@@ -374,7 +374,7 @@ def build_page(day_num, title, body, secs, cells):
 
     prev = '<a href="#" class="nav-btn prev-btn disabled">← Prev</a>' if day_num == 1 \
         else f'<a href="day{day_num-1:02d}.html" class="nav-btn prev-btn">← Prev</a>'
-    nxt = '<a href="landing.html" class="nav-btn next-btn">🏠 Finish</a>' if day_num >= 30 \
+    nxt = '<a href="index.html" class="nav-btn next-btn">🏠 Finish</a>' if day_num >= 30 \
         else f'<a href="day{day_num+1:02d}.html" class="nav-btn next-btn">Next →</a>'
 
     toc = '\n'.join(f'<li><a href="#{a}" class="toc-link">{t}</a></li>' for a, t in secs)
@@ -393,7 +393,7 @@ def build_page(day_num, title, body, secs, cells):
 <!-- Authentication Route Guard -->
 <script>
   if (localStorage.getItem('manodemy_auth') !== 'true') {{
-    window.location.href = 'landing.html';
+    window.location.href = 'index.html';
   }}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -405,7 +405,7 @@ def build_page(day_num, title, body, secs, cells):
 <nav class="top-bar" id="topBar">
   <div class="nav-inner">
     <div class="nav-left">
-      <a href="landing.html" class="home-btn" title="Back to Curriculum">🏠</a>
+      <a href="index.html" class="home-btn" title="Back to Curriculum">🏠</a>
       <div class="nav-score" title="Questions Solved">
         <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
         <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
@@ -489,7 +489,7 @@ class LiveHandler(SimpleHTTPRequestHandler):
                     except Exception as e:
                         self.send_error(500, f'Error generating page: {e}')
                         return
-        # Everything else (CSS, JS, landing.html) served normally
+        # Everything else (CSS, JS, index.html) served normally
         super().do_GET()
 
     def log_message(self, fmt, *args):
@@ -518,7 +518,7 @@ def build_static(start=1, end=30):
         print(f'  ✅ day{day_num:02d}.html — {cells} cells, {len(secs)} sections')
 
     # Update landing page links
-    lp = ROOT / 'landing.html'
+    lp = ROOT / 'index.html'
     if lp.exists():
         h = lp.read_text(encoding='utf-8')
         skills = []
@@ -530,7 +530,7 @@ def build_static(start=1, end=30):
         h2 = re.sub(r'(<div class="skills-grid s30">)\s*(.*?)\s*(</div>\s*</div>\s*</div>\s*</section>)',
                      r'\1\n' + new_grid + r'\n      \3', h, flags=re.DOTALL)
         lp.write_text(h2, encoding='utf-8')
-        print('  ✅ landing.html — all 30 days linked.')
+        print('  ✅ index.html — all 30 days linked.')
 
     print(f'\n🎉 Built {end-start+1} pages, {total_c} code cells, {total_s} sidebar sections.')
 
@@ -554,7 +554,7 @@ if __name__ == '__main__':
         # Live server mode
         port = int(args[0]) if args else 8080
         print(f'\n🚀 Manodemy Live Server')
-        print(f'   http://localhost:{port}/landing.html')
+        print(f'   http://localhost:{port}/index.html')
         print(f'   Notebooks: {NB_DIR}')
         print(f'   Edit any notebook → refresh browser → see changes instantly!')
         print(f'   Press Ctrl+C to stop.\n')
