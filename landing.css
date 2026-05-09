@@ -210,17 +210,15 @@ body {
 
 .hero-visual {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   position: relative;
+  width: 100%;
 }
 
 /* Premium Landing Login Card */
 .landing-login-card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   background: rgba(13, 17, 26, 0.55);
   backdrop-filter: blur(24px) saturate(1.2);
   -webkit-backdrop-filter: blur(24px) saturate(1.2);
@@ -235,8 +233,8 @@ body {
 }
 
 @keyframes floatIn {
-  from { opacity: 0; transform: translate(-50%, -40%) scale(0.95); }
-  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .login-title {
@@ -364,6 +362,33 @@ body {
 
 .landing-footer-links a:hover {
   color: var(--cyan);
+}
+
+/* Inline Python Logo */
+.inline-python-wrap {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px;
+  position: relative;
+}
+
+.python-logo-inline {
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 0 25px rgba(0, 230, 246, 0.6));
+  animation: floatInline 3s ease-in-out infinite;
+}
+
+@keyframes floatInline {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@media (max-width: 768px) {
+  .python-logo-inline {
+    width: 50px;
+    height: 50px;
+  }
 }
 
 .python-logo-wrap {
