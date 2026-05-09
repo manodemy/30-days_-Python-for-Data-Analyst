@@ -98,11 +98,9 @@ async function setupGeoPricing() {
 document.addEventListener('DOMContentLoaded', setupGeoPricing);
 
 console.log("✅ landing.js loaded successfully");
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("✅ DOM ready");
-  const googleBtn = document.getElementById("google-signin-btn");
-  console.log("✅ Google button found:", googleBtn);
-});
+console.log("✅ DOM ready check");
+const googleBtnTest = document.getElementById("google-signin-btn");
+console.log("✅ Google button found:", googleBtnTest);
 
 // ═══════ LANDING LOGIN CARD INTERACTIVITY (SUPABASE) ═══════
 const SUPABASE_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
@@ -120,7 +118,7 @@ try {
   console.error("❌ Error initializing Supabase client:", e);
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
+(async function initializeAuthentication() {
   const loginForm = document.getElementById('landingLoginForm');
   const btnGoogle = document.getElementById('google-signin-btn'); // Matches the updated ID
   const btnSubmit = document.getElementById('btnLandingSubmit');
@@ -321,5 +319,5 @@ document.addEventListener('DOMContentLoaded', async () => {
       alert('Just enter an email and password in the form and click "Start Learning" to instantly create your account!');
     });
   }
-});
+})();
 
