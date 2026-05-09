@@ -101,7 +101,6 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
 document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('landingLoginForm');
   const btnGoogle = document.getElementById('btnLandingGoogle');
-  const btnPhone = document.getElementById('btnLandingPhone');
   const btnSubmit = document.getElementById('btnLandingSubmit');
   const linkForgot = document.getElementById('linkLandingForgot');
   const linkSignup = document.getElementById('linkLandingSignup');
@@ -131,21 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Simulate Google OAuth popup
       const confirmed = confirm('Redirecting to Google Secure Sign-In. Continue?');
       if (confirmed) {
-        simulateLoginAndRedirect(btnGoogle, 'Google');
-      }
-    });
-  }
-
-  if (btnPhone) {
-    btnPhone.addEventListener('click', () => {
-      const phone = prompt('Enter your Phone Number with Country Code (e.g. +91 9876543210):');
-      if (phone && phone.trim().length > 5) {
-        const otp = prompt(`A 6-digit OTP has been sent to ${phone}.\nEnter OTP to continue (try 123456):`);
-        if (otp) {
-          simulateLoginAndRedirect(btnPhone, '📱 Phone');
-        } else {
-          alert('OTP Verification Cancelled.');
-        }
+        simulateLoginAndRedirect(btnGoogle, 'Continue with Google');
       }
     });
   }
