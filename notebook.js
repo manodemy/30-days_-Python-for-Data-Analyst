@@ -257,6 +257,38 @@ function updateToc() {
 window.addEventListener('scroll', updateToc);
 updateToc();
 
+// ── DROPDOWN TOGGLE ──
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('dayDropdownBtn');
+  const menu = document.getElementById('dayDropdownMenu');
+  
+  if (btn && menu) {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menu.classList.toggle('show');
+      btn.classList.toggle('open');
+      
+      // Auto-scroll to active item
+      if (menu.classList.contains('show')) {
+        const activeItem = menu.querySelector('.dropdown-item.active');
+        if (activeItem) {
+          setTimeout(() => {
+            activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 50);
+        }
+      }
+    });
+    
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.remove('show');
+        btn.classList.remove('open');
+      }
+    });
+  }
+});
+
 // ── SIDEBAR RESIZE ──
 const sidebar = document.getElementById('sidebar');
 const handle = document.getElementById('sidebarResize');

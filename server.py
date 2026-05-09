@@ -379,6 +379,11 @@ def build_page(day_num, title, body, secs, cells):
 
     toc = '\n'.join(f'<li><a href="#{a}" class="toc-link">{t}</a></li>' for a, t in secs)
 
+    dropdown_list = ''
+    for i, (f, t, e) in enumerate(DAYS, 1):
+        active = 'active' if i == day_num else ''
+        dropdown_list += f'<a href="day{i:02d}.html" class="dropdown-item {active}"><span class="day-num">Day {i:02d}</span> <span class="day-em">{e}</span> {t}</a>\n'
+
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -400,7 +405,20 @@ def build_page(day_num, title, body, secs, cells):
         <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
       </div>
     </div>
-    <div class="nav-center">Day {dd} : {title}</div>
+    <div class="nav-center has-dropdown">
+      <button class="nav-dropdown-btn" id="dayDropdownBtn">
+        <span class="day-label">Day {dd}</span>
+        <span class="day-divider">:</span>
+        <span class="day-title">{title}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+      <div class="nav-dropdown-menu" id="dayDropdownMenu">
+        <div class="dropdown-header">Jump to another day</div>
+        <div class="dropdown-scroll">
+          {dropdown_list}
+        </div>
+      </div>
+    </div>
     <div class="nav-right">{prev}{nxt}</div>
   </div>
 </nav>
