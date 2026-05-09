@@ -97,6 +97,13 @@ async function setupGeoPricing() {
 // Run geo-pricing when DOM is ready
 document.addEventListener('DOMContentLoaded', setupGeoPricing);
 
+console.log("✅ landing.js loaded successfully");
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("✅ DOM ready");
+  const googleBtn = document.getElementById("google-signin-btn");
+  console.log("✅ Google button found:", googleBtn);
+});
+
 // ═══════ LANDING LOGIN CARD INTERACTIVITY (SUPABASE) ═══════
 const SUPABASE_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
@@ -105,18 +112,17 @@ let supabase = null;
 try {
   if (window.supabase) {
     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log("✅ Supabase client initialized.");
   } else {
-    console.error("Supabase SDK not found. Authentication will be disabled.");
+    console.error("❌ Supabase SDK not found on window object. Is the CDN script blocked?");
   }
 } catch (e) {
-  console.error("Error initializing Supabase client:", e);
+  console.error("❌ Error initializing Supabase client:", e);
 }
 
-(async function initializeAuthentication() {
-  console.log("🚀 Initializing Manodemy Authentication...");
-  
+document.addEventListener('DOMContentLoaded', async () => {
   const loginForm = document.getElementById('landingLoginForm');
-  const btnGoogle = document.getElementById('btnLandingGoogle');
+  const btnGoogle = document.getElementById('google-signin-btn'); // Matches the updated ID
   const btnSubmit = document.getElementById('btnLandingSubmit');
   const linkForgot = document.getElementById('linkLandingForgot');
   const linkSignup = document.getElementById('linkLandingSignup');
@@ -187,7 +193,6 @@ try {
         showInstantLoggedInState();
       }
 
-      // 2. Listen for Auth State Changes (e.g. returning from Google OAuth)
       supabase.auth.onAuthStateChange((event, session) => {
         if (event === 'SIGNED_IN' && session) {
           localStorage.setItem('manodemy_auth', 'true');
@@ -199,11 +204,10 @@ try {
       if (localStorage.getItem('manodemy_auth') === 'true') showInstantLoggedInState();
     }
   } else {
-    // Fallback if Supabase SDK failed to load
     if (localStorage.getItem('manodemy_auth') === 'true') showInstantLoggedInState();
   }
 
-  // 3. Email & Password Login / Auto-Signup
+  // 2. Email & Password Login / Auto-Signup
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -220,15 +224,14 @@ try {
       btnSubmit.disabled = true;
       btnSubmit.style.opacity = '0.7';
 
-      // Attempt Login
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
       
       if (error) {
-        // If user doesn't exist, automatically sign them up!
         if (error.message.toLowerCase().includes('invalid login credentials')) {
           btnSubmit.textContent = 'Creating Account...';
           const { error: signUpError } = await supabase.auth.signUp({ email, password });
           if (signUpError) {
+            console.error("Supabase Signup Error:", signUpError);
             alert('Signup Failed: ' + signUpError.message);
             btnSubmit.textContent = 'Start Learning →';
             btnSubmit.disabled = false;
@@ -241,6 +244,7 @@ try {
           return;
         }
         
+        console.error("Supabase Login Error:", error);
         alert('Login Failed: ' + error.message);
         btnSubmit.textContent = 'Start Learning →';
         btnSubmit.disabled = false;
@@ -248,47 +252,61 @@ try {
         return;
       }
 
-      // Successful Login
       btnSubmit.textContent = 'Success! Access Granted...';
       localStorage.setItem('manodemy_auth', 'true');
       executeLoginAnimation();
     });
   }
 
-  // 4. Google OAuth Login
+  // 3. Google OAuth Login
   if (btnGoogle) {
-    btnGoogle.addEventListener('click', async () => {
+    btnGoogle.addEventListener('click', async (e) => {
+      e.preventDefault();
+      console.log("✅ Google button clicked");
+      
       if (!supabase) {
+        console.error("❌ Cannot sign in with Google because supabase client is null.");
         alert("Authentication service is currently unavailable.");
         return;
       }
       
+      const originalText = btnGoogle.innerHTML;
       btnGoogle.innerHTML = 'Redirecting securely...';
       btnGoogle.disabled = true;
       btnGoogle.style.opacity = '0.7';
       
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          // Redirect back to exactly where we are right now
-          redirectTo: window.location.origin + window.location.pathname
+      try {
+        console.log("✅ Calling supabase.auth.signInWithOAuth...");
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: window.location.origin + window.location.pathname
+          }
+        });
+        
+        if (error) {
+          console.error("❌ Supabase OAuth Error:", error);
+          alert('Google Login Error: ' + error.message);
+          btnGoogle.innerHTML = originalText;
+          btnGoogle.disabled = false;
+          btnGoogle.style.opacity = '1';
         }
-      });
-      
-      if (error) {
-        alert('Google Login Error: ' + error.message);
-        btnGoogle.innerHTML = '<img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">Continue with Google';
+      } catch (err) {
+        console.error("❌ Unexpected error during OAuth flow:", err);
+        btnGoogle.innerHTML = originalText;
         btnGoogle.disabled = false;
         btnGoogle.style.opacity = '1';
       }
     });
+  } else {
+    console.error("❌ Could not attach click listener: google-signin-btn not found in DOM");
   }
 
   if (linkForgot) {
     linkForgot.addEventListener('click', async (e) => {
       e.preventDefault();
       const email = prompt('Enter your registered email address to receive a password reset link:');
-      if (email) {
+      if (email && supabase) {
         await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: window.location.origin + window.location.pathname,
         });
@@ -303,7 +321,5 @@ try {
       alert('Just enter an email and password in the form and click "Start Learning" to instantly create your account!');
     });
   }
-  
-  console.log("✅ Authentication event listeners attached successfully.");
-})();
+});
 
