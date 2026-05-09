@@ -391,6 +391,37 @@ body {
   }
 }
 
+/* Stunning Transition Classes */
+.login-card-leaving {
+  transform: scale(0.8) translateY(40px) !important;
+  opacity: 0 !important;
+  filter: blur(20px) saturate(0) !important;
+  pointer-events: none;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.python-logo-hero {
+  width: 280px;
+  height: 280px;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  margin-right: -140px;
+  margin-top: -140px;
+  filter: drop-shadow(0 0 80px rgba(0, 230, 246, 0.8));
+  z-index: 20;
+  will-change: transform, filter;
+}
+
+.float-hero-anim {
+  animation: floatHero 4s ease-in-out infinite;
+}
+
+@keyframes floatHero {
+  0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 80px rgba(0, 230, 246, 0.8)); }
+  50% { transform: translateY(-20px) scale(1.02); filter: drop-shadow(0 0 100px rgba(0, 230, 246, 1)); }
+}
+
 .python-logo-wrap {
   position: relative;
   display: flex;

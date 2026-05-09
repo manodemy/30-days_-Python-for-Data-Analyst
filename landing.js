@@ -105,19 +105,76 @@ document.addEventListener('DOMContentLoaded', () => {
   const linkForgot = document.getElementById('linkLandingForgot');
   const linkSignup = document.getElementById('linkLandingSignup');
 
-  // Helper to simulate loading and redirect
+  // Helper to simulate loading and stunning transition
   const simulateLoginAndRedirect = (btn, originalText) => {
     btn.textContent = 'Authenticating...';
     btn.style.opacity = '0.7';
     btn.disabled = true;
+    
+    const loginCard = document.querySelector('.landing-login-card');
+    const heroVisual = document.querySelector('.hero-visual');
+    const inlineLogo = document.querySelector('.python-logo-inline');
+
     setTimeout(() => {
-      btn.textContent = 'Success! Redirecting...';
-      // Set the auth token in localStorage so the route guard allows access
+      btn.textContent = 'Success! Access Granted...';
       localStorage.setItem('manodemy_auth', 'true');
+      
+      // 1. Fade out the login card completely
+      loginCard.classList.add('login-card-leaving');
+      
       setTimeout(() => {
-        window.location.href = 'day01.html';
-      }, 800);
-    }, 1500);
+        loginCard.style.display = 'none';
+
+        if (inlineLogo && heroVisual) {
+          // FLIP Animation Strategy
+          // First: Get bounding rect of the inline logo where it currently is
+          const firstRect = inlineLogo.getBoundingClientRect();
+          
+          // Move the logo into the hero visual area in the DOM
+          heroVisual.appendChild(inlineLogo);
+          
+          // Swap its classes so it adopts the massive absolute positioning
+          inlineLogo.classList.remove('python-logo-inline');
+          inlineLogo.classList.add('python-logo-hero');
+          
+          // Last: Get bounding rect of where it has now naturally landed
+          const lastRect = inlineLogo.getBoundingClientRect();
+          
+          // Invert: Calculate the difference
+          const deltaX = firstRect.left - lastRect.left;
+          const deltaY = firstRect.top - lastRect.top;
+          const scaleW = firstRect.width / lastRect.width;
+          const scaleH = firstRect.height / lastRect.height;
+          
+          // Play: Animate from the Inverted position to the natural position
+          const animation = inlineLogo.animate([
+            {
+              transform: `translate(${deltaX}px, ${deltaY}px) scale(${scaleW}, ${scaleH})`,
+              filter: 'drop-shadow(0 0 20px rgba(0, 230, 246, 0.4))'
+            },
+            {
+              transform: 'translate(0, 0) scale(1)',
+              filter: 'drop-shadow(0 0 80px rgba(0, 230, 246, 0.8))'
+            }
+          ], {
+            duration: 1200,
+            easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+            fill: 'forwards'
+          });
+
+          // Add the continuous floating animation once the FLIP completes
+          animation.onfinish = () => {
+            inlineLogo.classList.add('float-hero-anim');
+            // Change the 'Buy Now' nav button to 'Go to Course'
+            const buyBtn = document.querySelector('.buy-btn');
+            if (buyBtn) {
+              buyBtn.innerHTML = 'Go to Course →';
+              buyBtn.href = 'day01.html';
+            }
+          };
+        }
+      }, 500); // wait for login card to vanish before moving the logo
+    }, 1200);
   };
 
   if (loginForm) {
