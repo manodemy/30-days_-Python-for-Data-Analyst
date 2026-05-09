@@ -297,6 +297,7 @@ try {
     });
   }
 
+  if (linkSignup) {
     linkSignup.addEventListener('click', (e) => {
       e.preventDefault();
       alert('Just enter an email and password in the form and click "Start Learning" to instantly create your account!');
