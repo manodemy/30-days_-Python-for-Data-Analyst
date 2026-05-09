@@ -208,11 +208,145 @@ body {
   font-weight: 600
 }
 
-/* Python Visual */
 .hero-visual {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center
+  align-items: center;
+  gap: 2.5rem;
+  position: relative;
+}
+
+/* Premium Landing Login Card */
+.landing-login-card {
+  background: rgba(17, 24, 39, 0.65);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 1.8rem;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  z-index: 10;
+  animation: slideDownFade 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideDownFade {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.login-title {
+  font: 800 1.3rem var(--font-h);
+  color: #fff;
+  text-align: center;
+  margin-bottom: 1.2rem;
+  letter-spacing: -0.02em;
+}
+
+.landing-social-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #fff;
+  font: 500 0.9rem var(--font-b);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.landing-social-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.landing-social-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+.landing-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.2rem 0;
+}
+
+.landing-divider::before, .landing-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.landing-divider span {
+  padding: 0 10px;
+  color: var(--muted);
+  font: 600 0.7rem var(--font-b);
+  letter-spacing: 0.05em;
+}
+
+.landing-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.landing-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  color: #fff;
+  font: 400 0.9rem var(--font-b);
+  transition: all 0.3s;
+}
+
+.landing-input:focus {
+  outline: none;
+  border-color: rgba(0, 230, 246, 0.5);
+  box-shadow: 0 0 0 3px rgba(0, 230, 246, 0.1);
+}
+
+.landing-submit-btn {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.4rem;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font: 700 1rem var(--font-h);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 230, 246, 0.2);
+}
+
+.landing-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 230, 246, 0.3);
+}
+
+.landing-footer-links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.2rem;
+}
+
+.landing-footer-links a {
+  color: var(--muted);
+  font: 500 0.85rem var(--font-b);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.landing-footer-links a:hover {
+  color: var(--cyan);
 }
 
 .python-logo-wrap {
