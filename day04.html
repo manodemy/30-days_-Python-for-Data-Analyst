@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 04: Lists — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="notebook.css">
+</head>
+<body>
+<nav class="top-bar" id="topBar">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="landing.html" class="home-btn" title="Back to Curriculum">🏠</a>
+      <div class="nav-score" title="Questions Solved">
+        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
+        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="nav-center">Day 04 : Lists</div>
+    <div class="nav-right"><a href="day03.html" class="nav-btn prev-btn">← Prev</a><a href="day05.html" class="nav-btn next-btn">Next →</a></div>
+  </div>
+</nav>
+<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
+<div class="layout">
+  <main class="notebook" id="notebook">
+    <div class="nb-title"><h1>📊 Day 04 : Lists</h1></div>
+<div class="nb-section" id="sec-0">
+<h2>🎯 Enterprise Objective</h2>
+<p>Lists are Python's most versatile data structure and the foundation for data manipulation. Today we master list creation, modification, comprehensions, and advanced patterns. You will learn the professional techniques that translate directly to pandas DataFrame operations.</p>
+<h3>📋 Strategic Overview</h3>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Concept</th><th>Core Use Case</th></tr></thead><tbody>
+<tr><td>1</td><td>Creation</td><td>Literal, <code>range()</code>, repetition</td><td>Building datasets</td></tr>
+<tr><td>2</td><td>Indexing & Slicing</td><td><code>lst[start:stop:step]</code></td><td>Data extraction</td></tr>
+<tr><td>3</td><td>Methods</td><td><code>.append()</code>, <code>.sort()</code>, <code>.pop()</code></td><td>In-place modification</td></tr>
+<tr><td>4</td><td>Copying</td><td>Shallow vs deep copy</td><td>Data integrity</td></tr>
+<tr><td>5</td><td>Comprehensions</td><td><code>[expr for x in iter if cond]</code></td><td>Transformation</td></tr>
+<tr><td>6</td><td>Built-in Functions</td><td><code>enumerate</code>, <code>zip</code>, <code>sorted</code></td><td>Aggregation</td></tr>
+<tr><td>7</td><td>Nested Lists</td><td>2D data, matrices</td><td>Tabular data</td></tr>
+<tr><td>8</td><td>Stack & Queue</td><td>LIFO/FIFO patterns</td><td>Algorithms</td></tr>
+</tbody></table>
+</div>
+<div class="nb-section" id="sec-1">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. List Creation & Basics : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Dynamic Mutable Sequences</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A list is an <b>ordered, mutable collection</b> that can hold items of any type. Lists are the most versatile data structure in Python — they grow and shrink dynamically, support indexing/slicing, and are the backbone of data pipelines.</p>
+<table>
+<thead><tr><th>Creation Method</th><th>Example</th><th>Use Case</th></tr></thead><tbody>
+<tr><td>Literal</td><td><code>[1, 2, 3]</code></td><td>Quick, explicit</td></tr>
+<tr><td><code>list()</code> constructor</td><td><code>list('abc')</code> → <code>['a','b','c']</code></td><td>Convert iterables</td></tr>
+<tr><td><code>list(range(n))</code></td><td><code>list(range(5))</code> → <code>[0,1,2,3,4]</code></td><td>Numeric sequences</td></tr>
+<tr><td>Repetition</td><td><code>[0] * 5</code> → <code>[0,0,0,0,0]</code></td><td>Initialize with defaults</td></tr>
+<tr><td>Comprehension</td><td><code>[x**2 for x in range(5)]</code></td><td>Functional creation</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Data buffers</strong>: Lists hold rows of data during ETL processing</p>
+<p>• <strong>Feature collections</strong>: Gather column names, metrics, or results dynamically</p>
+<p>• <strong>Pipeline stages</strong>: Accumulate transformed records before writing to output</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Shallow Copy Trap</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <code>matrix = [[0]*3]*3</code> creates 3 references to the <b>same</b> inner list. Modifying one row changes all rows. Use <code>[[0]*3 for _ in range(3)]</code> instead.
+</div>
+<h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Use <code>list()</code> to convert any iterable: <code>list('hello')</code> → <code>['h','e','l','l','o']</code>, <code>list(range(5))</code> → <code>[0,1,2,3,4]</code>.</p>
+<div class="code-cell" id="cell-1">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-1"># Creation methods
+nums = [10, 20, 30, 40, 50]
+mixed = [1, &#x27;hello&#x27;, True, 3.14, None]
+from_range = list(range(1, 6))
+repeated = [0] * 5
+
+print(f&#x27;nums: {nums}&#x27;)
+print(f&#x27;mixed types: {mixed}&#x27;)
+print(f&#x27;from range: {from_range}&#x27;)
+print(f&#x27;repeated: {repeated}&#x27;)
+
+# Lists are mutable
+nums[0] = 99
+print(f&#x27;After mutation: {nums}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-3">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>List Creation</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create a list of the first 10 even numbers using <code>list(range(...))</code>. Print the list and its length.</p></div>
+<div class="code-cell" id="cell-2">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-2"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Create a list containing: an int, a float, a string, a boolean, and <code>None</code>. Print each element with its type using a loop.</p></div>
+<div class="code-cell" id="cell-3">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-3"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Demonstrate the shallow copy trap: create <code>matrix = [[0]<em>3]</em>3</code>, modify <code>matrix[0][0] = 1</code>, then print the full matrix. Explain what happened.</p></div>
+<div class="code-cell" id="cell-4">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-4"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Create the same 3x3 matrix correctly using a list comprehension <code>[[0]*3 for _ in range(3)]</code>. Modify <code>[0][0]</code> and verify only one row changed.</p></div>
+<div class="code-cell" id="cell-5">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-5"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Convert the string <code>"Data Analytics"</code> into a list of characters, then into a list of words. Print both results.</p></div>
+<div class="code-cell" id="cell-6">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-6"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-14">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>2. List Indexing & Slicing : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Precision Data Access</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Lists use the same indexing and slicing syntax as strings: <code>lst[i]</code> for single access, <code>lst[start:stop:step]</code> for slices. Unlike strings, list slicing returns a <b>new list</b>, and you can <b>assign to slices</b> to modify multiple elements at once.</p>
+<table>
+<thead><tr><th>Operation</th><th>Syntax</th><th>Description</th></tr></thead><tbody>
+<tr><td>Access</td><td><code>lst[0]</code>, <code>lst[-1]</code></td><td>First, last element</td></tr>
+<tr><td>Slice</td><td><code>lst[1:4]</code></td><td>Elements at index 1,2,3</td></tr>
+<tr><td>Step</td><td><code>lst[::2]</code></td><td>Every other element</td></tr>
+<tr><td>Reverse</td><td><code>lst[::-1]</code></td><td>Reversed copy</td></tr>
+<tr><td>Slice assign</td><td><code>lst[1:3] = [10, 20]</code></td><td>Replace range</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Batch selection</strong>: Select specific rows/columns from data matrices</p>
+<p>• <strong>Pagination</strong>: <code>data[offset:offset+limit]</code> — paginate query results</p>
+<p>• <strong>Window operations</strong>: <code>data[i:i+window_size]</code> — sliding window analysis</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Slice assignment can <b>change list length</b>: <code>lst[1:3] = [10, 20, 30, 40]</code> replaces 2 elements with 4.</p>
+<div class="code-cell" id="cell-7">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-7">data = [10, 20, 30, 40, 50, 60, 70]
+
+# Indexing
+print(data[0])     # 10
+print(data[-1])    # 70
+
+# Slicing
+print(data[2:5])   # [30, 40, 50]
+print(data[::2])   # [10, 30, 50, 70]
+print(data[::-1])  # [70, 60, 50, 40, 30, 20, 10]
+
+# Slice assignment (unique to lists!)
+data[1:3] = [200, 300]
+print(data)  # [10, 200, 300, 40, 50, 60, 70]</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-16">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Indexing & Slicing</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>nums = list(range(1, 21))</code>, extract: first 5, last 5, every 3rd element, and reversed list. Print each.</p></div>
+<div class="code-cell" id="cell-8">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-8"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Use slice assignment to replace elements at index 2-4 in <code>data = [1,2,3,4,5]</code> with <code>[30,40,50]</code>. Print the result.</p></div>
+<div class="code-cell" id="cell-9">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-9"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Write code to rotate a list left by 2 positions: <code>[1,2,3,4,5]</code> → <code>[3,4,5,1,2]</code>. Use only slicing.</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Given <code>matrix = [[1,2,3],[4,5,6],[7,8,9]]</code>, extract the second column <code>[2,5,8]</code> using indexing in a loop.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Use negative slicing to get the second-to-last element and the last 3 elements of <code>data = [10,20,30,40,50,60]</code>. Print both.</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-27">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>3. List Methods : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">In-Place Modification</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Lists have powerful methods for adding, removing, and reordering elements. Most methods modify the list <b>in-place</b> and return <code>None</code>. This is a common gotcha — never write <code>lst = lst.sort()</code>.</p>
+<table>
+<thead><tr><th>Method</th><th>Action</th><th>Returns</th></tr></thead><tbody>
+<tr><td><code>.append(x)</code></td><td>Add to end</td><td><code>None</code></td></tr>
+<tr><td><code>.extend(iter)</code></td><td>Add multiple items</td><td><code>None</code></td></tr>
+<tr><td><code>.insert(i, x)</code></td><td>Insert at position</td><td><code>None</code></td></tr>
+<tr><td><code>.remove(x)</code></td><td>Remove first occurrence</td><td><code>None</code></td></tr>
+<tr><td><code>.pop(i)</code></td><td>Remove and return at index</td><td>The removed item</td></tr>
+<tr><td><code>.sort()</code></td><td>Sort in-place</td><td><code>None</code></td></tr>
+<tr><td><code>.reverse()</code></td><td>Reverse in-place</td><td><code>None</code></td></tr>
+<tr><td><code>.index(x)</code></td><td>Find position</td><td>Index int</td></tr>
+<tr><td><code>.count(x)</code></td><td>Count occurrences</td><td>Count int</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Data accumulation</strong>: <code>results.append(row)</code> — building datasets row by row</p>
+<p>• <strong>Deduplication</strong>: <code>.count()</code> and <code>.remove()</code> for cleaning duplicates</p>
+<p>• <strong>Sorting</strong>: <code>data.sort(key=lambda x: x['date'])</code> — sort records by field</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ sort() Returns None</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <code>lst.sort()</code> modifies in-place and returns <code>None</code>. Writing <code>lst = lst.sort()</code> destroys your list! Use <code>sorted(lst)</code> if you need a new sorted list.
+</div></div>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13">scores = [85, 92, 78, 95, 88]
+
+# Adding elements
+scores.append(76)
+scores.extend([91, 83])
+print(f&#x27;After adding: {scores}&#x27;)
+
+# Removing
+scores.remove(78)        # Remove by value
+popped = scores.pop(-1)  # Remove last, get value
+print(f&#x27;Removed: {popped}, List: {scores}&#x27;)
+
+# Sorting
+scores.sort(reverse=True)
+print(f&#x27;Sorted desc: {scores}&#x27;)
+
+# DANGER: sort() returns None
+result = scores.sort()
+print(f&#x27;result = {result}&#x27;)  # None!</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-29">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>List Methods</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Start with <code>lst = [3, 1, 4, 1, 5]</code>. Use <code>.append()</code>, <code>.extend()</code>, <code>.insert()</code> to add elements. Print the list after each operation.</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Given <code>data = [5, 3, 8, 1, 9, 2]</code>, sort it in ascending order, then reverse it. Use both in-place methods. Print after each step.</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Demonstrate the <code>sort()</code> trap: show that <code>result = [3,1,2].sort()</code> gives <code>None</code>. Then show the correct way using <code>sorted()</code>.</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Given <code>items = ["apple", "banana", "apple", "cherry", "apple"]</code>, count occurrences of <code>"apple"</code> and find its first index. Print both.</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write code that removes all occurrences of a value from a list (not just the first). Remove all <code>0</code>s from <code>[1, 0, 2, 0, 3, 0]</code>.</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-40">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>4. Copying Lists : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Shallow vs Deep Copy</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Assignment (<code>b = a</code>) creates a <b>reference</b>, not a copy. <code>.copy()</code> or <code>list(a)</code> creates a <b>shallow copy</b>. For nested lists, you need <code>copy.deepcopy()</code> to get a fully independent copy.</p>
+<table>
+<thead><tr><th>Method</th><th>Creates</th><th>Nested Objects</th></tr></thead><tbody>
+<tr><td><code>b = a</code></td><td>Reference (alias)</td><td>Shared — changes affect both</td></tr>
+<tr><td><code>b = a.copy()</code></td><td>Shallow copy</td><td>Still shared (inner refs)</td></tr>
+<tr><td><code>b = a[:]</code></td><td>Shallow copy</td><td>Still shared (inner refs)</td></tr>
+<tr><td><code>b = copy.deepcopy(a)</code></td><td>Deep copy</td><td>Fully independent</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Data integrity</strong>: Always copy before modifying to preserve original data</p>
+<p>• <strong>Function safety</strong>: Copy inputs inside functions to avoid side effects</p>
+<p>• <strong>Snapshot patterns</strong>: Take deep copies as checkpoints in data transformations</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Shallow Copy Surprise</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>With nested lists, <code>.copy()</code> only copies the outer list. Inner lists are still <b>shared references</b>. Modifying an inner list in the copy changes the original too.</p>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19">import copy
+
+# Reference vs Copy
+original = [1, 2, [3, 4]]
+ref = original            # Reference — same object
+shallow = original.copy()  # Shallow copy
+deep = copy.deepcopy(original)  # Deep copy
+
+# Modify nested list
+original[2][0] = 99
+
+print(f&#x27;original: {original}&#x27;)  # [1, 2, [99, 4]]
+print(f&#x27;ref:      {ref}&#x27;)       # [1, 2, [99, 4]] — affected!
+print(f&#x27;shallow:  {shallow}&#x27;)   # [1, 2, [99, 4]] — affected!
+print(f&#x27;deep:     {deep}&#x27;)      # [1, 2, [3, 4]]  — safe!</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Copying-42">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Copying</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create <code>a = [1, 2, 3]</code> and <code>b = a</code>. Modify <code>b.append(4)</code>. Print both. Explain why <code>a</code> changed too.</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Fix the above by using <code>.copy()</code>. Show that modifying <code>b</code> no longer affects <code>a</code>.</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Create <code>nested = [[1, 2], [3, 4]]</code>. Make a shallow copy. Modify <code>copy[0][0] = 99</code>. Show that the original also changed.</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Fix the nested copy issue using <code>copy.deepcopy()</code>. Verify the original is unaffected by changes to the deep copy.</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write a function <code>safe_process(data)</code> that takes a list, makes a deep copy internally, sorts the copy, and returns it — leaving the original unchanged. Test it.</p></div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-53">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>5. List Comprehensions : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Functional Data Transformation</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A list comprehension is a concise way to create lists: <code>[expression for item in iterable if condition]</code>. They replace multi-line loops with a single readable line and are <b>faster</b> than equivalent for-loops.</p>
+<pre class="nb-code-block"><code># Loop version (4 lines)
+result = []
+for x in range(10):
+    if x % 2 == 0:
+        result.append(x ** 2)
+
+# Comprehension (1 line)
+result = [x**2 for x in range(10) if x % 2 == 0]</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Data filtering</strong>: <code>clean = [x for x in data if x is not None]</code></p>
+<p>• <strong>Type conversion</strong>: <code>nums = [int(x) for x in string_list]</code></p>
+<p>• <strong>Feature engineering</strong>: <code>features = [row['age'] * row['income'] for row in records]</code></p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Readability Limit</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>If a comprehension needs more than one condition or nested loops, switch to a regular for-loop. Readability always wins over cleverness.</p>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25"># Basic comprehension
+squares = [x**2 for x in range(1, 6)]
+print(squares)  # [1, 4, 9, 16, 25]
+
+# With filter
+evens = [x for x in range(20) if x % 2 == 0]
+print(evens)
+
+# Transform + filter
+names = [&#x27;  Alice &#x27;, &#x27;Bob&#x27;, &#x27;  charlie&#x27;, &#x27;&#x27;]
+clean = [n.strip().title() for n in names if n.strip()]
+print(clean)  # [&#x27;Alice&#x27;, &#x27;Bob&#x27;, &#x27;Charlie&#x27;]
+
+# Nested: flatten 2D list
+matrix = [[1,2,3],[4,5,6],[7,8,9]]
+flat = [x for row in matrix for x in row]
+print(flat)  # [1,2,3,4,5,6,7,8,9]</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Comprehensions-55">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Comprehensions</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create a list of squares of numbers 1-10 using a comprehension. Print it.</p></div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Given <code>words = ["hello", "world", "python", "data"]</code>, create a list of their lengths using a comprehension. Print it.</p></div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Filter: from <code>nums = [1, -2, 3, -4, 5, -6]</code>, extract only positive numbers using a comprehension.</p></div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Flatten <code>matrix = [[1,2],[3,4],[5,6]]</code> into <code>[1,2,3,4,5,6]</code> using a nested comprehension.</p></div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Given <code>data = ["42", "hello", "3.14", "7", "abc"]</code>, use a comprehension with <code>.isdigit()</code> to extract and convert valid integers. Print the result.</p></div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-66">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>6. Built-in Functions for Lists : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Aggregation & Analysis</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Python provides powerful built-in functions that work on lists: <code>len()</code>, <code>sum()</code>, <code>min()</code>, <code>max()</code>, <code>sorted()</code>, <code>enumerate()</code>, <code>zip()</code>, <code>map()</code>, <code>filter()</code>, <code>any()</code>, <code>all()</code>.</p>
+<table>
+<thead><tr><th>Function</th><th>Purpose</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>len(lst)</code></td><td>Count elements</td><td><code>len([1,2,3])</code> → <code>3</code></td></tr>
+<tr><td><code>sum(lst)</code></td><td>Total</td><td><code>sum([1,2,3])</code> → <code>6</code></td></tr>
+<tr><td><code>min/max</code></td><td>Extremes</td><td><code>max([3,1,2])</code> → <code>3</code></td></tr>
+<tr><td><code>sorted()</code></td><td>New sorted list</td><td><code>sorted([3,1,2])</code> → <code>[1,2,3]</code></td></tr>
+<tr><td><code>enumerate()</code></td><td>Index + value</td><td>Indexed iteration</td></tr>
+<tr><td><code>zip()</code></td><td>Pair elements</td><td>Parallel iteration</td></tr>
+<tr><td><code>any()/all()</code></td><td>Boolean checks</td><td>Data validation</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Statistics</strong>: <code>sum(data)/len(data)</code> — quick mean calculation</p>
+<p>• <strong>Validation</strong>: <code>all(x > 0 for x in data)</code> — check all values positive</p>
+<p>• <strong>Paired data</strong>: <code>zip(names, scores)</code> — combine parallel lists</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <code>enumerate()</code> is always preferred over <code>range(len(lst))</code>: <code>for i, val in enumerate(data):</code> is cleaner and more Pythonic.
+</div></div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31">scores = [85, 92, 78, 95, 88]
+
+print(f&#x27;Count: {len(scores)}&#x27;)
+print(f&#x27;Sum:   {sum(scores)}&#x27;)
+print(f&#x27;Avg:   {sum(scores)/len(scores):.1f}&#x27;)
+print(f&#x27;Min:   {min(scores)}&#x27;)
+print(f&#x27;Max:   {max(scores)}&#x27;)
+
+# enumerate
+for i, score in enumerate(scores, 1):
+    print(f&#x27;Student {i}: {score}&#x27;)
+
+# zip
+names = [&#x27;Alice&#x27;, &#x27;Bob&#x27;, &#x27;Charlie&#x27;]
+grades = [92, 85, 78]
+for name, grade in zip(names, grades):
+    print(f&#x27;{name}: {grade}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-68">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Built-in Functions</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>data = [45, 82, 67, 91, 53]</code>, compute and print: length, sum, average, min, max.</p></div>
+<div class="code-cell" id="cell-32">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-32')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-32')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-32"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Use <code>enumerate()</code> to print each element of <code>fruits = ["apple", "banana", "cherry"]</code> with its 1-based index.</p></div>
+<div class="code-cell" id="cell-33">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-33')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-33')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-33"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>zip()</code> to combine <code>names = ["Alice", "Bob"]</code> and <code>ages = [25, 30]</code> into a list of tuples. Print it.</p></div>
+<div class="code-cell" id="cell-34">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-34')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-34')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-34"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Use <code>any()</code> to check if any number in <code>nums = [2, 4, 6, 7, 8]</code> is odd. Use <code>all()</code> to check if all are positive. Print both.</p></div>
+<div class="code-cell" id="cell-35">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-35')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-35')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-35"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Use <code>sorted()</code> with a <code>key</code> parameter to sort <code>words = ["banana", "apple", "cherry"]</code> by length. Print the result.</p></div>
+<div class="code-cell" id="cell-36">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-36')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-36')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-36"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-79">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>7. Nested Lists : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">2D Data Structures</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A nested list (list of lists) represents <b>2D data</b> — tables, matrices, grids. Access elements with <code>matrix[row][col]</code>. This is the foundation for understanding DataFrames in pandas.</p>
+<pre class="nb-code-block"><code>matrix = [
+    [1, 2, 3],   # row 0
+    [4, 5, 6],   # row 1
+    [7, 8, 9],   # row 2
+]
+matrix[1][2]  # row 1, col 2 → 6</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Tabular data</strong>: CSV data is naturally a list of lists before converting to DataFrame</p>
+<p>• <strong>Matrix operations</strong>: Row/column extraction, transposition, aggregation</p>
+<p>• <strong>Grid problems</strong>: Game boards, pixel maps, adjacency matrices</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Transpose a matrix with <code>list(zip(*matrix))</code>. This unpacks rows and re-zips them as columns.</p>
+<div class="code-cell" id="cell-37">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-37')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-37')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-37"># 2D data: sales by quarter
+sales = [
+    [&#x27;Q1&#x27;, 150, 200, 180],
+    [&#x27;Q2&#x27;, 220, 190, 210],
+    [&#x27;Q3&#x27;, 180, 250, 230],
+]
+
+# Access
+print(sales[0][0])  # Q1
+print(sales[1][2])  # 190
+
+# Extract column (all Q values)
+quarters = [row[0] for row in sales]
+print(quarters)  # [&#x27;Q1&#x27;, &#x27;Q2&#x27;, &#x27;Q3&#x27;]
+
+# Row totals
+for row in sales:
+    total = sum(row[1:])
+    print(f&#x27;{row[0]}: ${total:,}&#x27;)
+
+# Transpose
+matrix = [[1,2,3],[4,5,6]]
+transposed = list(zip(*matrix))
+print(transposed)  # [(1,4),(2,5),(3,6)]</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-81">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Nested Lists</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create a 3x3 matrix using a nested list. Print it row by row in a formatted grid.</p></div>
+<div class="code-cell" id="cell-38">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-38')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-38')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-38"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Given <code>matrix = [[1,2,3],[4,5,6],[7,8,9]]</code>, extract the diagonal <code>[1,5,9]</code> using indexing.</p></div>
+<div class="code-cell" id="cell-39">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-39')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-39')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-39"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Write code to compute the sum of each row and each column in a 3x3 matrix. Print the results.</p></div>
+<div class="code-cell" id="cell-40">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-40')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-40')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-40"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Transpose <code>matrix = [[1,2,3],[4,5,6]]</code> into <code>[[1,4],[2,5],[3,6]]</code> using <code>zip(*matrix)</code>. Print the result.</p></div>
+<div class="code-cell" id="cell-41">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-41')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-41')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-41"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Given a list of student records <code>[["Alice",85],["Bob",92],["Charlie",78]]</code>, sort by score (descending) and print the ranked list.</p></div>
+<div class="code-cell" id="cell-42">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-42')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-42')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-42"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-92">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>8. Lists as Stacks & Queues : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Data Structure Patterns</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Lists can function as <b>stacks</b> (LIFO — Last In, First Out) using <code>append()</code>/<code>pop()</code>, and as <b>queues</b> (FIFO — First In, First Out) using <code>append()</code>/<code>pop(0)</code>. For production queues, use <code>collections.deque</code> for O(1) performance.</p>
+<table>
+<thead><tr><th>Pattern</th><th>Push</th><th>Pop</th><th>Order</th></tr></thead><tbody>
+<tr><td>Stack (LIFO)</td><td><code>.append(x)</code></td><td><code>.pop()</code></td><td>Last in, first out</td></tr>
+<tr><td>Queue (FIFO)</td><td><code>.append(x)</code></td><td><code>.pop(0)</code></td><td>First in, first out</td></tr>
+<tr><td>Deque (fast)</td><td><code>.append(x)</code></td><td><code>.popleft()</code></td><td>O(1) both ends</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Undo systems</strong>: Stack-based undo/redo for data transformations</p>
+<p>• <strong>Task queues</strong>: FIFO queues for processing jobs in order</p>
+<p>• <strong>BFS/DFS</strong>: Graph traversal algorithms use stacks and queues</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ list.pop(0) is O(n)</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Removing from the front of a list shifts all elements. For frequent front-removal, use <code>collections.deque</code> which is O(1).</p>
+<div class="code-cell" id="cell-43">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-43')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-43')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-43"># Stack (LIFO)
+stack = []
+stack.append(&#x27;undo_1&#x27;)
+stack.append(&#x27;undo_2&#x27;)
+stack.append(&#x27;undo_3&#x27;)
+print(f&#x27;Stack: {stack}&#x27;)
+print(f&#x27;Pop: {stack.pop()}&#x27;)   # undo_3 (last in)
+print(f&#x27;Stack: {stack}&#x27;)
+
+# Queue (FIFO) — use deque for production
+from collections import deque
+queue = deque()
+queue.append(&#x27;task_1&#x27;)
+queue.append(&#x27;task_2&#x27;)
+queue.append(&#x27;task_3&#x27;)
+print(f&#x27;\nQueue: {list(queue)}&#x27;)
+print(f&#x27;Process: {queue.popleft()}&#x27;)  # task_1 (first in)
+print(f&#x27;Queue: {list(queue)}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-94">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Stack & Queue</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Implement a stack: push <code>[10, 20, 30]</code>, then pop twice. Print the popped values and remaining stack.</p></div>
+<div class="code-cell" id="cell-44">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-44')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-44')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-44"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Implement a queue using <code>collections.deque</code>: enqueue <code>["A", "B", "C"]</code>, then dequeue twice. Print results.</p></div>
+<div class="code-cell" id="cell-45">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-45')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-45')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-45"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Use a stack to reverse a string: push each character, then pop all. <code>"hello"</code> → <code>"olleh"</code>. Print the result.</p></div>
+<div class="code-cell" id="cell-46">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-46')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-46')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-46"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Write a function <code>is_balanced(expr)</code> that uses a stack to check if parentheses are balanced. Test with <code>"(())"</code> and <code>"(()"</code>.</p></div>
+<div class="code-cell" id="cell-47">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-47')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-47')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-47"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Compare performance: time <code>list.pop(0)</code> vs <code>deque.popleft()</code> for 10000 operations. Print the timing comparison.</p></div>
+<div class="code-cell" id="cell-48">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-48')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-48')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-48"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="practice">
+<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
+<p>Theory is useless without muscle memory. Complete these tasks to solidify your understanding.</p>
+<div class="question task"><p><strong>Task 1 (Data Pipeline):</strong> Write a function <code>process_scores(raw)</code> that takes <code>raw = ['85', 'N/A', '92', '', '78', 'absent', '95']</code>, filters out non-numeric entries, converts to int, sorts descending, and returns the top 3. Print the result.</p></div>
+<div class="code-cell" id="cell-49">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-49')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-49')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-49"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 2 (Matrix Calculator):</strong> Write functions to add and multiply two 3x3 matrices (list of lists). Test with sample matrices and print formatted results.</p></div>
+<div class="code-cell" id="cell-50">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-50')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-50')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-50"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 3 (Inventory Manager):</strong> Create a list of dicts <code>[{'item': 'Laptop', 'qty': 5, 'price': 999}, ...]</code> with 5 products. Write code to: find most expensive, compute total inventory value, sort by price.</p></div>
+<div class="code-cell" id="cell-51">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-51')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-51')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-51"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 4 (Deduplicator):</strong> Write a function <code>deduplicate(lst)</code> that removes duplicates while preserving original order. <code>[3,1,4,1,5,3,2]</code> → <code>[3,1,4,5,2]</code>. Do NOT use <code>set()</code>.</p></div>
+<div class="code-cell" id="cell-52">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-52')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-52')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-52"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 5 (Sliding Window):</strong> Write a function <code>moving_average(data, window)</code> that computes moving averages. <code>data=[1,3,5,7,9], window=3</code> → <code>[3.0, 5.0, 7.0]</code>. Print results.</p></div>
+<div class="code-cell" id="cell-53">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-53')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-53')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-53"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong></p>
+<h3>Write a function <code>two_sum(nums, target)</code> returning indices of two numbers that add to target. <code>[2,7,11,15], 9</code> → <code>[0,1]</code>.</h3>
+</div>
+<div class="code-cell" id="cell-54">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-54')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-54')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-54"># Solution for Q1</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q2.</strong></p>
+<h3>Write a function <code>rotate_list(lst, k)</code> that rotates right by k positions. <code>[1,2,3,4,5], k=2</code> → <code>[4,5,1,2,3]</code>.</h3>
+</div>
+<div class="code-cell" id="cell-55">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-55')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-55')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-55"># Solution for Q2</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q3.</strong></p>
+<h3>Write a function <code>merge_sorted(a, b)</code> that merges two sorted lists into one sorted list without using <code>sort()</code>.</h3>
+</div>
+<div class="code-cell" id="cell-56">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-56')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-56')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-56"># Solution for Q3</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong></p>
+<h3>Write a function <code>flatten(nested)</code> that flattens arbitrarily nested lists: <code>[1,[2,[3,[4]]],5]</code> → <code>[1,2,3,4,5]</code>. Use recursion.</h3>
+</div>
+<div class="code-cell" id="cell-57">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-57')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-57')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-57"># Solution for Q4</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong></p>
+<h3>Write a function <code>find_missing(nums)</code> that finds the missing number in <code>[0,1,2,4,5]</code> → <code>3</code>. List contains n-1 numbers from 0 to n.</h3>
+</div>
+<div class="code-cell" id="cell-58">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-58')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-58')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-58"># Solution for Q5</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong></p>
+<h3>Write a function <code>remove_duplicates_sorted(lst)</code> in-place for a sorted list. <code>[1,1,2,2,3]</code> → <code>[1,2,3]</code>. Return new length.</h3>
+</div>
+<div class="code-cell" id="cell-59">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-59')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-59')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-59"># Solution for Q6</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong></p>
+<h3>Write a function <code>max_subarray_sum(nums)</code> implementing Kadane's algorithm. Find contiguous subarray with largest sum.</h3>
+</div>
+<div class="code-cell" id="cell-60">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-60')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-60')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-60"># Solution for Q7</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong></p>
+<h3>Write a function <code>intersection(a, b)</code> returning common elements preserving order from <code>a</code>. Handle duplicates correctly.</h3>
+</div>
+<div class="code-cell" id="cell-61">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-61')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-61')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-61"># Solution for Q8</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong></p>
+<h3>Write a function <code>chunk(lst, size)</code> splitting list into chunks: <code>[1,2,3,4,5], size=2</code> → <code>[[1,2],[3,4],[5]]</code>.</h3>
+</div>
+<div class="code-cell" id="cell-62">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-62')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-62')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-62"># Solution for Q9</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-135">
+<div class="question interview"><p><strong>Q10.</strong></p>
+<h3>Write a function <code>spiral_order(matrix)</code> returning elements in spiral order from a 2D matrix.</h3>
+</div>
+<div class="code-cell" id="cell-63">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-63')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-63')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-63"># Solution for Q10</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-137">
+<div class="question interview"><p><strong>Q11.</strong></p>
+<h3>Write a function <code>product_except_self(nums)</code> returning array where each element is product of all others. No division.</h3>
+</div>
+<div class="code-cell" id="cell-64">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-64')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-64')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-64"># Solution for Q11</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-139">
+<div class="question interview"><p><strong>Q12.</strong></p>
+<h3>Write a function <code>longest_consecutive(nums)</code> finding longest consecutive sequence. <code>[100,4,200,1,3,2]</code> → 4 (sequence 1-4).</h3>
+</div>
+<div class="code-cell" id="cell-65">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-65')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-65')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-65"># Solution for Q12</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-141">
+<div class="question interview"><p><strong>Q13.</strong></p>
+<h3>Write a function <code>group_by(lst, key_func)</code> that groups elements by a key function. Return a dict of lists.</h3>
+</div>
+<div class="code-cell" id="cell-66">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-66')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-66')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-66"># Solution for Q13</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-143">
+<div class="question interview"><p><strong>Q14.</strong></p>
+<h3>Write a function <code>interleave(a, b)</code> merging alternately: <code>[1,3,5],[2,4,6]</code> → <code>[1,2,3,4,5,6]</code>. Handle different lengths.</h3>
+</div>
+<div class="code-cell" id="cell-67">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-67')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-67')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-67"># Solution for Q14</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-145">
+<div class="question interview"><p><strong>Q15.</strong></p>
+<h3>Write a function <code>partition(lst, pred)</code> splitting into two lists based on predicate. Return <code>(true_list, false_list)</code>.</h3>
+</div>
+<div class="code-cell" id="cell-68">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-68')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-68')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-68"># Solution for Q15</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-147">
+<div class="question interview"><p><strong>Q16.</strong></p>
+<h3>Write a function <code>find_duplicates(lst)</code> returning all elements that appear more than once. Preserve first-seen order.</h3>
+</div>
+<div class="code-cell" id="cell-69">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-69')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-69')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-69"># Solution for Q16</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-149">
+<div class="question interview"><p><strong>Q17.</strong></p>
+<h3>Write code implementing binary search on a sorted list. Return index or -1. No <code>bisect</code> module.</h3>
+</div>
+<div class="code-cell" id="cell-70">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-70')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-70')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-70"># Solution for Q17</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-151">
+<div class="question interview"><p><strong>Q18.</strong></p>
+<h3>Write a function <code>matrix_multiply(A, B)</code> for matrix multiplication. Validate dimensions. Return result matrix.</h3>
+</div>
+<div class="code-cell" id="cell-71">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-71')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-71')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-71"># Solution for Q18</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-153">
+<div class="question interview"><p><strong>Q19.</strong></p>
+<h3>Write a function <code>compress(lst)</code> implementing RLE: <code>[1,1,2,2,2,3]</code> → <code>[(1,2),(2,3),(3,1)]</code>.</h3>
+</div>
+<div class="code-cell" id="cell-72">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-72')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-72')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-72"># Solution for Q19</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-155">
+<div class="question interview"><p><strong>Q20.</strong></p>
+<h3>Write a function <code>kth_largest(lst, k)</code> finding kth largest element without full sort. Use partial sort or heap.</h3>
+</div>
+<div class="code-cell" id="cell-73">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-73')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-73')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-73"># Solution for Q20</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-157">
+<div class="question interview"><p><strong>Q21.</strong></p>
+<h3>Write a function <code>is_sorted(lst)</code> checking if list is sorted (ascending or descending). Handle equal elements.</h3>
+</div>
+<div class="code-cell" id="cell-74">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-74')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-74')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-74"># Solution for Q21</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-159">
+<div class="question interview"><p><strong>Q22.</strong></p>
+<h3>Write a function <code>dutch_flag(lst)</code> sorting <code>[0,1,2,0,1,2]</code> in-place with single pass. Three-way partition.</h3>
+</div>
+<div class="code-cell" id="cell-75">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-75')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-75')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-75"># Solution for Q22</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-161">
+<div class="question interview"><p><strong>Q23.</strong></p>
+<h3>Write a function <code>subsets(lst)</code> generating all subsets (power set). <code>[1,2]</code> → <code>[[], [1], [2], [1,2]]</code>.</h3>
+</div>
+<div class="code-cell" id="cell-76">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-76')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-76')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-76"># Solution for Q23</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-163">
+<div class="question interview"><p><strong>Q24.</strong></p>
+<h3>Write a function <code>next_greater(lst)</code> finding next greater element for each: <code>[4,5,2,10]</code> → <code>[5,10,10,-1]</code>.</h3>
+</div>
+<div class="code-cell" id="cell-77">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-77')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-77')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-77"># Solution for Q24</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-165">
+<div class="question interview"><p><strong>Q25.</strong></p>
+<h3>Write a function <code>max_profit(prices)</code> finding max stock profit from single buy-sell. <code>[7,1,5,3,6,4]</code> → <code>5</code>.</h3>
+</div>
+<div class="code-cell" id="cell-78">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-78')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-78')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-78"># Solution for Q25</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="summary">
+<div class="section-header cyan"><h2>📊 Day 4 Executive Summary</h2></div>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Takeaway</th><th>Professional Application</th></tr></thead><tbody>
+<tr><td>1</td><td>Creation</td><td>Mutable, dynamic, any type</td><td>Data buffers, accumulators</td></tr>
+<tr><td>2</td><td>Indexing</td><td>Zero-based; slice assignment modifies</td><td>Data extraction, pagination</td></tr>
+<tr><td>3</td><td>Methods</td><td>In-place methods return <code>None</code></td><td>Data manipulation</td></tr>
+<tr><td>4</td><td>Copying</td><td><code>.copy()</code> is shallow; use <code>deepcopy</code> for nested</td><td>Data integrity</td></tr>
+<tr><td>5</td><td>Comprehensions</td><td><code>[expr for x in iter if cond]</code></td><td>Filtering, transformation</td></tr>
+<tr><td>6</td><td>Built-ins</td><td><code>enumerate</code>, <code>zip</code>, <code>any</code>, <code>all</code></td><td>Aggregation, pairing</td></tr>
+<tr><td>7</td><td>Nested Lists</td><td>2D data; <code>zip(*m)</code> transposes</td><td>Tabular data, matrices</td></tr>
+<tr><td>8</td><td>Stack/Queue</td><td>LIFO/FIFO patterns; use <code>deque</code></td><td>Algorithms, task processing</td></tr>
+</tbody></table>
+<h2>✅ Instructor's End-of-Day Checklist</h2>
+<p>• [ ] I understand mutability and can avoid accidental aliasing.</p>
+<p>• [ ] I know the difference between <code>.sort()</code> (in-place) and <code>sorted()</code> (new list).</p>
+<p>• [ ] I can use list comprehensions for filtering and transformation.</p>
+<p>• [ ] I understand shallow vs deep copy for nested structures.</p>
+<p>• [ ] I can use <code>enumerate()</code> and <code>zip()</code> for Pythonic iteration.</p>
+<p>• [ ] I have completed all 5 practice tasks.</p>
+<p>• [ ] I have reviewed all 25 interview questions.</p>
+<p><strong>Next Up: Day 5 - Tuples: Immutable Records, Packing/Unpacking, and Named Tuples</strong></p>
+</div>
+  </main>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
+    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
+<li><a href="#sec-1" class="toc-link">1. List Creation & Basics : Dynamic Mutable Sequences</a></li>
+<li><a href="#checks-Check-3" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-14" class="toc-link">2. List Indexing & Slicing : Precision Data Access</a></li>
+<li><a href="#checks-Check-16" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-27" class="toc-link">3. List Methods : In-Place Modification</a></li>
+<li><a href="#checks-Check-29" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-40" class="toc-link">4. Copying Lists : Shallow vs Deep Copy</a></li>
+<li><a href="#checks-Copying-42" class="toc-link">🧪 Checks: Copying</a></li>
+<li><a href="#sec-53" class="toc-link">5. List Comprehensions : Functional Data Transformation</a></li>
+<li><a href="#checks-Comprehensions-55" class="toc-link">🧪 Checks: Comprehensions</a></li>
+<li><a href="#sec-66" class="toc-link">6. Built-in Functions for Lists : Aggregation & Analysis</a></li>
+<li><a href="#checks-Check-68" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-79" class="toc-link">7. Nested Lists : 2D Data Structures</a></li>
+<li><a href="#checks-Check-81" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-92" class="toc-link">8. Lists as Stacks & Queues : Data Structure Patterns</a></li>
+<li><a href="#checks-Check-94" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
+<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
+<li><a href="#sec-135" class="toc-link">Q10.</a></li>
+<li><a href="#sec-137" class="toc-link">Q11.</a></li>
+<li><a href="#sec-139" class="toc-link">Q12.</a></li>
+<li><a href="#sec-141" class="toc-link">Q13.</a></li>
+<li><a href="#sec-143" class="toc-link">Q14.</a></li>
+<li><a href="#sec-145" class="toc-link">Q15.</a></li>
+<li><a href="#sec-147" class="toc-link">Q16.</a></li>
+<li><a href="#sec-149" class="toc-link">Q17.</a></li>
+<li><a href="#sec-151" class="toc-link">Q18.</a></li>
+<li><a href="#sec-153" class="toc-link">Q19.</a></li>
+<li><a href="#sec-155" class="toc-link">Q20.</a></li>
+<li><a href="#sec-157" class="toc-link">Q21.</a></li>
+<li><a href="#sec-159" class="toc-link">Q22.</a></li>
+<li><a href="#sec-161" class="toc-link">Q23.</a></li>
+<li><a href="#sec-163" class="toc-link">Q24.</a></li>
+<li><a href="#sec-165" class="toc-link">Q25.</a></li>
+<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
+    <div class="sidebar-resize" id="sidebarResize"></div>
+  </nav>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="notebook.js"></script>
+</body>
+</html>

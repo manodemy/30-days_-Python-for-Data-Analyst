@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 17: OOP Advanced — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="notebook.css">
+</head>
+<body>
+<nav class="top-bar" id="topBar">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="landing.html" class="home-btn" title="Back to Curriculum">🏠</a>
+      <div class="nav-score" title="Questions Solved">
+        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
+        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="nav-center">Day 17 : OOP Advanced</div>
+    <div class="nav-right"><a href="day16.html" class="nav-btn prev-btn">← Prev</a><a href="day18.html" class="nav-btn next-btn">Next →</a></div>
+  </div>
+</nav>
+<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
+<div class="layout">
+  <main class="notebook" id="notebook">
+    <div class="nb-title"><h1>📊 Day 17 : OOP Advanced</h1></div>
+<div class="nb-section" id="sec-0">
+<h2>🎯 Enterprise Objective</h2>
+<p>To write truly Pythonic code, your custom classes should behave like built-in types. Today we unlock 'Dunder' magic methods to make our objects printable, measurable, and iterable. We also explore the elegant <code>@property</code> decorator for bulletproof data validation.</p>
+<h3>📋 Strategic Overview</h3>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Concept</th></tr></thead><tbody>
+<tr><td>1</td><td>Dunders</td><td><code><strong>str</strong></code>, <code><strong>len</strong></code>, <code><strong>eq</strong></code></td></tr>
+<tr><td>2</td><td>Properties</td><td>Encapsulation, <code>@property</code></td></tr>
+<tr><td>3</td><td>Class Methods</td><td><code>@classmethod</code>, <code>@staticmethod</code></td></tr>
+</tbody></table>
+</div>
+<div class="nb-section" id="sec-1">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. Dunder Methods : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Magic Integration</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Dunder (Double Under) methods are special methods like <code><strong>str</strong></code> or <code><strong>len</strong></code> that allow your objects to integrate seamlessly with Python's built-in functions. They define how an object should behave when printed, added, or measured.</p>
+<table>
+<thead><tr><th>Method</th><th>Triggered By</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code><strong>str</strong></code></td><td><code>print(obj)</code></td><td>User-friendly string representation</td></tr>
+<tr><td><code><strong>repr</strong></code></td><td><code>repr(obj)</code></td><td>Developer-friendly representation (for debugging)</td></tr>
+<tr><td><code><strong>len</strong></code></td><td><code>len(obj)</code></td><td>Return length or size of object</td></tr>
+<tr><td><code><strong>eq</strong></code></td><td><code>obj == other</code></td><td>Custom equality checking</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Beautiful Logging</strong>: Implementing <code><strong>str</strong></code> so <code>print(user)</code> shows 'Alice' instead of <code><<strong>main</strong>.User object at 0x...></code></p>
+<p>• <strong>Custom Collections</strong>: Implementing <code><strong>len</strong></code> on a custom <code>Dataset</code> class so <code>len(df)</code> works naturally</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Missing __repr__</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Always implement at least <code><strong>repr</strong></code>. If <code><strong>str</strong></code> is missing, Python falls back to <code><strong>repr</strong></code>. If both are missing, you get the ugly memory address string.</p>
+<div class="code-cell" id="cell-1">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-1">class Team:
+    def __init__(self, name, members):
+        self.name = name
+        self.members = members
+        
+    # Beautiful printing
+    def __str__(self):
+        return f&quot;Team {self.name} ({len(self.members)} members)&quot;
+        
+    # Native length checking
+    def __len__(self):
+        return len(self.members)
+        
+    # Native equality checking
+    def __eq__(self, other):
+        return self.name == other.name
+
+t = Team(&quot;Alpha&quot;, [&quot;Alice&quot;, &quot;Bob&quot;])
+print(t)         # Calls __str__
+print(len(t))    # Calls __len__
+print(t == Team(&quot;Alpha&quot;, [])) # Calls __eq__ (True)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-3">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Dunder Methods</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create a <code>Point(x,y)</code> class. Try to <code>print()</code> an instance and note the ugly output.</p></div>
+<div class="code-cell" id="cell-2">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-2"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Add a <code><strong>str</strong></code> method to <code>Point</code> that returns <code>"(x, y)"</code>. Print the instance again.</p></div>
+<div class="code-cell" id="cell-3">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-3"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Add an <code><strong>eq</strong></code> method that returns True if both x and y are the same. Test <code>Point(1,1) == Point(1,1)</code>.</p></div>
+<div class="code-cell" id="cell-4">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-4"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Add a <code><strong>add</strong></code> method that allows you to add two points together: <code>Point(x1+x2, y1+y2)</code>. Test <code>p1 + p2</code>.</p></div>
+<div class="code-cell" id="cell-5">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-5"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Why is <code><strong>repr</strong></code> meant for developers and <code><strong>str</strong></code> meant for users?</p></div>
+<div class="code-cell" id="cell-6">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-6"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-14">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>2. Properties & Encapsulation : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Safe Data Access</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Encapsulation is the practice of hiding internal state. In Python, we prefix private variables with an underscore <code>_</code>. To provide controlled access to these variables, we use the <b><code>@property</code></b> decorator, which allows methods to be accessed like attributes.</p>
+<pre class="nb-code-block"><code>class User:
+    def __init__(self):
+        self._score = 0  # Private variable
+        
+    @property
+    def score(self):
+        return self._score # Accessed without ()</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Data Validation</strong>: Preventing a user's age from being set to a negative number via a property setter</p>
+<p>• <strong>Computed Properties</strong>: Calculating <code>fullname</code> dynamically from <code>first_name</code> and <code>last_name</code> without storing it</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Python doesn't have strict 'private' variables like Java. The underscore is a 'gentleman's agreement' among developers: 'This is internal, do not touch it directly.'</p>
+<div class="code-cell" id="cell-7">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-7">class Thermostat:
+    def __init__(self):
+        self._celsius = 20  # internal private state
+        
+    @property
+    def celsius(self):
+        return self._celsius
+        
+    @celsius.setter
+    def celsius(self, value):
+        if value &lt; -273.15:
+            raise ValueError(&quot;Temperature below absolute zero!&quot;)
+        self._celsius = value
+        
+    @property
+    def fahrenheit(self):
+        # Computed dynamically! Not stored.
+        return (self._celsius * 9/5) + 32
+
+t = Thermostat()
+print(t.celsius)
+print(t.fahrenheit)
+
+# Safely triggers validation
+# t.celsius = -300  # Would raise ValueError</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Properties-16">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Properties</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create a <code>Person</code> class with an <code><strong>init</strong></code> that sets <code>self.first</code> and <code>self.last</code>.</p></div>
+<div class="code-cell" id="cell-8">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-8"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Add a <code>@property</code> method called <code>fullname</code> that returns <code>first + " " + last</code>.</p></div>
+<div class="code-cell" id="cell-9">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-9"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Create an instance, change <code>first</code>, and then print <code>fullname</code> without parentheses. See how it updates.</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Add a setter <code>@fullname.setter</code> that takes a full name string, splits it, and updates <code>first</code> and <code>last</code>.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Why are properties better than Java-style <code>get_name()</code> and <code>set_name()</code> methods?</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-27">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>3. Class & Static Methods : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Alternative Constructors</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+    <b><code>@classmethod</code></b> takes <code>cls</code> instead of <code>self</code> and modifies class-level state. It's heavily used for alternative constructors. <b><code>@staticmethod</code></b> takes neither and is just a regular function that is logically bundled inside the class.
+</div></div>
+<table>
+<thead><tr><th>Decorator</th><th>First Arg</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>(None)</td><td><code>self</code></td><td>Manipulate instance state</td></tr>
+<tr><td><code>@classmethod</code></td><td><code>cls</code></td><td>Manipulate class state / Alternative constructors</td></tr>
+<tr><td><code>@staticmethod</code></td><td>(None)</td><td>Utility functions that don't need class/instance state</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>API Parsers</strong>: <code>User.from_json(json_string)</code> is a classic use of <code>@classmethod</code> to instantiate objects from APIs</p>
+<p>• <strong>Utilities</strong>: <code>MathUtils.is_prime(n)</code> is a classic <code>@staticmethod</code></p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>If your method doesn't use <code>self</code> anywhere inside it, your IDE will usually suggest converting it to a <code>@staticmethod</code>.</p>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13">import json
+
+class Config:
+    # Class attribute
+    version = &quot;1.0&quot;
+    
+    def __init__(self, data):
+        self.data = data
+        
+    @classmethod
+    def from_json_string(cls, json_str):
+        # Alternative constructor
+        data_dict = json.loads(json_str)
+        return cls(data_dict) # Returns a new Config instance
+        
+    @staticmethod
+    def validate_key(key):
+        # Utility function (needs no state)
+        return isinstance(key, str) and len(key) &gt; 0
+
+# Use alternative constructor directly on the Class
+conf = Config.from_json_string(&#x27;{&quot;port&quot;: 8080}&#x27;)
+print(conf.data)
+print(Config.validate_key(&quot;port&quot;))</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-29">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Class Methods</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create a <code>Date</code> class with <code>day, month, year</code>. Add a <code>@classmethod</code> <code>from_string(cls, date_str)</code> that parses <code>"DD-MM-YYYY"</code>.</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Test the class method: <code>d = Date.from_string("25-12-2023")</code>. Print its year.</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Add a <code>@staticmethod</code> <code>is_valid_month(m)</code> that checks if <code>1 <= m <= 12</code>. Test it.</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Explain the difference between <code>cls</code> in a class method and <code>self</code> in an instance method.</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Add a class attribute <code>count = 0</code>. Increment it inside <code><strong>init</strong></code>. Create 3 objects and print <code>Date.count</code>.</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="practice">
+<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
+<p>Theory is useless without muscle memory. Complete these tasks to solidify your understanding.</p>
+<div class="question task"><p><strong>Task 1 (Vector Math):</strong> Create a <code>Vector(x, y)</code> class. Implement <code><strong>add</strong></code> (add two vectors), <code><strong>sub</strong></code> (subtract), and <code><strong>str</strong></code> (print like <code><x, y></code>). Test them.</p></div>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 2 (Safe Wallet):</strong> Create a <code>Wallet</code> class. Add a private <code>_balance</code> starting at 0. Add a <code>@property</code> for balance. Add a <code>@balance.setter</code> that prevents setting the balance to a negative number. Raise ValueError if attempted.</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 3 (DataFrame Mock):</strong> Create a <code>MockDF</code> class initialized with a list of dictionaries. Implement <code><strong>len</strong></code> to return row count. Implement <code><strong>getitem</strong>(key)</code> to return a list of values for a specific column key.</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 4 (User Parser):</strong> Create a <code>User(username, email)</code> class. Add a <code>@classmethod</code> <code>from_csv(cls, csv_line)</code> that takes a string <code>'bob,bob@gmail.com'</code>, splits it, and returns a new User instance.</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 5 (String Utilities):</strong> Create a <code>StringUtils</code> class. Add <code>@staticmethod</code>s for <code>is_palindrome(s)</code> and <code>count_vowels(s)</code>. Call them without instantiating the class.</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong></p>
+<h3>Write a <code>Point(x, y)</code> class. Implement <code><strong>str</strong></code> to return <code>'(x, y)'</code> and <code><strong>repr</strong></code> to return <code>'Point(x, y)'</code>. Print both.</h3>
+</div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24"># Solution for Q1</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q2.</strong></p>
+<h3>Write a <code>Vector(x, y)</code> class that implements <code><strong>add</strong></code> to add two vectors. Test with <code>Vector(1,2) + Vector(3,4)</code> and print.</h3>
+</div>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25"># Solution for Q2</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q3.</strong></p>
+<h3>Write a class <code>Config</code> that implements <code><strong>getitem</strong></code> and <code><strong>setitem</strong></code> using an internal dict. Test with <code>cfg['key'] = 'value'</code>.</h3>
+</div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26"># Solution for Q3</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong></p>
+<h3>Write a <code>Temperature</code> class with a <code>@property celsius</code> and a computed <code>@property fahrenheit</code>. Demonstrate updating celsius and reading fahrenheit.</h3>
+</div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27"># Solution for Q4</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong></p>
+<h3>Write a <code>Date</code> class with <code>@classmethod from_string(cls, s)</code> and <code>@staticmethod is_valid_year(y)</code>. Demonstrate both.</h3>
+</div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28"># Solution for Q5</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong></p>
+<h3>Write a <code>User</code> class with <code>@classmethod from_json(cls, json_str)</code> that parses a JSON string into a User object. Test it.</h3>
+</div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29"># Solution for Q6</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong></p>
+<h3>Write a class with <code>__name</code> (double underscore). Print <code>dir(obj)</code> to find the mangled name <code>_ClassName__name</code>. Access it.</h3>
+</div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30"># Solution for Q7</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong></p>
+<h3>Write a <code>Timer</code> context manager class implementing <code><strong>enter</strong></code> and <code><strong>exit</strong></code>. Use it with <code>with Timer(): time.sleep(0.5)</code>.</h3>
+</div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31"># Solution for Q8</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong></p>
+<h3>Write a simple descriptor class <code>PositiveNumber</code> with <code><strong>get</strong></code> and <code><strong>set</strong></code> that rejects negative values. Use it in a <code>Product</code> class for <code>price</code>.</h3>
+</div>
+<div class="code-cell" id="cell-32">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-32')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-32')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-32"># Solution for Q9</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-70">
+<div class="question interview"><p><strong>Q10.</strong></p>
+<h3>Write a class implementing <code><strong>iter</strong></code> and <code><strong>next</strong></code> to iterate over a range of even numbers. Test with <code>for n in EvenRange(10):</code>.</h3>
+</div>
+<div class="code-cell" id="cell-33">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-33')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-33')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-33"># Solution for Q10</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-72">
+<div class="question interview"><p><strong>Q11.</strong></p>
+<h3>Write a <code>Greeter</code> class with <code><strong>call</strong>(self, name)</code> so instances can be called like functions: <code>g = Greeter(); g('Alice')</code>.</h3>
+</div>
+<div class="code-cell" id="cell-34">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-34')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-34')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-34"># Solution for Q11</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-74">
+<div class="question interview"><p><strong>Q12.</strong></p>
+<h3>Write a Singleton class using <code><strong>new</strong></code>: override it to return the same instance every time. Create two objects and verify <code>a is b</code>.</h3>
+</div>
+<div class="code-cell" id="cell-35">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-35')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-35')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-35"># Solution for Q12</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-76">
+<div class="question interview"><p><strong>Q13.</strong></p>
+<h3>Write a Singleton class overriding <code><strong>new</strong></code> to always return the same instance. Create <code>a = S(); b = S()</code> and print <code>a is b</code>.</h3>
+</div>
+<div class="code-cell" id="cell-36">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-36')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-36')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-36"># Solution for Q13</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-78">
+<div class="question interview"><p><strong>Q14.</strong></p>
+<h3>Write a class using <code><strong>slots</strong> = ['x', 'y']</code>. Try to add a dynamic attribute <code>obj.z = 1</code> and catch the <code>AttributeError</code>.</h3>
+</div>
+<div class="code-cell" id="cell-37">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-37')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-37')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-37"># Solution for Q14</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-80">
+<div class="question interview"><p><strong>Q15.</strong></p>
+<h3>Write code comparing memory usage of a class with <code><strong>slots</strong></code> vs without using <code>sys.getsizeof()</code>. Print both sizes.</h3>
+</div>
+<div class="code-cell" id="cell-38">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-38')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-38')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-38"># Solution for Q15</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-82">
+<div class="question interview"><p><strong>Q16.</strong></p>
+<h3>Write a class with <code><strong>getattr</strong></code> that returns <code>'not found'</code> for any missing attribute. Test with <code>obj.nonexistent</code>.</h3>
+</div>
+<div class="code-cell" id="cell-39">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-39')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-39')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-39"># Solution for Q16</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-84">
+<div class="question interview"><p><strong>Q17.</strong></p>
+<h3>Write a class with <code><strong>getattr</strong></code> (missing attrs only) vs <code><strong>getattribute</strong></code> (all attr access). Show how the latter intercepts everything.</h3>
+</div>
+<div class="code-cell" id="cell-40">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-40')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-40')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-40"># Solution for Q17</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-86">
+<div class="question interview"><p><strong>Q18.</strong></p>
+<h3>Write a class with <code><strong>del</strong></code> that prints <code>'Deleted'</code>. Create an instance, delete it with <code>del obj</code>, and observe the output.</h3>
+</div>
+<div class="code-cell" id="cell-41">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-41')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-41')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-41"># Solution for Q18</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-88">
+<div class="question interview"><p><strong>Q19.</strong></p>
+<h3>Write a <code>Person</code> class with <code>_age</code>. Add a <code>@age.setter</code> that raises <code>TypeError</code> if the value is not an <code>int</code>. Test it.</h3>
+</div>
+<div class="code-cell" id="cell-42">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-42')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-42')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-42"># Solution for Q19</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-90">
+<div class="question interview"><p><strong>Q20.</strong></p>
+<h3>Write two unrelated classes with <code><strong>len</strong></code> and <code><strong>getitem</strong></code>. Pass both to a function that calls <code>len()</code> and <code>[0]</code> on them — demonstrating duck typing.</h3>
+</div>
+<div class="code-cell" id="cell-43">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-43')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-43')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-43"># Solution for Q20</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-92">
+<div class="question interview"><p><strong>Q21.</strong></p>
+<h3>Write a class <code>HexInt(int)</code> that overrides <code><strong>str</strong></code> to return the hex representation. Test with <code>print(HexInt(255))</code>.</h3>
+</div>
+<div class="code-cell" id="cell-44">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-44')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-44')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-44"># Solution for Q21</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-94">
+<div class="question interview"><p><strong>Q22.</strong></p>
+<h3>Import <code>abc</code>. Write an <code>ABC Shape</code> with <code>@abstractmethod area()</code>. Create <code>Circle(Shape)</code> implementing <code>area()</code>. Show what happens if you don't implement it.</h3>
+</div>
+<div class="code-cell" id="cell-45">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-45')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-45')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-45"># Solution for Q22</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-96">
+<div class="question interview"><p><strong>Q23.</strong></p>
+<h3>Write an ABC <code>DataReader</code> with <code>@abstractmethod read()</code>. Write <code>CSVReader(DataReader)</code> and <code>JSONReader(DataReader)</code> implementing it.</h3>
+</div>
+<div class="code-cell" id="cell-46">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-46')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-46')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-46"># Solution for Q23</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-98">
+<div class="question interview"><p><strong>Q24.</strong></p>
+<h3>Write a class with diamond inheritance (<code>A -> B, A -> C, B,C -> D</code>). Call <code>D.mro()</code> and print the resolution order.</h3>
+</div>
+<div class="code-cell" id="cell-47">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-47')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-47')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-47"># Solution for Q24</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-100">
+<div class="question interview"><p><strong>Q25.</strong></p>
+<h3>Write a class using <code>@functools.cached_property</code> for an expensive computation. Show it only computes once by adding a print statement inside.</h3>
+</div>
+<div class="code-cell" id="cell-48">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-48')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-48')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-48"># Solution for Q25</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="summary">
+<div class="section-header cyan"><h2>📊 Day 17 Executive Summary</h2></div>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Takeaway</th></tr></thead><tbody>
+<tr><td>1</td><td>Dunder</td><td>Makes objects act like native Python types</td></tr>
+<tr><td>2</td><td>Property</td><td>Protects private data while keeping syntax clean</td></tr>
+<tr><td>3</td><td>Classmethod</td><td>Perfect for alternative constructors (<code>from_json</code>)</td></tr>
+</tbody></table>
+<h2>✅ Instructor's End-of-Day Checklist</h2>
+<p>• [ ] I can implement <code><strong>str</strong></code> and <code><strong>repr</strong></code>.</p>
+<p>• [ ] I can use <code>@property</code> for getter/setter validation.</p>
+<p>• [ ] I understand when to use <code>@classmethod</code>.</p>
+<p><strong>Next Up: Day 18 - Regular Expressions (Regex)</strong></p>
+</div>
+  </main>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
+    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
+<li><a href="#sec-1" class="toc-link">1. Dunder Methods : Magic Integration</a></li>
+<li><a href="#checks-Check-3" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-14" class="toc-link">2. Properties & Encapsulation : Safe Data Access</a></li>
+<li><a href="#checks-Properties-16" class="toc-link">🧪 Checks: Properties</a></li>
+<li><a href="#sec-27" class="toc-link">3. Class & Static Methods : Alternative Constructors</a></li>
+<li><a href="#checks-Check-29" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
+<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
+<li><a href="#sec-70" class="toc-link">Q10.</a></li>
+<li><a href="#sec-72" class="toc-link">Q11.</a></li>
+<li><a href="#sec-74" class="toc-link">Q12.</a></li>
+<li><a href="#sec-76" class="toc-link">Q13.</a></li>
+<li><a href="#sec-78" class="toc-link">Q14.</a></li>
+<li><a href="#sec-80" class="toc-link">Q15.</a></li>
+<li><a href="#sec-82" class="toc-link">Q16.</a></li>
+<li><a href="#sec-84" class="toc-link">Q17.</a></li>
+<li><a href="#sec-86" class="toc-link">Q18.</a></li>
+<li><a href="#sec-88" class="toc-link">Q19.</a></li>
+<li><a href="#sec-90" class="toc-link">Q20.</a></li>
+<li><a href="#sec-92" class="toc-link">Q21.</a></li>
+<li><a href="#sec-94" class="toc-link">Q22.</a></li>
+<li><a href="#sec-96" class="toc-link">Q23.</a></li>
+<li><a href="#sec-98" class="toc-link">Q24.</a></li>
+<li><a href="#sec-100" class="toc-link">Q25.</a></li>
+<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
+    <div class="sidebar-resize" id="sidebarResize"></div>
+  </nav>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="notebook.js"></script>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 22: NumPy Advanced — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="notebook.css">
+</head>
+<body>
+<nav class="top-bar" id="topBar">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="landing.html" class="home-btn" title="Back to Curriculum">🏠</a>
+      <div class="nav-score" title="Questions Solved">
+        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
+        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="nav-center">Day 22 : NumPy Advanced</div>
+    <div class="nav-right"><a href="day21.html" class="nav-btn prev-btn">← Prev</a><a href="day23.html" class="nav-btn next-btn">Next →</a></div>
+  </div>
+</nav>
+<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
+<div class="layout">
+  <main class="notebook" id="notebook">
+    <div class="nb-title"><h1>📊 Day 22 : NumPy Advanced</h1></div>
+<div class="nb-section" id="sec-0">
+<h2>🎯 Enterprise Objective</h2>
+<p>To manipulate data efficiently, you must master the art of selecting exactly what you need. Today we cover Slicing matrices, filtering data with Boolean Masks, and applying mathematical transformations across different shapes using the magic of Broadcasting.</p>
+<h3>📋 Strategic Overview</h3>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Concept</th></tr></thead><tbody>
+<tr><td>1</td><td>Slicing</td><td><code>arr[0:2, :]</code>, Views</td></tr>
+<tr><td>2</td><td>Masking</td><td><code>arr[arr > 5]</code>, Filtering</td></tr>
+<tr><td>3</td><td>Broadcasting</td><td>Shape stretching (<code>+</code>)</td></tr>
+</tbody></table>
+</div>
+<div class="nb-section" id="sec-1">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. Slicing & Indexing : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Navigating Matrices</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>NumPy slicing is similar to Python lists but extended to multiple dimensions. You access elements using <code>arr[row, col]</code>. Slices return <b>Views</b> (not copies!), meaning if you modify a slice, the original array changes.</p>
+<pre class="nb-code-block"><code># [start_row:stop_row, start_col:stop_col]
+sub_matrix = matrix[0:2, 1:3]</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Image Cropping</strong>: An image is just a 3D NumPy array (Height, Width, RGB). Cropping is just slicing: <code>img[100:200, 100:200]</code></p>
+<p>• <strong>Data Sampling</strong>: Extracting every 10th row using a step slice: <code>data[::10, :]</code></p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ The View Trap</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Slicing a NumPy array does not copy data; it creates a 'View'. <code>slice = arr[:2]; slice[0] = 99</code> WILL change the original array. Use <code>arr[:2].copy()</code> if you need an independent copy.</p>
+<div class="code-cell" id="cell-1">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-1">import numpy as np
+
+# Create a 3x3 matrix
+matrix = np.arange(1, 10).reshape((3, 3))
+print(f&quot;Original:\n{matrix}&quot;)
+
+# Indexing a single element (Row 1, Col 2)
+print(f&quot;\nElement [1,2]: {matrix[1, 2]}&quot;)
+
+# Slicing the first 2 rows, and all columns
+print(f&quot;\nTop 2 rows:\n{matrix[:2, :]}&quot;)
+
+# Slicing the last column
+print(f&quot;\nLast column:\n{matrix[:, -1]}&quot;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Slicing-3">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Slicing</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create <code>arr = np.arange(10)</code>. Slice the first 5 elements.</p></div>
+<div class="code-cell" id="cell-2">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-2"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Create a 4x4 matrix using <code>np.arange(16).reshape((4,4))</code>. Print it.</p></div>
+<div class="code-cell" id="cell-3">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-3"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> From the 4x4 matrix, extract the 2x2 square in the top-right corner. Print it.</p></div>
+<div class="code-cell" id="cell-4">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-4"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Demonstrate the view trap: extract the first row, change its first element to <code>999</code>, and print the original matrix to see it changed.</p></div>
+<div class="code-cell" id="cell-5">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-5"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Extract the second column from the matrix as a 1D array using <code>matrix[:, 1]</code>.</p></div>
+<div class="code-cell" id="cell-6">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-6"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-14">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>2. Boolean Masking : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Filtering Data</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+    <b>Boolean Masking</b> is how we filter arrays. When you apply a condition to an array (e.g., <code>arr > 5</code>), it returns an array of Booleans (True/False). You can use this Boolean array inside the brackets to select only the True elements.
+</div></div>
+<pre class="nb-code-block"><code>mask = arr &gt; 5       # [False, True, ...]
+filtered = arr[mask] # Keeps only the True values</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Outlier Removal</strong>: <code>clean_data = data[(data > -3) & (data < 3)]</code> to remove extreme z-scores</p>
+<p>• <strong>Conditional Assignment</strong>: <code>arr[arr < 0] = 0</code> to instantly cap all negative numbers to zero</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>When combining conditions, you MUST use bitwise operators <code>&</code> (and) / <code>|</code> (or) instead of Python's <code>and/or</code>. You MUST also wrap conditions in parentheses: <code>(arr > 2) & (arr < 8)</code>.</p>
+<div class="code-cell" id="cell-7">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-7">import numpy as np
+
+arr = np.array([-2, 5, 10, -5, 8])
+
+# 1. Create the boolean mask
+mask = arr &gt; 0
+print(f&quot;Boolean Mask: {mask}&quot;)
+
+# 2. Apply the mask to filter
+positives = arr[mask]
+print(f&quot;Positives only: {positives}&quot;)
+
+# 3. Combine conditions (Note the parentheses!)
+in_range = arr[(arr &gt; 0) &amp; (arr &lt; 10)]
+print(f&quot;Between 0 and 10: {in_range}&quot;)
+
+# 4. Conditional Replacement
+arr[arr &lt; 0] = 0
+print(f&quot;Negatives zeroed: {arr}&quot;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-16">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Boolean Masking</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create <code>arr = np.array([10, 50, 30, 80, 20])</code>. Create a mask for values <code>> 40</code> and print the mask.</p></div>
+<div class="code-cell" id="cell-8">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-8"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Use the mask from Q1 to extract and print the values greater than 40.</p></div>
+<div class="code-cell" id="cell-9">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-9"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Use a combined mask <code>(arr > 20) & (arr < 60)</code> to filter the array. Print the result.</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Try to use the Python <code>and</code> keyword instead of <code>&</code> for the combined mask. Catch the ValueError.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Replace all values in the array that are <code>< 30</code> with <code>-1</code> using a mask assignment. Print the updated array.</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-27">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>3. Broadcasting : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Shape Alignment</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+    <b>Broadcasting</b> is NumPy's way of doing math between arrays of different shapes. If the shapes are compatible, NumPy 'stretches' the smaller array to match the larger one without actually making copies in memory.
+</div></div>
+<table>
+<thead><tr><th>Array A</th><th>Array B</th><th>Result</th><th>Works?</th></tr></thead><tbody>
+<tr><td>(3, 3)</td><td>Scalar <code>5</code></td><td>(3, 3)</td><td>Yes (Scalar stretches)</td></tr>
+<tr><td>(3, 3)</td><td>(3,)</td><td>(3, 3)</td><td>Yes (Row stretches down)</td></tr>
+<tr><td>(3, 3)</td><td>(4,)</td><td>Error</td><td>No (Dimensions mismatch)</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Standardization</strong>: Subtracting the mean of each column from a large matrix: <code>matrix - means_array</code></p>
+<p>• <strong>Color Adjustments</strong>: Multiplying an RGB image matrix (1080, 1920, 3) by a brightness vector (3,)</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Broadcasting starts checking dimensions from the <b>trailing (rightmost) edge</b>. They must be equal, or one of them must be 1. If not, you get a <code>ValueError: operands could not be broadcast together</code>.</p>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13">import numpy as np
+
+# Matrix (3x3)
+matrix = np.ones((3, 3))
+print(&quot;Original Matrix:\n&quot;, matrix)
+
+# Scalar Broadcasting
+print(&quot;\nAdd Scalar (5):\n&quot;, matrix + 5)
+
+# Vector Broadcasting (1D array of shape 3, stretches down across rows)
+vector = np.array([10, 20, 30])
+print(&quot;\nAdd Vector [10, 20, 30]:\n&quot;, matrix + vector)
+
+# Column Broadcasting (Requires reshaping vector to 3x1)
+col_vector = vector.reshape((3, 1))
+print(&quot;\nAdd Column Vector:\n&quot;, matrix + col_vector)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Broadcasting-29">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Broadcasting</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create a <code>3x2</code> matrix of ones. Multiply it by the scalar <code>10</code>. Print the result.</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Create a <code>3x3</code> matrix of zeros. Add a <code>1D</code> array <code>[1, 2, 3]</code> to it. Observe how it broadcasts across rows.</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Reshape <code>[1, 2, 3]</code> into a column <code>(3, 1)</code>. Add it to the zeros matrix. Observe how it broadcasts across columns.</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Try to add a <code>1D</code> array of length <code>4</code> to a <code>3x3</code> matrix. Catch the <code>ValueError</code> and print the error message.</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Explain why <code>(4, 3)</code> broadcasts with <code>(3,)</code> but fails with <code>(4,)</code>. (Hint: Right-to-left dimension matching).</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="practice">
+<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
+<p>Theory is useless without muscle memory. Complete these tasks to solidify your understanding.</p>
+<div class="question task"><p><strong>Task 1 (Matrix Borders):</strong> Create a 5x5 array of zeros. Use slicing to set the outer border (first row, last row, first col, last col) to 1. Print the result.</p></div>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 2 (Checkerboard):</strong> Create an 8x8 array of zeros. Use step slicing <code>[::2]</code> to create a checkerboard pattern of 1s and 0s (like a chess board).</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 3 (Outlier Capping):</strong> Create an array of 50 random numbers from a standard normal distribution (<code>np.random.randn</code>). Use boolean masking to cap any values > 2 to 2, and any values < -2 to -2. Print the min and max to verify.</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 4 (Column Standardization):</strong> Create a 10x3 matrix of random integers. Calculate the mean of each column (<code>.mean(axis=0)</code>). Subtract this mean array from the matrix using broadcasting. The new matrix columns should have a mean of 0.</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 5 (Distance Matrix):</strong> Create a 1D array <code>x = np.arange(5)</code>. Use broadcasting to create a 5x5 matrix where each element <code>M[i,j] = abs(x[i] - x[j])</code>. (Hint: reshape one <code>x</code> to column).</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong></p>
+<h3>What is an array View in NumPy? How does it differ from a Copy?</h3>
+</div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24"># Solution for Q1</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q2.</strong></p>
+<h3>How do you forcefully create a copy of a slice instead of a view?</h3>
+</div>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25"># Solution for Q2</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q3.</strong></p>
+<h3>Explain Boolean Masking. What type of array is generated as the mask?</h3>
+</div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26"># Solution for Q3</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong></p>
+<h3>Why does NumPy require <code>&</code> and <code>|</code> instead of <code>and</code> and <code>or</code> for boolean arrays?</h3>
+</div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27"># Solution for Q4</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong></p>
+<h3>Explain the broadcasting rules in NumPy. What does 'trailing dimensions' mean?</h3>
+</div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28"># Solution for Q5</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong></p>
+<h3>Write code to add a 1D array of length 3 to the columns of a 4x3 matrix.</h3>
+</div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29"># Solution for Q6</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong></p>
+<h3>How do you add a 1D array of length 4 to the rows of a 4x3 matrix? (Hint: <code>np.newaxis</code> or reshape).</h3>
+</div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30"># Solution for Q7</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong></p>
+<h3>What does <code>np.where(condition, x, y)</code> do? Write an example replacing negatives with 0.</h3>
+</div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31"># Solution for Q8</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong></p>
+<h3>How do you select specific arbitrary rows from a matrix using a list of indices? (Fancy Indexing).</h3>
+</div>
+<div class="code-cell" id="cell-32">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-32')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-32')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-32"># Solution for Q9</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-70">
+<div class="question interview"><p><strong>Q10.</strong></p>
+<h3>Explain the difference between Slicing (<code>arr[1:3]</code>) and Fancy Indexing (<code>arr[[1,2]]</code>) in terms of Views vs Copies.</h3>
+</div>
+<div class="code-cell" id="cell-33">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-33')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-33')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-33"># Solution for Q10</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-72">
+<div class="question interview"><p><strong>Q11.</strong></p>
+<h3>Write a one-liner to reverse the rows of a 2D matrix.</h3>
+</div>
+<div class="code-cell" id="cell-34">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-34')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-34')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-34"># Solution for Q11</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-74">
+<div class="question interview"><p><strong>Q12.</strong></p>
+<h3>How do you find the unique elements and their counts in a NumPy array? (<code>np.unique</code>).</h3>
+</div>
+<div class="code-cell" id="cell-35">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-35')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-35')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-35"># Solution for Q12</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-76">
+<div class="question interview"><p><strong>Q13.</strong></p>
+<h3>Write code to stack two 1D arrays horizontally and vertically (<code>np.hstack</code>, <code>np.vstack</code>).</h3>
+</div>
+<div class="code-cell" id="cell-36">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-36')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-36')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-36"># Solution for Q13</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-78">
+<div class="question interview"><p><strong>Q14.</strong></p>
+<h3>Explain the <code>axis</code> parameter. What does <code>.sum(axis=0)</code> do on a 2D matrix?</h3>
+</div>
+<div class="code-cell" id="cell-37">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-37')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-37')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-37"># Solution for Q14</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-80">
+<div class="question interview"><p><strong>Q15.</strong></p>
+<h3>Write a boolean mask to filter out all <code>np.nan</code> values from an array.</h3>
+</div>
+<div class="code-cell" id="cell-38">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-38')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-38')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-38"># Solution for Q15</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-82">
+<div class="question interview"><p><strong>Q16.</strong></p>
+<h3>How do you concatenate two 2D matrices along the column axis?</h3>
+</div>
+<div class="code-cell" id="cell-39">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-39')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-39')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-39"># Solution for Q16</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-84">
+<div class="question interview"><p><strong>Q17.</strong></p>
+<h3>Explain <code>np.argmax()</code> and <code>np.argmin()</code>. What do they return?</h3>
+</div>
+<div class="code-cell" id="cell-40">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-40')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-40')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-40"># Solution for Q17</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-86">
+<div class="question interview"><p><strong>Q18.</strong></p>
+<h3>Write code to sort a 2D array by the values in its second column using <code>np.argsort()</code>.</h3>
+</div>
+<div class="code-cell" id="cell-41">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-41')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-41')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-41"># Solution for Q18</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-88">
+<div class="question interview"><p><strong>Q19.</strong></p>
+<h3>What is the difference between <code>arr.flatten()</code> and <code>arr.ravel()</code>? (View vs Copy).</h3>
+</div>
+<div class="code-cell" id="cell-42">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-42')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-42')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-42"># Solution for Q19</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-90">
+<div class="question interview"><p><strong>Q20.</strong></p>
+<h3>Write a broadcasting operation that computes the outer product of two vectors <code>[1,2,3]</code> and <code>[4,5,6]</code>.</h3>
+</div>
+<div class="code-cell" id="cell-43">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-43')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-43')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-43"># Solution for Q20</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-92">
+<div class="question interview"><p><strong>Q21.</strong></p>
+<h3>How do you use <code>np.clip()</code>? Compare it to using boolean mask assignments.</h3>
+</div>
+<div class="code-cell" id="cell-44">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-44')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-44')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-44"># Solution for Q21</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-94">
+<div class="question interview"><p><strong>Q22.</strong></p>
+<h3>Explain how memory layout (C-order vs Fortran-order) affects NumPy performance.</h3>
+</div>
+<div class="code-cell" id="cell-45">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-45')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-45')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-45"># Solution for Q22</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-96">
+<div class="question interview"><p><strong>Q23.</strong></p>
+<h3>Write code to extract the diagonal elements of a matrix without using a loop.</h3>
+</div>
+<div class="code-cell" id="cell-46">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-46')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-46')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-46"># Solution for Q23</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-98">
+<div class="question interview"><p><strong>Q24.</strong></p>
+<h3>What is the <code>Ellipsis</code> (<code>...</code>) used for in NumPy slicing?</h3>
+</div>
+<div class="code-cell" id="cell-47">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-47')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-47')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-47"># Solution for Q24</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-100">
+<div class="question interview"><p><strong>Q25.</strong></p>
+<h3>How does NumPy handle operations between arrays of different <code>dtype</code>s? (Type Promotion).</h3>
+</div>
+<div class="code-cell" id="cell-48">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-48')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-48')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-48"># Solution for Q25</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="summary">
+<div class="section-header cyan"><h2>📊 Day 22 Executive Summary</h2></div>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Takeaway</th></tr></thead><tbody>
+<tr><td>1</td><td>Slices</td><td>Slices are Views! Modifying a slice alters the original data</td></tr>
+<tr><td>2</td><td>Masks</td><td>Use <code>&</code> and `</td><td><code> with parentheses </code>(arr>1) & (arr<5)`</td></tr>
+<tr><td>3</td><td>Broadcast</td><td>NumPy automatically stretches dimensions to align math operations</td></tr>
+</tbody></table>
+<h2>✅ Instructor's End-of-Day Checklist</h2>
+<p>• [ ] I can slice rows and columns from a 2D matrix.</p>
+<p>• [ ] I can filter an array using a boolean condition.</p>
+<p>• [ ] I understand how scalar broadcasting works.</p>
+<p><strong>Next Up: Day 23 - Pandas: DataFrames & Real-World Data</strong></p>
+</div>
+  </main>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
+    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
+<li><a href="#sec-1" class="toc-link">1. Slicing & Indexing : Navigating Matrices</a></li>
+<li><a href="#checks-Slicing-3" class="toc-link">🧪 Checks: Slicing</a></li>
+<li><a href="#sec-14" class="toc-link">2. Boolean Masking : Filtering Data</a></li>
+<li><a href="#checks-Check-16" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-27" class="toc-link">3. Broadcasting : Shape Alignment</a></li>
+<li><a href="#checks-Broadcasting-29" class="toc-link">🧪 Checks: Broadcasting</a></li>
+<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
+<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
+<li><a href="#sec-70" class="toc-link">Q10.</a></li>
+<li><a href="#sec-72" class="toc-link">Q11.</a></li>
+<li><a href="#sec-74" class="toc-link">Q12.</a></li>
+<li><a href="#sec-76" class="toc-link">Q13.</a></li>
+<li><a href="#sec-78" class="toc-link">Q14.</a></li>
+<li><a href="#sec-80" class="toc-link">Q15.</a></li>
+<li><a href="#sec-82" class="toc-link">Q16.</a></li>
+<li><a href="#sec-84" class="toc-link">Q17.</a></li>
+<li><a href="#sec-86" class="toc-link">Q18.</a></li>
+<li><a href="#sec-88" class="toc-link">Q19.</a></li>
+<li><a href="#sec-90" class="toc-link">Q20.</a></li>
+<li><a href="#sec-92" class="toc-link">Q21.</a></li>
+<li><a href="#sec-94" class="toc-link">Q22.</a></li>
+<li><a href="#sec-96" class="toc-link">Q23.</a></li>
+<li><a href="#sec-98" class="toc-link">Q24.</a></li>
+<li><a href="#sec-100" class="toc-link">Q25.</a></li>
+<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
+    <div class="sidebar-resize" id="sidebarResize"></div>
+  </nav>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="notebook.js"></script>
+</body>
+</html>

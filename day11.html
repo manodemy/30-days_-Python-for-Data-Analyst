@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 11: Modules — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="notebook.css">
+</head>
+<body>
+<nav class="top-bar" id="topBar">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="landing.html" class="home-btn" title="Back to Curriculum">🏠</a>
+      <div class="nav-score" title="Questions Solved">
+        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
+        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="nav-center">Day 11 : Modules</div>
+    <div class="nav-right"><a href="day10.html" class="nav-btn prev-btn">← Prev</a><a href="day12.html" class="nav-btn next-btn">Next →</a></div>
+  </div>
+</nav>
+<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
+<div class="layout">
+  <main class="notebook" id="notebook">
+    <div class="nb-title"><h1>📊 Day 11 : Modules</h1></div>
+<div class="nb-section" id="sec-0">
+<h2>🎯 Enterprise Objective</h2>
+<p>To build large-scale applications, you must master code organization. Today we learn how to modularize code into separate files, leverage Python's powerful Standard Library, and isolate project dependencies using virtual environments. These are essential software engineering practices.</p>
+<h3>📋 Strategic Overview</h3>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Concept</th></tr></thead><tbody>
+<tr><td>1</td><td>Modules</td><td><code>import</code>, code splitting</td></tr>
+<tr><td>2</td><td>StdLib</td><td><code>os</code>, <code>json</code>, <code>collections</code></td></tr>
+<tr><td>3</td><td>Venvs</td><td><code>pip</code>, isolation</td></tr>
+</tbody></table>
+</div>
+<div class="nb-section" id="sec-1">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. Modules & Packages : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Organizing Code</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A <b>module</b> is just a <code>.py</code> file containing Python code. A <b>package</b> is a directory of modules with an <code><strong>init</strong>.py</code> file. Instead of writing monolithic 5000-line scripts, we split code into logical modules and <code>import</code> them.</p>
+<pre class="nb-code-block"><code># 1. Import whole module
+import math
+math.sqrt(16)
+
+# 2. Import specific function
+from math import sqrt
+sqrt(16)
+
+# 3. Import with alias
+import pandas as pd</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Code Reuse</strong>: Import the same data-cleaning functions across multiple notebooks</p>
+<p>• <strong>Namespace Management</strong>: <code>math.pi</code> and <code>numpy.pi</code> can coexist without overwriting each other</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Circular Imports</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>If Module A imports Module B, and Module B imports Module A, Python will crash with an ImportError. Always structure code hierarchically to avoid circular dependencies.</p>
+<div class="code-cell" id="cell-1">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-1"># Importing standard library module
+import statistics as stats
+
+data = [10, 20, 30, 40, 50]
+print(f&#x27;Mean: {stats.mean(data)}&#x27;)
+print(f&#x27;Median: {stats.median(data)}&#x27;)
+
+# Importing specific items
+from datetime import date, timedelta
+
+today = date.today()
+tomorrow = today + timedelta(days=1)
+print(f&#x27;Tomorrow is: {tomorrow}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Modules-3">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Modules</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Import the <code>random</code> module. Use <code>random.randint(1, 10)</code> to print a random number.</p></div>
+<div class="code-cell" id="cell-2">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-2"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Import <code>math</code> using an alias <code>m</code>. Print the value of <code>m.pi</code>.</p></div>
+<div class="code-cell" id="cell-3">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-3"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Import ONLY the <code>choice</code> function from <code>random</code>. Use it to pick a random color from <code>["Red", "Blue", "Green"]</code>.</p></div>
+<div class="code-cell" id="cell-4">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-4"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Try to import a module that doesn't exist (e.g., <code>import fake_module</code>). Catch the <code>ModuleNotFoundError</code> and print a friendly message.</p></div>
+<div class="code-cell" id="cell-5">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-5"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Explain why <code>import pandas as pd</code> is preferred over <code>from pandas import *</code>.</p></div>
+<div class="code-cell" id="cell-6">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-6"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-14">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>2. The Standard Library : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Batteries Included</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Python's philosophy is 'Batteries Included'. It comes with a massive standard library covering file systems, mathematics, network protocols, and data formats without needing <code>pip install</code>.</p>
+<table>
+<thead><tr><th>Module</th><th>Purpose</th><th>Example Use</th></tr></thead><tbody>
+<tr><td><code>os</code> / <code>sys</code></td><td>Operating System</td><td>File paths, command-line args</td></tr>
+<tr><td><code>json</code></td><td>Data Format</td><td>Parsing API responses</td></tr>
+<tr><td><code>collections</code></td><td>Data Structures</td><td><code>Counter</code>, <code>defaultdict</code></td></tr>
+<tr><td><code>datetime</code></td><td>Time & Dates</td><td>Timestamps, durations</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>No Dependencies</strong>: Code relies only on built-in tools, making it easy to deploy on servers</p>
+<p>• <strong>Reliability</strong>: Standard library modules are heavily tested and rarely introduce breaking changes</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Before installing a third-party package for a simple task, check the standard library. For example, use <code>pathlib</code> for file paths instead of string manipulation.</p>
+<div class="code-cell" id="cell-7">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-7">import os
+import sys
+import collections
+
+# os: File system information
+cwd = os.getcwd()
+print(f&#x27;Current Directory: {cwd}&#x27;)
+
+# collections: Advanced data structures
+text = &#x27;apple banana apple cherry apple&#x27;
+word_counts = collections.Counter(text.split())
+print(f&#x27;Top word: {word_counts.most_common(1)}&#x27;)
+
+# sys: Python environment info
+print(f&#x27;Python version: {sys.version.split()[0]}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-16">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Standard Lib</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Import <code>json</code>. Parse <code>'{"name": "Alice"}'</code> into a dictionary using <code>json.loads()</code>. Print the dictionary.</p></div>
+<div class="code-cell" id="cell-8">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-8"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Import <code>collections.defaultdict</code>. Create a dict that defaults to <code>0</code>. Increment a key <code>"x"</code> and print it.</p></div>
+<div class="code-cell" id="cell-9">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-9"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Import <code>sys</code>. Print the list of command-line arguments using <code>sys.argv</code>.</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Import <code>math</code>. Calculate the factorial of 5 using <code>math.factorial()</code>. Print it.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Import <code>time</code>. Use <code>time.sleep(1)</code> to pause execution for 1 second, then print "Done".</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-27">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>3. Virtual Environments & pip : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Dependency Isolation</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Different projects need different versions of packages. A <b>Virtual Environment (venv)</b> is an isolated folder containing a specific Python interpreter and its own installed packages. <code>pip</code> is the package installer used to download libraries from PyPI (Python Package Index).</p>
+<pre class="nb-code-block"><code># 1. Create a virtual environment
+python -m venv myenv
+
+# 2. Activate it (Windows)
+myenv\Scripts\activate
+
+# 3. Install a package
+pip install requests==2.31.0
+
+# 4. Save dependencies
+pip freeze &gt; requirements.txt</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Reproducibility</strong>: Ensures your code runs on your coworker's machine exactly as it does on yours</p>
+<p>• <strong>Conflict Prevention</strong>: Project A uses Pandas 1.0, Project B uses Pandas 2.0 without crashing each other</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Global Installs</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Never use <code>pip install</code> globally on your machine (outside a venv). It will eventually corrupt your system Python installation.</p>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13"># This is a conceptual demo.
+# In a real script, you&#x27;d run these in the terminal.
+
+print(&quot;Standard Workflow:&quot;)
+print(&quot;1. Create:  python -m venv venv&quot;)
+print(&quot;2. Enable:  venv\\Scripts\\activate&quot;)
+print(&quot;3. Install: pip install pandas&quot;)
+print(&quot;4. Freeze:  pip freeze &gt; requirements.txt&quot;)
+print(&quot;5. Restore: pip install -r requirements.txt&quot;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-29">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Pip & Venv</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> What command creates a new virtual environment named <code>env</code>?</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> What command activates the environment on Windows? On Mac/Linux?</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Write the command to install exactly version <code>1.5.3</code> of the <code>pandas</code> library.</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Explain what <code>pip freeze > requirements.txt</code> does and why it is important for version control.</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Why should you exclude the virtual environment folder (e.g., <code>venv/</code>) from GitHub using <code>.gitignore</code>?</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="practice">
+<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
+<p>Theory is useless without muscle memory. Complete these tasks to solidify your understanding.</p>
+<div class="question task"><p><strong>Task 1 (Math Operations):</strong> Create a file <code>my_math.py</code> with an <code>add</code> function. In your main cell, import it and use it. (Simulate this by writing both blocks).</p></div>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 2 (JSON Config):</strong> Import <code>json</code>. Create a dictionary, save it to a file <code>config.json</code> using <code>json.dump()</code>, then read it back using <code>json.load()</code>.</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 3 (Collections Counter):</strong> Write a function that takes a long string, removes punctuation, and uses <code>collections.Counter</code> to find the 3 most common words.</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 4 (Datetime Math):</strong> Import <code>datetime</code>. Calculate how many days have passed since January 1st, 2000. Print the result.</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 5 (Requirements):</strong> Write a Python script that reads a simulated <code>requirements.txt</code> file and prints out only the package names, stripping out the version numbers (<code>==X.Y.Z</code>).</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong></p>
+<h3>Write a Python script that creates a folder <code>mypack/</code> with an <code><strong>init</strong>.py</code> containing <code>version = '1.0'</code>. Then import it and print <code>mypack.version</code>.</h3>
+</div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24"># Solution for Q1</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q2.</strong></p>
+<h3>Write code that imports <code>math</code> two ways: <code>import math</code> and <code>from math import <em></code>. Show how <code></em></code> can shadow a local variable named <code>pow</code> by printing <code>pow</code> before and after.</h3>
+</div>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25"># Solution for Q2</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q3.</strong></p>
+<h3>Write code that appends a custom directory to <code>sys.path</code> using <code>sys.path.insert(0, '/custom')</code>. Print <code>sys.path</code> to show the change.</h3>
+</div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26"># Solution for Q3</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong></p>
+<h3>Write a script that reads <code>sys.path</code> and prints each path entry on its own line, numbered 1 through N.</h3>
+</div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27"># Solution for Q4</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong></p>
+<h3>Write a Python script that reads a <code>requirements.txt</code> string <code>'pandas==2.0.0\nnumpy==1.24.0'</code> and prints each package name and version as a formatted table.</h3>
+</div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28"># Solution for Q5</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong></p>
+<h3>Write code to parse <code>'pandas==2.0.0\nnumpy==1.24.0'</code> and extract just the package names <code>['pandas', 'numpy']</code> into a list.</h3>
+</div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29"># Solution for Q6</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong></p>
+<h3>Write code that creates a file called <code>math.py</code> with <code>print('Custom math!')</code>, then shows what happens when you try <code>import math</code>. Explain the shadowing.</h3>
+</div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30"># Solution for Q7</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong></p>
+<h3>Write code using <code>os.path.join('data', 'users', 'file.csv')</code> and compare it with manual string concatenation <code>'data' + '/' + 'users'</code>. Print both results.</h3>
+</div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31"># Solution for Q8</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong></p>
+<h3>Write code using <code>collections.defaultdict(list)</code> to group words by their first letter from <code>['apple', 'banana', 'avocado', 'blueberry']</code>.</h3>
+</div>
+<div class="code-cell" id="cell-32">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-32')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-32')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-32"># Solution for Q9</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-70">
+<div class="question interview"><p><strong>Q10.</strong></p>
+<h3>Write code using <code>urllib.request.urlopen()</code> to fetch the HTML of <code>http://example.com</code> and print the first 200 characters.</h3>
+</div>
+<div class="code-cell" id="cell-33">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-33')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-33')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-33"># Solution for Q10</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-72">
+<div class="question interview"><p><strong>Q11.</strong></p>
+<h3>Write a module-like script with a function and an <code>if <strong>name</strong> == '<strong>main</strong>':</code> block. Show what runs when imported vs executed directly.</h3>
+</div>
+<div class="code-cell" id="cell-34">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-34')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-34')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-34"># Solution for Q11</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-74">
+<div class="question interview"><p><strong>Q12.</strong></p>
+<h3>Write the pip command to upgrade a package to the latest version. Then write Python code using <code>subprocess.run()</code> to execute that same command.</h3>
+</div>
+<div class="code-cell" id="cell-35">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-35')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-35')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-35"># Solution for Q12</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-76">
+<div class="question interview"><p><strong>Q13.</strong></p>
+<h3>Write code using <code>importlib.metadata.version('pip')</code> to print the installed version of pip.</h3>
+</div>
+<div class="code-cell" id="cell-36">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-36')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-36')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-36"># Solution for Q13</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-78">
+<div class="question interview"><p><strong>Q14.</strong></p>
+<h3>Write a function using <code>datetime.strptime()</code> to convert <code>'2023-12-25'</code> into a datetime object. Print the day of the week.</h3>
+</div>
+<div class="code-cell" id="cell-37">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-37')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-37')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-37"># Solution for Q14</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-80">
+<div class="question interview"><p><strong>Q15.</strong></p>
+<h3>Write code that uses both <code>os.path.join()</code> and <code>pathlib.Path() / 'subdir' / 'file.txt'</code> to build the same path. Print both.</h3>
+</div>
+<div class="code-cell" id="cell-38">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-38')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-38')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-38"># Solution for Q15</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-82">
+<div class="question interview"><p><strong>Q16.</strong></p>
+<h3>Write code using the <code>json</code> module: try to load a config file, catch <code>FileNotFoundError</code>, and return a default <code>{'debug': False}</code> dict.</h3>
+</div>
+<div class="code-cell" id="cell-39">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-39')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-39')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-39"># Solution for Q16</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-84">
+<div class="question interview"><p><strong>Q17.</strong></p>
+<h3>Write code using <code>importlib.metadata.version('pip')</code> to print the installed version of pip programmatically.</h3>
+</div>
+<div class="code-cell" id="cell-40">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-40')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-40')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-40"># Solution for Q17</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-86">
+<div class="question interview"><p><strong>Q18.</strong></p>
+<h3>Write the pip commands (as strings) to: install, uninstall, and reinstall all packages from a requirements file.</h3>
+</div>
+<div class="code-cell" id="cell-41">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-41')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-41')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-41"># Solution for Q18</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-88">
+<div class="question interview"><p><strong>Q19.</strong></p>
+<h3>Write code that uses <code>sys.exit(1)</code> to terminate a script if a required environment variable is missing. Use <code>os.environ.get()</code>.</h3>
+</div>
+<div class="code-cell" id="cell-42">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-42')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-42')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-42"># Solution for Q19</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-90">
+<div class="question interview"><p><strong>Q20.</strong></p>
+<h3>Write code that prints the absolute path of the <code>site-packages</code> directory using <code>import site; print(site.getsitepackages())</code>.</h3>
+</div>
+<div class="code-cell" id="cell-43">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-43')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-43')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-43"># Solution for Q20</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-92">
+<div class="question interview"><p><strong>Q21.</strong></p>
+<h3>Write a function <code>parse_toml_deps(text)</code> that extracts dependency names from a TOML-style string like <code>'[dependencies]\npandas = "^2.0"\nnumpy = "^1.24"'</code>.</h3>
+</div>
+<div class="code-cell" id="cell-44">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-44')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-44')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-44"># Solution for Q21</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-94">
+<div class="question interview"><p><strong>Q22.</strong></p>
+<h3>Write code that imports a module, then modifies it, and uses <code>importlib.reload()</code> to reload the updated version. Demonstrate with print statements.</h3>
+</div>
+<div class="code-cell" id="cell-45">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-45')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-45')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-45"># Solution for Q22</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-96">
+<div class="question interview"><p><strong>Q23.</strong></p>
+<h3>Write code that measures the time taken to import <code>json</code> vs <code>pandas</code> using <code>time.perf_counter()</code>. Print both durations.</h3>
+</div>
+<div class="code-cell" id="cell-46">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-46')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-46')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-46"># Solution for Q23</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-98">
+<div class="question interview"><p><strong>Q24.</strong></p>
+<h3>Write code that checks if a package name exists on PyPI by trying to import it and catching <code>ModuleNotFoundError</code>.</h3>
+</div>
+<div class="code-cell" id="cell-47">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-47')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-47')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-47"># Solution for Q24</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-100">
+<div class="question interview"><p><strong>Q25.</strong></p>
+<h3>Write a Python script using <code>os.walk()</code> to recursively list all <code>.py</code> files in the current directory. Print each file path.</h3>
+</div>
+<div class="code-cell" id="cell-48">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-48')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-48')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-48"># Solution for Q25</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="summary">
+<div class="section-header cyan"><h2>📊 Day 11 Executive Summary</h2></div>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Takeaway</th></tr></thead><tbody>
+<tr><td>1</td><td>Imports</td><td>Avoid circular and <code>*</code> imports</td></tr>
+<tr><td>2</td><td>Library</td><td>Use built-ins before pip installing</td></tr>
+<tr><td>3</td><td>Venvs</td><td>Never install globally. Always use requirements.txt</td></tr>
+</tbody></table>
+<h2>✅ Instructor's End-of-Day Checklist</h2>
+<p>• [ ] I can import specific functions from a module.</p>
+<p>• [ ] I know how to use <code>os</code> and <code>collections</code>.</p>
+<p>• [ ] I can create and activate a virtual environment.</p>
+<p><strong>Next Up: Day 12 - Advanced Comprehensions</strong></p>
+</div>
+  </main>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
+    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
+<li><a href="#sec-1" class="toc-link">1. Modules & Packages : Organizing Code</a></li>
+<li><a href="#checks-Modules-3" class="toc-link">🧪 Checks: Modules</a></li>
+<li><a href="#sec-14" class="toc-link">2. The Standard Library : Batteries Included</a></li>
+<li><a href="#checks-Check-16" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-27" class="toc-link">3. Virtual Environments & pip : Dependency Isolation</a></li>
+<li><a href="#checks-Check-29" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
+<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
+<li><a href="#sec-70" class="toc-link">Q10.</a></li>
+<li><a href="#sec-72" class="toc-link">Q11.</a></li>
+<li><a href="#sec-74" class="toc-link">Q12.</a></li>
+<li><a href="#sec-76" class="toc-link">Q13.</a></li>
+<li><a href="#sec-78" class="toc-link">Q14.</a></li>
+<li><a href="#sec-80" class="toc-link">Q15.</a></li>
+<li><a href="#sec-82" class="toc-link">Q16.</a></li>
+<li><a href="#sec-84" class="toc-link">Q17.</a></li>
+<li><a href="#sec-86" class="toc-link">Q18.</a></li>
+<li><a href="#sec-88" class="toc-link">Q19.</a></li>
+<li><a href="#sec-90" class="toc-link">Q20.</a></li>
+<li><a href="#sec-92" class="toc-link">Q21.</a></li>
+<li><a href="#sec-94" class="toc-link">Q22.</a></li>
+<li><a href="#sec-96" class="toc-link">Q23.</a></li>
+<li><a href="#sec-98" class="toc-link">Q24.</a></li>
+<li><a href="#sec-100" class="toc-link">Q25.</a></li>
+<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
+    <div class="sidebar-resize" id="sidebarResize"></div>
+  </nav>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="notebook.js"></script>
+</body>
+</html>

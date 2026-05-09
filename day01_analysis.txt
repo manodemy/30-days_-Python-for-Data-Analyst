@@ -1,0 +1,194 @@
+﻿=== CELL 0 (Title) ===
+---
+## ≡ƒÄ» Enterprise Objective
+Mastering Python isn't just about knowing syntax; it's about understanding how data is fundamentally stored, accessed, and optimized in memory. Today, we deconstruct Python's 10 foundational data types. You will learn not only *how* to use them, but *when* to use them to write high-performance, production-grade analytical pipelines.
+
+### ≡ƒôï Strategic Data Type Matrix
+| # | Type | Immutable? | Memory Cost | Enterprise Analytics Use Case |
+|---|------|------------|-------------|-------------------------------|
+| 1 | `int` | Γ£à Yes | Variable | Primary keys, absolute indexing, discrete counts. |
+| 2 | `float` | Γ£à Yes | 24 bytes | Continuous measurements, financial metrics, probabilities. |
+| 3 | `complex`| Γ£à Yes | 32 bytes | Signal processing, geospatial vectors, quantum modeling. |
+| 4 | `str` | Γ£à Yes | Variable | Raw text mining, log parsing, categorical identifiers. |
+| 5 | `bool` | Γ£à Yes | 28 bytes | Binary masks, conditional filtering, boolean logic. |
+| 6 | `list` | Γ¥î No | Dynamic | Ordered queues, chronological time-series buffers. |
+| 7 | `tuple` | Γ£à Yes | Fixed | Immutable configuration matrices, compound dictionary keys. |
+| 8 | `set` | Γ¥î No | Dynamic | O(1) deduplication, cohort intersection/union analysis. |
+| 9 | `dict` | Γ¥î No | Dynamic | Fast O(1) lookups, JSON payload structuring, aggregations. |
+| 10| `None` | Γ£à Yes | 16 bytes | Singleton representation of missing/null values. |
+
+
+================================================================================
+=== CELL 1 (Objective) ===
+<h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. Integer (<code>int</code>) : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Precision Counts & Identifiers</span></b>
+</h2>
+
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>≡ƒöì What is it?</b><br>
+    An integer is a whole number that can be positive, negative, or zero, and it does not contain a decimal point. Unlike many other programming languages such as C or Java, Python integers support <b>arbitrary precision</b>, meaning they can grow to very large values limited only by your system's memory.
+</div>
+
+**Examples:** `10`, `-25`, `0`, `999999`
+
+```python
+x = 10**100  # A 101-digit number!
+print(x)
+```
+
+<h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>≡ƒÆ╝ Why Data Analysts Care</b></h3>
+
+Integers are the foundational blocks of tracking entities and loops.
+
+* **Row Counts**: Functions like `len(df)` return integers.
+* **Primary Keys**: `Customer ID`, `Order ID`, and `Transaction ID` are typically stored as integers for high-speed indexing.
+* **Categorical Encoding**: Converting string categories to integers (`0 = Low`, `1 = Medium`, `2 = High`) is a standard requirement for Machine Learning.
+
+<h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>ΓÜá∩╕Å Common Pitfall: Division Behavior</b></h3>
+
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    In Python, the standard division operator <code>/</code> <b>always</b> returns a float, even if the result is mathematically whole.
+</div>
+
+```python
+print(10 / 2)   # Output: 5.0 (float)
+print(10 // 2)  # Output: 5 (int) - Use floor division to keep it an integer!
+```
+> ΓÜí **Important**: Floor division truncates toward negative infinity (e.g., `-7 // 2` yields `-4`).
+
+<h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>≡ƒºá Memory Insight</b></h3>
+
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    A standard Python integer uses about <b>28 bytes</b>. For large-scale data processing (millions of rows), this is highly inefficient. Professional analysts use NumPy and pandas optimized types to compress data footprint.
+</div>
+
+| Optimized Type | Memory Usage | Range |
+| :--- | :--- | :--- |
+| `int8` | 1 byte | -128 to 127 |
+| `int16` | 2 bytes | -32K to 32K |
+| `int32` | 4 bytes | ~┬▒2 billion |
+
+
+
+================================================================================
+=== CELL 2 (First Section Header with Theory) ===
+transaction_count = 1842
+customer_id       = 10245
+
+print(f'transaction_count : {transaction_count}  | type: {type(transaction_count).__name__}')
+
+# Arithmetic
+print(f'10 / 3  ΓåÆ type: {type(10 / 3).__name__}')   # float!
+print(f'10 // 3 ΓåÆ type: {type(10 // 3).__name__}')  # int (floor div)
+
+
+================================================================================
+=== CELL 3 ===
+<h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>≡ƒº¬ Concept Checks: <code>int</code></b>
+</h3>
+
+
+================================================================================
+=== CELL 3 (Concept Check Header) ===
+<h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>≡ƒº¬ Concept Checks: <code>int</code></b>
+</h3>
+
+
+================================================================================
+=== CELL 4 (First Question after CC) ===
+### **Q1.** Create `a = 15` and `b = 4`. Compute and print: `a + b`, `a * b`, `a // b`, `a % b`, `a ** b`. Verify each result's type with `type()`.
+
+
+================================================================================
+=== CELL 131 (Practice Header) ===
+---
+# ≡ƒ¢á∩╕Å Professional Practice Tasks
+Theory is useless without muscle memory. Complete these tasks to solidify your understanding.
+
+
+================================================================================
+=== CELL 142 (Interview Header) ===
+---
+# ≡ƒÆ╗ Pure Coding Interview Questions
+
+
+================================================================================
+=== CELL 193 (Executive Summary) ===
+---
+# ≡ƒôè Day 1 Executive Summary
+
+| # | Type | Focus Area | Professional Application |
+|---|------|------------|--------------------------|
+| 1 | `int`     | Topic 1  | Absolute counts, primary IDs |
+| 2 | `float`   | Topic 2  | Metrics, continuous variables |
+| 3 | `complex` | Topic 3  | Scientific computing |
+| 4 | `str`     | Topic 4  | Text parsing, categorical data |
+| 5 | `bool`    | Topic 5  | Logic gating, boolean masks |
+| 6 | `list`    | Topic 6  | Ordered, mutable data streams |
+| 7 | `tuple`   | Topic 7  | Immutable constraints, fast read |
+| 8 | `set`     | Topic 8  | O(1) deduplication, set theory |
+| 9 | `dict`    | Topic 9  | Fast lookups, unstructured rows |
+| 10 | `None`   | Topic 10 | Explicit null-value handling |
+
+## Γ£à Instructor's End-of-Day Checklist
+- [ ] I deeply understand the difference between mutable and immutable types.
+- [ ] I know why evaluating `set` membership is faster than `list` membership.
+- [ ] I understand the relationship between `bool` and `int`.
+- [ ] I can safely handle `NoneType` values to prevent runtime errors.
+- [ ] I have successfully completed all 5 practice tasks.
+- [ ] I have reviewed and internalized all 25 interview questions.
+
+---
+**Next Up: Day 2 ΓÇö Variables, Memory Allocation, and Advanced Type Conversion**
+
+
+================================================================================
+
+=== PATTERN ANALYSIS ===
+
+Section 1: cells 1 to 13 (13 cells)
+  [1] MD:   <h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid
+  [2] CODE: transaction_count = 1842|customer_id       = 10245||print(f'
+  [3] MD:   <h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #
+  [4] MD:   ### **Q1.** Create `a = 15` and `b = 4`. Compute and print: `a + b`, `a * b`, `a
+  [5] CODE: # Write your answer here
+  [6] MD:   ### **Q2.** Write code that checks whether `2 ** 100` overflows. Print the resul
+  [7] CODE: 
+  [8] MD:   ### **Q3.** Given `x = 42`, convert it to: float (`float(x)`), string (`str(x)`)
+  [9] CODE: 
+  [10] MD:   ### **Q4.** Write code to extract the tens digit from `n = 4567` using integer a
+  [11] CODE: # Write your answer here|
+  [12] MD:   ### **Q5.** Compute `10 // 3` and `10 / 3`. Print both results and their types. 
+  [13] CODE: # Write your answer here|
+
+Section 2: cells 14 to 26 (13 cells)
+  [14] MD:   <h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid
+  [15] CODE: revenue = 87540.50|growth_rate = 12.4||# Float precision ΓÇö i
+  [16] MD:   <h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #
+  [17] MD:   ### **Q1.** Print `0.1 + 0.2`. Is the result exactly `0.3`? Write code using `ro
+  [18] CODE: # Write your answer here|
+  [19] MD:   ### **Q2.** Write code to convert `temperature_f = 98.6` to Celsius using `(f - 
+  [20] CODE: # Write your answer here|
+  [21] MD:   ### **Q3.** Create `price = 19.99` and `quantity = 3`. Compute `total = price * 
+  [22] CODE: # Write your answer here|
+  [23] MD:   ### **Q4.** Demonstrate float overflow: compute `1e308 * 2`. What does Python re
+  [24] CODE: # Write your answer here|
+  [25] MD:   ### **Q5.** Use `float('inf')`, `float('-inf')`, and `float('nan')`. Test: `inf 
+  [26] CODE: # Write your answer here|
+
+Section 3: cells 27 to 39 (13 cells)
+  [27] MD:   <h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid
+  [28] CODE: sensor_reading = 3 + 5j|print(f'Real part      : {sensor_rea
+  [29] MD:   <h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #
+  [30] MD:   ### **Q1.** Create `z = 3 + 4j`. Print its `.real`, `.imag`, and compute the mag
+  [31] CODE: # Write your answer here|
+  [32] MD:   ### **Q2.** Add `(2 + 3j)` and `(4 - 1j)`. Print the result. Then multiply them 
+  [33] CODE: # Write your answer here|
+  [34] MD:   ### **Q3.** Write code to check if `type(5j)` is `complex`. Then check if `isins
+  [35] CODE: # Write your answer here|
+  [36] MD:   ### **Q4.** Convert the integer `7` to a complex number using `complex(7)`. What
+  [37] CODE: # Write your answer here|
+  [38] MD:   ### **Q5.** Try `complex('3+4j')` (string parsing). Then try `complex('3 + 4j')`
+  [39] CODE: # Write your answer here|

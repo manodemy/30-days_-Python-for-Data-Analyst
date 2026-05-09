@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 30: Phase Analysis & Review — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="notebook.css">
+</head>
+<body>
+<nav class="top-bar" id="topBar">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="landing.html" class="home-btn" title="Back to Curriculum">🏠</a>
+      <div class="nav-score" title="Questions Solved">
+        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
+        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="nav-center">Day 30 : Phase Analysis & Review</div>
+    <div class="nav-right"><a href="day29.html" class="nav-btn prev-btn">← Prev</a><a href="landing.html" class="nav-btn next-btn">🏠 Finish</a></div>
+  </div>
+</nav>
+<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
+<div class="layout">
+  <main class="notebook" id="notebook">
+    <div class="nb-title"><h1>📊 Day 30 : Phase Analysis & Review</h1></div>
+<div class="nb-section" id="sec-0">
+<h2>🎯 Enterprise Objective</h2>
+<p>Congratulations. You have reached Day 30. Today is the ultimate test of your Data Analytics skills. You will ingest messy data, clean it, merge it, aggregate it, and visualize the story it tells. This is exactly what professional Data Analysts do every day.</p>
+<h3>📋 Strategic Overview</h3>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Concept</th></tr></thead><tbody>
+<tr><td>1</td><td>Ingestion</td><td>Loading & Merging</td></tr>
+<tr><td>2</td><td>Cleaning</td><td>NaNs, Types, & Outliers</td></tr>
+<tr><td>3</td><td>Insight</td><td>Aggregation & Vis</td></tr>
+</tbody></table>
+</div>
+<div class="nb-section" id="sec-1">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. Phase 2 Capstone : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Exploratory Data Analysis</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>You have mastered Pandas and Seaborn. You can clean missing data, merge tables, group statistics, and visualize trends. <b>Today is the Phase 2 Capstone.</b> You will perform a complete Exploratory Data Analysis (EDA) pipeline on a raw, messy dataset.</p>
+<h3>🎯 The Mission: Customer Churn Analysis</h3>
+<p>You will simulate loading a messy Customer CSV and a Transaction CSV. You will merge them, clean the data, calculate Customer Lifetime Value (CLV), and visualize which demographics are churning.</p>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Portfolio Piece</strong>: A complete end-to-end Jupyter Notebook analyzing data is the standard requirement for Data Analyst job interviews</p>
+<p>• <strong>Real-world simulation</strong>: Data is never in one table, and it is never clean</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Jumping to Code</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Don't start writing <code>pd.read_csv()</code> blindly. Write a markdown cell outlining your 5-step plan: 1. Load, 2. Clean, 3. Merge, 4. Feature Engineering, 5. Visualization.</p>
+<div class="code-cell" id="cell-1">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-1"># Outline of the EDA Pipeline:
+
+# 1. Ingestion
+# customers = pd.read_csv(&#x27;...&#x27;)
+# txns = pd.read_csv(&#x27;...&#x27;)
+
+# 2. Cleaning
+# customers.dropna(subset=[&#x27;ID&#x27;], inplace=True)
+# txns[&#x27;Amount&#x27;] = pd.to_numeric(txns[&#x27;Amount&#x27;], errors=&#x27;coerce&#x27;)
+
+# 3. Merging
+# df = pd.merge(customers, txns, on=&#x27;ID&#x27;, how=&#x27;left&#x27;)
+
+# 4. Aggregation
+# summary = df.groupby(&#x27;Region&#x27;)[&#x27;Amount&#x27;].sum()
+
+# 5. Visualization
+# sns.barplot(data=summary.reset_index(), x=&#x27;Region&#x27;, y=&#x27;Amount&#x27;)
+# plt.show()
+
+print(&quot;Ready for the final challenge?&quot;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Capstone-3">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Capstone</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Plan the Cleaning Phase. What 3 Pandas methods will you use to handle missing data and wrong types?</p></div>
+<div class="code-cell" id="cell-2">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-2"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Plan the Merge Phase. Why would you use a <code>LEFT JOIN</code> (Customers -> Txns) instead of an <code>INNER JOIN</code>?</p></div>
+<div class="code-cell" id="cell-3">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-3"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Plan the Feature Engineering Phase. How will you calculate <code>Total_Spent</code> per user? (Hint: <code>groupby().transform("sum")</code>).</p></div>
+<div class="code-cell" id="cell-4">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-4"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Plan the Vis Phase. What Seaborn plot is best to show the distribution of <code>Age</code>? What about <code>Total_Spent</code> by <code>Gender</code>?</p></div>
+<div class="code-cell" id="cell-5">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-5"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Set up your notebook: Import <code>pandas as pd</code>, <code>numpy as np</code>, <code>seaborn as sns</code>, and <code>matplotlib.pyplot as plt</code>.</p></div>
+<div class="code-cell" id="cell-6">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-6"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-14">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>2. Data Generation : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Creating the Simulation</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Since we don't have external CSV files, we will generate synthetic data using NumPy and Pandas. Generating fake data is an excellent skill for testing pipelines.</p>
+<p>We need two tables:</p>
+<p>1. <strong><code>customers</code></strong>: <code>ID</code>, <code>Age</code> (with some NaNs), <code>Region</code>, <code>Churned</code> (Boolean).</p>
+<p>2. <strong><code>transactions</code></strong>: <code>Txn_ID</code>, <code>Cust_ID</code>, <code>Amount</code> (with some '$' strings), <code>Date</code>.</p>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Testing Logic</strong>: If your code works on this synthetic data, it will work on the real data database extract.</p>
+<div class="code-cell" id="cell-7">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-7">import pandas as pd
+import numpy as np
+
+# Generate 100 Customers
+cust_df = pd.DataFrame({
+    &#x27;ID&#x27;: range(1, 101),
+    &#x27;Age&#x27;: np.random.randint(18, 70, 100).astype(float),
+    &#x27;Region&#x27;: np.random.choice([&#x27;North&#x27;, &#x27;South&#x27;, &#x27;East&#x27;, &#x27;West&#x27;], 100),
+    &#x27;Churned&#x27;: np.random.choice([0, 1], 100, p=[0.8, 0.2])
+})
+# Inject missing ages
+cust_df.loc[np.random.choice(100, 10), &#x27;Age&#x27;] = np.nan
+
+print(&quot;Customers:\n&quot;, cust_df.head(3))</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Simulation-16">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Simulation</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Execute the customer generation code above. Run <code>cust_df.info()</code> to see the missing values.</p></div>
+<div class="code-cell" id="cell-8">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-8"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Generate a <code>txn_df</code> with 500 rows. <code>Txn_ID</code> (1 to 500), <code>Cust_ID</code> (random 1 to 100).</p></div>
+<div class="code-cell" id="cell-9">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-9"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Add an <code>Amount</code> column to <code>txn_df</code>. Make 90% of them floats, and 10% of them messy strings like <code>"$50"</code>.</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Add a <code>Date</code> column using <code>pd.date_range()</code> and <code>np.random.choice()</code>.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Verify both DataFrames exist and inspect their heads.</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-27">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>3. Execution & Reporting : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">The Final Deliverable</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Execute the pipeline. Clean the tables, merge them, and answer the core business question: <b>What factors drive Customer Churn?</b></p>
+<p>You must produce at least 3 visualizations:</p>
+<p>1. A Correlation Heatmap of numeric features.</p>
+<p>2. A Barplot comparing Total Revenue by Region.</p>
+<p>3. A Boxplot comparing Age distribution between Churned and Retained users.</p>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13"># Example Heatmap code
+# corr = final_df.corr(numeric_only=True)
+# sns.heatmap(corr, annot=True, cmap=&#x27;RdBu&#x27;, vmin=-1, vmax=1)
+# plt.title(&#x27;Correlation Matrix&#x27;)
+# plt.show()
+
+print(&quot;The stage is yours. Build the pipeline.&quot;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Execution-29">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Execution</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Clean <code>Amount</code> in <code>txn_df</code> (remove <code>$</code> and cast to float). Clean <code>Age</code> in <code>cust_df</code> (fill NaN with median).</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Merge <code>cust_df</code> and <code>txn_df</code> on ID using a LEFT JOIN.</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Create the Correlation Heatmap. Is <code>Age</code> correlated with <code>Amount</code>?</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Create the Barplot: <code>x="Region"</code>, <code>y="Amount"</code>, <code>estimator=sum</code>. Which region brings the most revenue?</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Create the Boxplot: <code>x="Churned"</code>, <code>y="Age"</code>. Do older users churn more?</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="practice">
+<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
+<p>Theory is useless without muscle memory. Complete these tasks to solidify your understanding.</p>
+<div class="question task"><p><strong>Task 1 (Feature Engineering):</strong> Create a new column <code>Transaction_Count</code> for each user. (Hint: group <code>txn_df</code> by <code>Cust_ID</code>, calculate <code>.size()</code>, then merge this metric into <code>cust_df</code>).</p></div>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 2 (Time Series Vis):</strong> Convert <code>Date</code> to a datetime object. Extract the <code>Month</code>. Group by Month and sum the <code>Amount</code>. Plot a Seaborn Lineplot of Revenue over Time.</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 3 (Cohort Analysis):</strong> Use <code>pd.cut()</code> to bin <code>Age</code> into 3 groups: 'Youth', 'Adult', 'Senior'. Create a Countplot (<code>sns.countplot</code>) with <code>x='Age_Group'</code> and <code>hue='Churned'</code> to see which demographic churns most.</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 4 (Outlier Removal):</strong> Before plotting revenue, find the 99th percentile of <code>Amount</code> using <code>.quantile(0.99)</code>. Filter out any rows where Amount is strictly greater than this value to remove massive outliers.</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="summary">
+<div class="question task"><p><strong>Task 5 (Executive Summary):</strong> Create a markdown cell at the very bottom of your notebook. Write 3 bullet points summarizing your findings (e.g., 'Seniors in the South region have the highest churn rate'). This is what executives actually read.</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong></p>
+<h3>Walk me through your EDA process when you receive a brand new, undocumented dataset.</h3>
+</div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24"># Solution for Q1</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q2.</strong></p>
+<h3>How do you decide whether to drop a column with 20% missing data, vs imputing the values?</h3>
+</div>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25"># Solution for Q2</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q3.</strong></p>
+<h3>Explain the difference between a Left Join and an Inner Join, and why you used one over the other in this project.</h3>
+</div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26"># Solution for Q3</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong></p>
+<h3>What does a Correlation coefficient of -0.85 tell you? How did you visualize this?</h3>
+</div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27"># Solution for Q4</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong></p>
+<h3>When grouping by Customer, what is the difference between summing their transactions vs counting their transactions?</h3>
+</div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28"># Solution for Q5</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong></p>
+<h3>Why is it important to check for duplicates before aggregating revenue?</h3>
+</div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29"># Solution for Q6</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong></p>
+<h3>What plot would you use to show the distribution of a single continuous variable (like Salary)?</h3>
+</div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30"># Solution for Q7</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong></p>
+<h3>What plot is best to compare the median and outliers of Salary across 5 different departments?</h3>
+</div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31"># Solution for Q8</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong></p>
+<h3>Explain what 'Data Leakage' is in the context of predictive modeling.</h3>
+</div>
+<div class="code-cell" id="cell-32">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-32')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-32')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-32"># Solution for Q9</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-70">
+<div class="question interview"><p><strong>Q10.</strong></p>
+<h3>How do you handle a highly imbalanced dataset? (e.g., 99% retained, 1% churned).</h3>
+</div>
+<div class="code-cell" id="cell-33">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-33')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-33')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-33"># Solution for Q10</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-72">
+<div class="question interview"><p><strong>Q11.</strong></p>
+<h3>What does <code>pd.to_datetime(errors='coerce')</code> do, and why is it safer than default parsing?</h3>
+</div>
+<div class="code-cell" id="cell-34">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-34')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-34')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-34"># Solution for Q11</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-74">
+<div class="question interview"><p><strong>Q12.</strong></p>
+<h3>Write code to find the top 5 most valuable customers based on Total Spend.</h3>
+</div>
+<div class="code-cell" id="cell-35">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-35')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-35')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-35"># Solution for Q12</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-76">
+<div class="question interview"><p><strong>Q13.</strong></p>
+<h3>How would you optimize this pipeline if the Transactions file was 50GB and couldn't fit in RAM? (Hint: chunking or Dask/PySpark).</h3>
+</div>
+<div class="code-cell" id="cell-36">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-36')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-36')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-36"># Solution for Q13</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-78">
+<div class="question interview"><p><strong>Q14.</strong></p>
+<h3>Explain the 'Split-Apply-Combine' strategy you used to calculate Regional revenue.</h3>
+</div>
+<div class="code-cell" id="cell-37">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-37')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-37')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-37"># Solution for Q14</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-80">
+<div class="question interview"><p><strong>Q15.</strong></p>
+<h3>What is the difference between <code>.agg(['mean', 'sum'])</code> and <code>.transform('mean')</code>?</h3>
+</div>
+<div class="code-cell" id="cell-38">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-38')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-38')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-38"># Solution for Q15</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-82">
+<div class="question interview"><p><strong>Q16.</strong></p>
+<h3>How do you rename columns dynamically after a GroupBy operation flattens the index?</h3>
+</div>
+<div class="code-cell" id="cell-39">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-39')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-39')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-39"># Solution for Q16</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-84">
+<div class="question interview"><p><strong>Q17.</strong></p>
+<h3>Why is Seaborn built on top of Matplotlib rather than replacing it?</h3>
+</div>
+<div class="code-cell" id="cell-40">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-40')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-40')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-40"># Solution for Q17</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-86">
+<div class="question interview"><p><strong>Q18.</strong></p>
+<h3>Explain the <code>hue</code> parameter in Seaborn. How did it help your Churn analysis?</h3>
+</div>
+<div class="code-cell" id="cell-41">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-41')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-41')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-41"># Solution for Q18</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-88">
+<div class="question interview"><p><strong>Q19.</strong></p>
+<h3>If you noticed a massive spike in revenue on one specific day in your Lineplot, how would you investigate it using Pandas?</h3>
+</div>
+<div class="code-cell" id="cell-42">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-42')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-42')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-42"># Solution for Q19</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-90">
+<div class="question interview"><p><strong>Q20.</strong></p>
+<h3>What are some common pitfalls when using Pie Charts, and why do Data Scientists prefer Bar charts?</h3>
+</div>
+<div class="code-cell" id="cell-43">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-43')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-43')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-43"># Solution for Q20</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-92">
+<div class="question interview"><p><strong>Q21.</strong></p>
+<h3>How would you save your final cleaned DataFrame to a CSV file without the index?</h3>
+</div>
+<div class="code-cell" id="cell-44">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-44')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-44')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-44"># Solution for Q21</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-94">
+<div class="question interview"><p><strong>Q22.</strong></p>
+<h3>Explain how you would connect this Pandas script directly to a SQL database instead of reading CSVs.</h3>
+</div>
+<div class="code-cell" id="cell-45">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-45')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-45')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-45"># Solution for Q22</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-96">
+<div class="question interview"><p><strong>Q23.</strong></p>
+<h3>What is feature engineering? Give an example of a feature you engineered in this project.</h3>
+</div>
+<div class="code-cell" id="cell-46">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-46')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-46')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-46"># Solution for Q23</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-98">
+<div class="question interview"><p><strong>Q24.</strong></p>
+<h3>How do you present technical findings to a non-technical stakeholder?</h3>
+</div>
+<div class="code-cell" id="cell-47">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-47')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-47')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-47"># Solution for Q24</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-100">
+<div class="question interview"><p><strong>Q25.</strong></p>
+<h3>Congratulations on completing the 30 Days of Python and Data Analytics. What was the hardest concept for you to grasp, and how did you overcome it?</h3>
+</div>
+<div class="code-cell" id="cell-48">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-48')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-48')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-48"># Solution for Q25</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="summary">
+<div class="section-header cyan"><h2>📊 Day 30 Executive Summary</h2></div>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Takeaway</th></tr></thead><tbody>
+<tr><td>1</td><td>Process</td><td>EDA is iterative. Clean, plot, discover an error, clean again.</td></tr>
+<tr><td>2</td><td>Code</td><td>Chain operations logically. Don't mutate state wildly.</td></tr>
+<tr><td>3</td><td>Value</td><td>The code doesn't matter. The business insight you derive is what matters.</td></tr>
+</tbody></table>
+<h2>✅ Instructor's End-of-Day Checklist</h2>
+<p>• [ ] I can clean and merge raw datasets.</p>
+<p>• [ ] I can perform Exploratory Data Analysis.</p>
+<p>• [ ] I can visualize and communicate business insights.</p>
+<p><strong>Next Up: Graduation! 🎉 You are now a competent Python Data Analyst.</strong></p>
+</div>
+  </main>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
+    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
+<li><a href="#sec-1" class="toc-link">1. Phase 2 Capstone : Exploratory Data Analysis</a></li>
+<li><a href="#checks-Capstone-3" class="toc-link">🧪 Checks: Capstone</a></li>
+<li><a href="#sec-14" class="toc-link">2. Data Generation : Creating the Simulation</a></li>
+<li><a href="#checks-Simulation-16" class="toc-link">🧪 Checks: Simulation</a></li>
+<li><a href="#sec-27" class="toc-link">3. Execution & Reporting : The Final Deliverable</a></li>
+<li><a href="#checks-Execution-29" class="toc-link">🧪 Checks: Execution</a></li>
+<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
+<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li>
+<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
+<li><a href="#sec-70" class="toc-link">Q10.</a></li>
+<li><a href="#sec-72" class="toc-link">Q11.</a></li>
+<li><a href="#sec-74" class="toc-link">Q12.</a></li>
+<li><a href="#sec-76" class="toc-link">Q13.</a></li>
+<li><a href="#sec-78" class="toc-link">Q14.</a></li>
+<li><a href="#sec-80" class="toc-link">Q15.</a></li>
+<li><a href="#sec-82" class="toc-link">Q16.</a></li>
+<li><a href="#sec-84" class="toc-link">Q17.</a></li>
+<li><a href="#sec-86" class="toc-link">Q18.</a></li>
+<li><a href="#sec-88" class="toc-link">Q19.</a></li>
+<li><a href="#sec-90" class="toc-link">Q20.</a></li>
+<li><a href="#sec-92" class="toc-link">Q21.</a></li>
+<li><a href="#sec-94" class="toc-link">Q22.</a></li>
+<li><a href="#sec-96" class="toc-link">Q23.</a></li>
+<li><a href="#sec-98" class="toc-link">Q24.</a></li>
+<li><a href="#sec-100" class="toc-link">Q25.</a></li>
+<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
+    <div class="sidebar-resize" id="sidebarResize"></div>
+  </nav>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="notebook.js"></script>
+</body>
+</html>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 06: Sets — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="notebook.css">
+</head>
+<body>
+<nav class="top-bar" id="topBar">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="landing.html" class="home-btn" title="Back to Curriculum">🏠</a>
+      <div class="nav-score" title="Questions Solved">
+        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
+        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="nav-center">Day 06 : Sets</div>
+    <div class="nav-right"><a href="day05.html" class="nav-btn prev-btn">← Prev</a><a href="day07.html" class="nav-btn next-btn">Next →</a></div>
+  </div>
+</nav>
+<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
+<div class="layout">
+  <main class="notebook" id="notebook">
+    <div class="nb-title"><h1>📊 Day 06 : Sets</h1></div>
+<div class="nb-section" id="sec-0">
+<h2>🎯 Enterprise Objective</h2>
+<p>Sets are the secret weapon of efficient Python code. While lists are for sequences, sets are for membership and uniqueness. Today we master set theory operations and discover how switching from a list to a set can speed up your data processing pipelines by 1000x.</p>
+<h3>📋 Strategic Overview</h3>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Concept</th><th>Core Use Case</th></tr></thead><tbody>
+<tr><td>1</td><td>Creation</td><td>Unordered, unique, <code>{}</code> or <code>set()</code></td><td>Deduplication</td></tr>
+<tr><td>2</td><td>Operations</td><td>`\</td><td><code>, </code>&<code>, </code>-<code>, </code>^`</td><td>Cohort Analysis</td></tr>
+<tr><td>3</td><td>Methods</td><td><code>add()</code>, <code>discard()</code></td><td>Dynamic updating</td></tr>
+<tr><td>4</td><td>Relations</td><td><code>A <= B</code>, <code>issubset()</code></td><td>Validation</td></tr>
+<tr><td>5</td><td>Frozen Sets</td><td><code>frozenset()</code>, immutable</td><td>Dict keys, sets of sets</td></tr>
+<tr><td>6</td><td>Performance</td><td>O(1) vs O(N)</td><td>Pipeline optimization</td></tr>
+</tbody></table>
+</div>
+<div class="nb-section" id="sec-1">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. Set Creation & Basics : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Unordered, Unique Elements</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A set is an <b>unordered collection of unique, hashable elements</b>. Sets are defined by curly braces <code>{}</code> (but without key-value pairs) or the <code>set()</code> constructor. Their superpower is <b>fast O(1) membership testing</b> and automatic deduplication.</p>
+<table>
+<thead><tr><th>Creation Method</th><th>Example</th><th>Note</th></tr></thead><tbody>
+<tr><td>Curly braces</td><td><code>{1, 2, 3}</code></td><td>Values must be hashable</td></tr>
+<tr><td><code>set()</code> constructor</td><td><code>set([1, 2, 2, 3])</code></td><td>Automatically deduplicates</td></tr>
+<tr><td>Empty set</td><td><code>set()</code></td><td><code>{}</code> creates an empty dict!</td></tr>
+<tr><td>Comprehension</td><td><code>{x**2 for x in range(5)}</code></td><td>Set comprehension</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Data Deduplication</strong>: <code>unique_users = set(user_ids)</code> — instant deduplication</p>
+<p>• <strong>Membership Testing</strong>: Checking if an item exists is exponentially faster than lists</p>
+<p>• <strong>Vocabulary Building</strong>: Finding unique words in a document corpus</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Empty Set Trap</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <code>{}</code> creates an <b>empty dictionary</b>, not an empty set. You must use <code>set()</code> to create an empty set.
+</div>
+<h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Sets can only contain <b>hashable</b> (immutable) items. You cannot put a list or a dictionary inside a set, but you can put a tuple.</p>
+<div class="code-cell" id="cell-1">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-1"># Creation methods
+nums = {1, 2, 3, 4, 5}
+letters = set(&#x27;hello&#x27;)  # string to set
+empty = set()         # Empty set
+
+print(f&#x27;nums: {nums}&#x27;)
+print(f&#x27;letters (deduplicated &amp; unordered): {letters}&#x27;)
+print(f&#x27;empty: {type(empty)}&#x27;)
+
+# Empty dict trap
+wrong_empty = {}
+print(f&#x27;wrong_empty is a dict: {type(wrong_empty)}&#x27;)
+
+# Fast deduplication
+duplicates = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+unique_items = set(duplicates)
+print(f&#x27;Unique list: {list(unique_items)}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-3">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Set Creation</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create a set of your 3 favorite colors. Then create an empty set. Print their types.</p></div>
+<div class="code-cell" id="cell-2">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-2"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Convert the string <code>"abracadabra"</code> to a set. Print it. Explain why the length is much shorter.</p></div>
+<div class="code-cell" id="cell-3">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-3"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Try to create a set containing a list: <code>s = {1, 2, [3, 4]}</code>. Catch the <code>TypeError</code> and print the error message (unhashable type).</p></div>
+<div class="code-cell" id="cell-4">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-4"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Create a set containing a tuple: <code>s = {1, 2, (3, 4)}</code>. Print the set. Why does this work but lists do not?</p></div>
+<div class="code-cell" id="cell-5">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-5"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Use a set comprehension to create a set of the lengths of these words: <code>["data", "science", "python", "data", "code"]</code>. Print it.</p></div>
+<div class="code-cell" id="cell-6">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-6"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-14">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>2. Set Theory Operations : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Mathematical Relational Logic</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Python sets support mathematical operations like <b>union</b>, <b>intersection</b>, <b>difference</b>, and <b>symmetric difference</b>. These can be performed using operators (e.g., <code>|</code>, <code>&amp;</code>) or methods (e.g., <code>.union()</code>). Operators require both operands to be sets, while methods accept any iterable.</p>
+<table>
+<thead><tr><th>Operation</th><th>Operator</th><th>Method</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Union</td><td>`A \</td><td>B`</td><td><code>A.union(B)</code></td><td>Elements in A or B (or both)</td></tr>
+<tr><td>Intersection</td><td><code>A & B</code></td><td><code>A.intersection(B)</code></td><td>Elements in both A and B</td></tr>
+<tr><td>Difference</td><td><code>A - B</code></td><td><code>A.difference(B)</code></td><td>Elements in A but not in B</td></tr>
+<tr><td>Symmetric Diff</td><td><code>A ^ B</code></td><td><code>A.symmetric_difference(B)</code></td><td>Elements in exactly one set</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Cohort Analysis</strong>: Find users who bought Product A AND Product B (Intersection)</p>
+<p>• <strong>Churn Analysis</strong>: Users active last month MINUS users active this month (Difference)</p>
+<p>• <strong>A/B Testing</strong>: Combine unique user IDs from two experiment arms (Union)</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Order Matters in Difference</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <code>A - B</code> is not the same as <code>B - A</code>. The difference operation is <b>asymmetric</b>.
+</div></div>
+<div class="code-cell" id="cell-7">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-7">A = {1, 2, 3, 4}
+B = {3, 4, 5, 6}
+
+print(f&#x27;Union (A | B): {A | B}&#x27;)
+print(f&#x27;Intersection (A &amp; B): {A &amp; B}&#x27;)
+print(f&#x27;Difference (A - B): {A - B}&#x27;)
+print(f&#x27;Difference (B - A): {B - A}&#x27;)
+print(f&#x27;Sym Diff (A ^ B): {A ^ B}&#x27;)
+
+# Methods accept iterables (lists, strings, etc.)
+C = {1, 2, 3}
+print(f&#x27;Union with list: {C.union([3, 4, 5])}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-16">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Set Operations</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>engineers = {"Alice", "Bob", "Charlie"}</code> and <code>managers = {"Charlie", "David", "Eve"}</code>, find who is both an engineer and a manager.</p></div>
+<div class="code-cell" id="cell-8">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-8"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Using the same sets, find all unique employees across both roles (Union). Print the result.</p></div>
+<div class="code-cell" id="cell-9">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-9"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Find employees who are engineers but NOT managers. Find employees who are managers but NOT engineers. Print both.</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Find employees who hold exactly ONE role (not both). Print the symmetric difference.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Demonstrate that operators require sets: try <code>{1, 2} | [2, 3]</code>. Then show how to fix it using the <code>.union()</code> method.</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-27">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>3. Set Methods & Modification : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Dynamic Set Updates</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Sets are mutable. You can add or remove elements using methods. Unlike lists, sets have no concept of index or order, so you cannot use <code>append()</code> or <code>pop(i)</code>.</p>
+<table>
+<thead><tr><th>Method</th><th>Action</th><th>Note</th></tr></thead><tbody>
+<tr><td><code>.add(x)</code></td><td>Add one item</td><td>Does nothing if already exists</td></tr>
+<tr><td><code>.update(iter)</code></td><td>Add multiple items</td><td>Like <code>.extend()</code> for lists</td></tr>
+<tr><td><code>.remove(x)</code></td><td>Remove item x</td><td>Raises <code>KeyError</code> if x not found</td></tr>
+<tr><td><code>.discard(x)</code></td><td>Remove item x</td><td><b>Does nothing</b> if x not found (safe)</td></tr>
+<tr><td><code>.pop()</code></td><td>Remove & return random item</td><td>Raises <code>KeyError</code> if empty</td></tr>
+<tr><td><code>.clear()</code></td><td>Remove all items</td><td>Leaves <code>set()</code></td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Incremental Processing</strong>: Add seen IDs to a set to track processed records: <code>seen.add(row_id)</code></p>
+<p>• <strong>Safe Cleanup</strong>: Use <code>.discard()</code> to remove elements without needing <code>if item in set:</code> checks</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ remove() vs discard()</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Always use <code>.discard()</code> unless you specifically want your program to crash when trying to remove an element that isn't there.</p>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13">s = {1, 2, 3}
+
+# Adding
+s.add(4)
+s.add(4)  # No effect, duplicates ignored
+s.update([5, 6, 7])
+print(f&#x27;After adding: {s}&#x27;)
+
+# Removing
+s.remove(7)
+# s.remove(99)  # Would raise KeyError!
+s.discard(99)   # Safe, no error
+print(f&#x27;After removal: {s}&#x27;)
+
+# Popping (removes arbitrary element)
+popped = s.pop()
+print(f&#x27;Popped {popped}, remaining: {s}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-29">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Set Methods</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Start with <code>s = set()</code>. Add elements <code>1</code>, <code>2</code>, and <code>2</code> again. Print the set.</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Update the set with a list <code>[3, 4, 5]</code> and a string <code>"hello"</code>. Print the result. Notice how the string is handled.</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Demonstrate the difference between <code>.remove()</code> and <code>.discard()</code> by trying to remove an element that does not exist. Use a try/except block for <code>.remove()</code>.</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Use a while loop and <code>.pop()</code> to empty a set of <code>5</code> elements, printing each popped item. Print the final set to confirm it is empty.</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write a function <code>add_if_missing(s, item)</code> that adds an item and returns <code>True</code> if it was added, or <code>False</code> if it was already there.</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-40">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>4. Subset & Superset Relations : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Comparative Logic</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Sets can be compared to check if one is fully contained within another. A set is a <b>subset</b> if all its elements exist in the other set. It is a <b>superset</b> if it contains all elements of the other set. Two sets are <b>disjoint</b> if they share no common elements.</p>
+<table>
+<thead><tr><th>Operation</th><th>Operator</th><th>Method</th><th>True if...</th></tr></thead><tbody>
+<tr><td>Subset</td><td><code>A <= B</code></td><td><code>A.issubset(B)</code></td><td>All elements of A are in B</td></tr>
+<tr><td>Proper Subset</td><td><code>A < B</code></td><td>None</td><td>Subset AND A != B</td></tr>
+<tr><td>Superset</td><td><code>A >= B</code></td><td><code>A.issuperset(B)</code></td><td>A contains all elements of B</td></tr>
+<tr><td>Disjoint</td><td>None</td><td><code>A.isdisjoint(B)</code></td><td>A & B is empty</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Permission Checking</strong>: <code>if user_roles.issubset(allowed_roles):</code> — verify access rights</p>
+<p>• <strong>Data Validation</strong>: <code>if required_columns.issubset(df.columns):</code> — ensure data structure is correct</p>
+<p>• <strong>Overlap Checking</strong>: <code>if isdisjoint</code> — verify two user segments are truly mutually exclusive</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Use <code><=</code> and <code>>=</code> for subsets/supersets. <code>A < B</code> checks for a <b>proper subset</b> (A is a subset of B, but A is not equal to B).</p>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19">A = {1, 2}
+B = {1, 2, 3, 4}
+C = {5, 6}
+
+# Subsets
+print(f&#x27;A is subset of B: {A.issubset(B)}&#x27;)  # True
+print(f&#x27;A &lt;= B: {A &lt;= B}&#x27;)  # True
+
+# Proper subset
+print(f&#x27;A &lt; A: {A &lt; A}&#x27;)    # False (not proper)
+print(f&#x27;A &lt;= A: {A &lt;= A}&#x27;)  # True
+
+# Supersets
+print(f&#x27;B is superset of A: {B.issuperset(A)}&#x27;)  # True
+print(f&#x27;B &gt;= A: {B &gt;= A}&#x27;)  # True
+
+# Disjoint
+print(f&#x27;A and C are disjoint: {A.isdisjoint(C)}&#x27;)  # True</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-42">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Subset & Superset</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>required = {"age", "name"}</code>, check if it is a subset of <code>columns = {"age", "name", "salary"}</code> using both method and operator.</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Check if <code>columns</code> is a superset of <code>required</code> using both method and operator. Print results.</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Demonstrate the difference between a subset (<code><=</code>) and a proper subset (<code><</code>) using <code>A = {1, 2}</code> and <code>B = {1, 2}</code>.</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Create two sets of tags for two different articles. Check if they have zero overlap using <code>.isdisjoint()</code>. Print the result.</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write a function <code>has_all_permissions(user_perms, required_perms)</code> that returns True only if the user has all required permissions. Test it.</p></div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-53">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>5. Frozen Sets : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Immutable Sets</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A <b>frozenset</b> is an <b>immutable</b> version of a set. Once created, elements cannot be added or removed. Because it is immutable, a frozenset is <b>hashable</b>, meaning it can be used as a dictionary key or as an element inside another set.</p>
+<table>
+<thead><tr><th>Feature</th><th><code>set</code></th><th><code>frozenset</code></th></tr></thead><tbody>
+<tr><td>Mutable?</td><td>Yes</td><td>No</td></tr>
+<tr><td>Hashable?</td><td>No</td><td>Yes</td></tr>
+<tr><td>Use as dict key?</td><td>No</td><td>Yes</td></tr>
+<tr><td>Put inside a set?</td><td>No</td><td>Yes</td></tr>
+<tr><td>Methods</td><td>All set methods</td><td>Only non-modifying methods (union, etc.)</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Compound Keys</strong>: <code>distances = {frozenset(['NY', 'LA']): 2444}</code> — order-independent keys</p>
+<p>• <strong>Caching</strong>: Use frozenset as arguments to cached/memoized functions</p>
+<p>• <strong>Immutable Constraints</strong>: Prevent accidental modification of global rule sets</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Sets of Sets</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>You cannot create a set of sets like <code>{{1, 2}, {3, 4}}</code> because sets are unhashable. You MUST use frozensets: <code>{frozenset([1, 2]), frozenset([3, 4])}</code>.</p>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25"># Frozenset creation
+fs = frozenset([1, 2, 3])
+print(f&#x27;Frozenset: {fs}&#x27;)
+
+# fs.add(4)  # AttributeError: &#x27;frozenset&#x27; object has no attribute &#x27;add&#x27;
+
+# Frozenset as dict key
+# Represents distance between two cities (order doesn&#x27;t matter!)
+distances = {
+    frozenset([&#x27;NY&#x27;, &#x27;LA&#x27;]): 2444,
+    frozenset([&#x27;NY&#x27;, &#x27;Chicago&#x27;]): 712
+}
+
+# Lookup works regardless of order
+query = frozenset([&#x27;LA&#x27;, &#x27;NY&#x27;])
+print(f&#x27;Distance NY-LA: {distances[query]} miles&#x27;)
+
+# Set of sets (using frozensets)
+valid_combinations = {frozenset([1, 2]), frozenset([3, 4])}
+print(f&#x27;Combinations: {valid_combinations}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-55">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Frozen Sets</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create a frozenset from a list <code>[1, 2, 3]</code>. Try to use <code>.add(4)</code> and catch the AttributeError. Print the error message.</p></div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Demonstrate that standard sets cannot be dict keys (catch TypeError), but frozensets can.</p></div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Create a dictionary where keys are frozensets of two users, and values are their relationship status. Retrieve a value using the reverse order of users.</p></div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Show that <code>frozenset([1, 2, 3]) | frozenset([3, 4, 5])</code> works and returns a frozenset. Print the type of the result.</p></div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Create a set containing three frozensets. Print the set.</p></div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-66">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>6. Sets vs Lists : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">O(1) Lookups & Performance</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Sets use <b>hash tables</b> under the hood. This means checking if an item is in a set takes <b>O(1) time</b> (constant time), regardless of how large the set is. Checking if an item is in a list takes <b>O(n) time</b>, which gets slower as the list grows.</p>
+<table>
+<thead><tr><th>Operation</th><th>List Time Complexity</th><th>Set Time Complexity</th><th>Speedup</th></tr></thead><tbody>
+<tr><td><code>x in collection</code></td><td>O(n)</td><td>O(1)</td><td>Massive for large data</td></tr>
+<tr><td>Deduplicate</td><td>O(n^2) (naive)</td><td>O(n)</td><td>Huge</td></tr>
+<tr><td>Iteration</td><td>O(n)</td><td>O(n)</td><td>Equal</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Filtering Pipelines</strong>: Convert blacklist of IDs to a set before filtering a large DataFrame</p>
+<p>• <strong>Cross-referencing</strong>: Checking which users in Table A exist in Table B</p>
+<p>• <strong>Performance Optimization</strong>: Replacing <code>if item in list:</code> with <code>if item in set:</code> is the easiest performance win in Python</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>If you need to check membership (<code>in</code>) inside a loop over a large dataset, ALWAYS convert the lookup collection to a set first.</p>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31">import time
+import random
+
+# Setup data
+num_elements = 1_000_000
+lookup_value = 999_999
+
+# Create collections
+data_list = list(range(num_elements))
+data_set = set(data_list)
+
+# Time List Lookup
+start = time.time()
+found = lookup_value in data_list
+list_time = time.time() - start
+
+# Time Set Lookup
+start = time.time()
+found = lookup_value in data_set
+set_time = time.time() - start
+
+print(f&#x27;List lookup: {list_time:.6f} seconds&#x27;)
+print(f&#x27;Set lookup:  {set_time:.6f} seconds&#x27;)
+print(f&#x27;Set is {list_time / (set_time + 1e-9):.1f}x faster&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Performance-68">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Performance</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Recreate the performance benchmark: time looking up <code>-1</code> (not in collection) in a list of 1,000,000 items vs a set. Print the times.</p></div>
+<div class="code-cell" id="cell-32">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-32')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-32')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-32"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Given a huge text, extracting unique words using <code>list.append</code> (if not in list) vs <code>set.add</code>. Explain why the set approach is O(n) and list approach is O(n^2).</p></div>
+<div class="code-cell" id="cell-33">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-33')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-33')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-33"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Write a function <code>find_common(l1, l2)</code> that finds common elements between two large lists. Convert them to sets and use intersection. Time the function.</p></div>
+<div class="code-cell" id="cell-34">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-34')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-34')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-34"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Write a loop that filters a list of 100,000 numbers, keeping only those present in a <code>valid_ids</code> list of 10,000 numbers. Show how converting <code>valid_ids</code> to a set speeds it up.</p></div>
+<div class="code-cell" id="cell-35">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-35')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-35')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-35"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> When would you NOT use a set for lookups? (Hint: Order preservation, duplicate counting). Explain briefly.</p></div>
+<div class="code-cell" id="cell-36">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-36')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-36')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-36"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="practice">
+<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
+<p>Theory is useless without muscle memory. Complete these tasks to solidify your understanding.</p>
+<div class="question task"><p><strong>Task 1 (Data Deduplicator):</strong> Write a function <code>unique_sorted_chars(text)</code> that takes a string, removes duplicates, removes spaces, and returns a sorted list of the unique characters. Test with <code>'hello world'</code>.</p></div>
+<div class="code-cell" id="cell-37">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-37')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-37')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-37"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 2 (Cohort Overlap):</strong> Given <code>cohort_A = [1,2,3,4,5,6]</code> and <code>cohort_B = [4,5,6,7,8]</code>, use sets to find: IDs in both, IDs only in A, IDs only in B, and IDs in exactly one cohort. Print all 4 lists.</p></div>
+<div class="code-cell" id="cell-38">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-38')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-38')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-38"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 3 (Vocabulary Analyzer):</strong> Write a function <code>jaccard_similarity(doc1, doc2)</code> that splits two strings into sets of words and calculates: <code>len(intersection) / len(union)</code>. Test with two short sentences.</p></div>
+<div class="code-cell" id="cell-39">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-39')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-39')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-39"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 4 (Access Controller):</strong> Given <code>user_roles = {'read', 'write'}</code> and <code>admin_roles = {'read', 'write', 'delete'}</code>, write code that uses subset/superset methods to check if the user has all admin roles, and if not, which ones are missing.</p></div>
+<div class="code-cell" id="cell-40">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-40')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-40')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-40"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 5 (Fast Filter):</strong> Create a list of 100,000 random integers. Create a list of 5,000 'blacklist' integers. Filter the main list to remove blacklisted integers using a set for O(1) lookups. Print the final length.</p></div>
+<div class="code-cell" id="cell-41">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-41')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-41')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-41"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong></p>
+<h3>Write a function <code>has_duplicates(lst)</code> that returns True if a list contains duplicates, using sets. Do it in one line.</h3>
+</div>
+<div class="code-cell" id="cell-42">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-42')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-42')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-42"># Solution for Q1</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q2.</strong></p>
+<h3>Write a function <code>missing_numbers(lst, n)</code> that finds all missing numbers from <code>1</code> to <code>n</code> in a list. Use sets.</h3>
+</div>
+<div class="code-cell" id="cell-43">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-43')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-43')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-43"># Solution for Q2</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q3.</strong></p>
+<h3>Write a function <code>intersection_multiple(*sets)</code> that returns the intersection of an arbitrary number of sets.</h3>
+</div>
+<div class="code-cell" id="cell-44">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-44')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-44')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-44"># Solution for Q3</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong></p>
+<h3>Write a function <code>symmetric_diff_multiple(*sets)</code> that finds elements present in exactly one of the sets.</h3>
+</div>
+<div class="code-cell" id="cell-45">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-45')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-45')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-45"># Solution for Q4</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong></p>
+<h3>Write a function <code>is_pangram(text)</code> that checks if a string contains every letter of the alphabet using sets.</h3>
+</div>
+<div class="code-cell" id="cell-46">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-46')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-46')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-46"># Solution for Q5</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong></p>
+<h3>Given two lists of dictionaries, find the symmetric difference based on a specific key (e.g., 'id').</h3>
+</div>
+<div class="code-cell" id="cell-47">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-47')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-47')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-47"># Solution for Q6</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong></p>
+<h3>Write a function <code>remove_duplicates_preserve_order(lst)</code> without using external libraries, but using a set for O(1) lookups.</h3>
+</div>
+<div class="code-cell" id="cell-48">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-48')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-48')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-48"># Solution for Q7</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong></p>
+<h3>Implement the Jaccard similarity index for two lists of items. Handle empty sets gracefully.</h3>
+</div>
+<div class="code-cell" id="cell-49">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-49')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-49')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-49"># Solution for Q8</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong></p>
+<h3>Write a function that takes a string and returns the length of the longest substring without repeating characters (sliding window + set).</h3>
+</div>
+<div class="code-cell" id="cell-50">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-50')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-50')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-50"># Solution for Q9</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-109">
+<div class="question interview"><p><strong>Q10.</strong></p>
+<h3>Write a function <code>find_pairs_sum(lst, target)</code> that finds all unique pairs that sum to target, using a set for O(n) time.</h3>
+</div>
+<div class="code-cell" id="cell-51">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-51')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-51')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-51"># Solution for Q10</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-111">
+<div class="question interview"><p><strong>Q11.</strong></p>
+<h3>Write a function <code>find_common_chars(words)</code> that returns a list of characters present in all words in a list.</h3>
+</div>
+<div class="code-cell" id="cell-52">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-52')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-52')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-52"># Solution for Q11</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-113">
+<div class="question interview"><p><strong>Q12.</strong></p>
+<h3>Write code to flatten a list of sets into a single set: <code>[{1,2}, {2,3}, {3,4}]</code> -> <code>{1,2,3,4}</code>.</h3>
+</div>
+<div class="code-cell" id="cell-53">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-53')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-53')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-53"># Solution for Q12</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-115">
+<div class="question interview"><p><strong>Q13.</strong></p>
+<h3>Explain the difference between <code>s.remove(x)</code> and <code>s.discard(x)</code>. Write a wrapper function <code>safe_remove(s, x)</code> that mimics discard using remove.</h3>
+</div>
+<div class="code-cell" id="cell-54">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-54')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-54')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-54"># Solution for Q13</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-117">
+<div class="question interview"><p><strong>Q14.</strong></p>
+<h3>Write a function <code>is_anagram_set_trap(s1, s2)</code> that shows why <code>set(s1) == set(s2)</code> is NOT a valid way to check for anagrams.</h3>
+</div>
+<div class="code-cell" id="cell-55">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-55')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-55')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-55"># Solution for Q14</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-119">
+<div class="question interview"><p><strong>Q15.</strong></p>
+<h3>Create a dictionary acting as an undirected graph, where edges are represented by frozensets. <code>frozenset([A, B]): weight</code>.</h3>
+</div>
+<div class="code-cell" id="cell-56">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-56')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-56')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-56"># Solution for Q15</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-121">
+<div class="question interview"><p><strong>Q16.</strong></p>
+<h3>Given a list of lists, deduplicate the inner lists. <code>[[1,2], [2,1], [3,4]]</code> -> <code>[[1,2], [3,4]]</code>. Use frozensets.</h3>
+</div>
+<div class="code-cell" id="cell-57">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-57')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-57')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-57"># Solution for Q16</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-123">
+<div class="question interview"><p><strong>Q17.</strong></p>
+<h3>Write a function <code>group_identical(lst)</code> that groups identical dictionaries in a list using frozensets of their items.</h3>
+</div>
+<div class="code-cell" id="cell-58">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-58')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-58')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-58"># Solution for Q17</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-125">
+<div class="question interview"><p><strong>Q18.</strong></p>
+<h3>Write a function <code>set_from_generator(n)</code> that creates a set of the first <code>n</code> prime numbers using a generator expression inside <code>set()</code>.</h3>
+</div>
+<div class="code-cell" id="cell-59">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-59')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-59')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-59"># Solution for Q18</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-127">
+<div class="question interview"><p><strong>Q19.</strong></p>
+<h3>Explain why <code>{[]}</code> raises a TypeError but <code>{()}</code> does not. Write code demonstrating this hashability concept.</h3>
+</div>
+<div class="code-cell" id="cell-60">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-60')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-60')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-60"># Solution for Q19</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-129">
+<div class="question interview"><p><strong>Q20.</strong></p>
+<h3>Write a function <code>longest_consecutive_sequence(nums)</code> that runs in O(n) time using a set.</h3>
+</div>
+<div class="code-cell" id="cell-61">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-61')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-61')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-61"># Solution for Q20</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-131">
+<div class="question interview"><p><strong>Q21.</strong></p>
+<h3>Write a function to find the elements that appear exactly once in an array where every other element appears twice. (Can use XOR or sets).</h3>
+</div>
+<div class="code-cell" id="cell-62">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-62')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-62')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-62"># Solution for Q21</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-133">
+<div class="question interview"><p><strong>Q22.</strong></p>
+<h3>Write a function <code>word_break(s, word_dict)</code> that checks if a string can be segmented into words from a dictionary. Convert dict to set.</h3>
+</div>
+<div class="code-cell" id="cell-63">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-63')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-63')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-63"># Solution for Q22</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-135">
+<div class="question interview"><p><strong>Q23.</strong></p>
+<h3>Write a function <code>is_bipartite(graph)</code> using two sets to color nodes and detect odd-length cycles.</h3>
+</div>
+<div class="code-cell" id="cell-64">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-64')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-64')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-64"># Solution for Q23</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-137">
+<div class="question interview"><p><strong>Q24.</strong></p>
+<h3>Implement a custom <code>MySet</code> class wrapping a dictionary to demonstrate how sets work under the hood.</h3>
+</div>
+<div class="code-cell" id="cell-65">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-65')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-65')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-65"># Solution for Q24</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-139">
+<div class="question interview"><p><strong>Q25.</strong></p>
+<h3>Write a function <code>count_unique_vowels(word)</code> using set intersection with <code>{'a','e','i','o','u'}</code>.</h3>
+</div>
+<div class="code-cell" id="cell-66">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-66')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-66')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-66"># Solution for Q25</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="summary">
+<div class="section-header cyan"><h2>📊 Day 6 Executive Summary</h2></div>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Takeaway</th><th>Professional Application</th></tr></thead><tbody>
+<tr><td>1</td><td>Creation</td><td><code>set()</code>, <code>{1, 2}</code>. Mutable, unordered.</td><td>Data deduplication</td></tr>
+<tr><td>2</td><td>Operations</td><td>Union `</td><td><code>, Intersection </code>&<code>, Difference </code>-`</td><td>Cohort and overlap analysis</td></tr>
+<tr><td>3</td><td>Methods</td><td><code>add</code>, <code>discard</code> (safe), <code>remove</code> (unsafe)</td><td>Incremental processing</td></tr>
+<tr><td>4</td><td>Relations</td><td><code>issubset <=</code>, <code>issuperset >=</code></td><td>Data validation, permissions</td></tr>
+<tr><td>5</td><td>Frozen Sets</td><td>Immutable, hashable sets</td><td>Sets of sets, Dict keys</td></tr>
+<tr><td>6</td><td>Performance</td><td>O(1) membership testing (<code>in</code>)</td><td>Massive optimization over lists</td></tr>
+</tbody></table>
+<h2>✅ Instructor's End-of-Day Checklist</h2>
+<p>• [ ] I understand that sets are unordered and cannot be accessed by index.</p>
+<p>• [ ] I know how to deduplicate a list instantly using <code>set()</code>.</p>
+<p>• [ ] I can perform union, intersection, and difference operations.</p>
+<p>• [ ] I understand the difference between <code>.remove()</code> and <code>.discard()</code>.</p>
+<p>• [ ] I know when to use a <code>frozenset</code> (dict keys, sets of sets).</p>
+<p>• [ ] I understand why <code>in set</code> is exponentially faster than <code>in list</code>.</p>
+<p>• [ ] I have completed all 5 practice tasks.</p>
+<p>• [ ] I have reviewed all 25 interview questions.</p>
+<p><strong>Next Up: Day 7 - Dictionaries: Key-Value Mappings, Iteration, and Data Structures</strong></p>
+</div>
+  </main>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
+    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
+<li><a href="#sec-1" class="toc-link">1. Set Creation & Basics : Unordered, Unique Elements</a></li>
+<li><a href="#checks-Check-3" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-14" class="toc-link">2. Set Theory Operations : Mathematical Relational Logic</a></li>
+<li><a href="#checks-Check-16" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-27" class="toc-link">3. Set Methods & Modification : Dynamic Set Updates</a></li>
+<li><a href="#checks-Check-29" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-40" class="toc-link">4. Subset & Superset Relations : Comparative Logic</a></li>
+<li><a href="#checks-Check-42" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-53" class="toc-link">5. Frozen Sets : Immutable Sets</a></li>
+<li><a href="#checks-Check-55" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-66" class="toc-link">6. Sets vs Lists : O(1) Lookups & Performance</a></li>
+<li><a href="#checks-Performance-68" class="toc-link">🧪 Checks: Performance</a></li>
+<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
+<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
+<li><a href="#sec-109" class="toc-link">Q10.</a></li>
+<li><a href="#sec-111" class="toc-link">Q11.</a></li>
+<li><a href="#sec-113" class="toc-link">Q12.</a></li>
+<li><a href="#sec-115" class="toc-link">Q13.</a></li>
+<li><a href="#sec-117" class="toc-link">Q14.</a></li>
+<li><a href="#sec-119" class="toc-link">Q15.</a></li>
+<li><a href="#sec-121" class="toc-link">Q16.</a></li>
+<li><a href="#sec-123" class="toc-link">Q17.</a></li>
+<li><a href="#sec-125" class="toc-link">Q18.</a></li>
+<li><a href="#sec-127" class="toc-link">Q19.</a></li>
+<li><a href="#sec-129" class="toc-link">Q20.</a></li>
+<li><a href="#sec-131" class="toc-link">Q21.</a></li>
+<li><a href="#sec-133" class="toc-link">Q22.</a></li>
+<li><a href="#sec-135" class="toc-link">Q23.</a></li>
+<li><a href="#sec-137" class="toc-link">Q24.</a></li>
+<li><a href="#sec-139" class="toc-link">Q25.</a></li>
+<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
+    <div class="sidebar-resize" id="sidebarResize"></div>
+  </nav>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="notebook.js"></script>
+</body>
+</html>

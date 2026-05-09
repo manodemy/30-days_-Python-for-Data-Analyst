@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 13: Lambda Functions — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="notebook.css">
+</head>
+<body>
+<nav class="top-bar" id="topBar">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="landing.html" class="home-btn" title="Back to Curriculum">🏠</a>
+      <div class="nav-score" title="Questions Solved">
+        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
+        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="nav-center">Day 13 : Lambda Functions</div>
+    <div class="nav-right"><a href="day12.html" class="nav-btn prev-btn">← Prev</a><a href="day14.html" class="nav-btn next-btn">Next →</a></div>
+  </div>
+</nav>
+<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
+<div class="layout">
+  <main class="notebook" id="notebook">
+    <div class="nb-title"><h1>📊 Day 13 : Lambda Functions</h1></div>
+<div class="nb-section" id="sec-0">
+<h2>🎯 Enterprise Objective</h2>
+<p>Functional programming treats computation as the evaluation of mathematical functions. Today we master <code>lambda</code>, <code>map</code>, <code>filter</code>, and <code>reduce</code>. These patterns are essential for writing clean data transformation pipelines, especially in Pandas.</p>
+<h3>📋 Strategic Overview</h3>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Concept</th></tr></thead><tbody>
+<tr><td>1</td><td>Lambdas</td><td>Anonymous inline functions</td></tr>
+<tr><td>2</td><td>Functional</td><td>Map, Filter, Reduce</td></tr>
+</tbody></table>
+</div>
+<div class="nb-section" id="sec-1">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. Lambda Functions : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Anonymous Inline Functions</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A <b>lambda</b> is a small, anonymous, single-line function. Defined using <code>lambda arguments: expression</code>. It implicitly returns the result of the expression.</p>
+<pre class="nb-code-block"><code># Standard
+def add(x, y): return x + y
+# Lambda
+add_lambda = lambda x, y: x + y</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Pandas Apply</strong>: <code>df['col'].apply(lambda x: x * 2)</code> — inline data transformations</p>
+<p>• <strong>Sorting</strong>: <code>sorted(data, key=lambda d: d['age'])</code> — custom sort keys on the fly</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Overusing Lambdas</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>If a lambda gets complex or requires multiple lines, write a standard <code>def</code> function instead. Code readability is more important than brevity.</p>
+<div class="code-cell" id="cell-1">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-1"># Sorting a list of tuples by the second element
+records = [(&#x27;Alice&#x27;, 95), (&#x27;Bob&#x27;, 82), (&#x27;Charlie&#x27;, 91)]
+sorted_records = sorted(records, key=lambda x: x[1])
+print(sorted_records)
+
+# Inline math mapping
+math_funcs = {
+    &#x27;double&#x27;: lambda x: x * 2,
+    &#x27;square&#x27;: lambda x: x ** 2
+}
+print(math_funcs[&#x27;square&#x27;](5))</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Lambdas-3">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Lambdas</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Write a lambda that multiplies a number by 10. Assign it to <code>times10</code>. Call it with 5.</p></div>
+<div class="code-cell" id="cell-2">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-2"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Use a lambda with <code>sorted()</code> to sort <code>words = ["apple", "banana", "cherry", "date"]</code> by length.</p></div>
+<div class="code-cell" id="cell-3">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-3"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Given a list of dicts <code>[{"id": 2}, {"id": 1}]</code>, sort them by <code>"id"</code> using a lambda key.</p></div>
+<div class="code-cell" id="cell-4">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-4"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Create a lambda that takes <code>x, y</code> and returns <code>True</code> if <code>x > y</code>. Call it with 10, 5.</p></div>
+<div class="code-cell" id="cell-5">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-5"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Extract the domain from an email: <code>lambda email: email.split("@")[1]</code>. Test it on <code>"user@gmail.com"</code>.</p></div>
+<div class="code-cell" id="cell-6">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-6"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-14">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>2. Map, Filter, Reduce : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Functional Paradigms</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Python supports functional programming concepts. <code>map()</code> applies a function to all items. <code>filter()</code> keeps items where a function returns True. <code>reduce()</code> (from <code>functools</code>) repeatedly applies a function to pairs of items to reduce a list to a single value.</p>
+<table>
+<thead><tr><th>Function</th><th>Purpose</th><th>Equivalent Comprehension</th></tr></thead><tbody>
+<tr><td><code>map(f, data)</code></td><td>Transform</td><td><code>[f(x) for x in data]</code></td></tr>
+<tr><td><code>filter(f, data)</code></td><td>Extract</td><td><code>[x for x in data if f(x)]</code></td></tr>
+<tr><td><code>reduce(f, data)</code></td><td>Aggregate</td><td>(No direct equivalent)</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Data Pipelines</strong>: Chaining operations: <code>reduce(add, map(square, filter(is_even, data)))</code></p>
+<p>• <strong>Legacy Code</strong>: You will see <code>map/filter</code> frequently in codebases written by Java/JS developers</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>In modern Python, list comprehensions are generally preferred over <code>map()</code> and <code>filter()</code> because they are more readable and slightly faster.</p>
+<div class="code-cell" id="cell-7">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-7">from functools import reduce
+
+nums = [1, 2, 3, 4, 5]
+
+# Map (Transform)
+doubled = list(map(lambda x: x * 2, nums))
+print(f&#x27;Map: {doubled}&#x27;)
+
+# Filter (Extract)
+evens = list(filter(lambda x: x % 2 == 0, nums))
+print(f&#x27;Filter: {evens}&#x27;)
+
+# Reduce (Aggregate - e.g., multiply all)
+product = reduce(lambda x, y: x * y, nums)
+print(f&#x27;Reduce (Product): {product}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Functional-16">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Functional</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Use <code>map()</code> and a lambda to convert <code>names = ["alice", "bob"]</code> to uppercase. Print as list.</p></div>
+<div class="code-cell" id="cell-8">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-8"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Use <code>filter()</code> and a lambda to extract numbers > 5 from <code>[3, 8, 2, 9, 4]</code>. Print as list.</p></div>
+<div class="code-cell" id="cell-9">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-9"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Import <code>reduce</code>. Use it to find the maximum value in <code>[1, 5, 2, 8, 3]</code> using a lambda.</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Write a list comprehension that does the exact same thing as <code>list(map(lambda x: x**2, [1, 2, 3]))</code>.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Why does <code>map()</code> return a <code><map object></code> instead of a list? (Hint: Lazy evaluation).</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="practice">
+<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
+<p>Theory is useless without muscle memory. Complete these tasks to solidify your understanding.</p>
+<div class="question task"><p><strong>Task 1 (Sort by Length):</strong> Given <code>sentences = ['I am Python', 'Hi', 'This is a long sentence']</code>, sort them by word count using <code>sorted()</code> and a lambda. Print the result.</p></div>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 2 (Data Pipeline):</strong> Given <code>nums = [1, -5, 10, -2, 8]</code>. Use <code>filter()</code> to remove negatives, then <code>map()</code> to square them, then <code>reduce()</code> to sum them up. Print the final sum.</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 3 (Dictionary Filter):</strong> Given a dictionary <code>data = {'a': 10, 'b': 5, 'c': 20}</code>, use <code>filter()</code> and a lambda on <code>data.items()</code> to keep pairs where value > 5. Convert back to dict.</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 4 (Multi-Map):</strong> Given <code>A = [1, 2, 3]</code> and <code>B = [10, 20, 30]</code>. Use <code>map()</code> with a lambda <code>lambda x, y: x + y</code> to add them element-wise. Print the resulting list.</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 5 (Custom Reduce):</strong> Write your own <code>my_reduce(func, seq)</code> function using a <code>for</code> loop that mimics the behavior of <code>functools.reduce</code>.</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong></p>
+<h3>Write a lambda that takes a string and returns the number of vowels in it. Test with <code>'hello world'</code>.</h3>
+</div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18"># Solution for Q1</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q2.</strong></p>
+<h3>Write the same transformation using <code>list(map(lambda x: x<strong>2, data))</code> and <code>[x</strong>2 for x in data]</code>. Time both on a list of 100,000 numbers and print which is faster.</h3>
+</div>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19"># Solution for Q2</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q3.</strong></p>
+<h3>Write a lambda to extract the domain from an email address (e.g., <code>'user@gmail.com'</code> → <code>'gmail.com'</code>). Test with 3 emails.</h3>
+</div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20"># Solution for Q3</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong></p>
+<h3>Use <code>functools.reduce</code> to concatenate <code>['Hello', ' ', 'World']</code> into a single string <code>'Hello World'</code>.</h3>
+</div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21"># Solution for Q4</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong></p>
+<h3>Write a <code>reduce()</code> call that computes the product of <code>[1, 2, 3, 4, 5]</code>. Then write the same logic using a <code>for</code> loop. Print both results.</h3>
+</div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22"># Solution for Q5</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong></p>
+<h3>Write a <code>filter()</code> expression that removes all <code>None</code> values from <code>[1, None, 2, None, 3]</code>. Print the result as a list.</h3>
+</div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23"># Solution for Q6</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong></p>
+<h3>Write code to sort a dictionary <code>{'b': 3, 'a': 1, 'c': 2}</code> by its values in descending order using <code>sorted()</code> with a lambda key.</h3>
+</div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24"># Solution for Q7</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong></p>
+<h3>Write a custom <code>my_map(func, iterable)</code> generator function using <code>yield</code>. Test it with <code>my_map(str.upper, ['a', 'b'])</code>.</h3>
+</div>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25"># Solution for Q8</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong></p>
+<h3>Import <code>functools.partial</code>. Create <code>add_ten = partial(add, 10)</code> from <code>def add(a, b): return a + b</code>. Call <code>add_ten(5)</code> and print.</h3>
+</div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26"># Solution for Q9</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-57">
+<div class="question interview"><p><strong>Q10.</strong></p>
+<h3>Write a function <code>make_counter()</code> that returns an inner function. Each call to the inner function increments and returns a counter. Demonstrate the closure.</h3>
+</div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27"># Solution for Q10</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-59">
+<div class="question interview"><p><strong>Q11.</strong></p>
+<h3>Write a pipeline: use <code>filter</code> to get even numbers from <code>range(20)</code>, then <code>map</code> to square them. Print the result as a list.</h3>
+</div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28"># Solution for Q11</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-61">
+<div class="question interview"><p><strong>Q12.</strong></p>
+<h3>Write two versions of uppercasing a word list: <code>list(map(str.upper, words))</code> and <code>list(map(lambda x: x.upper(), words))</code>. Print both results.</h3>
+</div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29"># Solution for Q12</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-63">
+<div class="question interview"><p><strong>Q13.</strong></p>
+<h3>Given <code>[(1, 'a'), (3, 'c'), (2, 'b')]</code>, sort by the second element using a lambda key. Print the sorted list.</h3>
+</div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30"># Solution for Q13</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-65">
+<div class="question interview"><p><strong>Q14.</strong></p>
+<h3>Write a lambda that checks if a string reads the same forwards and backwards (palindrome). Test with <code>'racecar'</code> and <code>'hello'</code>.</h3>
+</div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31"># Solution for Q14</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-67">
+<div class="question interview"><p><strong>Q15.</strong></p>
+<h3>Write a lambda that classifies a number as <code>'positive'</code>, <code>'negative'</code>, or <code>'zero'</code> using nested ternary. Test with <code>-5, 0, 7</code>.</h3>
+</div>
+<div class="code-cell" id="cell-32">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-32')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-32')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-32"># Solution for Q15</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-69">
+<div class="question interview"><p><strong>Q16.</strong></p>
+<h3>Use <code>reduce</code> to find the intersection of <code>[{1,2,3}, {2,3,4}, {3,4,5}]</code>. Print the result.</h3>
+</div>
+<div class="code-cell" id="cell-33">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-33')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-33')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-33"># Solution for Q16</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-71">
+<div class="question interview"><p><strong>Q17.</strong></p>
+<h3>Write your own <code>my_any(iterable)</code> function using <code>functools.reduce</code>. It should return <code>True</code> if any element is truthy.</h3>
+</div>
+<div class="code-cell" id="cell-34">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-34')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-34')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-34"># Solution for Q17</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-73">
+<div class="question interview"><p><strong>Q18.</strong></p>
+<h3>Write code that creates a <code>map</code> object of 1 million squares. Print its size using <code>sys.getsizeof()</code> vs the equivalent list's size.</h3>
+</div>
+<div class="code-cell" id="cell-35">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-35')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-35')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-35"># Solution for Q18</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-75">
+<div class="question interview"><p><strong>Q19.</strong></p>
+<h3>Write a lambda that takes another function as an argument and calls it twice: <code>twice = lambda f, x: f(f(x))</code>. Test with <code>lambda x: x + 3</code>.</h3>
+</div>
+<div class="code-cell" id="cell-36">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-36')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-36')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-36"># Solution for Q19</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-77">
+<div class="question interview"><p><strong>Q20.</strong></p>
+<h3>Write code using <code>map</code> with <code>lambda</code> over a list of tuples <code>[(1,2), (3,4)]</code> to compute each tuple's sum. Print the result.</h3>
+</div>
+<div class="code-cell" id="cell-37">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-37')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-37')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-37"># Solution for Q20</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-79">
+<div class="question interview"><p><strong>Q21.</strong></p>
+<h3>Write code demonstrating the late-binding closure bug: <code>funcs = [lambda: i for i in range(3)]</code>. Call each and print the (unexpected) results.</h3>
+</div>
+<div class="code-cell" id="cell-38">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-38')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-38')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-38"># Solution for Q21</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-81">
+<div class="question interview"><p><strong>Q22.</strong></p>
+<h3>Fix the late-binding bug from the previous question using <code>lambda i=i: i</code>. Call each and verify they return <code>0, 1, 2</code>.</h3>
+</div>
+<div class="code-cell" id="cell-39">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-39')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-39')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-39"># Solution for Q22</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-83">
+<div class="question interview"><p><strong>Q23.</strong></p>
+<h3>Use <code>filter</code> and a lambda to keep only words containing the letter <code>'e'</code> from <code>['hello', 'world', 'test', 'fun']</code>.</h3>
+</div>
+<div class="code-cell" id="cell-40">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-40')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-40')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-40"># Solution for Q23</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-85">
+<div class="question interview"><p><strong>Q24.</strong></p>
+<h3>Write a lambda that parses <code>'2023-12-25'</code> and returns a tuple <code>(2023, 12, 25)</code> using <code>split</code> and <code>map(int, ...)</code>.</h3>
+</div>
+<div class="code-cell" id="cell-41">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-41')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-41')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-41"># Solution for Q24</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-87">
+<div class="question interview"><p><strong>Q25.</strong></p>
+<h3>Write a lambda that has a side effect (appends to a list). Call it 3 times and print the list to show the mutation.</h3>
+</div>
+<div class="code-cell" id="cell-42">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-42')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-42')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-42"># Solution for Q25</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="summary">
+<div class="section-header cyan"><h2>📊 Day 13 Executive Summary</h2></div>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Takeaway</th></tr></thead><tbody>
+<tr><td>1</td><td>Lambda</td><td><code>lambda x: x*2</code> is great for <code>apply()</code></td></tr>
+<tr><td>2</td><td>Map/Filter</td><td>Lazy evaluation saves memory</td></tr>
+</tbody></table>
+<h2>✅ Instructor's End-of-Day Checklist</h2>
+<p>• [ ] I can write a lambda function.</p>
+<p>• [ ] I can use <code>map()</code> and <code>filter()</code>.</p>
+<p>• [ ] I understand <code>reduce()</code>.</p>
+<p><strong>Next Up: Day 14 - Exceptions & Error Handling</strong></p>
+</div>
+  </main>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
+    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
+<li><a href="#sec-1" class="toc-link">1. Lambda Functions : Anonymous Inline Functions</a></li>
+<li><a href="#checks-Lambdas-3" class="toc-link">🧪 Checks: Lambdas</a></li>
+<li><a href="#sec-14" class="toc-link">2. Map, Filter, Reduce : Functional Paradigms</a></li>
+<li><a href="#checks-Functional-16" class="toc-link">🧪 Checks: Functional</a></li>
+<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
+<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
+<li><a href="#sec-57" class="toc-link">Q10.</a></li>
+<li><a href="#sec-59" class="toc-link">Q11.</a></li>
+<li><a href="#sec-61" class="toc-link">Q12.</a></li>
+<li><a href="#sec-63" class="toc-link">Q13.</a></li>
+<li><a href="#sec-65" class="toc-link">Q14.</a></li>
+<li><a href="#sec-67" class="toc-link">Q15.</a></li>
+<li><a href="#sec-69" class="toc-link">Q16.</a></li>
+<li><a href="#sec-71" class="toc-link">Q17.</a></li>
+<li><a href="#sec-73" class="toc-link">Q18.</a></li>
+<li><a href="#sec-75" class="toc-link">Q19.</a></li>
+<li><a href="#sec-77" class="toc-link">Q20.</a></li>
+<li><a href="#sec-79" class="toc-link">Q21.</a></li>
+<li><a href="#sec-81" class="toc-link">Q22.</a></li>
+<li><a href="#sec-83" class="toc-link">Q23.</a></li>
+<li><a href="#sec-85" class="toc-link">Q24.</a></li>
+<li><a href="#sec-87" class="toc-link">Q25.</a></li>
+<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
+    <div class="sidebar-resize" id="sidebarResize"></div>
+  </nav>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="notebook.js"></script>
+</body>
+</html>

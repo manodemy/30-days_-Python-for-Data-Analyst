@@ -1,0 +1,71 @@
+﻿=== CELL 0 FULL ===
+---
+## ≡ƒÄ» Enterprise Objective
+Mastering Python isn't just about knowing syntax; it's about understanding how data is fundamentally stored, accessed, and optimized in memory. Today, we deconstruct Python's 10 foundational data types. You will learn not only *how* to use them, but *when* to use them to write high-performance, production-grade analytical pipelines.
+
+### ≡ƒôï Strategic Data Type Matrix
+| # | Type | Immutable? | Memory Cost | Enterprise Analytics Use Case |
+|---|------|------------|-------------|-------------------------------|
+| 1 | `int` | Γ£à Yes | Variable | Primary keys, absolute indexing, discrete counts. |
+| 2 | `float` | Γ£à Yes | 24 bytes | Continuous measurements, financial metrics, probabilities. |
+| 3 | `complex`| Γ£à Yes | 32 bytes | Signal processing, geospatial vectors, quantum modeling. |
+| 4 | `str` | Γ£à Yes | Variable | Raw text mining, log parsing, categorical identifiers. |
+| 5 | `bool` | Γ£à Yes | 28 bytes | Binary masks, conditional filtering, boolean logic. |
+| 6 | `list` | Γ¥î No | Dynamic | Ordered queues, chronological time-series buffers. |
+| 7 | `tuple` | Γ£à Yes | Fixed | Immutable configuration matrices, compound dictionary keys. |
+| 8 | `set` | Γ¥î No | Dynamic | O(1) deduplication, cohort intersection/union analysis. |
+| 9 | `dict` | Γ¥î No | Dynamic | Fast O(1) lookups, JSON payload structuring, aggregations. |
+| 10| `None` | Γ£à Yes | 16 bytes | Singleton representation of missing/null values. |
+
+
+
+=== CELL 1 FULL (Section Header + Theory) ===
+<h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. Integer (<code>int</code>) : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Precision Counts & Identifiers</span></b>
+</h2>
+
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>≡ƒöì What is it?</b><br>
+    An integer is a whole number that can be positive, negative, or zero, and it does not contain a decimal point. Unlike many other programming languages such as C or Java, Python integers support <b>arbitrary precision</b>, meaning they can grow to very large values limited only by your system's memory.
+</div>
+
+**Examples:** `10`, `-25`, `0`, `999999`
+
+```python
+x = 10**100  # A 101-digit number!
+print(x)
+```
+
+<h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>≡ƒÆ╝ Why Data Analysts Care</b></h3>
+
+Integers are the foundational blocks of tracking entities and loops.
+
+* **Row Counts**: Functions like `len(df)` return integers.
+* **Primary Keys**: `Customer ID`, `Order ID`, and `Transaction ID` are typically stored as integers for high-speed indexing.
+* **Categorical Encoding**: Converting string categories to integers (`0 = Low`, `1 = Medium`, `2 = High`) is a standard requirement for Machine Learning.
+
+<h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>ΓÜá∩╕Å Common Pitfall: Division Behavior</b></h3>
+
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    In Python, the standard division operator <code>/</code> <b>always</b> returns a float, even if the result is mathematically whole.
+</div>
+
+```python
+print(10 / 2)   # Output: 5.0 (float)
+print(10 // 2)  # Output: 5 (int) - Use floor division to keep it an integer!
+```
+> ΓÜí **Important**: Floor division truncates toward negative infinity (e.g., `-7 // 2` yields `-4`).
+
+<h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>≡ƒºá Memory Insight</b></h3>
+
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    A standard Python integer uses about <b>28 bytes</b>. For large-scale data processing (millions of rows), this is highly inefficient. Professional analysts use NumPy and pandas optimized types to compress data footprint.
+</div>
+
+| Optimized Type | Memory Usage | Range |
+| :--- | :--- | :--- |
+| `int8` | 1 byte | -128 to 127 |
+| `int16` | 2 bytes | -32K to 32K |
+| `int32` | 4 bytes | ~┬▒2 billion |
+
+

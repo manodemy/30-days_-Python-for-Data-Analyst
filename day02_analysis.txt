@@ -1,0 +1,181 @@
+﻿=== DAY 02 FULL STRUCTURE (128 cells) ===
+
+[  0] markdown | ---\n# **1 . Arithmetic :** Numeric Operations\n\n### ≡ƒöì What are Arithmetic Operators?\nPython has 7 built-in arithmetic operators: `+` (add), `-` (subtra
+[  1] code     | revenue = 150000\ncosts   = 87500\nprofit  = revenue - costs\nmargin  = (profit / revenue) * 100\nprint(f'Profit: ${profit:,}')\nprint(f'Margin: {margin:.1
+[  2] markdown | ### ≡ƒº¬ Concept Checks: Arithmetic\n
+[  3] markdown | ### **Q1.** Compute `17 // 5` and `17 % 5`. Verify: `5 * (17//5) + (17%5) == 17`. Print all values and the verification.\n
+[  4] code     | # Write your answer here\n
+[  5] markdown | ### **Q2.** Compute `2 ** 10`. Then compute `(-3) ** 3`. Explain why the second result is negative. Print both.\n
+[  6] code     | # Write your answer here\n
+[  7] markdown | ### **Q3.** Given `price = 49.99` and `qty = 7`, compute total, tax (8.5%), and grand total. Round to 2 decimals. Print formatted receipt.\n
+[  8] code     | # Write your answer here\n
+[  9] markdown | ### **Q4.** Demonstrate operator precedence: compute `2 + 3 * 4 ** 2` step by step. Print the result with and without parentheses to force different o
+[ 10] code     | # Write your answer here\n
+[ 11] markdown | ### **Q5.** Write code to swap two variables `a = 10, b = 20` using: (a) tuple unpacking, (b) arithmetic (`a = a+b; b = a-b; a = a-b`). Verify both ap
+[ 12] code     | # Write your answer here\n
+[ 13] markdown | ---\n# **2 . Comparison :** Evaluating Conditions\n\n### ≡ƒöì What are Comparison Operators?\nComparison operators (`==`, `!=`, `<`, `>`, `<=`, `>=`) compare
+[ 14] code     | score = 78\nprint(score >= 60)   # True\nprint(score == 100)  # False\nprint(score != 0)    # True\n\n# Chained comparison ΓÇö Pythonic\nage = 25\nprint(18 <= 
+[ 15] markdown | ### ≡ƒº¬ Concept Checks: Comparison\n
+[ 16] markdown | ### **Q1.** Compare: `5 == 5.0` (True), `5 is 5.0` (False). Explain the difference between `==` (value) and `is` (identity). Print both.\n
+[ 17] code     | # Write your answer here\n
+[ 18] markdown | ### **Q2.** Write chained comparisons: `1 < x < 10` for `x = 5` and `x = 15`. Print both. Show this is equivalent to `1 < x and x < 10`.\n
+[ 19] code     | # Write your answer here\n
+[ 20] markdown | ### **Q3.** Compare strings: `'apple' < 'banana'` and `'apple' < 'Apple'`. Print both. Explain lexicographic (Unicode) ordering.\n
+[ 21] code     | # Write your answer here\n
+[ 22] markdown | ### **Q4.** Write code to find the largest of three variables `a=15, b=42, c=28` using only comparison operators and `if/elif/else` (no `max()`).\n
+[ 23] code     | # Write your answer here\n
+[ 24] markdown | ### **Q5.** Demonstrate `!=` vs `is not`: `a = [1,2]; b = [1,2]; print(a != b, a is not b)`. Explain why both can be `True` or `False` differently.\n
+[ 25] code     | # Write your answer here\n
+[ 26] markdown | ---\n# **3 . Logical :** Combining Conditions\n\n### ≡ƒöì What are Logical Operators?\nPython has three logical operators: `and`, `or`, and `not`. They combi
+[ 27] code     | # Short-circuit ΓÇö safe default\nname = None\ndisplay = name or 'Guest'\nprint(display)  # 'Guest'\n\n# and ΓÇö guard pattern\nuser = {'role': 'admin'}\nis_admi
+[ 28] markdown | ### ≡ƒº¬ Concept Checks: Logical\n
+[ 29] markdown | ### **Q1.** Evaluate: `True and False`, `True or False`, `not True`. Print all three. Then evaluate `0 and 5`, `0 or 5`. Explain short-circuit behavio
+[ 30] code     | # Write your answer here\n
+[ 31] markdown | ### **Q2.** Write a condition: `age >= 18 and age <= 65 and employed == True`. Simplify using chained comparison. Test with `age=25, employed=True`.\n
+[ 32] code     | # Write your answer here\n
+[ 33] markdown | ### **Q3.** Demonstrate short-circuit: `x = 0; result = x != 0 and 10/x > 2`. Explain why this doesn't crash despite division by zero. Print result.\n
+[ 34] code     | # Write your answer here\n
+[ 35] markdown | ### **Q4.** Write code using `or` for default values: `name = user_input or 'Anonymous'`. Test with `user_input = ''` and `user_input = 'Alice'`. Prin
+[ 36] code     | # Write your answer here\n
+[ 37] markdown | ### **Q5.** Build a truth table for `and`, `or`, `not` using nested loops: `for a in [True,False]: for b in [True,False]:`. Print formatted table.\n
+[ 38] code     | # Write your answer here\n
+[ 39] markdown | ---\n# **4 . Assignment & Augmented :** Compact Updates\n\n### ≡ƒöì What is Augmented Assignment?\nInstead of writing `x = x + 10`, you can write `x += 10`. 
+[ 40] code     | counter = 0\ncounter += 10   # 10\ncounter -= 3    # 7\ncounter *= 2    # 14\nprint(counter)\n\n# Walrus operator ΓÇö assign and use in one step\ndata = [1, 2,
+[ 41] markdown | ### ≡ƒº¬ Concept Checks: Assignment\n
+[ 42] markdown | ### **Q1.** Start with `x = 100`. Apply: `x += 50`, `x -= 30`, `x *= 2`, `x //= 3`, `x %= 7`. Print `x` after each step. Predict the final value.\n
+[ 43] code     | # Write your answer here\n
+[ 44] markdown | ### **Q2.** Use augmented assignment on a list: `lst = [1,2]; lst += [3,4]; lst *= 2`. Print after each. Show that `+=` on list is equivalent to `.ext
+[ 45] code     | # Write your answer here\n
+[ 46] markdown | ### **Q3.** Demonstrate `x = x + [1]` creates a new list vs `x += [1]` modifies in-place. Prove using `id()` before and after each operation.\n
+[ 47] code     | # Write your answer here\n
+[ 48] markdown | ### **Q4.** Use walrus operator (`:=`): write a `while` loop that reads from `data = [5,3,0,8,2]`, stopping when value is 0: `while (val := data.pop(0
+[ 49] code     | # Write your answer here\n
+[ 50] markdown | ### **Q5.** Compute compound interest: `principal = 1000; rate = 0.05`. Use `principal *= (1 + rate)` in a loop for 10 years. Print final amount round
+[ 51] code     | # Write your answer here\n
+[ 52] markdown | ---\n# **5 :** Identity, Membership & Bitwise Operators\n\n### ≡ƒöì What are Identity and Membership?\n`is` / `is not` check **object identity** (memory addr
+[ 53] code     | # Identity\nprint(None is None)   # True ΓÇö correct way\nprint([] is [])       # False ΓÇö different objects\n\n# Membership\nroles = {'admin', 'editor', 'vie
+[ 54] markdown | ### ≡ƒº¬ Concept Checks: Identity\n
+[ 55] markdown | ### **Q1.** Create `a = 256; b = 256; print(a is b)` ΓåÆ `True`. Then `a = 257; b = 257; print(a is b)`. Explain Python's integer caching range (-5 to 2
+[ 56] code     | # Write your answer here\n
+[ 57] markdown | ### **Q2.** Create `a = [1,2,3]; b = a; c = a.copy()`. Test `a is b`, `a is c`, `a == c`. Print all three. Explain reference vs value equality.\n
+[ 58] code     | # Write your answer here\n
+[ 59] markdown | ### **Q3.** Use `id()` to show that small integers and short strings are cached (interned). Compare `id('hello')` across two assignments.\n
+[ 60] code     | # Write your answer here\n
+[ 61] markdown | ### **Q4.** Write code proving `None` is a singleton: `a = None; b = None; print(a is b, id(a) == id(b))`. Explain why `x is None` is preferred over `
+[ 62] code     | # Write your answer here\n
+[ 63] markdown | ### **Q5.** Demonstrate membership operators: `3 in [1,2,3,4]`, `'py' in 'python'`, `'x' not in {'a','b','c'}`. Print all three. What does `in` check 
+[ 64] code     | # Write your answer here\n
+[ 65] markdown | ---\n# ≡ƒ¢á∩╕Å Professional Practice Tasks\nTheory is useless without muscle memory. Complete these tasks to solidify your understanding.\n
+[ 66] markdown | ### **Task 1 (Calculator):** Write code that takes `a=24, b=7` and prints ALL operations: `+`, `-`, `*`, `/`, `//`, `%`, `**`. Format each line as `24
+[ 67] code     | # Write your answer here\n
+[ 68] markdown | ### **Task 2 (Grade Classifier):** Given `score = 78`, use chained comparisons and logical operators to classify: A(90+), B(80-89), C(70-79), D(60-69)
+[ 69] code     | # Write your answer here\n
+[ 70] markdown | ### **Task 3 (Bit Counter):** Use `%` and `//` operators to count how many digits are in a number `n = 123456`. Also compute the sum of its digits. No
+[ 71] code     | # Write your answer here\n
+[ 72] markdown | ### **Task 4 (Leap Year):** Write a leap year checker using logical operators: divisible by 4 AND (not divisible by 100 OR divisible by 400). Test: 20
+[ 73] code     | # Write your answer here\n
+[ 74] markdown | ### **Task 5 (Bill Splitter):** Given `total = 156.75`, `num_people = 4`, `tip_pct = 0.18`, compute: tip amount, total with tip, per-person share (rou
+[ 75] code     | # Write your answer here\n
+[ 76] markdown | ---\n# ≡ƒÆ╗ Coding Interview Questions (25 Questions)\nThese are real interview questions asked at top tech companies worldwide.\n\n| Category | Questions |\n
+[ 77] markdown | ---\n## Q1.\n### Write a function `is_power_of_two(n)` using only arithmetic operators (no loops, no log). Hint: `n & (n-1) == 0`.\n
+[ 78] code     | # Write your answer here\n
+[ 79] markdown | ---\n## Q2.\n### Write code to check if a number is even using: (a) modulo, (b) bitwise AND, (c) integer division. Show all three return same result.\n
+[ 80] code     | # Write your answer here\n
+[ 81] markdown | ---\n## Q3.\n### Write a function `clamp(value, min_val, max_val)` that restricts a value to a range. Use `min()` and `max()`. Test edge cases.\n
+[ 82] code     | # Write your answer here\n
+[ 83] markdown | ---\n## Q4.\n### Write code demonstrating operator overloading: create a class where `+` concatenates strings with a separator.\n
+[ 84] code     | # Write your answer here\n
+[ 85] markdown | ---\n## Q5.\n### Write a function `evaluate(a, op, b)` that takes an operator as a string (`'+','-','*','/'`) and returns the result. Handle division by
+[ 86] code     | # Write your answer here\n
+[ 87] markdown | ---\n## Q6.\n### Write code using only bitwise operators (`&`,`|`,`^`,`~`,`<<`,`>>`) to: (a) multiply by 2, (b) divide by 2, (c) check if odd.\n
+[ 88] code     | # Write your answer here\n
+[ 89] markdown | ---\n## Q7.\n### Write a function `compare_floats(a, b, tolerance=1e-9)` that correctly handles floating-point comparison. Test with `0.1+0.2` vs `0.3`.
+[ 90] code     | # Write your answer here\n
+[ 91] markdown | ---\n## Q8.\n### Write code that computes `a**b % m` efficiently for large numbers using Python's built-in `pow(a, b, m)`. Compare with naive `(a**b) % 
+[ 92] code     | # Write your answer here\n
+[ 93] markdown | ---\n## Q9.\n### Write a function `digital_root(n)` that repeatedly sums digits until single digit: `493` ΓåÆ `4+9+3=16` ΓåÆ `1+6=7`. Use only arithmetic op
+[ 94] code     | # Write your answer here\n
+[ 95] markdown | ---\n## Q10.\n### Write code demonstrating short-circuit evaluation: create a function with a side effect (prints something) and show `and`/`or` skip it
+[ 96] code     | # Write your answer here\n
+[ 97] markdown | ---\n## Q11.\n### Write a function `negate_without_minus(n)` that returns `-n` without using the `-` operator. Hint: use `~n + 1` (two's complement).\n
+[ 98] code     | # Write your answer here\n
+[ 99] markdown | ---\n## Q12.\n### Write a function `abs_without_abs(n)` using only comparison and arithmetic operators. No `abs()` built-in allowed.\n
+[100] code     | # Write your answer here\n
+[101] markdown | ---\n## Q13.\n### Write code that demonstrates all 6 comparison operators with custom objects by implementing `__eq__`, `__lt__`, etc. on a `Temperature
+[102] code     | # Write your answer here\n
+[103] markdown | ---\n## Q14.\n### Write a function `count_set_bits(n)` that counts the number of 1-bits in the binary representation. Use `&` and `>>` in a loop.\n
+[104] code     | # Write your answer here\n
+[105] markdown | ---\n## Q15.\n### Write a function `is_palindrome_number(n)` using only arithmetic operators to reverse the digits and compare. No string conversion.\n
+[106] code     | # Write your answer here\n
+[107] markdown | ---\n## Q16.\n### Write code showing the `ternary` operator: `result = 'even' if x%2==0 else 'odd'`. Then write a nested ternary for 3 categories.\n
+[108] code     | # Write your answer here\n
+[109] markdown | ---\n## Q17.\n### Write a function `gcd(a, b)` using only modulo and assignment operators (Euclidean algorithm). Test with several number pairs.\n
+[110] code     | # Write your answer here\n
+[111] markdown | ---\n## Q18.\n### Write code that computes n! (factorial) using `functools.reduce` and the `*` operator. Compare with `math.factorial`.\n
+[112] code     | # Write your answer here\n
+[113] markdown | ---\n## Q19.\n### Write a function `round_to_nearest(value, step)` that rounds to the nearest multiple of step: `round_to_nearest(17, 5)` ΓåÆ `15`.\n
+[114] code     | # Write your answer here\n
+[115] markdown | ---\n## Q20.\n### Write code demonstrating `//` floor division with negative numbers: `-7 // 2`. Why is it `-4` and not `-3`? Explain floor vs truncatio
+[116] code     | # Write your answer here\n
+[117] markdown | ---\n## Q21.\n### Write a function `safe_divide(a, b)` that returns `(quotient, remainder)` tuple. Handle: zero division, type errors, negative numbers.
+[118] code     | # Write your answer here\n
+[119] markdown | ---\n## Q22.\n### Write code using walrus operator to simplify: `data = get_data(); if data: process(data)` ΓåÆ `if (data := get_data()): process(data)`.\n
+[120] code     | # Write your answer here\n
+[121] markdown | ---\n## Q23.\n### Write a function `matrix_scalar_ops(matrix, scalar, op)` that applies `+,-,*,/` between a 2D list and a scalar. Return new matrix.\n
+[122] code     | # Write your answer here\n
+[123] markdown | ---\n## Q24.\n### Write a function `chained_comparison(x, ranges)` where ranges is `[(0,10,'low'),(10,50,'mid'),(50,100,'high')]`. Return the label for 
+[124] code     | # Write your answer here\n
+[125] markdown | ---\n## Q25.\n### Write code implementing a simple expression evaluator: parse and compute `'3 + 4 * 2 - 1'` respecting operator precedence. Return resu
+[126] code     | # Write your answer here\n
+[127] markdown | ---\n# ≡ƒôè Day 2 Executive Summary\n\n| Topic | Key Takeaway |\n|-------|-------------|\n| Arithmetic   | `/` always float; `//` floor; `%` remainder; `**` r
+
+
+=== FIRST 3 CELLS FULL CONTENT ===
+
+--- Cell 0 (markdown) ---
+---
+# **1 . Arithmetic :** Numeric Operations
+
+### ≡ƒöì What are Arithmetic Operators?
+Python has 7 built-in arithmetic operators: `+` (add), `-` (subtract), ` * ` (multiply), `/` (true division), `//` (floor division), `%` (modulo/remainder), and `**` (exponentiation/power).
+
+### ≡ƒÆ╝ Why Data Analysts Care
+- **Financial calculations**: `profit = revenue - costs`
+- **Metrics generation**: `margin = (profit / revenue) * 100`
+- **Batch processing**: Using modulo `%` to execute code every Nth row.
+
+### ΓÜá∩╕Å Common Pitfall
+Division (`/`) **always** returns a float, even if the result is whole (`10 / 2` ΓåÆ `5.0`). If you need an integer result (e.g., for list indexing), you **must** use floor division (`//`).
+
+### ≡ƒºá Pro Tip
+Exponentiation (`**`) evaluates right-to-left. So `2**3**2` is computed as `2**(3**2)` which is `2**9` (512), not `(2**3)**2` (which is 64).
+
+
+--- Cell 1 (code) ---
+revenue = 150000
+costs   = 87500
+profit  = revenue - costs
+margin  = (profit / revenue) * 100
+print(f'Profit: ${profit:,}')
+print(f'Margin: {margin:.1f}%')
+
+# Floor division and modulo
+print(17 // 5)   # 3 ΓÇö integer quotient
+print(17 %  5)   # 2 ΓÇö remainder
+
+# Power
+print(2 ** 10)   # 1024
+print(9 ** 0.5)  # 3.0 ΓÇö square root
+
+
+--- Cell 2 (markdown) ---
+### ≡ƒº¬ Concept Checks: Arithmetic
+
+
+--- Cell 3 (markdown) ---
+### **Q1.** Compute `17 // 5` and `17 % 5`. Verify: `5 * (17//5) + (17%5) == 17`. Print all values and the verification.
+
+
+--- Cell 4 (code) ---
+# Write your answer here
+

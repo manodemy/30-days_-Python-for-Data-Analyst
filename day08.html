@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 08: Conditionals — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="notebook.css">
+</head>
+<body>
+<nav class="top-bar" id="topBar">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="landing.html" class="home-btn" title="Back to Curriculum">🏠</a>
+      <div class="nav-score" title="Questions Solved">
+        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
+        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="nav-center">Day 08 : Conditionals</div>
+    <div class="nav-right"><a href="day07.html" class="nav-btn prev-btn">← Prev</a><a href="day09.html" class="nav-btn next-btn">Next →</a></div>
+  </div>
+</nav>
+<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
+<div class="layout">
+  <main class="notebook" id="notebook">
+    <div class="nb-title"><h1>📊 Day 08 : Conditionals</h1></div>
+<div class="nb-section" id="sec-0">
+<h1><strong>1 . if / elif / else :</strong> Branching Logic</h1>
+<h3>🔍 What are Branching Statements?</h3>
+<p>Python uses <code>if</code>, <code>elif</code>, and <code>else</code> to control the flow of execution based on boolean conditions. The blocks of code are defined strictly by indentation (usually 4 spaces).</p>
+<h3>💼 Why Data Analysts Care</h3>
+<p>• <strong>Business Rules</strong>: Categorizing a user's age into demographics (e.g., <code><18</code> is Minor, <code>18-65</code> is Adult).</p>
+<p>• <strong>Data Filtering</strong>: Determining whether a specific row of data should be included in a final calculation based on specific thresholds.</p>
+<h3>⚠️ Common Pitfall</h3>
+<p>Using <code>== True</code> or <code>== False</code> is redundant. Instead of <code>if user_is_active == True:</code>, simply write <code>if user_is_active:</code>. Python natively evaluates the 'truthiness' of any object.</p>
+<h3>🧠 Under the Hood</h3>
+<p>The <code>elif</code> chain evaluates conditions sequentially from the top down. The very first condition that evaluates to <code>True</code> will execute its block, and Python will immediately skip the remainder of the chain. Reordering the conditions can completely change the output!</p>
+<div class="code-cell" id="cell-1">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-1">score = 82
+
+if score &gt;= 90:
+    grade = &#x27;A&#x27;
+elif score &gt;= 80:
+    grade = &#x27;B&#x27;
+elif score &gt;= 70:
+    grade = &#x27;C&#x27;
+elif score &gt;= 60:
+    grade = &#x27;D&#x27;
+else:
+    grade = &#x27;F&#x27;
+print(f&#x27;Score: {score} → Grade: {grade}&#x27;)  # B
+
+# Truthiness checks
+data = []
+if not data:
+    print(&#x27;Empty dataset — nothing to process&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-2">
+<div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
+<div class="question"><p><strong>Q1.</strong> Write an <code>if/elif/else</code> chain that classifies BMI: <18.5 Underweight, 18.5-24.9 Normal, 25-29.9 Overweight, 30+ Obese. Test with <code>bmi=27.5</code>.</p></div>
+<div class="code-cell" id="cell-2">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-2"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Write code checking if a year is a leap year: divisible by 4 AND (not by 100 OR by 400). Test <code>2024, 1900, 2000</code>. Print result for each.</p></div>
+<div class="code-cell" id="cell-3">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-3"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Write an <code>if</code> that checks multiple conditions: <code>age >= 18 and has_license and not suspended</code>. Test with 3 combinations. Print 'Can drive' or reason why not.</p></div>
+<div class="code-cell" id="cell-4">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-4"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Show the difference between <code>if/elif/elif</code> (stops at first match) vs three separate <code>if</code> statements (checks all). Test with <code>score=95</code> matching multiple ranges.</p></div>
+<div class="code-cell" id="cell-5">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-5"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write nested <code>if</code> statements: outer checks if number is positive/negative/zero, inner checks if even/odd (for non-zero). Test with <code>-7, 0, 12</code>.</p></div>
+<div class="code-cell" id="cell-6">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-6"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-13">
+<h1><strong>2 . Ternary Expression :</strong> Inline Conditions</h1>
+<h3>🔍 What is a Ternary Expression?</h3>
+<p>It allows you to assign a value based on a condition in a single line. The syntax is: <code>value_if_true if condition else value_if_false</code>.</p>
+<h3>💼 Why Data Analysts Care</h3>
+<p>• <strong>List Comprehensions</strong>: Applying conditional logic during data transformations: <code>['Pass' if x > 60 else 'Fail' for x in scores]</code>.</p>
+<p>• <strong>f-strings</strong>: Directly rendering different outputs based on state: <code>f"User is {'Active' if is_active else 'Inactive'}"</code>.</p>
+<h3>⚠️ Common Pitfall</h3>
+<p>Do not nest ternary operators deeply (e.g., <code>A if cond1 else B if cond2 else C</code>). It severely hurts readability. If you need more than one <code>else if</code>, use a standard block.</p>
+<h3>🧠 Pro Tip</h3>
+<p>Ternary expressions always return a value. You cannot put statements (like <code>pass</code>, <code>break</code>, or assignment <code>x = 5</code>) inside the return values of a ternary expression.</p>
+<div class="code-cell" id="cell-7">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-7"># Simple ternary
+status = &#x27;pass&#x27; if score &gt;= 60 else &#x27;fail&#x27;
+print(status)
+
+# In f-string
+print(f&#x27;Status: {&quot;Active&quot; if True else &quot;Inactive&quot;}&#x27;)
+
+# In list comprehension
+scores = [45, 72, 88, 55, 91]
+labels = [&#x27;pass&#x27; if s &gt;= 60 else &#x27;fail&#x27; for s in scores]
+print(labels)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-15">
+<div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
+<div class="question"><p><strong>Q1.</strong> Write a ternary expression: <code>status = 'Adult' if age >= 18 else 'Minor'</code>. Test with <code>age=15</code> and <code>age=25</code>. Print both results.</p></div>
+<div class="code-cell" id="cell-8">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-8"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Write a nested ternary: classify score as <code>'A' if s>=90 else 'B' if s>=80 else 'C' if s>=70 else 'F'</code>. Test with 95, 85, 65. Discuss readability.</p></div>
+<div class="code-cell" id="cell-9">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-9"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Use ternary in a list comprehension: <code>['even' if x%2==0 else 'odd' for x in range(1,6)]</code>. Print result: <code>['odd','even','odd','even','odd']</code>.</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Use ternary with function calls: <code>result = process_valid(x) if validate(x) else handle_error(x)</code>. Write the helper functions and test.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write a ternary for default values: <code>name = user_input if user_input else 'Anonymous'</code>. Compare with <code>name = user_input or 'Anonymous'</code>. Are they equivalent?</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-26">
+<h1><strong>3 . Match-Case :</strong> Structural Pattern Matching (Python 3.10+)</h1>
+<h3>🔍 What is Match-Case?</h3>
+<p>Introduced in Python 3.10, <code>match-case</code> is much more than a <code>switch</code> statement. It enables structural pattern matching, allowing you to match variable types, sequence structures, and dict keys.</p>
+<h3>💼 Why Data Analysts Care</h3>
+<p>• <strong>API Parsing</strong>: When an API returns dictionaries with different schemas based on the event type, <code>match-case</code> routes them perfectly.</p>
+<p>• <strong>Complex Dispatch</strong>: Replacing huge blocks of <code>elif</code> chains when parsing commands or states.</p>
+<h3>⚠️ Common Pitfall</h3>
+<p>Unlike C++ or Java, Python's <code>match-case</code> does NOT fall through. Once a case is matched and its block executes, the match block terminates. There is no need for <code>break</code>.</p>
+<h3>🧠 Under the Hood</h3>
+<p>The wildcard <code>case _:</code> acts as the ultimate default. It must always be placed at the very bottom of the <code>match</code> block. Furthermore, you can capture variables directly in the case pattern: <code>case [x, y]: print(x)</code>.</p>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13">command = &#x27;quit&#x27;
+
+match command:
+    case &#x27;start&#x27;:
+        print(&#x27;Starting pipeline...&#x27;)
+    case &#x27;stop&#x27; | &#x27;quit&#x27;:
+        print(&#x27;Shutting down...&#x27;)
+    case &#x27;status&#x27;:
+        print(&#x27;All systems operational&#x27;)
+    case _:
+        print(f&#x27;Unknown command: {command}&#x27;)
+
+# Match on type/structure
+point = (0, 1)
+match point:
+    case (0, 0): print(&#x27;Origin&#x27;)
+    case (x, 0): print(f&#x27;On X-axis at {x}&#x27;)
+    case (0, y): print(f&#x27;On Y-axis at {y}&#x27;)
+    case (x, y): print(f&#x27;Point ({x}, {y})&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-28">
+<div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
+<div class="question"><p><strong>Q1.</strong> Write a <code>match/case</code> for HTTP status codes: 200→'OK', 404→'Not Found', 500→'Server Error', _→'Unknown'. Test with 4 codes.</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Use <code>match/case</code> with pattern matching on a tuple: <code>match (x, y):</code> with cases <code>(0,0)→'origin'</code>, <code>(x,0)→'x-axis'</code>, <code>(0,y)→'y-axis'</code>, <code>_→'other'</code>.</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>match/case</code> with <code>|</code> for OR patterns: <code>case 'GET' | 'HEAD':</code> → 'read', <code>case 'POST' | 'PUT':</code> → 'write'. Test all methods.</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Use <code>match/case</code> to destructure a dict: <code>match command: case {'action':'move','x':x,'y':y}:</code>. Extract values into variables.</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Use <code>match/case</code> with guard clauses: <code>case x if x > 0:</code> → 'positive'. Show the difference between guard and simple pattern.</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-39">
+<h1><strong>4 . Guard Patterns :</strong> Defensive and Clean Code</h1>
+<h3>🔍 What is a Guard Pattern?</h3>
+<p>A guard clause validates preconditions at the very top of a function and returns or raises an error immediately if they fail. This prevents deep nesting of <code>if</code> statements.</p>
+<h3>💼 Why Data Analysts Care</h3>
+<p>• <strong>Data Validation</strong>: When receiving a messy dataframe or a raw JSON payload, guards instantly reject invalid schemas before the complex processing logic begins.</p>
+<p>• <strong>Readability</strong>: Code that flows straight down is immensely easier to read than code deeply indented by 5 nested <code>if</code> blocks.</p>
+<h3>⚠️ Common Pitfall</h3>
+<p>Failing to use guards leads to the 'Arrow Anti-Pattern', where code indentation keeps shifting to the right, causing massive horizontal sprawl and confusing scope.</p>
+<h3>🧠 Pro Tip</h3>
+<p>Combine guards with early returns: <code>if not valid: return None</code>. The remainder of the function can then safely assume the input is perfectly valid without wrapping it in an <code>else</code> block.</p>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19"># Without guard (deeply nested — bad)
+def process_bad(data):
+    if data is not None:
+        if len(data) &gt; 0:
+            if isinstance(data, list):
+                return sum(data)
+
+# With guard clauses (flat — good)
+def process(data):
+    if data is None:
+        raise ValueError(&#x27;data cannot be None&#x27;)
+    if not isinstance(data, list):
+        raise TypeError(f&#x27;Expected list, got {type(data).__name__}&#x27;)
+    if len(data) == 0:
+        return 0
+    return sum(data)
+
+print(process([1, 2, 3, 4, 5]))  # 15</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-41">
+<div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
+<div class="question"><p><strong>Q1.</strong> Write a guard clause pattern: <code>if not valid_input: return 'Error'</code> at the top of a function. Show how it simplifies nested <code>if/else</code>.</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Write a function <code>process_data(data)</code> with early returns: if None→'No data', if empty→'Empty', if too large→'Too big', else process. Test all paths.</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Write input validation guards: check type, range, format before processing. <code>validate_age(value)</code> → return error string or None. Test 5 inputs.</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Refactor deeply nested <code>if/else</code> into flat guard clauses. Before: 4 levels of nesting. After: 4 sequential <code>if return</code> statements. Show both versions.</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Use <code>assert</code> as a development guard: <code>assert isinstance(x, int), 'x must be int'</code>. Show it raises <code>AssertionError</code>. Explain when to use vs exceptions.</p></div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-52">
+<h1><strong>5 . Complex Conditions :</strong> Compound Logic</h1>
+<h3>🔍 Compound Boolean Logic</h3>
+<p>Python utilizes <code>and</code>, <code>or</code>, and <code>not</code> to combine multiple conditions. Parentheses should be used to explicitly group conditions when mixing operators.</p>
+<h3>💼 Why Data Analysts Care</h3>
+<p>• <strong>Advanced Filtering</strong>: Filtering a dataframe based on multiple columns (e.g., <code>is_active and (revenue > 1000 or months_tenure > 12)</code>).</p>
+<p>• <strong>Aggregating conditions</strong>: Using <code>all(list)</code> to verify that an entire batch of data passed quality checks.</p>
+<h3>⚠️ Common Pitfall</h3>
+<p>Short-circuit evaluation means Python stops checking an <code>and</code> sequence as soon as it hits a <code>False</code>, and stops checking an <code>or</code> sequence as soon as it hits a <code>True</code>. Do not put side-effects inside conditions!</p>
+<h3>🧠 Under the Hood</h3>
+<p>Python allows chained comparisons like <code>0 < x < 10</code>. This is mathematically elegant and evaluates to <code>x > 0 and x < 10</code> automatically.</p>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25"># Named boolean variables — self-documenting
+age        = 25
+income     = 55000
+credit     = 720
+has_job    = True
+
+is_adult     = age &gt;= 18
+good_income  = income &gt;= 50000
+good_credit  = credit &gt;= 700
+
+eligible = is_adult and good_income and good_credit and has_job
+print(f&#x27;Loan eligible: {eligible}&#x27;)
+
+# all() and any()
+scores = [85, 90, 78, 92, 88]
+print(all(s &gt;= 60 for s in scores))  # True — all passing
+print(any(s &gt;= 90 for s in scores))  # True — at least one A</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-54">
+<div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
+<div class="question"><p><strong>Q1.</strong> Write a function <code>classify_triangle(a,b,c)</code> returning: 'invalid' (triangle inequality), 'equilateral', 'isosceles', 'scalene'. Test with 5 triangles.</p></div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Write a function <code>grade_calculator(scores)</code> that: validates all scores are 0-100, computes weighted average, returns letter grade and pass/fail.</p></div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Write a function <code>ticket_price(age, day, is_member)</code> with complex pricing: kids/adults/seniors × weekday/weekend × member discount. Return price and breakdown.</p></div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Write a function <code>validate_password(pw)</code> checking 6 rules (length, upper, lower, digit, special, no spaces). Return <code>(True/False, [failures])</code>. Test 5 passwords.</p></div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write a function <code>tax_calculator(income, filing_status)</code> using progressive tax brackets with different rates per bracket. Return tax owed and effective rate.</p></div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="practice">
+<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
+<p>Theory is useless without muscle memory. Complete these tasks to solidify your understanding.</p>
+<div class="question task"><p><strong>Task 1 (ATM Simulator):</strong> Write ATM logic: check PIN (3 attempts, lockout), check balance, withdraw (check sufficient funds, daily limit), deposit. Print transaction receipt.</p></div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31"># Task 1 Solution</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 2 (Rock Paper Scissors):</strong> Write full game: validate input, determine winner (player vs random), track score over 5 rounds. Print round-by-round results and final winner.</p></div>
+<div class="code-cell" id="cell-32">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-32')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-32')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-32"># Task 2 Solution</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 3 (Email Router):</strong> Write <code>route_email(email)</code> that classifies by: domain (.edu→academic, .gov→government, .com→commercial), sender patterns, keywords in subject. Return routing decision.</p></div>
+<div class="code-cell" id="cell-33">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-33')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-33')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-33"># Task 3 Solution</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 4 (Discount Engine):</strong> Write <code>calculate_discount(customer_type, order_total, coupon_code, is_holiday)</code> with layered rules: base discount + coupon + holiday bonus + loyalty tier. Cap at 50%. Print breakdown.</p></div>
+<div class="code-cell" id="cell-34">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-34')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-34')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-34"># Task 4 Solution</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 5 (Data Validator):</strong> Write <code>validate_record(record, rules)</code> where rules define: required fields, type checks, range checks, pattern checks, cross-field checks. Return <code>(valid, [errors])</code>.</p></div>
+<div class="code-cell" id="cell-35">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-35')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-35')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-35"># Task 5 Solution</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<p>Solve these 25 purely code-based problems.</p>
+<div class="question interview"><p><strong>Q1.</strong></p>
+<h3>Write a function <code>fizzbuzz(n)</code> printing 1-n with: 'Fizz' for multiples of 3, 'Buzz' for 5, 'FizzBuzz' for both. Do it with minimal <code>if</code> statements.</h3>
+</div>
+<div class="code-cell" id="cell-36">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-36')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-36')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-36"># Solution for Q1</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q2.</strong></p>
+<h3>Write a function <code>roman_to_int(s)</code> converting 'XIV' → 14. Handle subtractive cases (IV=4, IX=9). Use dict mapping.</h3>
+</div>
+<div class="code-cell" id="cell-37">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-37')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-37')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-37"># Solution for Q2</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q3.</strong></p>
+<h3>Write a function <code>valid_parentheses(s)</code> checking if brackets <code>()[]{}</code> are properly matched. Use a stack. Return True/False.</h3>
+</div>
+<div class="code-cell" id="cell-38">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-38')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-38')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-38"># Solution for Q3</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong></p>
+<h3>Write a function <code>binary_search(lst, target)</code> returning index or -1. Implement with while loop and conditional comparisons.</h3>
+</div>
+<div class="code-cell" id="cell-39">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-39')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-39')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-39"># Solution for Q4</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong></p>
+<h3>Write a function <code>merge_intervals(intervals)</code> merging overlapping intervals. Sort first, then conditionally merge. Return merged list.</h3>
+</div>
+<div class="code-cell" id="cell-40">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-40')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-40')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-40"># Solution for Q5</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong></p>
+<h3>Write a function <code>can_jump(nums)</code> determining if you can reach the last index from first. <code>[2,3,1,1,4]</code>→True, <code>[3,2,1,0,4]</code>→False.</h3>
+</div>
+<div class="code-cell" id="cell-41">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-41')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-41')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-41"># Solution for Q6</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong></p>
+<h3>Write a function <code>eval_rpn(tokens)</code> evaluating Reverse Polish Notation: <code>['2','3','+','4','*']</code> → 20. Use stack + conditionals.</h3>
+</div>
+<div class="code-cell" id="cell-42">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-42')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-42')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-42"># Solution for Q7</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong></p>
+<h3>Write a function <code>longest_valid_parens(s)</code> finding length of longest valid parentheses substring. <code>'(()'</code> → 2.</h3>
+</div>
+<div class="code-cell" id="cell-43">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-43')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-43')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-43"># Solution for Q8</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong></p>
+<h3>Write a function <code>trap_rain_water(heights)</code> computing trapped water between bars. Use two-pointer approach with conditionals.</h3>
+</div>
+<div class="code-cell" id="cell-44">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-44')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-44')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-44"># Solution for Q9</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-95">
+<div class="question interview"><p><strong>Q10.</strong></p>
+<h3>Write a function <code>word_ladder_length(begin, end, word_list)</code> finding shortest transformation. BFS with character-change conditions.</h3>
+</div>
+<div class="code-cell" id="cell-45">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-45')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-45')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-45"># Solution for Q10</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-97">
+<div class="question interview"><p><strong>Q11.</strong></p>
+<h3>Write a function <code>search_rotated(nums, target)</code> searching in a rotated sorted array. Modified binary search with conditionals.</h3>
+</div>
+<div class="code-cell" id="cell-46">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-46')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-46')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-46"># Solution for Q11</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-99">
+<div class="question interview"><p><strong>Q12.</strong></p>
+<h3>Write a function <code>decode_ways(s)</code> counting ways to decode digit string (1=A, 26=Z). <code>'226'</code> → 3. DP with conditionals.</h3>
+</div>
+<div class="code-cell" id="cell-47">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-47')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-47')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-47"># Solution for Q12</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-101">
+<div class="question interview"><p><strong>Q13.</strong></p>
+<h3>Write a function <code>state_machine(s)</code> validating a number string handles: spaces, sign, digits, decimal, exponent. Conditional transitions.</h3>
+</div>
+<div class="code-cell" id="cell-48">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-48')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-48')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-48"># Solution for Q13</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-103">
+<div class="question interview"><p><strong>Q14.</strong></p>
+<h3>Write a function <code>calculator(expression)</code> parsing <code>'3 + 4 * 2 / (1 - 5)'</code> respecting precedence. Stack-based with conditionals.</h3>
+</div>
+<div class="code-cell" id="cell-49">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-49')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-49')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-49"># Solution for Q14</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-105">
+<div class="question interview"><p><strong>Q15.</strong></p>
+<h3>Write a function <code>next_greater_element(nums)</code> finding next greater element for each position. Use monotonic stack.</h3>
+</div>
+<div class="code-cell" id="cell-50">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-50')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-50')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-50"># Solution for Q15</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-107">
+<div class="question interview"><p><strong>Q16.</strong></p>
+<h3>Write a function <code>game_of_life(board)</code> computing next state of Conway's Game of Life. Count neighbors, apply rules conditionally.</h3>
+</div>
+<div class="code-cell" id="cell-51">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-51')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-51')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-51"># Solution for Q16</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-109">
+<div class="question interview"><p><strong>Q17.</strong></p>
+<h3>Write a function <code>min_coins(coins, amount)</code> finding minimum coins for amount. DP with conditional updates. Return -1 if impossible.</h3>
+</div>
+<div class="code-cell" id="cell-52">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-52')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-52')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-52"># Solution for Q17</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-111">
+<div class="question interview"><p><strong>Q18.</strong></p>
+<h3>Write a function <code>partition_labels(s)</code> partitioning string into max parts where each letter appears in at most one part.</h3>
+</div>
+<div class="code-cell" id="cell-53">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-53')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-53')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-53"># Solution for Q18</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-113">
+<div class="question interview"><p><strong>Q19.</strong></p>
+<h3>Write a function <code>task_scheduler(tasks, n)</code> finding min intervals to execute all tasks with cooldown n between same tasks.</h3>
+</div>
+<div class="code-cell" id="cell-54">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-54')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-54')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-54"># Solution for Q19</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-115">
+<div class="question interview"><p><strong>Q20.</strong></p>
+<h3>Write a function <code>is_valid_bst(tree_list)</code> checking if list representation of binary tree is a valid BST. Recursive with range conditions.</h3>
+</div>
+<div class="code-cell" id="cell-55">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-55')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-55')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-55"># Solution for Q20</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-117">
+<div class="question interview"><p><strong>Q21.</strong></p>
+<h3>Write a function <code>stock_buy_sell_k(prices, k)</code> finding max profit with at most k transactions. DP with buy/sell state conditions.</h3>
+</div>
+<div class="code-cell" id="cell-56">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-56')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-56')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-56"># Solution for Q21</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-119">
+<div class="question interview"><p><strong>Q22.</strong></p>
+<h3>Write a function <code>regex_match(s, p)</code> implementing simple regex: <code>.</code> matches any char, <code>*</code> matches zero or more of preceding. DP approach.</h3>
+</div>
+<div class="code-cell" id="cell-57">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-57')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-57')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-57"># Solution for Q22</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-121">
+<div class="question interview"><p><strong>Q23.</strong></p>
+<h3>Write a function <code>candy_distribution(ratings)</code> assigning minimum candies (each child ≥1, higher rating than neighbor → more candy).</h3>
+</div>
+<div class="code-cell" id="cell-58">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-58')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-58')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-58"># Solution for Q23</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-123">
+<div class="question interview"><p><strong>Q24.</strong></p>
+<h3>Write a function <code>median_sorted_arrays(nums1, nums2)</code> finding median of two sorted arrays in O(log(min(m,n))) with binary search + conditionals.</h3>
+</div>
+<div class="code-cell" id="cell-59">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-59')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-59')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-59"># Solution for Q24</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-125">
+<div class="question interview"><p><strong>Q25.</strong></p>
+<h3>Write a function <code>skyline(buildings)</code> computing city skyline from building rectangles <code>[left,right,height]</code>. Line sweep with conditions.</h3>
+</div>
+<div class="code-cell" id="cell-60">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-60')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-60')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-60"># Solution for Q25</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="summary">
+<div class="section-header cyan"><h2>📊 Day 8 Executive Summary</h2></div>
+<table>
+<thead><tr><th>Topic</th><th>Focus Area</th><th>Professional Application</th></tr></thead><tbody>
+<tr><td>1</td><td>if/elif/else</td><td>Establishing core routing and categorization logic.</td></tr>
+<tr><td>2</td><td>Ternary</td><td>Cleaning up simple conditions inside functional map statements.</td></tr>
+<tr><td>3</td><td>Match-Case</td><td>Parsing complex dictionary schemas or abstract syntax trees.</td></tr>
+<tr><td>4</td><td>Guards</td><td>Building robust functions that reject invalid data immediately.</td></tr>
+<tr><td>5</td><td>Complex</td><td>Executing heavy quality assurance pipelines utilizing all/any.</td></tr>
+</tbody></table>
+<h2>✅ Instructor's End-of-Day Checklist</h2>
+<p>• [ ] I rely on Python's native truthiness checking instead of <code>== True</code>.</p>
+<p>• [ ] I implement guard clauses to return early and prevent deep indentation.</p>
+<p>• [ ] I can seamlessly apply ternary operators inside comprehensions.</p>
+<p>• [ ] I understand how <code>match-case</code> utilizes the <code>case _:</code> wildcard.</p>
+<p>• [ ] I have successfully completed all 5 professional practice tasks.</p>
+<p>• [ ] I have reviewed, coded, and internalized all 25 pure coding interview questions.</p>
+<p><strong>Next Up: Day 9 — Loops</strong></p>
+</div>
+  </main>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
+    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">1 . if / elif / else : Branching Logic</a></li>
+<li><a href="#checks-Check-2" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-13" class="toc-link">2 . Ternary Expression : Inline Conditions</a></li>
+<li><a href="#checks-Check-15" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-26" class="toc-link">3 . Match-Case : Structural Pattern Matching (Python 3.10+)</a></li>
+<li><a href="#checks-Check-28" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-39" class="toc-link">4 . Guard Patterns : Defensive and Clean Code</a></li>
+<li><a href="#checks-Check-41" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-52" class="toc-link">5 . Complex Conditions : Compound Logic</a></li>
+<li><a href="#checks-Check-54" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
+<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
+<li><a href="#sec-95" class="toc-link">Q10.</a></li>
+<li><a href="#sec-97" class="toc-link">Q11.</a></li>
+<li><a href="#sec-99" class="toc-link">Q12.</a></li>
+<li><a href="#sec-101" class="toc-link">Q13.</a></li>
+<li><a href="#sec-103" class="toc-link">Q14.</a></li>
+<li><a href="#sec-105" class="toc-link">Q15.</a></li>
+<li><a href="#sec-107" class="toc-link">Q16.</a></li>
+<li><a href="#sec-109" class="toc-link">Q17.</a></li>
+<li><a href="#sec-111" class="toc-link">Q18.</a></li>
+<li><a href="#sec-113" class="toc-link">Q19.</a></li>
+<li><a href="#sec-115" class="toc-link">Q20.</a></li>
+<li><a href="#sec-117" class="toc-link">Q21.</a></li>
+<li><a href="#sec-119" class="toc-link">Q22.</a></li>
+<li><a href="#sec-121" class="toc-link">Q23.</a></li>
+<li><a href="#sec-123" class="toc-link">Q24.</a></li>
+<li><a href="#sec-125" class="toc-link">Q25.</a></li>
+<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
+    <div class="sidebar-resize" id="sidebarResize"></div>
+  </nav>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="notebook.js"></script>
+</body>
+</html>

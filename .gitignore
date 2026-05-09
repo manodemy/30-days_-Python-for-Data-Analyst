@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Temporary/Debug files
+*.log
+data_folder/
+sample.txt
+test.txt
+config.json
+data.json
+quick.txt
+demo.txt

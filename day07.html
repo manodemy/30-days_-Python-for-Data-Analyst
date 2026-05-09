@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 07: Dictionaries — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="notebook.css">
+</head>
+<body>
+<nav class="top-bar" id="topBar">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="landing.html" class="home-btn" title="Back to Curriculum">🏠</a>
+      <div class="nav-score" title="Questions Solved">
+        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
+        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="nav-center">Day 07 : Dictionaries</div>
+    <div class="nav-right"><a href="day06.html" class="nav-btn prev-btn">← Prev</a><a href="day08.html" class="nav-btn next-btn">Next →</a></div>
+  </div>
+</nav>
+<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
+<div class="layout">
+  <main class="notebook" id="notebook">
+    <div class="nb-title"><h1>📊 Day 07 : Dictionaries</h1></div>
+<div class="nb-section" id="sec-0">
+<h2>🎯 Enterprise Objective</h2>
+<p>Dictionaries are the most critical data structure in modern programming. They map keys to values with lightning-fast O(1) lookups and are the exact equivalent of JSON objects. Today we master dictionary manipulation, safe extraction, functional comprehensions, and deep nested hierarchies. Mastery of dictionaries is non-negotiable for working with APIs and DataFrames.</p>
+<h3>📋 Strategic Overview</h3>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Concept</th><th>Core Use Case</th></tr></thead><tbody>
+<tr><td>1</td><td>Creation</td><td><code>{'k': 'v'}</code>, <code>dict(k='v')</code></td><td>JSON modeling</td></tr>
+<tr><td>2</td><td>Access & Safety</td><td><code>.get(k, default)</code></td><td>Avoid KeyError crashes</td></tr>
+<tr><td>3</td><td>Views</td><td><code>.keys()</code>, <code>.values()</code>, <code>.items()</code></td><td>Fast dynamic views</td></tr>
+<tr><td>4</td><td>Iteration</td><td><code>for k, v in d.items():</code></td><td>Data processing</td></tr>
+<tr><td>5</td><td>Comprehensions</td><td><code>{k: v for k, v in data}</code></td><td>Transformation</td></tr>
+<tr><td>6</td><td>Merging</td><td>`d1 \</td><td>d2<code>, </code>.update()`</td><td>Aggregating data</td></tr>
+<tr><td>7</td><td>Nested Dicts</td><td>Deep hierarchical data</td><td>API Payloads</td></tr>
+</tbody></table>
+</div>
+<div class="nb-section" id="sec-1">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. Dictionary Creation & Basics : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Key-Value Mapping</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A dictionary is a <b>mutable, unordered collection of key-value pairs</b>. It is Python's most powerful data structure, serving as the foundation for JSON parsing, DataFrames, and fast lookups. Keys must be <b>hashable</b> (strings, numbers, tuples), while values can be anything.</p>
+<table>
+<thead><tr><th>Creation Method</th><th>Example</th><th>Note</th></tr></thead><tbody>
+<tr><td>Braces</td><td><code>{'a': 1, 'b': 2}</code></td><td>Standard literal</td></tr>
+<tr><td><code>dict()</code> constructor</td><td><code>dict(a=1, b=2)</code></td><td>Clean for string keys</td></tr>
+<tr><td>From pairs</td><td><code>dict([('a',1), ('b',2)])</code></td><td>Converting lists of tuples</td></tr>
+<tr><td><code>fromkeys()</code></td><td><code>dict.fromkeys(['a','b'], 0)</code></td><td>Initialize with defaults</td></tr>
+<tr><td>Empty dict</td><td><code>{}</code> or <code>dict()</code></td><td>Empty dictionary</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>JSON Data</strong>: Dictionaries are the Python equivalent of JSON objects</p>
+<p>• <strong>Fast Lookups</strong>: Looking up a value by its key is an O(1) operation</p>
+<p>• <strong>Data Modeling</strong>: Representing real-world entities (e.g., a user profile)</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Mutable Keys</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>You cannot use a list or dictionary as a dictionary key because they are unhashable (mutable). You will get a <code>TypeError: unhashable type: 'list'</code>. Use tuples instead.</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Since Python 3.7, dictionaries maintain <b>insertion order</b>. But never rely on this for logic; if order matters explicitly, document it or use <code>collections.OrderedDict</code> for backward compatibility.</p>
+<div class="code-cell" id="cell-1">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-1"># Creation methods
+user = {
+    &#x27;id&#x27;: 101,
+    &#x27;name&#x27;: &#x27;Alice&#x27;,
+    &#x27;active&#x27;: True
+}
+
+# dict() constructor (keys become strings automatically)
+config = dict(host=&#x27;localhost&#x27;, port=8080, debug=False)
+
+# fromkeys for initialization
+metrics = dict.fromkeys([&#x27;clicks&#x27;, &#x27;views&#x27;, &#x27;sales&#x27;], 0)
+
+print(f&#x27;User: {user}&#x27;)
+print(f&#x27;Config: {config}&#x27;)
+print(f&#x27;Metrics: {metrics}&#x27;)
+
+# Fast lookup
+print(f&#x27;User Name: {user[&quot;name&quot;]}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-3">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Dictionary Creation</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create a dictionary representing a book with keys: <code>title</code>, <code>author</code>, <code>year</code>. Print the dictionary and its type.</p></div>
+<div class="code-cell" id="cell-2">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-2"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Create a dictionary using the <code>dict()</code> constructor with kwargs for <code>x=10, y=20, z=30</code>. Print it.</p></div>
+<div class="code-cell" id="cell-3">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-3"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>dict.fromkeys()</code> to initialize a dictionary with keys <code>["mon", "tue", "wed"]</code> and default value <code>None</code>. Print it.</p></div>
+<div class="code-cell" id="cell-4">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-4"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Try to create a dictionary with a list as a key: <code>{[1, 2]: "value"}</code>. Catch the <code>TypeError</code> and print the error message.</p></div>
+<div class="code-cell" id="cell-5">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-5"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Fix the previous code by using a tuple instead of a list for the key. Print the valid dictionary.</p></div>
+<div class="code-cell" id="cell-6">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-6"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-14">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>2. Accessing & Modifying Data : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Safe Lookups & Updates</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>You can access values using <code>dict[key]</code>, but if the key doesn't exist, it raises a <code>KeyError</code>. To safely access data, use the <b><code>.get(key, default)</code></b> method. To add or modify, simply assign <code>dict[key] = value</code>.</p>
+<table>
+<thead><tr><th>Operation</th><th>Syntax</th><th>Behavior</th></tr></thead><tbody>
+<tr><td>Unsafe Access</td><td><code>d['key']</code></td><td>Returns value or raises <code>KeyError</code></td></tr>
+<tr><td>Safe Access</td><td><code>d.get('key')</code></td><td>Returns value or <code>None</code> (no error)</td></tr>
+<tr><td>Safe w/ Default</td><td><code>d.get('key', 0)</code></td><td>Returns value or <code>0</code></td></tr>
+<tr><td>Add / Modify</td><td><code>d['key'] = val</code></td><td>Creates new or overwrites existing</td></tr>
+<tr><td>Delete</td><td><code>del d['key']</code></td><td>Removes key-value pair</td></tr>
+<tr><td>Pop & Return</td><td><code>d.pop('key')</code></td><td>Removes and returns the value</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>API Parsing</strong>: APIs often have missing fields. Use <code>.get()</code> to avoid crashing your pipeline</p>
+<p>• <strong>Counter Patterns</strong>: <code>d[key] = d.get(key, 0) + 1</code> is the standard way to count frequencies</p>
+<p>• <strong>Configuration Defaults</strong>: <code>port = config.get('port', 80)</code> applies safe default values</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ KeyError Crashes</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <code>data['missing_key']</code> is the #1 cause of crashes in data pipelines. Always use <code>.get()</code> when parsing external data.
+</div></div>
+<div class="code-cell" id="cell-7">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-7">record = {&#x27;id&#x27;: 1, &#x27;name&#x27;: &#x27;DataPipeline&#x27;}
+
+# Adding and Modifying
+record[&#x27;status&#x27;] = &#x27;running&#x27;  # Add new
+record[&#x27;id&#x27;] = 2              # Overwrite
+print(f&#x27;Updated: {record}&#x27;)
+
+# Safe access
+# print(record[&#x27;owner&#x27;])      # CRASH! KeyError
+print(record.get(&#x27;owner&#x27;))    # None
+print(record.get(&#x27;owner&#x27;, &#x27;Admin&#x27;))  # &#x27;Admin&#x27; (fallback)
+
+# Deleting
+del record[&#x27;status&#x27;]
+removed_id = record.pop(&#x27;id&#x27;)
+print(f&#x27;Popped ID: {removed_id}&#x27;)
+print(f&#x27;Final: {record}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-16">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Access & Modification</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>user = {"name": "Alice"}</code>, add a new key <code>"age"</code> with value <code>28</code>. Then update <code>"name"</code> to <code>"Alice Smith"</code>. Print the dict.</p></div>
+<div class="code-cell" id="cell-8">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-8"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Demonstrate <code>KeyError</code>: try to access <code>user["city"]</code> in a try/except block. Print the error message.</p></div>
+<div class="code-cell" id="cell-9">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-9"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>.get()</code> to safely access <code>"city"</code> with a default value of <code>"Unknown"</code>. Print the result.</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Write the standard counting pattern: given <code>counts = {"a": 1}</code>, increment <code>"b"</code> by 1 using <code>counts["b"] = counts.get("b", 0) + 1</code>. Print the dict.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Use <code>.pop()</code> to remove <code>"name"</code> from <code>user</code> and save it to a variable. Print the popped value and the remaining dictionary.</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-27">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>3. Dictionary Views : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Keys, Values, and Items</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Dictionaries provide dynamic <b>view objects</b> through three methods: <code>.keys()</code>, <code>.values()</code>, and <code>.items()</code>. These views update automatically when the dictionary changes and are fast and memory-efficient.</p>
+<table>
+<thead><tr><th>Method</th><th>Returns View Of</th><th>Example Use</th></tr></thead><tbody>
+<tr><td><code>.keys()</code></td><td>All keys</td><td>Checking membership: <code>'age' in d.keys()</code></td></tr>
+<tr><td><code>.values()</code></td><td>All values</td><td>Statistics: <code>sum(d.values())</code></td></tr>
+<tr><td><code>.items()</code></td><td><code>(key, value)</code> tuples</td><td>Iteration: <code>for k, v in d.items():</code></td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Column Checks</strong>: Check if expected columns exist in a data record using <code>.keys()</code></p>
+<p>• <strong>Data Extraction</strong>: Extract all metric values for analysis using <code>.values()</code></p>
+<p>• <strong>Transformation</strong>: Iterate over <code>.items()</code> to apply a function to all values</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Views are not Lists</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Views don't support indexing. <code>d.keys()[0]</code> raises a <code>TypeError</code>. If you need a list, explicitly convert it: <code>list(d.keys())</code>.</p>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13">scores = {&#x27;math&#x27;: 95, &#x27;physics&#x27;: 88, &#x27;chem&#x27;: 92}
+
+# View objects
+keys = scores.keys()
+vals = scores.values()
+items = scores.items()
+
+print(f&#x27;Keys: {keys}&#x27;)
+print(f&#x27;Values: {vals}&#x27;)
+print(f&#x27;Items: {items}&#x27;)
+
+# Views are dynamic!
+scores[&#x27;biology&#x27;] = 90
+print(f&#x27;\nAfter adding biology, keys view auto-updated: \n{keys}&#x27;)
+
+# Need a list? Convert it explicitly
+key_list = list(keys)
+print(f&#x27;First key: {key_list[0]}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-29">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Dictionary Views</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>data = {"a": 10, "b": 20, "c": 30}</code>, extract the values and calculate their sum. Print the sum.</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Check if the key <code>"d"</code> exists in <code>data.keys()</code>. Print the boolean result.</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Convert <code>data.items()</code> to a list of tuples. Print the list.</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Prove views are dynamic: assign <code>view = data.values()</code>, add <code>"d": 40</code> to <code>data</code>, then print <code>view</code>. Note how it updated.</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Try to access <code>data.keys()[0]</code>. Catch the TypeError and print the error message. Show the correct way by converting to a list first.</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-40">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>4. Iteration Patterns : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Looping over Dictionaries</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Iterating directly over a dictionary loops over its <b>keys</b>. To loop over both keys and values, use <code>.items()</code>. This is the most common and Pythonic way to process dictionary data.</p>
+<pre class="nb-code-block"><code># ❌ Bad: Looping keys to get values
+for k in d:
+    v = d[k]  # Inefficient lookup
+
+# ✅ Good: Unpacking items directly
+for k, v in d.items():
+    print(k, v)</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Formatting Output</strong>: Printing structured reports of metrics or configuration</p>
+<p>• <strong>Data Cleaning</strong>: Iterating over items to clean strings or convert types</p>
+<p>• <strong>Filtering</strong>: Looping to build a new dictionary with specific key-value pairs</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>You cannot add or remove keys from a dictionary while iterating over it. It will raise a <code>RuntimeError: dictionary changed size during iteration</code>. If you must modify keys, iterate over a copy or build a new dictionary.</p>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19">config = {&#x27;host&#x27;: &#x27;localhost&#x27;, &#x27;port&#x27;: 5432, &#x27;user&#x27;: &#x27;admin&#x27;}
+
+# Default iteration is keys
+print(&quot;Keys only:&quot;)
+for k in config:
+    print(f&quot;- {k}&quot;)
+
+# Iterating values
+print(&quot;\nValues only:&quot;)
+for v in config.values():
+    print(f&quot;- {v}&quot;)
+
+# The Pythonic Way: items() unpacking
+print(&quot;\nItems (Keys &amp; Values):&quot;)
+for key, value in config.items():
+    print(f&quot;{key.upper()}: {value}&quot;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Iteration-42">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Iteration</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Iterate over <code>prices = {"apple": 1.2, "banana": 0.5}</code> and print just the keys using a standard <code>for</code> loop.</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Iterate over <code>prices.values()</code> and print each value formatted as currency (e.g., <code>$1.20</code>).</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>.items()</code> to iterate over <code>prices</code> and print <code>"[Item] costs $[Price]"</code>.</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Write a loop over <code>.items()</code> that creates a new dictionary <code>expensive</code> containing only items costing more than <code>$1.00</code>. Print it.</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Demonstrate the RuntimeError: try to <code>del d[k]</code> while iterating over <code>d = {"a":1, "b":2}</code>. Catch the error and print it.</p></div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-53">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>5. Dictionary Comprehensions : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Functional Dictionary Creation</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Just like list comprehensions, <b>dictionary comprehensions</b> provide a concise way to create dictionaries from iterables. The syntax is <code>{key: value for item in iterable if condition}</code>.</p>
+<pre class="nb-code-block"><code># Square numbers mapping
+squares = {x: x**2 for x in range(5)}
+# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Data Transformation</strong>: Convert a list of records into a dictionary keyed by ID for fast lookups</p>
+<p>• <strong>Filtering Dictionaries</strong>: <code>{k: v for k, v in data.items() if v > 0}</code> — clean negative values</p>
+<p>• <strong>Key Mapping</strong>: Mapping original column names to new clean column names</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>A very common pattern for fast lookups: <code>lookup = {row['id']: row for row in dataset}</code>. This converts an O(n) search into an O(1) dictionary lookup.</p>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25">names = [&#x27;Alice&#x27;, &#x27;Bob&#x27;, &#x27;Charlie&#x27;]
+
+# Create dict mapping name to its length
+name_lengths = {name: len(name) for name in names}
+print(f&#x27;Lengths: {name_lengths}&#x27;)
+
+# Filtering an existing dictionary
+prices = {&#x27;apple&#x27;: 1.2, &#x27;banana&#x27;: 0.5, &#x27;cherry&#x27;: 2.5}
+expensive = {k: v for k, v in prices.items() if v &gt; 1.0}
+print(f&#x27;Expensive items: {expensive}&#x27;)
+
+# Swapping keys and values
+original = {&#x27;a&#x27;: 1, &#x27;b&#x27;: 2, &#x27;c&#x27;: 3}
+swapped = {v: k for k, v in original.items()}
+print(f&#x27;Swapped: {swapped}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-55">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Dict Comprehensions</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create a dictionary comprehension that maps numbers 1-5 to their cubes (<code>x**3</code>). Print it.</p></div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Given <code>keys = ["a", "b", "c"]</code> and <code>values = [1, 2, 3]</code>, use <code>zip()</code> in a comprehension to create a dictionary. Print it.</p></div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Filter <code>data = {"x": -5, "y": 10, "z": -2, "w": 15}</code> to keep only positive values using a comprehension. Print the result.</p></div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Swap keys and values in <code>codes = {"NY": "New York", "CA": "California"}</code> using a comprehension. Print the result.</p></div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Create a dictionary mapping each character in <code>"Data Science"</code> to its uppercase version. Notice what happens to duplicate characters. Print it.</p></div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-66">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>6. Merging & Updating : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Combining Dictionaries</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Python provides multiple ways to combine dictionaries. <code>dict.update()</code> modifies in-place. Python 3.9+ introduced the <b>merge operator <code>|</code></b> which creates a new dictionary.</p>
+<table>
+<thead><tr><th>Operation</th><th>Syntax</th><th>Effect</th></tr></thead><tbody>
+<tr><td>Update in-place</td><td><code>d1.update(d2)</code></td><td><code>d1</code> is modified. <code>d2</code> keys overwrite <code>d1</code>. Returns <code>None</code>.</td></tr>
+<tr><td>Merge operator (3.9+)</td><td>`d3 = d1 \</td><td>d2`</td><td>Creates new dict <code>d3</code>. <code>d2</code> overwrites <code>d1</code>.</td></tr>
+<tr><td>Unpacking</td><td><code>d3 = {<strong>d1, </strong>d2}</code></td><td>Creates new dict. Pre-3.9 equivalent of `\</td><td>`.</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Configuration Management</strong>: Merge <code>default_config</code> with <code>user_config</code> (user overrides default)</p>
+<p>• <strong>Aggregating Data</strong>: Combining parsed JSON objects from multiple API endpoints</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Right Wins</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>When merging, if the same key exists in both dictionaries, the value from the dictionary on the <b>right side</b> (or passed to <code>.update()</code>) wins.</p>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31">defaults = {&#x27;theme&#x27;: &#x27;light&#x27;, &#x27;port&#x27;: 8080, &#x27;debug&#x27;: False}
+user_prefs = {&#x27;theme&#x27;: &#x27;dark&#x27;, &#x27;verbose&#x27;: True}
+
+# 1. Update in-place
+active_config = defaults.copy()
+active_config.update(user_prefs)
+print(f&#x27;Update: {active_config}&#x27;)
+
+# 2. Merge operator (Python 3.9+)
+merged_config = defaults | user_prefs
+print(f&#x27;Merge |: {merged_config}&#x27;)
+
+# 3. Kwargs unpacking (older Python)
+unpacked = {**defaults, **user_prefs}
+print(f&#x27;Unpacked: {unpacked}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-68">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Merging & Updating</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Merge <code>d1 = {"a": 1, "b": 2}</code> and <code>d2 = {"b": 99, "c": 3}</code> using <code>.update()</code>. Note the value of <code>"b"</code>. Print <code>d1</code>.</p></div>
+<div class="code-cell" id="cell-32">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-32')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-32')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-32"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Merge the same dictionaries using the <code>|</code> operator into a new dict <code>d3</code>. Print <code>d3</code>.</p></div>
+<div class="code-cell" id="cell-33">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-33')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-33')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-33"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Merge three dictionaries <code>d1</code>, <code>d2</code>, <code>d3 = {"d": 4}</code> using kwargs unpacking <code>{<strong>d1, </strong>d2, **d3}</code>. Print the result.</p></div>
+<div class="code-cell" id="cell-34">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-34')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-34')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-34"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Try to merge a dictionary and a list <code>{"a": 1} | ["b", 2]</code>. Catch the TypeError and print it.</p></div>
+<div class="code-cell" id="cell-35">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-35')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-35')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-35"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write a function <code>apply_defaults(config, defaults)</code> that returns a new config where <code>config</code> values override <code>defaults</code>. Test it.</p></div>
+<div class="code-cell" id="cell-36">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-36')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-36')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-36"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-79">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>7. Nested Dictionaries : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">JSON & Deep Data</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A dictionary can contain other dictionaries (or lists, sets, etc.) as values. This is essential for working with hierarchical data like <b>JSON</b> or <b>NoSQL document databases</b>.</p>
+<pre class="nb-code-block"><code>users = {
+    &#x27;u1&#x27;: {&#x27;name&#x27;: &#x27;Alice&#x27;, &#x27;role&#x27;: &#x27;Admin&#x27;},
+    &#x27;u2&#x27;: {&#x27;name&#x27;: &#x27;Bob&#x27;, &#x27;role&#x27;: &#x27;User&#x27;}
+}
+# Access nested data
+alice_role = users[&#x27;u1&#x27;][&#x27;role&#x27;]</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>API Parsing</strong>: Traversing complex JSON responses from web services</p>
+<p>• <strong>Document Storage</strong>: Representing MongoDB documents in memory</p>
+<p>• <strong>Configuration Trees</strong>: Hierarchical settings (e.g., <code>config['database']['host']</code>)</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Deep Missing Keys</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Accessing <code>data['user']['address']['zip']</code> will crash if <i>any</i> key in the chain is missing. Use chained <code>.get()</code> or handle exceptions.</p>
+<div class="code-cell" id="cell-37">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-37')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-37')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-37">import json
+
+# JSON-like nested structure
+api_response = {
+    &#x27;status&#x27;: 200,
+    &#x27;data&#x27;: {
+        &#x27;user&#x27;: {&#x27;id&#x27;: 101, &#x27;name&#x27;: &#x27;Alice&#x27;},
+        &#x27;permissions&#x27;: [&#x27;read&#x27;, &#x27;write&#x27;]
+    }
+}
+
+# Accessing deep data
+user_name = api_response[&#x27;data&#x27;][&#x27;user&#x27;][&#x27;name&#x27;]
+perms = api_response[&#x27;data&#x27;][&#x27;permissions&#x27;]
+print(f&#x27;User: {user_name}, Perms: {perms}&#x27;)
+
+# Safe deep access (avoid KeyError)
+data_obj = api_response.get(&#x27;data&#x27;, {})
+address = data_obj.get(&#x27;user&#x27;, {}).get(&#x27;address&#x27;, &#x27;No Address&#x27;)
+print(f&#x27;Address: {address}&#x27;)
+
+# Pretty printing nested dicts
+print(&quot;\nPretty printed:&quot;)
+print(json.dumps(api_response, indent=2))</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-81">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Nested Dictionaries</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create a nested dictionary representing a company with two departments (<code>"Sales"</code>, <code>"Engineering"</code>), each containing a list of employee names. Print it.</p></div>
+<div class="code-cell" id="cell-38">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-38')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-38')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-38"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Access and print the first employee in the <code>"Engineering"</code> department from the dictionary above.</p></div>
+<div class="code-cell" id="cell-39">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-39')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-39')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-39"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Add a new department <code>"HR"</code> with an empty list of employees to the company dictionary. Print the updated dict.</p></div>
+<div class="code-cell" id="cell-40">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-40')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-40')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-40"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Safely extract <code>"city"</code> from <code>data = {"user": {"id": 1}}</code> using chained <code>.get()</code> to avoid KeyError. Print the default <code>"Unknown"</code>.</p></div>
+<div class="code-cell" id="cell-41">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-41')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-41')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-41"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Use <code>json.dumps(dict, indent=4)</code> to pretty-print your company dictionary. Print the result.</p></div>
+<div class="code-cell" id="cell-42">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-42')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-42')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-42"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="practice">
+<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
+<p>Theory is useless without muscle memory. Complete these tasks to solidify your understanding.</p>
+<div class="question task"><p><strong>Task 1 (Frequency Counter):</strong> Write a function <code>count_words(text)</code> that takes a string, splits it into words (lowercase), and returns a dictionary of word frequencies. Handle punctuation if you can. Test with a short paragraph.</p></div>
+<div class="code-cell" id="cell-43">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-43')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-43')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-43"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 2 (Dict Inverter):</strong> Write a function <code>invert_dict(d)</code> that swaps keys and values. Since multiple keys might have the same value, the new dictionary should map <code>value -> list_of_keys</code>. Test with <code>{'a':1, 'b':2, 'c':1}</code>.</p></div>
+<div class="code-cell" id="cell-44">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-44')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-44')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-44"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 3 (JSON Path Extractor):</strong> Write a function <code>extract_path(data, path_list)</code> that safely navigates a nested dict. <code>extract_path(data, ['user', 'address', 'city'])</code>. Return <code>None</code> if any key is missing.</p></div>
+<div class="code-cell" id="cell-45">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-45')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-45')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-45"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 4 (Data Grouper):</strong> Given a list of dictionaries <code>[{'dept': 'HR', 'name': 'Alice'}, {'dept': 'IT', 'name': 'Bob'}, {'dept': 'HR', 'name': 'Charlie'}]</code>, write code to group them by department: <code>{'HR': ['Alice', 'Charlie'], 'IT': ['Bob']}</code>.</p></div>
+<div class="code-cell" id="cell-46">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-46')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-46')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-46"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 5 (Config Merger):</strong> Write a function <code>deep_merge(d1, d2)</code> that merges two dictionaries. If a key contains a nested dictionary in both, recursively merge them. Otherwise, <code>d2</code> overwrites <code>d1</code>.</p></div>
+<div class="code-cell" id="cell-47">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-47')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-47')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-47"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong></p>
+<h3>Write a function <code>two_sum(nums, target)</code> using a dictionary to find the pair of indices in O(n) time.</h3>
+</div>
+<div class="code-cell" id="cell-48">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-48')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-48')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-48"># Solution for Q1</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q2.</strong></p>
+<h3>Write a function <code>is_isomorphic(s, t)</code> that checks if two strings are isomorphic using a dictionary mapping.</h3>
+</div>
+<div class="code-cell" id="cell-49">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-49')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-49')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-49"># Solution for Q2</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q3.</strong></p>
+<h3>Write a function <code>lru_cache_simulation(queries, capacity)</code> using <code>collections.OrderedDict</code> to track recently used keys.</h3>
+</div>
+<div class="code-cell" id="cell-50">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-50')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-50')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-50"># Solution for Q3</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong></p>
+<h3>Write a function <code>group_anagrams(strs)</code> using a dictionary where the key is the sorted string and the value is a list of anagrams.</h3>
+</div>
+<div class="code-cell" id="cell-51">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-51')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-51')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-51"># Solution for Q4</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong></p>
+<h3>Write a function <code>first_unique_char(s)</code> using a dictionary to count frequencies, then a second pass to find the first with count 1.</h3>
+</div>
+<div class="code-cell" id="cell-52">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-52')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-52')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-52"># Solution for Q5</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong></p>
+<h3>Implement a <code>Trie</code> (Prefix Tree) data structure using nested dictionaries. Include <code>insert</code> and <code>search</code> methods.</h3>
+</div>
+<div class="code-cell" id="cell-53">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-53')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-53')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-53"># Solution for Q6</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong></p>
+<h3>Write a function <code>find_itinerary(tickets)</code> given a list of <code>(source, dest)</code> tuples, reconstruct the full itinerary using a dict.</h3>
+</div>
+<div class="code-cell" id="cell-54">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-54')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-54')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-54"># Solution for Q7</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong></p>
+<h3>Write a function <code>contains_duplicate_nearby(nums, k)</code> checking if duplicate values exist within distance <code>k</code> using a dict.</h3>
+</div>
+<div class="code-cell" id="cell-55">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-55')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-55')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-55"># Solution for Q8</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong></p>
+<h3>Write a function <code>longest_consecutive_sequence(nums)</code> using a dictionary/set for O(n) time complexity.</h3>
+</div>
+<div class="code-cell" id="cell-56">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-56')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-56')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-56"># Solution for Q9</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-122">
+<div class="question interview"><p><strong>Q10.</strong></p>
+<h3>Write a function <code>sort_characters_by_frequency(s)</code> returning a string with characters sorted by decreasing frequency.</h3>
+</div>
+<div class="code-cell" id="cell-57">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-57')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-57')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-57"># Solution for Q10</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-124">
+<div class="question interview"><p><strong>Q11.</strong></p>
+<h3>Write a function <code>subarray_sum(nums, k)</code> that finds the total number of continuous subarrays whose sum equals <code>k</code>. Use a dict to store prefix sums.</h3>
+</div>
+<div class="code-cell" id="cell-58">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-58')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-58')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-58"># Solution for Q11</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-126">
+<div class="question interview"><p><strong>Q12.</strong></p>
+<h3>Write a function <code>roman_to_int(s)</code> using a dictionary to map Roman numerals to integers.</h3>
+</div>
+<div class="code-cell" id="cell-59">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-59')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-59')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-59"># Solution for Q12</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-128">
+<div class="question interview"><p><strong>Q13.</strong></p>
+<h3>Write a function <code>majority_element(nums)</code> using a dictionary to count frequencies and find the element appearing > n/2 times.</h3>
+</div>
+<div class="code-cell" id="cell-60">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-60')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-60')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-60"># Solution for Q13</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-130">
+<div class="question interview"><p><strong>Q14.</strong></p>
+<h3>Implement an <code>LFUCache</code> (Least Frequently Used) using combinations of dictionaries for O(1) operations.</h3>
+</div>
+<div class="code-cell" id="cell-61">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-61')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-61')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-61"># Solution for Q14</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-132">
+<div class="question interview"><p><strong>Q15.</strong></p>
+<h3>Write a function <code>design_hashmap()</code> from scratch using a list of lists (chaining) without using the built-in dictionary.</h3>
+</div>
+<div class="code-cell" id="cell-62">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-62')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-62')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-62"># Solution for Q15</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-134">
+<div class="question interview"><p><strong>Q16.</strong></p>
+<h3>Write a function <code>word_pattern(pattern, s)</code> using dictionaries to check a bijective mapping between a pattern and words.</h3>
+</div>
+<div class="code-cell" id="cell-63">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-63')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-63')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-63"># Solution for Q16</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-136">
+<div class="question interview"><p><strong>Q17.</strong></p>
+<h3>Write a function <code>find_all_anagrams_in_string(s, p)</code> using sliding window and dictionaries to count characters.</h3>
+</div>
+<div class="code-cell" id="cell-64">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-64')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-64')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-64"># Solution for Q17</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-138">
+<div class="question interview"><p><strong>Q18.</strong></p>
+<h3>Write a function <code>flatten_nested_dict(d)</code> that flattens <code>{'a': {'b': 1}}</code> into <code>{'a.b': 1}</code>.</h3>
+</div>
+<div class="code-cell" id="cell-65">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-65')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-65')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-65"># Solution for Q18</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-140">
+<div class="question interview"><p><strong>Q19.</strong></p>
+<h3>Write a function <code>dict_difference(d1, d2)</code> returning keys added, removed, and modified between two dictionaries.</h3>
+</div>
+<div class="code-cell" id="cell-66">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-66')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-66')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-66"># Solution for Q19</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-142">
+<div class="question interview"><p><strong>Q20.</strong></p>
+<h3>Write a function <code>top_k_frequent_elements(nums, k)</code> using a dictionary and sorting/heap.</h3>
+</div>
+<div class="code-cell" id="cell-67">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-67')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-67')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-67"># Solution for Q20</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-144">
+<div class="question interview"><p><strong>Q21.</strong></p>
+<h3>Explain the internal implementation of a Python dictionary (Hash Table, open addressing, PyDictObject).</h3>
+</div>
+<div class="code-cell" id="cell-68">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-68')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-68')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-68"># Solution for Q21</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-146">
+<div class="question interview"><p><strong>Q22.</strong></p>
+<h3>Write a function <code>check_valid_sudoku(board)</code> using dictionaries/sets to track seen numbers in rows, columns, and 3x3 grids.</h3>
+</div>
+<div class="code-cell" id="cell-69">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-69')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-69')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-69"># Solution for Q22</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-148">
+<div class="question interview"><p><strong>Q23.</strong></p>
+<h3>Write a function <code>minimum_window_substring(s, t)</code> using a dictionary to track character counts in a sliding window.</h3>
+</div>
+<div class="code-cell" id="cell-70">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-70')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-70')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-70"># Solution for Q23</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-150">
+<div class="question interview"><p><strong>Q24.</strong></p>
+<h3>Write a function <code>find_duplicate_file(paths)</code> grouping identical file contents (using content hash as dict key).</h3>
+</div>
+<div class="code-cell" id="cell-71">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-71')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-71')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-71"># Solution for Q24</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-152">
+<div class="question interview"><p><strong>Q25.</strong></p>
+<h3>Implement <code>defaultdict</code> behavior manually by subclassing <code>dict</code> and overriding the <code><strong>missing</strong></code> method.</h3>
+</div>
+<div class="code-cell" id="cell-72">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-72')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-72')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-72"># Solution for Q25</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="summary">
+<div class="section-header cyan"><h2>📊 Day 7 Executive Summary</h2></div>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Takeaway</th><th>Professional Application</th></tr></thead><tbody>
+<tr><td>1</td><td>Creation</td><td>Key-Value pairs, hashable keys, O(1) lookup</td><td>JSON modeling, caching</td></tr>
+<tr><td>2</td><td>Access/Modify</td><td>Use <code>.get(key, default)</code> for safety</td><td>Robust API parsing</td></tr>
+<tr><td>3</td><td>Views</td><td><code>keys()</code>, <code>values()</code>, <code>items()</code> are dynamic</td><td>Data extraction</td></tr>
+<tr><td>4</td><td>Iteration</td><td><code>for k, v in d.items():</code> is standard</td><td>Data transformation loops</td></tr>
+<tr><td>5</td><td>Comprehensions</td><td><code>{k: v for ...}</code> creates dicts cleanly</td><td>Fast filtering & mapping</td></tr>
+<tr><td>6</td><td>Merging</td><td>`d1 \</td><td>d2<code> or </code>.update()`</td><td>Combining configurations</td></tr>
+<tr><td>7</td><td>Nested Dicts</td><td>Dicts inside dicts represent JSON</td><td>NoSQL, complex payloads</td></tr>
+</tbody></table>
+<h2>✅ Instructor's End-of-Day Checklist</h2>
+<p>• [ ] I understand why dictionary keys must be immutable (hashable).</p>
+<p>• [ ] I know to use <code>.get()</code> to safely extract data without crashing.</p>
+<p>• [ ] I can iterate efficiently using <code>.items()</code>.</p>
+<p>• [ ] I can create dictionaries quickly using dictionary comprehensions.</p>
+<p>• [ ] I know how to merge two dictionaries using the <code>|</code> operator or <code>.update()</code>.</p>
+<p>• [ ] I understand how to navigate nested dictionaries (JSON objects).</p>
+<p>• [ ] I have completed all 5 practice tasks.</p>
+<p>• [ ] I have reviewed all 25 interview questions.</p>
+<p><strong>Next Up: Day 8 - Control Flow: Advanced If/Else, Match-Case, and Logic Design</strong></p>
+</div>
+  </main>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
+    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
+<li><a href="#sec-1" class="toc-link">1. Dictionary Creation & Basics : Key-Value Mapping</a></li>
+<li><a href="#checks-Check-3" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-14" class="toc-link">2. Accessing & Modifying Data : Safe Lookups & Updates</a></li>
+<li><a href="#checks-Check-16" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-27" class="toc-link">3. Dictionary Views : Keys, Values, and Items</a></li>
+<li><a href="#checks-Check-29" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-40" class="toc-link">4. Iteration Patterns : Looping over Dictionaries</a></li>
+<li><a href="#checks-Iteration-42" class="toc-link">🧪 Checks: Iteration</a></li>
+<li><a href="#sec-53" class="toc-link">5. Dictionary Comprehensions : Functional Dictionary Creation</a></li>
+<li><a href="#checks-Check-55" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-66" class="toc-link">6. Merging & Updating : Combining Dictionaries</a></li>
+<li><a href="#checks-Check-68" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-79" class="toc-link">7. Nested Dictionaries : JSON & Deep Data</a></li>
+<li><a href="#checks-Check-81" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
+<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
+<li><a href="#sec-122" class="toc-link">Q10.</a></li>
+<li><a href="#sec-124" class="toc-link">Q11.</a></li>
+<li><a href="#sec-126" class="toc-link">Q12.</a></li>
+<li><a href="#sec-128" class="toc-link">Q13.</a></li>
+<li><a href="#sec-130" class="toc-link">Q14.</a></li>
+<li><a href="#sec-132" class="toc-link">Q15.</a></li>
+<li><a href="#sec-134" class="toc-link">Q16.</a></li>
+<li><a href="#sec-136" class="toc-link">Q17.</a></li>
+<li><a href="#sec-138" class="toc-link">Q18.</a></li>
+<li><a href="#sec-140" class="toc-link">Q19.</a></li>
+<li><a href="#sec-142" class="toc-link">Q20.</a></li>
+<li><a href="#sec-144" class="toc-link">Q21.</a></li>
+<li><a href="#sec-146" class="toc-link">Q22.</a></li>
+<li><a href="#sec-148" class="toc-link">Q23.</a></li>
+<li><a href="#sec-150" class="toc-link">Q24.</a></li>
+<li><a href="#sec-152" class="toc-link">Q25.</a></li>
+<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
+    <div class="sidebar-resize" id="sidebarResize"></div>
+  </nav>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="notebook.js"></script>
+</body>
+</html>

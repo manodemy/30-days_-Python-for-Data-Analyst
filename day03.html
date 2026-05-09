@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 03: Strings — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="notebook.css">
+</head>
+<body>
+<nav class="top-bar" id="topBar">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="landing.html" class="home-btn" title="Back to Curriculum">🏠</a>
+      <div class="nav-score" title="Questions Solved">
+        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
+        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="nav-center">Day 03 : Strings</div>
+    <div class="nav-right"><a href="day02.html" class="nav-btn prev-btn">← Prev</a><a href="day04.html" class="nav-btn next-btn">Next →</a></div>
+  </div>
+</nav>
+<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
+<div class="layout">
+  <main class="notebook" id="notebook">
+    <div class="nb-title"><h1>📊 Day 03 : Strings</h1></div>
+<div class="nb-section" id="sec-0">
+<h2>🎯 Enterprise Objective</h2>
+<p>Strings are the primary vehicle for text data — the most common data type in real-world datasets. Today we master every aspect of string manipulation, from basic creation to performance optimization. You will learn not just string methods, but professional text processing patterns used in ETL pipelines and data cleaning.</p>
+<h3>📋 Strategic Overview</h3>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Methods</th><th>Core Use Case</th></tr></thead><tbody>
+<tr><td>1</td><td>Creation & Escaping</td><td><code>''</code>, <code>""</code>, <code>r''</code>, <code>'''</code></td><td>File paths, SQL, multi-line</td></tr>
+<tr><td>2</td><td>Indexing & Slicing</td><td><code>s[0]</code>, <code>s[1:4]</code>, <code>s[::-1]</code></td><td>Data extraction</td></tr>
+<tr><td>3</td><td>Core Methods</td><td><code>.strip()</code>, <code>.replace()</code>, <code>.find()</code></td><td>Data cleaning</td></tr>
+<tr><td>4</td><td>Split & Join</td><td><code>.split()</code>, <code>','.join()</code></td><td>CSV/text parsing</td></tr>
+<tr><td>5</td><td>Formatting</td><td>f-strings, <code>.format()</code></td><td>Reports, dashboards</td></tr>
+<tr><td>6</td><td>Validation</td><td><code>.isdigit()</code>, <code>.isalpha()</code></td><td>Input validation</td></tr>
+<tr><td>7</td><td>Encoding</td><td><code>.encode()</code>, <code>.decode()</code></td><td>APIs, file I/O</td></tr>
+<tr><td>8</td><td>Performance</td><td><code>join()</code> vs <code>+=</code></td><td>Efficient processing</td></tr>
+</tbody></table>
+</div>
+<div class="nb-section" id="sec-1">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. String Creation & Escaping : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Text Data Fundamentals</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A string is an <b>immutable sequence of Unicode characters</b>. You can create strings with single quotes <code>'...'</code>, double quotes <code>"..."</code>, or triple quotes <code>'''...'''</code> for multi-line text. Raw strings <code>r'...'</code> disable escape character processing.</p>
+<table>
+<thead><tr><th>Syntax</th><th>Use Case</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>'hello'</code></td><td>Simple text</td><td>Most common</td></tr>
+<tr><td><code>"it's"</code></td><td>Text with apostrophes</td><td>Avoids escaping</td></tr>
+<tr><td><code>"""..."""</code></td><td>Multi-line / docstrings</td><td>SQL queries, docs</td></tr>
+<tr><td><code>r'C:\path'</code></td><td>Raw string (no escapes)</td><td>File paths, regex</td></tr>
+</tbody></table>
+<p><strong>Common Escape Characters:</strong></p>
+<table>
+<thead><tr><th>Escape</th><th>Meaning</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>\n</code></td><td>Newline</td><td><code>'Line1\nLine2'</code></td></tr>
+<tr><td><code>\t</code></td><td>Tab</td><td><code>'Col1\tCol2'</code></td></tr>
+<tr><td><code>\\</code></td><td>Backslash</td><td><code>'C:\\Users'</code></td></tr>
+<tr><td><code>\'</code></td><td>Single quote</td><td><code>'it\'s'</code></td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>CSV/JSON parsing</strong>: Understanding escape characters is essential for parsing data files</p>
+<p>• <strong>SQL queries</strong>: Triple-quoted strings hold multi-line SQL cleanly</p>
+<p>• <strong>File paths</strong>: Raw strings <code>r'C:\data\file.csv'</code> prevent escape issues on Windows</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Immutability</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Strings <b>cannot be modified in place</b>. Every operation like <code>.upper()</code> or <code>+</code> creates a <b>new string object</b>. This matters for performance in loops.</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Use triple-quoted strings for multi-line SQL queries: <code>query = """SELECT * FROM users WHERE age > 18"""</code>. This keeps your code readable.</p>
+<div class="code-cell" id="cell-1">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-1"># String creation methods
+single = &#x27;Hello&#x27;
+double = &quot;World&quot;
+multi = &#x27;&#x27;&#x27;This is
+a multi-line
+string&#x27;&#x27;&#x27;
+raw = r&#x27;C:\Users\data\file.csv&#x27;
+
+print(single, double)
+print(multi)
+print(raw)
+
+# Immutability proof
+s = &#x27;hello&#x27;
+print(f&#x27;id before: {id(s)}&#x27;)
+s = s.upper()
+print(f&#x27;id after:  {id(s)}&#x27;)  # Different object!</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Creation-3">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Creation</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Create strings using all 4 methods: single quotes, double quotes, triple quotes, and raw string. Print each with its <code>type()</code> and <code>len()</code>.</p></div>
+<div class="code-cell" id="cell-2">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-2"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Write a string containing: a newline, a tab, and a backslash. Print it and then print its <code>repr()</code> to see the escape characters.</p></div>
+<div class="code-cell" id="cell-3">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-3"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Prove string immutability: create <code>s = "hello"</code>, save <code>id(s)</code>, then do <code>s += " world"</code>. Compare the IDs. What does this prove?</p></div>
+<div class="code-cell" id="cell-4">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-4"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Create a raw string for the Windows path <code>C:\Users\Admin\Documents\data.csv</code>. Then create the same path using escape characters. Verify they are equal.</p></div>
+<div class="code-cell" id="cell-5">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-5"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write a multi-line SQL query using triple quotes: <code>SELECT name, age FROM users WHERE age > 18 ORDER BY name</code>. Print it.</p></div>
+<div class="code-cell" id="cell-6">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-6"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-14">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>2. Indexing & Slicing : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Precision Text Extraction</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Strings support <b>zero-based indexing</b> and <b>negative indexing</b> (from the end). <b>Slicing</b> extracts substrings using the syntax <code>s[start:stop:step]</code> where <code>stop</code> is exclusive.</p>
+<pre class="nb-code-block"><code>text = &#x27;PYTHON&#x27;
+#       P  Y  T  H  O  N
+#       0  1  2  3  4  5   (positive index)
+#      -6 -5 -4 -3 -2 -1  (negative index)</code></pre>
+<table>
+<thead><tr><th>Operation</th><th>Syntax</th><th>Result</th></tr></thead><tbody>
+<tr><td>First char</td><td><code>s[0]</code></td><td><code>'P'</code></td></tr>
+<tr><td>Last char</td><td><code>s[-1]</code></td><td><code>'N'</code></td></tr>
+<tr><td>Slice</td><td><code>s[1:4]</code></td><td><code>'YTH'</code></td></tr>
+<tr><td>Reverse</td><td><code>s[::-1]</code></td><td><code>'NOHTYP'</code></td></tr>
+<tr><td>Every 2nd</td><td><code>s[::2]</code></td><td><code>'PTO'</code></td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Column extraction</strong>: Extract substrings from fixed-width data: <code>record[0:10]</code> for name field</p>
+<p>• <strong>Data cleaning</strong>: <code>phone[-10:]</code> to extract last 10 digits of phone numbers</p>
+<p>• <strong>Log parsing</strong>: Slice timestamps from log lines: <code>log_line[:19]</code> for ISO datetime</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Off-by-One</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>The stop index is <b>exclusive</b>: <code>'PYTHON'[0:3]</code> gives <code>'PYT'</code> (indices 0, 1, 2), not <code>'PYTH'</code>. This is a common source of bugs.</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Reverse a string with <code>s[::-1]</code>. Check for palindromes: <code>s == s[::-1]</code>.</p>
+<div class="code-cell" id="cell-7">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-7">text = &#x27;Data Analytics&#x27;
+
+# Indexing
+print(text[0])     # D
+print(text[-1])    # s
+
+# Slicing
+print(text[0:4])   # Data
+print(text[5:])    # Analytics
+print(text[::-1])  # scitylanA ataD
+
+# Practical: extract date parts
+iso_date = &#x27;2024-12-25&#x27;
+year  = iso_date[:4]
+month = iso_date[5:7]
+day   = iso_date[8:10]
+print(f&#x27;{year}/{month}/{day}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-16">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Indexing & Slicing</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>s = "Data Analytics"</code>, extract: first word, last word, every other character, and the reversed string. Print each.</p></div>
+<div class="code-cell" id="cell-8">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-8"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Given <code>iso_date = "2024-12-25T14:30:00"</code>, use slicing to extract: year, month, day, hour, minute, second. Print a formatted result.</p></div>
+<div class="code-cell" id="cell-9">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-9"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Write code to check if <code>word = "racecar"</code> is a palindrome using slicing. Print the result with an explanation.</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Given <code>phone = "+91-98765-43210"</code>, use slicing to extract just the 10-digit number (last 10 characters). Print it.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write code that reverses each word in <code>sentence = "Hello World Python"</code> but keeps word order. Use <code>split()</code> and slicing.</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-27">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>3. Core String Methods : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Search, Replace & Transform</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Python strings have 40+ built-in methods. The most important ones for data work are: <code>upper()</code>, <code>lower()</code>, <code>strip()</code>, <code>replace()</code>, <code>find()</code>, <code>count()</code>, <code>startswith()</code>, and <code>endswith()</code>. All return <b>new strings</b> (immutability).</p>
+<table>
+<thead><tr><th>Method</th><th>Purpose</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>.upper()</code> / <code>.lower()</code></td><td>Case conversion</td><td>Standardize text</td></tr>
+<tr><td><code>.strip()</code></td><td>Remove whitespace</td><td>Clean user input</td></tr>
+<tr><td><code>.replace(old, new)</code></td><td>Replace substrings</td><td>Data correction</td></tr>
+<tr><td><code>.find(sub)</code></td><td>Find position (-1 if absent)</td><td>Safe search</td></tr>
+<tr><td><code>.count(sub)</code></td><td>Count occurrences</td><td>Frequency analysis</td></tr>
+<tr><td><code>.startswith()</code></td><td>Check prefix</td><td>Filter by pattern</td></tr>
+<tr><td><code>.endswith()</code></td><td>Check suffix</td><td>File type detection</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Data standardization</strong>: <code>name.strip().title()</code> — clean and capitalize names</p>
+<p>• <strong>Text cleaning</strong>: <code>text.replace('\n', ' ').strip()</code> — normalize whitespace</p>
+<p>• <strong>File filtering</strong>: <code>if filename.endswith('.csv'):</code> — filter file types</p>
+<p>• <strong>Search</strong>: <code>.find()</code> returns -1 instead of raising error (safer than <code>.index()</code>)</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ find() vs index()</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <code>.find()</code> returns <code>-1</code> if not found. <code>.index()</code> raises <code>ValueError</code>. Always prefer <code>.find()</code> for safe searching.
+</div>
+<h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Chain methods for clean data pipelines: <code>name.strip().lower().replace(' ', '_')</code> converts <code>' John Doe '</code> to <code>'john_doe'</code>.</p>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13">name = &#x27;  John Doe  &#x27;
+print(name.strip())          # &#x27;John Doe&#x27;
+print(name.strip().lower())  # &#x27;john doe&#x27;
+print(name.strip().title())  # &#x27;John Doe&#x27;
+
+email = &#x27;user@company.com&#x27;
+print(email.find(&#x27;@&#x27;))       # 4
+print(email.endswith(&#x27;.com&#x27;)) # True
+
+text = &#x27;apple banana apple cherry apple&#x27;
+print(text.count(&#x27;apple&#x27;))   # 3
+print(text.replace(&#x27;apple&#x27;, &#x27;mango&#x27;))  # mango banana mango cherry mango</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-29">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>String Methods</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>name = "  alice SMITH  "</code>, clean it to produce <code>"Alice Smith"</code> using method chaining (<code>strip</code>, <code>title</code>). Print the result.</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Given <code>csv_line = "John,25,Engineer,NYC"</code>, use <code>.find()</code> to locate the position of the second comma. Print the result.</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Count how many times the word <code>"data"</code> appears in <code>text = "Data science uses data to derive data-driven insights"</code> (case-insensitive). Print the count.</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Given a list of filenames <code>["report.csv", "image.png", "data.csv", "notes.txt"]</code>, use <code>.endswith()</code> to filter only <code>.csv</code> files. Print the result.</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write code that replaces all spaces in <code>"hello world python"</code> with underscores, then converts to uppercase. Chain the methods in one line.</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-40">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>4. Splitting & Joining : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Text Decomposition & Assembly</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+    <code>split()</code> breaks a string into a <b>list</b> of substrings based on a delimiter. <code>join()</code> does the reverse — it combines a list of strings into one string with a separator. These two methods are the backbone of text data processing.
+</div></div>
+<pre class="nb-code-block"><code># split: string → list
+&#x27;a,b,c&#x27;.split(&#x27;,&#x27;)        # [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]
+
+# join: list → string
+&#x27;,&#x27;.join([&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;])  # &#x27;a,b,c&#x27;</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>CSV parsing</strong>: <code>row.split(',')</code> — manual CSV field extraction</p>
+<p>• <strong>Log analysis</strong>: <code>log_line.split()</code> — split on whitespace for field extraction</p>
+<p>• <strong>Data export</strong>: <code>','.join(columns)</code> — build CSV rows for output</p>
+<p>• <strong>Path building</strong>: <code>'/'.join(['home', 'user', 'data'])</code> — construct file paths</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ split() with No Arguments</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <code>'a  b  c'.split()</code> splits on <b>any whitespace</b> and removes empty strings. <code>'a  b  c'.split(' ')</code> splits on single space only, producing <code>['a', '', 'b', '', 'c']</code>.
+</div>
+<h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Use <code>splitlines()</code> for multi-line text: it handles <code>\n</code>, <code>\r\n</code>, and <code>\r</code> correctly across all platforms.</p>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19"># Splitting
+csv_row = &#x27;Alice,28,Engineer,London&#x27;
+fields = csv_row.split(&#x27;,&#x27;)
+print(fields)  # [&#x27;Alice&#x27;, &#x27;28&#x27;, &#x27;Engineer&#x27;, &#x27;London&#x27;]
+print(f&#x27;Name: {fields[0]}, Age: {fields[1]}&#x27;)
+
+# Joining
+words = [&#x27;Data&#x27;, &#x27;Science&#x27;, &#x27;Python&#x27;]
+print(&#x27; &#x27;.join(words))    # Data Science Python
+print(&#x27; -&gt; &#x27;.join(words))  # Data -&gt; Science -&gt; Python
+
+# split() vs split(&#x27; &#x27;)
+text = &#x27;hello   world&#x27;
+print(text.split())      # [&#x27;hello&#x27;, &#x27;world&#x27;]
+print(text.split(&#x27; &#x27;))   # [&#x27;hello&#x27;, &#x27;&#x27;, &#x27;&#x27;, &#x27;world&#x27;]</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-42">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Split & Join</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>csv = "name,age,city,salary"</code>, split into a list, then rejoin with <code>" | "</code> as separator. Print both results.</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Given <code>path = "/home/user/data/file.csv"</code>, split by <code>"/"</code> and extract just the filename. Print it.</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Split <code>text = "one  two   three    four"</code> using both <code>.split()</code> and <code>.split(" ")</code>. Print both results and explain the difference.</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Given <code>words = ["SELECT", "name", "FROM", "users"]</code>, join them with spaces to build a SQL query string. Print it.</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write code that reads a multi-line string (use triple quotes with 3 lines) and splits it into individual lines using <code>.splitlines()</code>. Print each line with its index.</p></div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-53">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>5. String Formatting : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Professional Output Generation</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Python offers three formatting approaches: <b>f-strings</b> (Python 3.6+, fastest and most readable), <code>.format()</code>, and <code>%</code>-formatting (legacy). F-strings embed expressions directly inside <code>{}</code> braces.</p>
+<table>
+<thead><tr><th>Format Spec</th><th>Meaning</th><th>Example</th><th>Result</th></tr></thead><tbody>
+<tr><td><code>:.2f</code></td><td>2 decimal places</td><td><code>f'{3.14159:.2f}'</code></td><td><code>3.14</code></td></tr>
+<tr><td><code>:,</code></td><td>Thousands separator</td><td><code>f'{1000000:,}'</code></td><td><code>1,000,000</code></td></tr>
+<tr><td><code>:>10</code></td><td>Right-align (width 10)</td><td><code>f'{"hi":>10}'</code></td><td><code>'        hi'</code></td></tr>
+<tr><td><code>:<10</code></td><td>Left-align</td><td><code>f'{"hi":<10}'</code></td><td><code>'hi        '</code></td></tr>
+<tr><td><code>:^10</code></td><td>Center-align</td><td><code>f'{"hi":^10}'</code></td><td><code>'    hi    '</code></td></tr>
+<tr><td><code>:.2%</code></td><td>Percentage</td><td><code>f'{0.856:.2%}'</code></td><td><code>85.60%</code></td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Report generation</strong>: Formatted tables, aligned columns, currency values</p>
+<p>• <strong>Logging</strong>: <code>f'[{timestamp}] {level}: {message}'</code> — structured log output</p>
+<p>• <strong>Dashboard metrics</strong>: <code>f'{revenue:,.2f}'</code> — professional number formatting</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>F-strings can contain any Python expression: <code>f'{len(data):,} records processed in {elapsed:.1f}s'</code>. They are evaluated at runtime.</p>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25">name, age, salary = &#x27;Alice&#x27;, 30, 85432.5
+
+# f-string basics
+print(f&#x27;{name} is {age} years old&#x27;)
+print(f&#x27;Salary: ${salary:,.2f}&#x27;)
+
+# Alignment
+for item, price in [(&#x27;Coffee&#x27;, 4.5), (&#x27;Sandwich&#x27;, 8.99), (&#x27;Juice&#x27;, 3.2)]:
+    print(f&#x27;{item:&lt;12} ${price:&gt;6.2f}&#x27;)
+
+# Expressions inside f-strings
+data = [1, 2, 3, 4, 5]
+print(f&#x27;Sum: {sum(data)}, Avg: {sum(data)/len(data):.1f}&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Formatting-55">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Formatting</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>revenue = 1234567.89</code>, print it as currency with commas and 2 decimal places: <code>$1,234,567.89</code>. Use an f-string.</p></div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Create a formatted table: print 3 products with name (left-aligned, 15 chars) and price (right-aligned, 8 chars, 2 decimals). Use f-string alignment.</p></div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Given <code>ratio = 0.8567</code>, print it as a percentage with 1 decimal place: <code>85.7%</code>. Use the <code>%</code> format specifier.</p></div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Print the number <code>42</code> in binary, octal, and hexadecimal using f-string format specs (<code>:b</code>, <code>:o</code>, <code>:x</code>). Print all three.</p></div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write an f-string that embeds a conditional expression: print <code>"Even"</code> or <code>"Odd"</code> for <code>n = 7</code> directly inside the f-string.</p></div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-66">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>6. String Validation Methods : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Data Quality Checks</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Python strings have built-in validation methods that return <code>True</code> or <code>False</code>. These are essential for <b>input validation</b> and <b>data quality checks</b> before processing.</p>
+<table>
+<thead><tr><th>Method</th><th>Returns True if...</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>.isdigit()</code></td><td>All characters are digits</td><td><code>'123'.isdigit()</code> → <code>True</code></td></tr>
+<tr><td><code>.isalpha()</code></td><td>All characters are letters</td><td><code>'abc'.isalpha()</code> → <code>True</code></td></tr>
+<tr><td><code>.isalnum()</code></td><td>Letters or digits only</td><td><code>'abc123'.isalnum()</code> → <code>True</code></td></tr>
+<tr><td><code>.isspace()</code></td><td>All whitespace</td><td><code>'  '.isspace()</code> → <code>True</code></td></tr>
+<tr><td><code>.isupper()</code></td><td>All uppercase</td><td><code>'ABC'.isupper()</code> → <code>True</code></td></tr>
+<tr><td><code>.islower()</code></td><td>All lowercase</td><td><code>'abc'.islower()</code> → <code>True</code></td></tr>
+<tr><td><code>.istitle()</code></td><td>Title case</td><td><code>'Hello World'.istitle()</code> → <code>True</code></td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Input validation</strong>: <code>if user_id.isdigit():</code> — validate before int conversion</p>
+<p>• <strong>Data cleaning</strong>: Filter rows where a column should be numeric but contains text</p>
+<p>• <strong>ETL pipelines</strong>: Validate data quality before loading into databases</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ isdigit() vs isnumeric()</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <code>isdigit()</code> only matches <code>0-9</code>. <code>isnumeric()</code> also matches Unicode numerals like <code>'\u00B2'</code> (superscript 2). For data work, use <code>isdigit()</code> or try/except with <code>int()</code>.
+</div></div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31"># Validation checks
+print(&#x27;12345&#x27;.isdigit())    # True
+print(&#x27;12.34&#x27;.isdigit())    # False — dot is not a digit
+print(&#x27;hello&#x27;.isalpha())    # True
+print(&#x27;hello123&#x27;.isalnum()) # True
+
+# Practical: safe type conversion
+user_input = &#x27;42&#x27;
+if user_input.isdigit():
+    age = int(user_input)
+    print(f&#x27;Valid age: {age}&#x27;)
+else:
+    print(&#x27;Invalid input&#x27;)
+
+# Check naming conventions
+print(&#x27;Hello World&#x27;.istitle())  # True
+print(&#x27;CONSTANT&#x27;.isupper())     # True</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Validation-68">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Validation</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Given a list <code>inputs = ["123", "12.5", "abc", "45", ""]</code>, use <code>.isdigit()</code> to filter only valid integers. Print the valid ones.</p></div>
+<div class="code-cell" id="cell-32">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-32')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-32')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-32"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Write a function <code>validate_username(name)</code> that returns <code>True</code> only if: length 3-20, alphanumeric only. Test with 5 examples.</p></div>
+<div class="code-cell" id="cell-33">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-33')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-33')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-33"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Given <code>data = ["Hello", "WORLD", "mixedCase", "Title Case"]</code>, classify each as upper, lower, title, or mixed. Use <code>.isupper()</code>, <code>.islower()</code>, <code>.istitle()</code>.</p></div>
+<div class="code-cell" id="cell-34">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-34')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-34')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-34"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Write code that checks if <code>s = "  \t\n  "</code> is all whitespace using <code>.isspace()</code>. Then check <code>""</code> (empty string). What does empty return? Explain.</p></div>
+<div class="code-cell" id="cell-35">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-35')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-35')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-35"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write a safe <code>to_float(s)</code> function that handles strings like <code>"3.14"</code>, <code>"-2.5"</code>, <code>"abc"</code>, <code>""</code>. Return <code>None</code> for invalid inputs. Test with 5 cases.</p></div>
+<div class="code-cell" id="cell-36">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-36')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-36')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-36"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-79">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>7. Encoding & Unicode : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Global Text Processing</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Python 3 strings are <b>Unicode by default</b> (UTF-8). When working with files, APIs, or databases, you must handle encoding correctly. <code>encode()</code> converts str → bytes, <code>decode()</code> converts bytes → str.</p>
+<pre class="nb-code-block"><code>text = &#x27;Hello&#x27;
+bytes_obj = text.encode(&#x27;utf-8&#x27;)   # b&#x27;Hello&#x27;
+back = bytes_obj.decode(&#x27;utf-8&#x27;)   # &#x27;Hello&#x27;</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>API responses</strong>: JSON/REST APIs often return bytes that need decoding</p>
+<p>• <strong>File I/O</strong>: <code>open(file, encoding='utf-8')</code> — always specify encoding</p>
+<p>• <strong>International data</strong>: Names, addresses, currencies in non-Latin scripts need proper Unicode handling</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ UnicodeDecodeError</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Reading a file with wrong encoding causes <code>UnicodeDecodeError</code>. Always use <code>encoding='utf-8'</code> or detect encoding with libraries like <code>chardet</code>.</p>
+<div class="code-cell" id="cell-37">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-37')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-37')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-37"># Encoding and decoding
+text = &#x27;Python&#x27;
+bytes_val = text.encode(&#x27;utf-8&#x27;)
+print(bytes_val)          # b&#x27;Python&#x27;
+print(type(bytes_val))    # &lt;class &#x27;bytes&#x27;&gt;
+print(bytes_val.decode()) # Python
+
+# Unicode characters
+emoji = &#x27;\U0001F4CA&#x27;  # chart emoji
+print(f&#x27;Data {emoji}&#x27;)
+print(f&#x27;Length: {len(emoji)}&#x27;)  # 1 character
+print(f&#x27;Bytes:  {len(emoji.encode(&quot;utf-8&quot;))}&#x27;)  # 4 bytes
+
+# ord() and chr()
+print(ord(&#x27;A&#x27;))    # 65
+print(chr(65))     # A</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Encoding-81">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Encoding</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Encode <code>text = "Python"</code> to UTF-8 bytes. Print the bytes object and its length. Then decode it back and verify equality.</p></div>
+<div class="code-cell" id="cell-38">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-38')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-38')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-38"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Compare the byte length of <code>"A"</code> vs <code>"\u00C9"</code> (accented E) vs a Chinese character <code>"\u4e16"</code> in UTF-8. Print each character and its byte count.</p></div>
+<div class="code-cell" id="cell-39">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-39')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-39')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-39"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>ord()</code> to print the Unicode code point of each character in <code>"Hello"</code>. Then use <code>chr()</code> to reconstruct the string from code points.</p></div>
+<div class="code-cell" id="cell-40">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-40')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-40')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-40"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Write code that safely reads a string, trying UTF-8 first, then Latin-1 as fallback. Use try/except with <code>.decode()</code>.</p></div>
+<div class="code-cell" id="cell-41">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-41')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-41')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-41"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Create a string with mixed scripts: English, numbers, and symbols. Print its <code>len()</code> (characters) and <code>len(s.encode())</code> (bytes). Explain the difference.</p></div>
+<div class="code-cell" id="cell-42">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-42')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-42')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-42"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-92">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>8. String Performance : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Efficient Text Processing</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Since strings are <b>immutable</b>, concatenation in loops creates many temporary objects. For building large strings, use <code>list + join</code> or <code>io.StringIO</code> instead of <code>+=</code>. This can be <b>100x faster</b> for large datasets.</p>
+<table>
+<thead><tr><th>Approach</th><th>Speed</th><th>Memory</th><th>Use When</th></tr></thead><tbody>
+<tr><td><code>+=</code> in loop</td><td>Slow</td><td>High</td><td>Never for large data</td></tr>
+<tr><td><code>''.join(list)</code></td><td>Fast</td><td>Low</td><td>Building strings in loops</td></tr>
+<tr><td>f-strings</td><td>Fastest</td><td>Low</td><td>Single-line formatting</td></tr>
+<tr><td><code>io.StringIO</code></td><td>Fast</td><td>Medium</td><td>Stream-like building</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>ETL pipelines</strong>: Building CSV output with <code>join()</code> instead of <code>+=</code> saves minutes on large datasets</p>
+<p>• <strong>Report generation</strong>: Use <code>join()</code> for assembling multi-line reports</p>
+<p>• <strong>Memory management</strong>: Knowing string interning helps debug identity issues</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Python <b>interns</b> small strings and identifiers. <code>'hello' is 'hello'</code> may be <code>True</code> due to caching, but never rely on this — always use <code>==</code> for comparison.</p>
+<div class="code-cell" id="cell-43">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-43')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-43')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-43">import time
+
+# Slow: string concatenation in loop
+start = time.time()
+result = &#x27;&#x27;
+for i in range(10000):
+    result += str(i)
+slow_time = time.time() - start
+
+# Fast: list + join
+start = time.time()
+parts = []
+for i in range(10000):
+    parts.append(str(i))
+result = &#x27;&#x27;.join(parts)
+fast_time = time.time() - start
+
+print(f&#x27;Concatenation: {slow_time:.4f}s&#x27;)
+print(f&#x27;Join:          {fast_time:.4f}s&#x27;)
+print(f&#x27;Join is {slow_time/fast_time:.1f}x faster&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Performance-94">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Performance</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Build a string of numbers <code>"0,1,2,...,999"</code> using: (a) <code>+=</code> in a loop, (b) <code>",".join()</code>. Time both approaches and print the speedup ratio.</p></div>
+<div class="code-cell" id="cell-44">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-44')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-44')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-44"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Demonstrate string interning: test <code>a = "hello"; b = "hello"; print(a is b)</code>. Then test with <code>a = "hello world"</code>. Explain the difference.</p></div>
+<div class="code-cell" id="cell-45">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-45')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-45')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-45"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Write code that builds a CSV string from <code>data = [("Alice",25), ("Bob",30), ("Charlie",35)]</code> using <code>join()</code>. Print the result.</p></div>
+<div class="code-cell" id="cell-46">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-46')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-46')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-46"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Use <code>sys.getsizeof()</code> to measure memory of: empty string, <code>"a"</code>, <code>"hello"</code>, <code>"a"*1000</code>. Print each size. What pattern do you notice?</p></div>
+<div class="code-cell" id="cell-47">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-47')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-47')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-47"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Write a function <code>build_report(rows)</code> that takes a list of dicts and returns a formatted table string using <code>join()</code>. Test with 3 sample rows.</p></div>
+<div class="code-cell" id="cell-48">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-48')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-48')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-48"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="practice">
+<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
+<p>Theory is useless without muscle memory. Complete these tasks to solidify your understanding.</p>
+<div class="question task"><p><strong>Task 1 (Data Cleaner):</strong> Write a function <code>clean_name(name)</code> that: strips whitespace, converts to title case, replaces multiple spaces with single space, and removes non-alphabetic characters (except spaces). Test with <code>'  john   DOE 3rd  '</code>.</p></div>
+<div class="code-cell" id="cell-49">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-49')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-49')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-49"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 2 (CSV Parser):</strong> Write a function <code>parse_csv_line(line)</code> that splits a CSV line by commas, strips each field, and returns a list. Handle edge case: fields containing commas inside quotes. Test with <code>'Alice, 28, "New York, NY"'</code>.</p></div>
+<div class="code-cell" id="cell-50">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-50')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-50')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-50"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 3 (Log Analyzer):</strong> Given <code>log = "2024-01-15 14:30:22 ERROR Database connection failed"</code>, extract: date, time, level, message using string methods only (no regex). Print each part.</p></div>
+<div class="code-cell" id="cell-51">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-51')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-51')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-51"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 4 (Email Validator):</strong> Write a function <code>validate_email(email)</code> that checks: contains exactly one <code>@</code>, has text before and after <code>@</code>, domain has a dot, no spaces. Return <code>True</code>/<code>False</code>. Test with 5 valid and 5 invalid emails.</p></div>
+<div class="code-cell" id="cell-52">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-52')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-52')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-52"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 5 (Text Statistics):</strong> Write a function <code>text_stats(text)</code> that returns a dict with: character count, word count, sentence count, average word length, most common word. Test with a paragraph of text.</p></div>
+<div class="code-cell" id="cell-53">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-53')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-53')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-53"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong></p>
+<h3>Write a function <code>reverse_words(s)</code> that reverses word order: <code>'hello world'</code> → <code>'world hello'</code>. Do NOT reverse individual characters.</h3>
+</div>
+<div class="code-cell" id="cell-54">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-54')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-54')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-54"># Solution for Q1</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q2.</strong></p>
+<h3>Write a function <code>is_anagram(s1, s2)</code> that checks if two strings are anagrams (case-insensitive, ignoring spaces). Test with <code>'listen'</code> and <code>'silent'</code>.</h3>
+</div>
+<div class="code-cell" id="cell-55">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-55')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-55')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-55"># Solution for Q2</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q3.</strong></p>
+<h3>Write a function <code>compress(s)</code> implementing run-length encoding: <code>'aabcccdd'</code> → <code>'a2b1c3d2'</code>. Only compress if result is shorter.</h3>
+</div>
+<div class="code-cell" id="cell-56">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-56')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-56')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-56"># Solution for Q3</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong></p>
+<h3>Write a function <code>first_non_repeating(s)</code> that finds the first non-repeating character. <code>'aabbc'</code> → <code>'c'</code>. Return <code>None</code> if all repeat.</h3>
+</div>
+<div class="code-cell" id="cell-57">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-57')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-57')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-57"># Solution for Q4</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong></p>
+<h3>Write a function <code>caesar_cipher(text, shift)</code> that shifts each letter by <code>shift</code> positions. Handle wrapping (z→a) and preserve non-letters.</h3>
+</div>
+<div class="code-cell" id="cell-58">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-58')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-58')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-58"># Solution for Q5</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong></p>
+<h3>Write a function <code>longest_common_prefix(strs)</code> that finds the longest common prefix in a list of strings. <code>['flower','flow','flight']</code> → <code>'fl'</code>.</h3>
+</div>
+<div class="code-cell" id="cell-59">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-59')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-59')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-59"># Solution for Q6</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong></p>
+<h3>Write a function <code>valid_parentheses(s)</code> that checks if brackets are balanced: <code>'([{}])'</code> → <code>True</code>, <code>'([)]'</code> → <code>False</code>.</h3>
+</div>
+<div class="code-cell" id="cell-60">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-60')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-60')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-60"># Solution for Q7</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong></p>
+<h3>Write a function <code>count_vowels(s)</code> that returns a dict of vowel frequencies (case-insensitive). Test with a sentence.</h3>
+</div>
+<div class="code-cell" id="cell-61">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-61')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-61')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-61"># Solution for Q8</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong></p>
+<h3>Write a function <code>title_case(s)</code> that capitalizes the first letter of each word, except articles (<code>a, an, the</code>). First word always capitalized.</h3>
+</div>
+<div class="code-cell" id="cell-62">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-62')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-62')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-62"># Solution for Q9</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-135">
+<div class="question interview"><p><strong>Q10.</strong></p>
+<h3>Write a function <code>remove_duplicates(s)</code> that removes duplicate characters preserving order: <code>'abcabc'</code> → <code>'abc'</code>.</h3>
+</div>
+<div class="code-cell" id="cell-63">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-63')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-63')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-63"># Solution for Q10</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-137">
+<div class="question interview"><p><strong>Q11.</strong></p>
+<h3>Write a function <code>zigzag(s, rows)</code> that converts text to zigzag pattern and reads row by row. <code>'PAYPALISHIRING'</code> with 3 rows → <code>'PAHNAPLSIIGYIR'</code>.</h3>
+</div>
+<div class="code-cell" id="cell-64">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-64')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-64')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-64"># Solution for Q11</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-139">
+<div class="question interview"><p><strong>Q12.</strong></p>
+<h3>Write a function <code>word_pattern(pattern, s)</code> that checks if string follows pattern: <code>pattern='abba', s='dog cat cat dog'</code> → <code>True</code>.</h3>
+</div>
+<div class="code-cell" id="cell-65">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-65')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-65')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-65"># Solution for Q12</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-141">
+<div class="question interview"><p><strong>Q13.</strong></p>
+<h3>Write a function <code>group_anagrams(words)</code> that groups anagrams together. <code>['eat','tea','tan','ate','nat','bat']</code> → grouped lists.</h3>
+</div>
+<div class="code-cell" id="cell-66">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-66')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-66')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-66"># Solution for Q13</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-143">
+<div class="question interview"><p><strong>Q14.</strong></p>
+<h3>Write a function <code>find_overlapping(s, sub)</code> that counts all overlapping occurrences of <code>sub</code> in <code>s</code>. E.g., <code>find_overlapping('aaa', 'aa')</code> returns <code>2</code>.</h3>
+</div>
+<div class="code-cell" id="cell-67">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-67')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-67')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-67"># Solution for Q14</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-145">
+<div class="question interview"><p><strong>Q15.</strong></p>
+<h3>Write a function <code>pad_number(n, width)</code> that pads a number with leading zeros to the given width. E.g., <code>pad_number(42, 5)</code> returns <code>'00042'</code>.</h3>
+</div>
+<div class="code-cell" id="cell-68">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-68')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-68')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-68"># Solution for Q15</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-147">
+<div class="question interview"><p><strong>Q16.</strong></p>
+<h3>Write code to implement <code>str.replace()</code> from scratch: <code>my_replace(text, old, new)</code>. Handle overlapping patterns.</h3>
+</div>
+<div class="code-cell" id="cell-69">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-69')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-69')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-69"># Solution for Q16</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-149">
+<div class="question interview"><p><strong>Q17.</strong></p>
+<h3>Write a function <code>repeat_chars(s, n)</code> that repeats each character n times: <code>repeat_chars('abc', 3)</code> returns <code>'aaabbbccc'</code>.</h3>
+</div>
+<div class="code-cell" id="cell-70">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-70')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-70')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-70"># Solution for Q17</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-151">
+<div class="question interview"><p><strong>Q18.</strong></p>
+<h3>Write a function <code>longest_palindrome_substring(s)</code> that finds the longest palindromic substring in a string.</h3>
+</div>
+<div class="code-cell" id="cell-71">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-71')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-71')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-71"># Solution for Q18</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-153">
+<div class="question interview"><p><strong>Q19.</strong></p>
+<h3>Write a function <code>atoi(s)</code> that converts string to integer handling: whitespace, signs, overflow, invalid chars. Mimic <code>int()</code> behavior.</h3>
+</div>
+<div class="code-cell" id="cell-72">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-72')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-72')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-72"># Solution for Q19</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-155">
+<div class="question interview"><p><strong>Q20.</strong></p>
+<h3>Write a function <code>justify_text(text, width)</code> that fully justifies text to given width by distributing spaces evenly between words.</h3>
+</div>
+<div class="code-cell" id="cell-73">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-73')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-73')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-73"># Solution for Q20</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-157">
+<div class="question interview"><p><strong>Q21.</strong></p>
+<h3>Write a function <code>compare_version(v1, v2)</code> that compares version strings: <code>'1.2.3'</code> vs <code>'1.2.4'</code> → <code>-1</code>. Handle different lengths.</h3>
+</div>
+<div class="code-cell" id="cell-74">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-74')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-74')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-74"># Solution for Q21</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-159">
+<div class="question interview"><p><strong>Q22.</strong></p>
+<h3>Write a function <code>interleave(s1, s2)</code> that interleaves two strings: <code>'abc','xyz'</code> → <code>'axbycz'</code>. Handle different lengths.</h3>
+</div>
+<div class="code-cell" id="cell-75">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-75')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-75')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-75"># Solution for Q22</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-161">
+<div class="question interview"><p><strong>Q23.</strong></p>
+<h3>Write a function <code>count_substrings(s, sub)</code> that counts overlapping occurrences: <code>'aaa'</code> contains <code>'aa'</code> twice.</h3>
+</div>
+<div class="code-cell" id="cell-76">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-76')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-76')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-76"># Solution for Q23</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-163">
+<div class="question interview"><p><strong>Q24.</strong></p>
+<h3>Write a function <code>to_snake_case(s)</code> converting <code>'camelCaseString'</code> → <code>'camel_case_string'</code>. Handle consecutive capitals.</h3>
+</div>
+<div class="code-cell" id="cell-77">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-77')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-77')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-77"># Solution for Q24</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-165">
+<div class="question interview"><p><strong>Q25.</strong></p>
+<h3>Write a function <code>expand_range(s)</code> that expands: <code>'1-5,8,11-14'</code> → <code>[1,2,3,4,5,8,11,12,13,14]</code>.</h3>
+</div>
+<div class="code-cell" id="cell-78">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-78')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-78')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-78"># Solution for Q25</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="summary">
+<div class="section-header cyan"><h2>📊 Day 3 Executive Summary</h2></div>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Takeaway</th><th>Professional Application</th></tr></thead><tbody>
+<tr><td>1</td><td>Creation</td><td>4 ways to create; strings are immutable</td><td>File paths, SQL queries</td></tr>
+<tr><td>2</td><td>Indexing & Slicing</td><td>Zero-based; <code>stop</code> is exclusive; <code>[::-1]</code> reverses</td><td>Log parsing, data extraction</td></tr>
+<tr><td>3</td><td>Core Methods</td><td><code>.strip()</code>, <code>.replace()</code>, <code>.find()</code> — chain them</td><td>Data cleaning pipelines</td></tr>
+<tr><td>4</td><td>Split & Join</td><td><code>split()</code> → list; <code>join()</code> → string</td><td>CSV/text parsing</td></tr>
+<tr><td>5</td><td>Formatting</td><td>f-strings are fastest and most readable</td><td>Reports, dashboards</td></tr>
+<tr><td>6</td><td>Validation</td><td><code>.isdigit()</code>, <code>.isalpha()</code> for quality checks</td><td>Input validation, ETL</td></tr>
+<tr><td>7</td><td>Encoding</td><td>UTF-8 default; <code>encode()</code>/<code>decode()</code> for bytes</td><td>APIs, file I/O</td></tr>
+<tr><td>8</td><td>Performance</td><td><code>join()</code> >> <code>+=</code> for loop concatenation</td><td>Large-scale text processing</td></tr>
+</tbody></table>
+<h2>✅ Instructor's End-of-Day Checklist</h2>
+<p>• [ ] I understand string immutability and its performance implications.</p>
+<p>• [ ] I can use slicing to extract substrings efficiently.</p>
+<p>• [ ] I know the difference between <code>.find()</code> (safe) and <code>.index()</code> (raises error).</p>
+<p>• [ ] I can use f-strings with format specs for professional output.</p>
+<p>• [ ] I understand encoding and can handle UTF-8/bytes conversion.</p>
+<p>• [ ] I have completed all 5 practice tasks.</p>
+<p>• [ ] I have reviewed all 25 interview questions.</p>
+<p><strong>Next Up: Day 4 - Lists: Dynamic Sequences, Manipulation, and Data Pipelines</strong></p>
+</div>
+  </main>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
+    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
+<li><a href="#sec-1" class="toc-link">1. String Creation & Escaping : Text Data Fundamentals</a></li>
+<li><a href="#checks-Creation-3" class="toc-link">🧪 Checks: Creation</a></li>
+<li><a href="#sec-14" class="toc-link">2. Indexing & Slicing : Precision Text Extraction</a></li>
+<li><a href="#checks-Check-16" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-27" class="toc-link">3. Core String Methods : Search, Replace & Transform</a></li>
+<li><a href="#checks-Check-29" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-40" class="toc-link">4. Splitting & Joining : Text Decomposition & Assembly</a></li>
+<li><a href="#checks-Check-42" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-53" class="toc-link">5. String Formatting : Professional Output Generation</a></li>
+<li><a href="#checks-Formatting-55" class="toc-link">🧪 Checks: Formatting</a></li>
+<li><a href="#sec-66" class="toc-link">6. String Validation Methods : Data Quality Checks</a></li>
+<li><a href="#checks-Validation-68" class="toc-link">🧪 Checks: Validation</a></li>
+<li><a href="#sec-79" class="toc-link">7. Encoding & Unicode : Global Text Processing</a></li>
+<li><a href="#checks-Encoding-81" class="toc-link">🧪 Checks: Encoding</a></li>
+<li><a href="#sec-92" class="toc-link">8. String Performance : Efficient Text Processing</a></li>
+<li><a href="#checks-Performance-94" class="toc-link">🧪 Checks: Performance</a></li>
+<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
+<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
+<li><a href="#sec-135" class="toc-link">Q10.</a></li>
+<li><a href="#sec-137" class="toc-link">Q11.</a></li>
+<li><a href="#sec-139" class="toc-link">Q12.</a></li>
+<li><a href="#sec-141" class="toc-link">Q13.</a></li>
+<li><a href="#sec-143" class="toc-link">Q14.</a></li>
+<li><a href="#sec-145" class="toc-link">Q15.</a></li>
+<li><a href="#sec-147" class="toc-link">Q16.</a></li>
+<li><a href="#sec-149" class="toc-link">Q17.</a></li>
+<li><a href="#sec-151" class="toc-link">Q18.</a></li>
+<li><a href="#sec-153" class="toc-link">Q19.</a></li>
+<li><a href="#sec-155" class="toc-link">Q20.</a></li>
+<li><a href="#sec-157" class="toc-link">Q21.</a></li>
+<li><a href="#sec-159" class="toc-link">Q22.</a></li>
+<li><a href="#sec-161" class="toc-link">Q23.</a></li>
+<li><a href="#sec-163" class="toc-link">Q24.</a></li>
+<li><a href="#sec-165" class="toc-link">Q25.</a></li>
+<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
+    <div class="sidebar-resize" id="sidebarResize"></div>
+  </nav>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="notebook.js"></script>
+</body>
+</html>

@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 09: Loops — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="notebook.css">
+</head>
+<body>
+<nav class="top-bar" id="topBar">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="landing.html" class="home-btn" title="Back to Curriculum">🏠</a>
+      <div class="nav-score" title="Questions Solved">
+        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
+        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="nav-center">Day 09 : Loops</div>
+    <div class="nav-right"><a href="day08.html" class="nav-btn prev-btn">← Prev</a><a href="day10.html" class="nav-btn next-btn">Next →</a></div>
+  </div>
+</nav>
+<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
+<div class="layout">
+  <main class="notebook" id="notebook">
+    <div class="nb-title"><h1>📊 Day 09 : Loops</h1></div>
+<div class="nb-section" id="sec-0">
+<h2>🎯 Enterprise Objective</h2>
+<p>Iteration is the engine of data processing. Today we graduate from basic loops to professional iteration patterns. You will learn to write memory-efficient pipelines using generators and the <code>itertools</code> module, allowing you to process gigabytes of data seamlessly without crashing your system.</p>
+<h3>📋 Strategic Overview</h3>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Concept</th><th>Core Use Case</th></tr></thead><tbody>
+<tr><td>1</td><td><code>for</code> loops</td><td>Iterables & Iterators</td><td>Standard data traversal</td></tr>
+<tr><td>2</td><td><code>while</code> loops</td><td>Condition-based</td><td>Polling & Pagination</td></tr>
+<tr><td>3</td><td>Loop Control</td><td><code>continue</code>, <code>for...else</code></td><td>Filtering & Search logic</td></tr>
+<tr><td>4</td><td>Patterns</td><td><code>enumerate()</code>, <code>zip()</code></td><td>Multi-list processing</td></tr>
+<tr><td>5</td><td>Generators</td><td><code>yield</code></td><td>O(1) Memory pipelines</td></tr>
+<tr><td>6</td><td>Expressions</td><td><code>(expr for x in data)</code></td><td>Lazy reductions</td></tr>
+<tr><td>7</td><td>Itertools</td><td><code>chain</code>, <code>combinations</code></td><td>Combinatorial math</td></tr>
+</tbody></table>
+</div>
+<div class="nb-section" id="sec-1">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. For Loops & Iterables : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Data Traversal</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A <code>for</code> loop in Python iterates over an <b>iterable</b> (like a list, string, or dictionary). Unlike C-style loops that use index counters, Python's <code>for</code> loop extracts the actual items directly. Under the hood, it calls <code>iter()</code> to get an iterator, and <code>next()</code> until it hits a <code>StopIteration</code> error.</p>
+<table>
+<thead><tr><th>Iterable Type</th><th>Iteration Yields</th><th>Example</th></tr></thead><tbody>
+<tr><td>List / Tuple</td><td>Items</td><td><code>for item in [1, 2]:</code></td></tr>
+<tr><td>String</td><td>Characters</td><td><code>for char in 'abc':</code></td></tr>
+<tr><td>Dictionary</td><td>Keys</td><td><code>for key in {'a': 1}:</code></td></tr>
+<tr><td>Set</td><td>Items (Unordered)</td><td><code>for item in {1, 2}:</code></td></tr>
+<tr><td>File object</td><td>Lines</td><td><code>for line in open('f.txt'):</code></td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Data Processing</strong>: Iterating over rows in a dataset or JSON objects in an API response</p>
+<p>• <strong>File Parsing</strong>: Reading gigabytes of log files line-by-line without loading them into memory</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Modifying While Iterating</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Never modify a list (adding/removing items) while iterating over it with a <code>for</code> loop. It will skip elements or crash. Iterate over a <b>copy</b> instead: <code>for item in my_list.copy():</code>.</p>
+<div class="code-cell" id="cell-1">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-1"># Iterating lists
+names = [&#x27;Alice&#x27;, &#x27;Bob&#x27;, &#x27;Charlie&#x27;]
+for name in names:
+    print(f&#x27;Hello {name}&#x27;)
+
+# Iterating strings
+for char in &#x27;Data&#x27;:
+    print(char.upper())
+
+# Under the hood (How &#x27;for&#x27; actually works)
+nums = [1, 2]
+iterator = iter(nums)
+print(next(iterator))  # 1
+print(next(iterator))  # 2
+# print(next(iterator)) # Raises StopIteration</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-3">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>For Loops</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Write a <code>for</code> loop that iterates over <code>data = [10, 20, 30]</code> and prints the square of each number.</p></div>
+<div class="code-cell" id="cell-2">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-2"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Iterate over the string <code>"Python"</code> and print each character multiplied by 3 (e.g., <code>"PPP"</code>).</p></div>
+<div class="code-cell" id="cell-3">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-3"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Create a dictionary <code>d = {"a": 1, "b": 2}</code>. Use a standard <code>for</code> loop (which yields keys) to print both key and value: <code>d[key]</code>.</p></div>
+<div class="code-cell" id="cell-4">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-4"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Demonstrate the modification trap: iterate over <code>lst = [1, 2, 3, 4]</code>, and if the item is even, remove it using <code>lst.remove()</code>. Print the list. Did it work correctly? Explain.</p></div>
+<div class="code-cell" id="cell-5">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-5"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Fix the previous code by iterating over a slice copy <code>lst[:]</code>. Print the corrected list.</p></div>
+<div class="code-cell" id="cell-6">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-6"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-14">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>2. While Loops & State Machines : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Condition-Based Iteration</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A <code>while</code> loop runs as long as a condition evaluates to <code>True</code>. It is used when the number of iterations is <b>unknown</b> beforehand (e.g., waiting for an API response, polling a database, or reading user input until they type 'quit').</p>
+<pre class="nb-code-block"><code># Polling pattern
+while not db.is_ready():
+    time.sleep(1)
+    print(&quot;Waiting...&quot;)</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>API Pagination</strong>: Fetching pages of data until <code>next_page_token</code> is null</p>
+<p>• <strong>Retry Logic</strong>: Attempting to connect to a server up to 5 times before failing</p>
+<p>• <strong>Simulation</strong>: Running a simulation until a specific convergence threshold is met</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Infinite Loops</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Always ensure the condition inside a <code>while</code> loop will eventually become <code>False</code>, or provide a <code>break</code> statement. Otherwise, your program will freeze forever.</p>
+<div class="code-cell" id="cell-7">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-7">import random
+
+# Standard while loop
+counter = 3
+while counter &gt; 0:
+    print(f&#x27;Countdown: {counter}&#x27;)
+    counter -= 1
+print(&#x27;Liftoff!&#x27;)
+
+# Polling / Unknown iterations pattern
+attempts = 0
+success = False
+
+while not success and attempts &lt; 5:
+    attempts += 1
+    # Simulate a network request with 20% success rate
+    if random.random() &gt; 0.8:
+        success = True
+        print(f&#x27;Connected on attempt {attempts}!&#x27;)
+    else:
+        print(f&#x27;Attempt {attempts} failed...&#x27;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-16">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>While Loops</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Write a <code>while</code> loop that prints powers of 2 (1, 2, 4, 8...) as long as the value is less than 100.</p></div>
+<div class="code-cell" id="cell-8">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-8"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Write a while loop to find the first number divisible by both 7 and 13, starting your search at <code>n = 1</code>. Print it.</p></div>
+<div class="code-cell" id="cell-9">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-9"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Create a list <code>items = ["a", "b", "c"]</code>. Use a <code>while items:</code> loop and <code>.pop()</code> to empty the list, printing each item.</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Write a simulation: start with <code>money = 100</code>. In a while loop, subtract a random amount between 10-20 until money is < 0. Count iterations.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> What is the most common cause of an infinite loop? Write a tiny script demonstrating one (and comment it out so it doesn't crash the notebook!).</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-27">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>3. Loop Control : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Break, Continue, Pass & Else</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Python provides keywords to alter loop flow. <code>break</code> exits the loop entirely. <code>continue</code> skips the rest of the current iteration and jumps to the next. Python also has a unique <code>for...else</code> construct where the <code>else</code> block runs <b>only if the loop completes without hitting a break</b>.</p>
+<table>
+<thead><tr><th>Keyword</th><th>Effect</th><th>Common Use</th></tr></thead><tbody>
+<tr><td><code>continue</code></td><td>Skip to next iteration</td><td>Guard clauses inside loops (filtering)</td></tr>
+<tr><td><code>break</code></td><td>Exit loop immediately</td><td>Early exit when item is found</td></tr>
+<tr><td><code>pass</code></td><td>Do nothing</td><td>Placeholder for unimplemented code</td></tr>
+<tr><td><code>else</code></td><td>Runs if NO break occurred</td><td>"Search failed" logic</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Data Filtering</strong>: Use <code>continue</code> to skip invalid rows without deeply nesting <code>if</code> statements</p>
+<p>• <strong>Search Algorithms</strong>: Use <code>break</code> to stop searching a massive dataset once the target is found</p>
+<p>• <strong>Validation</strong>: Use <code>for...else</code> to verify that ALL items pass a check</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>The <code>for...else</code> naming is confusing. Think of it as <b><code>for...no_break</code></b>. It's the most Pythonic way to perform a 'search and report if not found' pattern.</p>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13"># Continue (Skip evens)
+print(&quot;Continue:&quot;)
+for i in range(1, 6):
+    if i % 2 == 0:
+        continue
+    print(i)  # 1, 3, 5
+
+# Break (Early exit)
+print(&quot;\nBreak:&quot;)
+for i in range(1, 6):
+    if i == 4:
+        break
+    print(i)  # 1, 2, 3
+
+# For...Else (Search pattern)
+print(&quot;\nFor...Else:&quot;)
+target = 99
+data = [10, 20, 30]
+
+for num in data:
+    if num == target:
+        print(&quot;Found it!&quot;)
+        break
+else:
+    print(&quot;Target not found in dataset.&quot;)  # Runs because break was never hit</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-29">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Loop Control</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Write a loop from 1 to 10. Use <code>continue</code> to skip numbers divisible by 3. Print the rest.</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Given <code>data = [1, 5, -2, 8, -4]</code>, iterate and print positive numbers. Use <code>break</code> to stop completely if you hit a negative number.</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Write a <code>for...else</code> loop that checks if a prime number <code>11</code> is divisible by any number from 2 to 10. If not, the <code>else</code> block prints "It is prime".</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Write a <code>while True:</code> loop that increments a counter. Use an <code>if</code> statement and <code>break</code> to exit when the counter reaches 5. Print the counter.</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Why is <code>pass</code> useful? Write an empty function or loop using <code>pass</code> to show how it prevents a SyntaxError.</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-40">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>4. Iteration Patterns : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Pythonic Looping</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>Python emphasizes readability. Instead of manually tracking indices with <code>range(len(data))</code>, Python provides elegant built-in functions: <code>enumerate()</code> (value + index), <code>zip()</code> (parallel iteration), and <code>reversed()</code> (backwards).</p>
+<table>
+<thead><tr><th>Pattern</th><th>Good Pythonic Code</th><th>Bad C-Style Code</th></tr></thead><tbody>
+<tr><td>Index Tracking</td><td><code>for i, val in enumerate(lst):</code></td><td><code>for i in range(len(lst)): val = lst[i]</code></td></tr>
+<tr><td>Parallel Loops</td><td><code>for a, b in zip(listA, listB):</code></td><td><code>for i in range(len(listA)): a,b = listA[i], listB[i]</code></td></tr>
+<tr><td>Reverse Loop</td><td><code>for val in reversed(lst):</code></td><td><code>for i in range(len(lst)-1, -1, -1):</code></td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Feature Engineering</strong>: Combining multiple columns using <code>zip(col1, col2)</code></p>
+<p>• <strong>Logging</strong>: Printing row numbers alongside data errors using <code>enumerate(data, start=1)</code></p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Uneven Zip</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <code>zip()</code> stops at the shortest iterable. If <code>A</code> has 5 items and <code>B</code> has 3, it only loops 3 times. Use <code>itertools.zip_longest</code> if you need to process all elements.
+</div></div>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19">names = [&#x27;Alice&#x27;, &#x27;Bob&#x27;, &#x27;Charlie&#x27;]
+scores = [95, 82, 91]
+
+# Enumerate (Index + Value)
+print(&quot;Enumerate:&quot;)
+for idx, name in enumerate(names, start=1):
+    print(f&quot;Row {idx}: {name}&quot;)
+
+# Zip (Parallel iteration)
+print(&quot;\nZip:&quot;)
+for name, score in zip(names, scores):
+    print(f&quot;{name} got {score}&quot;)
+
+# Reversed
+print(&quot;\nReversed:&quot;)
+for name in reversed(names):
+    print(name)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-42">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Iteration Patterns</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>cities = ["NY", "LA", "CHI"]</code>, use <code>enumerate(..., start=1)</code> to print <code>"1. NY"</code>, <code>"2. LA"</code>, etc.</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Given <code>keys = ["a", "b", "c"]</code> and <code>vals = [1, 2, 3]</code>, use <code>zip</code> in a dictionary comprehension to map them: <code>{k: v}</code>. Print the dict.</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> What happens if you <code>zip</code> <code>[1, 2, 3]</code> with <code>["A", "B"]</code>? Write the loop and print the results to see the truncation.</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Loop backwards from 10 to 1 using <code>reversed(range(1, 11))</code>. Print the numbers.</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Combine patterns: use <code>enumerate(zip(names, scores))</code> to print the index, name, and score all at once. Try it!</p></div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-53">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>5. Generators & yield : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Lazy Memory-Efficient Evaluation</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A <b>generator</b> is a special function that returns an iterator. Instead of computing an entire list and storing it in memory, it uses the <code>yield</code> keyword to produce values <b>one at a time</b>. It pauses its state between yields.</p>
+<pre class="nb-code-block"><code># Normal Function (Eats RAM)
+def get_millions():
+    return [x for x in range(1_000_000)] # list in memory
+
+# Generator (O(1) Memory)
+def yield_millions():
+    for x in range(1_000_000):
+        yield x  # yields one by one</code></pre>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Big Data Processing</strong>: Reading a 50GB CSV file line-by-line without crashing your laptop</p>
+<p>• <strong>Infinite Streams</strong>: Processing real-time sensor data or Kafka event streams</p>
+<p>• <strong>API Pagination</strong>: Yielding records page-by-page as they are requested</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Generators are Single-Use</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Once a generator is exhausted (loop finishes), it is empty. You cannot iterate over it a second time. You must create a new generator object.</p>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25">import sys
+
+# Regular list
+squares_list = [x**2 for x in range(10000)]
+
+# Generator function
+def generate_squares(n):
+    for x in range(n):
+        yield x**2
+
+# Generator object
+squares_gen = generate_squares(10000)
+
+print(f&quot;List memory: {sys.getsizeof(squares_list)} bytes&quot;)
+print(f&quot;Gen memory:  {sys.getsizeof(squares_gen)} bytes&quot;)
+
+# Iterating the generator
+print(&quot;First 3 from generator:&quot;)
+print(next(squares_gen))  # 0
+print(next(squares_gen))  # 1
+print(next(squares_gen))  # 4</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Generators-55">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Generators</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Write a generator function <code>countdown(n)</code> that yields numbers from n down to 1. Test it in a loop.</p></div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Demonstrate that generators are single-use: create a generator, loop over it once, then try to loop over it again. What happens?</p></div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Write a generator <code>fibonacci(limit)</code> that yields Fibonacci numbers up to a maximum value. Print the results.</p></div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Create a generator that yields random numbers between 1-10 infinitely. Use <code>next()</code> to pull 3 numbers from it manually.</p></div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Why is <code>yield</code> better than <code>return</code> when parsing a massive log file?</p></div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-66">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>6. Generator Expressions : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Inline Lazy Data</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A <b>generator expression</b> is exactly like a list comprehension, but it uses <b>parentheses <code>()</code></b> instead of square brackets <code>[]</code>. It creates a generator object instead of a list, saving massive amounts of memory.</p>
+<table>
+<thead><tr><th>Syntax</th><th>Object Created</th><th>Evaluation</th><th>Memory</th></tr></thead><tbody>
+<tr><td><code>[x for x in data]</code></td><td><code>list</code></td><td>Eager (All at once)</td><td>High</td></tr>
+<tr><td><code>(x for x in data)</code></td><td><code>generator</code></td><td>Lazy (One by one)</td><td>Low O(1)</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Math Reductions</strong>: <code>sum(x**2 for x in data)</code> — computes the sum without creating a temporary list</p>
+<p>• <strong>Pipelining</strong>: Chain multiple generator expressions to create a clean, memory-efficient data pipeline</p>
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>When passing a generator expression as the ONLY argument to a function, you can omit the extra parentheses: <code>sum(x<strong>2 for x in range(10))</code> instead of <code>sum((x</strong>2 for x in range(10)))</code>.</p>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31"># List Comprehension
+lst = [x * 2 for x in range(10)]
+print(type(lst))  # &lt;class &#x27;list&#x27;&gt;
+
+# Generator Expression
+gen = (x * 2 for x in range(10))
+print(type(gen))  # &lt;class &#x27;generator&#x27;&gt;
+
+# Best practice: Reductions
+total = sum(x**2 for x in range(1, 1001))
+print(f&quot;Sum of squares: {total:,}&quot;)
+
+# Any / All with generators (short-circuits!)
+# Stops computing as soon as it finds an even number
+has_even = any(x % 2 == 0 for x in [1, 3, 5, 6, 7, 9])
+print(f&quot;Has even? {has_even}&quot;)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Check-68">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Generator Expressions</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Write a generator expression for the cubes of numbers 1-10. Assign it to <code>gen</code>. Print <code>next(gen)</code> twice.</p></div>
+<div class="code-cell" id="cell-32">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-32')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-32')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-32"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Given <code>data = ["10", "20", "invalid", "30"]</code>, write a generator expression that attempts to convert valid integers. Iterate and print.</p></div>
+<div class="code-cell" id="cell-33">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-33')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-33')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-33"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Compute the sum of the first 10,000 even numbers using <code>sum()</code> and a generator expression. Print the result.</p></div>
+<div class="code-cell" id="cell-34">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-34')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-34')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-34"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Use <code>all()</code> with a generator expression to check if all words in <code>["apple", "banana", "cherry"]</code> have > 3 letters.</p></div>
+<div class="code-cell" id="cell-35">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-35')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-35')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-35"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Measure the memory difference (<code>sys.getsizeof()</code>) between <code>[x for x in range(10000)]</code> and <code>(x for x in range(10000))</code>.</p></div>
+<div class="code-cell" id="cell-36">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-36')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-36')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-36"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-79">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>7. The itertools Module : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Professional Iteration</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>The <code>itertools</code> module is a standard library toolkit for creating and combining iterators. It provides fast, memory-efficient tools for combinatorial math, grouping, and advanced looping patterns.</p>
+<p><strong>Key Itertools:</strong></p>
+<table>
+<thead><tr><th>Function</th><th>Purpose</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>chain(A, B)</code></td><td>Combine iterables sequentially</td><td><code>chain([1,2], [3,4])</code> → 1,2,3,4</td></tr>
+<tr><td><code>combinations(A, 2)</code></td><td>All unique pairs</td><td><code>(A,B), (A,C), (B,C)</code></td></tr>
+<tr><td><code>permutations(A, 2)</code></td><td>All ordered pairs</td><td><code>(A,B), (B,A), (A,C)...</code></td></tr>
+<tr><td><code>cycle(A)</code></td><td>Infinite loop over A</td><td><code>1,2,1,2,1,2...</code></td></tr>
+<tr><td><code>groupby(A, key)</code></td><td>Group adjacent duplicates</td><td>Grouping sorted data</td></tr>
+</tbody></table>
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Feature Interactions</strong>: Generating all pairs of columns using <code>combinations</code> for machine learning</p>
+<p>• <strong>Flattening Data</strong>: Using <code>chain.from_iterable(list_of_lists)</code> to flatten nested structures efficiently</p>
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Infinite Itertools</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+</div></div>
+<p>Tools like <code>cycle</code>, <code>count</code>, and <code>repeat</code> generate infinite streams. Always use a <code>break</code> condition or zip them with a finite sequence, otherwise your program will hang.</p>
+<div class="code-cell" id="cell-37">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-37')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-37')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-37">import itertools
+
+# Chain: seamless iteration across multiple lists
+l1, l2 = [1, 2], [3, 4]
+print(&quot;Chain:&quot;, list(itertools.chain(l1, l2)))
+
+# Combinations: pick 2
+items = [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;]
+combs = list(itertools.combinations(items, 2))
+print(&quot;Combinations:&quot;, combs)
+
+# Zip Longest (pad missing values)
+l3 = [1, 2, 3]
+l4 = [&#x27;A&#x27;]
+zipped = list(itertools.zip_longest(l3, l4, fillvalue=&#x27;?&#x27;))
+print(&quot;Zip Longest:&quot;, zipped)
+
+# Slice an infinite iterator
+counter = itertools.count(start=10, step=5)
+first_three = list(itertools.islice(counter, 3))
+print(&quot;Infinite Count slice:&quot;, first_three)</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="checks-Itertools-81">
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Itertools</code></b>
+</h3></div>
+<div class="question"><p><strong>Q1.</strong> Import <code>itertools</code>. Use <code>chain()</code> to loop over <code>[1,2,3]</code>, <code>(4,5)</code>, and <code>{"A", "B"}</code> in a single for loop. Print each item.</p></div>
+<div class="code-cell" id="cell-38">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-38')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-38')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-38"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q2.</strong> Use <code>itertools.combinations()</code> to find all 3-person teams from <code>["Alice", "Bob", "Charlie", "David"]</code>. Print them.</p></div>
+<div class="code-cell" id="cell-39">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-39')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-39')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-39"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>itertools.permutations()</code> on <code>[1, 2, 3]</code> with length 2. How many results are there compared to combinations?</p></div>
+<div class="code-cell" id="cell-40">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-40')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-40')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-40"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q4.</strong> Write a <code>for</code> loop using <code>itertools.cycle(["Red", "Green", "Blue"])</code>. Use a manual counter to <code>break</code> after 7 prints.</p></div>
+<div class="code-cell" id="cell-41">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-41')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-41')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-41"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question"><p><strong>Q5.</strong> Flatten <code>matrix = [[1, 2], [3, 4], [5, 6]]</code> using <code>itertools.chain.from_iterable()</code>. Print the resulting list.</p></div>
+<div class="code-cell" id="cell-42">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-42')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-42')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-42"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="practice">
+<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
+<p>Theory is useless without muscle memory. Complete these tasks to solidify your understanding.</p>
+<div class="question task"><p><strong>Task 1 (Data Paginator):</strong> Write a generator <code>paginate(data, page_size)</code> that yields chunks of a list. E.g., <code>paginate([1,2,3,4,5], 2)</code> yields <code>[1,2]</code>, <code>[3,4]</code>, <code>[5]</code>. Test it in a loop.</p></div>
+<div class="code-cell" id="cell-43">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-43')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-43')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-43"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 2 (CSV Reader Pipeline):</strong> Write two generator functions. <code>read_lines(text)</code> yields lines from a multi-line string. <code>parse_csv(lines)</code> yields lists of values. Chain them: <code>for row in parse_csv(read_lines(data)):</code>.</p></div>
+<div class="code-cell" id="cell-44">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-44')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-44')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-44"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 3 (Prime Generator):</strong> Write a generator <code>primes_up_to(n)</code> that yields prime numbers. Use an internal <code>while</code> loop and math logic. Test with <code>n=50</code>.</p></div>
+<div class="code-cell" id="cell-45">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-45')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-45')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-45"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 4 (For-Else Search):</strong> Given a list of dictionaries (users), write a <code>for...else</code> loop that searches for a user with <code>role == 'admin'</code>. Break and print their name if found, else print 'No admin configured'.</p></div>
+<div class="code-cell" id="cell-46">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-46')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-46')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-46"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question task"><p><strong>Task 5 (Cartesian Combinations):</strong> Given <code>colors = ['red', 'blue']</code> and <code>sizes = ['S', 'M', 'L']</code>, use <code>itertools.product</code> to generate and print all possible color/size combinations.</p></div>
+<div class="code-cell" id="cell-47">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-47')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-47')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-47"># Write your answer here</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong></p>
+<h3>Write a generator <code>fibonacci()</code> that yields the Fibonacci sequence infinitely. Use <code>itertools.islice</code> to get the first 10.</h3>
+</div>
+<div class="code-cell" id="cell-48">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-48')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-48')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-48"># Solution for Q1</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q2.</strong></p>
+<h3>Explain the difference between <code>yield</code> and <code>return</code>. What is a coroutine?</h3>
+</div>
+<div class="code-cell" id="cell-49">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-49')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-49')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-49"># Solution for Q2</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q3.</strong></p>
+<h3>Write a function <code>flatten(nested_list)</code> using recursion and <code>yield from</code> to flatten arbitrarily deep lists.</h3>
+</div>
+<div class="code-cell" id="cell-50">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-50')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-50')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-50"># Solution for Q3</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong></p>
+<h3>Explain how <code>for...else</code> works. Write a code example showing a use case where it replaces a boolean flag.</h3>
+</div>
+<div class="code-cell" id="cell-51">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-51')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-51')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-51"># Solution for Q4</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong></p>
+<h3>Write a generator expression to find the sum of all odd numbers under 1,000,000. Why is this better than a list comprehension?</h3>
+</div>
+<div class="code-cell" id="cell-52">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-52')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-52')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-52"># Solution for Q5</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong></p>
+<h3>Implement a custom iterator class (with <code><strong>iter</strong></code> and <code><strong>next</strong></code>) that mimics the <code>range(start, stop)</code> function.</h3>
+</div>
+<div class="code-cell" id="cell-53">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-53')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-53')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-53"># Solution for Q6</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong></p>
+<h3>Write a function <code>sliding_window(iterable, n)</code> using <code>itertools</code> or generators to yield n-length windows. <code>[1,2,3,4]</code>, n=2 -> <code>(1,2), (2,3), (3,4)</code>.</h3>
+</div>
+<div class="code-cell" id="cell-54">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-54')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-54')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-54"># Solution for Q7</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong></p>
+<h3>Write a function that parses a log file line-by-line using a generator, filtering only lines containing 'ERROR'.</h3>
+</div>
+<div class="code-cell" id="cell-55">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-55')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-55')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-55"># Solution for Q8</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong></p>
+<h3>Explain the <code>StopIteration</code> exception. Write code that manually catches it while using <code>next()</code>.</h3>
+</div>
+<div class="code-cell" id="cell-56">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-56')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-56')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-56"># Solution for Q9</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-122">
+<div class="question interview"><p><strong>Q10.</strong></p>
+<h3>Write a function <code>group_anagrams(words)</code> using <code>itertools.groupby</code>. Why must the data be sorted first?</h3>
+</div>
+<div class="code-cell" id="cell-57">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-57')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-57')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-57"># Solution for Q10</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-124">
+<div class="question interview"><p><strong>Q11.</strong></p>
+<h3>Implement a custom <code>zip(*iterables)</code> function using a <code>while</code> loop and <code>next()</code>.</h3>
+</div>
+<div class="code-cell" id="cell-58">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-58')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-58')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-58"># Solution for Q11</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-126">
+<div class="question interview"><p><strong>Q12.</strong></p>
+<h3>Write code using <code>itertools.dropwhile</code> and <code>takewhile</code> to extract a specific segment of data from a stream.</h3>
+</div>
+<div class="code-cell" id="cell-59">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-59')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-59')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-59"># Solution for Q12</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-128">
+<div class="question interview"><p><strong>Q13.</strong></p>
+<h3>Explain what <code>itertools.tee</code> does and when you would need to use it to duplicate an iterator.</h3>
+</div>
+<div class="code-cell" id="cell-60">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-60')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-60')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-60"># Solution for Q13</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-130">
+<div class="question interview"><p><strong>Q14.</strong></p>
+<h3>Write a function to generate all subsets (powerset) of a list using <code>itertools.combinations</code>.</h3>
+</div>
+<div class="code-cell" id="cell-61">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-61')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-61')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-61"># Solution for Q14</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-132">
+<div class="question interview"><p><strong>Q15.</strong></p>
+<h3>Write a generator <code>chunker(iterable, size)</code> that works on ANY iterable (not just lists) using <code>itertools.islice</code>.</h3>
+</div>
+<div class="code-cell" id="cell-62">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-62')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-62')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-62"># Solution for Q15</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-134">
+<div class="question interview"><p><strong>Q16.</strong></p>
+<h3>Implement an infinite prime number generator using a growing set of seen primes.</h3>
+</div>
+<div class="code-cell" id="cell-63">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-63')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-63')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-63"># Solution for Q16</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-136">
+<div class="question interview"><p><strong>Q17.</strong></p>
+<h3>Write code showing the difference between <code>itertools.combinations</code> and <code>itertools.combinations_with_replacement</code>.</h3>
+</div>
+<div class="code-cell" id="cell-64">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-64')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-64')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-64"># Solution for Q17</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-138">
+<div class="question interview"><p><strong>Q18.</strong></p>
+<h3>Write a function that uses a generator to find the first duplicate in a stream of data in O(1) memory.</h3>
+</div>
+<div class="code-cell" id="cell-65">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-65')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-65')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-65"># Solution for Q18</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-140">
+<div class="question interview"><p><strong>Q19.</strong></p>
+<h3>Explain the memory profile of <code>any([cond(x) for x in data])</code> vs <code>any(cond(x) for x in data)</code>. Why does it matter?</h3>
+</div>
+<div class="code-cell" id="cell-66">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-66')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-66')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-66"># Solution for Q19</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-142">
+<div class="question interview"><p><strong>Q20.</strong></p>
+<h3>Write a pipeline of three generator functions: read, filter, and transform. Connect them together.</h3>
+</div>
+<div class="code-cell" id="cell-67">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-67')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-67')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-67"># Solution for Q20</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-144">
+<div class="question interview"><p><strong>Q21.</strong></p>
+<h3>Implement the Collatz conjecture as a generator yielding the sequence until it reaches 1.</h3>
+</div>
+<div class="code-cell" id="cell-68">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-68')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-68')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-68"># Solution for Q21</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-146">
+<div class="question interview"><p><strong>Q22.</strong></p>
+<h3>Write a function that alternates yielding from two infinite generators using <code>itertools.cycle</code> or manual logic.</h3>
+</div>
+<div class="code-cell" id="cell-69">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-69')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-69')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-69"># Solution for Q22</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-148">
+<div class="question interview"><p><strong>Q23.</strong></p>
+<h3>Explain why modifying a dictionary while iterating over it raises a RuntimeError. How do you safely delete keys in a loop?</h3>
+</div>
+<div class="code-cell" id="cell-70">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-70')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-70')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-70"># Solution for Q23</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-150">
+<div class="question interview"><p><strong>Q24.</strong></p>
+<h3>Write a <code>while</code> loop that retries an API call (simulated function) with exponential backoff.</h3>
+</div>
+<div class="code-cell" id="cell-71">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-71')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-71')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-71"># Solution for Q24</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="sec-152">
+<div class="question interview"><p><strong>Q25.</strong></p>
+<h3>What is <code>yield from</code>? Write a function that uses it to chain two separate generator functions together.</h3>
+</div>
+<div class="code-cell" id="cell-72">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-72')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-72')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-72"># Solution for Q25</textarea>
+<div class="cell-output hidden"></div></div>
+</div>
+<div class="nb-section" id="summary">
+<div class="section-header cyan"><h2>📊 Day 9 Executive Summary</h2></div>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Takeaway</th><th>Professional Application</th></tr></thead><tbody>
+<tr><td>1</td><td><code>for</code> loops</td><td>Iterates over iterables</td><td>Data traversal without indices</td></tr>
+<tr><td>2</td><td><code>while</code> loops</td><td>Runs while condition is true</td><td>Polling, infinite streams, pagination</td></tr>
+<tr><td>3</td><td>Loop Control</td><td><code>break</code>, <code>continue</code>, <code>else</code></td><td>Fast filtering, search resolution</td></tr>
+<tr><td>4</td><td>Iteration Patterns</td><td><code>enumerate</code>, <code>zip</code>, <code>reversed</code></td><td>Elegant, readable data manipulation</td></tr>
+<tr><td>5</td><td>Generators</td><td><code>yield</code> pauses execution</td><td>O(1) memory for massive datasets</td></tr>
+<tr><td>6</td><td>Gen Expressions</td><td><code>(x for x in data)</code></td><td>Inline lazy reductions (sum/any/all)</td></tr>
+<tr><td>7</td><td>Itertools</td><td>Standard library iteration tools</td><td>Combinatorics, efficient chaining</td></tr>
+</tbody></table>
+<h2>✅ Instructor's End-of-Day Checklist</h2>
+<p>• [ ] I understand how <code>for</code> loops work under the hood (<code>iter()</code> and <code>next()</code>).</p>
+<p>• [ ] I know how to use <code>while</code> loops for unknown iteration counts (polling).</p>
+<p>• [ ] I can use <code>continue</code> to filter and <code>for...else</code> for search operations.</p>
+<p>• [ ] I always use <code>enumerate()</code> instead of <code>range(len())</code>.</p>
+<p>• [ ] I understand how <code>yield</code> saves memory compared to returning a full list.</p>
+<p>• [ ] I can write a generator expression for memory-efficient math reductions.</p>
+<p>• [ ] I have completed all 5 practice tasks.</p>
+<p>• [ ] I have reviewed all 25 interview questions.</p>
+<p>*<em>Next Up: Day 10 - Functions: Scope, Arguments, \</em>args/\<em>\</em>kwargs, and Lambdas**</p>
+</div>
+  </main>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
+    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
+<li><a href="#sec-1" class="toc-link">1. For Loops & Iterables : Data Traversal</a></li>
+<li><a href="#checks-Check-3" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-14" class="toc-link">2. While Loops & State Machines : Condition-Based Iteration</a></li>
+<li><a href="#checks-Check-16" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-27" class="toc-link">3. Loop Control : Break, Continue, Pass & Else</a></li>
+<li><a href="#checks-Check-29" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-40" class="toc-link">4. Iteration Patterns : Pythonic Looping</a></li>
+<li><a href="#checks-Check-42" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-53" class="toc-link">5. Generators & yield : Lazy Memory-Efficient Evaluation</a></li>
+<li><a href="#checks-Generators-55" class="toc-link">🧪 Checks: Generators</a></li>
+<li><a href="#sec-66" class="toc-link">6. Generator Expressions : Inline Lazy Data</a></li>
+<li><a href="#checks-Check-68" class="toc-link">🧪 Checks: Check</a></li>
+<li><a href="#sec-79" class="toc-link">7. The itertools Module : Professional Iteration</a></li>
+<li><a href="#checks-Itertools-81" class="toc-link">🧪 Checks: Itertools</a></li>
+<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
+<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
+<li><a href="#sec-122" class="toc-link">Q10.</a></li>
+<li><a href="#sec-124" class="toc-link">Q11.</a></li>
+<li><a href="#sec-126" class="toc-link">Q12.</a></li>
+<li><a href="#sec-128" class="toc-link">Q13.</a></li>
+<li><a href="#sec-130" class="toc-link">Q14.</a></li>
+<li><a href="#sec-132" class="toc-link">Q15.</a></li>
+<li><a href="#sec-134" class="toc-link">Q16.</a></li>
+<li><a href="#sec-136" class="toc-link">Q17.</a></li>
+<li><a href="#sec-138" class="toc-link">Q18.</a></li>
+<li><a href="#sec-140" class="toc-link">Q19.</a></li>
+<li><a href="#sec-142" class="toc-link">Q20.</a></li>
+<li><a href="#sec-144" class="toc-link">Q21.</a></li>
+<li><a href="#sec-146" class="toc-link">Q22.</a></li>
+<li><a href="#sec-148" class="toc-link">Q23.</a></li>
+<li><a href="#sec-150" class="toc-link">Q24.</a></li>
+<li><a href="#sec-152" class="toc-link">Q25.</a></li>
+<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
+    <div class="sidebar-resize" id="sidebarResize"></div>
+  </nav>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="notebook.js"></script>
+</body>
+</html>
