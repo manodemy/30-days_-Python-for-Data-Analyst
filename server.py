@@ -139,7 +139,7 @@ def parse_notebook(nb_path, day_num):
                 title = re.sub(r'\s+', ' ', strip_html(src)).strip() or f'Section {len(secs)+1}'
                 open_sec(f'sec-{i}', title)
             elif is_concept_check(src):
-                tn = (re.search(r'<code>(\w+)</code>', src) or re.search(r'`(\w+)`', src))
+                tn = (re.search(r'<code>(.*?)</code>', src) or re.search(r'`(.*?)`', src))
                 tn = tn.group(1) if tn else 'Check'
                 open_sec(f'checks-{tn}-{i}', f'🧪 Checks: {tn}')
             elif is_practice_hdr(src):
