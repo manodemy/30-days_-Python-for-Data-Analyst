@@ -104,6 +104,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSubmit = document.getElementById('btnLandingSubmit');
   const linkForgot = document.getElementById('linkLandingForgot');
   const linkSignup = document.getElementById('linkLandingSignup');
+  
+  const loginCard = document.querySelector('.landing-login-card');
+  const heroVisual = document.querySelector('.hero-visual');
+  const inlineLogo = document.querySelector('.python-logo-inline');
+  const buyBtn = document.querySelector('.buy-btn');
+
+  // Check if user is already logged in
+  if (localStorage.getItem('manodemy_auth') === 'true') {
+    // Hide login card instantly
+    if (loginCard) loginCard.style.display = 'none';
+    
+    // Put logo in place immediately without transition
+    if (inlineLogo && heroVisual) {
+      heroVisual.appendChild(inlineLogo);
+      inlineLogo.classList.remove('python-logo-inline');
+      inlineLogo.classList.add('python-logo-hero', 'float-hero-anim');
+    }
+    
+    // Update Buy button
+    if (buyBtn) {
+      buyBtn.innerHTML = 'Go to Course →';
+      buyBtn.href = 'day01.html';
+    }
+  }
 
   // Helper to simulate loading and stunning transition
   const simulateLoginAndRedirect = (btn, originalText) => {
@@ -111,10 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.style.opacity = '0.7';
     btn.disabled = true;
     
-    const loginCard = document.querySelector('.landing-login-card');
-    const heroVisual = document.querySelector('.hero-visual');
-    const inlineLogo = document.querySelector('.python-logo-inline');
-
     setTimeout(() => {
       btn.textContent = 'Success! Access Granted...';
       localStorage.setItem('manodemy_auth', 'true');
