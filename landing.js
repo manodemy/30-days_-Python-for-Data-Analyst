@@ -100,7 +100,17 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
 // ═══════ LANDING LOGIN CARD INTERACTIVITY (SUPABASE) ═══════
 const SUPABASE_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let supabase = null;
+try {
+  if (window.supabase) {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } else {
+    console.error("Supabase SDK not found. Authentication will be disabled.");
+  }
+} catch (e) {
+  console.error("Error initializing Supabase client:", e);
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
   const loginForm = document.getElementById('landingLoginForm');
@@ -165,27 +175,42 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   // 1. Check Supabase Session on Load
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
-    localStorage.setItem('manodemy_auth', 'true');
-    showInstantLoggedInState();
-  } else if (localStorage.getItem('manodemy_auth') === 'true') {
-    // Fallback for UI if session expired but cache remains
-    showInstantLoggedInState();
-  }
+  if (supabase) {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        localStorage.setItem('manodemy_auth', 'true');
+        showInstantLoggedInState();
+      } else if (localStorage.getItem('manodemy_auth') === 'true') {
+        showInstantLoggedInState();
+      }
 
-  // 2. Listen for Auth State Changes (e.g. returning from Google OAuth)
-  supabase.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN' && session) {
-      localStorage.setItem('manodemy_auth', 'true');
-      executeLoginAnimation();
+      // 2. Listen for Auth State Changes (e.g. returning from Google OAuth)
+      supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+          localStorage.setItem('manodemy_auth', 'true');
+          executeLoginAnimation();
+        }
+      });
+    } catch (e) {
+      console.error("Session check failed:", e);
+      if (localStorage.getItem('manodemy_auth') === 'true') showInstantLoggedInState();
     }
-  });
+  } else {
+    // Fallback if Supabase SDK failed to load
+    if (localStorage.getItem('manodemy_auth') === 'true') showInstantLoggedInState();
+  }
 
   // 3. Email & Password Login / Auto-Signup
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      if (!supabase) {
+        alert("Authentication service is currently unavailable. Please check your connection or disable adblockers.");
+        return;
+      }
+      
       const email = document.getElementById('landingEmail').value;
       const password = document.getElementById('landingPassword').value;
       
@@ -231,6 +256,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 4. Google OAuth Login
   if (btnGoogle) {
     btnGoogle.addEventListener('click', async () => {
+      if (!supabase) {
+        alert("Authentication service is currently unavailable.");
+        return;
+      }
+      
       btnGoogle.innerHTML = 'Redirecting securely...';
       btnGoogle.disabled = true;
       btnGoogle.style.opacity = '0.7';
