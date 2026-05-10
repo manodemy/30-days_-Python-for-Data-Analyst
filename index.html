@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="landing.css?v=6.0">
 <!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Payment Gateway SDKs -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
   console.log("🔍 Manodemy Debug: Checking SDK...");
   console.log("🌐 URL:", window.location.href);
@@ -200,7 +202,7 @@
     </div>
   </div>
   <div class="container" style="text-align:center;margin-top:2rem;">
-    <a href="#" class="buy-btn" id="buyBtn">🛒 BUY NOW — <span id="buyPrice">$19</span></a>
+    <button class="buy-btn" id="buyBtn" type="button">🛒 BUY NOW — <span id="buyPrice">$19</span></button>
     <p class="guarantee">✅ 30-Day Money-Back Guarantee &nbsp;|&nbsp; ✅ Lifetime Access &nbsp;|&nbsp; ✅ Free Updates</p>
   </div>
 </section>
@@ -216,10 +218,46 @@
   <button class="close-editor" id="closeEditor">✕</button>
 </div>
 
+<!-- ═══════════ CHECKOUT MODAL ═══════════ -->
+<div class="checkout-overlay" id="checkoutOverlay">
+  <div class="checkout-modal">
+    <button class="checkout-close" id="checkoutClose">✕</button>
+    <div class="checkout-header">
+      <h3>🎓 Complete Your Purchase</h3>
+      <p>30-Day Python Data Analytics Masterclass</p>
+    </div>
+    <div class="checkout-price-display">
+      <span class="checkout-amount" id="checkoutAmount">$19</span>
+      <span class="checkout-original" id="checkoutOriginal">$69</span>
+      <span class="checkout-label">One-time payment • Lifetime access</span>
+    </div>
+    <div class="coupon-section">
+      <input type="text" id="couponInput" placeholder="Coupon code (optional)" maxlength="20">
+      <button class="coupon-apply" id="couponApply">Apply</button>
+    </div>
+    <div class="checkout-divider"><span>Choose Payment Method</span></div>
+    <div class="gateway-buttons" id="gatewayButtons">
+      <!-- Populated dynamically by landing.js based on geo -->
+    </div>
+    <div class="checkout-spinner" id="checkoutSpinner"></div>
+    <div class="checkout-features">
+      <span>🔒 Secure Payment</span>
+      <span>🔄 30-Day Refund</span>
+      <span>♾️ Lifetime Access</span>
+      <span>📧 Instant Access</span>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer class="footer">
   <div class="container">
     <p>© 2026 <strong>Manodemy</strong>. All rights reserved. | Built for aspiring Data Analysts.</p>
+    <div class="footer-links">
+      <a href="refund-policy.html">Refund Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
   </div>
 </footer>
 </body>

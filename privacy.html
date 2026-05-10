@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="landing.css?v=7.0">
+<style>
+  .legal-page { max-width:720px; margin:2rem auto; padding:2rem 1.5rem }
+  .legal-page h1 { font:900 2rem var(--font-h); color:#fff; margin-bottom:0.5rem }
+  .legal-page h2 { font:700 1.2rem var(--font-h); color:var(--cyan); margin:2rem 0 0.5rem }
+  .legal-page p, .legal-page li { color:var(--muted); line-height:1.8; font-size:0.95rem }
+  .legal-page ul { padding-left:1.5rem }
+  .legal-page .updated { font-size:0.8rem; color:#475569; margin-bottom:2rem }
+  .back-link { color:var(--cyan); text-decoration:none; font-size:0.9rem }
+</style>
+</head>
+<body>
+<div class="legal-page">
+  <a href="index.html" class="back-link">← Back to Home</a>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: May 2026</p>
+
+  <h2>1. Information We Collect</h2>
+  <ul>
+    <li><strong>Account data:</strong> Email address, name (via Google OAuth or manual signup)</li>
+    <li><strong>Payment data:</strong> Processed by Razorpay/Stripe/PayPal — we never store card numbers</li>
+    <li><strong>Usage data:</strong> Course progress, login timestamps</li>
+    <li><strong>Location:</strong> Country code (via IP geolocation for pricing)</li>
+  </ul>
+
+  <h2>2. How We Use Your Data</h2>
+  <ul>
+    <li>To provide course access and track your learning progress</li>
+    <li>To process payments securely</li>
+    <li>To send purchase confirmations and course updates</li>
+    <li>To display region-appropriate pricing</li>
+  </ul>
+
+  <h2>3. Payment Security</h2>
+  <p>All payments are processed through PCI-DSS compliant payment gateways (Razorpay, Stripe, PayPal). We never store, process, or have access to your full card details. Payment secrets are stored exclusively in secure server-side environments.</p>
+
+  <h2>4. Data Storage</h2>
+  <p>Your data is stored securely on Supabase (hosted on AWS). We use Row Level Security (RLS) policies to ensure users can only access their own data.</p>
+
+  <h2>5. Third-Party Services</h2>
+  <ul>
+    <li><strong>Supabase:</strong> Authentication and database</li>
+    <li><strong>Razorpay / Stripe / PayPal:</strong> Payment processing</li>
+    <li><strong>GeoJS:</strong> Country detection for pricing (IP-based, anonymized)</li>
+    <li><strong>Google OAuth:</strong> Optional sign-in method</li>
+  </ul>
+
+  <h2>6. Your Rights</h2>
+  <ul>
+    <li>Request a copy of your data</li>
+    <li>Request deletion of your account and data</li>
+    <li>Opt out of non-essential communications</li>
+  </ul>
+
+  <h2>7. Contact</h2>
+  <p>For privacy concerns, email <strong>support@manodemy.com</strong></p>
+</div>
+</body>
+</html>

@@ -4,11 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 29: Data Visualization — Manodemy</title>
-<!-- Authentication Route Guard -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Authentication + Enrollment Route Guard -->
 <script>
+  // Fast cache check first (prevents flash of content)
   if (localStorage.getItem('manodemy_auth') !== 'true') {
     window.location.href = 'index.html';
   }
+  // Then verify enrollment against Supabase (async, non-blocking)
+  (async function() {
+    try {
+      if (typeof window.supabase === 'undefined') return;
+      const SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
+      const SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
+      const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) {
+        localStorage.removeItem('manodemy_auth');
+        localStorage.removeItem('manodemy_enrolled');
+        window.location.href = 'index.html';
+        return;
+      }
+      // Check enrollment in DB
+      const { data: enrolled } = await sb.rpc('check_enrollment', { p_course_id: 'python-30day' });
+      if (enrolled) {
+        localStorage.setItem('manodemy_enrolled', 'true');
+      } else if (localStorage.getItem('manodemy_enrolled') !== 'true') {
+        // Show purchase overlay instead of hard redirect
+        document.addEventListener('DOMContentLoaded', function() {
+          const overlay = document.createElement('div');
+          overlay.className = 'purchase-overlay';
+          overlay.innerHTML = '<h2>🔒 Premium Content</h2><p>This course requires a one-time purchase to access all 30 interactive notebooks and 750+ interview questions.</p><a href="index.html#pricing" class="purchase-cta">🛒 Purchase Access</a>';
+          document.body.appendChild(overlay);
+        });
+      }
+    } catch(e) { console.log('Guard check:', e.message); }
+  })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">

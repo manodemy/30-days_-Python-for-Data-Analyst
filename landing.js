@@ -52,49 +52,333 @@ document.querySelectorAll('.stat-card, .feature-card, .cta-btn, .pricing-box').f
   observer.observe(el);
 });
 
-// ═══════ GEO-PRICING & PAYMENT LINKS ═══════
+// ═══════ SUPABASE CLIENT ═══════
+const SUPABASE_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
+
+// Payment gateway publishable keys (safe for frontend)
+const RAZORPAY_KEY_ID = 'rzp_live_SnbHZn5Q7rYNAP';   // Live Razorpay key
+const PAYPAL_CLIENT_ID = 'xxxx';             // Replace with your PayPal client ID
+
+let supabaseClient = null;
+try {
+  if (window.supabase) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log("✅ Supabase client initialized.");
+  } else {
+    console.error("❌ Supabase SDK not found.");
+  }
+} catch (e) {
+  console.error("❌ Error initializing Supabase:", e);
+}
+
+// ═══════ GEO-PRICING & PAYMENT ROUTING ═══════
+let userCountry = 'US';
+let currentPricing = { amount: 1900, currency: 'USD', display: '$19', original: '$69', discount: '72% OFF' };
+
 async function setupGeoPricing() {
-  const buyBtns = document.querySelectorAll('.buy-btn');
   const priceNow = document.getElementById('priceNow');
   const priceOld = document.getElementById('priceOld');
   const discountBadge = document.getElementById('discountBadge');
   const buyPrice = document.getElementById('buyPrice');
-  
+  const checkoutAmount = document.getElementById('checkoutAmount');
+  const checkoutOriginal = document.getElementById('checkoutOriginal');
+
   try {
     const response = await fetch('https://get.geojs.io/v1/ip/country.json');
     const data = await response.json();
-    
-    if (data.country === 'IN') {
-      // Indian Pricing (INR)
-      if (priceNow) priceNow.textContent = '₹1499';
-      if (priceOld) priceOld.textContent = '₹4999';
-      if (buyPrice) buyPrice.textContent = '₹1499';
-      if (discountBadge) discountBadge.textContent = '70% OFF';
-      
-      // Update all Buy buttons to UPI/GPay
-      buyBtns.forEach(btn => {
-        // Change 'your-upi-id@okaxis' to your actual UPI ID
-        btn.href = 'upi://pay?pa=your-upi-id@okaxis&pn=Manodemy&am=1499.00&cu=INR';
-        btn.title = 'Pay with GPay / PhonePe / Paytm';
-      });
-    } else {
-      // International Pricing (USD)
-      if (priceNow) priceNow.textContent = '$19';
-      if (priceOld) priceOld.textContent = '$69';
-      if (buyPrice) buyPrice.textContent = '$19';
-      if (discountBadge) discountBadge.textContent = '72% OFF';
-      
-      // Update all Buy buttons to PayPal
-      buyBtns.forEach(btn => {
-        // Change 'your-paypal-id' to your actual PayPal.me link
-        btn.href = 'https://paypal.me/your-paypal-id/19USD';
-        btn.title = 'Pay with PayPal';
-      });
-    }
+    userCountry = data.country || 'US';
   } catch (error) {
     console.error("Geo-pricing API failed. Using default USD.", error);
-    buyBtns.forEach(btn => btn.href = 'https://paypal.me/your-paypal-id/19USD');
+    userCountry = 'US';
   }
+
+  if (userCountry === 'IN') {
+    currentPricing = { amount: 100, currency: 'INR', display: '₹1', original: '₹4,999', discount: 'TEST MODE' };
+  } else {
+    currentPricing = { amount: 1900, currency: 'USD', display: '$19', original: '$69', discount: '72% OFF' };
+  }
+
+  if (priceNow) priceNow.textContent = currentPricing.display;
+  if (priceOld) priceOld.textContent = currentPricing.original;
+  if (buyPrice) buyPrice.textContent = currentPricing.display;
+  if (discountBadge) discountBadge.textContent = currentPricing.discount;
+  if (checkoutAmount) checkoutAmount.textContent = currentPricing.display;
+  if (checkoutOriginal) checkoutOriginal.textContent = currentPricing.original;
+
+  setupGatewayButtons();
+}
+
+function setupGatewayButtons() {
+  const container = document.getElementById('gatewayButtons');
+  if (!container) return;
+
+  if (userCountry === 'IN') {
+    container.innerHTML = `
+      <button class="gateway-btn razorpay" id="payRazorpay" type="button">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 4l5.5 16h3L17 7.5 14.5 20h3L23 4h-3l-4 11L12.5 4h-3l-4 11L1.5 4H3z"/></svg>
+        Pay with Razorpay — ${currentPricing.display}
+      </button>
+      <p style="text-align:center;font-size:0.75rem;color:#64748b;margin:0">UPI • Cards • Net Banking • Wallets</p>
+    `;
+  } else {
+    container.innerHTML = `
+      <button class="gateway-btn stripe" id="payStripe" type="button">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z"/></svg>
+        Pay with Card — ${currentPricing.display}
+      </button>
+      <button class="gateway-btn paypal" id="payPaypal" type="button">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.603c-.564 0-1.04.408-1.13.964L7.076 21.337z"/></svg>
+        Pay with PayPal — ${currentPricing.display}
+      </button>
+      <p style="text-align:center;font-size:0.75rem;color:#64748b;margin:0">Visa • Mastercard • PayPal Balance</p>
+    `;
+  }
+
+  // Attach event listeners
+  const rzpBtn = document.getElementById('payRazorpay');
+  const stripeBtn = document.getElementById('payStripe');
+  const ppBtn = document.getElementById('payPaypal');
+
+  if (rzpBtn) rzpBtn.addEventListener('click', () => initiatePayment('razorpay'));
+  if (stripeBtn) stripeBtn.addEventListener('click', () => initiatePayment('stripe'));
+  if (ppBtn) ppBtn.addEventListener('click', () => initiatePayment('paypal'));
+}
+
+// ═══════ CHECKOUT MODAL ═══════
+const checkoutOverlay = document.getElementById('checkoutOverlay');
+const checkoutCloseBtn = document.getElementById('checkoutClose');
+const buyBtn = document.getElementById('buyBtn');
+const topBuyBtn = document.querySelector('.top-buy-btn');
+
+function openCheckout() {
+  if (!supabaseClient) {
+    alert('Please sign in first to purchase the course.');
+    return;
+  }
+  // Check if user is logged in
+  supabaseClient.auth.getSession().then(({ data: { session } }) => {
+    if (!session) {
+      alert('Please sign in first, then click Buy Now.');
+      document.getElementById('landingEmail')?.focus();
+      return;
+    }
+    if (checkoutOverlay) checkoutOverlay.classList.add('active');
+  });
+}
+
+if (buyBtn) buyBtn.addEventListener('click', (e) => { e.preventDefault(); openCheckout(); });
+if (topBuyBtn) topBuyBtn.addEventListener('click', (e) => { e.preventDefault(); openCheckout(); });
+if (checkoutCloseBtn) checkoutCloseBtn.addEventListener('click', () => {
+  checkoutOverlay?.classList.remove('active');
+});
+if (checkoutOverlay) checkoutOverlay.addEventListener('click', (e) => {
+  if (e.target === checkoutOverlay) checkoutOverlay.classList.remove('active');
+});
+
+// ═══════ PAYMENT INITIATION ═══════
+async function initiatePayment(gateway) {
+  const spinner = document.getElementById('checkoutSpinner');
+  const buttons = document.getElementById('gatewayButtons');
+
+  try {
+    if (spinner) spinner.classList.add('active');
+    if (buttons) buttons.style.opacity = '0.4';
+
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) throw new Error('Please sign in first');
+
+    const coupon = document.getElementById('couponInput')?.value?.trim() || '';
+
+    // Call Supabase Edge Function to create order
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/create-order`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({
+        gateway,
+        currency: currentPricing.currency,
+        coupon_code: coupon || undefined
+      })
+    });
+
+    const data = await res.json();
+    if (data.error) {
+      if (data.enrolled) {
+        alert('You already have access! Redirecting to course...');
+        localStorage.setItem('manodemy_enrolled', 'true');
+        localStorage.setItem('manodemy_auth', 'true');
+        window.location.href = 'day01.html';
+        return;
+      }
+      throw new Error(data.error);
+    }
+
+    // ── RAZORPAY ──
+    if (gateway === 'razorpay') {
+      const options = {
+        key: RAZORPAY_KEY_ID,
+        amount: data.amount,
+        currency: data.currency,
+        order_id: data.razorpay_order_id,
+        name: 'Manodemy',
+        description: '30-Day Python Data Analytics Masterclass',
+        handler: async function(response) {
+          // Verify payment server-side
+          try {
+            const verifyRes = await fetch(`${SUPABASE_URL}/functions/v1/verify-payment`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.access_token}`
+              },
+              body: JSON.stringify({
+                gateway: 'razorpay',
+                order_id: data.order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            });
+            const result = await verifyRes.json();
+            if (result.success) {
+              localStorage.setItem('manodemy_enrolled', 'true');
+              window.location.href = `payment-success.html?order_id=${data.order_id}`;
+            } else {
+              window.location.href = `payment-failed.html?order_id=${data.order_id}`;
+            }
+          } catch (e) {
+            window.location.href = `payment-failed.html?reason=verification`;
+          }
+        },
+        prefill: { email: session.user.email },
+        theme: { color: '#0B0F19' },
+        modal: { ondismiss: () => { resetCheckoutUI(); } }
+      };
+      const rzp = new Razorpay(options);
+      rzp.on('payment.failed', function(response) {
+        window.location.href = `payment-failed.html?reason=declined`;
+      });
+      rzp.open();
+      checkoutOverlay?.classList.remove('active');
+    }
+
+    // ── STRIPE ──
+    else if (gateway === 'stripe') {
+      if (data.stripe_session_url) {
+        window.location.href = data.stripe_session_url;
+      }
+    }
+
+    // ── PAYPAL ──
+    else if (gateway === 'paypal') {
+      // Load PayPal SDK dynamically then render buttons
+      await loadPayPalSDK();
+      checkoutOverlay?.classList.remove('active');
+      await handlePayPalPayment(data, session);
+    }
+
+  } catch (error) {
+    console.error('Payment error:', error);
+    alert('Payment error: ' + error.message);
+  } finally {
+    resetCheckoutUI();
+  }
+}
+
+function resetCheckoutUI() {
+  const spinner = document.getElementById('checkoutSpinner');
+  const buttons = document.getElementById('gatewayButtons');
+  if (spinner) spinner.classList.remove('active');
+  if (buttons) buttons.style.opacity = '1';
+}
+
+// ═══════ PAYPAL DYNAMIC LOADING ═══════
+let paypalLoaded = false;
+function loadPayPalSDK() {
+  if (paypalLoaded) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=${currentPricing.currency}`;
+    script.onload = () => { paypalLoaded = true; resolve(); };
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+async function handlePayPalPayment(orderData, session) {
+  // Create a temporary container for PayPal buttons
+  const ppContainer = document.createElement('div');
+  ppContainer.id = 'paypal-button-container';
+  ppContainer.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3000;background:#111827;padding:2rem;border-radius:16px;border:1px solid rgba(255,255,255,0.1);min-width:350px';
+  document.body.appendChild(ppContainer);
+
+  paypal.Buttons({
+    createOrder: () => orderData.paypal_order_id,
+    onApprove: async (ppData) => {
+      try {
+        const verifyRes = await fetch(`${SUPABASE_URL}/functions/v1/verify-payment`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`
+          },
+          body: JSON.stringify({
+            gateway: 'paypal',
+            order_id: orderData.order_id,
+            paypal_order_id: ppData.orderID
+          })
+        });
+        const result = await verifyRes.json();
+        ppContainer.remove();
+        if (result.success) {
+          localStorage.setItem('manodemy_enrolled', 'true');
+          window.location.href = `payment-success.html?order_id=${orderData.order_id}`;
+        } else {
+          window.location.href = `payment-failed.html?order_id=${orderData.order_id}`;
+        }
+      } catch (e) {
+        ppContainer.remove();
+        window.location.href = 'payment-failed.html?reason=verification';
+      }
+    },
+    onCancel: () => { ppContainer.remove(); },
+    onError: (err) => { ppContainer.remove(); alert('PayPal error. Please try again.'); }
+  }).render('#paypal-button-container');
+}
+
+// ═══════ COUPON VALIDATION ═══════
+const couponApplyBtn = document.getElementById('couponApply');
+if (couponApplyBtn) {
+  couponApplyBtn.addEventListener('click', async () => {
+    const input = document.getElementById('couponInput');
+    const code = input?.value?.trim();
+    if (!code) return;
+
+    if (!supabaseClient) return;
+    const { data, error } = await supabaseClient
+      .from('coupons')
+      .select('discount_percent')
+      .eq('code', code.toUpperCase())
+      .eq('active', true)
+      .single();
+
+    if (data) {
+      const disc = data.discount_percent;
+      const newAmount = Math.round(currentPricing.amount * (1 - disc / 100));
+      const display = currentPricing.currency === 'INR'
+        ? '₹' + (newAmount / 100).toLocaleString('en-IN')
+        : '$' + (newAmount / 100);
+      document.getElementById('checkoutAmount').textContent = display;
+      couponApplyBtn.textContent = `✅ ${disc}% OFF!`;
+      couponApplyBtn.style.color = '#10B981';
+    } else {
+      couponApplyBtn.textContent = '❌ Invalid';
+      setTimeout(() => { couponApplyBtn.textContent = 'Apply'; couponApplyBtn.style.color = ''; }, 2000);
+    }
+  });
 }
 
 // Run geo-pricing when DOM is ready
@@ -106,21 +390,6 @@ const googleBtnTest = document.getElementById("google-signin-btn");
 console.log("✅ Google button found:", googleBtnTest);
 
 // ═══════ LANDING LOGIN CARD INTERACTIVITY (SUPABASE) ═══════
-const SUPABASE_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-
-let supabaseClient = null;
-try {
-  if (window.supabase) {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log("✅ Supabase client initialized.");
-  } else {
-    console.error("❌ Supabase SDK not found on window object. Is the CDN script blocked?");
-  }
-} catch (e) {
-  console.error("❌ Error initializing Supabase client:", e);
-}
-
 (async function initializeAuthentication() {
   const loginForm = document.getElementById('landingLoginForm');
   const btnGoogle = document.getElementById('google-signin-btn'); // Matches the updated ID
@@ -131,7 +400,7 @@ try {
   const loginCard = document.querySelector('.landing-login-card');
   const heroVisual = document.querySelector('.hero-visual');
   const inlineLogo = document.querySelector('.python-logo-inline');
-  const buyBtn = document.querySelector('.buy-btn');
+  const buyBtnEl = document.querySelector('.buy-btn');
 
   // Animation Function
   const executeLoginAnimation = () => {
@@ -161,10 +430,6 @@ try {
 
         animation.onfinish = () => {
           inlineLogo.classList.add('float-hero-anim');
-          if (buyBtn) {
-            buyBtn.innerHTML = 'Go to Course →';
-            buyBtn.href = 'day01.html';
-          }
         };
       }
     }, 500);
@@ -177,11 +442,27 @@ try {
       inlineLogo.classList.remove('python-logo-inline');
       inlineLogo.classList.add('python-logo-hero', 'float-hero-anim');
     }
-    if (buyBtn) {
-      buyBtn.innerHTML = 'Go to Course →';
-      buyBtn.href = 'day01.html';
-    }
   };
+
+  // Check enrollment status and update Buy button
+  async function updateBuyButtonState() {
+    if (!supabaseClient) return;
+    try {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) return;
+      
+      const { data } = await supabaseClient.rpc('check_enrollment', { p_course_id: 'python-30day' });
+      if (data === true) {
+        localStorage.setItem('manodemy_enrolled', 'true');
+        if (buyBtnEl) {
+          buyBtnEl.innerHTML = 'Go to Course →';
+          buyBtnEl.onclick = () => { window.location.href = 'day01.html'; };
+        }
+      }
+    } catch (e) {
+      console.log('Enrollment check skipped:', e.message);
+    }
+  }
 
   // 1. Check Supabase Session on Load
   if (supabaseClient) {
@@ -190,6 +471,7 @@ try {
       if (session) {
         localStorage.setItem('manodemy_auth', 'true');
         showInstantLoggedInState();
+        updateBuyButtonState();
       } else if (localStorage.getItem('manodemy_auth') === 'true') {
         showInstantLoggedInState();
       }
@@ -198,6 +480,7 @@ try {
         if (event === 'SIGNED_IN' && session) {
           localStorage.setItem('manodemy_auth', 'true');
           executeLoginAnimation();
+          updateBuyButtonState();
         }
       });
     } catch (e) {
@@ -323,4 +606,3 @@ try {
     });
   }
 })();
-
