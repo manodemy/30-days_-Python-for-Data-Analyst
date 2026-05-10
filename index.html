@@ -14,7 +14,11 @@
   console.log("🔍 Manodemy Debug: Checking SDK...");
   console.log("🌐 URL:", window.location.href);
   console.log("📦 Supabase SDK status:", typeof window.supabase !== 'undefined' ? "✅ Loaded" : "❌ FAILED");
+  window.onerror = function(msg, url, line, col, error) {
+    console.log("💥 ERROR:", msg, "at", url, "line:", line);
+  };
 </script>
+<script src="landing.js?v=6.3" defer></script>
 </head>
 <body>
 
@@ -218,7 +222,5 @@
     <p>© 2026 <strong>Manodemy</strong>. All rights reserved. | Built for aspiring Data Analysts.</p>
   </div>
 </footer>
-
-<script src="landing.js?v=6.2"></script>
 </body>
 </html>
