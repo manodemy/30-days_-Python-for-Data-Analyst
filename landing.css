@@ -1409,25 +1409,36 @@ body {
 }
 
 /* ═══════ BOTTOM-ALIGNED LOCKS ═══════ */
-.day-card--locked {
-  position: relative !important;
-  padding-bottom: 50px !important; /* Space for the lock */
+.skills-grid.s30 {
+  align-items: stretch !important;
 }
 
-.lock-overlay {
+.skill.day-card--locked {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  padding-bottom: 50px !important; /* Space for the lock at bottom */
+  justify-content: flex-start !important;
+}
+
+.skill.day-card--locked .lock-overlay {
   position: absolute !important;
-  bottom: 15px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
+  bottom: 12px !important;
+  left: 0 !important;
+  right: 0 !important;
   width: 100% !important;
   display: flex !important;
   justify-content: center !important;
-  pointer-events: none;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
 }
 
-.lock-overlay svg {
-  width: 22px !important;
-  height: 22px !important;
-  color: var(--muted);
-  opacity: 0.5;
+.skill.day-card--locked .lock-overlay svg {
+  width: 24px !important;
+  height: 24px !important;
+  color: var(--muted) !important;
+  opacity: 0.4 !important;
+  display: block !important;
 }
