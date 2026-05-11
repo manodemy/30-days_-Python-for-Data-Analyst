@@ -671,11 +671,10 @@ def build_static(start=1, end=30):
         skills = []
         for idx, (_, title, emoji) in enumerate(DAYS):
             dd = f'{idx+1:02d}'
-            short = title[:16].rstrip() if len(title) > 16 else title
             if idx >= 2:
-                skills.append(f'        <a href="day{dd}.html" class="skill day-card--locked"><span class="skill-badge">{dd}</span><span class="skill-icon">{emoji}</span><span class="skill-title">{short}</span><div class="lock-overlay"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></a>')
+                skills.append(f'        <a href="day{dd}.html" class="skill day-card--locked"><span class="skill-badge">{dd}</span><span class="skill-icon">{emoji}</span><span class="skill-title">{title}</span></a>')
             else:
-                skills.append(f'        <a href="day{dd}.html" class="skill"><span class="skill-badge">{dd}</span><span class="skill-icon">{emoji}</span><span class="skill-title">{short}</span></a>')
+                skills.append(f'        <a href="day{dd}.html" class="skill"><span class="skill-badge">{dd}</span><span class="skill-icon">{emoji}</span><span class="skill-title">{title}</span></a>')
         new_grid = '\n'.join(skills)
         h2 = re.sub(r'(<div class="skills-grid s30">)\s*(.*?)\s*(</div>\s*</div>\s*</div>\s*</section>)',
                      r'\1\n' + new_grid + r'\n      \3', h, flags=re.DOTALL)

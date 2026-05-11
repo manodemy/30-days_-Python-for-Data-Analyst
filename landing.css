@@ -746,25 +746,28 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Align to top */
   text-align: center;
-  gap: .4rem;
-  padding: 1.4rem .5rem .9rem;
-  background: rgba(255, 255, 255, .03);
+  gap: 0.8rem;
+  padding: 1.8rem 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  font-size: .78rem;
-  color: var(--muted);
-  transition: all .2s;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: var(--text);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   overflow: hidden;
+  min-height: 140px; /* Ensure same box size */
+  height: 100%;
 }
 
 .s30 .skill {
-  padding: 1.2rem .2rem .5rem;
-  gap: .25rem;
-  font-size: .68rem;
-  border-radius: 8px
+  padding: 1.5rem 0.5rem 1rem;
+  gap: 0.6rem;
+  font-size: 0.75rem;
+  border-radius: 12px;
+  min-height: 120px; /* Same size for all cards in grid */
 }
 
 .skill:hover {
@@ -795,10 +798,15 @@ body {
 
 .skill-title {
   width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--muted);
+  transition: color 0.2s;
   padding: 0 4px;
+}
+
+.skill:hover .skill-title {
+  color: #fff;
 }
 
 .skill-icon {
@@ -1499,45 +1507,21 @@ body {
   }
 }
 
-/* ═══════ BOTTOM-ALIGNED LOCKS ═══════ */
+/* ═══════ BOTTOM-ALIGNED LOCKS (Removed as per request) ═══════ */
 .skills-grid.s30 {
   align-items: stretch !important;
 }
 
 .skill.day-card--locked {
-  position: relative !important;
-  display: flex !important;
-  flex-direction: column !important;
-  height: 100% !important;
-  padding-bottom: 50px !important; /* Space for the lock at bottom */
-  justify-content: flex-start !important;
+  filter: none !important;
 }
 
-.skill.day-card--locked .lock-overlay {
-  position: absolute !important;
-  bottom: 12px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  width: 32px !important;
-  height: 32px !important;
-  background: rgba(15, 23, 42, 0.98) !important;
-  border: 1.5px solid var(--cyan) !important;
-  border-radius: 50% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  box-shadow: 0 0 15px rgba(0, 230, 246, 0.4), inset 0 0 8px rgba(0, 230, 246, 0.1) !important;
-  pointer-events: none !important;
-  z-index: 5 !important;
+.skill.day-card--locked::after {
+  display: none !important;
 }
 
-.skill.day-card--locked .lock-overlay svg {
-  width: 16px !important;
-  height: 16px !important;
-  color: var(--cyan) !important;
-  opacity: 1 !important;
-  filter: drop-shadow(0 0 5px rgba(0, 230, 246, 0.8)) !important;
-  display: block !important;
+.lock-overlay {
+  display: none !important;
 }
 
 /* ═══════ LOGOUT BUTTON ═══════ */
