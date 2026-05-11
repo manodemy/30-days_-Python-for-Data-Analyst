@@ -161,56 +161,6 @@
         <a href="day30.html" class="skill day-card--locked"><span class="skill-badge">30</span><span class="skill-icon">🔬</span><span class="skill-title">Phase Analysis &</span><div class="lock-overlay"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></a>
       </div>
     </div>
-
-    <!-- Right: Code Editor Mockup -->
-    <div class="feature-card editor-card">
-      <h3>LEARN BY <span class="grad-cyan">DOING</span></h3>
-      <p class="feature-sub">Code. Experiment. Master.</p>
-      <div class="code-editor">
-        <div class="editor-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="editor-title">python</span></div>
-        <pre class="code-block"><code><span class="ln">1</span>  <span class="kw">import</span> <span class="mod">pandas</span> <span class="kw">as</span> pd
-<span class="ln">2</span>
-<span class="ln">3</span>  <span class="comment"># Load the sales dataset</span>
-<span class="ln">4</span>  df = pd.<span class="fn">read_csv</span>(<span class="str">'sales_data.csv'</span>)
-<span class="ln">5</span>
-<span class="ln">6</span>  <span class="comment"># Fill missing values with 0</span>
-<span class="ln">7</span>  df[<span class="str">'revenue'</span>] = df[<span class="str">'revenue'</span>].<span class="fn">fillna</span>(<span class="num">0</span>)
-<span class="ln">8</span>
-<span class="ln">9</span>  <span class="comment"># Calculate total revenue per region</span>
-<span class="ln">10</span> summary = df.<span class="fn">groupby</span>(<span class="str">'region'</span>)[<span class="str">'revenue'</span>].<span class="fn">sum</span>()
-<span class="ln">11</span> <span class="fn">print</span>(summary.<span class="fn">sort_values</span>(ascending=<span class="bool">False</span>))</code></pre>
-      </div>
-      <div class="learning-steps">
-        <div class="step-item">
-          <div class="step-icon">1</div>
-          <div class="step-content">
-            <div class="step-title"><strong>Read</strong> the notes</div>
-            <div class="step-desc">Distraction-free, conceptual breakdowns.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-icon">2</div>
-          <div class="step-content">
-            <div class="step-title"><strong>Run</strong> live Python code</div>
-            <div class="step-desc">Execute examples instantly in your browser.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-icon">3</div>
-          <div class="step-content">
-            <div class="step-title"><strong>Solve</strong> 750+ challenges</div>
-            <div class="step-desc">Build muscle memory through real practice.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-icon">4</div>
-          <div class="step-content">
-            <div class="step-title"><strong>Track</strong> daily progress</div>
-            <div class="step-desc">Gamify your journey to become job-ready.</div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 

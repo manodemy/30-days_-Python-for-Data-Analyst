@@ -497,14 +497,14 @@ def build_page(day_num, title, body, secs, cells):
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
     </div>
-    
-    <!-- App Navigation -->
-    <div class="nav-controls">
-      <a href="index.html" class="nav-icon-btn home-btn" title="Back to Dashboard" aria-label="Home">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-      </a>
-      {prev}
-      {nxt}
+
+    <!-- Score Card -->
+    <div class="nav-score-card">
+      <div class="score-info">
+        <span class="score-label">Solved</span>
+        <span class="score-values"><span id="scoreSolved" class="score-highlight">0</span> / <span id="scoreTotal">0</span></span>
+      </div>
+      <div class="score-track"><div class="score-fill" id="scoreProgress" style="width:0%"></div></div>
     </div>
   </div>
 
@@ -523,12 +523,13 @@ def build_page(day_num, title, body, secs, cells):
   </div>
 
   <div class="nav-zone--right">
-    <div class="nav-score-card">
-      <div class="score-info">
-        <span class="score-label">Solved</span>
-        <span class="score-values"><span id="scoreSolved" class="score-highlight">0</span> / <span id="scoreTotal">0</span></span>
-      </div>
-      <div class="score-track"><div class="score-fill" id="scoreProgress" style="width:0%"></div></div>
+    <!-- App Navigation -->
+    <div class="nav-controls">
+      <a href="index.html" class="nav-icon-btn home-btn" title="Back to Dashboard" aria-label="Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      </a>
+      {prev}
+      {nxt}
     </div>
   </div>
 </nav>
