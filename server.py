@@ -672,7 +672,9 @@ def build_static(start=1, end=30):
         for idx, (_, title, emoji) in enumerate(DAYS):
             dd = f'{idx+1:02d}'
             if idx >= 2:
-                skills.append(f'        <a href="day{dd}.html" class="skill day-card--locked"><span class="skill-badge">{dd}</span><span class="skill-icon">{emoji}</span><span class="skill-title">{title}</span></a>')
+                # Add lock tag for premium days
+                lock_svg = '<div class="lock-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>'
+                skills.append(f'        <a href="day{dd}.html" class="skill day-card--locked"><span class="skill-badge">{dd}</span><span class="skill-icon">{emoji}</span><span class="skill-title">{title}</span>{lock_svg}</a>')
             else:
                 skills.append(f'        <a href="day{dd}.html" class="skill"><span class="skill-badge">{dd}</span><span class="skill-icon">{emoji}</span><span class="skill-title">{title}</span></a>')
         new_grid = '\n'.join(skills)

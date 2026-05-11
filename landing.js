@@ -519,7 +519,9 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
         document.querySelectorAll('.day-card--locked').forEach(el => {
           el.classList.remove('day-card--locked');
           const overlay = el.querySelector('.lock-overlay');
+          const tag = el.querySelector('.lock-tag');
           if (overlay) overlay.remove();
+          if (tag) tag.remove();
         });
       }
     } catch (e) {

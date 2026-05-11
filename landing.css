@@ -1507,21 +1507,48 @@ body {
   }
 }
 
-/* ═══════ BOTTOM-ALIGNED LOCKS (Removed as per request) ═══════ */
-.skills-grid.s30 {
-  align-items: stretch !important;
+/* ═══════ SMART LOCK TAGS ═══════ */
+.lock-tag {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  background: rgba(11, 15, 25, 0.8);
+  border: 1px solid var(--cyan);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cyan);
+  box-shadow: 0 0 10px rgba(0, 230, 246, 0.4), inset 0 0 5px rgba(0, 230, 246, 0.2);
+  z-index: 10;
+  transition: all 0.3s ease;
 }
 
-.skill.day-card--locked {
-  filter: none !important;
+.skill:hover .lock-tag {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(0, 230, 246, 0.6);
+  background: var(--cyan);
+  color: #000;
+}
+
+.day-card--locked {
+  opacity: 0.85;
+  filter: saturate(0.8);
+}
+
+.day-card--locked:hover {
+  opacity: 1;
+  filter: saturate(1);
 }
 
 .skill.day-card--locked::after {
-  display: none !important;
-}
-
-.lock-overlay {
-  display: none !important;
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 230, 246, 0.03), transparent);
+  pointer-events: none;
 }
 
 /* ═══════ LOGOUT BUTTON ═══════ */
