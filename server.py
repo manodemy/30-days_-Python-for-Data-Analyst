@@ -375,8 +375,26 @@ def build_page(day_num, title, body, secs, cells):
     prev = '<a href="#" class="nav-icon-btn prev-btn disabled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Prev</a>' if day_num == 1 \
         else f'<a href="day{day_num-1:02d}.html" class="nav-icon-btn prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Prev</a>'
     
-    nxt = '<a href="index.html" class="nav-icon-btn next-btn finish-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Finish</a>' if day_num >= 30 \
-        else f'<a href="day{day_num+1:02d}.html" class="nav-icon-btn next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>'
+    if day_num >= 30:
+        nxt = '<a href="index.html" class="nav-icon-btn next-btn finish-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Finish</a>'
+    elif day_num == 2:
+        nxt = f'<a href="day03.html" id="topNextBtn" class="nav-icon-btn next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>'
+    else:
+        nxt = f'<a href="day{day_num+1:02d}.html" class="nav-icon-btn next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>'
+
+    def replace_next(m):
+        nxt_day = f"{day_num+1:02d}"
+        if day_num == 2:
+            return f'''<div class="next-day-wrapper" style="margin-top: 3.5rem; margin-bottom: 2rem; text-align: center;">
+                <a href="day03.html" id="bottomNextBtn" class="cta-btn cta-cyan" style="display: inline-flex; width: 100%; max-width: 450px; justify-content: center; font-size: 1.15rem; padding: 1.1rem; box-shadow: 0 4px 15px rgba(0, 230, 246, 0.3);">🚀 Continue to {m.group(1)}</a>
+            </div>'''
+        elif day_num < 30:
+            return f'''<div class="next-day-wrapper" style="margin-top: 3.5rem; margin-bottom: 2rem; text-align: center;">
+                <a href="day{nxt_day}.html" class="cta-btn cta-cyan" style="display: inline-flex; width: 100%; max-width: 450px; justify-content: center; font-size: 1.15rem; padding: 1.1rem; box-shadow: 0 4px 15px rgba(0, 230, 246, 0.3);">🚀 Continue to {m.group(1)}</a>
+            </div>'''
+        return ''
+
+    body = re.sub(r'<p><strong>Next Up:\s*(.*?)</strong></p>', replace_next, body)
 
     toc = '\n'.join(f'<li><a href="#{a}" class="toc-link">{t}</a></li>' for a, t in secs)
 
@@ -562,6 +580,25 @@ def build_page(day_num, title, body, secs, cells):
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
 <script src="notebook.js"></script>
+{f"""
+<script>
+  document.addEventListener('DOMContentLoaded', () => {{
+    const topBtn = document.getElementById('topNextBtn');
+    const btmBtn = document.getElementById('bottomNextBtn');
+    
+    const enforcePaywall = (e) => {{
+      const isEnrolled = localStorage.getItem('manodemy_enrolled') === 'true';
+      if (!isEnrolled) {{
+        e.preventDefault();
+        window.location.href = 'index.html#pricing?locked=true';
+      }}
+    }};
+    
+    if (topBtn) topBtn.addEventListener('click', enforcePaywall);
+    if (btmBtn) btmBtn.addEventListener('click', enforcePaywall);
+  }});
+</script>
+""" if day_num == 2 else ""}
 </body>
 </html>'''
 
