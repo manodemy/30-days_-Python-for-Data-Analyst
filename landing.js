@@ -712,3 +712,12 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
     }
   }
 })();
+
+// Auto-open checkout flow if redirected from a locked day
+window.addEventListener('load', () => {
+  if (window.location.hash.includes('locked=true')) {
+    setTimeout(() => {
+      if (typeof openCheckout === 'function') openCheckout();
+    }, 600);
+  }
+});
