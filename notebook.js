@@ -1,5 +1,36 @@
 // ═══════ MANODEMY — CODEMIRROR + PYODIDE ENGINE (shared across all days) ═══════
 
+// --- StateManagement & Profile Avatar Constants ---
+const SAVE_DEBOUNCE_MS = 400;
+const TOTAL_QUESTIONS = 120; // approximate total across 30 days
+const AVATAR_COLORS = ['--avatar-bg-1', '--avatar-bg-2', '--avatar-bg-3'];
+const TOAST_DURATION_MS = 6000;
+
+// Supabase client initialize (assumes loaded in head)
+let sbClient = null;
+if (typeof window.supabase !== 'undefined') {
+  const SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
+  const SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
+  sbClient = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+}
+
+// Helper functions for state
+const safeStorageSet = (key, value) => {
+  try { localStorage.setItem(key, value); return true; }
+  catch(e) { 
+    try { sessionStorage.setItem(key, value); return true; } catch(e2) { return false; }
+  }
+};
+const safeStorageGet = (key) => {
+  try { return localStorage.getItem(key) || sessionStorage.getItem(key) || ''; }
+  catch(e) { return ''; }
+};
+
+// Auto-save logic hooks
+const getDayId = () => {
+  const m = window.location.pathname.match(/day(\d{2})/);
+  return m ? `day${m[1]}` : null;
+};
 let pyodide = null;
 let cellCounter = 0;
 const editors = {};  // cellId -> CodeMirror instance
@@ -75,6 +106,38 @@ document.querySelectorAll('.cm-source').forEach(ta => {
   });
   cm.setSize(null, null);  // auto height
   editors[cellId] = cm;
+  
+  // Attach debounced auto-save to CodeMirror
+  const dayId = getDayId();
+  if (dayId) {
+    let timeout;
+    cm.on('change', () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        safeStorageSet(`manodemy_${dayId}_${cellId}_code`, cm.getValue());
+      }, SAVE_DEBOUNCE_MS);
+    });
+  }
+});
+
+// ── RESTORE STATE ──
+document.addEventListener('DOMContentLoaded', () => {
+  const dayId = getDayId();
+  if (dayId) {
+    // Restore cell contents
+    Object.keys(editors).forEach(cellId => {
+      const savedCode = safeStorageGet(`manodemy_${dayId}_${cellId}_code`);
+      if (savedCode) {
+        editors[cellId].setValue(savedCode);
+      }
+      const isSolved = safeStorageGet(`manodemy_${dayId}_${cellId}_solved`) === 'true';
+      if (isSolved) {
+        successfulCells.add(cellId);
+        document.getElementById(cellId).classList.add('is-solved');
+      }
+    });
+  }
+  updateScore(); // Initial score update
 });
 
 // ── LOAD PYODIDE ──
@@ -107,7 +170,7 @@ if (totalCells === 0) totalCells = 1; // fallback prevent NaN
 function updateScore() {
   const solvedEl = document.getElementById('scoreSolved');
   const totalEl = document.getElementById('scoreTotal');
-  const progEl = document.getElementById('scoreProgress');
+  const progEl = document.getElementById('scoreProgress'); // Note: we removed this from the prompt's layout, but keeping JS safe
   
   if (solvedEl && totalEl) {
     let solved = successfulCells.size;
@@ -123,9 +186,14 @@ function updateScore() {
         }
     }
   }
+  
+  const dayId = getDayId();
+  if (dayId) {
+    safeStorageSet(`manodemy_${dayId}_solved_count`, successfulCells.size.toString());
+  }
 }
 // Init display
-updateScore();
+// updateScore() is now called inside DOMContentLoaded state restoration
 
 // ── RUN CELL ──
 async function runCell(cellId) {
@@ -206,9 +274,15 @@ async function runCell(cellId) {
     if (isCorrectAndRelated) {
       if (cell.classList.contains('is-scored-question')) {
         successfulCells.add(cellId);
+        cell.classList.add('is-solved');
+        const dayId = getDayId();
+        if (dayId) safeStorageSet(`manodemy_${dayId}_${cellId}_solved`, 'true');
       }
     } else {
       successfulCells.delete(cellId);
+      cell.classList.remove('is-solved');
+      const dayId = getDayId();
+      if (dayId) safeStorageSet(`manodemy_${dayId}_${cellId}_solved`, 'false');
     }
     updateScore();
   } catch (err) {
@@ -303,3 +377,134 @@ if (handle && sidebar) {
   });
   document.addEventListener('mouseup', ()=>{dragging=false});
 }
+
+// ── PROFILE AVATAR & AGGREGATE PROGRESS ──
+const hashString = (str) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return Math.abs(hash);
+};
+
+const getInitials = (name) => {
+  if (!name) return 'U';
+  const parts = name.split(/[\s.@]+/);
+  return parts.slice(0, 2).map(p => p[0]).join('').toUpperCase();
+};
+
+const updateProfileProgress = () => {
+  let globalCount = 0;
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.match(/^manodemy_day\d{2}_solved_count$/)) {
+      globalCount += parseInt(localStorage.getItem(key) || '0', 10);
+    }
+  }
+  const pct = Math.min(100, Math.round((globalCount / TOTAL_QUESTIONS) * 100));
+  const pctEl = document.getElementById('profileProgressPct');
+  if (pctEl) pctEl.textContent = `${pct}%`;
+};
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const avatar = document.getElementById('profileAvatar');
+  const card = document.getElementById('profileCard');
+  const avatarCircle = document.getElementById('avatarCircle');
+  
+  if (!avatar || !card || !sbClient) return;
+
+  // Fetch User Auth
+  const { data: { session } } = await sbClient.auth.getSession();
+  if (session) {
+    const user = session.user;
+    const metadata = user.user_metadata || {};
+    
+    if (metadata.avatar_url) {
+      avatarCircle.innerHTML = `<img src="${metadata.avatar_url}" alt="${metadata.full_name || 'User'}">`;
+    } else {
+      const nameToUse = metadata.full_name || user.email;
+      const initials = getInitials(nameToUse);
+      const colorVar = AVATAR_COLORS[hashString(user.email) % AVATAR_COLORS.length];
+      const span = document.createElement('span');
+      span.textContent = initials;
+      avatarCircle.style.backgroundColor = `var(${colorVar})`;
+      avatarCircle.appendChild(span);
+    }
+    
+    document.getElementById('profileName').textContent = metadata.full_name || 'Developer';
+    document.getElementById('profileEmail').textContent = user.email;
+    const plan = metadata.plan === 'pro' ? 'pro' : 'free';
+    const badgeEl = document.getElementById('profileBadge');
+    badgeEl.textContent = plan === 'pro' ? 'Pro' : 'Free';
+    badgeEl.setAttribute('data-plan', plan);
+  }
+
+  // Toggle card
+  const toggleCard = () => {
+    const isOpen = card.classList.contains('is-open');
+    if (!isOpen) {
+      updateProfileProgress();
+      card.classList.add('is-open');
+      avatar.setAttribute('aria-expanded', 'true');
+    } else {
+      card.classList.remove('is-open');
+      avatar.setAttribute('aria-expanded', 'false');
+    }
+  };
+
+  avatar.addEventListener('click', toggleCard);
+  
+  document.addEventListener('focusout', (e) => {
+    if (card.classList.contains('is-open') && 
+        !card.contains(e.relatedTarget) && 
+        !avatar.contains(e.relatedTarget)) {
+      toggleCard();
+    }
+  });
+
+  const signOutBtn = document.getElementById('signOutBtn');
+  if (signOutBtn) {
+    signOutBtn.addEventListener('click', async () => {
+      await sbClient.auth.signOut();
+      localStorage.removeItem('manodemy_auth');
+      window.location.href = 'index.html';
+    });
+  }
+});
+
+// ── TOAST NOTIFICATION FOR LOCKED DAYS ──
+let toastTimeout;
+window.showUpgradeToast = (dayTitle) => {
+  let toast = document.querySelector('.upgrade-toast');
+  
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'upgrade-toast';
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.innerHTML = `
+      <div class="upgrade-toast__icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div class="upgrade-toast__body">
+        <p class="upgrade-toast__headline">"<span id="toastDayTitle"></span>" is a Pro feature</p>
+        <p class="upgrade-toast__sub">Unlock all 30 days of structured coding challenges.</p>
+      </div>
+      <a href="index.html#pricing" class="upgrade-toast__cta">Upgrade Now →</a>
+      <button class="upgrade-toast__dismiss" aria-label="Dismiss">×</button>
+    `;
+    document.body.appendChild(toast);
+    
+    toast.querySelector('.upgrade-toast__dismiss').addEventListener('click', () => {
+      toast.classList.remove('is-visible');
+      clearTimeout(toastTimeout);
+    });
+  }
+  
+  document.getElementById('toastDayTitle').textContent = dayTitle;
+  void toast.offsetWidth; 
+  toast.classList.add('is-visible');
+  
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('is-visible'), TOAST_DURATION_MS);
+};

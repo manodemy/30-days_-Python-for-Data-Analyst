@@ -393,38 +393,38 @@ def build_page(day_num, title, body, secs, cells):
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
-  // Fast cache check first (prevents flash of content)
-  if (localStorage.getItem('manodemy_auth') !== 'true') {{
-    window.location.href = 'index.html';
-  }}
-  // Then verify enrollment against Supabase (async, non-blocking)
-  (async function() {{
+  // PaywallGuard — executes before DOM render
+  (async function PaywallGuard() {{
+    const currentPath = window.location.pathname;
+    const isProtectedDay = currentPath.match(/day(0[3-9]|[1-2][0-9]|30)\\.html/);
+    if (!isProtectedDay) return;
+
     try {{
       if (typeof window.supabase === 'undefined') return;
       const SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
       const SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
       const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-      const {{ data: {{ session }} }} = await sb.auth.getSession();
-      if (!session) {{
-        localStorage.removeItem('manodemy_auth');
-        localStorage.removeItem('manodemy_enrolled');
-        window.location.href = 'index.html';
+      
+      const {{ data: {{ session }}, error }} = await sb.auth.getSession();
+      
+      if (error || !session) {{
+        window.location.href = `index.html?redirect=${{encodeURIComponent(currentPath)}}`;
         return;
       }}
-      // Check enrollment in DB
-      const {{ data: enrolled }} = await sb.rpc('check_enrollment', {{ p_course_id: 'python-30day' }});
-      if (enrolled) {{
-        localStorage.setItem('manodemy_enrolled', 'true');
-      }} else if (localStorage.getItem('manodemy_enrolled') !== 'true') {{
-        // Show purchase overlay instead of hard redirect
-        document.addEventListener('DOMContentLoaded', function() {{
-          const overlay = document.createElement('div');
-          overlay.className = 'purchase-overlay';
-          overlay.innerHTML = '<h2>🔒 Premium Content</h2><p>This course requires a one-time purchase to access all 30 interactive notebooks and 750+ interview questions.</p><a href="index.html#pricing" class="purchase-cta">🛒 Purchase Access</a>';
-          document.body.appendChild(overlay);
-        }});
+      
+      const plan = session.user.user_metadata?.plan;
+      if (plan !== 'pro') {{
+        window.location.href = `index.html#pricing?locked=true`;
+        return;
       }}
-    }} catch(e) {{ console.log('Guard check:', e.message); }}
+      
+      const preload = document.getElementById('paywall-preload-screen');
+      if (preload) preload.remove();
+      
+    }} catch (err) {{
+      console.error('Auth verification failed', err);
+      window.location.href = `index.html`;
+    }}
   }})();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -433,32 +433,76 @@ def build_page(day_num, title, body, secs, cells):
 <link rel="stylesheet" href="notebook.css">
 </head>
 <body>
-<nav class="top-bar" id="topBar">
-  <div class="nav-inner">
-    <div class="nav-left">
-      <a href="index.html" class="home-btn" title="Back to Curriculum">🏠</a>
-      <div class="nav-score" title="Questions Solved">
-        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
-        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+<!-- Paywall Preload Screen -->
+<div id="paywall-preload-screen" class="paywall-preload" aria-hidden="true">
+  <div class="paywall-preload__spinner"></div>
+</div>
+
+<nav class="top-bar nav-container" id="topBar">
+  <div class="nav-zone--left">
+    <div class="avatar-wrapper" id="profileAvatar" 
+         role="button" 
+         tabindex="0" 
+         aria-label="Open profile card"
+         aria-expanded="false"
+         aria-haspopup="true">
+      <div class="avatar-circle" id="avatarCircle">
+        <!-- JS will inject either <img> or initials <span> here -->
+      </div>
+      <div class="avatar-status-dot" aria-hidden="true"></div>
+    </div>
+    
+    <div class="nav-controls">
+      <a href="index.html" class="nav-btn" role="link" aria-label="Home">🏠 Home</a>
+      {prev.replace('nav-btn', 'nav-btn prev-btn')}
+      {nxt.replace('nav-btn', 'nav-btn next-btn')}
+    </div>
+  </div>
+
+  <div class="nav-center has-dropdown">
+    <button class="nav-dropdown-btn" id="dayDropdownBtn">
+      <span class="day-label">Day {dd}</span>
+      <span class="day-divider">:</span>
+      <span class="day-title">{title}</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div class="nav-dropdown-menu" id="dayDropdownMenu">
+      <div class="dropdown-header">Jump to another day</div>
+      <div class="dropdown-scroll">
+        {dropdown_list}
       </div>
     </div>
-    <div class="nav-center has-dropdown">
-      <button class="nav-dropdown-btn" id="dayDropdownBtn">
-        <span class="day-label">Day {dd}</span>
-        <span class="day-divider">:</span>
-        <span class="day-title">{title}</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
-      <div class="nav-dropdown-menu" id="dayDropdownMenu">
-        <div class="dropdown-header">Jump to another day</div>
-        <div class="dropdown-scroll">
-          {dropdown_list}
-        </div>
-      </div>
+  </div>
+
+  <div class="nav-zone--right">
+    <div class="nav-score" aria-live="polite">
+      Solved: <span id="scoreSolved">0</span>/<span id="scoreTotal">0</span>
     </div>
-    <div class="nav-right">{prev}{nxt}</div>
   </div>
 </nav>
+
+<div class="profile-card" id="profileCard" 
+     role="dialog" 
+     aria-label="User profile summary"
+     aria-modal="false">
+  <div class="profile-card__header">
+    <div class="profile-card__info">
+      <h2 class="profile-card__name" id="profileName">Loading...</h2>
+      <p class="profile-card__email" id="profileEmail">loading@... </p>
+    </div>
+    <span class="profile-card__badge" id="profileBadge">Free</span>
+  </div>
+  
+  <div class="profile-card__progress-section">
+    <div class="profile-card__progress-labels">
+      <span class="profile-card__progress-text">Overall Progress</span>
+      <span class="profile-card__progress-pct" id="profileProgressPct">0%</span>
+    </div>
+  </div>
+  
+  <button class="profile-card__signout" id="signOutBtn">Sign Out</button>
+</div>
+
 <div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
 <div class="layout">
   <main class="notebook" id="notebook">
@@ -556,7 +600,10 @@ def build_static(start=1, end=30):
         for idx, (_, title, emoji) in enumerate(DAYS):
             dd = f'{idx+1:02d}'
             short = title[:16].rstrip() if len(title) > 16 else title
-            skills.append(f'        <a href="day{dd}.html" class="skill"><span class="skill-icon">{emoji}</span><span>{dd} {short}</span></a>')
+            if idx >= 2:
+                skills.append(f'        <a href="day{dd}.html" class="skill day-card--locked"><span class="skill-icon">{emoji}</span><span>{dd} {short}</span><div class="lock-overlay"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></a>')
+            else:
+                skills.append(f'        <a href="day{dd}.html" class="skill"><span class="skill-icon">{emoji}</span><span>{dd} {short}</span></a>')
         new_grid = '\n'.join(skills)
         h2 = re.sub(r'(<div class="skills-grid s30">)\s*(.*?)\s*(</div>\s*</div>\s*</div>\s*</section>)',
                      r'\1\n' + new_grid + r'\n      \3', h, flags=re.DOTALL)

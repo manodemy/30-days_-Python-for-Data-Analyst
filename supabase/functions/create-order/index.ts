@@ -35,8 +35,10 @@ serve(async (req) => {
 
     const { gateway, currency, coupon_code } = await req.json()
 
-    // ── Pricing logic ──
-    let amount = currency === 'INR' ? 149900 : 1900  // paise / cents
+    // ── Dynamic Pricing from settings table ──
+    const { data: pricingSetting } = await supabase.from('settings').select('value').eq('key', 'pricing').single()
+    const prices = pricingSetting?.value || { inr: 149900, usd: 1900 }
+    let amount = currency === 'INR' ? prices.inr : prices.usd  // paise / cents
     let currencyCode = currency || 'INR'
 
     // Apply coupon if provided

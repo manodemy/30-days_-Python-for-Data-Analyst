@@ -7,38 +7,38 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
-  // Fast cache check first (prevents flash of content)
-  if (localStorage.getItem('manodemy_auth') !== 'true') {
-    window.location.href = 'index.html';
-  }
-  // Then verify enrollment against Supabase (async, non-blocking)
-  (async function() {
+  // PaywallGuard — executes before DOM render
+  (async function PaywallGuard() {
+    const currentPath = window.location.pathname;
+    const isProtectedDay = currentPath.match(/day(0[3-9]|[1-2][0-9]|30)\.html/);
+    if (!isProtectedDay) return;
+
     try {
       if (typeof window.supabase === 'undefined') return;
       const SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
       const SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
       const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-      const { data: { session } } = await sb.auth.getSession();
-      if (!session) {
-        localStorage.removeItem('manodemy_auth');
-        localStorage.removeItem('manodemy_enrolled');
-        window.location.href = 'index.html';
+      
+      const { data: { session }, error } = await sb.auth.getSession();
+      
+      if (error || !session) {
+        window.location.href = `index.html?redirect=${encodeURIComponent(currentPath)}`;
         return;
       }
-      // Check enrollment in DB
-      const { data: enrolled } = await sb.rpc('check_enrollment', { p_course_id: 'python-30day' });
-      if (enrolled) {
-        localStorage.setItem('manodemy_enrolled', 'true');
-      } else if (localStorage.getItem('manodemy_enrolled') !== 'true') {
-        // Show purchase overlay instead of hard redirect
-        document.addEventListener('DOMContentLoaded', function() {
-          const overlay = document.createElement('div');
-          overlay.className = 'purchase-overlay';
-          overlay.innerHTML = '<h2>🔒 Premium Content</h2><p>This course requires a one-time purchase to access all 30 interactive notebooks and 750+ interview questions.</p><a href="index.html#pricing" class="purchase-cta">🛒 Purchase Access</a>';
-          document.body.appendChild(overlay);
-        });
+      
+      const plan = session.user.user_metadata?.plan;
+      if (plan !== 'pro') {
+        window.location.href = `index.html#pricing?locked=true`;
+        return;
       }
-    } catch(e) { console.log('Guard check:', e.message); }
+      
+      const preload = document.getElementById('paywall-preload-screen');
+      if (preload) preload.remove();
+      
+    } catch (err) {
+      console.error('Auth verification failed', err);
+      window.location.href = `index.html`;
+    }
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,26 +47,43 @@
 <link rel="stylesheet" href="notebook.css">
 </head>
 <body>
-<nav class="top-bar" id="topBar">
-  <div class="nav-inner">
-    <div class="nav-left">
-      <a href="index.html" class="home-btn" title="Back to Curriculum">🏠</a>
-      <div class="nav-score" title="Questions Solved">
-        <div class="ns-text"><span id="scoreSolved">0</span> <span class="ns-muted">/ <span id="scoreTotal">0</span> QUESTIONS SOLVED</span></div>
-        <div class="ns-track"><div class="ns-fill" id="scoreProgress" style="width:0%"></div></div>
+<!-- Paywall Preload Screen -->
+<div id="paywall-preload-screen" class="paywall-preload" aria-hidden="true">
+  <div class="paywall-preload__spinner"></div>
+</div>
+
+<nav class="top-bar nav-container" id="topBar">
+  <div class="nav-zone--left">
+    <div class="avatar-wrapper" id="profileAvatar" 
+         role="button" 
+         tabindex="0" 
+         aria-label="Open profile card"
+         aria-expanded="false"
+         aria-haspopup="true">
+      <div class="avatar-circle" id="avatarCircle">
+        <!-- JS will inject either <img> or initials <span> here -->
       </div>
+      <div class="avatar-status-dot" aria-hidden="true"></div>
     </div>
-    <div class="nav-center has-dropdown">
-      <button class="nav-dropdown-btn" id="dayDropdownBtn">
-        <span class="day-label">Day 21</span>
-        <span class="day-divider">:</span>
-        <span class="day-title">NumPy Fundamentals</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
-      <div class="nav-dropdown-menu" id="dayDropdownMenu">
-        <div class="dropdown-header">Jump to another day</div>
-        <div class="dropdown-scroll">
-          <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🔢</span> Data Types and Memory</a>
+    
+    <div class="nav-controls">
+      <a href="index.html" class="nav-btn" role="link" aria-label="Home">🏠 Home</a>
+      <a href="day20.html" class="nav-btn prev-btn prev-btn">← Prev</a>
+      <a href="day22.html" class="nav-btn next-btn next-btn">Next →</a>
+    </div>
+  </div>
+
+  <div class="nav-center has-dropdown">
+    <button class="nav-dropdown-btn" id="dayDropdownBtn">
+      <span class="day-label">Day 21</span>
+      <span class="day-divider">:</span>
+      <span class="day-title">NumPy Fundamentals</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div class="nav-dropdown-menu" id="dayDropdownMenu">
+      <div class="dropdown-header">Jump to another day</div>
+      <div class="dropdown-scroll">
+        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🔢</span> Data Types and Memory</a>
 <a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">➕</span> Operators and Expressions</a>
 <a href="day03.html" class="dropdown-item "><span class="day-num">Day 03</span> <span class="day-em">📝</span> Strings</a>
 <a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📋</span> Lists</a>
@@ -97,12 +114,39 @@
 <a href="day29.html" class="dropdown-item "><span class="day-num">Day 29</span> <span class="day-em">🎨</span> Data Visualization</a>
 <a href="day30.html" class="dropdown-item "><span class="day-num">Day 30</span> <span class="day-em">🔬</span> Phase Analysis & Review</a>
 
-        </div>
       </div>
     </div>
-    <div class="nav-right"><a href="day20.html" class="nav-btn prev-btn">← Prev</a><a href="day22.html" class="nav-btn next-btn">Next →</a></div>
+  </div>
+
+  <div class="nav-zone--right">
+    <div class="nav-score" aria-live="polite">
+      Solved: <span id="scoreSolved">0</span>/<span id="scoreTotal">0</span>
+    </div>
   </div>
 </nav>
+
+<div class="profile-card" id="profileCard" 
+     role="dialog" 
+     aria-label="User profile summary"
+     aria-modal="false">
+  <div class="profile-card__header">
+    <div class="profile-card__info">
+      <h2 class="profile-card__name" id="profileName">Loading...</h2>
+      <p class="profile-card__email" id="profileEmail">loading@... </p>
+    </div>
+    <span class="profile-card__badge" id="profileBadge">Free</span>
+  </div>
+  
+  <div class="profile-card__progress-section">
+    <div class="profile-card__progress-labels">
+      <span class="profile-card__progress-text">Overall Progress</span>
+      <span class="profile-card__progress-pct" id="profileProgressPct">0%</span>
+    </div>
+  </div>
+  
+  <button class="profile-card__signout" id="signOutBtn">Sign Out</button>
+</div>
+
 <div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
 <div class="layout">
   <main class="notebook" id="notebook">

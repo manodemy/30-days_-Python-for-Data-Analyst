@@ -93,10 +93,17 @@ async function setupGeoPricing() {
     userCountry = 'US';
   }
 
+  // Fetch dynamic pricing from Supabase settings
+  let prices = { inr: 149900, usd: 1900, original_inr: 499900, original_usd: 6900, discount_label_inr: '70% OFF', discount_label_usd: '72% OFF' };
+  try {
+    const pRes = await fetch(SUPABASE_URL + '/functions/v1/get-pricing');
+    if (pRes.ok) prices = await pRes.json();
+  } catch (e) { console.log('Using fallback pricing'); }
+
   if (userCountry === 'IN') {
-    currentPricing = { amount: 100, currency: 'INR', display: '₹1', original: '₹4,999', discount: 'TEST MODE' };
+    currentPricing = { amount: prices.inr, currency: 'INR', display: '₹' + (prices.inr/100).toLocaleString('en-IN'), original: '₹' + (prices.original_inr/100).toLocaleString('en-IN'), discount: prices.discount_label_inr || prices.discount_label || '70% OFF' };
   } else {
-    currentPricing = { amount: 1900, currency: 'USD', display: '$19', original: '$69', discount: '72% OFF' };
+    currentPricing = { amount: prices.usd, currency: 'USD', display: '$' + (prices.usd/100), original: '$' + (prices.original_usd/100), discount: prices.discount_label_usd || prices.discount_label || '72% OFF' };
   }
 
   if (priceNow) priceNow.textContent = currentPricing.display;
@@ -225,7 +232,7 @@ async function initiatePayment(gateway) {
         order_id: data.razorpay_order_id,
         name: 'Manodemy',
         description: '30-Day Python Data Analytics Masterclass',
-        handler: async function(response) {
+        handler: async function (response) {
           // Verify payment server-side
           try {
             const verifyRes = await fetch(`${SUPABASE_URL}/functions/v1/verify-payment`, {
@@ -258,7 +265,7 @@ async function initiatePayment(gateway) {
         modal: { ondismiss: () => { resetCheckoutUI(); } }
       };
       const rzp = new Razorpay(options);
-      rzp.on('payment.failed', function(response) {
+      rzp.on('payment.failed', function (response) {
         window.location.href = `payment-failed.html?reason=declined`;
       });
       rzp.open();
@@ -396,7 +403,7 @@ console.log("✅ Google button found:", googleBtnTest);
   const btnSubmit = document.getElementById('btnLandingSubmit');
   const linkForgot = document.getElementById('linkLandingForgot');
   const linkSignup = document.getElementById('linkLandingSignup');
-  
+
   const loginCard = document.querySelector('.landing-login-card');
   const heroVisual = document.querySelector('.hero-visual');
   const inlineLogo = document.querySelector('.python-logo-inline');
@@ -405,9 +412,9 @@ console.log("✅ Google button found:", googleBtnTest);
   // Animation Function
   const executeLoginAnimation = () => {
     if (!loginCard || loginCard.style.display === 'none') return;
-    
+
     loginCard.classList.add('login-card-leaving');
-    
+
     setTimeout(() => {
       loginCard.style.display = 'none';
 
@@ -416,13 +423,13 @@ console.log("✅ Google button found:", googleBtnTest);
         heroVisual.appendChild(inlineLogo);
         inlineLogo.classList.remove('python-logo-inline');
         inlineLogo.classList.add('python-logo-hero');
-        
+
         const lastRect = inlineLogo.getBoundingClientRect();
         const deltaX = firstRect.left - lastRect.left;
         const deltaY = firstRect.top - lastRect.top;
         const scaleW = firstRect.width / lastRect.width;
         const scaleH = firstRect.height / lastRect.height;
-        
+
         const animation = inlineLogo.animate([
           { transform: `translate(${deltaX}px, ${deltaY}px) scale(${scaleW}, ${scaleH})`, filter: 'drop-shadow(0 0 20px rgba(0, 230, 246, 0.4))' },
           { transform: 'translate(0, 0) scale(1)', filter: 'drop-shadow(0 0 80px rgba(0, 230, 246, 0.8))' }
@@ -450,11 +457,11 @@ console.log("✅ Google button found:", googleBtnTest);
     try {
       const { data: { session } } = await supabaseClient.auth.getSession();
       if (!session) return;
-      
+
       const { data } = await supabaseClient.rpc('check_enrollment', { p_course_id: 'python-30day' });
-      if (data === true) {
+      if (data === true || session.user?.user_metadata?.plan === 'pro') {
         localStorage.setItem('manodemy_enrolled', 'true');
-        
+
         // Hide the entire pricing section and its buy button
         const pricingSection = document.getElementById('pricing');
         if (pricingSection) pricingSection.style.display = 'none';
@@ -478,11 +485,27 @@ console.log("✅ Google button found:", googleBtnTest);
           purpleCta.innerHTML = '🏆 CONTINUE LEARNING';
           purpleCta.href = 'day01.html';
         }
+
+        // Unlock premium days on index.html
+        document.querySelectorAll('.day-card--locked').forEach(el => {
+          el.classList.remove('day-card--locked');
+          const overlay = el.querySelector('.lock-overlay');
+          if (overlay) overlay.remove();
+        });
       }
     } catch (e) {
       console.log('Enrollment check skipped:', e.message);
     }
   }
+
+  // Intercept clicks on locked day cards
+  document.addEventListener('click', (e) => {
+    const lockedCard = e.target.closest('.day-card--locked');
+    if (lockedCard) {
+      e.preventDefault();
+      window.location.href = '#pricing';
+    }
+  });
 
   // 1. Check Supabase Session on Load
   if (supabaseClient) {
@@ -515,21 +538,21 @@ console.log("✅ Google button found:", googleBtnTest);
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       if (!supabaseClient) {
         alert("Authentication service is currently unavailable. Please check your connection or disable adblockers.");
         return;
       }
-      
+
       const email = document.getElementById('landingEmail').value;
       const password = document.getElementById('landingPassword').value;
-      
+
       btnSubmit.textContent = 'Authenticating...';
       btnSubmit.disabled = true;
       btnSubmit.style.opacity = '0.7';
 
       const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-      
+
       if (error) {
         if (error.message.toLowerCase().includes('invalid login credentials')) {
           btnSubmit.textContent = 'Creating Account...';
@@ -547,7 +570,7 @@ console.log("✅ Google button found:", googleBtnTest);
           executeLoginAnimation();
           return;
         }
-        
+
         console.error("Supabase Login Error:", error);
         alert('Login Failed: ' + error.message);
         btnSubmit.textContent = 'Start Learning →';
@@ -567,18 +590,18 @@ console.log("✅ Google button found:", googleBtnTest);
     btnGoogle.addEventListener('click', async (e) => {
       e.preventDefault();
       console.log("✅ Google button clicked");
-      
+
       if (!supabaseClient) {
         console.error("❌ Cannot sign in with Google because supabaseClient client is null.");
         alert("Authentication service is currently unavailable.");
         return;
       }
-      
+
       const originalText = btnGoogle.innerHTML;
       btnGoogle.innerHTML = 'Redirecting securely...';
       btnGoogle.disabled = true;
       btnGoogle.style.opacity = '0.7';
-      
+
       try {
         console.log("✅ Calling supabaseClient.auth.signInWithOAuth...");
         const { error } = await supabaseClient.auth.signInWithOAuth({
@@ -587,7 +610,7 @@ console.log("✅ Google button found:", googleBtnTest);
             redirectTo: window.location.origin + window.location.pathname
           }
         });
-        
+
         if (error) {
           console.error("❌ Supabase OAuth Error:", error);
           alert('Google Login Error: ' + error.message);
