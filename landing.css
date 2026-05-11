@@ -691,23 +691,26 @@ body {
 }
 
 .skill {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
   gap: .4rem;
-  padding: .9rem .5rem;
+  padding: 1.4rem .5rem .9rem;
   background: rgba(255, 255, 255, .03);
   border: 1px solid var(--border);
   border-radius: 10px;
   font-size: .78rem;
   color: var(--muted);
   transition: all .2s;
-  text-decoration: none
+  text-decoration: none;
+  overflow: hidden;
 }
 
 .s30 .skill {
-  padding: .5rem .2rem;
+  padding: 1.2rem .2rem .5rem;
   gap: .25rem;
   font-size: .68rem;
   border-radius: 8px
@@ -718,6 +721,33 @@ body {
   color: #fff;
   background: rgba(245, 166, 35, .05);
   transform: translateY(-2px)
+}
+
+.skill-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: rgba(0, 230, 246, 0.1);
+  color: var(--cyan);
+  font: 700 0.6rem var(--font-h);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.s30 .skill-badge {
+  top: 4px;
+  left: 4px;
+  font-size: 0.55rem;
+  padding: 0.1rem 0.3rem;
+}
+
+.skill-title {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 4px;
 }
 
 .skill-icon {
