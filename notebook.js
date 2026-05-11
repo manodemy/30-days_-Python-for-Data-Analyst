@@ -165,10 +165,10 @@ async function initPyodide() {
 if (statusEl) {
   statusEl.textContent = '💡 Click ▶ Run on any cell to start Python';
   statusEl.classList.add('ready');
-  // Hide hint after 5 seconds so it doesn't clutter the screen
+  // Hide hint quickly so it doesn't clutter the screen
   setTimeout(() => {
-    if (!pyodide) statusEl.classList.add('hidden');
-  }, 5000);
+    statusEl.classList.add('hidden');
+  }, 3000);
 }
 
 // ── SCORE TRACKING ──
