@@ -1484,3 +1484,16 @@ body {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
+
+/* ═══════ LOGIN CARD PULSE ANIMATION (BUY NOW INTENT) ═══════ */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(0, 230, 246, 0.7); }
+  70% { box-shadow: 0 0 0 20px rgba(0, 230, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 230, 246, 0); }
+}
+
+.highlight-pulse {
+  animation: pulseGlow 1s ease-out 2 !important;
+  border-color: var(--cyan) !important;
+  transition: border-color 0.3s;
+}

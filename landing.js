@@ -158,6 +158,8 @@ const checkoutCloseBtn = document.getElementById('checkoutClose');
 const buyBtn = document.getElementById('buyBtn');
 const topBuyBtn = document.querySelector('.top-buy-btn');
 
+window.pendingBuyIntent = false;
+
 function openCheckout() {
   if (!supabaseClient) {
     alert('Please sign in first to purchase the course.');
@@ -166,8 +168,16 @@ function openCheckout() {
   // Check if user is logged in
   supabaseClient.auth.getSession().then(({ data: { session } }) => {
     if (!session) {
-      alert('Please sign in first, then click Buy Now.');
-      document.getElementById('landingEmail')?.focus();
+      window.pendingBuyIntent = true;
+      // Smooth scroll to hero section (where login is)
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Pulse the login card
+      const loginCard = document.querySelector('.landing-login-card');
+      if (loginCard && loginCard.style.display !== 'none') {
+        loginCard.classList.add('highlight-pulse');
+        setTimeout(() => loginCard.classList.remove('highlight-pulse'), 2000);
+      }
+      setTimeout(() => document.getElementById('landingEmail')?.focus(), 500);
       return;
     }
     if (checkoutOverlay) checkoutOverlay.classList.add('active');
@@ -447,7 +457,16 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
 
         animation.onfinish = () => {
           inlineLogo.classList.add('float-hero-anim');
+          if (window.pendingBuyIntent && typeof openCheckout === 'function') {
+            window.pendingBuyIntent = false;
+            openCheckout();
+          }
         };
+      } else {
+        if (window.pendingBuyIntent && typeof openCheckout === 'function') {
+          window.pendingBuyIntent = false;
+          openCheckout();
+        }
       }
     }, 500);
   };
