@@ -650,6 +650,11 @@ body {
   color: #F78C6C
 }
 
+.code-block .comment {
+  color: #546E7A;
+  font-style: italic;
+}
+
 .code-block .var {
   color: #EEFFFF
 }
@@ -658,7 +663,7 @@ body {
 .learning-steps {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
   margin-top: 1.5rem;
   padding: 1.2rem;
   background: rgba(0, 230, 246, 0.03);
@@ -668,33 +673,59 @@ body {
 
 .step-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
+  padding: 0.2rem 0;
+  position: relative;
+}
+
+.step-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 17px;
+  width: 2px;
+  height: calc(100% - 16px);
+  background: rgba(0, 230, 246, 0.15);
 }
 
 .step-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: rgba(0, 230, 246, 0.15);
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, rgba(0, 230, 246, 0.2), rgba(0, 230, 246, 0.05));
   color: var(--cyan);
   border-radius: 50%;
-  font: 700 0.9rem var(--font-h);
+  font: 800 1.1rem var(--font-h);
   flex-shrink: 0;
-  border: 1px solid rgba(0, 230, 246, 0.3);
+  border: 1px solid rgba(0, 230, 246, 0.4);
+  box-shadow: 0 0 10px rgba(0, 230, 246, 0.2);
+  z-index: 2;
 }
 
-.step-text {
-  font-size: 0.95rem;
+.step-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-top: 0.4rem;
+}
+
+.step-title {
+  font-size: 1.05rem;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.step-title strong {
+  color: var(--cyan);
+}
+
+.step-desc {
+  font-size: 0.85rem;
   color: var(--muted);
   line-height: 1.4;
-}
-
-.step-text strong {
-  color: #fff;
-  font-weight: 600;
 }
 
 /* Skills Grid */

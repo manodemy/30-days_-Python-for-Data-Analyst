@@ -131,34 +131,46 @@
       <p class="feature-sub">Code. Experiment. Master.</p>
       <div class="code-editor">
         <div class="editor-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="editor-title">python</span></div>
-        <pre class="code-block"><code><span class="ln">1</span>  <span class="kw">import</span> <span class="mod">python</span>
+        <pre class="code-block"><code><span class="ln">1</span>  <span class="kw">import</span> <span class="mod">pandas</span> <span class="kw">as</span> pd
 <span class="ln">2</span>
-<span class="ln">3</span>  <span class="var">from</span> list = <span class="num">3</span>
-<span class="ln">4</span>  <span class="kw">from</span> <span class="mod">listever</span> <span class="kw">imp</span>
-<span class="ln">5</span>  <span class="kw">from</span> <span class="mod">listever</span> <span class="kw">import</span> <span class="str">'lists'</span>, tess
-<span class="ln">6</span>
-<span class="ln">7</span>  <span class="kw">class</span> <span class="fn">Roan</span>():
-<span class="ln">8</span>      <span class="kw">for</span> i = <span class="bool">true</span>
-<span class="ln">9</span>      <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">roosa</span>(ist):
-<span class="ln">10</span>         <span class="fn">print</span>(<span class="str">"Soot is opencvet."</span>)
-<span class="ln">11</span>     <span class="kw">return</span> loops</code></pre>
+<span class="ln">3</span>  <span class="comment"># Load the sales dataset</span>
+<span class="ln">4</span>  df = pd.<span class="fn">read_csv</span>(<span class="str">'sales_data.csv'</span>)
+<span class="ln">5</span>
+<span class="ln">6</span>  <span class="comment"># Fill missing values with 0</span>
+<span class="ln">7</span>  df[<span class="str">'revenue'</span>] = df[<span class="str">'revenue'</span>].<span class="fn">fillna</span>(<span class="num">0</span>)
+<span class="ln">8</span>
+<span class="ln">9</span>  <span class="comment"># Calculate total revenue per region</span>
+<span class="ln">10</span> summary = df.<span class="fn">groupby</span>(<span class="str">'region'</span>)[<span class="str">'revenue'</span>].<span class="fn">sum</span>()
+<span class="ln">11</span> <span class="fn">print</span>(summary.<span class="fn">sort_values</span>(ascending=<span class="bool">False</span>))</code></pre>
       </div>
       <div class="learning-steps">
         <div class="step-item">
           <div class="step-icon">1</div>
-          <div class="step-text"><strong>Read</strong> the distraction-free notes</div>
+          <div class="step-content">
+            <div class="step-title"><strong>Read</strong> the notes</div>
+            <div class="step-desc">Distraction-free, conceptual breakdowns.</div>
+          </div>
         </div>
         <div class="step-item">
           <div class="step-icon">2</div>
-          <div class="step-text"><strong>Run</strong> live Python examples instantly</div>
+          <div class="step-content">
+            <div class="step-title"><strong>Run</strong> live Python code</div>
+            <div class="step-desc">Execute examples instantly in your browser.</div>
+          </div>
         </div>
         <div class="step-item">
           <div class="step-icon">3</div>
-          <div class="step-text"><strong>Solve</strong> 750+ coding challenges</div>
+          <div class="step-content">
+            <div class="step-title"><strong>Solve</strong> 750+ challenges</div>
+            <div class="step-desc">Build muscle memory through real practice.</div>
+          </div>
         </div>
         <div class="step-item">
           <div class="step-icon">4</div>
-          <div class="step-text"><strong>Track</strong> your daily progress</div>
+          <div class="step-content">
+            <div class="step-title"><strong>Track</strong> daily progress</div>
+            <div class="step-desc">Gamify your journey to become job-ready.</div>
+          </div>
         </div>
       </div>
     </div>
