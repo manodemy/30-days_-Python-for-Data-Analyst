@@ -548,7 +548,7 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
         // Session expired or out of sync: force login card to be visible
         localStorage.removeItem('manodemy_auth');
         if (loginCard) {
-          loginCard.style.setProperty('display', 'flex', 'important');
+          loginCard.style.setProperty('display', 'block', 'important');
           loginCard.style.opacity = '1';
         }
       }
@@ -564,14 +564,14 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
       console.error("Session check failed:", e);
       localStorage.removeItem('manodemy_auth');
       if (loginCard) {
-        loginCard.style.setProperty('display', 'flex', 'important');
+        loginCard.style.setProperty('display', 'block', 'important');
         loginCard.style.opacity = '1';
       }
     }
   } else {
     localStorage.removeItem('manodemy_auth');
     if (loginCard) {
-      loginCard.style.setProperty('display', 'flex', 'important');
+      loginCard.style.setProperty('display', 'block', 'important');
       loginCard.style.opacity = '1';
     }
   }

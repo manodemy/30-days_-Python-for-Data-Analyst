@@ -119,6 +119,12 @@ body {
   color: var(--cyan)
 }
 
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .top-buy-btn {
   display: inline-flex;
   align-items: center;
@@ -137,6 +143,10 @@ body {
 .top-buy-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4)
+}
+
+@media (max-width: 900px) {
+  .top-center { display: none; }
 }
 
 /* ═══════ HERO ═══════ */
