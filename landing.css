@@ -1429,13 +1429,13 @@ body {
   transform: translateX(-50%) !important;
   width: 32px !important;
   height: 32px !important;
-  background: rgba(15, 23, 42, 0.95) !important;
+  background: rgba(15, 23, 42, 0.98) !important;
   border: 1.5px solid var(--cyan) !important;
   border-radius: 50% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 230, 246, 0.2) !important;
+  box-shadow: 0 0 15px rgba(0, 230, 246, 0.4), inset 0 0 8px rgba(0, 230, 246, 0.1) !important;
   pointer-events: none !important;
   z-index: 5 !important;
 }
@@ -1445,5 +1445,6 @@ body {
   height: 16px !important;
   color: var(--cyan) !important;
   opacity: 1 !important;
+  filter: drop-shadow(0 0 5px rgba(0, 230, 246, 0.8)) !important;
   display: block !important;
 }
