@@ -11,10 +11,26 @@
   (async function PaywallGuard() {
     const currentPath = window.location.pathname;
     const isProtectedDay = currentPath.match(/day(0[3-9]|[1-2][0-9]|30)\.html/);
-    if (!isProtectedDay) return;
+
+    const removePreload = () => {
+      const p = document.getElementById('paywall-preload-screen');
+      if (p) p.remove();
+      else document.addEventListener('DOMContentLoaded', () => {
+        const p2 = document.getElementById('paywall-preload-screen');
+        if (p2) p2.remove();
+      });
+    };
+
+    if (!isProtectedDay) {
+      removePreload();
+      return;
+    }
 
     try {
-      if (typeof window.supabase === 'undefined') return;
+      if (typeof window.supabase === 'undefined') {
+        removePreload();
+        return;
+      }
       const SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
       const SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
       const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
@@ -27,13 +43,13 @@
       }
       
       const plan = session.user.user_metadata?.plan;
-      if (plan !== 'pro') {
+      const isEnrolled = localStorage.getItem('manodemy_enrolled') === 'true';
+      if (plan !== 'pro' && !isEnrolled) {
         window.location.href = `index.html#pricing?locked=true`;
         return;
       }
       
-      const preload = document.getElementById('paywall-preload-screen');
-      if (preload) preload.remove();
+      removePreload();
       
     } catch (err) {
       console.error('Auth verification failed', err);
