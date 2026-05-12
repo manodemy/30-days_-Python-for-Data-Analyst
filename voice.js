@@ -21,9 +21,9 @@ const ManoVoice = (() => {
   // These values are calibrated for the most natural conversational tone.
   // Rate 0.92 = slightly slower than default, feels thoughtful not robotic.
   // Pitch 1.0 = natural female range. Higher pitch sounds artificial.
-  const RATE_NORMAL = 0.92;     // Explanations, hints
-  const RATE_CELEBRATE = 0.97;  // Celebrations — slightly upbeat
-  const RATE_ERROR = 0.88;      // Error hints — slower, patient, teacher-like
+  const RATE_NORMAL = 1.0;      // Natural conversational speed
+  const RATE_CELEBRATE = 1.05;  // Celebrations — upbeat energy
+  const RATE_ERROR = 0.95;      // Error hints — slightly slower for clarity
   const PITCH = 1.0;            // Keep natural — don't go above 1.05
   const TOAST_MS = 5000;
 
