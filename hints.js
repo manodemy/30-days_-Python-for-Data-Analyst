@@ -1,15 +1,14 @@
 // ═══════════════════════════════════════════════════════════════════════
-// MANO HINT SYSTEM v2 — Context-Aware Progressive Hints
-// Popup appended to document.body (avoids overflow clipping)
+// MANO HINT SYSTEM v3 — Fixed position below cell, smooth transitions
 // ═══════════════════════════════════════════════════════════════════════
 
 const ManoHint = (() => {
   'use strict';
 
-  const state = {}; // cellId → { level }
+  const hintLevel = {}; // cellId → current level
 
   // ── CONCEPT DATABASE ──
-  const C = [
+  const DB = [
     { kw: ['type(', 'data type', 'type of'], l1: "This is about checking data types. Use the type() function.", l2: "Wrap your variable in type() and print the result.", l3: "Try: print(type(your_variable))" },
     { kw: ['print', 'display', 'output'], l1: "Use print() to display your answer.", l2: "Wrap your expression inside print().", l3: "Example: print(your_value)" },
     { kw: ['variable', 'assign', 'create', 'store'], l1: "Create a variable using = to assign a value.", l2: "Syntax: variable_name = value", l3: "Example: x = 10" },
@@ -42,168 +41,157 @@ const ManoHint = (() => {
     { kw: ['is None', 'none', 'null', 'missing'], l1: "None represents absence of value.", l2: "Always check with 'is None', not '=='.", l3: "Example: if val is None: print('missing')" },
   ];
 
-  // ── Match question text to concepts ──
-  function match(qText) {
+  function matchQ(qText) {
     const q = qText.toLowerCase();
-    const found = [];
-    for (const c of C) {
-      for (const kw of c.kw) {
-        if (q.includes(kw)) { found.push(c); break; }
-      }
-    }
-    return found;
+    for (const c of DB) { for (const kw of c.kw) { if (q.includes(kw)) return c; } }
+    return null;
   }
 
-  // ── Scan what user has written ──
-  function scan(code) {
+  function scanCode(code) {
     const c = code.trim().toLowerCase();
     return {
       empty: c.length < 5 || c === '# write your answer here',
       hasPrint: c.includes('print('),
       hasVar: /\w+\s*=/.test(c),
-      hasLoop: c.includes('for ') || c.includes('while '),
-      hasDef: c.includes('def '),
     };
   }
 
-  // ── Generate hint ──
-  function gen(cellId) {
+  // ── Generate hint text for a given level ──
+  function getHint(cellId, level) {
     try {
       const cell = document.getElementById(cellId);
       if (!cell) return null;
 
-      // Get question text
       const prev = cell.previousElementSibling;
       const qText = (prev && (prev.classList.contains('question') || prev.classList.contains('interview')))
         ? prev.textContent : '';
 
-      // Get code
       let code = '';
-      if (typeof editors !== 'undefined' && editors[cellId]) {
-        code = editors[cellId].getValue();
-      } else {
-        const ta = cell.querySelector('textarea');
-        if (ta) code = ta.value || '';
-      }
+      if (typeof editors !== 'undefined' && editors[cellId]) code = editors[cellId].getValue();
+      else { const ta = cell.querySelector('textarea'); if (ta) code = ta.value || ''; }
 
-      // Get output state
       const outEl = cell.querySelector('.cell-output');
       const hasErr = outEl && outEl.classList.contains('error');
       const errText = hasErr ? (outEl.textContent || '') : '';
+      const p = scanCode(code);
+      const concept = matchQ(qText);
 
-      // Track level
-      if (!state[cellId]) state[cellId] = { level: 0 };
-      state[cellId].level = Math.min(state[cellId].level + 1, 4);
-      const lvl = state[cellId].level;
-
-      const p = scan(code);
-      const concepts = match(qText);
-
-      // ── Error state ──
+      // Error state
       if (hasErr && errText) {
-        let h = "Your code has an error. Fix it first, then try again.";
+        let h = "Your code has an error. Fix it first.";
         if (errText.includes('SyntaxError')) h = "Fix the syntax error — check for missing colons, brackets, or quotes.";
-        else if (errText.includes('NameError')) h = "You have a NameError — check variable and function names for typos.";
+        else if (errText.includes('NameError')) h = "NameError — check variable names for typos.";
         else if (errText.includes('TypeError')) h = "TypeError — you're mixing incompatible data types.";
-        else if (errText.includes('IndentationError')) h = "Fix your indentation — use 4 spaces after if, for, def.";
-        else if (errText.includes('IndexError')) h = "Index out of range — check the length of your list/string.";
-        else if (errText.includes('KeyError')) h = "That key doesn't exist in the dictionary — check for typos.";
-        if (lvl >= 2 && concepts.length > 0) h += "\n\nAfter fixing: " + concepts[0].l2;
-        return { text: h, level: lvl, max: 4, type: 'error' };
+        else if (errText.includes('IndentationError')) h = "Fix indentation — use 4 spaces after if, for, def.";
+        else if (errText.includes('IndexError')) h = "Index out of range — check the length first.";
+        else if (errText.includes('KeyError')) h = "Key doesn't exist — check for typos or use .get().";
+        if (level >= 2 && concept) h += "\n\nAfter fixing: " + concept.l2;
+        return { text: h, type: 'error' };
       }
 
-      // ── Empty cell ──
+      // Empty cell
       if (p.empty) {
-        if (concepts.length > 0) {
-          const l = Math.min(lvl, 3);
-          return { text: concepts[0]['l' + l], level: lvl, max: 3, type: 'guide' };
+        if (concept) {
+          const l = Math.min(level, 3);
+          return { text: concept['l' + l], type: 'guide' };
         }
-        return { text: "Read the question carefully and start writing your solution.", level: 1, max: 3, type: 'guide' };
+        return { text: "Read the question carefully and start writing your solution.", type: 'guide' };
       }
 
-      // ── Has code — check what's missing ──
-      if (concepts.length > 0) {
-        const c = concepts[0];
-        const q = qText.toLowerCase();
-        if ((q.includes('print') || q.includes('display')) && !p.hasPrint && lvl <= 2) {
-          return { text: "Good start! Don't forget to print your result so it shows in the output.", level: lvl, max: 3, type: 'nudge' };
-        }
+      // Has code
+      if (concept) {
         let pre = "";
         if (p.hasVar && !p.hasPrint) pre = "Good, you've created a variable! ";
-        else if (p.hasLoop && !p.hasPrint) pre = "Your loop looks good! ";
-        else if (p.hasDef) pre = "Function started! ";
-        const l = Math.min(lvl, 3);
-        return { text: pre + c['l' + l], level: lvl, max: 3, type: 'guide' };
+        const l = Math.min(level, 3);
+        return { text: pre + concept['l' + l], type: 'guide' };
       }
 
-      // ── Fallback ──
       const g = [
         "Read the question and identify the key Python concept.",
         "Create the variables mentioned, then apply the operation.",
         "Make sure you're printing the final result."
       ];
-      return { text: g[Math.min(lvl, 3) - 1], level: lvl, max: 3, type: 'guide' };
-
+      return { text: g[Math.min(level, 3) - 1], type: 'guide' };
     } catch (e) {
-      console.error('ManoHint error:', e);
-      return { text: "Try reading the question again and start with the basics.", level: 1, max: 3, type: 'guide' };
+      return { text: "Try reading the question again and start with the basics.", type: 'guide' };
     }
   }
 
-  // ── Show popup (appended to body, positioned near cell) ──
-  function show(cellId, data) {
-    close();
+  function esc(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+  }
+
+  // ── Update popup content in place (no position change) ──
+  function updateContent(cellId) {
+    const lvl = hintLevel[cellId] || 1;
+    const maxLvl = 3;
+    const data = getHint(cellId, lvl);
     if (!data) return;
+
+    const popup = document.getElementById('manoHintPopup');
+    if (!popup) return;
+
+    const icon = data.type === 'error' ? '🐛' : '💡';
+    popup.querySelector('.mano-hint-title').textContent = icon + ' Hint (' + lvl + '/' + maxLvl + ')';
+
+    const body = popup.querySelector('.mano-hint-body');
+    body.style.opacity = '0';
+    setTimeout(() => {
+      body.innerHTML = esc(data.text);
+      body.style.opacity = '1';
+    }, 150);
+
+    const footer = popup.querySelector('.mano-hint-footer');
+    if (lvl < maxLvl) {
+      footer.innerHTML = '<button class="mano-hint-next">Next Hint →</button>';
+      footer.querySelector('.mano-hint-next').onclick = function() { nextHint(cellId); };
+    } else {
+      footer.innerHTML = '<span class="mano-hint-final">No more hints — give it your best shot!</span>';
+    }
+  }
+
+  // ── Show popup (inserted after the cell, stays in place) ──
+  function show(cellId) {
+    close();
+    hintLevel[cellId] = 1;
+    const data = getHint(cellId, 1);
+    if (!data) return;
+
     const cell = document.getElementById(cellId);
     if (!cell) return;
 
-    const rect = cell.getBoundingClientRect();
+    const icon = data.type === 'error' ? '🐛' : '💡';
     const popup = document.createElement('div');
     popup.id = 'manoHintPopup';
     popup.className = 'mano-hint-popup';
     popup.setAttribute('data-cell', cellId);
 
-    const icon = data.type === 'error' ? '🐛' : data.type === 'nudge' ? '💬' : '💡';
-
     popup.innerHTML =
       '<div class="mano-hint-header">' +
-        '<span class="mano-hint-title">' + icon + ' Hint (' + data.level + '/' + data.max + ')</span>' +
+        '<span class="mano-hint-title">' + icon + ' Hint (1/3)</span>' +
         '<button class="mano-hint-close" aria-label="Close">&times;</button>' +
       '</div>' +
       '<div class="mano-hint-body">' + esc(data.text) + '</div>' +
-      (data.level < data.max
-        ? '<button class="mano-hint-next">Next Hint →</button>'
-        : '<div class="mano-hint-final">No more hints — give it your best shot!</div>');
+      '<div class="mano-hint-footer">' +
+        '<button class="mano-hint-next">Next Hint →</button>' +
+      '</div>';
 
-    document.body.appendChild(popup);
+    // Insert AFTER the cell (as a sibling, not a child — avoids overflow clipping)
+    cell.parentNode.insertBefore(popup, cell.nextSibling);
 
-    // Position below the cell
-    const top = rect.bottom + window.scrollY + 8;
-    const left = rect.left + window.scrollX + 12;
-    const width = Math.min(rect.width - 24, 500);
-    popup.style.top = top + 'px';
-    popup.style.left = left + 'px';
-    popup.style.width = width + 'px';
-
-    // Event listeners
+    // Events
     popup.querySelector('.mano-hint-close').onclick = close;
-    const nextBtn = popup.querySelector('.mano-hint-next');
-    if (nextBtn) nextBtn.onclick = () => { const d = gen(cellId); show(cellId, d); };
+    popup.querySelector('.mano-hint-next').onclick = function() { nextHint(cellId); };
 
     // Animate in
-    requestAnimationFrame(() => popup.classList.add('mano-hint-visible'));
-
-    // Close on outside click
-    setTimeout(() => {
-      document.addEventListener('click', outsideClick, { once: true });
-    }, 100);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => popup.classList.add('mano-hint-visible'));
+    });
   }
 
-  function outsideClick(e) {
-    const popup = document.getElementById('manoHintPopup');
-    if (popup && !popup.contains(e.target) && !e.target.classList.contains('hint-btn')) {
-      close();
-    }
+  function nextHint(cellId) {
+    hintLevel[cellId] = Math.min((hintLevel[cellId] || 1) + 1, 3);
+    updateContent(cellId);
   }
 
   function close() {
@@ -214,21 +202,15 @@ const ManoHint = (() => {
     }
   }
 
-  function esc(s) {
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
-  }
-
-  // ── Click handler ──
   function onClick(cellId) {
     const existing = document.getElementById('manoHintPopup');
     if (existing && existing.getAttribute('data-cell') === cellId) {
       close(); return;
     }
-    const data = gen(cellId);
-    show(cellId, data);
+    show(cellId);
   }
 
-  // ── Inject hint buttons ──
+  // ── Inject buttons ──
   function inject() {
     document.querySelectorAll('.code-cell').forEach(cell => {
       const prev = cell.previousElementSibling;
@@ -240,20 +222,14 @@ const ManoHint = (() => {
       btn.className = 'hint-btn';
       btn.textContent = '💡 Hint';
       const id = cell.id;
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        onClick(id);
-      });
+      btn.addEventListener('click', function(e) { e.stopPropagation(); onClick(id); });
       actions.insertBefore(btn, actions.firstChild);
     });
-    console.log('ManoHint: Buttons injected');
   }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', inject, { once: true });
-  } else {
-    inject();
-  }
+  } else { inject(); }
 
-  return { click: onClick, next: function(id) { show(id, gen(id)); }, close: close };
+  return { click: onClick, close: close };
 })();

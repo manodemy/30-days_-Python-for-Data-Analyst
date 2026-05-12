@@ -435,20 +435,18 @@ tbody tr:hover{background:rgba(0,230,246,.03)}
   box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
 }
 
-/* Hint Popup (appended to body) */
+/* Hint Popup (sibling after cell — flow-based, never moves) */
 .mano-hint-popup {
-  position: absolute;
-  z-index: 9999;
+  margin: 8px 12px 16px;
   background: rgba(15, 23, 42, 0.97);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(245, 158, 11, 0.25);
   border-radius: 12px;
   opacity: 0;
-  transform: translateY(-8px);
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(245, 158, 11, 0.1);
+  transform: translateY(-6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 158, 11, 0.08);
   overflow: hidden;
-  pointer-events: auto;
 }
 .mano-hint-visible {
   opacity: 1;
@@ -482,6 +480,7 @@ tbody tr:hover{background:rgba(0,230,246,.03)}
   font: 400 0.85rem var(--font-b);
   color: var(--text);
   line-height: 1.65;
+  transition: opacity 0.15s ease;
 }
 .mano-hint-body code {
   background: rgba(0, 230, 246, 0.1);
