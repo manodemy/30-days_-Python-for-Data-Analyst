@@ -414,3 +414,113 @@ tbody tr:hover{background:rgba(0,230,246,.03)}
   .mano-mute-btn { width: 42px; height: 42px; bottom: 16px; right: 16px; font-size: 1.1rem; }
   .mano-toast { left: 4px; right: 4px; font-size: 0.78rem; padding: 8px 10px; }
 }
+
+/* ═══════ MANO HINT SYSTEM ═══════ */
+
+/* Hint Button (in cell-actions bar) */
+.hint-btn {
+  padding: 3px 10px;
+  background: rgba(245, 158, 11, 0.08);
+  color: var(--gold);
+  font: 600 0.72rem var(--font-h);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.hint-btn:hover {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.4);
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+}
+
+/* Hint Popup */
+.mano-hint-popup {
+  position: absolute;
+  bottom: -8px;
+  left: 12px;
+  right: 12px;
+  transform: translateY(100%) scale(0.95);
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 12px;
+  z-index: 200;
+  opacity: 0;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  will-change: transform, opacity;
+  overflow: hidden;
+}
+.mano-hint-visible {
+  opacity: 1;
+  transform: translateY(calc(100% + 10px)) scale(1);
+}
+.mano-hint-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.2);
+}
+.mano-hint-title {
+  font: 700 0.8rem var(--font-h);
+  color: var(--gold);
+}
+.mano-hint-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color 0.2s;
+  line-height: 1;
+}
+.mano-hint-close:hover { color: var(--rose); }
+.mano-hint-body {
+  padding: 12px 14px;
+  font: 400 0.85rem var(--font-b);
+  color: var(--text);
+  line-height: 1.65;
+}
+.mano-hint-body code {
+  background: rgba(0, 230, 246, 0.1);
+  color: var(--cyan);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-family: var(--font-c);
+  font-size: 0.82em;
+}
+.mano-hint-next {
+  display: block;
+  width: calc(100% - 28px);
+  margin: 0 14px 12px;
+  padding: 7px 12px;
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--gold);
+  font: 600 0.78rem var(--font-h);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+.mano-hint-next:hover {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+.mano-hint-final {
+  padding: 8px 14px 12px;
+  font: 500 0.78rem var(--font-b);
+  color: var(--muted);
+  text-align: center;
+  font-style: italic;
+}
+
+@media(max-width: 600px) {
+  .mano-hint-popup { left: 4px; right: 4px; }
+  .mano-hint-body { font-size: 0.8rem; padding: 10px; }
+}

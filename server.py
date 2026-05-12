@@ -581,7 +581,8 @@ def build_page(day_num, title, body, secs, cells):
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
 <script src="notebook.js"></script>
-<script src="voice.js" defer></script>
+<script src="voice.js" defer></script>\r
+<script src="hints.js" defer></script>
 {f"""
 <script>
   document.addEventListener('DOMContentLoaded', () => {{
