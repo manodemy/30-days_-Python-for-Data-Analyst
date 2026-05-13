@@ -252,21 +252,22 @@ async function runCell(cellId) {
     output.innerHTML = `<span class="out-label">Out [${cellCounter}]:</span>${esc(text.trim()||'(no output)')}`;
     output.classList.add('success');
 
-    // ── SCORE VERIFICATION HEURISTIC ──
-    // Ensure code is not just empty/comments and is actually related to the question
-    let cleanCode = code.replace(/#.*/g, '').trim().toLowerCase();
+    // ── SCORE VERIFICATION HEURISTIC (Smart Validation) ──
+    let rawCode = code.trim();
+    let cleanCode = rawCode.replace(/#.*/g, '').trim().toLowerCase();
+    let outText = (text || '').trim().toLowerCase();
     let isCorrectAndRelated = false;
+    let isPartialMatch = false;
 
     if (cleanCode.length > 0 && cleanCode !== 'pass') {
       isCorrectAndRelated = true; // Assume true if no question binds it
       
       let prev = cell.previousElementSibling;
-      if (prev && prev.classList.contains('question')) {
+      if (prev && (prev.classList.contains('question') || prev.classList.contains('interview'))) {
         let questionText = prev.textContent.toLowerCase();
         isCorrectAndRelated = false; // Must prove relevance
         
         // 1. Check if output matches "Expected: <val>"
-        let outText = (text || '').trim().toLowerCase();
         let expMatch = questionText.match(/expected:\s*([a-z0-9_.-]+)/);
         if (expMatch && expMatch[1] && outText && outText.includes(expMatch[1])) {
             isCorrectAndRelated = true;
@@ -279,7 +280,6 @@ async function runCell(cellId) {
             
             for (let token of codeTokens) {
                 if (ignore.includes(token)) continue;
-                // Must appear as a distinct word/number in the question
                 let regex = new RegExp("\\b" + token + "\\b");
                 if (regex.test(questionText)) {
                     isCorrectAndRelated = true;
@@ -290,8 +290,47 @@ async function runCell(cellId) {
         
         // 3. Fallback for purely symbolic math code
         if (!isCorrectAndRelated && /[+\-*/%<>=]/.test(cleanCode)) {
-            if (questionText.includes('add ') || questionText.includes('divide') || questionText.includes('multiply') || questionText.includes('operator') || questionText.includes('arithmetic')) {
+            if (questionText.includes('add ') || questionText.includes('divide') || questionText.includes('multiply') || questionText.includes('operator') || questionText.includes('arithmetic') || questionText.includes('compute')) {
                 isCorrectAndRelated = true;
+            }
+        }
+
+        // ── SMART PENALTY CHECKS (Downgrade to Partial if incomplete) ──
+        if (isCorrectAndRelated) {
+            let outLines = outText.split('\n').filter(l => l.trim().length > 0);
+            let penalties = 0;
+            
+            // Requirement A: "types" -> Output must have <class or code must have type(
+            if ((questionText.includes('type') || questionText.includes('types')) && questionText.includes('print')) {
+                if (!outText.includes('<class') && !cleanCode.includes('type(')) penalties++;
+            }
+            
+            // Requirement B: "explain" or "why" -> Code must contain a comment
+            if (questionText.includes('explain') || questionText.includes('describe') || questionText.includes('why is')) {
+                if (!rawCode.includes('#')) penalties++;
+            }
+            
+            // Requirement C: "both" or multiple outputs requested -> Output must have multiple lines
+            if (questionText.includes('both results') || questionText.includes('print both') || questionText.includes('compute both')) {
+                if (outLines.length < 2) penalties++;
+            }
+
+            // Requirement D: Question provides multiple distinct numbers to compute
+            let qNumbers = questionText.match(/\b\d+\b/g) || [];
+            let uniqueQNums = [...new Set(qNumbers)];
+            if (uniqueQNums.length >= 2) {
+                let codeNums = cleanCode.match(/\b\d+\b/g) || [];
+                let usedQNums = uniqueQNums.filter(n => codeNums.includes(n));
+                // If it only uses 1 of the numbers, and output is only 1 line, it's definitely partial
+                if (usedQNums.length < uniqueQNums.length && outLines.length < 2) {
+                    penalties++;
+                }
+            }
+
+            // Apply penalty
+            if (penalties > 0) {
+                isCorrectAndRelated = false;
+                isPartialMatch = true; // Signal that it was on the right track but incomplete
             }
         }
       }
@@ -329,7 +368,8 @@ async function runCell(cellId) {
           let ignore = ['print','type','len','def','class','import','for','in','if','else','return','and','or','not','the','is','a','to','pass','true','false'];
           tokens.forEach(t => { if (!ignore.includes(t) && qText.includes(t)) overlapCount++; });
         }
-        if (overlapCount >= 1) {
+        
+        if (isPartialMatch || overlapCount >= 1) {
           ManoVoice.onPartial(cellId, 'close');
         } else {
           ManoVoice.onWrong(cellId);
