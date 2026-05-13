@@ -995,24 +995,27 @@ fallback: [
     if (!all.length) return;
     voicesReady = true;
 
-    // Tiered priority — best natural voices first
+    // Tiered priority — Indian English first, then premium fallbacks
     const tiers = [
-      // Tier 1: Microsoft Natural voices (Edge) — near-human quality
+      // Tier 1: Indian English Natural voices (Edge) — best for Indian students
+      v => /natural/i.test(v.name) && /neerja|prabhat/i.test(v.name) && v.lang.startsWith('en'),
+      v => /natural/i.test(v.name) && v.lang.startsWith('en-IN'),
+      v => /online/i.test(v.name) && v.lang.startsWith('en-IN'),
+      v => v.lang.startsWith('en-IN'),
+      // Tier 2: Microsoft Natural voices (Edge) — near-human quality
       v => /natural/i.test(v.name) && /jenny|aria|ana|sonia/i.test(v.name) && v.lang.startsWith('en'),
       v => /natural/i.test(v.name) && v.lang.startsWith('en'),
-      // Tier 2: Microsoft Online voices (Edge) — high quality
+      // Tier 3: Microsoft Online voices (Edge) — high quality
       v => /online/i.test(v.name) && /zira|hazel|susan/i.test(v.name) && v.lang.startsWith('en'),
       v => /online/i.test(v.name) && v.lang.startsWith('en'),
-      // Tier 3: Google Premium voices (Chrome)
+      // Tier 4: Google Premium voices (Chrome)
       v => /google/i.test(v.name) && /uk english female/i.test(v.name),
       v => /google/i.test(v.name) && /us english/i.test(v.name),
       v => /google/i.test(v.name) && v.lang.startsWith('en'),
-      // Tier 4: Apple voices (Safari)
+      // Tier 5: Apple voices (Safari)
       v => /samantha|karen|moira|fiona|victoria/i.test(v.name) && v.lang.startsWith('en'),
-      // Tier 5: Any female-sounding English voice
+      // Tier 6: Any female-sounding English voice
       v => /female/i.test(v.name) && v.lang.startsWith('en'),
-      // Tier 6: Indian English (for Indian users)
-      v => v.lang.startsWith('en-IN'),
       // Tier 7: Any English
       v => v.lang.startsWith('en-US'),
       v => v.lang.startsWith('en-GB'),
