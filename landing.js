@@ -13,21 +13,6 @@ const SiteVoice = (() => {
       "Hello! Your Python journey is waiting. Sign in to access the 30-day curriculum.",
       "Welcome to Manodemy. Real skills, real coding. Please log in to get started."
     ],
-    firstLogin: [
-      "Authentication successful! Welcome to the course. Let's get started.",
-      "You're in! Your 30-day Python journey begins right now.",
-      "Welcome aboard. Get ready to write some real Python code."
-    ],
-    returning: [
-      "Welcome back! You stopped at DAY_NAME. Let's keep that momentum going.",
-      "Hello again! Ready to tackle DAY_NAME?",
-      "Great to see you back. DAY_NAME is waiting for you.",
-      "Welcome back! Let's pick up right where you left off on DAY_NAME."
-    ],
-    returningGeneric: [
-      "Welcome back! Ready for another Python coding session?",
-      "Hello again! Let's get back to coding."
-    ],
     buyNow: [
       "Great choice! Taking you to secure checkout.",
       "Securing your checkout now. You're making a great investment in your skills."
@@ -104,24 +89,6 @@ const SiteVoice = (() => {
     setTimeout(() => queueOrSay(pick(NARRATIONS.loggedOut)), 1500); // 1.5s delay to be non-intrusive
   }
 
-  function welcomeFirstLogin() {
-    setTimeout(() => say(pick(NARRATIONS.firstLogin)), 500);
-  }
-
-  function welcomeReturning() {
-    if (hasSpokenWelcome || !canSpeakWelcome()) return;
-    hasSpokenWelcome = true;
-    const lastDay = localStorage.getItem('mano_last_day');
-    setTimeout(() => {
-      if (lastDay) {
-        let msg = pick(NARRATIONS.returning).replace(/DAY_NAME/g, lastDay);
-        queueOrSay(msg);
-      } else {
-        queueOrSay(pick(NARRATIONS.returningGeneric));
-      }
-    }, 1500);
-  }
-
   function buyNowClick() {
     say(pick(NARRATIONS.buyNow));
   }
@@ -139,7 +106,7 @@ const SiteVoice = (() => {
     }
   }
 
-  return { welcomeLoggedOut, welcomeFirstLogin, welcomeReturning, buyNowClick, scrollCurriculum };
+  return { welcomeLoggedOut, buyNowClick, scrollCurriculum };
 })();
 
 // ═══════ MANODEMY — PRICE EDITOR & INTERACTIONS ═══════
@@ -704,7 +671,6 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
         localStorage.setItem('manodemy_auth', 'true');
         showInstantLoggedInState();
         updateBuyButtonState();
-        SiteVoice.welcomeReturning();
       } else {
         // Session expired or out of sync: force login card to be visible
         localStorage.removeItem('manodemy_auth');
@@ -720,10 +686,6 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
           localStorage.setItem('manodemy_auth', 'true');
           executeLoginAnimation();
           updateBuyButtonState();
-          if (sessionStorage.getItem('mano_active_login') === 'true') {
-            sessionStorage.removeItem('mano_active_login');
-            SiteVoice.welcomeFirstLogin();
-          }
         }
       });
     } catch (e) {
@@ -760,7 +722,6 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
       btnSubmit.textContent = 'Authenticating...';
       btnSubmit.disabled = true;
       btnSubmit.style.opacity = '0.7';
-      sessionStorage.setItem('mano_active_login', 'true');
 
       const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
@@ -818,7 +779,6 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
       btnGoogle.innerHTML = 'Redirecting securely...';
       btnGoogle.disabled = true;
       btnGoogle.style.opacity = '0.7';
-      sessionStorage.setItem('mano_active_login', 'true');
 
       try {
         console.log("✅ Calling supabaseClient.auth.signInWithOAuth...");
