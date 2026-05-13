@@ -1,4 +1,116 @@
 // ═══════ MANODEMY — Landing Page Engine ═══════
+// ═══════ SITE VOICE ENGINE ═══════
+const SiteVoice = (() => {
+  let voice = null;
+  let hasSpokenWelcome = false;
+  let queuedSpeech = null;
+
+  const NARRATIONS = {
+    loggedOut: [
+      "Welcome to Manodemy. 30 days Python for Data Analyst. Please login. Learn by actually coding.",
+      "Welcome! Escape tutorial hell. Please login and learn by actually coding.",
+      "Welcome to Manodemy. Your 30 day Python challenge awaits. Please login."
+    ],
+    firstLogin: [
+      "Welcome to the course! Let's get started.",
+      "Authentication successful. Welcome to Manodemy.",
+      "You're in! Get ready to write some Python."
+    ],
+    returning: [
+      "Welcome back! You stopped at DAY_NAME. Let's keep that momentum going.",
+      "Hello again! Ready to tackle DAY_NAME?",
+      "Great to see you back. DAY_NAME is waiting for you."
+    ],
+    returningGeneric: [
+      "Welcome back! Ready for another coding session?",
+      "Hello again! Let's write some Python today."
+    ]
+  };
+
+  function loadVoices() {
+    if (!window.speechSynthesis) return;
+    const all = speechSynthesis.getVoices();
+    if (!all.length) return;
+    const tiers = [
+      v => /natural/i.test(v.name) && /neerja|prabhat/i.test(v.name) && v.lang.startsWith('en'),
+      v => /natural/i.test(v.name) && v.lang.startsWith('en-IN'),
+      v => /online/i.test(v.name) && v.lang.startsWith('en-IN'),
+      v => v.lang.startsWith('en-IN'),
+      v => /natural/i.test(v.name) && /jenny|aria|ana|sonia/i.test(v.name) && v.lang.startsWith('en'),
+      v => /natural/i.test(v.name) && v.lang.startsWith('en')
+    ];
+    for (const test of tiers) {
+      const found = all.find(test);
+      if (found) { voice = found; return; }
+    }
+    voice = all[0];
+  }
+
+  function say(text) {
+    if (!window.speechSynthesis) return;
+    try {
+      if (localStorage.getItem('mano_voice_muted') === '1') return;
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      if (voice) u.voice = voice;
+      u.rate = 1.0;
+      speechSynthesis.speak(u);
+    } catch(e) {}
+  }
+
+  // Handle browser autoplay policies
+  function queueOrSay(text) {
+    if (navigator.userActivation && navigator.userActivation.hasBeenActive) {
+      say(text);
+    } else {
+      queuedSpeech = text;
+      const playOnInteraction = () => {
+        if (queuedSpeech) say(queuedSpeech);
+        queuedSpeech = null;
+        document.removeEventListener('click', playOnInteraction);
+        document.removeEventListener('keydown', playOnInteraction);
+      };
+      document.addEventListener('click', playOnInteraction, { once: true });
+      document.addEventListener('keydown', playOnInteraction, { once: true });
+    }
+  }
+
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  function welcomeLoggedOut() {
+    if (hasSpokenWelcome) return;
+    hasSpokenWelcome = true;
+    setTimeout(() => queueOrSay(pick(NARRATIONS.loggedOut)), 1000);
+  }
+
+  function welcomeFirstLogin() {
+    setTimeout(() => say(pick(NARRATIONS.firstLogin)), 500);
+  }
+
+  function welcomeReturning() {
+    if (hasSpokenWelcome) return;
+    hasSpokenWelcome = true;
+    const lastDay = localStorage.getItem('mano_last_day');
+    setTimeout(() => {
+      if (lastDay) {
+        let msg = pick(NARRATIONS.returning).replace('DAY_NAME', lastDay);
+        queueOrSay(msg);
+      } else {
+        queueOrSay(pick(NARRATIONS.returningGeneric));
+      }
+    }, 1000);
+  }
+
+  if (window.speechSynthesis) {
+    loadVoices();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = loadVoices;
+    }
+  }
+
+  return { welcomeLoggedOut, welcomeFirstLogin, welcomeReturning };
+})();
+
 // ═══════ MANODEMY — PRICE EDITOR & INTERACTIONS ═══════
 
 // Navbar scroll shadow
@@ -546,12 +658,14 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
         localStorage.setItem('manodemy_auth', 'true');
         showInstantLoggedInState();
         updateBuyButtonState();
+        SiteVoice.welcomeReturning();
       } else {
         // Session expired or out of sync: force login card to be visible
         localStorage.removeItem('manodemy_auth');
         if (loginCard) {
           loginCard.style.setProperty('display', 'block', 'important');
           loginCard.style.opacity = '1';
+          SiteVoice.welcomeLoggedOut();
         }
       }
 
@@ -560,6 +674,7 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
           localStorage.setItem('manodemy_auth', 'true');
           executeLoginAnimation();
           updateBuyButtonState();
+          SiteVoice.welcomeFirstLogin();
         }
       });
     } catch (e) {
@@ -568,6 +683,7 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
       if (loginCard) {
         loginCard.style.setProperty('display', 'block', 'important');
         loginCard.style.opacity = '1';
+        SiteVoice.welcomeLoggedOut();
       }
     }
   } else {
@@ -575,6 +691,7 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
     if (loginCard) {
       loginCard.style.setProperty('display', 'block', 'important');
       loginCard.style.opacity = '1';
+      SiteVoice.welcomeLoggedOut();
     }
   }
 

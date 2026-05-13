@@ -31,6 +31,10 @@ const getDayId = () => {
   const m = window.location.pathname.match(/day(\d{2})/);
   return m ? `day${m[1]}` : null;
 };
+const _currentDayId = getDayId();
+if (_currentDayId) {
+  safeStorageSet('mano_last_day', _currentDayId.replace('day', 'Day '));
+}
 let pyodide = null;
 let cellCounter = 0;
 const editors = {};  // cellId -> CodeMirror instance
