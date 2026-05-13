@@ -1396,12 +1396,8 @@ fallback: [
   }
 
   function onHintClick(cellId, hintLevel) {
-    const R = VOICE_DATA;
-    let line;
-    if (hintLevel <= 1) line = smartPick('h1', R.hint1);
-    else if (hintLevel === 2) line = smartPick('h2', R.hint2);
-    else line = smartPick('h3', R.hint3);
-    say(line, RATE_NORMAL);
+    // Hint narrations have been disabled per user request
+    return;
   }
 
   function onCodeQuality(cellId, code) {
