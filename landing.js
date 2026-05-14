@@ -580,10 +580,15 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
       if (linkForgot) linkForgot.style.display = '';
       if (linkSignup) { linkSignup.style.display = ''; linkSignup.textContent = 'Create Account'; }
       if (linkBack) linkBack.style.display = 'none';
+      // Restore normal spacing from compact signup mode
+      if (loginForm) loginForm.style.gap = '';
+      document.querySelectorAll('#landingLoginForm .landing-input').forEach(el => el.style.padding = '');
+      if (btnSubmit) btnSubmit.style.padding = '';
+      if (authSubtitle) authSubtitle.style.marginBottom = '';
     } else if (state === 'signup') {
       if (authTitle) authTitle.textContent = 'Create Account';
-      if (authSubtitle) authSubtitle.textContent = 'Join thousands of learners';
-      if (socialSection) socialSection.style.display = '';
+      if (authSubtitle) { authSubtitle.textContent = 'Join thousands of learners'; authSubtitle.style.marginBottom = '0.4rem'; }
+      if (socialSection) socialSection.style.display = 'none';
       if (nameField) nameField.style.display = '';
       if (passwordField) passwordField.style.display = '';
       if (confirmField) confirmField.style.display = '';
@@ -591,6 +596,10 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
       if (linkForgot) linkForgot.style.display = 'none';
       if (linkSignup) linkSignup.style.display = 'none';
       if (linkBack) linkBack.style.display = '';
+      // Compact mode: reduce spacing to match login height
+      if (loginForm) loginForm.style.gap = '0.5rem';
+      document.querySelectorAll('#landingLoginForm .landing-input').forEach(el => el.style.padding = '0.55rem 0.8rem');
+      if (btnSubmit) btnSubmit.style.padding = '0.65rem';
     } else if (state === 'forgot') {
       if (authTitle) authTitle.textContent = 'Reset Password';
       if (authSubtitle) authSubtitle.textContent = 'Enter your email to receive a reset link';
