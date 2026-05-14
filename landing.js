@@ -705,7 +705,7 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
           // Ask user before auto-creating account
           const confirmSignup = confirm('No account found with this email. Would you like to create a new account?');
           if (!confirmSignup) {
-            btnSubmit.textContent = 'Start Learning →';
+            btnSubmit.textContent = 'Login';
             btnSubmit.disabled = false;
             btnSubmit.style.opacity = '1';
             return;
@@ -714,7 +714,7 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
           const { error: signUpError } = await supabaseClient.auth.signUp({ email, password });
           if (signUpError) {
             alert('Signup Failed: ' + signUpError.message);
-            btnSubmit.textContent = 'Start Learning →';
+            btnSubmit.textContent = 'Login';
             btnSubmit.disabled = false;
             btnSubmit.style.opacity = '1';
             return;
@@ -760,7 +760,11 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
         const { error } = await supabaseClient.auth.signInWithOAuth({
           provider: 'google',
           options: {
-            redirectTo: window.location.origin + window.location.pathname
+            redirectTo: window.location.href,
+            queryParams: {
+              access_type: 'offline',
+              prompt: 'consent',
+            }
           }
         });
 
