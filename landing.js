@@ -521,43 +521,110 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
 
 // ═══════ LANDING LOGIN CARD INTERACTIVITY (SUPABASE) ═══════
 (async function initializeAuthentication() {
+  // ═══════ AUTH STATE MANAGEMENT ═══════
+  let authState = 'login'; // 'login' | 'signup' | 'forgot'
+
   const loginForm = document.getElementById('landingLoginForm');
-  const btnGoogle = document.getElementById('google-signin-btn'); // Matches the updated ID
+  const btnGoogle = document.getElementById('google-signin-btn');
   const btnSubmit = document.getElementById('btnLandingSubmit');
   const linkForgot = document.getElementById('linkLandingForgot');
   const linkSignup = document.getElementById('linkLandingSignup');
+  const linkBack = document.getElementById('linkBackToLogin');
+  const authTitle = document.getElementById('authTitle');
+  const authSubtitle = document.getElementById('authSubtitle');
+  const authMsg = document.getElementById('authMessage');
+  const socialSection = document.getElementById('socialAuthSection');
+  const nameField = document.getElementById('landingName');
+  const passwordField = document.getElementById('landingPassword');
+  const confirmField = document.getElementById('landingConfirmPassword');
 
   const loginCard = document.querySelector('.landing-login-card');
   const heroVisual = document.querySelector('.hero-visual');
   const inlineLogo = document.querySelector('.python-logo-inline');
   const buyBtnEl = document.querySelector('.buy-btn');
 
-  // Animation Function
+  // ── Inline Message Helpers (replaces all alert/confirm/prompt) ──
+  const setAuthMessage = (msg, type = 'info') => {
+    if (!authMsg) return;
+    authMsg.textContent = msg;
+    authMsg.style.display = 'block';
+    if (type === 'error') {
+      authMsg.style.background = 'rgba(244, 63, 94, 0.15)';
+      authMsg.style.color = '#F43F5E';
+      authMsg.style.border = '1px solid rgba(244, 63, 94, 0.3)';
+    } else if (type === 'success') {
+      authMsg.style.background = 'rgba(16, 185, 129, 0.15)';
+      authMsg.style.color = '#10B981';
+      authMsg.style.border = '1px solid rgba(16, 185, 129, 0.3)';
+    } else {
+      authMsg.style.background = 'rgba(0, 230, 246, 0.1)';
+      authMsg.style.color = '#00E6F6';
+      authMsg.style.border = '1px solid rgba(0, 230, 246, 0.2)';
+    }
+  };
+  const clearAuthMessage = () => { if (authMsg) authMsg.style.display = 'none'; };
+
+  // ── State Switcher ──
+  const switchAuthState = (state) => {
+    authState = state;
+    clearAuthMessage();
+
+    if (state === 'login') {
+      if (authTitle) authTitle.textContent = 'Join the Challenge';
+      if (authSubtitle) authSubtitle.textContent = 'Sign in to start learning';
+      if (socialSection) socialSection.style.display = '';
+      if (nameField) nameField.style.display = 'none';
+      if (passwordField) passwordField.style.display = '';
+      if (confirmField) confirmField.style.display = 'none';
+      if (btnSubmit) btnSubmit.textContent = 'Login';
+      if (linkForgot) linkForgot.style.display = '';
+      if (linkSignup) { linkSignup.style.display = ''; linkSignup.textContent = 'Create Account'; }
+      if (linkBack) linkBack.style.display = 'none';
+    } else if (state === 'signup') {
+      if (authTitle) authTitle.textContent = 'Create Account';
+      if (authSubtitle) authSubtitle.textContent = 'Join thousands of learners';
+      if (socialSection) socialSection.style.display = '';
+      if (nameField) nameField.style.display = '';
+      if (passwordField) passwordField.style.display = '';
+      if (confirmField) confirmField.style.display = '';
+      if (btnSubmit) btnSubmit.textContent = 'Sign Up';
+      if (linkForgot) linkForgot.style.display = 'none';
+      if (linkSignup) linkSignup.style.display = 'none';
+      if (linkBack) linkBack.style.display = '';
+    } else if (state === 'forgot') {
+      if (authTitle) authTitle.textContent = 'Reset Password';
+      if (authSubtitle) authSubtitle.textContent = 'Enter your email to receive a reset link';
+      if (socialSection) socialSection.style.display = 'none';
+      if (nameField) nameField.style.display = 'none';
+      if (passwordField) passwordField.style.display = 'none';
+      if (confirmField) confirmField.style.display = 'none';
+      if (btnSubmit) btnSubmit.textContent = 'Send Reset Link';
+      if (linkForgot) linkForgot.style.display = 'none';
+      if (linkSignup) linkSignup.style.display = 'none';
+      if (linkBack) linkBack.style.display = '';
+    }
+  };
+
+  // ── Login Animation ──
   const executeLoginAnimation = () => {
     if (!loginCard || loginCard.style.display === 'none') return;
-
     loginCard.classList.add('login-card-leaving');
-
     setTimeout(() => {
       loginCard.style.display = 'none';
-
       if (inlineLogo && heroVisual) {
         const firstRect = inlineLogo.getBoundingClientRect();
         heroVisual.appendChild(inlineLogo);
         inlineLogo.classList.remove('python-logo-inline');
         inlineLogo.classList.add('python-logo-hero');
-
         const lastRect = inlineLogo.getBoundingClientRect();
         const deltaX = firstRect.left - lastRect.left;
         const deltaY = firstRect.top - lastRect.top;
         const scaleW = firstRect.width / lastRect.width;
         const scaleH = firstRect.height / lastRect.height;
-
         const animation = inlineLogo.animate([
           { transform: `translate(${deltaX}px, ${deltaY}px) scale(${scaleW}, ${scaleH})`, filter: 'drop-shadow(0 0 20px rgba(0, 230, 246, 0.4))' },
           { transform: 'translate(0, 0) scale(1)', filter: 'drop-shadow(0 0 80px rgba(0, 230, 246, 0.8))' }
         ], { duration: 1200, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' });
-
         animation.onfinish = () => {
           inlineLogo.classList.add('float-hero-anim');
           if (window.pendingBuyIntent && typeof openCheckout === 'function') {
@@ -583,22 +650,17 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
     }
   };
 
-  // Check enrollment status and update Buy button
+  // ── Enrollment & Buy Button ──
   async function updateBuyButtonState() {
     if (!supabaseClient) return;
     try {
       const { data: { session } } = await supabaseClient.auth.getSession();
       if (!session) return;
-
       const { data } = await supabaseClient.rpc('check_enrollment', { p_course_id: 'python-30day' });
       if (data === true || session.user?.user_metadata?.plan === 'pro') {
         localStorage.setItem('manodemy_enrolled', 'true');
-
-        // Hide the entire pricing section and its buy button
         const pricingSection = document.getElementById('pricing');
         if (pricingSection) pricingSection.style.display = 'none';
-
-        // Update top nav "Buy Now" to "Share this course"
         const topBuyBtnEl = document.querySelector('.top-buy-btn');
         if (topBuyBtnEl) {
           topBuyBtnEl.innerHTML = '🔗 Share this course';
@@ -610,15 +672,8 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
             setTimeout(() => { topBuyBtnEl.innerHTML = '🔗 Share this course'; }, 2000);
           };
         }
-
-        // Change the purple CTA to "Continue Learning"
         const purpleCta = document.querySelector('.cta-purple');
-        if (purpleCta) {
-          purpleCta.innerHTML = '🏆 CONTINUE LEARNING';
-          purpleCta.href = 'day01.html';
-        }
-
-        // Unlock premium days on index.html
+        if (purpleCta) { purpleCta.innerHTML = '🏆 CONTINUE LEARNING'; purpleCta.href = 'day01.html'; }
         document.querySelectorAll('.day-card--locked').forEach(el => {
           el.classList.remove('day-card--locked');
           const overlay = el.querySelector('.lock-overlay');
@@ -627,21 +682,48 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
           if (tag) tag.remove();
         });
       }
-    } catch (e) {
-      console.log('Enrollment check skipped:', e.message);
-    }
+    } catch (e) { console.log('Enrollment check skipped:', e.message); }
+  }
+
+  // ── Admin Nav Link (conditional) ──
+  async function checkAdminAccess() {
+    if (!supabaseClient) return;
+    try {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) return;
+      const { data: profile } = await supabaseClient.from('profiles').select('role').eq('id', session.user.id).single();
+      if (profile?.role === 'admin') {
+        const nav = document.querySelector('.top-actions');
+        if (nav && !document.getElementById('adminNavLink')) {
+          const adminLink = document.createElement('a');
+          adminLink.id = 'adminNavLink';
+          adminLink.href = 'admin.html';
+          adminLink.textContent = '⚙️ Admin';
+          adminLink.style.cssText = 'color:#F5A623;font-size:0.85rem;margin-right:0.8rem;text-decoration:none;font-weight:600;';
+          nav.insertBefore(adminLink, nav.firstChild);
+        }
+      }
+    } catch (e) { /* non-critical */ }
   }
 
   // Intercept clicks on locked day cards
   document.addEventListener('click', (e) => {
     const lockedCard = e.target.closest('.day-card--locked');
-    if (lockedCard) {
-      e.preventDefault();
-      window.location.href = '#pricing';
-    }
+    if (lockedCard) { e.preventDefault(); window.location.href = '#pricing'; }
   });
 
-  // 1. Check Supabase Session on Load
+  // ═══════ FOOTER LINK HANDLERS ═══════
+  if (linkSignup) {
+    linkSignup.onclick = (e) => { e.preventDefault(); switchAuthState('signup'); };
+  }
+  if (linkForgot) {
+    linkForgot.onclick = (e) => { e.preventDefault(); switchAuthState('forgot'); };
+  }
+  if (linkBack) {
+    linkBack.onclick = (e) => { e.preventDefault(); switchAuthState('login'); };
+  }
+
+  // ═══════ 1. CHECK SESSION ON LOAD ═══════
   if (supabaseClient) {
     try {
       const { data: { session } } = await supabaseClient.auth.getSession();
@@ -649,164 +731,127 @@ document.addEventListener('DOMContentLoaded', setupGeoPricing);
         localStorage.setItem('manodemy_auth', 'true');
         showInstantLoggedInState();
         updateBuyButtonState();
+        checkAdminAccess();
       } else {
-        // Session expired or out of sync: force login card to be visible
         localStorage.removeItem('manodemy_auth');
-        if (loginCard) {
-          loginCard.style.setProperty('display', 'block', 'important');
-          loginCard.style.opacity = '1';
-        }
+        if (loginCard) { loginCard.style.setProperty('display', 'block', 'important'); loginCard.style.opacity = '1'; }
       }
-
       supabaseClient.auth.onAuthStateChange((event, session) => {
         if (event === 'SIGNED_IN' && session) {
           localStorage.setItem('manodemy_auth', 'true');
           executeLoginAnimation();
           updateBuyButtonState();
+          checkAdminAccess();
+          saveCountryToProfile(userCountry);
         }
       });
     } catch (e) {
       console.error("Session check failed:", e);
       localStorage.removeItem('manodemy_auth');
-      if (loginCard) {
-        loginCard.style.setProperty('display', 'block', 'important');
-        loginCard.style.opacity = '1';
-      }
+      if (loginCard) { loginCard.style.setProperty('display', 'block', 'important'); loginCard.style.opacity = '1'; }
     }
   } else {
     localStorage.removeItem('manodemy_auth');
-    if (loginCard) {
-      loginCard.style.setProperty('display', 'block', 'important');
-      loginCard.style.opacity = '1';
-    }
+    if (loginCard) { loginCard.style.setProperty('display', 'block', 'important'); loginCard.style.opacity = '1'; }
   }
 
-  // 2. Email & Password Login / Auto-Signup
+  // ═══════ 2. FORM SUBMIT HANDLER ═══════
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      clearAuthMessage();
+      if (!supabaseClient) { setAuthMessage("Auth service unavailable. Check your connection.", "error"); return; }
 
-      if (!supabaseClient) {
-        alert("Authentication service is currently unavailable. Please check your connection or disable adblockers.");
-        return;
-      }
-
-      const email = document.getElementById('landingEmail').value;
+      const email = document.getElementById('landingEmail').value.trim();
       const password = document.getElementById('landingPassword').value;
+      const name = nameField ? nameField.value.trim() : '';
+      const confirmPass = confirmField ? confirmField.value : '';
 
-      btnSubmit.textContent = 'Authenticating...';
       btnSubmit.disabled = true;
       btnSubmit.style.opacity = '0.7';
+      const originalText = btnSubmit.textContent;
 
-      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
-      if (error) {
-        if (error.message.toLowerCase().includes('invalid login credentials')) {
-          // Ask user before auto-creating account
-          const confirmSignup = confirm('No account found with this email. Would you like to create a new account?');
-          if (!confirmSignup) {
-            btnSubmit.textContent = 'Login';
-            btnSubmit.disabled = false;
-            btnSubmit.style.opacity = '1';
-            return;
+      try {
+        if (authState === 'login') {
+          btnSubmit.textContent = 'Signing in...';
+          const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+          if (error) {
+            if (error.message.toLowerCase().includes('invalid login credentials')) {
+              throw new Error("Incorrect email or password. Need an account? Click 'Create Account'.");
+            }
+            throw error;
           }
-          btnSubmit.textContent = 'Creating Account...';
-          const { error: signUpError } = await supabaseClient.auth.signUp({ email, password });
-          if (signUpError) {
-            alert('Signup Failed: ' + signUpError.message);
-            btnSubmit.textContent = 'Login';
-            btnSubmit.disabled = false;
-            btnSubmit.style.opacity = '1';
-            return;
-          }
-          btnSubmit.textContent = 'Account Created! Welcome...';
           localStorage.setItem('manodemy_auth', 'true');
           executeLoginAnimation();
-          return;
+          updateBuyButtonState();
+          checkAdminAccess();
         }
-
-        alert('Login Failed: ' + error.message);
-        btnSubmit.textContent = 'Start Learning →';
+        else if (authState === 'signup') {
+          if (!name) { setAuthMessage("Please enter your full name.", "error"); throw new Error("_handled"); }
+          if (password.length < 6) { setAuthMessage("Password must be at least 6 characters.", "error"); throw new Error("_handled"); }
+          if (password !== confirmPass) { setAuthMessage("Passwords do not match.", "error"); throw new Error("_handled"); }
+          btnSubmit.textContent = 'Creating Account...';
+          const { data, error } = await supabaseClient.auth.signUp({
+            email, password,
+            options: { data: { full_name: name } }
+          });
+          if (error) throw error;
+          if (data?.user?.identities?.length === 0) {
+            setAuthMessage("This email is already registered. Please log in.", "info");
+          } else {
+            setAuthMessage("Account created! Check your email to verify, then log in.", "success");
+          }
+        }
+        else if (authState === 'forgot') {
+          btnSubmit.textContent = 'Sending...';
+          const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+          const resetUrl = window.location.origin + basePath + '/reset-password.html';
+          const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: resetUrl });
+          if (error) throw error;
+          setAuthMessage("If an account exists, a reset link has been sent to your email.", "success");
+        }
+      } catch (err) {
+        if (err.message !== "_handled") { setAuthMessage(err.message, "error"); }
+      } finally {
         btnSubmit.disabled = false;
         btnSubmit.style.opacity = '1';
-        return;
+        btnSubmit.textContent = originalText;
       }
-
-      btnSubmit.textContent = 'Success! Access Granted...';
-      localStorage.setItem('manodemy_auth', 'true');
-      executeLoginAnimation();
     });
   }
 
-  // 3. Google OAuth Login
+  // ═══════ 3. GOOGLE OAUTH ═══════
   if (btnGoogle) {
     btnGoogle.addEventListener('click', async (e) => {
       e.preventDefault();
-      console.log("✅ Google button clicked");
-
-      if (!supabaseClient) {
-        console.error("❌ Cannot sign in with Google because supabaseClient client is null.");
-        alert("Authentication service is currently unavailable.");
-        return;
-      }
-
+      if (!supabaseClient) { setAuthMessage("Auth service unavailable.", "error"); return; }
       const originalText = btnGoogle.innerHTML;
       btnGoogle.innerHTML = 'Redirecting securely...';
       btnGoogle.disabled = true;
       btnGoogle.style.opacity = '0.7';
-
       try {
-        console.log("✅ Calling supabaseClient.auth.signInWithOAuth...");
         const { error } = await supabaseClient.auth.signInWithOAuth({
           provider: 'google',
           options: {
             redirectTo: window.location.href,
-            queryParams: {
-              access_type: 'offline',
-              prompt: 'consent',
-            }
+            queryParams: { access_type: 'offline', prompt: 'consent' }
           }
         });
-
         if (error) {
-          console.error("❌ Supabase OAuth Error:", error);
-          alert('Google Login Error: ' + error.message);
+          setAuthMessage('Google Login Error: ' + error.message, "error");
           btnGoogle.innerHTML = originalText;
           btnGoogle.disabled = false;
           btnGoogle.style.opacity = '1';
         }
       } catch (err) {
-        console.error("❌ Unexpected error during OAuth flow:", err);
         btnGoogle.innerHTML = originalText;
         btnGoogle.disabled = false;
         btnGoogle.style.opacity = '1';
       }
     });
-  } else {
-    // Google button not found — non-critical
   }
 
-  if (linkForgot) {
-    linkForgot.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const email = prompt('Enter your registered email address to receive a password reset link:');
-      if (email && supabaseClient) {
-        await supabaseClient.auth.resetPasswordForEmail(email, {
-          redirectTo: window.location.origin + window.location.pathname,
-        });
-        alert('If an account exists, a secure reset link has been sent to that email.');
-      }
-    });
-  }
-
-  if (linkSignup) {
-    linkSignup.addEventListener('click', (e) => {
-      e.preventDefault();
-      alert('Just enter an email and password in the form and click "Start Learning" to instantly create your account!');
-    });
-  }
-
-  // ═══════ LOGOUT BUTTON ON LANDING PAGE ═══════
+  // ═══════ 4. LOGOUT ═══════
   const logoutBtn = document.getElementById('logoutBtn');
   if (supabaseClient) {
     const { data: { session } } = await supabaseClient.auth.getSession();
@@ -830,3 +875,4 @@ window.addEventListener('load', () => {
     }, 600);
   }
 });
+

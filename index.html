@@ -15,18 +15,7 @@
 <!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Razorpay SDK loaded lazily by landing.js when user clicks Buy -->
-<style>
-  /* Anti-flicker: hide login card instantly if user was previously authenticated */
-  .landing-login-card { opacity: 0; animation: fadeInCard 0.3s ease 0.2s forwards; }
-  @keyframes fadeInCard { to { opacity: 1; } }
-</style>
-<script>
-  // Instant anti-flicker for returning users
-  if (localStorage.getItem('manodemy_auth') === 'true') {
-    document.write('<style>.landing-login-card{display:none!important}</style>');
-  }
-</script>
-<script src="landing.js?v=6.4" defer></script>
+<script src="landing.js?v=7.1" defer></script>
 </head>
 <body>
 
@@ -84,20 +73,27 @@
     <div class="hero-visual">
       <!-- Premium Landing Login Box -->
       <div class="landing-login-card">
-        <h3 class="login-title">Join the Challenge</h3>
-        <button type="button" class="landing-social-btn" id="google-signin-btn">
-          <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
-          Continue with Google
-        </button>
-        <div class="landing-divider"><span>OR EMAIL</span></div>
+        <h3 class="login-title" id="authTitle">Join the Challenge</h3>
+        <p id="authSubtitle" style="color:#94A3B8;font-size:0.85rem;text-align:center;margin:0 0 1rem;">Sign in to start learning</p>
+        <div id="socialAuthSection">
+          <button type="button" class="landing-social-btn" id="google-signin-btn">
+            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+            Continue with Google
+          </button>
+          <div class="landing-divider"><span>OR EMAIL</span></div>
+        </div>
+        <div id="authMessage" style="display:none;padding:0.6rem;border-radius:8px;font-size:0.85rem;text-align:center;margin-bottom:0.8rem;"></div>
         <form class="landing-login-form" id="landingLoginForm">
+          <input type="text" id="landingName" placeholder="Full Name" class="landing-input" style="display:none;">
           <input type="email" id="landingEmail" placeholder="name@example.com" class="landing-input" required>
           <input type="password" id="landingPassword" placeholder="••••••••" class="landing-input" required>
+          <input type="password" id="landingConfirmPassword" placeholder="Confirm Password" class="landing-input" style="display:none;">
           <button type="submit" class="landing-submit-btn" id="btnLandingSubmit">Login</button>
         </form>
-        <div class="landing-footer-links">
+        <div class="landing-footer-links" id="authFooterLinks">
           <a href="#" id="linkLandingForgot">Forgot password?</a>
-          <a href="#" id="linkLandingSignup">Sign up</a>
+          <a href="#" id="linkLandingSignup">Create Account</a>
+          <a href="#" id="linkBackToLogin" style="display:none;">← Back to Login</a>
         </div>
       </div>
     </div>
