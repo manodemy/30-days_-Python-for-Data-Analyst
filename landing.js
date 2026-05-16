@@ -525,13 +525,23 @@ if (couponApplyBtn) {
       .eq('code', code.toUpperCase())
       .single();
 
-    console.log('[Coupon] Data:', data);
-    const isActive = data ? (data.is_active === true && data.active !== false) : false;
+    console.log('[Coupon] Raw data from DB:', JSON.stringify(data));
+    console.log('[Coupon] is_active:', data?.is_active, '| type:', typeof data?.is_active);
+    console.log('[Coupon] active:', data?.active, '| type:', typeof data?.active);
+
+    // Use Boolean() to handle PostgreSQL returning 1/0 or true/false or null
+    const isActive = data
+      ? (Boolean(data.is_active) === true && Boolean(data.active) !== false)
+      : false;
+
+    console.log('[Coupon] isActive result:', isActive);
+
     const expiry = data ? (data.expires_at || data.valid_until) : null;
     const isExpired = expiry && new Date(expiry) < new Date();
     
     const appliesTo = data?.applies_to || 'both';
     const currencyMatch = appliesTo === 'both' || appliesTo === currentPricing.currency;
+
 
     if (data && isActive && !isExpired && currencyMatch) {
       const type = data.discount_type || 'percentage';
