@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 
+  Manodemy Conversion Funnel — funnel.html
+  Compatible with: admin.html Intelligence Suite
+  Data sources: page_views, activity_logs, purchases (Supabase)
+  Manual mode: always available, no Supabase required
+-->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conversion Funnel — Manodemy</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="supabase.js"></script>
+  
+  <style>
+    :root {
+      --void: #080810;
+      --base: #0C0C16;
+      --surface: #111120;
+      --elevated: #16162A;
+      --overlay: #1C1C34;
+      --rim: rgba(255, 255, 255, 0.06);
+      
+      --gold: #C9A84C;
+      --emerald: #2DD4BF;
+      --rose: #F87171;
+      --amber: #FBBF24;
+      --sapphire: #60A5FA;
+      --violet: #8B5CF6;
+
+      --ink: #EEE8D9;
+      --ink-dim: #A8A090;
+      --ink-muted: #60584E;
+
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-data: 'DM Mono', 'Courier New', monospace;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; -webkit-font-smoothing: antialiased; }
+    body {
+      background: var(--void);
+      color: var(--ink);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 4rem;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: 0.4;
+    }
+    
+    .nav-bar {
+      width: 100%; max-width: 900px;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 2rem 1rem;
+    }
+    .back-btn {
+      color: var(--ink-dim); text-decoration: none;
+      font-family: var(--font-data); font-size: 0.8rem;
+      border: 1px solid var(--rim); padding: 0.5rem 1rem; border-radius: 4px;
+      transition: all 0.2s; background: var(--surface);
+    }
+    .back-btn:hover { border-color: var(--gold); color: var(--gold); }
+    
+    .header { width: 100%; max-width: 900px; padding: 0 1rem; margin-bottom: 2rem; position: relative; }
+    .title { font-family: var(--font-display); font-style: italic; font-size: 2.5rem; color: var(--gold); font-weight: 300; margin-bottom: 0.25rem; }
+    .subtitle { font-family: var(--font-data); color: var(--ink-muted); letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.8rem; }
+    
+    .mode-toggle { position: absolute; right: 1rem; top: 0; display: flex; background: var(--base); border: 1px solid var(--rim); border-radius: 8px; overflow: hidden; }
+    .mode-btn { background: transparent; color: var(--ink-dim); border: none; padding: 0.5rem 1rem; cursor: pointer; font-family: var(--font-body); font-size: 0.9rem; transition: 0.2s; }
+    .mode-btn.active { background: var(--elevated); color: var(--ink); box-shadow: inset 0 -2px 0 var(--gold); }
+
+    .filter-bar { width: 100%; max-width: 900px; margin: 0 auto 2rem; padding: 1rem; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .pill { background: var(--base); border: 1px solid var(--rim); color: var(--ink-dim); padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+    .pill:hover, .pill.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.05); }
+    .date-picker { background: var(--base); border: 1px solid var(--rim); color: var(--ink); padding: 0.4rem; border-radius: 4px; font-family: var(--font-data); font-size: 0.8rem; }
+    .apply-btn { background: rgba(201,168,76,0.1); border: 1px solid var(--gold); color: var(--gold); padding: 0.4rem 1rem; border-radius: 4px; cursor: pointer; }
+    .manual-banner { width: 100%; max-width: 900px; margin: 0 auto 2rem; padding: 1rem; background: rgba(255,255,255,0.02); border: 1px solid var(--rim); border-radius: 8px; text-align: center; color: var(--ink-dim); display: none; }
+
+    .kpi-row { width: 100%; max-width: 900px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1rem; padding: 0 1rem; }
+    .kpi-card { background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem; }
+    .kpi-val { font-family: var(--font-data); font-size: 1.75rem; color: var(--ink); margin-bottom: 0.25rem; }
+    .kpi-label { font-size: 0.8rem; color: var(--ink-muted); }
+    
+    .settings-row { width: 100%; max-width: 900px; display: flex; gap: 1rem; padding: 0 1rem; margin-bottom: 3rem; align-items: center; font-size: 0.85rem; color: var(--ink-dim); }
+    .aov-input { background: var(--base); border: 1px solid var(--rim); color: var(--ink); padding: 0.3rem 0.5rem; width: 80px; font-family: var(--font-data); text-align: right; border-radius: 4px; }
+    
+    .funnel-container { width: 100%; max-width: 900px; padding: 0 1rem; display: flex; flex-direction: column; gap: 0; }
+    
+    .funnel-step-wrapper { width: 100%; }
+    .funnel-step-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .step-badge { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-data); font-size: 0.75rem; font-weight: 500; background: var(--surface); border: 1px solid var(--rim); color: var(--ink-dim); }
+    .step-name { font-family: var(--font-display); font-size: 1.2rem; font-weight: 300; letter-spacing: 0.05em; }
+    
+    .bar-container { width: 100%; background: var(--base); border: 1px solid var(--rim); border-radius: 6px; height: 48px; position: relative; overflow: hidden; display: flex; align-items: center; margin-bottom: 0; }
+    .bar-fill { height: 100%; position: absolute; left: 0; top: 0; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0.85; z-index: 1; }
+    .bar-content { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 1rem; }
+    .bar-val { font-family: var(--font-data); font-size: 1.2rem; color: #FFF; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+    .bar-val-input { background: transparent; border: 1px dashed rgba(255,255,255,0.5); color: #FFF; font-family: var(--font-data); font-size: 1.2rem; width: 100px; padding: 0.2rem; outline: none; display: none; }
+    .bar-pct { font-family: var(--font-data); font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+
+    .dropoff-block { width: calc(100% - 24px); margin-left: 12px; border-left: 2px dashed var(--rim); padding: 1.5rem 0 1.5rem 1.5rem; position: relative; }
+    .dropoff-card { background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1rem; width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 0.5rem; }
+    .dropoff-header { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-data); font-size: 0.8rem; }
+    .friction-label { padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 500; font-family: var(--font-body); font-size: 0.7rem; letter-spacing: 0.05em; }
+    .diagnostic-msg { font-size: 0.85rem; color: var(--ink-dim); line-height: 1.4; }
+
+    .split-container { display: flex; gap: 1rem; width: 100%; margin-top: 2rem; position: relative; }
+    .split-container::before { content: ''; position: absolute; top: -2rem; left: 50%; width: 2px; height: 1.5rem; background: var(--rim); }
+    .split-branch { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+    
+    .benchmarks { width: 100%; max-width: 900px; margin: 4rem auto; padding: 0 1rem; }
+    .benchmarks-title { font-family: var(--font-display); font-size: 1.5rem; color: var(--gold); margin-bottom: 1rem; font-style: italic; }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; overflow: hidden; }
+    th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--rim); font-size: 0.9rem; }
+    th { color: var(--ink-muted); font-weight: 500; background: var(--elevated); }
+    td.mono { font-family: var(--font-data); }
+
+    /* Colors */
+    .c-vis { background: var(--sapphire); } .t-vis { color: var(--sapphire); }
+    .c-log { background: var(--violet); } .t-log { color: var(--violet); }
+    .c-buy { background: var(--amber); } .t-buy { color: var(--amber); }
+    .c-suc { background: var(--emerald); } .t-suc { color: var(--emerald); }
+    .c-fai { background: var(--rose); } .t-fai { color: var(--rose); }
+
+    @media (max-width: 768px) {
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+      .split-container { flex-direction: column; }
+      .dropoff-card { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-bar">
+    <a href="admin.html" class="back-btn">← Back to Admin</a>
+  </div>
+
+  <header class="header">
+    <h1 class="title">Conversion Funnel</h1>
+    <div class="subtitle">Intent · Friction · Revenue</div>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btnLive" onclick="setMode('live')">Live Data</button>
+      <button class="mode-btn" id="btnManual" onclick="setMode('manual')">Manual Input</button>
+    </div>
+  </header>
+
+  <div class="filter-bar" id="filterBar">
+    <button class="pill" data-preset="last7">Last 7 D</button>
+    <button class="pill active" data-preset="last30">Last 30 D</button>
+    <button class="pill" data-preset="this_month">This Month</button>
+    <button class="pill" data-preset="all_time">All Time</button>
+    <span style="margin: 0 0.5rem; color: var(--rim);">|</span>
+    <input class="date-picker" id="filterFrom" type="date" />
+    <input class="date-picker" id="filterTo" type="date" />
+    <button class="apply-btn" onclick="fetchLiveData()">Apply</button>
+  </div>
+  <div class="manual-banner" id="manualBanner">
+    Manual Mode active — enter your own values in the funnel bars below to test scenarios.
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Total Visitors</div>
+      <div class="kpi-val" id="kpiVisits">0</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Visit → Purchase</div>
+      <div class="kpi-val" id="kpiCvr" style="color:var(--gold);">0%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Payment Success Rate</div>
+      <div class="kpi-val" id="kpiSucc" style="color:var(--emerald);">0%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Est. Revenue at Risk</div>
+      <div class="kpi-val" id="kpiRisk" style="color:var(--rose);">₹0</div>
+    </div>
+  </div>
+
+  <div class="settings-row">
+    Avg Order Value (AOV): ₹ <input type="number" class="aov-input" id="aovInput" value="1900" onchange="renderFunnel()" />
+  </div>
+
+  <div class="funnel-container">
+    
+    <!-- STEP 1 -->
+    <div class="funnel-step-wrapper">
+      <div class="funnel-step-header">
+        <div class="step-badge t-vis">1</div>
+        <div class="step-name t-vis">VISITS</div>
+      </div>
+      <div class="bar-container" onclick="focusInput(1)">
+        <div class="bar-fill c-vis" id="bar1" style="width: 100%;"></div>
+        <div class="bar-content">
+          <span class="bar-val" id="val1">0</span>
+          <input type="number" class="bar-val-input" id="inp1" onchange="updateManual(1)" onblur="blurInput(1)" />
+          <span class="bar-pct">100%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DROPOFF 1 -->
+    <div class="dropoff-block">
+      <div class="dropoff-card">
+        <div class="dropoff-header">
+          <span style="color: var(--rose);" id="drop1_count">↓ 0 (0%)</span>
+          <span class="friction-label" style="background: rgba(139,92,246,0.2); color: var(--violet);">ACCOUNT FRICTION</span>
+        </div>
+        <div class="diagnostic-msg" id="diag1">...</div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="funnel-step-wrapper">
+      <div class="funnel-step-header">
+        <div class="step-badge t-log">2</div>
+        <div class="step-name t-log">LOGGED IN</div>
+      </div>
+      <div class="bar-container" onclick="focusInput(2)">
+        <div class="bar-fill c-log" id="bar2" style="width: 0%;"></div>
+        <div class="bar-content">
+          <span class="bar-val" id="val2">0</span>
+          <input type="number" class="bar-val-input" id="inp2" onchange="updateManual(2)" onblur="blurInput(2)" />
+          <span class="bar-pct" id="pct2">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DROPOFF 2 -->
+    <div class="dropoff-block">
+      <div class="dropoff-card">
+        <div class="dropoff-header">
+          <span style="color: var(--rose);" id="drop2_count">↓ 0 (0%)</span>
+          <span class="friction-label" style="background: rgba(245,158,11,0.2); color: var(--amber);">OFFER FRICTION</span>
+        </div>
+        <div class="diagnostic-msg" id="diag2">...</div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="funnel-step-wrapper">
+      <div class="funnel-step-header">
+        <div class="step-badge t-buy">3</div>
+        <div class="step-name t-buy">BUY CLICK</div>
+      </div>
+      <div class="bar-container" onclick="focusInput(3)">
+        <div class="bar-fill c-buy" id="bar3" style="width: 0%;"></div>
+        <div class="bar-content">
+          <span class="bar-val" id="val3">0</span>
+          <input type="number" class="bar-val-input" id="inp3" onchange="updateManual(3)" onblur="blurInput(3)" />
+          <span class="bar-pct" id="pct3">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPLIT -->
+    <div class="split-container">
+      <!-- SUCCESS -->
+      <div class="split-branch">
+        <div class="funnel-step-header">
+          <div class="step-badge t-suc">4</div>
+          <div class="step-name t-suc">SUCCESS</div>
+        </div>
+        <div class="bar-container" onclick="focusInput(4)">
+          <div class="bar-fill c-suc" id="bar4" style="width: 0%;"></div>
+          <div class="bar-content">
+            <span class="bar-val" id="val4">0</span>
+            <input type="number" class="bar-val-input" id="inp4" onchange="updateManual(4)" onblur="blurInput(4)" />
+            <span class="bar-pct" id="pct4">0% of Cart</span>
+          </div>
+        </div>
+        <div class="diagnostic-msg" id="diag3_suc" style="margin-top:0.5rem; font-size:0.8rem;"></div>
+      </div>
+      
+      <!-- FAILED -->
+      <div class="split-branch">
+        <div class="funnel-step-header">
+          <div class="step-badge t-fai">5</div>
+          <div class="step-name t-fai">FAILED</div>
+        </div>
+        <div class="bar-container" onclick="focusInput(5)">
+          <div class="bar-fill c-fai" id="bar5" style="width: 0%;"></div>
+          <div class="bar-content">
+            <span class="bar-val" id="val5">0</span>
+            <input type="number" class="bar-val-input" id="inp5" onchange="updateManual(5)" onblur="blurInput(5)" />
+            <span class="bar-pct" id="pct5">0% of Cart</span>
+          </div>
+        </div>
+        <div class="diagnostic-msg" id="diag3_fail" style="margin-top:0.5rem; font-size:0.8rem; color:var(--rose);"></div>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="benchmarks">
+    <h2 class="benchmarks-title">Performance vs Industry Benchmarks</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Your Rate</th>
+          <th>EdTech Norm</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Login Conversion (S1 → S2)</td>
+          <td class="mono" id="bm_log">0%</td>
+          <td class="mono">25% – 40%</td>
+          <td id="bm_st_log">...</td>
+        </tr>
+        <tr>
+          <td>Offer Desirability (S2 → S3)</td>
+          <td class="mono" id="bm_buy">0%</td>
+          <td class="mono">15% – 35%</td>
+          <td id="bm_st_buy">...</td>
+        </tr>
+        <tr>
+          <td>Payment Success (S4 / S3)</td>
+          <td class="mono" id="bm_suc">0%</td>
+          <td class="mono">65% – 80%</td>
+          <td id="bm_st_suc">...</td>
+        </tr>
+        <tr>
+          <td>Total CVR (S4 / S1)</td>
+          <td class="mono" id="bm_cvr">0%</td>
+          <td class="mono">2.0% – 8.0%</td>
+          <td id="bm_st_cvr">...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Config fallback
+    const SUPA_URL = window.MANODEMY_CONFIG?.SUPA_URL || 'https://gvhnwmuyrwissgkumeif.supabase.co';
+    const SUPA_KEY = window.MANODEMY_CONFIG?.SUPA_KEY || 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
+    let sb = null;
+    try { sb = supabase.createClient(SUPA_URL, SUPA_KEY); } catch (e) { console.warn("Supabase init failed. Offline mode only."); }
+
+    let currentMode = 'live'; // 'live' or 'manual'
+    let data = { s1: 0, s2: 0, s3: 0, s4: 0, s5: 0 };
+    let manualData = { s1: 1000, s2: 280, s3: 90, s4: 61, s5: 29 };
+
+    function fmt(n) { return Number(n).toLocaleString('en-IN'); }
+
+    function setMode(mode) {
+      currentMode = mode;
+      document.getElementById('btnLive').classList.toggle('active', mode === 'live');
+      document.getElementById('btnManual').classList.toggle('active', mode === 'manual');
+      document.getElementById('filterBar').style.display = mode === 'live' ? 'flex' : 'none';
+      document.getElementById('manualBanner').style.display = mode === 'manual' ? 'block' : 'none';
+      
+      if (mode === 'live') {
+        fetchLiveData();
+      } else {
+        data = { ...manualData };
+        renderFunnel();
+      }
+    }
+
+    function calculateDates() {
+      const activePill = document.querySelector('.pill.active');
+      const preset = activePill ? activePill.dataset.preset : 'last30';
+      const today = new Date();
+      let from = new Date(), to = new Date();
+      
+      if (preset === 'last7') from.setDate(today.getDate() - 7);
+      else if (preset === 'last30') from.setDate(today.getDate() - 30);
+      else if (preset === 'this_month') from = new Date(today.getFullYear(), today.getMonth(), 1);
+      else if (preset === 'all_time') from = new Date(2020, 0, 1);
+      
+      if (activePill) {
+        document.getElementById('filterFrom').value = from.toISOString().split('T')[0];
+        document.getElementById('filterTo').value = to.toISOString().split('T')[0];
+      }
+      return { 
+        start: document.getElementById('filterFrom').value + 'T00:00:00Z', 
+        end: document.getElementById('filterTo').value + 'T23:59:59Z' 
+      };
+    }
+
+    document.querySelectorAll('.pill').forEach(p => {
+      p.addEventListener('click', e => {
+        document.querySelectorAll('.pill').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        fetchLiveData();
+      });
+    });
+
+    async function fetchLiveData() {
+      if (!sb) { setMode('manual'); return; }
+      const dates = calculateDates();
+      
+      // Show loading
+      [1,2,3,4,5].forEach(i => document.getElementById(`val${i}`).textContent = "...");
+      
+      try {
+        const { data: res, error } = await sb.rpc('get_conversion_funnel', { start_ts: dates.start, end_ts: dates.end });
+        if (error) throw error;
+        if (res && res.length > 0) {
+          data = { s1: res[0].step1_visits, s2: res[0].step2_logged_in, s3: res[0].step3_buy_clicks, s4: res[0].step4_success, s5: res[0].step5_failed };
+          renderFunnel();
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Failed to fetch live data. Ensure get_conversion_funnel RPC is deployed. Switching to Manual.");
+        setMode('manual');
+      }
+    }
+
+    function focusInput(step) {
+      if (currentMode !== 'manual') return;
+      document.getElementById(`val${step}`).style.display = 'none';
+      const inp = document.getElementById(`inp${step}`);
+      inp.style.display = 'inline-block';
+      inp.value = data[`s${step}`];
+      inp.focus();
+    }
+
+    function blurInput(step) {
+      document.getElementById(`val${step}`).style.display = 'inline';
+      document.getElementById(`inp${step}`).style.display = 'none';
+    }
+
+    function updateManual(step) {
+      const val = parseInt(document.getElementById(`inp${step}`).value) || 0;
+      data[`s${step}`] = val;
+      manualData = { ...data };
+      renderFunnel();
+    }
+
+    function renderFunnel() {
+      const s1 = data.s1, s2 = data.s2, s3 = data.s3, s4 = data.s4, s5 = data.s5;
+      const aov = parseInt(document.getElementById('aovInput').value) || 0;
+
+      // Update basic counts
+      document.getElementById('val1').textContent = fmt(s1);
+      document.getElementById('val2').textContent = fmt(s2);
+      document.getElementById('val3').textContent = fmt(s3);
+      document.getElementById('val4').textContent = fmt(s4);
+      document.getElementById('val5').textContent = fmt(s5);
+
+      // Widths & Pcts (S1 is 100%, S2/3 relative to S1, S4/S5 relative to S3)
+      const p2 = s1 > 0 ? (s2/s1)*100 : 0;
+      const p3 = s1 > 0 ? (s3/s1)*100 : 0;
+      const p4_abs = s1 > 0 ? (s4/s1)*100 : 0;
+      const p5_abs = s1 > 0 ? (s5/s1)*100 : 0;
+
+      document.getElementById('bar2').style.width = Math.max(2, p2) + '%';
+      document.getElementById('bar3').style.width = Math.max(2, p3) + '%';
+      document.getElementById('bar4').style.width = Math.max(2, p4_abs*2) + '%'; // Visual scaling for splits
+      document.getElementById('bar5').style.width = Math.max(2, p5_abs*2) + '%';
+
+      document.getElementById('pct2').textContent = p2.toFixed(1) + '%';
+      document.getElementById('pct3').textContent = p3.toFixed(1) + '%';
+      
+      const p4_rel = s3 > 0 ? (s4/s3)*100 : 0;
+      const p5_rel = s3 > 0 ? (s5/s3)*100 : 0;
+      document.getElementById('pct4').textContent = p4_rel.toFixed(1) + '% of Cart';
+      document.getElementById('pct5').textContent = p5_rel.toFixed(1) + '% of Cart';
+
+      // Dropoff 1 (Visits to Login)
+      const d1 = s1 - s2;
+      const d1p = s1 > 0 ? (d1/s1)*100 : 0;
+      document.getElementById('drop1_count').textContent = `↓ ${fmt(d1)} (${d1p.toFixed(1)}%)`;
+      let d1msg = "";
+      if (d1p < 40) d1msg = "✓ Login barrier is healthy. Users are motivated.";
+      else if (d1p <= 70) d1msg = "⚠ Moderate login friction. Consider social login or previewing content.";
+      else d1msg = "🚨 Critical: Login wall killing intent. Add Google login or delay auth requirement.";
+      document.getElementById('diag1').textContent = d1msg;
+
+      // Dropoff 2 (Login to Buy Click)
+      const d2 = s2 - s3;
+      const d2p = s2 > 0 ? (d2/s2)*100 : 0;
+      document.getElementById('drop2_count').textContent = `↓ ${fmt(d2)} (${d2p.toFixed(1)}%)`;
+      let d2msg = "";
+      if (d2p < 50) d2msg = "✓ Offer resonating well with logged-in users.";
+      else if (d2p <= 75) d2msg = "⚠ Offer friction detected. Test price anchoring or add urgency.";
+      else d2msg = "🚨 Critical: Price or value proposition mismatch. Test pricing tiers.";
+      document.getElementById('diag2').textContent = d2msg;
+
+      // Dropoff 3 (Payment Diagnostics)
+      let d3msg = "";
+      if (p4_rel > 65) d3msg = "✓ Gateway healthy";
+      else if (p4_rel >= 40) d3msg = "⚠ Elevated failures. Check OTP success rates.";
+      else d3msg = "🚨 Critical: High card decline or OTP failure rate detected.";
+      document.getElementById('diag3_suc').textContent = d3msg;
+      document.getElementById('diag3_fail').textContent = s5 > 0 ? `Lost approx ₹${fmt(s5 * aov)}` : '';
+
+      // KPIs
+      document.getElementById('kpiVisits').textContent = fmt(s1);
+      const cvr = s1 > 0 ? (s4/s1)*100 : 0;
+      document.getElementById('kpiCvr').textContent = cvr.toFixed(2) + '%';
+      document.getElementById('kpiCvr').style.color = cvr >= 5 ? 'var(--gold)' : (cvr >= 2 ? 'var(--amber)' : 'var(--rose)');
+      
+      const succRate = (s4+s5) > 0 ? (s4/(s4+s5))*100 : 0;
+      document.getElementById('kpiSucc').textContent = succRate.toFixed(1) + '%';
+      document.getElementById('kpiSucc').style.color = succRate >= 65 ? 'var(--emerald)' : (succRate >= 40 ? 'var(--amber)' : 'var(--rose)');
+      
+      document.getElementById('kpiRisk').textContent = '₹' + fmt(s5 * aov);
+
+      // Benchmarks
+      document.getElementById('bm_log').textContent = (100 - d1p).toFixed(1) + '%';
+      document.getElementById('bm_st_log').innerHTML = (100-d1p) >= 25 ? '<span style="color:var(--emerald)">✓</span>' : '<span style="color:var(--rose)">🚨</span>';
+      
+      document.getElementById('bm_buy').textContent = (100 - d2p).toFixed(1) + '%';
+      document.getElementById('bm_st_buy').innerHTML = (100-d2p) >= 15 ? '<span style="color:var(--emerald)">✓</span>' : '<span style="color:var(--rose)">🚨</span>';
+
+      document.getElementById('bm_suc').textContent = succRate.toFixed(1) + '%';
+      document.getElementById('bm_st_suc').innerHTML = succRate >= 65 ? '<span style="color:var(--emerald)">✓</span>' : '<span style="color:var(--rose)">🚨</span>';
+
+      document.getElementById('bm_cvr').textContent = cvr.toFixed(2) + '%';
+      document.getElementById('bm_st_cvr').innerHTML = cvr >= 2 ? '<span style="color:var(--emerald)">✓</span>' : '<span style="color:var(--rose)">🚨</span>';
+    }
+
+    // Init
+    document.querySelector('[data-preset="last30"]').click(); // Triggers fetchLiveData if auth is valid
+    setTimeout(() => { if (currentMode === 'live' && data.s1 === 0) setMode('manual'); }, 1500);
+  </script>
+</body>
+</html>
