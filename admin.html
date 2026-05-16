@@ -2911,8 +2911,21 @@
     }
 
     async function toggleCoupon(id, isActive) {
-      await sb.from('coupons').update({ is_active: isActive, active: isActive }).eq('id', id);
-      showToast(`Coupon ${isActive ? 'activated' : 'deactivated'}`, 'success');
+      const { error } = await sb.from('coupons')
+        .update({ is_active: isActive, active: isActive })
+        .eq('id', id);
+
+      if (error) {
+        console.error('[Admin] Failed to update coupon:', error);
+        showToast(`❌ Failed to update coupon: ${error.message}`, 'error');
+        // Re-render to show actual DB state (revert the visual toggle)
+        loadDashboardData();
+        return;
+      }
+
+      showToast(`Coupon ${isActive ? 'activated ✅' : 'deactivated 🔴'}`, isActive ? 'success' : 'info');
+      // Re-fetch from DB to confirm actual saved state
+      loadDashboardData();
     }
 
     // ── AUDIT TABLE ──────────────────────────────────
