@@ -541,9 +541,7 @@ if (couponApplyBtn) {
         ? '₹' + (newAmount / 100).toLocaleString('en-IN')
         : '$' + (newAmount / 100);
       
-      document.getElementById('checkoutAmount').textContent = displayPrice;
-      
-      // Update gateway button text
+      // Update gateway button text only
       const razorpayBtn = document.getElementById('payRazorpay');
       const stripeBtn = document.getElementById('payStripe');
       const paypalBtn = document.getElementById('payPaypal');
