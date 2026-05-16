@@ -31,9 +31,16 @@ BEGIN
   RETURN QUERY
   WITH 
   s1 AS (
-    SELECT COUNT(DISTINCT session_id) AS visits 
+    SELECT COUNT(*) AS visits 
     FROM public.page_views 
     WHERE created_at BETWEEN start_ts AND end_ts
+      AND (
+        page_url ILIKE '%/index.html' OR 
+        page_url ILIKE '%/day01.html' OR 
+        page_url ILIKE '%/day02.html' OR
+        page_url = '/' OR
+        page_url ILIKE '%/30-days_-Python-for-Data-Analyst/'
+      )
   ),
   s2 AS (
     SELECT COUNT(DISTINCT user_id) AS logged_in 
