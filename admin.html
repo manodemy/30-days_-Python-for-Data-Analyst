@@ -1594,6 +1594,9 @@
         <div class="nav-item" data-tab="tab-retention">
           <span class="nav-icon">⟳</span> Retention
         </div>
+        <div class="nav-item" data-tab="tab-engagement">
+          <span class="nav-icon">◴</span> Engagement
+        </div>
         <div class="nav-section-label">Operations</div>
         <div class="nav-item" data-tab="tab-pricing">
           <span class="nav-icon">⬡</span> Coupons &amp; Pricing
@@ -2147,6 +2150,29 @@
             </div>
           </div>
         </div>
+        <!-- ══ TAB: ENGAGEMENT ══ -->
+        <div class="tab-pane" id="tab-engagement">
+          <div class="tab-header">
+            <h2 class="tab-title">Page <em>Engagement</em></h2>
+            <span class="tab-period-label" id="eng-period-label">Visits &amp; Time Spent</span>
+          </div>
+          
+          <div class="table-panel">
+            <table class="roster-table" style="margin-top:0;">
+              <thead>
+                <tr>
+                  <th style="width:50%;">Page URL</th>
+                  <th style="text-align:right;">Total Visits</th>
+                  <th style="text-align:right;">Avg Time Spent</th>
+                  <th style="text-align:right;">Total Time Spent</th>
+                </tr>
+              </thead>
+              <tbody id="engagementTableBody">
+                <tr><td colspan="4" style="text-align:center;">Loading engagement data...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
         <!-- ══ TAB 4: COUPONS & PRICING ══ -->
         <div class="tab-pane" id="tab-pricing">
           <div class="tab-header">
@@ -2528,7 +2554,8 @@
         { data: audits, error: auditErr },
         { data: txLogs, error: txErr },
         { data: rosterData, error: rosterError },
-        { data: funnelData, error: funnelError }
+        { data: funnelData, error: funnelError },
+        { data: engagementData, error: engagementErr }
       ] = await Promise.all([
         sb.rpc('get_revenue_intelligence', { start_ts: f.from, end_ts: f.to }),
         sb.rpc('get_revenue_intelligence_prev', { start_ts: f.prevFrom, end_ts: f.prevTo }),
@@ -2545,7 +2572,8 @@
         sb.rpc('get_transaction_ledger', { start_ts: f.from, end_ts: f.to }),
         // Roster always fetches ALL users — not filtered by dashboard date range
         sb.rpc('get_user_roster', { start_ts: '2000-01-01T00:00:00Z', end_ts: '2099-12-31T23:59:59Z' }),
-        sb.rpc('get_conversion_funnel', { start_ts: f.from, end_ts: f.to })
+        sb.rpc('get_conversion_funnel', { start_ts: f.from, end_ts: f.to }),
+        sb.rpc('get_page_engagement', { start_ts: f.from, end_ts: f.to })
       ]);
 
       if (couponErr) console.error("Supabase Coupon Error:", JSON.stringify(couponErr));
@@ -2555,6 +2583,7 @@
       if (growthErr) console.error('Growth Error:', JSON.stringify(growthErr));
       if (rosterError) console.error('Roster Error:', JSON.stringify(rosterError));
       if (funnelError) console.error('Funnel Error:', JSON.stringify(funnelError));
+      if (engagementErr) console.error('Engagement Error:', JSON.stringify(engagementErr));
 
       if (funnelData && funnelData.length > 0) {
         latestFunnelData = funnelData[0];
