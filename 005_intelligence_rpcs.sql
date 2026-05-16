@@ -102,9 +102,11 @@ BEGIN
 
   WITH agg AS (
     SELECT
-      SUM(amount_inr) FILTER (WHERE status IN ('completed', 'paid', 'captured', 'successful')) AS gross_revenue,
+      -- Gross Revenue = ALL money collected (including amounts later refunded)
+      -- This is the standard financial definition: money IN before deductions
+      SUM(amount_inr) FILTER (WHERE status IN ('completed', 'paid', 'captured', 'successful', 'refunded')) AS gross_revenue,
       SUM(amount_inr) FILTER (WHERE status = 'refunded') AS refund_amount,
-      COUNT(*) FILTER (WHERE status IN ('completed', 'paid', 'captured', 'successful')) AS transaction_count,
+      COUNT(*) FILTER (WHERE status IN ('completed', 'paid', 'captured', 'successful', 'refunded')) AS transaction_count,
       COUNT(*) FILTER (WHERE status = 'refunded') AS refund_count
     FROM purchases
     WHERE created_at >= start_ts AND created_at <= end_ts
@@ -112,7 +114,8 @@ BEGIN
   daily AS (
     SELECT
       to_char(date_trunc('day', created_at), 'YYYY-MM-DD') AS day,
-      COALESCE(SUM(amount_inr) FILTER (WHERE status IN ('completed', 'paid', 'captured', 'successful')), 0) AS gross,
+      -- Daily gross includes refunded rows (money was collected that day)
+      COALESCE(SUM(amount_inr) FILTER (WHERE status IN ('completed', 'paid', 'captured', 'successful', 'refunded')), 0) AS gross,
       COALESCE(SUM(amount_inr) FILTER (WHERE status = 'refunded'), 0) AS refunds
     FROM purchases
     WHERE created_at >= start_ts AND created_at <= end_ts
@@ -125,7 +128,8 @@ BEGIN
       SUM(amount_inr) AS amount,
       COUNT(*) AS count
     FROM purchases
-    WHERE created_at >= start_ts AND created_at <= end_ts AND status IN ('completed', 'paid', 'captured', 'successful')
+    WHERE created_at >= start_ts AND created_at <= end_ts
+      AND status IN ('completed', 'paid', 'captured', 'successful', 'refunded')
     GROUP BY currency
   )
   SELECT json_build_object(
@@ -173,9 +177,10 @@ BEGIN
 
   WITH agg AS (
     SELECT
-      SUM(amount_inr) FILTER (WHERE status IN ('completed', 'paid', 'captured', 'successful')) AS gross_revenue,
+      -- Gross Revenue = ALL money collected (including amounts later refunded)
+      SUM(amount_inr) FILTER (WHERE status IN ('completed', 'paid', 'captured', 'successful', 'refunded')) AS gross_revenue,
       SUM(amount_inr) FILTER (WHERE status = 'refunded') AS refund_amount,
-      COUNT(*) FILTER (WHERE status IN ('completed', 'paid', 'captured', 'successful')) AS transaction_count,
+      COUNT(*) FILTER (WHERE status IN ('completed', 'paid', 'captured', 'successful', 'refunded')) AS transaction_count,
       COUNT(*) FILTER (WHERE status = 'refunded') AS refund_count
     FROM purchases
     WHERE created_at >= start_ts AND created_at <= end_ts
