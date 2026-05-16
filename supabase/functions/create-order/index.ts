@@ -64,11 +64,14 @@ serve(async (req) => {
 
         if (isCouponActive && currencyMatch && notExpired && hasUses) {
           const type = coupon.discount_type || 'percentage'
-          const val = (type === 'percentage') ? (coupon.discount_percent || 0) : (coupon.discount_value || 0)
+          // discount_value stores the amount for BOTH types (discount_percent is always NULL)
+          const val = coupon.discount_value || coupon.discount_percent || 0
+          console.log(`[Order] Coupon type: ${type}, val: ${val}`)
 
           if (type === 'percentage') {
             amount = Math.round(amount * (1 - val / 100))
           } else {
+            // val is in whole rupees (e.g. 1000), convert to paise
             amount = Math.max(0, amount - (val * 100))
           }
 
