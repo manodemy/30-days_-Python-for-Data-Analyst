@@ -370,9 +370,14 @@ async function initiatePayment(gateway) {
           document.head.appendChild(s);
         });
       }
+
+      // Use the pre-validated discounted amount if coupon was applied
+      const finalAmount = appliedCouponAmount || data.amount;
+      console.log('[Payment] Amount sent to Razorpay:', finalAmount, '| Server returned:', data.amount, '| Coupon amount:', appliedCouponAmount);
+
       const options = {
         key: RAZORPAY_KEY_ID,
-        amount: data.amount,
+        amount: finalAmount,
         currency: data.currency,
         order_id: data.razorpay_order_id,
         name: 'Manodemy',
