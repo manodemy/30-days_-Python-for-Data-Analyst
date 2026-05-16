@@ -1870,7 +1870,12 @@
           </div>
 
           <!-- Rates Row -->
-          <div class="kpi-row" style="padding:0; margin-bottom:1.5rem; display:grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+          <div class="kpi-row" style="padding:0; margin-bottom:1.5rem; display:grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;">
+            <div style="visibility: hidden;"></div>
+            <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
+              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Visit → Login</div>
+              <div class="kpi-val" id="kpiVisitLogin" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--gold);">0%</div>
+            </div>
             <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
               <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Visit → Purchase</div>
               <div class="kpi-val" id="kpiCvr" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--gold);">0%</div>
@@ -3157,6 +3162,10 @@
 
       // KPIs
       document.getElementById('kpiVisits').textContent = fmt(s1);
+
+      document.getElementById('kpiVisitLogin').textContent = p2.toFixed(1) + '%';
+      document.getElementById('kpiVisitLogin').style.color = p2 >= 20 ? 'var(--gold)' : (p2 >= 10 ? 'var(--amber)' : 'var(--rose)');
+
       const cvr = s1 > 0 ? (s4/s1)*100 : 0;
       document.getElementById('kpiCvr').textContent = cvr.toFixed(2) + '%';
       document.getElementById('kpiCvr').style.color = cvr >= 5 ? 'var(--gold)' : (cvr >= 2 ? 'var(--amber)' : 'var(--rose)');
