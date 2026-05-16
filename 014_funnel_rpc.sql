@@ -31,7 +31,7 @@ BEGIN
   RETURN QUERY
   WITH 
   s1 AS (
-    SELECT COUNT(*) AS visits 
+    SELECT COUNT(DISTINCT session_id) AS visits 
     FROM public.page_views 
     WHERE created_at BETWEEN start_ts AND end_ts
       AND (

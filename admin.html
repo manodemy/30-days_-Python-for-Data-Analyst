@@ -2902,7 +2902,7 @@
         <td class="cell-mono" style="color:var(--ink-muted);">${c.expires_at ? new Date(c.expires_at).toLocaleDateString('en-IN') : 'Never'}</td>
         <td>
           <label class="switch">
-            <input type="checkbox" ${c.is_active ? 'checked' : ''} onchange="toggleCoupon('${c.id}',this.checked)">
+            <input type="checkbox" ${c.is_active ? 'checked' : ''} onchange="toggleCoupon('${c.code}',this.checked)">
             <span class="slider"></span>
           </label>
         </td>
@@ -2910,22 +2910,22 @@
       }).join('');
     }
 
-    async function toggleCoupon(id, isActive) {
+    async function toggleCoupon(code, isActive) {
       const { error } = await sb.from('coupons')
         .update({ is_active: isActive, active: isActive })
-        .eq('id', id);
+        .eq('code', code);
 
       if (error) {
         console.error('[Admin] Failed to update coupon:', error);
         showToast(`❌ Failed to update coupon: ${error.message}`, 'error');
         // Re-render to show actual DB state (revert the visual toggle)
-        loadDashboardData();
+        renderDashboard();
         return;
       }
 
       showToast(`Coupon ${isActive ? 'activated ✅' : 'deactivated 🔴'}`, isActive ? 'success' : 'info');
       // Re-fetch from DB to confirm actual saved state
-      loadDashboardData();
+      renderDashboard();
     }
 
     // ── AUDIT TABLE ──────────────────────────────────
