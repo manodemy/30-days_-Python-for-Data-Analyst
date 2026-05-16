@@ -2538,7 +2538,10 @@
         sb.rpc('get_dau_mau_series', { start_ts: f.from, end_ts: f.to }),
         sb.rpc('get_cohort_retention'),
         sb.rpc('get_coupon_performance', { start_ts: f.from, end_ts: f.to }),
-        fetchMetric('admin_audit_log', 'admin_id, action, changed_data, created_at', [{ col: 'table_name', op: 'eq', val: 'settings' }]),
+        sb.from('admin_audit_log').select('admin_id, action, changed_data, created_at, profiles(email)')
+          .eq('table_name', 'settings')
+          .order('created_at', { ascending: false })
+          .limit(10),
         sb.rpc('get_transaction_ledger', { start_ts: f.from, end_ts: f.to }),
         // Roster always fetches ALL users — not filtered by dashboard date range
         sb.rpc('get_user_roster', { start_ts: '2000-01-01T00:00:00Z', end_ts: '2099-12-31T23:59:59Z' }),
