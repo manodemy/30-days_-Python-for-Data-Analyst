@@ -330,7 +330,8 @@ async function initiatePayment(gateway) {
     const { data: { session } } = await supabaseClient.auth.getSession();
     if (!session) throw new Error('Please sign in first');
 
-    const coupon = document.getElementById('couponInput')?.value?.trim() || '';
+    const couponEl = document.getElementById('couponInput');
+    const coupon = couponEl ? couponEl.value.trim() : '';
 
     // Call Supabase Edge Function to create order
     const res = await fetch(`${SUPABASE_URL}/functions/v1/create-order`, {

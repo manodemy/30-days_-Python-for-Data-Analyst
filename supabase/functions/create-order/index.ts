@@ -43,6 +43,7 @@ serve(async (req) => {
 
     // Apply coupon if provided
     if (coupon_code) {
+      console.log(`[Order] Checking coupon: ${coupon_code}`);
       const { data: coupon } = await supabase
         .from('coupons')
         .select('*')
@@ -52,13 +53,15 @@ serve(async (req) => {
       if (coupon) {
         const isCouponActive = (coupon.is_active === true && coupon.active !== false)
         const appliesTo = coupon.applies_to || 'both'
-        const currencyMatch = appliesTo === 'both' || appliesTo === currencyCode
+        const currencyMatch = (appliesTo === 'both' || appliesTo === currencyCode)
         const notExpired = !coupon.expires_at || new Date(coupon.expires_at) > new Date()
-        const hasUses = !coupon.max_uses || coupon.used_count < coupon.max_uses
+        const hasUses = !coupon.max_uses || (coupon.used_count || 0) < coupon.max_uses
+
+        console.log(`[Order] Coupon validation: active=${isCouponActive}, currency=${currencyMatch}, expired=${!notExpired}, uses=${hasUses}`);
 
         if (isCouponActive && currencyMatch && notExpired && hasUses) {
           const type = coupon.discount_type || 'percentage'
-          const val = coupon.discount_value ?? coupon.discount_percent ?? 0
+          const val = (type === 'percentage') ? (coupon.discount_percent || 0) : (coupon.discount_value || 0)
           
           if (type === 'percentage') {
             amount = Math.round(amount * (1 - val / 100))
