@@ -1482,6 +1482,33 @@
       font-weight: 500;
       letter-spacing: 0.08em;
     }
+    /* FUNNEL ANALYTICS */
+    .funnel-container { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 0; margin-top: 1rem; }
+    .funnel-step-wrapper { width: 100%; }
+    .funnel-step-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .step-badge { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-data); font-size: 0.75rem; font-weight: 500; background: var(--surface); border: 1px solid var(--rim); color: var(--ink-dim); }
+    .step-name { font-family: var(--font-display); font-size: 1.2rem; font-weight: 300; letter-spacing: 0.05em; }
+    .bar-container { width: 100%; background: var(--base); border: 1px solid var(--rim); border-radius: 6px; height: 48px; position: relative; overflow: hidden; display: flex; align-items: center; margin-bottom: 0; }
+    .bar-fill { height: 100%; position: absolute; left: 0; top: 0; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0.85; z-index: 1; }
+    .bar-content { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 1rem; }
+    .bar-val { font-family: var(--font-data); font-size: 1.2rem; color: #FFF; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+    .bar-pct { font-family: var(--font-data); font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+    .dropoff-block { width: calc(100% - 24px); margin-left: 12px; border-left: 2px dashed var(--rim); padding: 1.5rem 0 1.5rem 1.5rem; position: relative; }
+    .dropoff-card { background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1rem; width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 0.5rem; }
+    .dropoff-header { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-data); font-size: 0.8rem; }
+    .friction-label { padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 500; font-family: var(--font-body); font-size: 0.7rem; letter-spacing: 0.05em; }
+    .diagnostic-msg { font-size: 0.85rem; color: var(--ink-dim); line-height: 1.4; }
+    .split-container { display: flex; gap: 1rem; width: 100%; margin-top: 2rem; position: relative; }
+    .split-container::before { content: ''; position: absolute; top: -2rem; left: 50%; width: 2px; height: 1.5rem; background: var(--rim); }
+    .split-branch { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+    .c-vis { background: var(--sapphire); } .t-vis { color: var(--sapphire); }
+    .c-log { background: var(--violet); } .t-log { color: var(--violet); }
+    .c-buy { background: var(--amber); } .t-buy { color: var(--amber); }
+    .c-suc { background: var(--emerald); } .t-suc { color: var(--emerald); }
+    .c-fai { background: var(--rose); } .t-fai { color: var(--rose); }
+    .benchmarks-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; overflow: hidden; margin-top: 1rem; }
+    .benchmarks-table th, .benchmarks-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--rim); font-size: 0.9rem; }
+    .benchmarks-table th { color: var(--ink-muted); font-weight: 500; background: var(--elevated); }
   </style>
 </head>
 
@@ -1504,7 +1531,7 @@
         <div class="nav-item" data-tab="tab-growth">
           <span class="nav-icon">↗</span> Growth
         </div>
-        <div class="nav-item" onclick="window.location.href='funnel.html'">
+        <div class="nav-item" data-tab="tab-funnel">
           <span class="nav-icon" style="color:var(--sapphire);">⧩</span> Funnel
         </div>
         <div class="nav-item" data-tab="tab-retention">
@@ -1810,6 +1837,180 @@
                 <button class="btn-ghost" id="rosterNextBtn">Next →</button>
               </div>
             </div>
+          </div>
+        </div>
+        <!-- ══ TAB: FUNNEL ══ -->
+        <div class="tab-pane" id="tab-funnel">
+          <div class="tab-header">
+            <h2 class="tab-title">Conversion <em>Funnel</em></h2>
+            <span class="tab-period-label">Intent &middot; Friction &middot; Revenue</span>
+          </div>
+
+          <div class="kpi-row" style="padding:0; margin-bottom:1.5rem; display:grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+            <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
+              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Total Visitors</div>
+              <div class="kpi-val" id="kpiVisits" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--ink);">0</div>
+            </div>
+            <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
+              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Visit → Purchase</div>
+              <div class="kpi-val" id="kpiCvr" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--gold);">0%</div>
+            </div>
+            <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
+              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Payment Success Rate</div>
+              <div class="kpi-val" id="kpiSucc" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--emerald);">0%</div>
+            </div>
+            <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
+              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Est. Revenue at Risk</div>
+              <div class="kpi-val" id="kpiRisk" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--rose);">₹0</div>
+            </div>
+          </div>
+
+          <div class="settings-row" style="padding:0; margin-bottom:2rem; font-size:0.85rem; color:var(--ink-dim);">
+            Avg Order Value (AOV): ₹ <input type="number" class="aov-input" id="aovInput" value="1900" onchange="renderFunnelView()" style="background:var(--base); border:1px solid var(--rim); color:var(--ink); padding:0.3rem 0.5rem; width:80px; font-family:var(--font-data); text-align:right; border-radius:4px;" />
+          </div>
+
+          <div class="funnel-container" style="padding:0;">
+            <!-- STEP 1 -->
+            <div class="funnel-step-wrapper">
+              <div class="funnel-step-header">
+                <div class="step-badge t-vis">1</div>
+                <div class="step-name t-vis">VISITS</div>
+              </div>
+              <div class="bar-container">
+                <div class="bar-fill c-vis" id="bar1" style="width: 100%;"></div>
+                <div class="bar-content">
+                  <span class="bar-val" id="val1">0</span>
+                  <span class="bar-pct">100%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- DROPOFF 1 -->
+            <div class="dropoff-block">
+              <div class="dropoff-card">
+                <div class="dropoff-header">
+                  <span style="color: var(--rose);" id="drop1_count">↓ 0 (0%)</span>
+                  <span class="friction-label" style="background: rgba(139,92,246,0.2); color: var(--violet);">ACCOUNT FRICTION</span>
+                </div>
+                <div class="diagnostic-msg" id="diag1">...</div>
+              </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="funnel-step-wrapper">
+              <div class="funnel-step-header">
+                <div class="step-badge t-log">2</div>
+                <div class="step-name t-log">LOGGED IN</div>
+              </div>
+              <div class="bar-container">
+                <div class="bar-fill c-log" id="bar2" style="width: 0%;"></div>
+                <div class="bar-content">
+                  <span class="bar-val" id="val2">0</span>
+                  <span class="bar-pct" id="pct2">0%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- DROPOFF 2 -->
+            <div class="dropoff-block">
+              <div class="dropoff-card">
+                <div class="dropoff-header">
+                  <span style="color: var(--rose);" id="drop2_count">↓ 0 (0%)</span>
+                  <span class="friction-label" style="background: rgba(245,158,11,0.2); color: var(--amber);">OFFER FRICTION</span>
+                </div>
+                <div class="diagnostic-msg" id="diag2">...</div>
+              </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="funnel-step-wrapper">
+              <div class="funnel-step-header">
+                <div class="step-badge t-buy">3</div>
+                <div class="step-name t-buy">BUY CLICK</div>
+              </div>
+              <div class="bar-container">
+                <div class="bar-fill c-buy" id="bar3" style="width: 0%;"></div>
+                <div class="bar-content">
+                  <span class="bar-val" id="val3">0</span>
+                  <span class="bar-pct" id="pct3">0%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- SPLIT -->
+            <div class="split-container">
+              <!-- SUCCESS -->
+              <div class="split-branch">
+                <div class="funnel-step-header">
+                  <div class="step-badge t-suc">4</div>
+                  <div class="step-name t-suc">SUCCESS</div>
+                </div>
+                <div class="bar-container">
+                  <div class="bar-fill c-suc" id="bar4" style="width: 0%;"></div>
+                  <div class="bar-content">
+                    <span class="bar-val" id="val4">0</span>
+                    <span class="bar-pct" id="pct4">0% of Cart</span>
+                  </div>
+                </div>
+                <div class="diagnostic-msg" id="diag3_suc" style="margin-top:0.5rem; font-size:0.8rem;"></div>
+              </div>
+              
+              <!-- FAILED -->
+              <div class="split-branch">
+                <div class="funnel-step-header">
+                  <div class="step-badge t-fai">5</div>
+                  <div class="step-name t-fai">FAILED</div>
+                </div>
+                <div class="bar-container">
+                  <div class="bar-fill c-fai" id="bar5" style="width: 0%;"></div>
+                  <div class="bar-content">
+                    <span class="bar-val" id="val5">0</span>
+                    <span class="bar-pct" id="pct5">0% of Cart</span>
+                  </div>
+                </div>
+                <div class="diagnostic-msg" id="diag3_fail" style="margin-top:0.5rem; font-size:0.8rem; color:var(--rose);"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="benchmarks" style="padding:0; margin:3rem 0; width:100%; max-width:900px;">
+            <h2 class="benchmarks-title" style="font-family:var(--font-display); font-size:1.5rem; color:var(--gold); margin-bottom:1rem; font-style:italic;">Performance vs Industry Benchmarks</h2>
+            <table class="benchmarks-table">
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th>Your Rate</th>
+                  <th>EdTech Norm</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Login Conversion (S1 → S2)</td>
+                  <td class="mono" id="bm_log">0%</td>
+                  <td class="mono">25% – 40%</td>
+                  <td id="bm_st_log">...</td>
+                </tr>
+                <tr>
+                  <td>Offer Desirability (S2 → S3)</td>
+                  <td class="mono" id="bm_buy">0%</td>
+                  <td class="mono">15% – 35%</td>
+                  <td id="bm_st_buy">...</td>
+                </tr>
+                <tr>
+                  <td>Payment Success (S4 / S3)</td>
+                  <td class="mono" id="bm_suc">0%</td>
+                  <td class="mono">65% – 80%</td>
+                  <td id="bm_st_suc">...</td>
+                </tr>
+                <tr>
+                  <td>Total CVR (S4 / S1)</td>
+                  <td class="mono" id="bm_cvr">0%</td>
+                  <td class="mono">2.0% – 8.0%</td>
+                  <td id="bm_st_cvr">...</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <!-- ══ TAB 3: RETENTION ══ -->
@@ -2282,7 +2483,8 @@
         { data: couponData, error: couponErr },
         { data: audits, error: auditErr },
         { data: txLogs, error: txErr },
-        { data: rosterData, error: rosterError }
+        { data: rosterData, error: rosterError },
+        { data: funnelData, error: funnelError }
       ] = await Promise.all([
         sb.rpc('get_revenue_intelligence', { start_ts: f.from, end_ts: f.to }),
         sb.rpc('get_revenue_intelligence_prev', { start_ts: f.prevFrom, end_ts: f.prevTo }),
@@ -2295,7 +2497,8 @@
         fetchMetric('admin_audit_log', 'admin_id, action, changed_data, created_at', [{ col: 'table_name', op: 'eq', val: 'settings' }]),
         sb.rpc('get_transaction_ledger', { start_ts: f.from, end_ts: f.to }),
         // Roster always fetches ALL users — not filtered by dashboard date range
-        sb.rpc('get_user_roster', { start_ts: '2000-01-01T00:00:00Z', end_ts: '2099-12-31T23:59:59Z' })
+        sb.rpc('get_user_roster', { start_ts: '2000-01-01T00:00:00Z', end_ts: '2099-12-31T23:59:59Z' }),
+        sb.rpc('get_conversion_funnel', { start_ts: f.from, end_ts: f.to })
       ]);
 
       if (couponErr) console.error("Supabase Coupon Error:", JSON.stringify(couponErr));
@@ -2304,7 +2507,12 @@
       if (revErr) console.error('Revenue Error:', JSON.stringify(revErr));
       if (growthErr) console.error('Growth Error:', JSON.stringify(growthErr));
       if (rosterError) console.error('Roster Error:', JSON.stringify(rosterError));
+      if (funnelError) console.error('Funnel Error:', JSON.stringify(funnelError));
 
+      if (funnelData && funnelData.length > 0) {
+        latestFunnelData = funnelData[0];
+        renderFunnelView();
+      }
       // ─ TAB 1: REVENUE ─
       renderKPI('kpi-gross-rev', 'meta-gross-rev', revData?.gross_revenue || 0, revPrevData?.gross_revenue, formatINR);
       renderKPI('kpi-net-rev', 'meta-net-rev', revData?.net_revenue || 0, revPrevData?.net_revenue, formatINR);
@@ -2862,6 +3070,96 @@
       showToast('Preparing CSV export…', 'info');
       setTimeout(() => showToast('CSV exported successfully', 'success'), 1200);
     });
+
+    // ── FUNNEL RENDER ─────────────────────────────────
+    let latestFunnelData = null;
+    function renderFunnelView() {
+      if (!latestFunnelData) return;
+      const f = latestFunnelData;
+      const s1 = f.step1_visits || 0, s2 = f.step2_logged_in || 0, s3 = f.step3_buy_clicks || 0, s4 = f.step4_success || 0, s5 = f.step5_failed || 0;
+      const aov = parseInt(document.getElementById('aovInput').value) || 1900;
+
+      function fmt(n) { return Number(n).toLocaleString('en-IN'); }
+
+      // Values
+      document.getElementById('val1').textContent = fmt(s1);
+      document.getElementById('val2').textContent = fmt(s2);
+      document.getElementById('val3').textContent = fmt(s3);
+      document.getElementById('val4').textContent = fmt(s4);
+      document.getElementById('val5').textContent = fmt(s5);
+
+      // Widths & Pcts
+      const p2 = s1 > 0 ? (s2/s1)*100 : 0;
+      const p3 = s1 > 0 ? (s3/s1)*100 : 0;
+      const p4_abs = s1 > 0 ? (s4/s1)*100 : 0;
+      const p5_abs = s1 > 0 ? (s5/s1)*100 : 0;
+
+      document.getElementById('bar2').style.width = Math.max(2, p2) + '%';
+      document.getElementById('bar3').style.width = Math.max(2, p3) + '%';
+      document.getElementById('bar4').style.width = Math.max(2, p4_abs*2) + '%';
+      document.getElementById('bar5').style.width = Math.max(2, p5_abs*2) + '%';
+
+      document.getElementById('pct2').textContent = p2.toFixed(1) + '%';
+      document.getElementById('pct3').textContent = p3.toFixed(1) + '%';
+      
+      const p4_rel = s3 > 0 ? (s4/s3)*100 : 0;
+      const p5_rel = s3 > 0 ? (s5/s3)*100 : 0;
+      document.getElementById('pct4').textContent = p4_rel.toFixed(1) + '% of Cart';
+      document.getElementById('pct5').textContent = p5_rel.toFixed(1) + '% of Cart';
+
+      // Dropoff 1
+      const d1 = s1 - s2;
+      const d1p = s1 > 0 ? (d1/s1)*100 : 0;
+      document.getElementById('drop1_count').textContent = `↓ ${fmt(d1)} (${d1p.toFixed(1)}%)`;
+      let d1msg = "";
+      if (d1p < 40) d1msg = "✓ Login barrier is healthy. Users are motivated.";
+      else if (d1p <= 70) d1msg = "⚠ Moderate login friction. Consider social login or previewing content.";
+      else d1msg = "🚨 Critical: Login wall killing intent. Add Google login or delay auth requirement.";
+      document.getElementById('diag1').textContent = d1msg;
+
+      // Dropoff 2
+      const d2 = s2 - s3;
+      const d2p = s2 > 0 ? (d2/s2)*100 : 0;
+      document.getElementById('drop2_count').textContent = `↓ ${fmt(d2)} (${d2p.toFixed(1)}%)`;
+      let d2msg = "";
+      if (d2p < 50) d2msg = "✓ Offer resonating well with logged-in users.";
+      else if (d2p <= 75) d2msg = "⚠ Offer friction detected. Test price anchoring or add urgency.";
+      else d2msg = "🚨 Critical: Price or value proposition mismatch. Test pricing tiers.";
+      document.getElementById('diag2').textContent = d2msg;
+
+      // Dropoff 3
+      let d3msg = "";
+      if (p4_rel > 65) d3msg = "✓ Gateway healthy";
+      else if (p4_rel >= 40) d3msg = "⚠ Elevated failures. Check OTP success rates.";
+      else d3msg = "🚨 Critical: High card decline or OTP failure rate detected.";
+      document.getElementById('diag3_suc').textContent = d3msg;
+      document.getElementById('diag3_fail').textContent = s5 > 0 ? `Lost approx ₹${fmt(s5 * aov)}` : '';
+
+      // KPIs
+      document.getElementById('kpiVisits').textContent = fmt(s1);
+      const cvr = s1 > 0 ? (s4/s1)*100 : 0;
+      document.getElementById('kpiCvr').textContent = cvr.toFixed(2) + '%';
+      document.getElementById('kpiCvr').style.color = cvr >= 5 ? 'var(--gold)' : (cvr >= 2 ? 'var(--amber)' : 'var(--rose)');
+      
+      const succRate = (s4+s5) > 0 ? (s4/(s4+s5))*100 : 0;
+      document.getElementById('kpiSucc').textContent = succRate.toFixed(1) + '%';
+      document.getElementById('kpiSucc').style.color = succRate >= 65 ? 'var(--emerald)' : (succRate >= 40 ? 'var(--amber)' : 'var(--rose)');
+      
+      document.getElementById('kpiRisk').textContent = '₹' + fmt(s5 * aov);
+
+      // Benchmarks
+      document.getElementById('bm_log').textContent = (100 - d1p).toFixed(1) + '%';
+      document.getElementById('bm_st_log').innerHTML = (100-d1p) >= 25 ? '<span style="color:var(--emerald)">✓</span>' : '<span style="color:var(--rose)">🚨</span>';
+      
+      document.getElementById('bm_buy').textContent = (100 - d2p).toFixed(1) + '%';
+      document.getElementById('bm_st_buy').innerHTML = (100-d2p) >= 15 ? '<span style="color:var(--emerald)">✓</span>' : '<span style="color:var(--rose)">🚨</span>';
+
+      document.getElementById('bm_suc').textContent = succRate.toFixed(1) + '%';
+      document.getElementById('bm_st_suc').innerHTML = succRate >= 65 ? '<span style="color:var(--emerald)">✓</span>' : '<span style="color:var(--rose)">🚨</span>';
+
+      document.getElementById('bm_cvr').textContent = cvr.toFixed(2) + '%';
+      document.getElementById('bm_st_cvr').innerHTML = cvr >= 2 ? '<span style="color:var(--emerald)">✓</span>' : '<span style="color:var(--rose)">🚨</span>';
+    }
 
     // ── INIT ─────────────────────────────────────────
     (async function init() {
