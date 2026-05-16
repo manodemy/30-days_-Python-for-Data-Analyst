@@ -1574,15 +1574,18 @@
           <button class="pill" data-preset="this_year">This Y</button>
           <button class="pill" data-preset="last_year">Last Y</button>
           <button class="pill active" data-preset="all_time">All Time</button>
-          <div class="filter-divider"></div>
-          <input class="date-picker" id="filterFrom" type="date" />
-          <span style="color:var(--ink-muted);font-size:0.8rem;">—</span>
-          <input class="date-picker" id="filterTo" type="date" />
-          <button class="apply-btn" id="applyFilterBtn">Apply</button>
         </div>
-        <div class="compare-row">
-          <input id="compareToggle" type="checkbox" />
-          <label for="compareToggle">Compare to previous period</label>
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 0.85rem; gap: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <input class="date-picker" id="filterFrom" type="date" />
+            <span style="color:var(--ink-muted);font-size:0.8rem;">—</span>
+            <input class="date-picker" id="filterTo" type="date" />
+            <button class="apply-btn" id="applyFilterBtn">Apply</button>
+          </div>
+          <div class="compare-row" style="margin-top: 0; padding-left: 0;">
+            <input id="compareToggle" type="checkbox" />
+            <label for="compareToggle">Compare to previous period</label>
+          </div>
         </div>
       </div>
       <!-- PAGE CONTENT -->
