@@ -139,8 +139,10 @@ BEGIN
     'transaction_count', COALESCE(agg.transaction_count, 0),
     'refund_count', COALESCE(agg.refund_count, 0),
     'refund_rate_pct', CASE WHEN agg.transaction_count > 0 THEN (agg.refund_count::NUMERIC / agg.transaction_count) * 100 ELSE 0 END,
-    'aov', CASE WHEN agg.transaction_count > 0 THEN (COALESCE(agg.gross_revenue, 0) - COALESCE(agg.refund_amount, 0)) / agg.transaction_count ELSE 0 END,
-    'arpu', CASE WHEN active_users_count > 0 THEN (COALESCE(agg.gross_revenue, 0) - COALESCE(agg.refund_amount, 0)) / active_users_count ELSE 0 END,
+    -- AOV = Gross Revenue / total transactions (avg ticket size)
+    'aov', CASE WHEN agg.transaction_count > 0 THEN COALESCE(agg.gross_revenue, 0) / agg.transaction_count ELSE 0 END,
+    -- ARPU = Gross Revenue / distinct paying users (avg customer value before refunds)
+    'arpu', CASE WHEN agg.transaction_count > 0 THEN COALESCE(agg.gross_revenue, 0) / agg.transaction_count ELSE 0 END,
     'currency_split', COALESCE((SELECT json_agg(json_build_object('currency', currency, 'amount', amount, 'count', count)) FROM curr_split), '[]'::json),
     'daily_revenue', COALESCE((SELECT json_agg(json_build_object('day', day, 'gross', gross, 'net', gross - refunds, 'refunds', refunds)) FROM daily), '[]'::json)
   ) INTO res
@@ -192,8 +194,8 @@ BEGIN
     'transaction_count', COALESCE(agg.transaction_count, 0),
     'refund_count', COALESCE(agg.refund_count, 0),
     'refund_rate_pct', CASE WHEN agg.transaction_count > 0 THEN (agg.refund_count::NUMERIC / agg.transaction_count) * 100 ELSE 0 END,
-    'aov', CASE WHEN agg.transaction_count > 0 THEN (COALESCE(agg.gross_revenue, 0) - COALESCE(agg.refund_amount, 0)) / agg.transaction_count ELSE 0 END,
-    'arpu', CASE WHEN active_users_count > 0 THEN (COALESCE(agg.gross_revenue, 0) - COALESCE(agg.refund_amount, 0)) / active_users_count ELSE 0 END,
+    'aov', CASE WHEN agg.transaction_count > 0 THEN COALESCE(agg.gross_revenue, 0) / agg.transaction_count ELSE 0 END,
+    'arpu', CASE WHEN agg.transaction_count > 0 THEN COALESCE(agg.gross_revenue, 0) / agg.transaction_count ELSE 0 END,
     'currency_split', '[]'::json,
     'daily_revenue', '[]'::json
   ) INTO res
