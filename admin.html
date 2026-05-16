@@ -1491,29 +1491,79 @@
       letter-spacing: 0.08em;
     }
     /* FUNNEL ANALYTICS */
-    .funnel-container { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 0; margin-top: 1rem; }
-    .funnel-step-wrapper { width: 100%; }
-    .funnel-step-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
-    .step-badge { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-data); font-size: 0.75rem; font-weight: 500; background: var(--surface); border: 1px solid var(--rim); color: var(--ink-dim); }
-    .step-name { font-family: var(--font-display); font-size: 1.2rem; font-weight: 300; letter-spacing: 0.05em; }
-    .bar-container { width: 100%; background: var(--base); border: 1px solid var(--rim); border-radius: 6px; height: 48px; position: relative; overflow: hidden; display: flex; align-items: center; margin-bottom: 0; }
-    .bar-fill { height: 100%; position: absolute; left: 0; top: 0; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0.85; z-index: 1; }
+    .funnel-container { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 0; margin-top: 1rem; position: relative; }
+    .funnel-step-wrapper { width: 100%; position: relative; }
+    .funnel-step-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    
+    .step-badge { 
+      width: 28px; height: 28px; border-radius: 50%; 
+      display: flex; align-items: center; justify-content: center; 
+      font-family: var(--font-data); font-size: 0.8rem; font-weight: 700; 
+      background: var(--surface); border: 2px solid currentColor; color: inherit; 
+      box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 2; position: relative; 
+    }
+    .step-name { font-family: var(--font-display); font-size: 1.25rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+    
+    .bar-container { 
+      width: calc(100% - 36px); margin-left: 36px;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--rim); 
+      border-radius: 6px; height: 46px; position: relative; overflow: hidden; 
+      display: flex; align-items: center; margin-bottom: 0; 
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);
+    }
+    
+    .bar-fill { 
+      height: 100%; position: absolute; left: 0; top: 0; 
+      transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1); opacity: 0.9; z-index: 1; 
+      background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
+      background-size: 200% 100%;
+      animation: barShine 3s infinite linear;
+    }
+    @keyframes barShine {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    
     .bar-content { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 1rem; }
-    .bar-val { font-family: var(--font-data); font-size: 1.2rem; color: #FFF; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
-    .bar-pct { font-family: var(--font-data); font-size: 0.85rem; color: rgba(255,255,255,0.7); }
-    .dropoff-block { width: calc(100% - 24px); margin-left: 12px; border-left: 2px dashed var(--rim); padding: 1.5rem 0 1.5rem 1.5rem; position: relative; }
-    .dropoff-card { background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1rem; width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 0.5rem; }
-    .dropoff-header { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-data); font-size: 0.8rem; }
-    .friction-label { padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 500; font-family: var(--font-body); font-size: 0.7rem; letter-spacing: 0.05em; }
-    .diagnostic-msg { font-size: 0.85rem; color: var(--ink-dim); line-height: 1.4; }
-    .split-container { display: flex; gap: 1rem; width: 100%; margin-top: 2rem; position: relative; }
-    .split-container::before { content: ''; position: absolute; top: -2rem; left: 50%; width: 2px; height: 1.5rem; background: var(--rim); }
+    .bar-val { font-family: var(--font-data); font-size: 1.3rem; font-weight: 500; color: #FFF; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+    .bar-pct { font-family: var(--font-data); font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.9); text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+    
+    .dropoff-block { 
+      width: calc(100% - 36px); margin-left: 36px; 
+      padding: 1.5rem 0 1.5rem 2rem; position: relative; 
+    }
+    /* Connecting pipeline line */
+    .dropoff-block::before { 
+      content: ''; position: absolute; left: -23px; top: -10px; bottom: -10px; 
+      width: 2px; background: var(--rim); z-index: 0;
+    }
+    /* Dropoff arrow connector */
+    .dropoff-block::after {
+      content: ''; position: absolute; left: -23px; top: 38px; width: 23px; height: 2px;
+      background: var(--rim); z-index: 0;
+    }
+    
+    .dropoff-card { 
+      background: linear-gradient(135deg, rgba(30,30,45,0.7), rgba(20,20,30,0.8));
+      border: 1px solid var(--rim); border-left: 4px solid var(--rose); 
+      border-radius: 8px; padding: 1.25rem; width: 100%; max-width: 500px; 
+      display: flex; flex-direction: column; gap: 0.5rem; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2); backdrop-filter: blur(8px);
+    }
+    .dropoff-header { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-data); font-size: 0.85rem; font-weight: 500; }
+    .friction-label { padding: 0.25rem 0.6rem; border-radius: 4px; font-weight: 600; font-family: var(--font-body); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .diagnostic-msg { font-size: 0.9rem; color: var(--ink-dim); line-height: 1.5; }
+    
+    .split-container { display: flex; gap: 1.5rem; width: calc(100% - 36px); margin-left: 36px; margin-top: 2rem; position: relative; }
+    .split-container::before { content: ''; position: absolute; top: -2.5rem; left: 50%; width: 2px; height: 2.5rem; background: var(--rim); }
     .split-branch { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
-    .c-vis { background: var(--sapphire); } .t-vis { color: var(--sapphire); }
-    .c-log { background: var(--violet); } .t-log { color: var(--violet); }
-    .c-buy { background: var(--amber); } .t-buy { color: var(--amber); }
-    .c-suc { background: var(--emerald); } .t-suc { color: var(--emerald); }
-    .c-fai { background: var(--rose); } .t-fai { color: var(--rose); }
+    
+    /* Elegant Gradients */
+    .c-vis { background: linear-gradient(90deg, #2563EB, #3B82F6); } .t-vis { color: #60A5FA; }
+    .c-log { background: linear-gradient(90deg, #7C3AED, #8B5CF6); } .t-log { color: #A78BFA; }
+    .c-buy { background: linear-gradient(90deg, #D97706, #F59E0B); } .t-buy { color: #FCD34D; }
+    .c-suc { background: linear-gradient(90deg, #059669, #10B981); } .t-suc { color: #34D399; }
+    .c-fai { background: linear-gradient(90deg, #DC2626, #EF4444); } .t-fai { color: #F87171; }
     .benchmarks-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; overflow: hidden; margin-top: 1rem; }
     .benchmarks-table th, .benchmarks-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--rim); font-size: 0.9rem; }
     .benchmarks-table th { color: var(--ink-muted); font-weight: 500; background: var(--elevated); }
