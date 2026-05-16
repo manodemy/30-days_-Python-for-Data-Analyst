@@ -204,9 +204,11 @@ async function setupGeoPricing() {
   } catch (e) { console.log('Using fallback pricing'); }
 
   if (userCountry === 'IN') {
-    currentPricing = { amount: prices.inr, currency: 'INR', display: '₹' + (prices.inr/100).toLocaleString('en-IN'), original: '₹' + (prices.original_inr/100).toLocaleString('en-IN'), discount: prices.discount_label_inr || prices.discount_label || '70% OFF' };
+    const calcDisc = Math.round(((prices.original_inr - prices.inr) / prices.original_inr) * 100);
+    currentPricing = { amount: prices.inr, currency: 'INR', display: '₹' + (prices.inr/100).toLocaleString('en-IN'), original: '₹' + (prices.original_inr/100).toLocaleString('en-IN'), discount: calcDisc + '% OFF' };
   } else {
-    currentPricing = { amount: prices.usd, currency: 'USD', display: '$' + (prices.usd/100), original: '$' + (prices.original_usd/100), discount: prices.discount_label_usd || prices.discount_label || '72% OFF' };
+    const calcDisc = Math.round(((prices.original_usd - prices.usd) / prices.original_usd) * 100);
+    currentPricing = { amount: prices.usd, currency: 'USD', display: '$' + (prices.usd/100), original: '$' + (prices.original_usd/100), discount: calcDisc + '% OFF' };
   }
 
   if (priceNow) priceNow.textContent = currentPricing.display;

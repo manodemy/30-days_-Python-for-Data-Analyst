@@ -1919,8 +1919,8 @@
                   <input id="inr_original" placeholder="0" required="" type="number" />
                 </div>
                 <div class="field">
-                  <label>INR Discount Label</label>
-                  <input id="discount_label_inr" placeholder="🏷️ 95% OFF" type="text" />
+                  <label>INR Computed Discount</label>
+                  <input id="discount_label_inr" placeholder="🏷️ 70% OFF" type="text" readonly style="background: rgba(255,255,255,0.02); color: var(--gold);" />
                 </div>
               </div>
               <div class="form-grid-3 mb-2">
@@ -1933,8 +1933,8 @@
                   <input id="usd_original" placeholder="0" required="" type="number" />
                 </div>
                 <div class="field">
-                  <label>USD Discount Label</label>
-                  <input id="discount_label_usd" placeholder="🏷️ 91% OFF" type="text" />
+                  <label>USD Computed Discount</label>
+                  <input id="discount_label_usd" placeholder="🏷️ 72% OFF" type="text" readonly style="background: rgba(255,255,255,0.02); color: var(--gold);" />
                 </div>
               </div>
               <button class="btn-outline-gold" id="savePricing" type="submit">↑ Sync Prices to Cloud</button>
@@ -2770,9 +2770,32 @@
         document.getElementById('discount_label_inr').value = data.value.discount_label || '';
         document.getElementById('usd_price').value = data.value.usd / 100;
         document.getElementById('usd_original').value = data.value.original_usd / 100;
-        document.getElementById('discount_label_usd').value = data.value.discount_label_usd || '';
+        updateDiscountLabels();
       }
     }
+
+    function updateDiscountLabels() {
+      const inrSale = Number(document.getElementById('inr_price').value) || 0;
+      const inrOrig = Number(document.getElementById('inr_original').value) || 0;
+      if (inrOrig > 0 && inrOrig > inrSale) {
+        document.getElementById('discount_label_inr').value = Math.round(((inrOrig - inrSale) / inrOrig) * 100) + '% OFF';
+      } else {
+        document.getElementById('discount_label_inr').value = '';
+      }
+
+      const usdSale = Number(document.getElementById('usd_price').value) || 0;
+      const usdOrig = Number(document.getElementById('usd_original').value) || 0;
+      if (usdOrig > 0 && usdOrig > usdSale) {
+        document.getElementById('discount_label_usd').value = Math.round(((usdOrig - usdSale) / usdOrig) * 100) + '% OFF';
+      } else {
+        document.getElementById('discount_label_usd').value = '';
+      }
+    }
+
+    document.getElementById('inr_price').addEventListener('input', updateDiscountLabels);
+    document.getElementById('inr_original').addEventListener('input', updateDiscountLabels);
+    document.getElementById('usd_price').addEventListener('input', updateDiscountLabels);
+    document.getElementById('usd_original').addEventListener('input', updateDiscountLabels);
 
     document.getElementById('pricingForm').addEventListener('submit', async (e) => {
       e.preventDefault();
