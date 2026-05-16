@@ -1,6 +1,6 @@
 -- ============================================================================
 -- 018_page_engagement_rpc.sql
--- RPC to fetch user-level page engagement
+-- RPC to fetch user-level page engagement with JSON aggregate
 -- ============================================================================
 
 DROP FUNCTION IF EXISTS public.get_page_engagement(TIMESTAMPTZ, TIMESTAMPTZ);
@@ -18,9 +18,7 @@ RETURNS TABLE (
   plan TEXT,
   signed_up_at TIMESTAMPTZ,
   last_seen_at TIMESTAMPTZ,
-  page_url TEXT,
-  visits BIGINT,
-  time_spent_seconds NUMERIC
+  page_metrics JSONB
 )
 LANGUAGE plpgsql
 SECURITY DEFINER
@@ -38,8 +36,8 @@ BEGIN
     SELECT 
       COALESCE(pv.user_id, al.user_id) AS uid,
       COALESCE(pv.page_url, al.page_url) AS page_url,
-      pv.visits,
-      al.time_spent
+      COALESCE(pv.visits, 0) AS visits,
+      COALESCE(al.time_spent, 0) AS time_spent
     FROM (
       -- visits
       SELECT pv_inner.user_id, pv_inner.page_url, COUNT(DISTINCT pv_inner.session_id) AS visits
@@ -63,6 +61,20 @@ BEGIN
       GROUP BY sess_times.user_id, sess_times.page_url
     ) al
     ON pv.user_id = al.user_id AND pv.page_url = al.page_url
+  ),
+  aggregated_metrics AS (
+    SELECT 
+      uid,
+      jsonb_object_agg(
+        page_url,
+        jsonb_build_object(
+          'visits', visits,
+          'time_spent_seconds', time_spent
+        )
+      ) AS page_metrics
+    FROM user_pages
+    WHERE page_url IS NOT NULL
+    GROUP BY uid
   ),
   user_profiles AS (
     SELECT 
@@ -88,12 +100,10 @@ BEGIN
     prf.plan,
     prf.signed_up_at,
     prf.last_seen_at,
-    up.page_url,
-    COALESCE(up.visits, 0),
-    COALESCE(up.time_spent, 0)
-  FROM user_pages up
-  JOIN user_profiles prf ON up.uid = prf.uid
-  ORDER BY prf.last_seen_at DESC NULLS LAST, up.page_url ASC;
+    COALESCE(am.page_metrics, '{}'::jsonb) AS page_metrics
+  FROM user_profiles prf
+  LEFT JOIN aggregated_metrics am ON am.uid = prf.uid
+  ORDER BY prf.last_seen_at DESC NULLS LAST;
 END;
 $$;
 

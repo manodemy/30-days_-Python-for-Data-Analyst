@@ -2157,20 +2157,18 @@
             <span class="tab-period-label" id="eng-period-label">Detailed Page Activity</span>
           </div>
           
-          <div class="table-panel">
-            <table class="roster-table" style="margin-top:0;">
+          <div class="table-panel" style="overflow-x: auto; max-width: 100vw;">
+            <table class="roster-table" style="margin-top:0; min-width: max-content;">
               <thead>
-                <tr>
-                  <th style="width:4%;">#</th>
-                  <th style="width:15%;">NAME</th>
-                  <th style="width:18%;">EMAIL ID</th>
-                  <th style="width:8%;">COUNTRY</th>
-                  <th style="width:8%;">PLAN</th>
-                  <th style="width:12%;">SIGNED UP</th>
-                  <th style="width:12%;">LAST SEEN</th>
-                  <th style="width:12%;">PAGE</th>
-                  <th style="width:6%; text-align:center;">VISITS</th>
-                  <th style="width:10%; text-align:right;">TIME SPENT</th>
+                <tr id="engagementTableHead">
+                  <th>#</th>
+                  <th>NAME</th>
+                  <th>EMAIL ID</th>
+                  <th>COUNTRY</th>
+                  <th>PLAN</th>
+                  <th>SIGNED UP</th>
+                  <th>LAST SEEN</th>
+                  <!-- Dynamic page columns will go here -->
                 </tr>
               </thead>
               <tbody id="engagementTableBody">
@@ -2765,6 +2763,9 @@
 
       renderHeatmapRPC(cohortData || []);
 
+      // ─ TAB: ENGAGEMENT (PIVOT) ─
+      renderEngagementTable(engagementData || []);
+
       // ─ TAB 4: COUPONS ─
       renderCouponsTable(couponData || []);
       renderAuditTable(audits || []);
@@ -2918,6 +2919,85 @@
       a.click(); URL.revokeObjectURL(url);
     });
 
+
+    // ── ENGAGEMENT TABLE (PIVOT) ─────────────────────
+    function renderEngagementTable(data) {
+      const tbody = document.getElementById('engagementTableBody');
+      const thead = document.getElementById('engagementTableHead');
+      if (!tbody || !thead) return;
+
+      if (!data || data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--ink-muted);padding:2rem;">No engagement data found</td></tr>';
+        return;
+      }
+
+      // 1. Identify all unique pages
+      const pageSet = new Set();
+      data.forEach(u => {
+        if (u.page_metrics) {
+          Object.keys(u.page_metrics).forEach(p => pageSet.add(p));
+        }
+      });
+
+      // 2. Sort pages (Home first, then Day 01, Day 02...)
+      const sortedPages = Array.from(pageSet).sort((a, b) => {
+        if (a.includes('index')) return -1;
+        if (b.includes('index')) return 1;
+        return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+      });
+
+      // 3. Update Headers
+      let headHtml = `
+        <th>#</th>
+        <th>NAME</th>
+        <th>EMAIL ID</th>
+        <th>COUNTRY</th>
+        <th>PLAN</th>
+        <th>SIGNED UP</th>
+        <th>LAST SEEN</th>
+      `;
+      sortedPages.forEach(p => {
+        const cleanName = p.replace('.html', '').replace('/', '') || 'Home';
+        headHtml += `
+          <th style="text-align:center; border-left: 1px solid var(--rim); background: var(--elevated);">${cleanName}<br/><small style="opacity:0.6;">Visits | Time</small></th>
+        `;
+      });
+      thead.innerHTML = headHtml;
+
+      // 4. Update Body
+      const fmt = ts => ts ? new Date(ts).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: '2-digit' }) : '—';
+      const formatTimeShort = secs => {
+        if (!secs || secs <= 0) return '0s';
+        if (secs < 60) return Math.round(secs) + 's';
+        return Math.round(secs / 60) + 'm';
+      };
+
+      tbody.innerHTML = data.map((u, i) => {
+        let rowHtml = `
+          <tr>
+            <td class="cell-mono" style="color:var(--ink-muted);">${i + 1}</td>
+            <td style="color:var(--ink);font-weight:500; white-space:nowrap;">${u.full_name || '—'}</td>
+            <td class="cell-mono" style="color:var(--ink-dim);">${u.email || '—'}</td>
+            <td>${u.country ? `<span class="badge badge-neutral">${u.country}</span>` : '—'}</td>
+            <td><span class="badge ${u.plan === 'paid' ? 'badge-ok' : 'badge-neutral'}">${u.plan}</span></td>
+            <td class="cell-mono" style="color:var(--ink-muted); font-size:0.75rem;">${fmt(u.signed_up_at)}</td>
+            <td class="cell-mono" style="color:var(--ink-muted); font-size:0.75rem;">${fmt(u.last_seen_at)}</td>
+        `;
+
+        sortedPages.forEach(p => {
+          const m = u.page_metrics[p] || { visits: 0, time_spent_seconds: 0 };
+          const hasActivity = m.visits > 0;
+          rowHtml += `
+            <td class="cell-mono" style="text-align:center; border-left: 1px solid var(--rim); ${hasActivity ? 'color:var(--gold);' : 'opacity:0.3;'}">
+              ${m.visits} <span style="opacity:0.4;">|</span> ${formatTimeShort(m.time_spent_seconds)}
+            </td>
+          `;
+        });
+
+        rowHtml += '</tr>';
+        return rowHtml;
+      }).join('');
+    }
 
     // ── COUPONS TABLE ────────────────────────────────
     function renderCouponsTable(coupons) {
