@@ -1848,7 +1848,7 @@
 
           <div class="kpi-row" style="padding:0; margin-bottom:1.5rem; display:grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
             <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
-              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Total Visitors</div>
+              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Total Visits</div>
               <div class="kpi-val" id="kpiVisits" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--ink);">0</div>
             </div>
             <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
@@ -1862,6 +1862,26 @@
             <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
               <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Est. Revenue at Risk</div>
               <div class="kpi-val" id="kpiRisk" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--rose);">₹0</div>
+            </div>
+          </div>
+
+          <!-- New Row -->
+          <div class="kpi-row" style="padding:0; margin-bottom:1.5rem; display:grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+            <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
+              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Logged Users</div>
+              <div class="kpi-val" id="kpiLogged" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--ink);">0</div>
+            </div>
+            <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
+              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Buy Clicks</div>
+              <div class="kpi-val" id="kpiBuyClicks" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--ink);">0</div>
+            </div>
+            <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
+              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Payment Success</div>
+              <div class="kpi-val" id="kpiSuccessRaw" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--emerald);">0</div>
+            </div>
+            <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
+              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Payment Failed</div>
+              <div class="kpi-val" id="kpiFailedRaw" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--rose);">0</div>
             </div>
           </div>
 
@@ -3146,6 +3166,12 @@
       document.getElementById('kpiSucc').style.color = succRate >= 65 ? 'var(--emerald)' : (succRate >= 40 ? 'var(--amber)' : 'var(--rose)');
       
       document.getElementById('kpiRisk').textContent = '₹' + fmt(s5 * aov);
+
+      // New Raw Value KPIs
+      document.getElementById('kpiLogged').textContent = fmt(s2);
+      document.getElementById('kpiBuyClicks').textContent = fmt(s3);
+      document.getElementById('kpiSuccessRaw').textContent = fmt(s4);
+      document.getElementById('kpiFailedRaw').textContent = fmt(s5);
 
       // Benchmarks
       document.getElementById('bm_log').textContent = (100 - d1p).toFixed(1) + '%';
