@@ -1707,7 +1707,7 @@
             <h2 class="tab-title">Gro<em>wth</em></h2>
             <span class="tab-period-label">Acquisition &amp; Funnel</span>
           </div>
-          <div class="kpi-grid">
+          <div class="kpi-grid" style="grid-template-columns: repeat(4, 1fr);">
             <div class="kpi-wrapper">
               <div class="kpi-label">New Signups</div>
               <div class="kpi-card">
@@ -1745,43 +1745,33 @@
               </div>
             </div>
             <div class="kpi-wrapper">
-              <div class="kpi-label">Signup Growth Rate</div>
+              <div class="kpi-label">Total Users (All-time)</div>
               <div class="kpi-card">
-
-                <div class="kpi-value" id="kpi-signup-growth">
-                  <div class="skeleton sk-val"></div>
-                </div>
-                <div class="kpi-meta"></div>
-              </div>
-            </div>
-            <div class="kpi-wrapper">
-              <div class="kpi-label-row">
-                <div class="kpi-label">CPA (₹)</div>
-                <span style="font-size:0.65rem;color:var(--ink-muted);">Spend: <input class="inline-input"
-                    id="cpaSpendInput" placeholder="0" type="number" value="0" /></span>
-              </div>
-              <div class="kpi-card">
-
-                <div class="kpi-value" id="kpi-cpa">
+                <div class="kpi-value" id="kpi-total-users" style="color: var(--ink);">
                   <div class="skeleton sk-val"></div>
                 </div>
                 <div class="kpi-meta"></div>
               </div>
             </div>
           </div>
-          <!-- Total Users all-time KPI row -->
-          <div class="kpi-row" style="padding:0; margin-bottom:1.5rem; display:grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
-            <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
-              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">Total Users (All-time)</div>
-              <div class="kpi-value" id="kpi-total-users" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--ink);">—</div>
+          <div class="kpi-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom:1.5rem;">
+            <div class="kpi-wrapper">
+              <div class="kpi-label">INR Revenue (Period)</div>
+              <div class="kpi-card">
+                <div class="kpi-value" id="kpi-inr-rev" style="color: var(--gold);">
+                  <div class="skeleton sk-val"></div>
+                </div>
+                <div class="kpi-meta"></div>
+              </div>
             </div>
-            <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
-              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">INR Revenue (Period)</div>
-              <div class="kpi-value" id="kpi-inr-rev" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--gold);">₹0</div>
-            </div>
-            <div class="kpi-card" style="margin:0; background: var(--surface); border: 1px solid var(--rim); border-radius: 8px; padding: 1.25rem;">
-              <div class="kpi-label" style="font-size: 0.8rem; color: var(--ink-muted);">USD Revenue (Period)</div>
-              <div class="kpi-value" id="kpi-usd-rev" style="font-family: var(--font-data); font-size: 1.75rem; color: var(--emerald);">$0</div>
+            <div class="kpi-wrapper">
+              <div class="kpi-label">USD Revenue (Period)</div>
+              <div class="kpi-card">
+                <div class="kpi-value" id="kpi-usd-rev" style="color: var(--emerald);">
+                  <div class="skeleton sk-val"></div>
+                </div>
+                <div class="kpi-meta"></div>
+              </div>
             </div>
           </div>
           <div class="chart-panel mb-3">
@@ -2619,16 +2609,6 @@
       renderKPI('kpi-new-paying', 'meta-new-paying', growthData?.new_paying_users || 0, growthPrevData?.new_paying_users, v => v.toString());
       renderKPI('kpi-conv-rate', 'meta-conv-rate', growthData?.conversion_rate_pct || 0, growthPrevData?.conversion_rate_pct, formatPct);
 
-      const prevSignups = growthPrevData?.new_signups || 0;
-      const curSignups = growthData?.new_signups || 0;
-      const signupGrowth = prevSignups > 0 ? ((curSignups - prevSignups) / prevSignups) * 100 : 0;
-      renderKPI('kpi-signup-growth', null, signupGrowth, null, formatPct);
-
-      const cpaSpend = Number(document.getElementById('cpaSpendInput').value) || 0;
-      const curPaying = growthData?.new_paying_users || 0;
-      const cpa = curPaying > 0 ? cpaSpend / curPaying : 0;
-      renderKPI('kpi-cpa', null, cpa, null, formatINR);
-
       const dailySignups = growthData?.daily_signups || [];
       const signupLabels = dailySignups.map(d => d.day);
       createChart('signupVsPaidChart', 'line', {
@@ -3037,7 +3017,6 @@
     });
 
     document.getElementById('compareToggle').addEventListener('change', applyFilters);
-    document.getElementById('cpaSpendInput').addEventListener('change', renderDashboard);
     document.getElementById('funnelVisitedInput').addEventListener('change', renderDashboard);
     document.getElementById('hamburgerBtn').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
 
