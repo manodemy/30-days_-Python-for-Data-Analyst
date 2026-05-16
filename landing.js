@@ -285,6 +285,20 @@ function openCheckout() {
       setTimeout(() => document.getElementById('landingEmail')?.focus(), 500);
       return;
     }
+    // ── Log Buy Click to activity_logs (feeds the funnel "Buy Clicks" metric) ──
+    supabaseClient.from('activity_logs').insert([{
+      user_id: session.user.id,
+      event_type: 'checkout_initiated',
+      page_url: window.location.pathname,
+      metadata: {
+        currency: currentPricing.currency,
+        amount: currentPricing.amount,
+        country: userCountry
+      }
+    }]).then(({ error }) => {
+      if (error) console.warn('[Telemetry] ⚠️ Buy click log failed:', error.message);
+      else console.log('[Telemetry] ✅ checkout_initiated logged');
+    });
     if (checkoutOverlay) checkoutOverlay.classList.add('active');
   });
 }
