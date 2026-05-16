@@ -2153,22 +2153,28 @@
         <!-- ══ TAB: ENGAGEMENT ══ -->
         <div class="tab-pane" id="tab-engagement">
           <div class="tab-header">
-            <h2 class="tab-title">Page <em>Engagement</em></h2>
-            <span class="tab-period-label" id="eng-period-label">Visits &amp; Time Spent</span>
+            <h2 class="tab-title">User <em>Engagement</em></h2>
+            <span class="tab-period-label" id="eng-period-label">Detailed Page Activity</span>
           </div>
           
           <div class="table-panel">
             <table class="roster-table" style="margin-top:0;">
               <thead>
                 <tr>
-                  <th style="width:50%;">Page URL</th>
-                  <th style="text-align:right;">Total Visits</th>
-                  <th style="text-align:right;">Avg Time Spent</th>
-                  <th style="text-align:right;">Total Time Spent</th>
+                  <th style="width:4%;">#</th>
+                  <th style="width:15%;">NAME</th>
+                  <th style="width:18%;">EMAIL ID</th>
+                  <th style="width:8%;">COUNTRY</th>
+                  <th style="width:8%;">PLAN</th>
+                  <th style="width:12%;">SIGNED UP</th>
+                  <th style="width:12%;">LAST SEEN</th>
+                  <th style="width:12%;">PAGE</th>
+                  <th style="width:6%; text-align:center;">VISITS</th>
+                  <th style="width:10%; text-align:right;">TIME SPENT</th>
                 </tr>
               </thead>
               <tbody id="engagementTableBody">
-                <tr><td colspan="4" style="text-align:center;">Loading engagement data...</td></tr>
+                <tr><td colspan="10" style="text-align:center;">Loading engagement data...</td></tr>
               </tbody>
             </table>
           </div>
@@ -2573,7 +2579,7 @@
         // Roster always fetches ALL users — not filtered by dashboard date range
         sb.rpc('get_user_roster', { start_ts: '2000-01-01T00:00:00Z', end_ts: '2099-12-31T23:59:59Z' }),
         sb.rpc('get_conversion_funnel', { start_ts: f.from, end_ts: f.to }),
-        sb.rpc('get_page_engagement', { start_ts: f.from, end_ts: f.to })
+        sb.rpc('get_user_page_engagement', { start_ts: f.from, end_ts: f.to })
       ]);
 
       if (couponErr) console.error("Supabase Coupon Error:", JSON.stringify(couponErr));

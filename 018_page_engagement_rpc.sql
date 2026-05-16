@@ -1,19 +1,26 @@
 -- ============================================================================
 -- 018_page_engagement_rpc.sql
--- RPC to fetch page visits and time spent
+-- RPC to fetch user-level page engagement
 -- ============================================================================
 
 DROP FUNCTION IF EXISTS public.get_page_engagement(TIMESTAMPTZ, TIMESTAMPTZ);
+DROP FUNCTION IF EXISTS public.get_user_page_engagement(TIMESTAMPTZ, TIMESTAMPTZ);
 
-CREATE OR REPLACE FUNCTION public.get_page_engagement(
+CREATE OR REPLACE FUNCTION public.get_user_page_engagement(
   start_ts TIMESTAMPTZ DEFAULT '2000-01-01'::TIMESTAMPTZ,
   end_ts   TIMESTAMPTZ DEFAULT '2099-01-01'::TIMESTAMPTZ
 )
 RETURNS TABLE (
+  user_id UUID,
+  full_name TEXT,
+  email TEXT,
+  country TEXT,
+  plan TEXT,
+  signed_up_at TIMESTAMPTZ,
+  last_seen_at TIMESTAMPTZ,
   page_url TEXT,
-  total_visits BIGINT,
-  avg_time_seconds NUMERIC,
-  total_time_seconds NUMERIC
+  visits BIGINT,
+  time_spent_seconds NUMERIC
 )
 LANGUAGE plpgsql
 SECURITY DEFINER
@@ -27,44 +34,68 @@ BEGIN
   END IF;
 
   RETURN QUERY
-  WITH page_visits AS (
+  WITH user_pages AS (
     SELECT 
-      pv.page_url,
-      COUNT(DISTINCT pv.session_id) AS total_visits
-    FROM public.page_views pv
-    WHERE pv.created_at BETWEEN start_ts AND end_ts
-    GROUP BY pv.page_url
+      COALESCE(pv.user_id, al.user_id) AS uid,
+      COALESCE(pv.page_url, al.page_url) AS page_url,
+      pv.visits,
+      al.time_spent
+    FROM (
+      -- visits
+      SELECT pv_inner.user_id, pv_inner.page_url, COUNT(DISTINCT pv_inner.session_id) AS visits
+      FROM public.page_views pv_inner
+      WHERE pv_inner.created_at BETWEEN start_ts AND end_ts
+        AND pv_inner.user_id IS NOT NULL
+      GROUP BY pv_inner.user_id, pv_inner.page_url
+    ) pv
+    FULL OUTER JOIN (
+      -- time spent
+      SELECT sess_times.user_id, sess_times.page_url, SUM(sess_times.time_s) AS time_spent
+      FROM (
+        SELECT al_inner.user_id, al_inner.page_url, al_inner.metadata->>'session_id' as sess, MAX((al_inner.metadata->>'active_seconds')::numeric) as time_s
+        FROM public.activity_logs al_inner
+        WHERE al_inner.event_type IN ('session_heartbeat', 'session_end')
+          AND al_inner.created_at BETWEEN start_ts AND end_ts
+          AND al_inner.user_id IS NOT NULL
+          AND al_inner.metadata->>'active_seconds' IS NOT NULL
+        GROUP BY al_inner.user_id, al_inner.page_url, al_inner.metadata->>'session_id'
+      ) sess_times
+      GROUP BY sess_times.user_id, sess_times.page_url
+    ) al
+    ON pv.user_id = al.user_id AND pv.page_url = al.page_url
   ),
-  page_time AS (
+  user_profiles AS (
     SELECT 
-      al.page_url,
-      al.metadata->>'session_id' AS session_id,
-      MAX((al.metadata->>'active_seconds')::numeric) AS time_spent
-    FROM public.activity_logs al
-    WHERE al.event_type IN ('session_heartbeat', 'session_end')
-      AND al.created_at BETWEEN start_ts AND end_ts
-      AND al.metadata->>'active_seconds' IS NOT NULL
-      AND al.metadata->>'session_id' IS NOT NULL
-    GROUP BY al.page_url, al.metadata->>'session_id'
-  ),
-  avg_time AS (
-    SELECT 
-      pt.page_url,
-      AVG(pt.time_spent) AS avg_time_seconds,
-      SUM(pt.time_spent) AS total_time_seconds
-    FROM page_time pt
-    GROUP BY pt.page_url
+      p.id as uid,
+      p.full_name,
+      p.email,
+      p.country,
+      p.created_at as signed_up_at,
+      (SELECT MAX(created_at) FROM public.activity_logs WHERE user_id = p.id) as last_seen_at,
+      COALESCE((
+        SELECT CASE WHEN status = 'completed' THEN 'paid' ELSE status END
+        FROM public.purchases
+        WHERE user_id = p.id
+        ORDER BY created_at DESC LIMIT 1
+      ), 'free') as plan
+    FROM public.profiles p
   )
   SELECT 
-    v.page_url,
-    v.total_visits,
-    ROUND(COALESCE(t.avg_time_seconds, 0), 1) AS avg_time_seconds,
-    COALESCE(t.total_time_seconds, 0) AS total_time_seconds
-  FROM page_visits v
-  LEFT JOIN avg_time t ON v.page_url = t.page_url
-  ORDER BY v.total_visits DESC;
+    up.uid,
+    COALESCE(prf.full_name, ''),
+    COALESCE(prf.email, ''),
+    prf.country,
+    prf.plan,
+    prf.signed_up_at,
+    prf.last_seen_at,
+    up.page_url,
+    COALESCE(up.visits, 0),
+    COALESCE(up.time_spent, 0)
+  FROM user_pages up
+  JOIN user_profiles prf ON up.uid = prf.uid
+  ORDER BY prf.last_seen_at DESC NULLS LAST, up.page_url ASC;
 END;
 $$;
 
-REVOKE ALL ON FUNCTION public.get_page_engagement(TIMESTAMPTZ, TIMESTAMPTZ) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION public.get_page_engagement(TIMESTAMPTZ, TIMESTAMPTZ) TO authenticated;
+REVOKE ALL ON FUNCTION public.get_user_page_engagement(TIMESTAMPTZ, TIMESTAMPTZ) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.get_user_page_engagement(TIMESTAMPTZ, TIMESTAMPTZ) TO authenticated;
