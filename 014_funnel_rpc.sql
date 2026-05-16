@@ -61,9 +61,12 @@ BEGIN
       AND created_at BETWEEN start_ts AND end_ts
   ),
   s5 AS (
+    -- IMPORTANT: 'refunded' and 'disputed' are NOT payment failures.
+    -- They are successful payments that were later reversed.
+    -- This step counts ONLY gateway-rejected transactions (status = 'failed').
     SELECT COUNT(DISTINCT user_id) AS failed 
     FROM public.purchases 
-    WHERE status IN ('refunded', 'disputed', 'failed') 
+    WHERE status = 'failed'
       AND created_at BETWEEN start_ts AND end_ts
   )
   SELECT 
