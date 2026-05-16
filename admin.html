@@ -2913,6 +2913,14 @@
     }
 
     // ── AUDIT TABLE ──────────────────────────────────
+    function formatAuditValue(val) {
+      if (!val) return '—';
+      if (typeof val === 'object' && val.inr !== undefined) {
+        return `₹${val.inr / 100} / $${val.usd / 100}`;
+      }
+      return JSON.stringify(val).substring(0, 50);
+    }
+
     function renderAuditTable(audits) {
       const tbody = document.querySelector('#auditTable tbody');
       if (!audits.length) {
@@ -2920,10 +2928,10 @@
         return;
       }
       tbody.innerHTML = audits.slice(0, 10).map(a => `<tr>
-      <td class="cell-mono" style="color:var(--ink-muted);">${a.profiles?.email || a.admin_id.substring(0, 10) + '…'}</td>
+      <td class="cell-mono" style="color:var(--ink-muted);">${a.profiles?.email || (a.admin_id ? a.admin_id.substring(0, 8) + '…' : 'System')}</td>
       <td><span class="badge badge-info">${a.action}</span></td>
-      <td class="cell-mono" style="max-width:140px;overflow:hidden;text-overflow:ellipsis;color:var(--ink-muted);">${JSON.stringify(a.changed_data?.old?.value || '—')}</td>
-      <td class="cell-mono" style="max-width:140px;overflow:hidden;text-overflow:ellipsis;color:var(--ink);">${JSON.stringify(a.changed_data?.new?.value || '—')}</td>
+      <td class="cell-mono" style="color:var(--ink-muted);">${formatAuditValue(a.changed_data?.old?.value)}</td>
+      <td class="cell-mono" style="color:var(--ink); font-weight: 500;">${formatAuditValue(a.changed_data?.new?.value)}</td>
       <td class="cell-mono" style="color:var(--ink-muted);">${new Date(a.created_at).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</td>
     </tr>`).join('');
     }
