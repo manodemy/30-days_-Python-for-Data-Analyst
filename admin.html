@@ -1983,9 +1983,6 @@
             </div>
           </div>
 
-          <div class="settings-row" style="padding:0; margin-bottom:2rem; font-size:0.85rem; color:var(--ink-dim);">
-            Avg Order Value (AOV): ₹ <input type="number" class="aov-input" id="aovInput" value="1900" onchange="renderFunnelView()" style="background:var(--base); border:1px solid var(--rim); color:var(--ink); padding:0.3rem 0.5rem; width:80px; font-family:var(--font-data); text-align:right; border-radius:4px;" />
-          </div>
 
           <div class="funnel-container" style="padding:0;">
             <!-- STEP 1 -->
@@ -3215,7 +3212,7 @@
       if (!latestFunnelData) return;
       const f = latestFunnelData;
       const s1 = f.step1_visits || 0, s2 = f.step2_logged_in || 0, s3 = f.step3_buy_clicks || 0, s4 = f.step4_success || 0, s5 = f.step5_failed || 0;
-      const aov = parseInt(document.getElementById('aovInput').value) || 1900;
+      const aov = 1900;
 
       function fmt(n) { return Number(n).toLocaleString('en-IN'); }
 
