@@ -2669,8 +2669,8 @@
       // INR / USD revenue breakdown
       const inrRevEl = document.getElementById('kpi-inr-rev');
       const usdRevEl = document.getElementById('kpi-usd-rev');
-      if (inrRevEl) inrRevEl.textContent = '₹' + Number(inrAmt / 100 || inrAmt).toLocaleString('en-IN');
-      if (usdRevEl) usdRevEl.textContent = '$' + Number(usdAmt / 100 || usdAmt).toLocaleString('en-US');
+      if (inrRevEl) inrRevEl.textContent = '₹' + Number(inrAmt).toLocaleString('en-IN', { maximumFractionDigits: 0 });
+      if (usdRevEl) usdRevEl.textContent = '$' + Number(usdAmt).toLocaleString('en-US', { maximumFractionDigits: 0 });
 
       const topC = growthData?.country_distribution || [];
       createChart('countryChart', 'bar', {
