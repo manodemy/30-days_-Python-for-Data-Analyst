@@ -3337,7 +3337,16 @@
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
         item.classList.add('active');
-        document.getElementById(item.dataset.tab).classList.add('active');
+        
+        const tabId = item.dataset.tab;
+        document.getElementById(tabId).classList.add('active');
+        
+        // Hide global filter bar on Engagement page since it handles all-time data
+        const filterBar = document.querySelector('.top-filter-bar');
+        if (filterBar) {
+          filterBar.style.display = (tabId === 'tab-engagement') ? 'none' : 'block';
+        }
+
         if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
       });
     });
