@@ -140,9 +140,16 @@
       this._heartbeatTimer = setInterval(() => {
         this._accumulateActive();
         if (this.userId && this._totalActiveSecs > 0) {
+          // Also sync the Active Focus localStorage timer (set by notebook.js every 5s)
+          // so admin panel always shows the latest client-side time.
+          const dayMatch = window.location.pathname.match(/day(\d{2})\.html/);
+          const lsKey = dayMatch ? `manodemy_day${dayMatch[1]}_time_spent` : null;
+          const lsSecs = lsKey ? parseInt(localStorage.getItem(lsKey) || '0', 10) : 0;
+          const bestSecs = Math.max(this._totalActiveSecs, lsSecs);
+
           this._writeActivityLog('session_heartbeat', {
             session_id: this.sessionId,
-            active_seconds: this._totalActiveSecs,
+            active_seconds: bestSecs,
             page_url: window.location.pathname
           });
         }
@@ -176,7 +183,12 @@
       clearInterval(this._heartbeatTimer);
 
       this._accumulateActive();
-      if (this._totalActiveSecs < MIN_ENGAGEMENT_SECS) return;
+      const dayMatch2 = window.location.pathname.match(/day(\d{2})\.html/);
+      const lsKey2 = dayMatch2 ? `manodemy_day${dayMatch2[1]}_time_spent` : null;
+      const lsTotal = lsKey2 ? parseInt(localStorage.getItem(lsKey2) || '0', 10) : 0;
+      const finalSecs = Math.max(this._totalActiveSecs, lsTotal);
+
+      if (finalSecs < MIN_ENGAGEMENT_SECS) return;
 
       const payload = {
         user_id: this.userId,
@@ -184,7 +196,8 @@
         page_url: window.location.pathname,
         metadata: {
           session_id: this.sessionId,
-          duration_seconds: this._totalActiveSecs  // ← Market standard: ACTIVE seconds only
+          duration_seconds: finalSecs,
+          active_seconds: finalSecs  // included for RPC compatibility
         }
       };
 

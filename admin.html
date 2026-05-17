@@ -3034,18 +3034,38 @@
       const fmt = ts => ts
         ? new Date(ts).toLocaleString('en-IN', { day:'2-digit', month:'short', year:'2-digit' })
         : '—';
+      // Matches same format as Enrolled Users — Raw Data table
       const fmtTime = secs => {
         if (!secs || secs <= 0) return '—';
-        if (secs < 60) return Math.round(secs) + 's';
-        if (secs < 3600) return Math.round(secs / 60) + 'm';
-        return (secs / 3600).toFixed(1) + 'h';
+        const s = Number(secs);
+        if (s >= 86400) return (s / 86400).toFixed(1) + ' days';
+        if (s >= 3600)  return (s / 3600).toFixed(1) + ' hours';
+        if (s >= 60)    return Math.round(s / 60) + ' mins';
+        return s + ' secs';
+      };
+
+      // Normalize stored page URL to bare filename matching JS keys
+      // e.g. /manodemy_web/day01.html → day01.html
+      const normKey = rawKey => rawKey ? rawKey.replace(/^.*\//, '') : rawKey;
+
+      // Try to read the latest Active Focus timer from localStorage for currently-active users.
+      // Key pattern: manodemy_dayXX_time_spent  (set by notebook.js every 5s)
+      const getLocalSecs = (dayKey) => {
+        const m = dayKey.match(/day(\d{2})\.html/);
+        if (!m) return 0;
+        const lsKey = `manodemy_day${m[1]}_time_spent`;
+        return parseInt(localStorage.getItem(lsKey) || '0', 10);
       };
 
       tbody.innerHTML = page.map((u, i) => {
         const pm = u.page_metrics || {};
 
         // Home page columns
-        const home = pm[ENG_HOME_KEY] || pm['index'] || pm['/'] || {};
+        // Normalize all page_metrics keys from the RPC so bare filenames always match
+        const normPm = {};
+        Object.keys(pm).forEach(k => { normPm[normKey(k)] = pm[k]; });
+
+        const home = normPm[ENG_HOME_KEY] || normPm['index'] || normPm['/'] || normPm[''] || {};
         const hv = home.visits || 0;
         const ht = home.time_spent_seconds || 0;
         const homeActive = hv > 0;
@@ -3061,14 +3081,17 @@
           <td class="cell-mono" style="text-align:center;border-left:2px solid var(--rim-strong);${homeActive?'color:var(--sapphire);font-weight:500;':'opacity:0.25;'}">${hv||'—'}</td>
           <td class="cell-mono" style="text-align:center;${homeActive?'color:var(--sapphire);':'opacity:0.25;'}">${fmtTime(ht)}</td>`;
 
-        // Day01–Day30 columns
+        // Day01–Day30 columns (use normPm built above)
         ENG_DAY_KEYS.forEach((key, idx) => {
-          // Try both 'day01.html' and 'day1.html' and '/day01' forms
-          const d = pm[key] || pm[key.replace('.html','')] || pm['/'+key] || pm['day'+(idx+1)+'.html'] || {};
+          const d = normPm[key] || normPm[key.replace('.html','')] || {};
           const v  = d.visits || 0;
-          const ts = d.time_spent_seconds || 0;
+          // Take the greater of DB-stored seconds or the latest localStorage Active Focus value
+          // This ensures that if a user is currently on the page, we show up-to-date time.
+          const dbSecs  = d.time_spent_seconds || 0;
+          const lsSecs  = getLocalSecs(key);
+          const ts = Math.max(dbSecs, lsSecs);
           const qs = d.questions_solved || 0;
-          const active = v > 0 || qs > 0;
+          const active = v > 0 || ts > 0 || qs > 0;
           const col = idx < 10 ? 'var(--sapphire)' : (idx < 20 ? 'var(--amber)' : 'var(--emerald)');
           row += `
             <td class="cell-mono" style="text-align:center;border-left:2px solid var(--rim-strong);${active?`color:${col};font-weight:500;`:'opacity:0.2;'}">${v||'—'}</td>
