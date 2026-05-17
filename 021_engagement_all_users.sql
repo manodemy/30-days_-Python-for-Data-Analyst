@@ -1,13 +1,17 @@
 -- ============================================================================
--- 021_engagement_all_users.sql  (v3 — reads notebook_state_sync for questions)
+-- 021_engagement_all_users.sql  (v4 — all bugs fixed from deep audit)
 --
--- DATA SOURCES:
---   Visits:    page_views table (session counts)
---   Time:      activity_logs session_heartbeat + session_end + notebook_state_sync
---   Questions: activity_logs notebook_state_sync (solved_count from localStorage)
---              + individual question_solved events as fallback
+-- BUGS FIXED in v4:
+--   1. Time double-counting: notebook_sync (cumulative) was being summed with
+--      per-visit telemetry sessions. Now uses GREATEST(sync, sum-of-sessions).
+--   2. gen_random_uuid() in COUNT DISTINCT inflated question counts for
+--      malformed events. Replaced with deterministic fallback.
+--   3. Added notebook_state_sync to time sources with proper isolation.
 --
--- All column references fully qualified to avoid PL/pgSQL variable ambiguity.
+-- DATA FLOW:
+--   Visits:    page_views.session_id  → COUNT(DISTINCT)
+--   Time:      GREATEST(notebook_state_sync cumulative, SUM of telemetry sessions)
+--   Questions: GREATEST(notebook_state_sync.solved_count, COUNT of individual events)
 -- ============================================================================
 
 DROP FUNCTION IF EXISTS public.get_user_page_engagement(TIMESTAMPTZ, TIMESTAMPTZ);
@@ -39,13 +43,13 @@ BEGIN
   RETURN QUERY
   WITH
 
-  -- 1. Normalize page_url → bare filename (day01.html, index.html)
+  -- ═══ NORMALIZATION ═══════════════════════════════════════════════════════
+  -- Strip page_url to bare filename: /any/path/day01.html → day01.html
   norm_views AS (
     SELECT
       pv.user_id                              AS uid,
       pv.session_id,
-      REGEXP_REPLACE(pv.page_url, '^.+/', '') AS page_key,
-      pv.created_at
+      REGEXP_REPLACE(pv.page_url, '^.+/', '') AS page_key
     FROM public.page_views pv
     WHERE pv.created_at BETWEEN start_ts AND end_ts
       AND pv.user_id IS NOT NULL
@@ -63,14 +67,14 @@ BEGIN
           ''
         ), '^.+/', ''
       )                                       AS page_key,
-      al.metadata,
-      al.created_at
+      al.metadata
     FROM public.activity_logs al
     WHERE al.created_at BETWEEN start_ts AND end_ts
       AND al.user_id IS NOT NULL
   ),
 
-  -- 2. Visits = distinct sessions per user per page
+  -- ═══ VISITS ══════════════════════════════════════════════════════════════
+  -- One visit = one distinct session_id in page_views
   visits_agg AS (
     SELECT
       nv.uid,
@@ -81,19 +85,36 @@ BEGIN
     GROUP BY nv.uid, nv.page_key
   ),
 
-  -- 3. Time spent: take MAX per session (heartbeats are cumulative), then SUM across sessions
-  time_agg AS (
+  -- ═══ TIME SPENT ══════════════════════════════════════════════════════════
+  -- Strategy A: notebook_state_sync carries the cumulative localStorage timer.
+  --             This is the GROUND TRUTH — it's what the user sees on their page.
+  --             Take MAX (latest sync has the highest cumulative value).
+  sync_time AS (
+    SELECT
+      nl.uid,
+      nl.page_key,
+      MAX(COALESCE(NULLIF(nl.metadata->>'active_seconds', '')::NUMERIC, 0)) AS total_secs
+    FROM norm_logs nl
+    WHERE nl.event_type = 'notebook_state_sync'
+      AND nl.page_key IS NOT NULL AND nl.page_key <> ''
+      AND nl.metadata->>'active_seconds' IS NOT NULL
+    GROUP BY nl.uid, nl.page_key
+  ),
+
+  -- Strategy B: Telemetry sessions (heartbeats + session_end).
+  --             Each unique session_id has cumulative heartbeats (30, 60, 90...),
+  --             so take MAX per session, then SUM across distinct sessions.
+  --             EXCLUDE notebook_sync sessions to avoid double-counting with Strategy A.
+  session_time AS (
     SELECT
       ps.uid,
       ps.page_key,
-      SUM(ps.max_secs) AS time_spent_seconds
+      SUM(ps.max_secs) AS total_secs
     FROM (
       SELECT
         nl.uid,
         nl.page_key,
         COALESCE(nl.metadata->>'session_id', nl.uid::text || '_' || nl.page_key) AS sess_id,
-        -- MAX per session because heartbeats report cumulative active_seconds
-        -- (30, 60, 90... not incremental). We want only the highest value per session.
         MAX(
           GREATEST(
             COALESCE(NULLIF(nl.metadata->>'active_seconds',   '')::NUMERIC, 0),
@@ -101,19 +122,35 @@ BEGIN
           )
         ) AS max_secs
       FROM norm_logs nl
-      WHERE nl.event_type IN ('session_heartbeat', 'session_end', 'notebook_state_sync')
+      WHERE nl.event_type IN ('session_heartbeat', 'session_end')
         AND nl.page_key IS NOT NULL AND nl.page_key <> ''
         AND (
           nl.metadata->>'active_seconds'   IS NOT NULL OR
           nl.metadata->>'duration_seconds' IS NOT NULL
         )
+        -- CRITICAL: exclude notebook sync heartbeats (they carry cumulative totals)
+        AND COALESCE(nl.metadata->>'session_id', '') NOT LIKE 'notebook_sync_%'
       GROUP BY nl.uid, nl.page_key, COALESCE(nl.metadata->>'session_id', nl.uid::text || '_' || nl.page_key)
     ) ps
     GROUP BY ps.uid, ps.page_key
   ),
 
-  -- 4a. Questions from notebook_state_sync (bulk sync from localStorage)
-  --     Take the MAX solved_count per user per page (latest sync is most accurate)
+  -- Final time: GREATEST of the two strategies (never double-count)
+  time_agg AS (
+    SELECT
+      COALESCE(st.uid, tt.uid)             AS uid,
+      COALESCE(st.page_key, tt.page_key)   AS page_key,
+      GREATEST(
+        COALESCE(st.total_secs, 0),
+        COALESCE(tt.total_secs, 0)
+      ) AS time_spent_seconds
+    FROM sync_time st
+    FULL OUTER JOIN session_time tt
+      ON tt.uid = st.uid AND tt.page_key = st.page_key
+  ),
+
+  -- ═══ QUESTIONS SOLVED ════════════════════════════════════════════════════
+  -- Source A: notebook_state_sync.solved_count (bulk from localStorage — ground truth)
   sync_questions AS (
     SELECT
       nl.uid,
@@ -126,23 +163,25 @@ BEGIN
     GROUP BY nl.uid, nl.page_key
   ),
 
-  -- 4b. Questions from individual question_solved events (real-time, per-solve)
+  -- Source B: Individual question_solved events (real-time, per cell solve)
   individual_questions AS (
     SELECT
       nl.uid,
       nl.page_key,
-      COUNT(DISTINCT COALESCE(nl.metadata->>'question_id', nl.metadata->>'cell_id', gen_random_uuid()::text)) AS solved
+      -- Use question_id or cell_id for distinct counting; skip rows without either
+      COUNT(DISTINCT COALESCE(nl.metadata->>'question_id', nl.metadata->>'cell_id')) AS solved
     FROM norm_logs nl
     WHERE nl.event_type IN ('question_solved', 'exercise_completed', 'answer_submitted', 'quiz_completed')
       AND nl.page_key IS NOT NULL AND nl.page_key <> ''
+      AND (nl.metadata->>'question_id' IS NOT NULL OR nl.metadata->>'cell_id' IS NOT NULL)
     GROUP BY nl.uid, nl.page_key
   ),
 
-  -- 4c. Merge: take the GREATEST of bulk sync vs individual count
+  -- Final questions: GREATEST of both sources
   questions_agg AS (
     SELECT
-      COALESCE(sq.uid, iq.uid)         AS uid,
-      COALESCE(sq.page_key, iq.page_key) AS page_key,
+      COALESCE(sq.uid, iq.uid)             AS uid,
+      COALESCE(sq.page_key, iq.page_key)   AS page_key,
       GREATEST(
         COALESCE(sq.solved, 0),
         COALESCE(iq.solved, 0)
@@ -152,7 +191,7 @@ BEGIN
       ON iq.uid = sq.uid AND iq.page_key = sq.page_key
   ),
 
-  -- 5. Union all page keys
+  -- ═══ MERGE ═══════════════════════════════════════════════════════════════
   all_pages AS (
     SELECT va.uid, va.page_key FROM visits_agg va
     UNION
@@ -161,21 +200,19 @@ BEGIN
     SELECT qa.uid, qa.page_key FROM questions_agg qa
   ),
 
-  -- 6. Merge metrics
   user_pages AS (
     SELECT
       ap.uid,
       ap.page_key,
-      COALESCE(va.visits, 0)                  AS visits,
-      COALESCE(ta.time_spent_seconds, 0)      AS time_spent,
-      COALESCE(qa.questions_solved, 0)        AS questions_solved
+      COALESCE(va.visits, 0)             AS visits,
+      COALESCE(ta.time_spent_seconds, 0) AS time_spent,
+      COALESCE(qa.questions_solved, 0)   AS questions_solved
     FROM all_pages ap
     LEFT JOIN visits_agg    va ON va.uid = ap.uid AND va.page_key = ap.page_key
     LEFT JOIN time_agg      ta ON ta.uid = ap.uid AND ta.page_key = ap.page_key
     LEFT JOIN questions_agg qa ON qa.uid = ap.uid AND qa.page_key = ap.page_key
   ),
 
-  -- 7. Roll up into JSONB per user
   aggregated_metrics AS (
     SELECT
       up.uid,
@@ -191,7 +228,7 @@ BEGIN
     GROUP BY up.uid
   ),
 
-  -- 8. All profiles (never filtered)
+  -- ═══ PROFILES ════════════════════════════════════════════════════════════
   user_profiles AS (
     SELECT
       p.id           AS uid,
@@ -214,7 +251,7 @@ BEGIN
     WHERE p.email IS NOT NULL
   )
 
-  -- 9. Final: ALL users LEFT JOIN metrics
+  -- ═══ OUTPUT ══════════════════════════════════════════════════════════════
   SELECT
     prf.uid                                AS user_id,
     COALESCE(prf.p_name, '')               AS full_name,

@@ -3101,6 +3101,13 @@
         const lsKey = `manodemy_day${m[1]}_time_spent`;
         return parseInt(localStorage.getItem(lsKey) || '0', 10);
       };
+      // Also read solved count from localStorage for admin's own data
+      const getLocalSolved = (dayKey) => {
+        const m = dayKey.match(/day(\d{2})\.html/);
+        if (!m) return 0;
+        const lsKey = `manodemy_day${m[1]}_solved_count`;
+        return parseInt(localStorage.getItem(lsKey) || '0', 10);
+      };
 
       tbody.innerHTML = page.map((u, i) => {
         const pm = u.page_metrics || {};
@@ -3131,11 +3138,13 @@
           const d = normPm[key] || normPm[key.replace('.html','')] || {};
           const v  = d.visits || 0;
           // Take the greater of DB-stored seconds or the latest localStorage Active Focus value
-          // This ensures that if a user is currently on the page, we show up-to-date time.
           const dbSecs  = d.time_spent_seconds || 0;
           const lsSecs  = getLocalSecs(key);
           const ts = Math.max(dbSecs, lsSecs);
-          const qs = d.questions_solved || 0;
+          // Take the greater of DB-stored solved count or localStorage solved count
+          const dbQs = d.questions_solved || 0;
+          const lsQs = getLocalSolved(key);
+          const qs = Math.max(dbQs, lsQs);
           const active = v > 0 || ts > 0 || qs > 0;
           const col = idx < 10 ? 'var(--sapphire)' : (idx < 20 ? 'var(--amber)' : 'var(--emerald)');
           row += `
