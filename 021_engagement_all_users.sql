@@ -1,9 +1,13 @@
 -- ============================================================================
--- 021_engagement_all_users.sql  (v2 — fixes "user_id is ambiguous" error)
+-- 021_engagement_all_users.sql  (v3 — reads notebook_state_sync for questions)
 --
--- ROOT CAUSE: RETURNS TABLE(user_id UUID) creates a PL/pgSQL variable that
--- shadows table column references inside CTEs. Fix: fully qualify every
--- column reference with explicit table aliases.
+-- DATA SOURCES:
+--   Visits:    page_views table (session counts)
+--   Time:      activity_logs session_heartbeat + session_end + notebook_state_sync
+--   Questions: activity_logs notebook_state_sync (solved_count from localStorage)
+--              + individual question_solved events as fallback
+--
+-- All column references fully qualified to avoid PL/pgSQL variable ambiguity.
 -- ============================================================================
 
 DROP FUNCTION IF EXISTS public.get_user_page_engagement(TIMESTAMPTZ, TIMESTAMPTZ);
@@ -35,7 +39,7 @@ BEGIN
   RETURN QUERY
   WITH
 
-  -- 1. Normalize page_url to bare filename
+  -- 1. Normalize page_url → bare filename (day01.html, index.html)
   norm_views AS (
     SELECT
       pv.user_id                              AS uid,
@@ -59,13 +63,14 @@ BEGIN
           ''
         ), '^.+/', ''
       )                                       AS page_key,
-      al.metadata
+      al.metadata,
+      al.created_at
     FROM public.activity_logs al
     WHERE al.created_at BETWEEN start_ts AND end_ts
       AND al.user_id IS NOT NULL
   ),
 
-  -- 2. Visits per user per page
+  -- 2. Visits = distinct sessions per user per page
   visits_agg AS (
     SELECT
       nv.uid,
@@ -92,7 +97,7 @@ BEGIN
           COALESCE(NULLIF(nl.metadata->>'duration_seconds', '')::NUMERIC, 0)
         ) AS best_secs
       FROM norm_logs nl
-      WHERE nl.event_type IN ('session_heartbeat', 'session_end')
+      WHERE nl.event_type IN ('session_heartbeat', 'session_end', 'notebook_state_sync')
         AND nl.page_key IS NOT NULL AND nl.page_key <> ''
         AND (
           nl.metadata->>'active_seconds'   IS NOT NULL OR
@@ -102,16 +107,44 @@ BEGIN
     GROUP BY ps.uid, ps.page_key
   ),
 
-  -- 4. Questions solved
-  questions_agg AS (
+  -- 4a. Questions from notebook_state_sync (bulk sync from localStorage)
+  --     Take the MAX solved_count per user per page (latest sync is most accurate)
+  sync_questions AS (
     SELECT
       nl.uid,
       nl.page_key,
-      COUNT(*) AS questions_solved
+      MAX(COALESCE(NULLIF(nl.metadata->>'solved_count', '')::INTEGER, 0)) AS solved
+    FROM norm_logs nl
+    WHERE nl.event_type = 'notebook_state_sync'
+      AND nl.page_key IS NOT NULL AND nl.page_key <> ''
+      AND nl.metadata->>'solved_count' IS NOT NULL
+    GROUP BY nl.uid, nl.page_key
+  ),
+
+  -- 4b. Questions from individual question_solved events (real-time, per-solve)
+  individual_questions AS (
+    SELECT
+      nl.uid,
+      nl.page_key,
+      COUNT(DISTINCT COALESCE(nl.metadata->>'question_id', nl.metadata->>'cell_id', gen_random_uuid()::text)) AS solved
     FROM norm_logs nl
     WHERE nl.event_type IN ('question_solved', 'exercise_completed', 'answer_submitted', 'quiz_completed')
       AND nl.page_key IS NOT NULL AND nl.page_key <> ''
     GROUP BY nl.uid, nl.page_key
+  ),
+
+  -- 4c. Merge: take the GREATEST of bulk sync vs individual count
+  questions_agg AS (
+    SELECT
+      COALESCE(sq.uid, iq.uid)         AS uid,
+      COALESCE(sq.page_key, iq.page_key) AS page_key,
+      GREATEST(
+        COALESCE(sq.solved, 0),
+        COALESCE(iq.solved, 0)
+      ) AS questions_solved
+    FROM sync_questions sq
+    FULL OUTER JOIN individual_questions iq
+      ON iq.uid = sq.uid AND iq.page_key = sq.page_key
   ),
 
   -- 5. Union all page keys

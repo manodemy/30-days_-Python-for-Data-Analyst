@@ -159,11 +159,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   updateScore(); // Initial score update
 
-  // ── SYNC ACCUMULATED TIME TO SUPABASE ON PAGE LOAD ─────────────────────
-  // Reads the localStorage Active Focus timer and writes a heartbeat so the
-  // admin engagement table always reflects the user's total time, even if they
-  // never trigger a natural 30-second telemetry heartbeat.
-  const _syncTimeToSupabase = async () => {
+  // ── COMPREHENSIVE SYNC: TIME + QUESTIONS TO SUPABASE ON PAGE LOAD ──────
+  // Pushes BOTH the Active Focus timer AND the solved questions count from
+  // localStorage to Supabase as a single 'notebook_state_sync' event.
+  // This ensures:
+  //   1. Historical solved counts (already in localStorage) get pushed to DB
+  //   2. Time spent is always up-to-date
+  //   3. Admin panel engagement table shows real, accurate numbers
+  const _syncNotebookState = async () => {
     try {
       if (!sbClient) return;
       const { data: { user } } = await sbClient.auth.getUser();
@@ -172,24 +175,66 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!dayId) return;
       const match = dayId.match(/(\d{2})/);
       if (!match) return;
-      const lsKey = `manodemy_day${match[1]}_time_spent`;
-      const secs = parseInt(localStorage.getItem(lsKey) || '0', 10);
-      if (secs < 10) return; // Don't write trivial values
-      // Write as a notebook_time_sync heartbeat — picked up by the RPC
+      const dayNum = match[1];
+
+      // Read time spent from localStorage
+      const timeLsKey = `manodemy_day${dayNum}_time_spent`;
+      const secs = parseInt(localStorage.getItem(timeLsKey) || '0', 10);
+
+      // Read solved count from localStorage
+      const solvedLsKey = `manodemy_${dayId}_solved_count`;
+      const solvedCount = parseInt(localStorage.getItem(solvedLsKey) || '0', 10);
+
+      // Also count individual solved cells as a cross-check
+      let cellSolvedCount = 0;
+      const solvedCellIds = [];
+      Object.keys(editors).forEach(cellId => {
+        if (safeStorageGet(`manodemy_${dayId}_${cellId}_solved`) === 'true') {
+          cellSolvedCount++;
+          solvedCellIds.push(cellId);
+        }
+      });
+      // Use the higher of the two counts (score counter vs individual cells)
+      const finalSolved = Math.max(solvedCount, cellSolvedCount);
+
+      // Skip sync if nothing meaningful to report
+      if (secs < 5 && finalSolved === 0) return;
+
+      // Write a single comprehensive sync event
       await sbClient.from('activity_logs').insert([{
         user_id:    user.id,
-        event_type: 'session_heartbeat',
+        event_type: 'notebook_state_sync',
         page_url:   window.location.pathname,
         metadata: {
-          session_id:     'notebook_sync_' + dayId,
-          active_seconds: secs,
-          page_url:       window.location.pathname
+          session_id:       'notebook_sync_' + dayId,
+          active_seconds:   secs,
+          solved_count:     finalSolved,
+          solved_cells:     solvedCellIds,
+          total_cells:      totalCells,
+          page_url:         window.location.pathname,
+          synced_at:        new Date().toISOString()
         }
       }]);
-    } catch(e) { /* silent */ }
+
+      // Also write a heartbeat for backward compatibility with time tracking
+      if (secs >= 10) {
+        await sbClient.from('activity_logs').insert([{
+          user_id:    user.id,
+          event_type: 'session_heartbeat',
+          page_url:   window.location.pathname,
+          metadata: {
+            session_id:     'notebook_sync_' + dayId,
+            active_seconds: secs,
+            page_url:       window.location.pathname
+          }
+        }]);
+      }
+
+      console.log(`[Notebook] ✅ Synced to Supabase: ${dayId} | Time: ${secs}s | Solved: ${finalSolved}/${totalCells}`);
+    } catch(e) { console.warn('[Notebook] Sync error:', e.message); }
   };
   // Delay by 3s to let Supabase auth session stabilise after page load
-  setTimeout(_syncTimeToSupabase, 3000);
+  setTimeout(_syncNotebookState, 3000);
 });
 
 // ── LOAD PYODIDE (LAZY — first Run click only) ──
