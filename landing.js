@@ -97,31 +97,6 @@ if (topBar) {
   });
 }
 
-// Price Editor Toggle
-const toggle = document.getElementById('priceToggle');
-const editor = document.getElementById('priceEditor');
-const closeBtn = document.getElementById('closeEditor');
-const applyBtn = document.getElementById('applyPrice');
-
-if (toggle && editor) toggle.addEventListener('click', () => editor.classList.toggle('hidden'));
-if (closeBtn && editor) closeBtn.addEventListener('click', () => editor.classList.add('hidden'));
-
-// Apply Price Changes
-if (applyBtn) applyBtn.addEventListener('click', () => {
-  const currency = document.getElementById('inputCurrency').value || '$';
-  const price = document.getElementById('inputPrice').value;
-  const original = document.getElementById('inputOriginal').value;
-  const discount = original > 0 ? Math.round((1 - price / original) * 100) : 0;
-
-  document.getElementById('priceNow').textContent = currency + price;
-  document.getElementById('priceOld').textContent = currency + original;
-  document.getElementById('discountBadge').textContent = discount + '% OFF';
-  document.getElementById('buyPrice').textContent = currency + price;
-
-  // Flash confirmation
-  applyBtn.textContent = '✅ Applied!';
-  setTimeout(() => { applyBtn.textContent = 'Apply Changes'; }, 1500);
-});
 
 // Smooth scroll-reveal animation
 const observer = new IntersectionObserver((entries) => {
