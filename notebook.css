@@ -586,3 +586,58 @@ tbody tr:hover{background:rgba(0,230,246,.03)}
   .mano-hint-popup { left: 4px; right: 4px; }
   .mano-hint-body { font-size: 0.8rem; padding: 10px; }
 }
+
+/* ═══════ PRACTICE MODE (THEORY HIDER) ═══════ */
+.practice-mode-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  font: 600 0.85rem var(--font-h);
+  padding: 10px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  z-index: 998;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+.practice-mode-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 230, 246, 0.4);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 230, 246, 0.2);
+  color: #fff;
+}
+.practice-mode-btn.is-active {
+  background: linear-gradient(135deg, rgba(0, 230, 246, 0.15), rgba(168, 85, 247, 0.15));
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+@media(max-width: 600px) {
+  .practice-mode-btn { bottom: 16px; left: 16px; padding: 8px 14px; font-size: 0.8rem; }
+}
+
+/* Practice Mode Hiding Logic */
+body.practice-mode-active > .layout p,
+body.practice-mode-active > .layout table,
+body.practice-mode-active > .layout ul:not(.exercise-list),
+body.practice-mode-active > .layout ol,
+body.practice-mode-active > .layout .nb-code-block,
+body.practice-mode-active > .layout .callout,
+body.practice-mode-active > .layout .nb-rich > div[style*="border-left"] {
+  display: none !important;
+}
+
+/* Protect the text inside questions and interactive components */
+body.practice-mode-active > .layout .question p,
+body.practice-mode-active > .layout .question ul,
+body.practice-mode-active > .layout .question ol,
+body.practice-mode-active > .layout .mano-hint-body p {
+  display: block !important;
+}

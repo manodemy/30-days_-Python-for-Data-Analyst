@@ -784,3 +784,31 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('beforeunload', pauseTimer);
 });
 
+// ── PRACTICE MODE (THEORY HIDER) ──
+document.addEventListener('DOMContentLoaded', () => {
+  const isPracticeMode = localStorage.getItem('manodemy_practice_mode') === 'true';
+  
+  if (isPracticeMode) {
+    document.body.classList.add('practice-mode-active');
+  }
+
+  // Inject Button
+  const btn = document.createElement('button');
+  btn.className = 'practice-mode-btn' + (isPracticeMode ? ' is-active' : '');
+  btn.innerHTML = isPracticeMode ? '💻 Practice Mode' : '📖 Read Mode';
+  document.body.appendChild(btn);
+
+  btn.addEventListener('click', () => {
+    const isActive = document.body.classList.toggle('practice-mode-active');
+    localStorage.setItem('manodemy_practice_mode', isActive);
+    
+    if (isActive) {
+      btn.classList.add('is-active');
+      btn.innerHTML = '💻 Practice Mode';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      btn.classList.remove('is-active');
+      btn.innerHTML = '📖 Read Mode';
+    }
+  });
+});
