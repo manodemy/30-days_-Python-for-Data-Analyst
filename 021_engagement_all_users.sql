@@ -81,21 +81,25 @@ BEGIN
     GROUP BY nv.uid, nv.page_key
   ),
 
-  -- 3. Time spent: MAX(active_seconds, duration_seconds) per session, then SUM
+  -- 3. Time spent: take MAX per session (heartbeats are cumulative), then SUM across sessions
   time_agg AS (
     SELECT
       ps.uid,
       ps.page_key,
-      SUM(ps.best_secs) AS time_spent_seconds
+      SUM(ps.max_secs) AS time_spent_seconds
     FROM (
       SELECT
         nl.uid,
         nl.page_key,
-        COALESCE(nl.metadata->>'session_id', gen_random_uuid()::text) AS sess_id,
-        GREATEST(
-          COALESCE(NULLIF(nl.metadata->>'active_seconds',   '')::NUMERIC, 0),
-          COALESCE(NULLIF(nl.metadata->>'duration_seconds', '')::NUMERIC, 0)
-        ) AS best_secs
+        COALESCE(nl.metadata->>'session_id', nl.uid::text || '_' || nl.page_key) AS sess_id,
+        -- MAX per session because heartbeats report cumulative active_seconds
+        -- (30, 60, 90... not incremental). We want only the highest value per session.
+        MAX(
+          GREATEST(
+            COALESCE(NULLIF(nl.metadata->>'active_seconds',   '')::NUMERIC, 0),
+            COALESCE(NULLIF(nl.metadata->>'duration_seconds', '')::NUMERIC, 0)
+          )
+        ) AS max_secs
       FROM norm_logs nl
       WHERE nl.event_type IN ('session_heartbeat', 'session_end', 'notebook_state_sync')
         AND nl.page_key IS NOT NULL AND nl.page_key <> ''
@@ -103,6 +107,7 @@ BEGIN
           nl.metadata->>'active_seconds'   IS NOT NULL OR
           nl.metadata->>'duration_seconds' IS NOT NULL
         )
+      GROUP BY nl.uid, nl.page_key, COALESCE(nl.metadata->>'session_id', nl.uid::text || '_' || nl.page_key)
     ) ps
     GROUP BY ps.uid, ps.page_key
   ),
