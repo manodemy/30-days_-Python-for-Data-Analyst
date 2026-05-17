@@ -2174,34 +2174,34 @@
             <button class="btn-ghost" id="engNextBtn">Next →</button>
           </div>
 
-          <!-- Scrollable Table -->
-          <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--rim);background:var(--surface);">
+          <!-- Scrollable Table (both X and Y) -->
+          <div style="overflow:auto;max-height:70vh;border-radius:var(--radius-lg);border:1px solid var(--rim);background:var(--surface);">
             <table id="engagementTable" style="border-collapse:collapse;min-width:max-content;width:100%;">
-              <thead id="engagementTableHead">
+              <thead id="engagementTableHead" style="position:sticky;top:0;z-index:4;background:var(--elevated);">
                 <tr>
-                  <!-- Only Name and Email are frozen -->
-                  <th style="min-width:36px;">#</th>
-                  <th style="position:sticky;left:0;z-index:3;background:var(--elevated);min-width:140px;">NAME</th>
-                  <th style="position:sticky;left:140px;z-index:3;background:var(--elevated);min-width:190px;">EMAIL ID</th>
-                  <th style="min-width:90px;">COUNTRY</th>
-                  <th style="min-width:70px;">PLAN</th>
-                  <th style="min-width:110px;">SIGNED UP</th>
-                  <th style="min-width:110px;">LAST SEEN</th>
+                  <!-- Only Name and Email are frozen horizontally -->
+                  <th style="position:sticky;top:0;z-index:4;background:var(--elevated);min-width:36px;">#</th>
+                  <th style="position:sticky;left:0;top:0;z-index:5;background:var(--elevated);min-width:140px;">NAME</th>
+                  <th style="position:sticky;left:140px;top:0;z-index:5;background:var(--elevated);min-width:190px;">EMAIL ID</th>
+                  <th style="position:sticky;top:0;z-index:4;background:var(--elevated);min-width:90px;">COUNTRY</th>
+                  <th style="position:sticky;top:0;z-index:4;background:var(--elevated);min-width:70px;">PLAN</th>
+                  <th style="position:sticky;top:0;z-index:4;background:var(--elevated);min-width:110px;">SIGNED UP</th>
+                  <th style="position:sticky;top:0;z-index:4;background:var(--elevated);min-width:110px;">LAST SEEN</th>
                   <!-- Home page group -->
-                  <th colspan="2" style="text-align:center;border-left:2px solid var(--rim-strong);background:rgba(96,165,250,0.06);color:var(--sapphire);min-width:160px;">HOME PAGE</th>
+                  <th colspan="2" style="position:sticky;top:0;z-index:4;text-align:center;border-left:2px solid var(--rim-strong);background:rgba(96,165,250,0.06);color:var(--sapphire);min-width:160px;">HOME PAGE</th>
                   <!-- Day columns injected by JS -->
                 </tr>
                 <tr id="engagementSubHead">
-                  <th></th>
-                  <th style="position:sticky;left:0;z-index:3;background:var(--elevated);"></th>
-                  <th style="position:sticky;left:140px;z-index:3;background:var(--elevated);"></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
+                  <th style="position:sticky;top:auto;z-index:4;background:var(--elevated);"></th>
+                  <th style="position:sticky;left:0;z-index:5;background:var(--elevated);"></th>
+                  <th style="position:sticky;left:140px;z-index:5;background:var(--elevated);"></th>
+                  <th style="position:sticky;top:auto;z-index:4;background:var(--elevated);"></th>
+                  <th style="position:sticky;top:auto;z-index:4;background:var(--elevated);"></th>
+                  <th style="position:sticky;top:auto;z-index:4;background:var(--elevated);"></th>
+                  <th style="position:sticky;top:auto;z-index:4;background:var(--elevated);"></th>
                   <!-- Home sub-headers -->
-                  <th style="text-align:center;border-left:2px solid var(--rim-strong);background:rgba(96,165,250,0.04);font-size:0.6rem;color:var(--sapphire);opacity:0.8;">VISITS</th>
-                  <th style="text-align:center;background:rgba(96,165,250,0.04);font-size:0.6rem;color:var(--sapphire);opacity:0.8;">TIME SPENT</th>
+                  <th style="position:sticky;top:auto;z-index:4;text-align:center;border-left:2px solid var(--rim-strong);background:rgba(96,165,250,0.04);font-size:0.6rem;color:var(--sapphire);opacity:0.8;">VISITS</th>
+                  <th style="position:sticky;top:auto;z-index:4;text-align:center;background:rgba(96,165,250,0.04);font-size:0.6rem;color:var(--sapphire);opacity:0.8;">TIME SPENT</th>
                   <!-- Day sub-headers injected by JS -->
                 </tr>
               </thead>
@@ -3035,10 +3035,10 @@
         const label = `DAY ${String(idx+1).padStart(2,'0')}`;
         const hue = idx < 10 ? 'rgba(167,139,250,0.06)' : (idx < 20 ? 'rgba(251,191,36,0.06)' : 'rgba(45,212,191,0.06)');
         const col = idx < 10 ? 'var(--sapphire)' : (idx < 20 ? 'var(--amber)' : 'var(--emerald)');
-        topExtra += `<th colspan="3" style="text-align:center;border-left:2px solid var(--rim-strong);background:${hue};color:${col};min-width:220px;">${label}</th>`;
-        subExtra += `<th style="text-align:center;border-left:2px solid var(--rim-strong);background:${hue};font-size:0.6rem;color:${col};opacity:0.8;">VISITS</th>`;
-        subExtra += `<th style="text-align:center;background:${hue};font-size:0.6rem;color:${col};opacity:0.8;">TIME SPENT</th>`;
-        subExtra += `<th style="text-align:center;background:${hue};font-size:0.6rem;color:${col};opacity:0.8;">Q.SOLVED</th>`;
+        topExtra += `<th colspan="3" style="position:sticky;top:0;z-index:4;text-align:center;border-left:2px solid var(--rim-strong);background:${hue};color:${col};min-width:220px;">${label}</th>`;
+        subExtra += `<th style="position:sticky;top:auto;z-index:4;text-align:center;border-left:2px solid var(--rim-strong);background:${hue};font-size:0.6rem;color:${col};opacity:0.8;">VISITS</th>`;
+        subExtra += `<th style="position:sticky;top:auto;z-index:4;text-align:center;background:${hue};font-size:0.6rem;color:${col};opacity:0.8;">TIME SPENT</th>`;
+        subExtra += `<th style="position:sticky;top:auto;z-index:4;text-align:center;background:${hue};font-size:0.6rem;color:${col};opacity:0.8;">Q.SOLVED</th>`;
       });
 
       // Append to existing static header rows
