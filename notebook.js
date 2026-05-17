@@ -792,23 +792,87 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('practice-mode-active');
   }
 
+  function updateTOC(isActive) {
+    const tocList = document.querySelector('.toc-list');
+    if (!tocList) return;
+    
+    if (!window.originalTOCHTML) {
+        window.originalTOCHTML = tocList.innerHTML;
+    }
+    
+    if (!isActive) {
+        tocList.innerHTML = window.originalTOCHTML;
+        return;
+    }
+    
+    tocList.innerHTML = '';
+    const sections = document.querySelectorAll('.nb-section');
+    sections.forEach((sec, sIdx) => {
+        const h2 = sec.querySelector('.nb-rich > h2, h2');
+        if (h2 && !sec.id.includes('checks')) {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = '#' + sec.id;
+            a.className = 'toc-link';
+            a.textContent = h2.textContent.replace(/🎯|💻|📊|✅|1\.|2\.|3\.|4\.|5\.|6\.|7\.|8\.|9\.|10\./g, '').trim().split(':')[0];
+            li.appendChild(a);
+            tocList.appendChild(li);
+        }
+        
+        const questions = sec.querySelectorAll('.question');
+        questions.forEach((q, qIdx) => {
+            if (!q.id) {
+                q.id = (sec.id || 'sec-' + sIdx) + '-q' + qIdx;
+            }
+            
+            let fullText = q.textContent.trim();
+            if (fullText.length > 35) fullText = fullText.substring(0, 35) + '...';
+            
+            const li = document.createElement('li');
+            li.style.paddingLeft = '12px';
+            li.style.fontSize = '0.9em';
+            li.style.opacity = '0.85';
+            
+            const a = document.createElement('a');
+            a.href = '#' + q.id;
+            a.className = 'toc-link';
+            a.textContent = fullText;
+            li.appendChild(a);
+            tocList.appendChild(li);
+        });
+    });
+  }
+
+  updateTOC(isPracticeMode);
+
   // Inject Button
   const btn = document.createElement('button');
   btn.className = 'practice-mode-btn' + (isPracticeMode ? ' is-active' : '');
-  btn.innerHTML = isPracticeMode ? '💻 Practice Mode' : '📖 Read Mode';
-  document.body.appendChild(btn);
+  btn.innerHTML = isPracticeMode ? '💻 Practice' : '📖 Read';
+  
+  const sidebarHeader = document.querySelector('.sidebar-header');
+  if (sidebarHeader) {
+      sidebarHeader.style.display = 'flex';
+      sidebarHeader.style.justifyContent = 'space-between';
+      sidebarHeader.style.alignItems = 'center';
+      sidebarHeader.appendChild(btn);
+  } else {
+      document.body.appendChild(btn);
+  }
 
   btn.addEventListener('click', () => {
     const isActive = document.body.classList.toggle('practice-mode-active');
     localStorage.setItem('manodemy_practice_mode', isActive);
     
+    updateTOC(isActive);
+    
     if (isActive) {
       btn.classList.add('is-active');
-      btn.innerHTML = '💻 Practice Mode';
+      btn.innerHTML = '💻 Practice';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       btn.classList.remove('is-active');
-      btn.innerHTML = '📖 Read Mode';
+      btn.innerHTML = '📖 Read';
     }
   });
 });
