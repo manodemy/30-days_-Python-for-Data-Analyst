@@ -617,3 +617,71 @@ window.showUpgradeToast = (dayTitle) => {
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => toast.classList.remove('is-visible'), TOAST_DURATION_MS);
 };
+
+// ── ENGAGEMENT TIMER (UI) ──
+document.addEventListener('DOMContentLoaded', () => {
+  const displayEl = document.getElementById('pageTimerDisplay');
+  const ringEl = document.querySelector('.timer-pulse-ring');
+  if (!displayEl) return;
+  
+  const dayId = getDayId();
+  if (!dayId) return;
+
+  const storageKey = `manodemy_${dayId}_time_spent`;
+  let activeSeconds = parseInt(safeStorageGet(storageKey) || '0', 10);
+  
+  let isTimerRunning = false;
+  let timerInterval = null;
+
+  const formatTime = (secs) => {
+    const m = Math.floor(secs / 60).toString().padStart(2, '0');
+    const s = (secs % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
+  const updateDisplay = () => {
+    displayEl.textContent = formatTime(activeSeconds);
+  };
+
+  const startTimer = () => {
+    if (isTimerRunning) return;
+    isTimerRunning = true;
+    if (ringEl) ringEl.classList.add('active');
+    timerInterval = setInterval(() => {
+      activeSeconds++;
+      updateDisplay();
+      // Save to storage every 5 seconds to reduce I/O overhead
+      if (activeSeconds % 5 === 0) {
+        safeStorageSet(storageKey, activeSeconds.toString());
+      }
+    }, 1000);
+  };
+
+  const pauseTimer = () => {
+    if (!isTimerRunning) return;
+    isTimerRunning = false;
+    if (ringEl) ringEl.classList.remove('active');
+    clearInterval(timerInterval);
+    safeStorageSet(storageKey, activeSeconds.toString());
+  };
+
+  // Initial render
+  updateDisplay();
+
+  // Start timer if window is visible
+  if (document.visibilityState === 'visible') {
+    startTimer();
+  }
+
+  // Handle visibility changes
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      startTimer();
+    } else {
+      pauseTimer();
+    }
+  });
+  
+  window.addEventListener('beforeunload', pauseTimer);
+});
+
