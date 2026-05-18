@@ -831,7 +831,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             let fullText = q.textContent.trim();
-            if (fullText.length > 35) fullText = fullText.substring(0, 35) + '...';
+            let match = fullText.match(/^(Q\d+|Task \d+)/i);
+            if (match) {
+                fullText = match[0];
+            } else if (fullText.length > 35) {
+                fullText = fullText.substring(0, 35) + '...';
+            }
             
             const li = document.createElement('li');
             li.style.paddingLeft = '12px';
