@@ -655,6 +655,8 @@ body.practice-mode-active .layout .mano-hint-body p {
 }
 
 /* Protect code cells directly following questions */
-body.practice-mode-active .layout .question + .code-cell {
+body.practice-mode-active .layout .nb-section[id^="sec-"] .question + .code-cell,
+body.practice-mode-active .layout .nb-section#practice .question + .code-cell,
+body.practice-mode-active .layout .nb-section#interview .question + .code-cell {
   display: block !important;
 }
