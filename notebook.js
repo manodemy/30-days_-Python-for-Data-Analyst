@@ -928,7 +928,6 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem(storageKey, 'true');
       readBtn.classList.remove('active');
       practiceBtn.classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       document.body.classList.remove('practice-mode-active');
       localStorage.setItem(storageKey, 'false');
