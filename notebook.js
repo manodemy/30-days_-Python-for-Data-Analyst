@@ -333,8 +333,21 @@ function updateScore() {
     }
     if (isSolved) {
       q.classList.add('is-solved-box');
+      if (q.id) {
+          const tocLink = document.querySelector(`.toc-list a[href="#${q.id}"]`);
+          if (tocLink && !tocLink.querySelector('.toc-tick')) {
+              tocLink.innerHTML += '<span class="toc-tick" style="float:right; color:var(--emerald, #10B981); font-weight:900; filter: drop-shadow(0 0 4px rgba(16,185,129,0.6));">✓</span>';
+          }
+      }
     } else {
       q.classList.remove('is-solved-box');
+      if (q.id) {
+          const tocLink = document.querySelector(`.toc-list a[href="#${q.id}"]`);
+          if (tocLink) {
+              const tick = tocLink.querySelector('.toc-tick');
+              if (tick) tick.remove();
+          }
+      }
     }
   });
 }
@@ -828,11 +841,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.originalTOCHTML = tocList.innerHTML;
     }
     
-    if (!isActive) {
-        tocList.innerHTML = window.originalTOCHTML;
-        return;
-    }
-    
     tocList.innerHTML = '';
     const sections = document.querySelectorAll('.nb-section');
     sections.forEach((sec, sIdx) => {
@@ -869,7 +877,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const a = document.createElement('a');
             a.href = '#' + q.id;
             a.className = 'toc-link';
-            a.textContent = fullText;
+            if (q.classList.contains('is-solved-box')) {
+                a.innerHTML = fullText + '<span class="toc-tick" style="float:right; color:var(--emerald, #10B981); font-weight:900; filter: drop-shadow(0 0 4px rgba(16,185,129,0.6));">✓</span>';
+            } else {
+                a.textContent = fullText;
+            }
             li.appendChild(a);
             tocList.appendChild(li);
         });
