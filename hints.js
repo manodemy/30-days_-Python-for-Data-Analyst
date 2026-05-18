@@ -177,10 +177,7 @@
     
     var level = Math.min(Math.max(hintLevels[cellId], 1), maxLevel);
 
-    // Voice narration for hint clicks
-    if (typeof ManoVoice !== 'undefined' && ManoVoice.onHintClick) {
-      ManoVoice.onHintClick(cellId, level);
-    }
+    // Voice narration removed
 
     // Determine what text to show
     var hintText = "";

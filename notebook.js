@@ -518,7 +518,7 @@ async function runCell(cellId) {
           ManoVoice.onWrong(cellId);
         }
       }
-      ManoVoice.checkMilestone(successfulCells.size, totalCells);
+      // ManoVoice.checkMilestone removed
     }
   } catch (err) {
     try { pyodide.runPython('sys.stdout=sys.__stdout__;sys.stderr=sys.__stderr__'); } catch(e) {}

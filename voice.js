@@ -1458,27 +1458,18 @@ fallback: [
     injectUI();
 
     // Fix Browser Autoplay Policies (Audio requires user interaction)
-    const triggerWelcome = () => {
-      document.removeEventListener('click', triggerWelcome);
-      document.removeEventListener('keydown', triggerWelcome);
+    const triggerAudioUnlock = () => {
+      document.removeEventListener('click', triggerAudioUnlock);
+      document.removeEventListener('keydown', triggerAudioUnlock);
       if (window.speechSynthesis) window.speechSynthesis.resume();
-      sessionWelcome();
     };
 
-    if (navigator.userActivation && navigator.userActivation.hasBeenActive) {
-      sessionWelcome();
-    } else {
-      document.addEventListener('click', triggerWelcome, { once: true });
-      document.addEventListener('keydown', triggerWelcome, { once: true });
+    if (!(navigator.userActivation && navigator.userActivation.hasBeenActive)) {
+      document.addEventListener('click', triggerAudioUnlock, { once: true });
+      document.addEventListener('keydown', triggerAudioUnlock, { once: true });
     }
-
-    // Session farewell
-    window.addEventListener('beforeunload', () => {
-      if (!muted && sessionSolves > 0) {
-        const R = VOICE_DATA;
-        say(smartPick('bye', R.farewell), RATE_NORMAL);
-      }
-    });
+    
+    // Welcome and farewell narrations have been removed as per user request.
   }
 
   if (document.readyState === 'loading') {
