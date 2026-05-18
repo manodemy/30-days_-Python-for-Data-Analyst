@@ -314,6 +314,29 @@ function updateScore() {
   if (dayId) {
     safeStorageSet(`manodemy_${dayId}_solved_count`, successfulCells.size.toString());
   }
+
+  // Sync Green Tick UI for Question Boxes
+  document.querySelectorAll('.question, .task, .interview').forEach(q => {
+    let next = q.nextElementSibling;
+    let isSolved = false;
+    while (next) {
+      if (next.classList.contains('code-cell')) {
+        if (next.classList.contains('is-solved')) {
+          isSolved = true;
+        }
+        break;
+      }
+      if (next.classList.contains('question') || next.classList.contains('task') || next.classList.contains('interview')) {
+        break;
+      }
+      next = next.nextElementSibling;
+    }
+    if (isSolved) {
+      q.classList.add('is-solved-box');
+    } else {
+      q.classList.remove('is-solved-box');
+    }
+  });
 }
 // Init display
 // updateScore() is now called inside DOMContentLoaded state restoration
