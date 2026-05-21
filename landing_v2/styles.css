@@ -3102,17 +3102,6 @@ button {
 .reviews-collapse-inner {
   min-height: 0;
   width: 100%;
-  opacity: 0;
-  transform: translateY(-20px);
-  filter: blur(4px);
-  transition: opacity 300ms ease, transform 350ms cubic-bezier(0.16, 1, 0.3, 1), filter 300ms ease;
-}
-
-.reviews-collapse-wrapper.expanded .reviews-collapse-inner {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-  transition: opacity 550ms ease 120ms, transform 650ms cubic-bezier(0.16, 1, 0.3, 1) 50ms, filter 450ms ease 120ms;
 }
 
 /* Neat Toggle Expand Button */
