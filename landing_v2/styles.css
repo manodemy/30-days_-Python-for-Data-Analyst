@@ -3090,7 +3090,7 @@ button {
 .reviews-collapse-wrapper {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: grid-template-rows 600ms cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
   width: 100%;
 }
@@ -3102,6 +3102,17 @@ button {
 .reviews-collapse-inner {
   min-height: 0;
   width: 100%;
+  opacity: 0;
+  transform: translateY(-20px);
+  filter: blur(4px);
+  transition: opacity 300ms ease, transform 350ms cubic-bezier(0.16, 1, 0.3, 1), filter 300ms ease;
+}
+
+.reviews-collapse-wrapper.expanded .reviews-collapse-inner {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  transition: opacity 550ms ease 120ms, transform 650ms cubic-bezier(0.16, 1, 0.3, 1) 50ms, filter 450ms ease 120ms;
 }
 
 /* Neat Toggle Expand Button */
@@ -3121,7 +3132,7 @@ button {
   justify-content: center;
   gap: 6px;
   cursor: pointer;
-  transition: all 300ms var(--ease);
+  transition: transform 300ms var(--ease), background-color 300ms var(--ease), border-color 300ms var(--ease), box-shadow 300ms var(--ease), color 300ms var(--ease);
 }
 
 .btn-toggle-reviews:hover {
@@ -3129,13 +3140,17 @@ button {
   border-color: rgba(0, 230, 246, 0.25);
   color: var(--cyan);
   box-shadow: 0 4px 12px rgba(0, 230, 246, 0.05);
-  transform: translateY(-1px);
+  transform: translateY(-1px) scale(1.03);
+}
+
+.btn-toggle-reviews:active {
+  transform: translateY(0) scale(0.97);
 }
 
 .btn-toggle-reviews svg {
   width: 12px;
   height: 12px;
-  transition: transform 300ms var(--ease);
+  transition: transform 550ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .btn-toggle-reviews.active {
