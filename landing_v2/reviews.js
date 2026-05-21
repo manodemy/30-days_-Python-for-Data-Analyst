@@ -1019,6 +1019,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })();
 
+  // View/Toggle Reviews Expand Controller
+  const toggleBtn = document.getElementById('btnToggleReviews');
+  const collapseArea = document.getElementById('reviewsCollapseArea');
+  
+  if (toggleBtn && collapseArea) {
+    toggleBtn.addEventListener('click', () => {
+      const isExpanded = collapseArea.classList.contains('expanded');
+      
+      if (isExpanded) {
+        collapseArea.classList.remove('expanded');
+        toggleBtn.classList.remove('active');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.querySelector('span').textContent = 'View Reviews';
+        
+        // Smoothly scroll user to the reviews dashboard top when collapsing
+        const dashboard = document.querySelector('.reviews-dashboard');
+        if (dashboard) {
+          dashboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        collapseArea.classList.add('expanded');
+        toggleBtn.classList.add('active');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        toggleBtn.querySelector('span').textContent = 'Hide Reviews';
+        
+        // Smoothly scroll down slightly so reviews content comes into viewport focus
+        setTimeout(() => {
+          collapseArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 150);
+      }
+    });
+  }
+
   // Initial Load Trigger
   refreshAllData();
 });

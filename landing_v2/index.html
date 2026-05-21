@@ -757,6 +757,10 @@
               <!-- Rendered Dynamically -->
             </div>
             <div class="rev-count-sub">Based on 2,400+ reviews</div>
+            <button class="btn-toggle-reviews" id="btnToggleReviews" aria-expanded="false" aria-controls="reviewsCollapseArea">
+              <span>View Reviews</span>
+              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path></svg>
+            </button>
           </div>
           
           <!-- Rating Distribution Column -->
@@ -807,49 +811,56 @@
           </div>
         </div>
 
-        <!-- Filter & Search Toolbar -->
-        <div class="reviews-toolbar reveal">
-          <div class="reviews-search-group">
-            <div class="rev-search-wrapper">
-              <input type="text" class="rev-search-input" placeholder="Search reviews by keyword...">
-              <svg class="rev-search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            </div>
+        <!-- Collapsible Reviews Grid & Controls Container -->
+        <div class="reviews-collapse-wrapper" id="reviewsCollapseArea">
+          <div class="reviews-collapse-inner">
             
-            <select class="rev-select-dropdown">
-              <option value="all">All Ratings</option>
-              <option value="5">5 Stars</option>
-              <option value="4">4 Stars</option>
-              <option value="3">3 Stars</option>
-              <option value="2">2 Stars</option>
-              <option value="1">1 Star</option>
-            </select>
+            <!-- Filter & Search Toolbar -->
+            <div class="reviews-toolbar">
+              <div class="reviews-search-group">
+                <div class="rev-search-wrapper">
+                  <input type="text" class="rev-search-input" placeholder="Search reviews by keyword...">
+                  <svg class="rev-search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                
+                <select class="rev-select-dropdown">
+                  <option value="all">All Ratings</option>
+                  <option value="5">5 Stars</option>
+                  <option value="4">4 Stars</option>
+                  <option value="3">3 Stars</option>
+                  <option value="2">2 Stars</option>
+                  <option value="1">1 Star</option>
+                </select>
 
-            <select class="rev-select-dropdown">
-              <option value="most_recent">Most Recent</option>
-              <option value="highest">Highest Rating</option>
-              <option value="helpful">Most Helpful</option>
-            </select>
+                <select class="rev-select-dropdown">
+                  <option value="most_recent">Most Recent</option>
+                  <option value="highest">Highest Rating</option>
+                  <option value="helpful">Most Helpful</option>
+                </select>
 
-            <label class="rev-filter-checkbox" for="filter-verified">
-              <input type="checkbox" id="filter-verified">
-              <span>Verified Only</span>
-            </label>
+                <label class="rev-filter-checkbox" for="filter-verified">
+                  <input type="checkbox" id="filter-verified">
+                  <span>Verified Only</span>
+                </label>
 
-            <label class="rev-filter-checkbox" for="filter-media">
-              <input type="checkbox" id="filter-media">
-              <span>With Media</span>
-            </label>
+                <label class="rev-filter-checkbox" for="filter-media">
+                  <input type="checkbox" id="filter-media">
+                  <span>With Media</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Dynamic Reviews Cards Roster -->
+            <div class="reviews-grid">
+              <!-- Populated Dynamically via reviews.js -->
+            </div>
+
+            <!-- Pagination Controls -->
+            <div class="reviews-pagination">
+              <!-- Populated Dynamically via reviews.js -->
+            </div>
+
           </div>
-        </div>
-
-        <!-- Dynamic Reviews Cards Roster -->
-        <div class="reviews-grid">
-          <!-- Populated Dynamically via reviews.js -->
-        </div>
-
-        <!-- Pagination Controls -->
-        <div class="reviews-pagination">
-          <!-- Populated Dynamically via reviews.js -->
         </div>
       </div>
     </section>
