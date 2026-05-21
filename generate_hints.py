@@ -5,7 +5,7 @@ thinking guidance WITHOUT giving the answer.
 """
 import re, os, html as htmlmod
 
-DAYS_DIR = r'd:\Learn Python in 60days\manodemy_web'
+DAYS_DIR = r'd:\Learn Python in 60days\Manodemy_Web_V2'
 
 def extract(q):
     t = htmlmod.unescape(q)

@@ -38,7 +38,7 @@ def inject_tracking(file_path):
         print(f"FAILED   {os.path.basename(file_path)} (</body> not found)")
 
 if __name__ == "__main__":
-    base_dir = r"d:\Learn Python in 60days\manodemy_web"
+    base_dir = r"d:\Learn Python in 60days\Manodemy_Web_V2"
 
     files_to_inject = [
         os.path.join(base_dir, "index.html"),

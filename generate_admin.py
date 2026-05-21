@@ -1175,5 +1175,5 @@ html_content = """<!DOCTYPE html>
 </body>
 </html>"""
 
-with open(r"d:\Learn Python in 60days\manodemy_web\admin.html", "w", encoding="utf-8") as f:
+with open(r"d:\Learn Python in 60days\Manodemy_Web_V2\admin.html", "w", encoding="utf-8") as f:
     f.write(html_content)
