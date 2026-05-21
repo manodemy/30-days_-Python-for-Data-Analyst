@@ -470,6 +470,9 @@ button {
   font-size: 0.68em;
   /* Reduced exactly to half/proportional size next to massive PYTHON */
   color: var(--gold);
+  -webkit-text-fill-color: var(--gold);
+  -webkit-background-clip: initial;
+  background-clip: initial;
   text-shadow: 0 0 10px rgba(255, 176, 32, 0.45);
   display: inline-block;
   overflow: hidden;
