@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 21: NumPy Fundamentals — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -247,27 +238,27 @@ print(f&quot;Data Type: {matrix.dtype}&quot;) # int64 or int32</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>NumPy Basics</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by importing the numpy library and assigning it a shorter alias, np, for convenience. This will be your first step." data-hint-2="To create an array from the given list, you&#x27;ll need to use the np.array() function. Remember to pass the list as an argument." data-hint-3="The np.array() function will return a numpy array object, which you can then print to see the result." data-hint-4="Don&#x27;t forget to print the array to see the actual output. You might be tempted to just return the array, but printing is crucial here." data-hint-5="Your final code should look something like this: import numpy as np; arr = np.array([10, 20, 30]); print(arr)."><p><strong>Q1.</strong> Import <code>numpy as np</code>. Create an array from <code>[10, 20, 30]</code>. Print it.</p></div>
+<div class="question"><p><strong>Q1.</strong> Import <code>numpy as np</code>. Create an array from <code>[10, 20, 30]</code>. Print it.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To create a 2D array representing a 3x3 grid of numbers, you&#x27;ll need to use the np.array() function again, but this time with a 2D list." data-hint-2="A 2D list in Python is created by nesting lists within each other. For example, [[1, 2, 3], [4, 5, 6], [7, 8, 9]]." data-hint-3="Once you have your 2D list, pass it to the np.array() function to create a 2D numpy array." data-hint-4="When printing the .shape attribute, remember that it returns a tuple representing the dimensions of the array." data-hint-5="Your final code should look something like this: import numpy as np; arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]); print(arr.shape)."><p><strong>Q2.</strong> Create a 2D array (matrix) representing a 3x3 grid of numbers. Print its <code>.shape</code>.</p></div>
+<div class="question"><p><strong>Q2.</strong> Create a 2D array (matrix) representing a 3x3 grid of numbers. Print its <code>.shape</code>.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="When creating an array from a list containing a mix of data types, like numbers and strings, numpy will automatically choose the most general data type." data-hint-2="In this case, since the list contains a string, numpy will choose the string data type, which is not what you want." data-hint-3="To avoid this, you can explicitly specify the data type when creating the array using the dtype argument." data-hint-4="Remember that specifying the data type is optional, but it&#x27;s a good practice to do so when working with mixed data types." data-hint-5="Your final code should look something like this: import numpy as np; arr = np.array([1, &#x27;two&#x27;, 3], dtype=int); print(arr.dtype)."><p><strong>Q3.</strong> Try creating an array from <code>[1, "two", 3]</code>. Print its <code>.dtype</code>. Notice how the numbers became strings (<code><U...</code>).</p></div>
+<div class="question"><p><strong>Q3.</strong> Try creating an array from <code>[1, "two", 3]</code>. Print its <code>.dtype</code>. Notice how the numbers became strings (<code><U...</code>).</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To get the number of dimensions of the 3x3 array, you&#x27;ll need to use the .ndim attribute of the numpy array object." data-hint-2="This attribute returns an integer representing the number of dimensions in the array." data-hint-3="Remember that the .ndim attribute is a property of the numpy array object, so you&#x27;ll need to access it using the dot notation." data-hint-4="Don&#x27;t forget to print the result to see the actual output." data-hint-5="Your final code should look something like this: import numpy as np; arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]); print(arr.ndim)."><p><strong>Q4.</strong> Print the number of dimensions <code>.ndim</code> of the 3x3 array.</p></div>
+<div class="question"><p><strong>Q4.</strong> Print the number of dimensions <code>.ndim</code> of the 3x3 array.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To get the total number of elements in the array, you&#x27;ll need to use the .size attribute of the numpy array object." data-hint-2="This attribute returns an integer representing the total number of elements in the array." data-hint-3="Remember that the .size attribute is a property of the numpy array object, so you&#x27;ll need to access it using the dot notation." data-hint-4="Don&#x27;t forget to print the result to see the actual output." data-hint-5="Your final code should look something like this: import numpy as np; arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]); print(arr.size)."><p><strong>Q5.</strong> Print the total number of elements in the array using <code>.size</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Print the total number of elements in the array using <code>.size</code>.</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -320,27 +311,27 @@ print(&quot;\nRandoms:\n&quot;, rands)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Generators</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by importing the numpy library, which provides the array data type and various functions for working with arrays." data-hint-2="Use numpy&#x27;s zeros function to create an array of 10 zeros, like this: np.zeros(10)." data-hint-3="The zeros function takes one argument, which is the size of the array. In this case, you want a 1D array with 10 elements." data-hint-4="Remember to print the array after creating it, so you can see the result." data-hint-5="Your final code should look something like this: import numpy as np; print(np.zeros(10))."><p><strong>Q1.</strong> Create an array of 10 zeros. Print it.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create an array of 10 zeros. Print it.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To create a 3x3 matrix of ones, you&#x27;ll need to use numpy&#x27;s ones function, which creates an array filled with ones." data-hint-2="The ones function takes one argument, which is the shape of the array. In this case, you want a 2D array with 3 rows and 3 columns, so you&#x27;ll pass (3, 3) as the argument." data-hint-3="The np.ones function will create a 3x3 matrix filled with ones, which you can then print to see the result." data-hint-4="Be careful not to confuse the shape argument with the size argument, which would give you a 1D array instead of a 2D matrix." data-hint-5="Your final code should look something like this: import numpy as np; print(np.ones((3, 3)))."><p><strong>Q2.</strong> Create a 3x3 matrix of ones using <code>np.ones((3, 3))</code>.</p></div>
+<div class="question"><p><strong>Q2.</strong> Create a 3x3 matrix of ones using <code>np.ones((3, 3))</code>.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To create an array of numbers from 10 to 50, stepping by 5, you&#x27;ll need to use numpy&#x27;s arange function." data-hint-2="The arange function takes three arguments: the start value, the stop value, and the step size. In this case, you want the start value to be 10, the stop value to be 50, and the step size to be 5." data-hint-3="The np.arange function will create an array of numbers from 10 to 50, stepping by 5, which you can then print to see the result." data-hint-4="Be careful not to confuse the start and stop values, or the step size, which would give you an incorrect array." data-hint-5="Your final code should look something like this: import numpy as np; print(np.arange(10, 50, 5))."><p><strong>Q3.</strong> Use <code>np.arange()</code> to create an array of numbers from 10 to 50, stepping by 5.</p></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>np.arange()</code> to create an array of numbers from 10 to 50, stepping by 5.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To generate exactly 11 evenly spaced points between 0 and 1, you&#x27;ll need to use numpy&#x27;s linspace function." data-hint-2="The linspace function takes two arguments: the start value and the stop value. In this case, you want the start value to be 0 and the stop value to be 1." data-hint-3="You&#x27;ll also need to specify the number of points you want to generate, which is 11 in this case." data-hint-4="The np.linspace function will create an array of exactly 11 evenly spaced points between 0 and 1, which you can then print to see the result." data-hint-5="Your final code should look something like this: import numpy as np; print(np.linspace(0, 1, 11))."><p><strong>Q4.</strong> Use <code>np.linspace()</code> to generate exactly 11 evenly spaced points between 0 and 1.</p></div>
+<div class="question"><p><strong>Q4.</strong> Use <code>np.linspace()</code> to generate exactly 11 evenly spaced points between 0 and 1.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To generate a 2x2 matrix of random integers between 1 and 100, you&#x27;ll need to use numpy&#x27;s random.randint function." data-hint-2="The randint function takes three arguments: the low value, the high value, and the size of the array. In this case, you want the low value to be 1, the high value to be 100, and the size to be (2, 2)." data-hint-3="The np.random.randint function will create a 2x2 matrix of random integers between 1 and 100, which you can then print to see the result." data-hint-4="Be careful not to confuse the low and high values, or the size argument, which would give you an incorrect array." data-hint-5="Your final code should look something like this: import numpy as np; print(np.random.randint(1, 100, size=(2, 2)))."><p><strong>Q5.</strong> Generate a 2x2 matrix of random integers between 1 and 100 using <code>np.random.randint(1, 100, size=(2,2))</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Generate a 2x2 matrix of random integers between 1 and 100 using <code>np.random.randint(1, 100, size=(2,2))</code>.</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -401,27 +392,27 @@ print(f&quot;\nNumPy is {list_time / arr_time:.1f}x faster!&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Vectorization</code></b>
 </h3></div>
-<div class="question" data-hint-1="To start, let&#x27;s create the numpy array arr with the given numbers 10, 20, and 30. You can use np.array() function for this." data-hint-2="Next, you&#x27;ll need to divide every element in the array by 10. Think about how you can use numpy&#x27;s vectorized operations to achieve this." data-hint-3="The step-by-step logic flow would be to first create the array, then divide each element by 10, and finally print the result." data-hint-4="A common mistake here might be to forget to use numpy&#x27;s vectorized operations, which can lead to incorrect results." data-hint-5="Your final code should look something like this: arr = np.array([10, 20, 30]); arr /= 10; print(arr)."><p><strong>Q1.</strong> Create <code>arr = np.array([10, 20, 30])</code>. Divide every element by 10 and print the result.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create <code>arr = np.array([10, 20, 30])</code>. Divide every element by 10 and print the result.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="First, let&#x27;s create the numpy arrays A and B with the given numbers. You can use np.array() function for this." data-hint-2="Next, you&#x27;ll need to multiply the two arrays together. Think about how you can use numpy&#x27;s element-wise multiplication to achieve this." data-hint-3="The step-by-step logic flow would be to first create the arrays, then multiply them together, and finally print the result." data-hint-4="A common mistake here might be to forget to use numpy&#x27;s element-wise multiplication, which can lead to incorrect results." data-hint-5="Your final code should look something like this: A = np.array([1, 2]); B = np.array([10, 20]); print(np.multiply(A, B))."><p><strong>Q2.</strong> Given <code>A = np.array([1, 2])</code> and <code>B = np.array([10, 20])</code>, multiply them together. Print the result.</p></div>
+<div class="question"><p><strong>Q2.</strong> Given <code>A = np.array([1, 2])</code> and <code>B = np.array([10, 20])</code>, multiply them together. Print the result.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To start, let&#x27;s create an array using numpy&#x27;s arange function with the given range 1 to 6. You can use np.arange() function for this." data-hint-2="Next, you&#x27;ll need to square all elements in the array. Think about how you can use numpy&#x27;s vectorized operations to achieve this." data-hint-3="The step-by-step logic flow would be to first create the array, then square each element, and finally print the result." data-hint-4="A common mistake here might be to forget to use numpy&#x27;s vectorized operations, which can lead to incorrect results." data-hint-5="Your final code should look something like this: arr = np.arange(1, 6); print(arr ** 2)."><p><strong>Q3.</strong> Create an array using <code>arange(1, 6)</code>. Square all elements (<code>**2</code>). Print the result.</p></div>
+<div class="question"><p><strong>Q3.</strong> Create an array using <code>arange(1, 6)</code>. Square all elements (<code>**2</code>). Print the result.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="First, let&#x27;s create an array with some numbers. You can use np.array() function for this." data-hint-2="Next, you&#x27;ll need to perform a boolean operation on the array. Think about how you can use numpy&#x27;s comparison operators to achieve this." data-hint-3="The step-by-step logic flow would be to first create the array, then perform the boolean operation, and finally print the result." data-hint-4="A common mistake here might be to forget to use numpy&#x27;s comparison operators, which can lead to incorrect results." data-hint-5="Your final code should look something like this: arr = np.array([10, 20, 30]); print(arr &gt; 15)."><p><strong>Q4.</strong> Write a boolean operation: <code>arr > 15</code>. Print the result (you get a boolean array!).</p></div>
+<div class="question"><p><strong>Q4.</strong> Write a boolean operation: <code>arr > 15</code>. Print the result (you get a boolean array!).</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To start, let&#x27;s measure the speed of summing a range of numbers using the built-in sum function. You can use time module for this." data-hint-2="Next, you&#x27;ll need to measure the speed of summing the same range of numbers using numpy&#x27;s sum function. Think about how you can use time module to achieve this." data-hint-3="The step-by-step logic flow would be to first measure the time taken by the built-in sum function, then measure the time taken by numpy&#x27;s sum function, and finally compare the results." data-hint-4="A common mistake here might be to forget to use time module to measure the time taken, which can lead to incorrect results." data-hint-5="Your final code should look something like this: import time; start_time = time.time(); sum(range(100000)); end_time = time.time(); print(end_time - start_time); start_time = time.time(); print(np.arange(100000).sum()); end_time = time.time(); print(end_time - start_time)."><p><strong>Q5.</strong> Measure the speed difference between <code>sum(range(100000))</code> and <code>np.arange(100000).sum()</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Measure the speed difference between <code>sum(range(100000))</code> and <code>np.arange(100000).sum()</code>.</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -753,19 +744,9 @@ print(f&quot;\nNumPy is {list_time / arr_time:.1f}x faster!&quot;)</textarea>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

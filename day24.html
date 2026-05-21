@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 24: Pandas Selection — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -248,27 +239,27 @@ print(&quot;\nloc Slicing:\n&quot;, df.loc[&#x27;ID1&#x27;:&#x27;ID3&#x27;, &#x2
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Loc / Iloc</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by understanding the structure of the given DataFrame &#x27;df&#x27;. What are its dimensions, and how many rows and columns does it have?" data-hint-2="To select the first 3 rows and the first 2 columns, you will need to use the .iloc attribute. Remember, .iloc is used for integer-based indexing." data-hint-3="The step-by-step logic flow is to use .iloc with two parameters: the first parameter will be a slice object to select the first 3 rows, and the second parameter will be another slice object to select the first 2 columns." data-hint-4="A common mistake here is forgetting to use the correct indexing. Make sure to use integer-based indexing with .iloc." data-hint-5="Your final code should look like this: df.iloc[0:3, 0:2]. This will select the first 3 rows and the first 2 columns."><p><strong>Q1.</strong> Given <code>df</code>, use <code>.iloc</code> to select the first 3 rows and the first 2 columns.</p></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>df</code>, use <code>.iloc</code> to select the first 3 rows and the first 2 columns.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To select all rows but only the &#x27;Name&#x27; and &#x27;Salary&#x27; columns, you need to understand the column labels in the DataFrame &#x27;df&#x27;. What are the column labels?" data-hint-2="Use the .loc attribute to select the desired columns. Remember, .loc is used for label-based indexing." data-hint-3="The step-by-step logic flow is to use .loc with two parameters: the first parameter will be a slice object to select all rows, and the second parameter will be a list of column labels to select." data-hint-4="A common mistake here is forgetting to use the correct column labels. Make sure to use the correct column labels with .loc." data-hint-5="Your final code should look like this: df.loc[:, [&#x27;Name&#x27;, &#x27;Salary&#x27;]]. This will select all rows and only the &#x27;Name&#x27; and &#x27;Salary&#x27; columns."><p><strong>Q2.</strong> Use <code>.loc</code> to select all rows (<code>:</code>), but only the <code>"Name"</code> and <code>"Salary"</code> columns.</p></div>
+<div class="question"><p><strong>Q2.</strong> Use <code>.loc</code> to select all rows (<code>:</code>), but only the <code>"Name"</code> and <code>"Salary"</code> columns.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Try to understand why the code df.iloc[0, &#x27;Name&#x27;] raises a TypeError. What is the reason behind this error?" data-hint-2="Remember, .iloc requires integer-based indexing, not label-based indexing." data-hint-3="The step-by-step logic flow is to use .iloc with two parameters: the first parameter will be an integer to select the row, and the second parameter will be another integer to select the column." data-hint-4="A common mistake here is trying to use label-based indexing with .iloc. Make sure to use integer-based indexing." data-hint-5="Your final code should look like this: df.iloc[0, 0]. This will select the value in row 0, column 0."><p><strong>Q3.</strong> What happens if you try <code>df.iloc[0, "Name"]</code>? Catch the <code>TypeError</code> (iloc requires integers).</p></div>
+<div class="question"><p><strong>Q3.</strong> What happens if you try <code>df.iloc[0, "Name"]</code>? Catch the <code>TypeError</code> (iloc requires integers).</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To slice rows from &#x27;ID2&#x27; to &#x27;ID4&#x27; inclusive, you need to understand the row labels in the DataFrame &#x27;df&#x27;. What are the row labels?" data-hint-2="Use the .loc attribute to select the desired rows. Remember, .loc is used for label-based indexing." data-hint-3="The step-by-step logic flow is to use .loc with two parameters: the first parameter will be a slice object to select the desired rows, and the second parameter will be a slice object to select all columns." data-hint-4="A common mistake here is forgetting to use the correct row labels. Make sure to use the correct row labels with .loc." data-hint-5="Your final code should look like this: df.loc[&#x27;ID2&#x27;:&#x27;ID4&#x27;, :]. This will select rows from &#x27;ID2&#x27; to &#x27;ID4&#x27; inclusive."><p><strong>Q4.</strong> Use <code>.loc</code> to slice rows from <code>"ID2"</code> to <code>"ID4"</code> inclusive. Print the result.</p></div>
+<div class="question"><p><strong>Q4.</strong> Use <code>.loc</code> to slice rows from <code>"ID2"</code> to <code>"ID4"</code> inclusive. Print the result.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To extract the single scalar value in row 0, column 1, you need to understand the indexing in the DataFrame &#x27;df&#x27;. What is the index of the desired value?" data-hint-2="Use the .iloc attribute to select the desired value. Remember, .iloc is used for integer-based indexing." data-hint-3="The step-by-step logic flow is to use .iloc with two parameters: the first parameter will be an integer to select the row, and the second parameter will be another integer to select the column." data-hint-4="A common mistake here is trying to use label-based indexing with .iloc. Make sure to use integer-based indexing." data-hint-5="Your final code should look like this: df.iloc[0, 1]. This will select the value in row 0, column 1."><p><strong>Q5.</strong> Extract the single scalar value in row 0, column 1 using <code>.iloc[0, 1]</code>. Print it.</p></div>
+<div class="question"><p><strong>Q5.</strong> Extract the single scalar value in row 0, column 1 using <code>.iloc[0, 1]</code>. Print it.</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -324,27 +315,27 @@ print(&quot;\n.query() Filtering:\n&quot;, senior_it)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Filtering</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by looking at the DataFrame &#x27;df&#x27; and its &#x27;Age&#x27; column. What&#x27;s the condition you want to apply to create a mask?" data-hint-2="To create a mask, you&#x27;ll need to use the comparison operator &#x27;&gt;=&#x27; and the variable &#x27;30&#x27;. Think about how you can use these to create a boolean mask." data-hint-3="Once you have the mask, you can use it to filter the DataFrame &#x27;df&#x27;. Remember to assign the result to a new variable, like &#x27;filtered_df&#x27;." data-hint-4="Don&#x27;t forget to print the filtered DataFrame to see the result. Make sure to use the correct method to print it." data-hint-5="Your final code should look something like this: mask = df[&#x27;Age&#x27;] &gt;= 30; filtered_df = df[mask]; print(filtered_df)"><p><strong>Q1.</strong> Create a mask for <code>Age >= 30</code>. Use it to filter <code>df</code> and print the result.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create a mask for <code>Age >= 30</code>. Use it to filter <code>df</code> and print the result.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Look at the DataFrame &#x27;df&#x27; and its &#x27;Dept&#x27; column. You want to filter it for people who are in &#x27;IT&#x27; OR &#x27;Sales&#x27;. Think about how you can use the &#x27;or&#x27; operator to combine these conditions." data-hint-2="To use the &#x27;or&#x27; operator, you&#x27;ll need to use parentheses to group the conditions. Remember that &#x27;or&#x27; is a logical operator, not a comparison operator." data-hint-3="Once you have the conditions, you can use them to filter the DataFrame &#x27;df&#x27;. Remember to use the correct method to filter it." data-hint-4="Don&#x27;t forget to print the filtered DataFrame to see the result. Make sure to use the correct method to print it." data-hint-5="Your final code should look something like this: filtered_df = df[(df[&#x27;Dept&#x27;] == &#x27;IT&#x27;) | (df[&#x27;Dept&#x27;] == &#x27;Sales&#x27;)]; print(filtered_df)"><p><strong>Q2.</strong> Filter <code>df</code> for people who are in <code>"IT"</code> OR (<code>|</code>) <code>"Sales"</code>. (Remember parentheses around conditions).</p></div>
+<div class="question"><p><strong>Q2.</strong> Filter <code>df</code> for people who are in <code>"IT"</code> OR (<code>|</code>) <code>"Sales"</code>. (Remember parentheses around conditions).</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Look at the DataFrame &#x27;df&#x27; and its &#x27;Dept&#x27; column. You want to filter it for people who are in &#x27;IT&#x27; OR &#x27;Sales&#x27;. Think about how you can use the .isin() method to achieve this." data-hint-2="To use the .isin() method, you&#x27;ll need to pass a list of values to it. Remember that .isin() returns a boolean mask." data-hint-3="Once you have the boolean mask, you can use it to filter the DataFrame &#x27;df&#x27;. Remember to assign the result to a new variable, like &#x27;filtered_df&#x27;." data-hint-4="Don&#x27;t forget to print the filtered DataFrame to see the result. Make sure to use the correct method to print it." data-hint-5="Your final code should look something like this: filtered_df = df[df[&#x27;Dept&#x27;].isin([&#x27;IT&#x27;, &#x27;Sales&#x27;])]; print(filtered_df)"><p><strong>Q3.</strong> Use the <code>.isin()</code> method to achieve the exact same result as Q2. Print it.</p></div>
+<div class="question"><p><strong>Q3.</strong> Use the <code>.isin()</code> method to achieve the exact same result as Q2. Print it.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="First, create the variables mentioned: Dept = =." data-hint-2="The question mentions these code elements: .query(), Dept == &quot;HR&quot;. These are your building blocks." data-hint-3="Step by step: 1) Create Dept. 2) Apply the operation described. 3) Print the result." data-hint-4="Remember: = is assignment, == is comparison. For None, use &#x27;is None&#x27; not &#x27;== None&#x27;." data-hint-5="Review your code: does it address every part of the question? Run it and verify the output matches expectations."><p><strong>Q4.</strong> Use the <code>.query()</code> method to find rows where <code>Age < 40</code> and <code>Dept == "HR"</code>. Print the result.</p></div>
+<div class="question"><p><strong>Q4.</strong> Use the <code>.query()</code> method to find rows where <code>Age < 40</code> and <code>Dept == "HR"</code>. Print the result.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Look at the DataFrame &#x27;df&#x27; and its &#x27;Name&#x27; column. You want to filter it for people whose Name starts with &#x27;A&#x27;. Think about how you can use the .str.startswith() method to achieve this." data-hint-2="To use the .str.startswith() method, you&#x27;ll need to pass a string to it. Remember that .str.startswith() returns a boolean mask." data-hint-3="Once you have the boolean mask, you can use it to filter the DataFrame &#x27;df&#x27;. Remember to assign the result to a new variable, like &#x27;filtered_df&#x27;." data-hint-4="Don&#x27;t forget to print the filtered DataFrame to see the result. Make sure to use the correct method to print it." data-hint-5="Your final code should look something like this: filtered_df = df[df[&#x27;Name&#x27;].str.startswith(&#x27;A&#x27;)]; print(filtered_df)"><p><strong>Q5.</strong> Filter the DataFrame to keep rows where the Name starts with "A" using <code>df[df["Name"].str.startswith("A")]</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Filter the DataFrame to keep rows where the Name starts with "A" using <code>df[df["Name"].str.startswith("A")]</code>.</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -396,27 +387,27 @@ print(&quot;\nTop 2 Scores:\n&quot;, df.nlargest(2, &#x27;Score&#x27;))</textare
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Sorting</code></b>
 </h3></div>
-<div class="question" data-hint-1="To start, take a look at the DataFrame &#x27;df&#x27; and identify the column you want to sort by, which is &#x27;Time&#x27;." data-hint-2="You&#x27;ll need to use the pandas function &#x27;sort_values()&#x27; to sort the DataFrame. This function takes two main arguments: the column name to sort by and the direction of the sort." data-hint-3="The logic flow is to first import the necessary pandas library, then use the &#x27;sort_values()&#x27; function on the DataFrame &#x27;df&#x27;, specifying the column &#x27;Time&#x27; and the direction &#x27;ascending&#x27; as True." data-hint-4="A common mistake here is to forget to specify the direction of the sort, which would result in a default sort in ascending order. Make sure to include the &#x27;ascending&#x27; argument and set it to True." data-hint-5="Your final code should look something like this: df = df.sort_values(by=&#x27;Time&#x27;, ascending=True)."><p><strong>Q1.</strong> Sort <code>df</code> by <code>"Time"</code> in ascending order (fastest to slowest). Print the result.</p></div>
+<div class="question"><p><strong>Q1.</strong> Sort <code>df</code> by <code>"Time"</code> in ascending order (fastest to slowest). Print the result.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Take a look at the DataFrame &#x27;df&#x27; and identify the column you want to sort by, which is &#x27;Name&#x27;." data-hint-2="You&#x27;ll need to use the pandas function &#x27;sort_values()&#x27; to sort the DataFrame. This function takes two main arguments: the column name to sort by and the direction of the sort." data-hint-3="The logic flow is to first import the necessary pandas library, then use the &#x27;sort_values()&#x27; function on the DataFrame &#x27;df&#x27;, specifying the column &#x27;Name&#x27; and the direction &#x27;ascending&#x27; as True." data-hint-4="A common mistake here is to forget to specify the direction of the sort, which would result in a default sort in ascending order. Make sure to include the &#x27;ascending&#x27; argument and set it to True." data-hint-5="Your final code should look something like this: df = df.sort_values(by=&#x27;Name&#x27;, ascending=True)."><p><strong>Q2.</strong> Sort <code>df</code> by <code>"Name"</code> alphabetically. Print it.</p></div>
+<div class="question"><p><strong>Q2.</strong> Sort <code>df</code> by <code>"Name"</code> alphabetically. Print it.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To start, take a look at the DataFrame &#x27;df&#x27; and identify the column you want to use for the smallest values, which is &#x27;Time&#x27;." data-hint-2="You&#x27;ll need to use the pandas function &#x27;nsmallest()&#x27; to find the two smallest values in the &#x27;Time&#x27; column. This function takes two main arguments: the number of smallest values to find and the column name." data-hint-3="The logic flow is to first import the necessary pandas library, then use the &#x27;nsmallest()&#x27; function on the DataFrame &#x27;df&#x27;, specifying the number of smallest values as 2 and the column &#x27;Time&#x27;." data-hint-4="A common mistake here is to forget to specify the column name, which would result in an error. Make sure to include the column name &#x27;Time&#x27; in the &#x27;nsmallest()&#x27; function." data-hint-5="Your final code should look something like this: result = df.nsmallest(2, &#x27;Time&#x27;)."><p><strong>Q3.</strong> Use <code>.nsmallest(2, "Time")</code> to find the two fastest times. Print the result.</p></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>.nsmallest(2, "Time")</code> to find the two fastest times. Print the result.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To start, take a look at the DataFrame &#x27;df&#x27; and identify the column you want to use for ranking, which is &#x27;Score&#x27;." data-hint-2="You&#x27;ll need to use the pandas function &#x27;rank()&#x27; to create a new column &#x27;Rank&#x27; based on the &#x27;Score&#x27; column. This function takes two main arguments: the method to use for ranking and the ascending order." data-hint-3="The logic flow is to first import the necessary pandas library, then use the &#x27;rank()&#x27; function on the &#x27;Score&#x27; column, specifying the method as &#x27;min&#x27; and the ascending order as False." data-hint-4="A common mistake here is to forget to specify the method for ranking, which would result in a default method. Make sure to include the method &#x27;min&#x27; in the &#x27;rank()&#x27; function." data-hint-5="Your final code should look something like this: df[&#x27;Rank&#x27;] = df[&#x27;Score&#x27;].rank(method=&#x27;min&#x27;, ascending=False)."><p><strong>Q4.</strong> Create a new column <code>"Rank"</code> using <code>df["Score"].rank(ascending=False, method="min")</code>. Print <code>df</code>.</p></div>
+<div class="question"><p><strong>Q4.</strong> Create a new column <code>"Rank"</code> using <code>df["Score"].rank(ascending=False, method="min")</code>. Print <code>df</code>.</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To start, take a look at the DataFrame &#x27;df&#x27; and identify the index you want to sort by, which is the default index." data-hint-2="You&#x27;ll need to use the pandas function &#x27;sort_index()&#x27; to sort the DataFrame by its index. This function takes no arguments." data-hint-3="The logic flow is to first import the necessary pandas library, then use the &#x27;sort_index()&#x27; function on the DataFrame &#x27;df&#x27;." data-hint-4="A common mistake here is to forget to reset the index after sorting, which would result in a messy index. Make sure to include the &#x27;inplace=True&#x27; argument in the &#x27;sort_index()&#x27; function." data-hint-5="Your final code should look something like this: df = df.sort_index(inplace=True)."><p><strong>Q5.</strong> Sort the DataFrame by the index (if it was scrambled) using <code>df.sort_index()</code>. Print it.</p></div>
+<div class="question"><p><strong>Q5.</strong> Sort the DataFrame by the index (if it was scrambled) using <code>df.sort_index()</code>. Print it.</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -748,19 +739,9 @@ print(&quot;\nTop 2 Scores:\n&quot;, df.nlargest(2, &#x27;Score&#x27;))</textare
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

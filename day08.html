@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 08: Conditionals — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -195,9 +186,7 @@
   <main class="notebook" id="notebook">
     <div class="nb-title"><h1>📊 Day 08 : Conditionals</h1></div>
 <div class="nb-section" id="sec-0">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b><span style="color: #070707ff; font-size: 0.85em; font-weight: normal;"></span></b>
-</h2></div>
+<h1><strong>1 . if / elif / else :</strong> Branching Logic</h1>
 <h3>🔍 What are Branching Statements?</h3>
 <p>Python uses <code>if</code>, <code>elif</code>, and <code>else</code> to control the flow of execution based on boolean conditions. The blocks of code are defined strictly by indentation (usually 4 spaces).</p>
 <h3>💼 Why Data Analysts Care</h3>
@@ -231,36 +220,34 @@ if not data:
 </div>
 <div class="nb-section" id="checks-Check-2">
 <div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
-<div class="question" data-hint-1="Start by understanding the BMI classification: underweight (BMI &lt; 18.5), normal weight (18.5 &lt;= BMI &lt; 25), overweight (25 &lt;= BMI &lt; 30), and obese (BMI &gt;= 30)." data-hint-2="You&#x27;ll need to use the if/elif/else statement and compare the bmi variable to these ranges. Consider using the &gt;= operator for the upper bounds." data-hint-3="First, check if the bmi is underweight, then if it&#x27;s normal weight, and finally if it&#x27;s overweight or obese." data-hint-4="Don&#x27;t forget to handle the case where bmi is exactly 18.5 or 25, as the ranges are inclusive." data-hint-5="Your code should look something like this: if bmi &lt; 18.5: ... elif 18.5 &lt;= bmi &lt; 25: ... elif bmi &gt;= 25: ..."><p><strong>Q1.</strong> Write an <code>if/elif/else</code> chain that classifies BMI: <18.5 Underweight, 18.5-24.9 Normal, 25-29.9 Overweight, 30+ Obese. Test with <code>bmi=27.5</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Write an <code>if/elif/else</code> chain that classifies BMI: <18.5 Underweight, 18.5-24.9 Normal, 25-29.9 Overweight, 30+ Obese. Test with <code>bmi=27.5</code>.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To determine if a year is a leap year, you need to check if it&#x27;s divisible by 4 and meets certain additional conditions." data-hint-2="You&#x27;ll use the % operator to check for divisibility and the logical operators AND, OR, and NOT." data-hint-3="First, check if the year is divisible by 4, then check if it&#x27;s not divisible by 100, and finally check if it&#x27;s divisible by 400." data-hint-4="Be careful with the order of operations and make sure to use parentheses if necessary." data-hint-5="Your code should look something like this: if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0): print(&#x27;Leap year&#x27;)"><p><strong>Q2.</strong> Write code checking if a year is a leap year: divisible by 4 AND (not by 100 OR by 400). Test <code>2024, 1900, 2000</code>. Print result for each.</p></div>
+<div class="question"><p><strong>Q2.</strong> Write code checking if a year is a leap year: divisible by 4 AND (not by 100 OR by 400). Test <code>2024, 1900, 2000</code>. Print result for each.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To check if someone can drive, you need to verify three conditions: age, has_license, and not suspended." data-hint-2="You&#x27;ll use the and operator to combine these conditions and the not operator to negate the suspended condition." data-hint-3="First, check if the age is &gt;= 18, then check if the person has a license, and finally check if they&#x27;re not suspended." data-hint-4="Make sure to handle the case where the person is suspended, as the not operator will make it False." data-hint-5="Your code should look something like this: if age &gt;= 18 and has_license and not suspended: print(&#x27;Can drive&#x27;)"><p><strong>Q3.</strong> Write an <code>if</code> that checks multiple conditions: <code>age >= 18 and has_license and not suspended</code>. Test with 3 combinations. Print 'Can drive' or reason why not.</p></div>
+<div class="question"><p><strong>Q3.</strong> Write an <code>if</code> that checks multiple conditions: <code>age >= 18 and has_license and not suspended</code>. Test with 3 combinations. Print 'Can drive' or reason why not.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To demonstrate the difference between if/elif/elif and three separate if statements, you&#x27;ll need to test with a score of 95." data-hint-2="For the if/elif/elif chain, you&#x27;ll use the &gt;= operator to check for different ranges." data-hint-3="For the three separate if statements, you&#x27;ll use the == operator to check for exact values." data-hint-4="Be careful with the order of operations and make sure to use parentheses if necessary." data-hint-5="Your code should look something like this: if score &gt;= 90: ... elif score &gt;= 80: ... else: ... or if score == 95: ... if score == 90: ... if score == 85: ..."><p><strong>Q4.</strong> Show the difference between <code>if/elif/elif</code> (stops at first match) vs three separate <code>if</code> statements (checks all). Test with <code>score=95</code> matching multiple ranges.</p></div>
+<div class="question"><p><strong>Q4.</strong> Show the difference between <code>if/elif/elif</code> (stops at first match) vs three separate <code>if</code> statements (checks all). Test with <code>score=95</code> matching multiple ranges.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To write nested if statements, you&#x27;ll need to check if the number is positive, negative, or zero first, then check if it&#x27;s even or odd." data-hint-2="You&#x27;ll use the if/else statement to check the outer condition and the if/else statement again to check the inner condition." data-hint-3="First, check if the number is positive, then check if it&#x27;s negative, and finally check if it&#x27;s zero." data-hint-4="For the inner condition, use the % operator to check if the number is even or odd." data-hint-5="Your code should look something like this: if number &gt; 0: if number % 2 == 0: ... else: ... elif number &lt; 0: if number % 2 == 0: ... else: ... else: ..."><p><strong>Q5.</strong> Write nested <code>if</code> statements: outer checks if number is positive/negative/zero, inner checks if even/odd (for non-zero). Test with <code>-7, 0, 12</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Write nested <code>if</code> statements: outer checks if number is positive/negative/zero, inner checks if even/odd (for non-zero). Test with <code>-7, 0, 12</code>.</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="sec-13">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b><span style="color: #070707ff; font-size: 0.85em; font-weight: normal;"></span></b>
-</h2></div>
+<h1><strong>2 . Ternary Expression :</strong> Inline Conditions</h1>
 <h3>🔍 What is a Ternary Expression?</h3>
 <p>It allows you to assign a value based on a condition in a single line. The syntax is: <code>value_if_true if condition else value_if_false</code>.</p>
 <h3>💼 Why Data Analysts Care</h3>
@@ -287,36 +274,34 @@ print(labels)</textarea>
 </div>
 <div class="nb-section" id="checks-Check-15">
 <div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
-<div class="question" data-hint-1="Understand that you need to write a ternary expression that checks the age and assigns a status accordingly." data-hint-2="Use the if-else syntax in a ternary expression: status = &#x27;Adult&#x27; if condition else &#x27;Minor&#x27;. You&#x27;ll need to define the condition using the age variable." data-hint-3="Structure your code by first defining the condition, then the ternary expression, and finally testing it with the given ages." data-hint-4="Pitfall: Don&#x27;t forget to test your code with both age=15 and age=25 to ensure it works correctly in both cases." data-hint-5="Final Check: Your code should look something like this: status = &#x27;Adult&#x27; if age &gt;= 18 else &#x27;Minor&#x27;, then print(status) for both ages."><p><strong>Q1.</strong> Write a ternary expression: <code>status = 'Adult' if age >= 18 else 'Minor'</code>. Test with <code>age=15</code> and <code>age=25</code>. Print both results.</p></div>
+<div class="question"><p><strong>Q1.</strong> Write a ternary expression: <code>status = 'Adult' if age >= 18 else 'Minor'</code>. Test with <code>age=15</code> and <code>age=25</code>. Print both results.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Understand that you need to write a nested ternary expression that checks the score and assigns a classification accordingly." data-hint-2="Use the if-else syntax in nested ternary expressions: classify score as &#x27;A&#x27; if condition1 else &#x27;B&#x27; if condition2 else &#x27;C&#x27; if condition3 else &#x27;F&#x27;. You&#x27;ll need to define the conditions using the score variable." data-hint-3="Structure your code by first defining the conditions, then the nested ternary expressions, and finally testing it with the given scores." data-hint-4="Pitfall: Make sure to use the correct order of conditions and classifications to avoid confusion." data-hint-5="Final Check: Your code should look something like this: classify = &#x27;A&#x27; if s &gt;= 90 else &#x27;B&#x27; if s &gt;= 80 else &#x27;C&#x27; if s &gt;= 70 else &#x27;F&#x27;, then print(classify) for all scores."><p><strong>Q2.</strong> Write a nested ternary: classify score as <code>'A' if s>=90 else 'B' if s>=80 else 'C' if s>=70 else 'F'</code>. Test with 95, 85, 65. Discuss readability.</p></div>
+<div class="question"><p><strong>Q2.</strong> Write a nested ternary: classify score as <code>'A' if s>=90 else 'B' if s>=80 else 'C' if s>=70 else 'F'</code>. Test with 95, 85, 65. Discuss readability.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Understand that you need to use a ternary expression in a list comprehension to classify numbers as &#x27;even&#x27; or &#x27;odd&#x27;." data-hint-2="Use the if-else syntax in a ternary expression: [&#x27;even&#x27; if condition else &#x27;odd&#x27; for x in range(1,6)]. You&#x27;ll need to define the condition using the x variable." data-hint-3="Structure your code by first defining the condition, then the list comprehension, and finally printing the result." data-hint-4="Pitfall: Make sure to use the correct syntax for the list comprehension and the ternary expression." data-hint-5="Final Check: Your code should look something like this: [&#x27;even&#x27; if x % 2 == 0 else &#x27;odd&#x27; for x in range(1,6)], then print the result."><p><strong>Q3.</strong> Use ternary in a list comprehension: <code>['even' if x%2==0 else 'odd' for x in range(1,6)]</code>. Print result: <code>['odd','even','odd','even','odd']</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Use ternary in a list comprehension: <code>['even' if x%2==0 else 'odd' for x in range(1,6)]</code>. Print result: <code>['odd','even','odd','even','odd']</code>.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Understand that you need to use a ternary expression to call either a valid function or an error-handling function based on the result of a validation function." data-hint-2="Use the if-else syntax in a ternary expression: result = process_valid(x) if condition else handle_error(x). You&#x27;ll need to define the condition using the validate(x) function." data-hint-3="Structure your code by first defining the condition, then the ternary expression, and finally testing it with sample inputs." data-hint-4="Pitfall: Don&#x27;t forget to define the helper functions process_valid and handle_error, and test them separately before using the ternary expression." data-hint-5="Final Check: Your code should look something like this: result = process_valid(x) if validate(x) else handle_error(x), then print the result for a sample input."><p><strong>Q4.</strong> Use ternary with function calls: <code>result = process_valid(x) if validate(x) else handle_error(x)</code>. Write the helper functions and test.</p></div>
+<div class="question"><p><strong>Q4.</strong> Use ternary with function calls: <code>result = process_valid(x) if validate(x) else handle_error(x)</code>. Write the helper functions and test.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Understand that you need to write a ternary expression to assign a default value to a variable if the user input is empty." data-hint-2="Use the if-else syntax in a ternary expression: name = user_input if condition else &#x27;Anonymous&#x27;. You&#x27;ll need to define the condition using the user_input variable." data-hint-3="Structure your code by first defining the condition, then the ternary expression, and finally comparing it with the alternative syntax using the or operator." data-hint-4="Pitfall: Make sure to understand the difference between the ternary expression and the or operator in this context." data-hint-5="Final Check: Your code should look something like this: name = user_input if user_input else &#x27;Anonymous&#x27;, then compare it with the alternative syntax using the or operator."><p><strong>Q5.</strong> Write a ternary for default values: <code>name = user_input if user_input else 'Anonymous'</code>. Compare with <code>name = user_input or 'Anonymous'</code>. Are they equivalent?</p></div>
+<div class="question"><p><strong>Q5.</strong> Write a ternary for default values: <code>name = user_input if user_input else 'Anonymous'</code>. Compare with <code>name = user_input or 'Anonymous'</code>. Are they equivalent?</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="sec-26">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b><span style="color: #070707ff; font-size: 0.85em; font-weight: normal;"></span></b>
-</h2></div>
+<h1><strong>3 . Match-Case :</strong> Structural Pattern Matching (Python 3.10+)</h1>
 <h3>🔍 What is Match-Case?</h3>
 <p>Introduced in Python 3.10, <code>match-case</code> is much more than a <code>switch</code> statement. It enables structural pattern matching, allowing you to match variable types, sequence structures, and dict keys.</p>
 <h3>💼 Why Data Analysts Care</h3>
@@ -351,36 +336,34 @@ match point:
 </div>
 <div class="nb-section" id="checks-Check-28">
 <div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
-<div class="question" data-hint-1="Start by understanding the HTTP status codes and their corresponding messages. You&#x27;ll need to define a match/case statement that covers the codes 200, 404, and 500, as well as a default case for any other code." data-hint-2="To implement this, you&#x27;ll use the match/case statement in Python, which is a powerful tool for pattern matching. Specifically, you&#x27;ll use the &#x27;match&#x27; function and the &#x27;case&#x27; keyword to define the different cases." data-hint-3="The logic flow will involve defining the different cases for the HTTP status codes, and then using the &#x27;match&#x27; function to determine which case to execute based on the input code. Make sure to include a default case to handle any unexpected codes." data-hint-4="One common mistake to watch out for is forgetting to include a default case, which can cause the program to crash if it encounters an unexpected code. Also, be careful with the syntax of the match/case statement, as it can be tricky to get right." data-hint-5="Your final code should look something like this: &#x27;match code: case 200: return &#x27;OK&#x27;; case 404: return &#x27;Not Found&#x27;; case 500: return &#x27;Server Error&#x27;; case _: return &#x27;Unknown&#x27;;&#x27;. Make sure to test it with different codes to ensure it&#x27;s working correctly."><p><strong>Q1.</strong> Write a <code>match/case</code> for HTTP status codes: 200→'OK', 404→'Not Found', 500→'Server Error', _→'Unknown'. Test with 4 codes.</p></div>
+<div class="question"><p><strong>Q1.</strong> Write a <code>match/case</code> for HTTP status codes: 200→'OK', 404→'Not Found', 500→'Server Error', _→'Unknown'. Test with 4 codes.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To solve this problem, start by understanding the pattern matching on a tuple. You&#x27;ll need to define a match/case statement that covers the cases (0,0), (x,0), and (0,y), as well as a default case for any other tuple." data-hint-2="To implement this, you&#x27;ll use the match/case statement in Python, which is a powerful tool for pattern matching. Specifically, you&#x27;ll use the &#x27;match&#x27; function and the &#x27;case&#x27; keyword to define the different cases." data-hint-3="The logic flow will involve defining the different cases for the tuples, and then using the &#x27;match&#x27; function to determine which case to execute based on the input tuple. Make sure to include a default case to handle any unexpected tuples." data-hint-4="One common mistake to watch out for is forgetting to include a default case, which can cause the program to crash if it encounters an unexpected tuple. Also, be careful with the syntax of the match/case statement, as it can be tricky to get right." data-hint-5="Your final code should look something like this: &#x27;match (x, y): case (0, 0): return &#x27;origin&#x27;; case (x, 0): return &#x27;x-axis&#x27;; case (0, y): return &#x27;y-axis&#x27;; case _: return &#x27;other&#x27;;&#x27;. Make sure to test it with different tuples to ensure it&#x27;s working correctly."><p><strong>Q2.</strong> Use <code>match/case</code> with pattern matching on a tuple: <code>match (x, y):</code> with cases <code>(0,0)→'origin'</code>, <code>(x,0)→'x-axis'</code>, <code>(0,y)→'y-axis'</code>, <code>_→'other'</code>.</p></div>
+<div class="question"><p><strong>Q2.</strong> Use <code>match/case</code> with pattern matching on a tuple: <code>match (x, y):</code> with cases <code>(0,0)→'origin'</code>, <code>(x,0)→'x-axis'</code>, <code>(0,y)→'y-axis'</code>, <code>_→'other'</code>.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To solve this problem, start by understanding the use of the &#x27;|&#x27; operator for OR patterns in the match/case statement. You&#x27;ll need to define a match/case statement that covers the cases &#x27;GET&#x27; and &#x27;HEAD&#x27;, as well as &#x27;POST&#x27; and &#x27;PUT&#x27;, and then return the corresponding message." data-hint-2="To implement this, you&#x27;ll use the match/case statement in Python, which is a powerful tool for pattern matching. Specifically, you&#x27;ll use the &#x27;match&#x27; function and the &#x27;case&#x27; keyword to define the different cases." data-hint-3="The logic flow will involve defining the different cases for the HTTP methods, and then using the &#x27;match&#x27; function to determine which case to execute based on the input method. Make sure to include all the necessary cases to cover all the methods." data-hint-4="One common mistake to watch out for is forgetting to include one of the necessary cases, which can cause the program to crash if it encounters an unexpected method. Also, be careful with the syntax of the match/case statement, as it can be tricky to get right." data-hint-5="Your final code should look something like this: &#x27;match method: case &#x27;GET&#x27; | &#x27;HEAD&#x27;: return &#x27;read&#x27;; case &#x27;POST&#x27; | &#x27;PUT&#x27;: return &#x27;write&#x27;;&#x27;. Make sure to test it with different methods to ensure it&#x27;s working correctly."><p><strong>Q3.</strong> Use <code>match/case</code> with <code>|</code> for OR patterns: <code>case 'GET' | 'HEAD':</code> → 'read', <code>case 'POST' | 'PUT':</code> → 'write'. Test all methods.</p></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>match/case</code> with <code>|</code> for OR patterns: <code>case 'GET' | 'HEAD':</code> → 'read', <code>case 'POST' | 'PUT':</code> → 'write'. Test all methods.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To solve this problem, start by understanding how to use the match/case statement to destructure a dictionary. You&#x27;ll need to define a match/case statement that covers the case where the dictionary has the key &#x27;action&#x27; with the value &#x27;move&#x27;, and then extract the values of &#x27;x&#x27; and &#x27;y&#x27; into variables." data-hint-2="To implement this, you&#x27;ll use the match/case statement in Python, which is a powerful tool for pattern matching. Specifically, you&#x27;ll use the &#x27;match&#x27; function and the &#x27;case&#x27; keyword to define the different cases." data-hint-3="The logic flow will involve defining the different cases for the dictionary, and then using the &#x27;match&#x27; function to determine which case to execute based on the input dictionary. Make sure to include a default case to handle any unexpected dictionaries." data-hint-4="One common mistake to watch out for is forgetting to include a default case, which can cause the program to crash if it encounters an unexpected dictionary. Also, be careful with the syntax of the match/case statement, as it can be tricky to get right." data-hint-5="Your final code should look something like this: &#x27;match command: case {&#x27;action&#x27;: &#x27;move&#x27;, &#x27;x&#x27;: x, &#x27;y&#x27;: y}: return x, y&#x27;. Make sure to test it with different dictionaries to ensure it&#x27;s working correctly."><p><strong>Q4.</strong> Use <code>match/case</code> to destructure a dict: <code>match command: case {'action':'move','x':x,'y':y}:</code>. Extract values into variables.</p></div>
+<div class="question"><p><strong>Q4.</strong> Use <code>match/case</code> to destructure a dict: <code>match command: case {'action':'move','x':x,'y':y}:</code>. Extract values into variables.</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To solve this problem, start by understanding the difference between a guard clause and a simple pattern in the match/case statement. You&#x27;ll need to define a match/case statement that covers the case where the input x is greater than 0, and then return the message &#x27;positive&#x27;." data-hint-2="To implement this, you&#x27;ll use the match/case statement in Python, which is a powerful tool for pattern matching. Specifically, you&#x27;ll use the &#x27;match&#x27; function and the &#x27;case&#x27; keyword to define the different cases." data-hint-3="The logic flow will involve defining the different cases for the input x, and then using the &#x27;match&#x27; function to determine which case to execute based on the input. Make sure to include a default case to handle any unexpected inputs." data-hint-4="One common mistake to watch out for is forgetting to include a default case, which can cause the program to crash if it encounters an unexpected input. Also, be careful with the syntax of the match/case statement, as it can be tricky to get right." data-hint-5="Your final code should look something like this: &#x27;match x: case x if x &gt; 0: return &#x27;positive&#x27;; case _: return &#x27;non-positive&#x27;;&#x27;. Make sure to test it with different inputs to ensure it&#x27;s working correctly."><p><strong>Q5.</strong> Use <code>match/case</code> with guard clauses: <code>case x if x > 0:</code> → 'positive'. Show the difference between guard and simple pattern.</p></div>
+<div class="question"><p><strong>Q5.</strong> Use <code>match/case</code> with guard clauses: <code>case x if x > 0:</code> → 'positive'. Show the difference between guard and simple pattern.</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="sec-39">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b><span style="color: #070707ff; font-size: 0.85em; font-weight: normal;"></span></b>
-</h2></div>
+<h1><strong>4 . Guard Patterns :</strong> Defensive and Clean Code</h1>
 <h3>🔍 What is a Guard Pattern?</h3>
 <p>A guard clause validates preconditions at the very top of a function and returns or raises an error immediately if they fail. This prevents deep nesting of <code>if</code> statements.</p>
 <h3>💼 Why Data Analysts Care</h3>
@@ -414,36 +397,34 @@ print(process([1, 2, 3, 4, 5]))  # 15</textarea>
 </div>
 <div class="nb-section" id="checks-Check-41">
 <div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
-<div class="question" data-hint-1="Start by defining a function that takes in a variable, let&#x27;s call it &#x27;valid_input&#x27;. The core requirement is to return &#x27;Error&#x27; if &#x27;valid_input&#x27; is not valid." data-hint-2="To simplify nested if/else statements, you can use a guard clause pattern. This involves placing the condition at the top of the function and returning immediately if it&#x27;s not met." data-hint-3="The step-by-step logic flow is to first check if &#x27;valid_input&#x27; is valid. If it&#x27;s not, return &#x27;Error&#x27;. Otherwise, proceed with the rest of the function." data-hint-4="A common mistake here is to forget to handle the case where &#x27;valid_input&#x27; is not valid, resulting in an unexpected behavior." data-hint-5="The final code should look like this: def my_function(valid_input): if not valid_input: return &#x27;Error&#x27;; # rest of the function"><p><strong>Q1.</strong> Write a guard clause pattern: <code>if not valid_input: return 'Error'</code> at the top of a function. Show how it simplifies nested <code>if/else</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Write a guard clause pattern: <code>if not valid_input: return 'Error'</code> at the top of a function. Show how it simplifies nested <code>if/else</code>.</p></div>
 <div class="code-cell" id="cell-20">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-20"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by defining a function called &#x27;process_data&#x27; that takes in a variable &#x27;data&#x27;. The core requirement is to return a specific message based on the input." data-hint-2="To implement early returns, you can use the &#x27;return&#x27; statement to exit the function immediately if certain conditions are met." data-hint-3="The step-by-step logic flow is to first check if &#x27;data&#x27; is None. If it is, return &#x27;No data&#x27;. Then, check if &#x27;data&#x27; is empty. If it is, return &#x27;Empty&#x27;. Next, check if &#x27;data&#x27; is too large. If it is, return &#x27;Too big&#x27;. Otherwise, proceed with processing &#x27;data&#x27;." data-hint-4="A common mistake here is to forget to handle the case where &#x27;data&#x27; is too large, resulting in an unexpected behavior." data-hint-5="The final code should look like this: def process_data(data): if data is None: return &#x27;No data&#x27;; if not data: return &#x27;Empty&#x27;; if len(data) &gt; 100: return &#x27;Too big&#x27;; # process data"><p><strong>Q2.</strong> Write a function <code>process_data(data)</code> with early returns: if None→'No data', if empty→'Empty', if too large→'Too big', else process. Test all paths.</p></div>
+<div class="question"><p><strong>Q2.</strong> Write a function <code>process_data(data)</code> with early returns: if None→'No data', if empty→'Empty', if too large→'Too big', else process. Test all paths.</p></div>
 <div class="code-cell" id="cell-21">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-21"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by defining a function called &#x27;validate_age&#x27; that takes in a variable &#x27;value&#x27;. The core requirement is to return an error message or None based on the input." data-hint-2="To implement input validation guards, you can use conditional statements to check the type, range, and format of the input." data-hint-3="The step-by-step logic flow is to first check if &#x27;value&#x27; is an integer. If it&#x27;s not, return an error message. Then, check if &#x27;value&#x27; is within a certain range. If it&#x27;s not, return an error message. Next, check if &#x27;value&#x27; is in a specific format. If it&#x27;s not, return an error message. Otherwise, return None." data-hint-4="A common mistake here is to forget to handle the case where &#x27;value&#x27; is not an integer, resulting in an unexpected behavior." data-hint-5="The final code should look like this: def validate_age(value): if not isinstance(value, int): return &#x27;Invalid age&#x27;; if value &lt; 0 or value &gt; 100: return &#x27;Age out of range&#x27;; if not 0 &lt;= value &lt;= 100: return &#x27;Invalid age&#x27;; return None"><p><strong>Q3.</strong> Write input validation guards: check type, range, format before processing. <code>validate_age(value)</code> → return error string or None. Test 5 inputs.</p></div>
+<div class="question"><p><strong>Q3.</strong> Write input validation guards: check type, range, format before processing. <code>validate_age(value)</code> → return error string or None. Test 5 inputs.</p></div>
 <div class="code-cell" id="cell-22">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-22"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by examining the deeply nested if/else statement. The core requirement is to simplify it into flat guard clauses." data-hint-2="To refactor the code, you can replace the nested if/else statements with sequential if return statements." data-hint-3="The step-by-step logic flow is to first check if &#x27;condition1&#x27; is met. If it is, return &#x27;result1&#x27;. Then, check if &#x27;condition2&#x27; is met. If it is, return &#x27;result2&#x27;. Next, check if &#x27;condition3&#x27; is met. If it is, return &#x27;result3&#x27;. Otherwise, return &#x27;default result&#x27;." data-hint-4="A common mistake here is to forget to handle the case where none of the conditions are met, resulting in an unexpected behavior." data-hint-5="The final code should look like this: def my_function(): if condition1: return &#x27;result1&#x27;; if condition2: return &#x27;result2&#x27;; if condition3: return &#x27;result3&#x27;; return &#x27;default result&#x27;"><p><strong>Q4.</strong> Refactor deeply nested <code>if/else</code> into flat guard clauses. Before: 4 levels of nesting. After: 4 sequential <code>if return</code> statements. Show both versions.</p></div>
+<div class="question"><p><strong>Q4.</strong> Refactor deeply nested <code>if/else</code> into flat guard clauses. Before: 4 levels of nesting. After: 4 sequential <code>if return</code> statements. Show both versions.</p></div>
 <div class="code-cell" id="cell-23">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-23"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by understanding the purpose of the &#x27;assert&#x27; statement. The core requirement is to use it as a development guard to ensure that a certain condition is met." data-hint-2="To use &#x27;assert&#x27; as a development guard, you can place it at the beginning of the function to check if a certain condition is met." data-hint-3="The step-by-step logic flow is to first check if the condition is met using the &#x27;assert&#x27; statement. If it&#x27;s not, an AssertionError will be raised. Otherwise, proceed with the rest of the function." data-hint-4="A common mistake here is to forget to remove the &#x27;assert&#x27; statement before deploying the code, resulting in an unexpected behavior." data-hint-5="The final code should look like this: def my_function(x): assert isinstance(x, int), &#x27;x must be int&#x27;; # rest of the function"><p><strong>Q5.</strong> Use <code>assert</code> as a development guard: <code>assert isinstance(x, int), 'x must be int'</code>. Show it raises <code>AssertionError</code>. Explain when to use vs exceptions.</p></div>
+<div class="question"><p><strong>Q5.</strong> Use <code>assert</code> as a development guard: <code>assert isinstance(x, int), 'x must be int'</code>. Show it raises <code>AssertionError</code>. Explain when to use vs exceptions.</p></div>
 <div class="code-cell" id="cell-24">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-24"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="sec-52">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b><span style="color: #070707ff; font-size: 0.85em; font-weight: normal;"></span></b>
-</h2></div>
+<h1><strong>5 . Complex Conditions :</strong> Compound Logic</h1>
 <h3>🔍 Compound Boolean Logic</h3>
 <p>Python utilizes <code>and</code>, <code>or</code>, and <code>not</code> to combine multiple conditions. Parentheses should be used to explicitly group conditions when mixing operators.</p>
 <h3>💼 Why Data Analysts Care</h3>
@@ -476,27 +457,27 @@ print(any(s &gt;= 90 for s in scores))  # True — at least one A</textarea>
 </div>
 <div class="nb-section" id="checks-Check-54">
 <div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
-<div class="question" data-hint-1="Start by understanding the triangle inequality theorem, which states that for any triangle, the sum of the lengths of any two sides must be greater than the length of the remaining side." data-hint-2="You&#x27;ll need to use Python&#x27;s built-in comparison operators (&gt;, &lt;, ==) to check the conditions for each type of triangle." data-hint-3="First, check if the triangle is valid by ensuring the sum of the lengths of any two sides is greater than the length of the remaining side. Then, compare the lengths of the sides to determine if it&#x27;s equilateral, isosceles, or scalene." data-hint-4="A common mistake here is to forget to handle the case where the input sides don&#x27;t form a valid triangle, resulting in incorrect classification." data-hint-5="Your function should return &#x27;invalid&#x27; if the triangle is not valid, and one of the other classifications if it is. For example: if classify_triangle(3, 4, 5) returns &#x27;scalene&#x27;, and classify_triangle(1, 1, 1) returns &#x27;equilateral&#x27;."><p><strong>Q1.</strong> Write a function <code>classify_triangle(a,b,c)</code> returning: 'invalid' (triangle inequality), 'equilateral', 'isosceles', 'scalene'. Test with 5 triangles.</p></div>
+<div class="question"><p><strong>Q1.</strong> Write a function <code>classify_triangle(a,b,c)</code> returning: 'invalid' (triangle inequality), 'equilateral', 'isosceles', 'scalene'. Test with 5 triangles.</p></div>
 <div class="code-cell" id="cell-26">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-26"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by understanding how weighted averages work and how to calculate them. You&#x27;ll need to validate that all scores are between 0 and 100." data-hint-2="You&#x27;ll need to use Python&#x27;s built-in functions for calculating averages (sum() and len()) and for rounding numbers (round())." data-hint-3="First, validate that all scores are between 0 and 100. Then, calculate the weighted average by multiplying each score by its weight and summing them up. Finally, round the result to two decimal places and convert it to a letter grade." data-hint-4="A common mistake here is to forget to validate the scores or to use the wrong weights, resulting in an incorrect average." data-hint-5="Your function should return a string representing the letter grade and a boolean indicating whether the student passed or failed. For example: if grade_calculator([90, 80, 70]) returns (&#x27;B&#x27;, True), and grade_calculator([40, 50, 60]) returns (&#x27;F&#x27;, False)."><p><strong>Q2.</strong> Write a function <code>grade_calculator(scores)</code> that: validates all scores are 0-100, computes weighted average, returns letter grade and pass/fail.</p></div>
+<div class="question"><p><strong>Q2.</strong> Write a function <code>grade_calculator(scores)</code> that: validates all scores are 0-100, computes weighted average, returns letter grade and pass/fail.</p></div>
 <div class="code-cell" id="cell-27">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-27"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by understanding the different pricing rules for kids, adults, seniors, weekdays, and weekends. You&#x27;ll need to calculate the base price and then apply any discounts." data-hint-2="You&#x27;ll need to use Python&#x27;s built-in conditional statements (if/elif/else) to determine the correct price based on the input parameters." data-hint-3="First, determine the base price based on the age and day of the week. Then, apply any member discounts. Finally, return the total price and a breakdown of the calculations." data-hint-4="A common mistake here is to forget to handle the case where the input age or day of the week is invalid, resulting in an incorrect price." data-hint-5="Your function should return a string representing the total price and a breakdown of the calculations. For example: if ticket_price(12, &#x27;weekday&#x27;, True) returns (&#x27;$10.00&#x27;, &#x27;Kids: $5.00, Member discount: $2.00&#x27;), and ticket_price(65, &#x27;weekend&#x27;, False) returns (&#x27;$15.00&#x27;, &#x27;Seniors: $10.00&#x27;)."><p><strong>Q3.</strong> Write a function <code>ticket_price(age, day, is_member)</code> with complex pricing: kids/adults/seniors × weekday/weekend × member discount. Return price and breakdown.</p></div>
+<div class="question"><p><strong>Q3.</strong> Write a function <code>ticket_price(age, day, is_member)</code> with complex pricing: kids/adults/seniors × weekday/weekend × member discount. Return price and breakdown.</p></div>
 <div class="code-cell" id="cell-28">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-28"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by understanding the 6 rules for a valid password. You&#x27;ll need to check if the password meets each of the rules, and return a tuple with a boolean indicating validity and a list of failures." data-hint-2="To check each rule, you&#x27;ll need to use the len() function to check the length, the any() function to check for upper and lower case letters, the any() function to check for digits, and the any() function to check for special characters." data-hint-3="The logic flow should involve first checking each rule, and then returning the validity and failures." data-hint-4="A common mistake here is to forget to handle the case where the password has spaces, resulting in an incorrect validity check." data-hint-5="Your final code should look something like this: a function validate_password(pw) that returns a tuple with a boolean indicating validity and a list of failures, using if-elif-else statements to handle the different cases."><p><strong>Q4.</strong> Write a function <code>validate_password(pw)</code> checking 6 rules (length, upper, lower, digit, special, no spaces). Return <code>(True/False, [failures])</code>. Test 5 passwords.</p></div>
+<div class="question"><p><strong>Q4.</strong> Write a function <code>validate_password(pw)</code> checking 6 rules (length, upper, lower, digit, special, no spaces). Return <code>(True/False, [failures])</code>. Test 5 passwords.</p></div>
 <div class="code-cell" id="cell-29">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-29"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by understanding the progressive tax brackets and how to calculate the tax owed based on the income and filing status." data-hint-2="You&#x27;ll need to use Python&#x27;s built-in conditional statements (if/elif/else) to determine the correct tax rate based on the income and filing status." data-hint-3="First, determine the tax rate based on the income and filing status. Then, calculate the tax owed by multiplying the income by the tax rate. Finally, return the tax owed and the effective tax rate." data-hint-4="A common mistake here is to forget to handle the case where the input income or filing status is invalid, resulting in an incorrect tax calculation." data-hint-5="Your function should return a string representing the tax owed and the effective tax rate. For example: if tax_calculator(50000, &#x27;single&#x27;) returns (&#x27;$10,000.00&#x27;, &#x27;20.0%&#x27;), and tax_calculator(100000, &#x27;married&#x27;) returns (&#x27;$20,000.00&#x27;, &#x27;25.0%&#x27;)."><p><strong>Q5.</strong> Write a function <code>tax_calculator(income, filing_status)</code> using progressive tax brackets with different rates per bracket. Return tax owed and effective rate.</p></div>
+<div class="question"><p><strong>Q5.</strong> Write a function <code>tax_calculator(income, filing_status)</code> using progressive tax brackets with different rates per bracket. Return tax owed and effective rate.</p></div>
 <div class="code-cell" id="cell-30">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-30"># Write your answer here</textarea>
@@ -837,19 +818,9 @@ print(any(s &gt;= 90 for s in scores))  # True — at least one A</textarea>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

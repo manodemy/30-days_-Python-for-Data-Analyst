@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>30-Day Python for Data Analyst Course &mdash; Manodemy</title>
+  <meta name="description" content="Master Python for Data Analysis in 30 days. Escape tutorial hell with interactive coding notebooks, 750+ real-world practice challenges, and no video bloat. $19 one-time.">
+  <meta name="keywords" content="learn python, python data analysis, stop tutorial hell, interactive python notebooks, pandas masterclass, numpy exercises, sql databases, analytics interview, data analyst certification">
+  <link rel="canonical" href="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/">
+  
+  <!-- Open Graph / Facebook SEO -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/">
+  <meta property="og:title" content="30-Day Python for Data Analyst Course — Manodemy">
+  <meta property="og:description" content="Learn Python by actually coding. 30 daily modules, 750+ interactive browser-based challenges, zero video bloat. $19 one-time.">
+  <meta property="og:image" content="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/assets/og-cover.png">
+
+  <!-- Twitter SEO Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/">
+  <meta name="twitter:title" content="30-Day Python for Data Analyst Course — Manodemy">
+  <meta name="twitter:description" content="Escape tutorial hell. Learn Python for Data Analytics through hands-on active coding notebooks in your browser.">
+  <meta name="twitter:image" content="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/assets/og-cover.png">
+  
+  <!-- Font Setup -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,700&family=Caveat:wght@400;700&family=Sacramento&family=Allura&family=Satisfy&family=Dancing+Script:wght@600;700&family=Kalam:wght@700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css?v=2.5">
+  
+  <!-- Structured SEO Metadata (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "30-Day Python for Data Analyst Masterclass",
+    "description": "Learn Python for Data Analytics through interactive browser-based coding notebooks, structured guides, and interview prep questions.",
+    "provider": {
+      "@type": "Organization",
+      "name": "Manodemy",
+      "sameAs": "https://manodemy.github.io/30-days_-Python-for-Data-Analyst/"
+    },
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "Online",
+      "courseWorkload": "PT1H"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "19.00",
+      "priceCurrency": "USD",
+      "category": "Paid"
+    },
+    "outputs": "Certification of Completion"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is there a refund policy?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! We offer a full 7-day money-back guarantee. If you are not satisfied with the learning quality, email us for a hassle-free refund."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to install any software or local environments?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Everything runs entirely in your browser with our built-in interactive code editor and runtime environment."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will I have lifetime access to the course content?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. A one-time purchase grants you permanent access to all 30 days, answers, interview prep, and future updates."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <nav class="nav" aria-label="Primary site navigation">
+      <div class="container">
+        <a href="#" class="nav-brand" aria-label="Manodemy Home">
+          <span class="nav-brand-name">Mano<span>demy</span></span>
+          <span class="nav-brand-sub">Hands-on EdTech</span>
+        </a>
+        <div class="nav-links">
+          <a href="../day01.html" class="nav-pill nav-pill--free">Try Day 01 Free</a>
+          <a href="#curriculum" class="nav-pill">Curriculum</a>
+          <a href="#testimonials" class="nav-pill">Testimonials</a>
+          <a href="#faq" class="nav-pill">FAQ</a>
+        </div>
+        <div class="nav-right">
+          <a href="#pricing" id="navSignin" class="btn-ghost">Sign In</a>
+          <a href="#pricing" class="btn-nav-buy" data-cta="buy">Buy Now &mdash; $19</a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-expanded="false" aria-label="Toggle Navigation menu" aria-controls="mobileOverlay">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-overlay" id="mobileOverlay" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+    <button class="mobile-close" id="mobileClose" aria-label="Close menu">&times;</button>
+    <a href="../day01.html">Try Day 01 Free</a>
+    <a href="#curriculum">Curriculum</a>
+    <a href="#testimonials">Testimonials</a>
+    <a href="#faq">FAQ</a>
+    <a href="#pricing" class="btn-gold btn-gold--filled" style="width: 80%; justify-content: center; margin-top: 1rem;" data-cta="buy">Buy Now &mdash; $19</a>
+  </div>
+
+  <!-- Main Content -->
+  <main id="main-content">
+    
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-left reveal">
+          <span class="hero-badge">&#x1F4A1; Escape Tutorial Hell</span>
+          <h1 class="hero-title"><span class="typed-learn">Learn</span>PYTHON <svg class="py-logo" viewBox="0 0 459 459" aria-label="Python Logo"><path fill="#306998" d="M229.5 0C161.4 0 122.4 15.6 122.4 53.6v34.4h107.1v15.3H122.4c-47.8 0-76.5 30.6-76.5 76.5v61.2c0 45.9 28.7 76.5 76.5 76.5h30.6v-45.9c0-51 41.3-91.8 91.8-91.8h107.1V107.1c0-53.6-47.8-107.1-122.4-107.1zM175.9 30.6c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3 6.9-15.3 15.3-15.3z"/><path fill="#FFE873" d="M229.5 459c68.1 0 107.1-15.6 107.1-53.6v-34.4H229.5v-15.3h107.1c47.8 0 76.5-30.6 76.5-76.5v-61.2c0-45.9-28.7-76.5-76.5-76.5h-30.6v45.9c0 51-41.3 91.8-91.8 91.8H122.4V351.9c0 53.6 47.8 107.1 122.4 107.1zm53.6-30.6c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3 15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3z"/></svg><br>BY <span class="gradient-actually">ACTUALLY</span> <span class="gradient-coding">CODING.</span></h1>
+          <p class="hero-sub">Master <strong>Python for Data Analytics</strong> with the ultimate 30-day interactive masterclass. Skip passive video bloat—write actual code side-by-side inside live browser notebooks, and ace your technical recruiting with <strong>750+ real-world data science interview challenges</strong>.</p>
+          <div class="hero-ctas">
+            <a href="../day01.html" class="btn-gold btn-gold--filled">&#x26A1; Launch Day 01 Free &mdash; Code Instantly</a>
+            <a href="#pricing" class="btn-gold btn-gold--outline" data-cta="buy">&#x1F4B3; Get Lifetime Access &mdash; $19 / &#x20B9;1,499</a>
+          </div>
+        </div>
+        
+        <div class="hero-right reveal">
+          <div class="terminal-stats">
+            <div class="stat-badge badge-days">
+              <span class="badge-led"></span>
+              <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>30 Guided Days</span>
+            </div>
+            <div class="stat-badge badge-challenges">
+              <span class="badge-led"></span>
+              <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="6"></circle>
+                <circle cx="12" cy="12" r="2"></circle>
+              </svg>
+              <span>750+ Challenges</span>
+            </div>
+            <div class="stat-badge badge-video">
+              <span class="badge-led"></span>
+              <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"></path>
+                <path d="M10 8L16 12L10 16V8Z"></path>
+                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+              </svg>
+              <span>No Video Bloat</span>
+            </div>
+          </div>
+          
+          <div class="terminal" role="img" aria-label="Visual demonstration of python data analytics workflow">
+            <div class="terminal-bar">
+              <div class="terminal-dots">
+                <span class="dot dot-r" aria-hidden="true"></span>
+                <span class="dot dot-y" aria-hidden="true"></span>
+                <span class="dot dot-g" aria-hidden="true"></span>
+              </div>
+              <span class="terminal-title">Python Interactive Console</span>
+            </div>
+            <div class="terminal-body">
+              <div class="terminal-mesh" aria-hidden="true"></div>
+              <div class="terminal-blobs" aria-hidden="true">
+                <div class="blob blob-purple"></div>
+                <div class="blob blob-cyan"></div>
+              </div>
+              <div class="terminal-code-wrapper" aria-live="off" aria-atomic="true">
+                <pre><code id="typingDisplay"></code></pre>
+                <span class="cursor-blink" id="typingCursor" aria-hidden="true">&#x2587;</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="hero-proof">
+            <div class="proof-card rating-card">
+              <svg class="proof-icon star-icon" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <span>4.9/5 Student Rating</span>
+            </div>
+            <div class="proof-card learners-card">
+              <svg class="proof-icon users-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <span>2,400+ Active Learners</span>
+            </div>
+            <div class="proof-card cert-card">
+              <svg class="proof-icon cert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+              </svg>
+              <span>Job-Ready Certificate Included</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Proof Strip -->
+    <section class="proof-strip">
+      <div class="container">
+        <div class="proof-stat">
+          <span class="proof-num" data-count="2400" data-suffix="+">0</span>
+          <span class="proof-label">Enrolled Learners</span>
+        </div>
+        <div class="proof-stat">
+          <span class="proof-num" data-count="750" data-suffix="+">0</span>
+          <span class="proof-label">Interview Practice Challenges</span>
+        </div>
+        <div class="proof-stat">
+          <span class="proof-num" data-count="30" data-suffix=" Days">0</span>
+          <span class="proof-label">Complete Learning Plan</span>
+        </div>
+        <div class="proof-stat">
+          <span class="proof-num" data-count="100" data-suffix="%">0</span>
+          <span class="proof-label">Interactive Practice Retention</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Free Day 1 Preview -->
+    <section class="preview">
+      <div class="container">
+        <div class="preview-text reveal">
+          <h2>Stop Stalling. Try Day 01 Unlocked Right Now.</h2>
+          <p class="preview-body">We are so confident in our hands-on active curriculum that we don't hide it behind annoying paywalls, subscription captures, or sales call forms. Launch the full Day 01 interactive notebook workspace directly in your browser. Edit variables, run automated test sets, and experience how simple learning python can feel when you are actually coding.</p>
+          <ul class="preview-list">
+            <li>Day 01: Core memory allocation & basic syntax foundations</li>
+            <li>Fully active Jupyter-style notebook cell editor</li>
+            <li>Instant, real-time code execution and automated test runners</li>
+            <li>100% Zero local installation — click and code instantly</li>
+          </ul>
+        </div>
+        <div class="preview-visual reveal">
+          <div class="preview-card">
+            <div class="preview-card-icon">&#x1F513;</div>
+            <h3>Instant Day 01 Sandbox</h3>
+            <span class="preview-meta">100% Free &bull; No Login Required</span>
+            <a href="../day01.html" class="btn-gold btn-gold--filled preview-cta">&#x1F680; Launch Lesson Sandbox</a>
+            <span class="preview-micro">Build active muscle memory in 10 minutes</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>How Manodemy Accelerates Mastery</h2>
+          <p>A proven interactive learning framework designed to build true muscle memory.</p>
+        </div>
+        <div class="how-steps">
+          <div class="how-step reveal">
+            <span class="how-num">01</span>
+            <h3>Conceptual Breakdowns</h3>
+            <p>Skip dry video lectures. Master deep concepts fast using precise, clear technical summaries designed by data team leads.</p>
+          </div>
+          <div class="how-arrow" aria-hidden="true">&#x2192;</div>
+          <div class="how-step reveal">
+            <span class="how-num">02</span>
+            <h3>Inline Execution</h3>
+            <p>Edit and run real Python script directly within each cell. Play with code side-by-side inside your standard notebook interface.</p>
+          </div>
+          <div class="how-arrow" aria-hidden="true">&#x2192;</div>
+          <div class="how-step reveal">
+            <span class="how-num">03</span>
+            <h3>Automated Verification</h3>
+            <p>Solve hundreds of interactive evaluation puzzles. Get direct guidance and absolute confirmation on every test case immediately.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Curriculum Roadmap Section -->
+    <section class="curriculum" id="curriculum">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Structured 30-Day Syllabus</h2>
+          <p>Filter by data theme to preview every core milestone of your analysis journey.</p>
+        </div>
+        <div class="filter-tabs reveal">
+          <button class="filter-tab active" data-filter="all">All Modules</button>
+          <button class="filter-tab" data-filter="basics">Python Foundations</button>
+          <button class="filter-tab" data-filter="structures">Data Structures</button>
+          <button class="filter-tab" data-filter="analysis">Data Analysis (Pandas/NumPy)</button>
+          <button class="filter-tab" data-filter="advanced">Advanced Techniques</button>
+        </div>
+        
+        <div class="curriculum-grid reveal">
+          <!-- Basics -->
+          <div class="day-card" data-day="01" data-category="basics" tabindex="0">
+            <span class="day-num">Day 01</span>
+            <span class="day-emoji">🔢</span>
+            <span class="day-title">Data Types and Memory</span>
+            <span class="day-badge free-badge">FREE</span>
+          </div>
+          <div class="day-card" data-day="02" data-category="basics" tabindex="0">
+            <span class="day-num">Day 02</span>
+            <span class="day-emoji">➕</span>
+            <span class="day-title">Operators and Control Flow</span>
+            <span class="day-badge free-badge">FREE</span>
+          </div>
+          
+          <!-- Structures -->
+          <div class="day-card locked" data-day="03" data-category="structures" tabindex="0">
+            <span class="day-num">Day 03</span>
+            <span class="day-emoji">📝</span>
+            <span class="day-title">Strings Manipulation</span>
+            <span class="day-badge lock-badge">&#x1F512;</span>
+          </div>
+          <div class="day-card locked" data-day="04" data-category="structures" tabindex="0">
+            <span class="day-num">Day 04</span>
+            <span class="day-emoji">📋</span>
+            <span class="day-title">Lists & Tuples Essentials</span>
+            <span class="day-badge lock-badge">&#x1F512;</span>
+          </div>
+          <div class="day-card locked" data-day="05" data-category="structures" tabindex="0">
+            <span class="day-num">Day 05</span>
+            <span class="day-emoji">📦</span>
+            <span class="day-title">Dictionaries & Sets Deep Dive</span>
+            <span class="day-badge lock-badge">&#x1F512;</span>
+          </div>
+          
+          <!-- Analysis -->
+          <div class="day-card locked" data-day="06" data-category="analysis" tabindex="0">
+            <span class="day-num">Day 06</span>
+            <span class="day-emoji">🧮</span>
+            <span class="day-title">NumPy Arrays & Matrices</span>
+            <span class="day-badge lock-badge">&#x1F512;</span>
+          </div>
+          <div class="day-card locked" data-day="07" data-category="analysis" tabindex="0">
+            <span class="day-num">Day 07</span>
+            <span class="day-emoji">📊</span>
+            <span class="day-title">Pandas Series & DataFrames</span>
+            <span class="day-badge lock-badge">&#x1F512;</span>
+          </div>
+          <div class="day-card locked" data-day="08" data-category="analysis" tabindex="0">
+            <span class="day-num">Day 08</span>
+            <span class="day-emoji">🧼</span>
+            <span class="day-title">Cleaning Messy Data</span>
+            <span class="day-badge lock-badge">&#x1F512;</span>
+          </div>
+          <div class="day-card locked" data-day="09" data-category="analysis" tabindex="0">
+            <span class="day-num">Day 09</span>
+            <span class="day-emoji">🔄</span>
+            <span class="day-title">Aggregating & Grouping</span>
+            <span class="day-badge lock-badge">&#x1F512;</span>
+          </div>
+          <div class="day-card locked" data-day="10" data-category="analysis" tabindex="0">
+            <span class="day-num">Day 10</span>
+            <span class="day-emoji">📈</span>
+            <span class="day-title">Matplotlib Visualizations</span>
+            <span class="day-badge lock-badge">&#x1F512;</span>
+          </div>
+          
+          <!-- Advanced / Capstones -->
+          <div class="day-card locked" data-day="20" data-category="advanced" tabindex="0">
+            <span class="day-num">Day 20</span>
+            <span class="day-emoji">🏢</span>
+            <span class="day-title">SQL Integration & Queries</span>
+            <span class="day-badge lock-badge">&#x1F512;</span>
+          </div>
+          <div class="day-card locked" data-day="30" data-category="advanced" tabindex="0">
+            <span class="day-num">Day 30</span>
+            <span class="day-emoji">🎓</span>
+            <span class="day-title">Capstone: E-Commerce Funnel Analysis</span>
+            <span class="day-badge lock-badge">&#x1F512;</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison Table Section -->
+    <section class="compare">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Why Choose Manodemy?</h2>
+          <p>See how interactive instruction compares to standard learning setups.</p>
+        </div>
+        <div class="compare-wrap reveal">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Feature</th>
+                <th scope="col" class="col-mano">Manodemy Masterclass</th>
+                <th scope="col">Traditional Video Courses</th>
+                <th scope="col">Bootcamps</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Interactive Coding</strong></td>
+                <td class="col-mano yes">&#x2714; Browser Editor Included</td>
+                <td class="no">&#x2718; Passive Watching</td>
+                <td>&#x2714; Project Assignments</td>
+              </tr>
+              <tr>
+                <td><strong>No Local Setup Required</strong></td>
+                <td class="col-mano yes">&#x2714; Zero Installation</td>
+                <td class="no">&#x2718; Hours of Configuration Debugging</td>
+                <td class="no">&#x2718; Standard Local CLI Setup</td>
+              </tr>
+              <tr>
+                <td><strong>Structured Daily Plan</strong></td>
+                <td class="col-mano yes">&#x2714; Clean 30-Day Progression</td>
+                <td class="no">&#x2718; Unending Playlists</td>
+                <td>&#x2714; Rigid Schedule</td>
+              </tr>
+              <tr>
+                <td><strong>Refund Guarantee</strong></td>
+                <td class="col-mano yes">&#x2714; 7-Day Money-Back Guarantee</td>
+                <td>&#x2714; Variable Policies</td>
+                <td class="no">&#x2718; None (High-stakes deposits)</td>
+              </tr>
+              <tr>
+                <td><strong>Total Cost</strong></td>
+                <td class="col-mano yes" style="font-weight: 600;">$19 / &#x20B9;1,499 (One-Time)</td>
+                <td>$15 - $200 / Month</td>
+                <td class="no">$5,000+ Upfront</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Praise From Successful Students</h2>
+          <p>Join over 2,400 ambitious learners who broke through conceptual blocks.</p>
+        </div>
+        
+        <div class="testimonials-grid">
+          <div class="test-card reveal">
+            <div class="test-stars" aria-label="5 out of 5 stars">&#x2B50;&#x2B50;&#x2B50;&#x2B50;&#x2B50;</div>
+            <p class="test-quote">"After spending three weeks struggling through video playlists on YouTube, I finished the entire Pandas milestone on Manodemy in three days. Interactive coding makes all the difference."</p>
+            <div class="test-author">
+              <span class="test-avatar" aria-hidden="true">AR</span>
+              <span class="test-name">Aarav R. &bull; Junior Data Analyst</span>
+            </div>
+          </div>
+          
+          <div class="test-card reveal">
+            <div class="test-stars" aria-label="5 out of 5 stars">&#x2B50;&#x2B50;&#x2B50;&#x2B50;&#x2B50;</div>
+            <p class="test-quote">"The 750+ interview questions matched the coding round I faced at a major analytics firm. Buying full access is easily the highest ROI education I've bought all year."</p>
+            <div class="test-author">
+              <span class="test-avatar" aria-hidden="true">SP</span>
+              <span class="test-name">Siddharth P. &bull; Business Analyst</span>
+            </div>
+          </div>
+          
+          <div class="test-card reveal">
+            <div class="test-stars" aria-label="5 out of 5 stars">&#x2B50;&#x2B50;&#x2B50;&#x2B50;&#x2B50;</div>
+            <p class="test-quote">"Being able to study, modify variables, and verify answers directly within the browser without debugging my local Python paths was amazing. Worth every cent."</p>
+            <div class="test-author">
+              <span class="test-avatar" aria-hidden="true">KN</span>
+              <span class="test-name">Kavitha N. &bull; Career Switcher</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Urgency and Pricing Section -->
+    <section class="pricing" id="pricing">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="urgency-bar" id="urgencyBar">
+            <span class="clock">&#x23F1;</span>
+            <span>Cohort pricing ends in:</span>
+            <div class="countdown" id="countdown" data-deadline="2026-06-25T23:59:59" aria-live="polite"><span>00D</span> : <span>00H</span> : <span>00M</span> : <span>00S</span></div>
+          </div>
+          <h2>Join the Challenge. Gain Lifetime Mastery.</h2>
+          <p>Get full lifetime access to all 30 days, solutions, interview guide, and support.</p>
+        </div>
+        
+        <div class="pricing-card reveal">
+          <span class="popular-badge">Special Cohort Offer</span>
+          <span class="price-old">$99 / &#x20B9;8,200 Upfront</span>
+          <span class="price-now"><span>$19</span></span>
+          <span class="price-inr">or &nbsp;&#x20B9;1,499 one-time payment</span>
+          <span class="discount-pill">You save over 80% today</span>
+          
+          <ul class="pricing-features">
+            <li><span class="feat-check">&#x2714;</span> 30 Unlocked Day Notebooks</li>
+            <li><span class="feat-check">&#x2714;</span> 750+ Practice Interview Questions</li>
+            <li><span class="feat-check">&#x2714;</span> Inline evaluation and test runners</li>
+            <li><span class="feat-check">&#x2714;</span> Certification of Masterclass Completion</li>
+            <li><span class="feat-check">&#x2714;</span> Premium career guidance resources</li>
+          </ul>
+          
+          <a href="#buy" class="btn-gold btn-gold--filled" style="width:100%;" data-cta="buy">&#x1F680; Buy Full Masterclass &mdash; Unlocks Instantly</a>
+          
+          <div class="guarantee">
+            <span class="shield">&#x1F6E1;</span>
+            <div>
+              <strong>7-Day Unconditional Guarantee</strong>
+              <p>We trust our interactive curriculum. If you don't build confidence within 7 days, simply email manodemy25@gmail.com for a full, rapid refund.</p>
+            </div>
+          </div>
+          
+          <div class="trust-trio">
+            <span>&#x1F512; Secure Checkout</span>
+            <span>&#x1F4BE; Instant Access</span>
+            <span>&#x26A0; One-Time Payment</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Frequently Asked Questions</h2>
+          <p>Everything you need to know about our interactive format.</p>
+        </div>
+        
+        <div class="faq-list">
+          <details class="faq-item reveal" open>
+            <summary>Is this course suitable for complete beginners?<span class="faq-icon">&#x2B55;</span></summary>
+            <div class="faq-answer">
+              Yes, absolutely! Day 01 assumes no prior programming experience. We teach you Python basic structures, syntax, variables, and logic before transitioning into Pandas, NumPy, and complex analytical workflows.
+            </div>
+          </details>
+          
+          <details class="faq-item reveal">
+            <summary>Do I need to install any heavy programs or IDEs?<span class="faq-icon">&#x2B55;</span></summary>
+            <div class="faq-answer">
+              No local installation or terminal debugging is required. Our interactive browser notebook environment allows you to write, edit, and evaluate real production-grade Python code directly inside the browser.
+            </div>
+          </details>
+          
+          <details class="faq-item reveal">
+            <summary>What is the 7-day money-back guarantee policy?<span class="faq-icon">&#x2B55;</span></summary>
+            <div class="faq-answer">
+              If for any reason you feel the course format is not helping you master Python, simply email our support at <strong>manodemy25@gmail.com</strong> within 7 days of purchase. We will issue a 100% refund immediately, no awkward questions asked.
+            </div>
+          </details>
+          
+          <details class="faq-item reveal">
+            <summary>Will I receive a course completion certificate?<span class="faq-icon">&#x2B55;</span></summary>
+            <div class="faq-answer">
+              Yes. Upon completing all 30 lesson modules and passing the automated capstone project evaluations, you will receive a verifiable digital certificate to showcase on LinkedIn or your portfolio.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta">
+      <div class="container">
+        <h2 class="reveal">Stop stalling your data career. Build active skills.</h2>
+        <p class="sub reveal">Gain real muscle memory, master interview algorithms, and prove your capabilities with job-ready capstone analysis.</p>
+        <div class="ctas reveal">
+          <a href="../day01.html" class="btn-gold btn-gold--outline">&#x26A1; Try Day 01 Free First</a>
+          <a href="#pricing" class="btn-gold btn-gold--filled" data-cta="buy">&#x1F3C6; Get Premium Access Now &mdash; $19</a>
+        </div>
+        <span class="micro reveal">&bull; 7-Day Refund Guarantee &bull; Lifetime updates included</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <span class="footer-brand-name">Manodemy</span>
+          <p class="footer-tagline">Learn by actually coding.</p>
+          <p class="footer-desc">Professional interactive educational materials designed to unlock complex technical subjects through practice-first retention models.</p>
+          <span class="footer-copy">&copy; 2026 Manodemy. All rights reserved.</span>
+        </div>
+        <div class="footer-col">
+          <h4>Syllabus Links</h4>
+          <a href="../day01.html">Try Day 01 (Free)</a>
+          <a href="#curriculum">Syllabus Overview</a>
+          <a href="#pricing">Pricing Structure</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support & Legal</h4>
+          <a href="#faq">Frequently Asked Questions</a>
+          <a href="mailto:manodemy25@gmail.com">Contact Support</a>
+          <a href="#">Privacy Policy &bull; Terms</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        Designed for future Data Analysts &bull; Delhi &bull; Singapore &bull; Global
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Sticky Buy Bar -->
+  <div class="mobile-sticky" id="mobileSticky">
+    <a href="../day01.html" class="sticky-free">&#x26A1; Day 01 Free</a>
+    <a href="#pricing" class="sticky-buy" data-cta="buy">&#x1F4B3; Full Access &mdash; $19</a>
+  </div>
+
+  <!-- Supabase Config Context Injection -->
+  <script>
+    window.MANODEMY_CONFIG = {
+      SUPA_URL: "https://gvhnwmuyrwissgkumeif.supabase.co",
+      SUPA_KEY: "sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq"
+    };
+  </script>
+
+  <!-- External JS Dependencies -->
+  <script src="../supabase.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

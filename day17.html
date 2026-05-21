@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 17: OOP Advanced — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -256,27 +247,27 @@ print(t == Team(&quot;Alpha&quot;, [])) # Calls __eq__ (True)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Dunder Methods</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by defining a class called Point with two attributes: x and y." data-hint-2="Use the __init__ method to initialize these attributes when creating a new Point instance." data-hint-3="To print the instance, you&#x27;ll need to use the built-in print function and the str function to convert the object to a string." data-hint-4="Be careful not to forget to print the instance, or you might wonder why your code isn&#x27;t working as expected." data-hint-5="Your final code should look something like: class Point: ...; p = Point(1, 2); print(p)."><p><strong>Q1.</strong> Create a <code>Point(x,y)</code> class. Try to <code>print()</code> an instance and note the ugly output.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create a <code>Point(x,y)</code> class. Try to <code>print()</code> an instance and note the ugly output.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To add a str method to the Point class, you&#x27;ll need to define a new method that returns a string representation of the point." data-hint-2="Inside this method, you can use the __str__ method to get the string representation of the x and y attributes." data-hint-3="Use string formatting to create a string that looks like (x, y)." data-hint-4="Don&#x27;t forget to call the super().__str__() method to get the default string representation of the object." data-hint-5="Your final code should look something like: class Point: ...; def __str__(self): return f&#x27;({self.x}, {self.y})&#x27;."><p><strong>Q2.</strong> Add a <code><strong>str</strong></code> method to <code>Point</code> that returns <code>"(x, y)"</code>. Print the instance again.</p></div>
+<div class="question"><p><strong>Q2.</strong> Add a <code><strong>str</strong></code> method to <code>Point</code> that returns <code>"(x, y)"</code>. Print the instance again.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To add an eq method to the Point class, you&#x27;ll need to define a new method that takes another Point instance as an argument." data-hint-2="Inside this method, you can use the == operator to compare the x and y attributes of the two points." data-hint-3="Use the and operator to ensure that both x and y are equal before returning True." data-hint-4="Don&#x27;t forget to test the method with two instances of Point, like Point(1, 1) and Point(1, 1)." data-hint-5="Your final code should look something like: class Point: ...; def __eq__(self, other): return self.x == other.x and self.y == other.y."><p><strong>Q3.</strong> Add an <code><strong>eq</strong></code> method that returns True if both x and y are the same. Test <code>Point(1,1) == Point(1,1)</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Add an <code><strong>eq</strong></code> method that returns True if both x and y are the same. Test <code>Point(1,1) == Point(1,1)</code>.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To add an add method to the Point class, you&#x27;ll need to define a new method that takes another Point instance as an argument." data-hint-2="Inside this method, you can use the + operator to add the x and y attributes of the two points." data-hint-3="Use the __add__ method to get the result of adding the two points together." data-hint-4="Don&#x27;t forget to test the method with two instances of Point, like Point(1, 2) and Point(3, 4)." data-hint-5="Your final code should look something like: class Point: ...; def __add__(self, other): return Point(self.x + other.x, self.y + other.y)."><p><strong>Q4.</strong> Add a <code><strong>add</strong></code> method that allows you to add two points together: <code>Point(x1+x2, y1+y2)</code>. Test <code>p1 + p2</code>.</p></div>
+<div class="question"><p><strong>Q4.</strong> Add a <code><strong>add</strong></code> method that allows you to add two points together: <code>Point(x1+x2, y1+y2)</code>. Test <code>p1 + p2</code>.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="repr is meant for developers because it provides a more detailed and technical representation of the object." data-hint-2="str is meant for users because it provides a more user-friendly and readable representation of the object." data-hint-3="Think about how you would want to see a Point object represented in a log message versus in a user interface." data-hint-4="Don&#x27;t confuse the two methods - repr is not just a more detailed version of str." data-hint-5="Your final understanding should be that repr is for developers and str is for users."><p><strong>Q5.</strong> Why is <code><strong>repr</strong></code> meant for developers and <code><strong>str</strong></code> meant for users?</p></div>
+<div class="question"><p><strong>Q5.</strong> Why is <code><strong>repr</strong></code> meant for developers and <code><strong>str</strong></code> meant for users?</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -337,27 +328,27 @@ print(t.fahrenheit)
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Properties</code></b>
 </h3></div>
-<div class="question" data-hint-1="Let&#x27;s start by understanding what the question is asking. We need to create a class called Person with an initializer method (init) that sets two attributes: first and last." data-hint-2="To set these attributes, we&#x27;ll use the self parameter in Python, which is a reference to the current instance of the class. We&#x27;ll use the = operator to assign values to self.first and self.last." data-hint-3="The structure of the code should start with the class definition, followed by the init method, and then we&#x27;ll define the attributes inside the init method." data-hint-4="A common pitfall here is forgetting to assign values to self.first and self.last, or using the wrong operator to set the attributes." data-hint-5="The final code should look something like this: class Person: def __init__(self, first, last): self.first = first; self.last = last."><p><strong>Q1.</strong> Create a <code>Person</code> class with an <code><strong>init</strong></code> that sets <code>self.first</code> and <code>self.last</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create a <code>Person</code> class with an <code><strong>init</strong></code> that sets <code>self.first</code> and <code>self.last</code>.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Now that we have the Person class with the init method, let&#x27;s add a property method called fullname. This method should return the full name by concatenating first and last with a space in between." data-hint-2="To create a property in Python, we&#x27;ll use the @property decorator, which allows us to define getter and setter methods for an attribute." data-hint-3="The structure of the code should start with the @property decorator, followed by the getter method that returns the full name." data-hint-4="A common mistake here is forgetting to use the @property decorator or not defining the getter method correctly." data-hint-5="The final code should look something like this: class Person: @property def fullname(self): return self.first + &#x27; &#x27; + self.last."><p><strong>Q2.</strong> Add a <code>@property</code> method called <code>fullname</code> that returns <code>first + " " + last</code>.</p></div>
+<div class="question"><p><strong>Q2.</strong> Add a <code>@property</code> method called <code>fullname</code> that returns <code>first + " " + last</code>.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Now that we have the Person class with the fullname property, let&#x27;s create an instance of the class and change the first attribute. Then, we&#x27;ll print the fullname without using parentheses." data-hint-2="To create an instance of the class, we&#x27;ll use the class name followed by parentheses and pass in the required arguments." data-hint-3="The structure of the code should start with creating an instance, followed by changing the first attribute, and then printing the fullname." data-hint-4="A common pitfall here is forgetting to create an instance of the class or not passing the required arguments." data-hint-5="The final code should look something like this: person = Person(&#x27;John&#x27;, &#x27;Doe&#x27;); person.first = &#x27;Jane&#x27;; print(person.fullname)"><p><strong>Q3.</strong> Create an instance, change <code>first</code>, and then print <code>fullname</code> without parentheses. See how it updates.</p></div>
+<div class="question"><p><strong>Q3.</strong> Create an instance, change <code>first</code>, and then print <code>fullname</code> without parentheses. See how it updates.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Now that we have the Person class with the fullname property, let&#x27;s add a setter method for the fullname attribute. This method should take a full name string, split it into first and last, and update the attributes accordingly." data-hint-2="To create a setter method in Python, we&#x27;ll use the @fullname.setter decorator, which allows us to define a method that updates the attribute." data-hint-3="The structure of the code should start with the @fullname.setter decorator, followed by the setter method that updates the attributes." data-hint-4="A common mistake here is forgetting to use the @fullname.setter decorator or not defining the setter method correctly." data-hint-5="The final code should look something like this: class Person: @property def fullname(self): return self.first + &#x27; &#x27; + self.last; @fullname.setter def fullname(self, value): self.first, self.last = value.split()"><p><strong>Q4.</strong> Add a setter <code>@fullname.setter</code> that takes a full name string, splits it, and updates <code>first</code> and <code>last</code>.</p></div>
+<div class="question"><p><strong>Q4.</strong> Add a setter <code>@fullname.setter</code> that takes a full name string, splits it, and updates <code>first</code> and <code>last</code>.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Properties in Python are better than Java-style get_name() and set_name() methods because they provide a more concise and readable way to access and modify attributes." data-hint-2="Properties allow us to define getter and setter methods that can perform complex logic, such as validation or data conversion." data-hint-3="Properties can also be used to implement lazy loading or caching, which can improve performance in certain scenarios." data-hint-4="A common misconception is that properties are only useful for simple attributes, but they can be used for complex data structures as well." data-hint-5="The final code should look something like this: class Person: @property def fullname(self): return self.first + &#x27; &#x27; + self.last; @fullname.setter def fullname(self, value): self.first, self.last = value.split()"><p><strong>Q5.</strong> Why are properties better than Java-style <code>get_name()</code> and <code>set_name()</code> methods?</p></div>
+<div class="question"><p><strong>Q5.</strong> Why are properties better than Java-style <code>get_name()</code> and <code>set_name()</code> methods?</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -416,27 +407,27 @@ print(Config.validate_key(&quot;port&quot;))</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Class Methods</code></b>
 </h3></div>
-<div class="question" data-hint-1="Let&#x27;s start by understanding what we need to create: a Date class with day, month, and year attributes." data-hint-2="To add a class method from_string, we&#x27;ll use the @classmethod decorator and the str.split() function to parse the date string." data-hint-3="The from_string method should first split the date string into day, month, and year, then assign these values to the corresponding class attributes." data-hint-4="A common mistake here is to forget to handle cases where the input string is not in the correct format, e.g., &#x27;25-12-2023&#x27;." data-hint-5="The final code should look like this: `Date.from_string(&#x27;25-12-2023&#x27;)` should create a Date object with day=25, month=12, year=2023."><p><strong>Q1.</strong> Create a <code>Date</code> class with <code>day, month, year</code>. Add a <code>@classmethod</code> <code>from_string(cls, date_str)</code> that parses <code>"DD-MM-YYYY"</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create a <code>Date</code> class with <code>day, month, year</code>. Add a <code>@classmethod</code> <code>from_string(cls, date_str)</code> that parses <code>"DD-MM-YYYY"</code>.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Now that we have the Date class, let&#x27;s test the from_string method by creating a Date object from a string." data-hint-2="We&#x27;ll use the d = Date.from_string(&#x27;25-12-2023&#x27;) line to create the object and then print its year attribute." data-hint-3="Remember to call the from_string method as a class method, using the class name (Date) instead of an instance." data-hint-4="A common mistake here is to forget to print the year attribute after creating the Date object." data-hint-5="The final code should look like this: `d = Date.from_string(&#x27;25-12-2023&#x27;); print(d.year)`"><p><strong>Q2.</strong> Test the class method: <code>d = Date.from_string("25-12-2023")</code>. Print its year.</p></div>
+<div class="question"><p><strong>Q2.</strong> Test the class method: <code>d = Date.from_string("25-12-2023")</code>. Print its year.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Let&#x27;s add a static method is_valid_month that checks if a given month is valid (i.e., between 1 and 12)." data-hint-2="We&#x27;ll use the @staticmethod decorator and a simple if statement to check the month value." data-hint-3="The is_valid_month method should take a month value as input and return a boolean indicating whether it&#x27;s valid." data-hint-4="A common mistake here is to forget to handle cases where the input month is not an integer." data-hint-5="The final code should look like this: `Date.is_valid_month(12)` should return True, while `Date.is_valid_month(13)` should return False."><p><strong>Q3.</strong> Add a <code>@staticmethod</code> <code>is_valid_month(m)</code> that checks if <code>1 <= m <= 12</code>. Test it.</p></div>
+<div class="question"><p><strong>Q3.</strong> Add a <code>@staticmethod</code> <code>is_valid_month(m)</code> that checks if <code>1 <= m <= 12</code>. Test it.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Now let&#x27;s explain the difference between cls and self in class methods and instance methods." data-hint-2="cls refers to the class itself, while self refers to the instance of the class." data-hint-3="In a class method, cls is used to access class attributes and methods, whereas in an instance method, self is used to access instance attributes and methods." data-hint-4="A common mistake here is to confuse cls and self and use them interchangeably." data-hint-5="The final code should look like this: `cls` is used in class methods, while `self` is used in instance methods."><p><strong>Q4.</strong> Explain the difference between <code>cls</code> in a class method and <code>self</code> in an instance method.</p></div>
+<div class="question"><p><strong>Q4.</strong> Explain the difference between <code>cls</code> in a class method and <code>self</code> in an instance method.</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Let&#x27;s add a class attribute count to the Date class and increment it inside the __init__ method." data-hint-2="We&#x27;ll use the class attribute syntax (Date.count) to access the count attribute and the += operator to increment it." data-hint-3="The __init__ method should increment the count attribute every time a new Date object is created." data-hint-4="A common mistake here is to forget to initialize the count attribute before using it." data-hint-5="The final code should look like this: `Date.count` should be incremented every time a new Date object is created."><p><strong>Q5.</strong> Add a class attribute <code>count = 0</code>. Increment it inside <code><strong>init</strong></code>. Create 3 objects and print <code>Date.count</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Add a class attribute <code>count = 0</code>. Increment it inside <code><strong>init</strong></code>. Create 3 objects and print <code>Date.count</code>.</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -768,19 +759,9 @@ print(Config.validate_key(&quot;port&quot;))</textarea>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 18: Regex — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -248,27 +239,27 @@ print(f&quot;Phones: {phones}&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Regex Basics</code></b>
 </h3></div>
-<div class="question" data-hint-1="Let&#x27;s start by understanding what the core requirement is. You need to extract all numbers from the given string." data-hint-2="To achieve this, you&#x27;ll need to use the re.findall() function along with a regex pattern that matches numbers." data-hint-3="The pattern r&quot;\d+&quot; will match one or more digits in the string. You can use this pattern with re.findall() to get all the numbers." data-hint-4="Be careful not to forget to import the re module at the beginning of your code. A common mistake is to try to use re.findall() without importing the module first." data-hint-5="Your final code should look something like this: import re; text = &quot;I have 2 apples and 10 bananas&quot;; numbers = re.findall(r&quot;\d+&quot;, text); print(numbers)"><p><strong>Q1.</strong> Import <code>re</code>. Use <code>re.findall()</code> with <code>r"\d+"</code> to extract all numbers from <code>"I have 2 apples and 10 bananas"</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Import <code>re</code>. Use <code>re.findall()</code> with <code>r"\d+"</code> to extract all numbers from <code>"I have 2 apples and 10 bananas"</code>.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Now that you know how to extract numbers, let&#x27;s focus on replacing them with &quot;X&quot;. You&#x27;ll need to use the re.sub() function this time." data-hint-2="The re.sub() function takes three arguments: the pattern to match, the replacement string, and the string to operate on. You&#x27;ll use the same pattern r&quot;\d+&quot; to match numbers." data-hint-3="The replacement string will be &quot;X&quot;. You&#x27;ll need to use this function to replace all occurrences of numbers in the string." data-hint-4="Remember to print the result after replacing the numbers. A common mistake is to forget to print the result." data-hint-5="Your final code should look something like this: import re; text = &quot;I have 2 apples and 10 bananas&quot;; text = re.sub(r&quot;\d+&quot;, &quot;X&quot;, text); print(text)"><p><strong>Q2.</strong> Use <code>re.sub()</code> to replace all numbers in the string above with <code>"X"</code>. Print the result.</p></div>
+<div class="question"><p><strong>Q2.</strong> Use <code>re.sub()</code> to replace all numbers in the string above with <code>"X"</code>. Print the result.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Let&#x27;s find all words in the given string &quot;The quick brown fox&quot;. You&#x27;ll need to use the re.findall() function again." data-hint-2="This time, you&#x27;ll use a different pattern r&quot;\w+&quot; to match words. The \w character class matches any alphanumeric character or underscore." data-hint-3="You&#x27;ll need to use this pattern with re.findall() to get all the words in the string." data-hint-4="Be careful not to forget to import the re module at the beginning of your code. A common mistake is to try to use re.findall() without importing the module first." data-hint-5="Your final code should look something like this: import re; text = &quot;The quick brown fox&quot;; words = re.findall(r&quot;\w+&quot;, text); print(words)"><p><strong>Q3.</strong> Find all words in <code>"The quick brown fox"</code> using <code>re.findall()</code> and <code>r"\w+"</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Find all words in <code>"The quick brown fox"</code> using <code>re.findall()</code> and <code>r"\w+"</code>.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Let&#x27;s try matching the literal period in the string &quot;www.google.com&quot;. You&#x27;ll need to use the re module and a regex pattern." data-hint-2="The pattern r&quot;.&quot; will match any character, not just the literal period. This is because the period has a special meaning in regex." data-hint-3="To match the literal period, you&#x27;ll need to escape it with a backslash, like this: r&quot;\.&quot;." data-hint-4="Remember that the backslash is an escape character in Python strings, so you&#x27;ll need to use a double backslash to represent a single backslash in the regex pattern." data-hint-5="Your final code should look something like this: import re; text = &quot;www.google.com&quot;; pattern = r&quot;\.&quot;; if re.search(pattern, text): print(&quot;Matched the literal period&quot;)"><p><strong>Q4.</strong> Try matching the literal period in <code>"www.google.com"</code>. Why does <code>r"."</code> match everything? How do you escape it <code>r"\."</code>?</p></div>
+<div class="question"><p><strong>Q4.</strong> Try matching the literal period in <code>"www.google.com"</code>. Why does <code>r"."</code> match everything? How do you escape it <code>r"\."</code>?</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="The r prefix is important in regex strings because it tells Python to treat the string as a raw string, without interpreting any escape sequences." data-hint-2="Without the r prefix, the string &quot;\n&quot; would be interpreted as a newline character, not as a literal backslash and n." data-hint-3="To see the difference, try printing both &quot;\n&quot; and r&quot;\n&quot;. You&#x27;ll see that the second one prints a literal backslash and n." data-hint-4="Remember that the r prefix is not necessary for regex patterns, but it&#x27;s a good practice to use it to avoid any confusion." data-hint-5="Your final code should look something like this: print(&quot;\n&quot;) vs print(r&quot;\n&quot;)"><p><strong>Q5.</strong> Why is the <code>r</code> prefix important in regex strings? What happens to <code>print("\n")</code> vs <code>print(r"\n")</code>?</p></div>
+<div class="question"><p><strong>Q5.</strong> Why is the <code>r</code> prefix important in regex strings? What happens to <code>print("\n")</code> vs <code>print(r"\n")</code>?</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -318,27 +309,27 @@ print(f&quot;Order: {order}&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Quantifiers</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by understanding the problem: you need to match strings that start with &#x27;ID-&#x27; in the given list." data-hint-2="To do this, you&#x27;ll need to use the re.search() function with a regular expression pattern that starts with &#x27;^ID-&#x27; to match the start of the string." data-hint-3="The next step is to define the pattern and the string to search. You can use the re.search() function with a pattern like &#x27;^ID-&#x27; and a string like &#x27;ID-123&#x27;." data-hint-4="Be careful not to forget to import the re module at the beginning of your code, or you&#x27;ll get a NameError." data-hint-5="Your final code should look something like this: import re; strings = [&#x27;ID-123&#x27;, &#x27;User ID-456&#x27;]; pattern = &#x27;^ID-&#x27;; for s in strings: match = re.search(pattern, s); if match: print(s)"><p><strong>Q1.</strong> Match strings that start with "ID-". Test on <code>["ID-123", "User ID-456"]</code> using <code>^ID-</code> with <code>re.search()</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Match strings that start with "ID-". Test on <code>["ID-123", "User ID-456"]</code> using <code>^ID-</code> with <code>re.search()</code>.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="First, understand that you need to match words that end in &#x27;ing&#x27; in the given string." data-hint-2="To do this, you&#x27;ll need to use the re.search() function with a regular expression pattern that ends with &#x27;\w+ing&#x27; to match the word." data-hint-3="The next step is to define the pattern and the string to search. You can use the re.search() function with a pattern like &#x27;\w+ing&#x27; and a string like &#x27;running and jumping&#x27;." data-hint-4="Be careful not to forget to escape the &#x27;+&#x27; character in the pattern, or it won&#x27;t match correctly." data-hint-5="Your final code should look something like this: import re; string = &#x27;running and jumping&#x27;; pattern = &#x27;\w+ing&#x27;; match = re.search(pattern, string); if match: print(match.group())"><p><strong>Q2.</strong> Match words that end in "ing". Test on <code>"running and jumping"</code> using <code>\w+ing</code>.</p></div>
+<div class="question"><p><strong>Q2.</strong> Match words that end in "ing". Test on <code>"running and jumping"</code> using <code>\w+ing</code>.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by understanding the problem: you need to match both &#x27;file.txt&#x27; and &#x27;files.txt&#x27; using the optional &#x27;?&#x27; character." data-hint-2="To do this, you&#x27;ll need to use the &#x27;?&#x27; character in the regular expression pattern to make the preceding character optional." data-hint-3="The next step is to define the pattern and the string to search. You can use the re.search() function with a pattern like &#x27;file?\.txt&#x27; and a string like &#x27;file.txt&#x27; or &#x27;files.txt&#x27;." data-hint-4="Be careful not to forget to escape the &#x27;.&#x27; character in the pattern, or it won&#x27;t match correctly." data-hint-5="Your final code should look something like this: import re; strings = [&#x27;file.txt&#x27;, &#x27;files.txt&#x27;]; pattern = &#x27;file?\.txt&#x27;; for s in strings: match = re.search(pattern, s); if match: print(s)"><p><strong>Q3.</strong> Use the optional <code>?</code> to match both <code>"file.txt"</code> and <code>"files.txt"</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Use the optional <code>?</code> to match both <code>"file.txt"</code> and <code>"files.txt"</code>.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="First, understand that you need to match exactly a 5-digit zip code in the given string." data-hint-2="To do this, you&#x27;ll need to use the {n} quantifier in the regular expression pattern to match exactly n occurrences of the preceding element." data-hint-3="The next step is to define the pattern and the string to search. You can use the re.search() function with a pattern like &#x27;\d{5}&#x27; and a string like &#x27;My zip is 90210 or 1234&#x27;." data-hint-4="Be careful not to forget to escape the &#x27;{&#x27; and &#x27;}&#x27; characters in the pattern, or they won&#x27;t match correctly." data-hint-5="Your final code should look something like this: import re; string = &#x27;My zip is 90210 or 1234&#x27;; pattern = &#x27;\d{5}&#x27;; match = re.search(pattern, string); if match: print(match.group())"><p><strong>Q4.</strong> Use the <code>{n}</code> quantifier to match exactly a 5-digit zip code in <code>"My zip is 90210 or 1234"</code>.</p></div>
+<div class="question"><p><strong>Q4.</strong> Use the <code>{n}</code> quantifier to match exactly a 5-digit zip code in <code>"My zip is 90210 or 1234"</code>.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by understanding the problem: you need to demonstrate the difference between greedy and lazy matching using the re.findall() function." data-hint-2="To do this, you&#x27;ll need to use the re.findall() function with a regular expression pattern that matches &#x27;&gt;&#x27; and then compare the results with and without the &#x27;?&#x27; character." data-hint-3="The next step is to define the pattern and the string to search. You can use the re.findall() function with a pattern like &#x27;&gt;\s*&#x27; and a string like &#x27; text &#x27; or &#x27; text &gt;&#x27;." data-hint-4="Be careful not to forget to escape the &#x27;&gt;&#x27; and &#x27;*&#x27; characters in the pattern, or they won&#x27;t match correctly." data-hint-5="Your final code should look something like this: import re; strings = [&#x27; text &#x27;, &#x27; text &gt;&#x27;]; patterns = [r&#x27;&gt;\s*&#x27;, r&#x27;&gt;?\s*&#x27;]; for s, p in zip(strings, patterns): matches = re.findall(p, s); print(matches)"><p><strong>Q5.</strong> Demonstrate greedy vs lazy: run <code>re.findall(r"<.<em>>", "<b>text</b>")</code> and then <code>r"<.</em>?>"</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Demonstrate greedy vs lazy: run <code>re.findall(r"<.<em>>", "<b>text</b>")</code> and then <code>r"<.</em>?>"</code>.</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -390,27 +381,27 @@ print(f&quot;Cleaned: {clean}&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Groups</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by importing the re module and defining the string you want to search, which is &quot;hello world&quot;." data-hint-2="You&#x27;ll need to use the re.findall() function with a regular expression pattern that matches any vowel. Think about what characters are vowels and how you can represent them in a character set." data-hint-3="The regular expression pattern should use the character set [aeiou] to match any vowel. Remember to use the re.findall() function to find all matches in the string." data-hint-4="Be careful not to forget to import the re module or to use the correct function to find all matches. Also, make sure to use the correct character set to match vowels." data-hint-5="Your final code should look something like this: re.findall(&#x27;[aeiou]&#x27;, &#x27;hello world&#x27;)."><p><strong>Q1.</strong> Match any vowel in <code>"hello world"</code> using <code>re.findall()</code> and a character set <code>[aeiou]</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Match any vowel in <code>"hello world"</code> using <code>re.findall()</code> and a character set <code>[aeiou]</code>.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by importing the re module and defining the string you want to search, which is &quot;hello world&quot;." data-hint-2="You&#x27;ll need to use the re.findall() function with a regular expression pattern that matches any consonant. Think about what characters are consonants and how you can represent them in a negation set." data-hint-3="The regular expression pattern should use the negation set [^aeiou\s] to match any consonant. Remember to use the re.findall() function to find all matches in the string." data-hint-4="Be careful not to forget to import the re module or to use the correct function to find all matches. Also, make sure to use the correct negation set to match consonants." data-hint-5="Your final code should look something like this: re.findall(&#x27;[^aeiou\s]&#x27;, &#x27;hello world&#x27;)."><p><strong>Q2.</strong> Match any consonant in <code>"hello world"</code> using the negation set <code>[^aeiou\s]</code>.</p></div>
+<div class="question"><p><strong>Q2.</strong> Match any consonant in <code>"hello world"</code> using the negation set <code>[^aeiou\s]</code>.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by importing the re module and defining the strings you want to search, which are &quot;user1@gmail.com&quot; and &quot;admin@yahoo.com&quot;." data-hint-2="You&#x27;ll need to use the re.findall() function with a regular expression pattern that captures the domain name. Think about how you can represent the domain name in a capture group." data-hint-3="The regular expression pattern should use the capture group r&quot;@(\w+\.\w+)&quot; to match the domain name. Remember to use the re.findall() function to find all matches in the string." data-hint-4="Be careful not to forget to import the re module or to use the correct function to find all matches. Also, make sure to use the correct capture group to match the domain name." data-hint-5="Your final code should look something like this: re.findall(r&#x27;@(\w+\.\w+)&#x27;, &#x27;user1@gmail.com admin@yahoo.com&#x27;)."><p><strong>Q3.</strong> Extract the domain names from <code>"user1@gmail.com"</code> and <code>"admin@yahoo.com"</code> using capture groups <code>r"@(\w+\.\w+)"</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Extract the domain names from <code>"user1@gmail.com"</code> and <code>"admin@yahoo.com"</code> using capture groups <code>r"@(\w+\.\w+)"</code>.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by importing the re module and defining the string you want to search, which is &quot;100 USD and 50 EUR&quot;." data-hint-2="You&#x27;ll need to use the re.findall() function with a regular expression pattern that extracts the amount and currency. Think about how you can represent the amount and currency in a regular expression pattern." data-hint-3="The regular expression pattern should use the pattern r&quot;(\d+)\s(USD|EUR)&quot; to match the amount and currency. Remember to use the re.findall() function to find all matches in the string." data-hint-4="Be careful not to forget to import the re module or to use the correct function to find all matches. Also, make sure to use the correct pattern to match the amount and currency." data-hint-5="Your final code should look something like this: re.findall(r&#x27;(d+)\s(USD|EUR)&#x27;, &#x27;100 USD and 50 EUR&#x27;)."><p><strong>Q4.</strong> Use <code>re.findall()</code> with <code>r"(\d+)\s(USD|EUR)"</code> to extract amount and currency from <code>"100 USD and 50 EUR"</code>.</p></div>
+<div class="question"><p><strong>Q4.</strong> Use <code>re.findall()</code> with <code>r"(\d+)\s(USD|EUR)"</code> to extract amount and currency from <code>"100 USD and 50 EUR"</code>.</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by importing the re module and defining the string you want to search, which is &quot;The Quick brown Fox&quot;." data-hint-2="You&#x27;ll need to use the re.findall() function with a regular expression pattern that matches words starting with a capital letter. Think about how you can represent a word starting with a capital letter in a regular expression pattern." data-hint-3="The regular expression pattern should use the pattern [A-Z][a-z]+ to match words starting with a capital letter. Remember to use the re.findall() function to find all matches in the string." data-hint-4="Be careful not to forget to import the re module or to use the correct function to find all matches. Also, make sure to use the correct pattern to match words starting with a capital letter." data-hint-5="Your final code should look something like this: re.findall(&#x27;[A-Z][a-z]+&#x27;, &#x27;The Quick brown Fox&#x27;)."><p><strong>Q5.</strong> Extract only words starting with a capital letter from <code>"The Quick brown Fox"</code> using <code>[A-Z][a-z]+</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Extract only words starting with a capital letter from <code>"The Quick brown Fox"</code> using <code>[A-Z][a-z]+</code>.</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -742,19 +733,9 @@ print(f&quot;Cleaned: {clean}&quot;)</textarea>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

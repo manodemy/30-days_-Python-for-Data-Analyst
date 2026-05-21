@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Failed &mdash; Manodemy</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: var(--void);
+      padding: 2rem;
+    }
+    .status-card {
+      background: var(--surface);
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      border-top-color: rgba(255,255,255,0.1);
+      border-bottom-color: rgba(0,0,0,0.5);
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .status-icon {
+      font-size: 64px;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .status-card h1 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 32px;
+      color: var(--rose);
+      margin-bottom: 12px;
+    }
+    .status-card p {
+      font-size: 15px;
+      color: var(--ink-dim);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .status-meta {
+      font-family: var(--font-data);
+      font-size: 11px;
+      color: var(--ink-muted);
+      margin-bottom: 2rem;
+      display: block;
+    }
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    .back-btn {
+      display: inline-block;
+      font-family: var(--font-data);
+      font-size: 13px;
+      color: var(--ink-dim);
+    }
+    .back-btn:hover {
+      color: var(--gold);
+    }
+  </style>
+</head>
+<body>
+  <div class="status-card">
+    <div class="status-icon" aria-hidden="true">&#x1F6AB;</div>
+    <h1>Payment Unsuccessful</h1>
+    <p>We could not complete your course authorization transaction. No balance was deducted from your financial details.</p>
+    <span class="status-meta">If payment was deducted, it will automatically revert within 3-5 business days.</span>
+    
+    <a href="index.html#pricing" class="btn-gold btn-gold--filled btn-action">&#x1F504; Return to Checkout &amp; Retry</a>
+    <br>
+    <a href="index.html" class="back-btn">&#x2190; Return to Homepage</a>
+    <p style="font-size: 11px; color: var(--ink-muted); margin-top: 2rem;">If transaction errors continue, please notify support at: <strong>manodemy25@gmail.com</strong></p>
+  </div>
+</body>
+</html>

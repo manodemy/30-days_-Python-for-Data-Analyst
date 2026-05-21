@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 27: Pandas Merging — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -255,27 +246,27 @@ print(&quot;\nLeft Merge:\n&quot;, left)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Merging</code></b>
 </h3></div>
-<div class="question" data-hint-1="To start, you need to import the pandas library and create two DataFrames, df1 and df2, with a common column &#x27;ID&#x27;." data-hint-2="You&#x27;ll use the concat function to concatenate the DataFrames, but since you want to merge them, you should use the merge function instead." data-hint-3="The merge function will take the DataFrames, the common column &#x27;ID&#x27;, and the how parameter set to &#x27;inner&#x27;." data-hint-4="Be careful not to forget to specify the how parameter, as it will default to &#x27;inner&#x27; if not provided." data-hint-5="Your final code should look something like this: df = pd.merge(df1, df2, on=&#x27;ID&#x27;, how=&#x27;inner&#x27;)."><p><strong>Q1.</strong> Create two DataFrames with a common column <code>"ID"</code>. Merge them using <code>how="inner"</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create two DataFrames with a common column <code>"ID"</code>. Merge them using <code>how="inner"</code>.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Now that you have the DataFrames merged with how=&#x27;inner&#x27;, you need to change the merge type to how=&#x27;left&#x27;." data-hint-2="This will include all rows from df1 and the matching rows from df2, filling in NaN values for the unmatched rows." data-hint-3="Remember to specify the how parameter as &#x27;left&#x27; when calling the merge function." data-hint-4="A common mistake here is to forget to check for NaN values, so make sure to inspect your DataFrame carefully." data-hint-5="Your final code should look something like this: df = pd.merge(df1, df2, on=&#x27;ID&#x27;, how=&#x27;left&#x27;)."><p><strong>Q2.</strong> Change the merge to <code>how="left"</code>. Observe the <code>NaN</code> values for the unmatched row.</p></div>
+<div class="question"><p><strong>Q2.</strong> Change the merge to <code>how="left"</code>. Observe the <code>NaN</code> values for the unmatched row.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To include all IDs from both tables, you need to change the merge type to how=&#x27;outer&#x27;." data-hint-2="This will include all rows from both DataFrames, even if there are no matches." data-hint-3="The merge function will automatically fill in NaN values for the unmatched rows." data-hint-4="Be careful not to forget to specify the how parameter, as it will default to &#x27;inner&#x27; if not provided." data-hint-5="Your final code should look something like this: df = pd.merge(df1, df2, on=&#x27;ID&#x27;, how=&#x27;outer&#x27;)."><p><strong>Q3.</strong> Change the merge to <code>how="outer"</code>. Observe that all IDs from both tables are present.</p></div>
+<div class="question"><p><strong>Q3.</strong> Change the merge to <code>how="outer"</code>. Observe that all IDs from both tables are present.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="If the columns have different names, you&#x27;ll need to specify the left_on and right_on parameters when calling the merge function." data-hint-2="In this case, you&#x27;ll use left_on=&#x27;Txn_ID&#x27; and right_on=&#x27;User_ID&#x27; to merge the DataFrames." data-hint-3="Remember to keep the column names consistent, as pandas will use them to match rows." data-hint-4="A common mistake here is to forget to specify the correct column names, so make sure to double-check your code." data-hint-5="Your final code should look something like this: df = pd.merge(df1, df2, left_on=&#x27;Txn_ID&#x27;, right_on=&#x27;User_ID&#x27;)."><p><strong>Q4.</strong> What happens if the columns have different names? Use <code>left_on="Txn_ID"</code> and <code>right_on="User_ID"</code> to merge them.</p></div>
+<div class="question"><p><strong>Q4.</strong> What happens if the columns have different names? Use <code>left_on="Txn_ID"</code> and <code>right_on="User_ID"</code> to merge them.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Many-to-Many joins can be tricky, as they can result in a large number of rows and potential data inconsistencies." data-hint-2="When performing a Many-to-Many join, you&#x27;ll need to use a third DataFrame to act as a bridge between the two DataFrames." data-hint-3="This can lead to row count explosions, so be careful when working with large datasets." data-hint-4="A common mistake here is to forget to handle the Many-to-Many join correctly, so make sure to research the topic thoroughly." data-hint-5="Your final understanding should involve recognizing the need for a third DataFrame and the potential row count implications."><p><strong>Q5.</strong> Explain the risk of Many-to-Many joins. What happens to row counts?</p></div>
+<div class="question"><p><strong>Q5.</strong> Explain the risk of Many-to-Many joins. What happens to row counts?</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -317,27 +308,27 @@ print(&quot;\nConcat (Clean Index):\n&quot;, clean_concat)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Concat</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by creating two DataFrames, df1 and df2, with identical columns. You can use the pandas library to create these DataFrames." data-hint-2="Use the pd.concat function to stack these DataFrames vertically. The function takes a list of DataFrames as an argument." data-hint-3="The pd.concat function will concatenate the DataFrames in the order they appear in the list. So, df1 will be on top of df2." data-hint-4="Be careful not to forget to print the result after concatenating the DataFrames." data-hint-5="Your final code should look something like this: df_concat = pd.concat([df1, df2]) and print(df_concat)."><p><strong>Q1.</strong> Create two DataFrames with identical columns. Use <code>pd.concat([df1, df2])</code> to stack them.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create two DataFrames with identical columns. Use <code>pd.concat([df1, df2])</code> to stack them.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Notice that the index of the resulting DataFrame is not unique, which can cause problems later on." data-hint-2="To fix this, you can add the ignore_index=True argument to the pd.concat function." data-hint-3="This will reset the index of the resulting DataFrame, making it unique." data-hint-4="Don&#x27;t forget to print the result after making this change." data-hint-5="Your final code should look something like this: df_concat = pd.concat([df1, df2], ignore_index=True) and print(df_concat)."><p><strong>Q2.</strong> Notice the index duplicates. Add <code>ignore_index=True</code> to fix it. Print the result.</p></div>
+<div class="question"><p><strong>Q2.</strong> Notice the index duplicates. Add <code>ignore_index=True</code> to fix it. Print the result.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To concatenate the DataFrames side-by-side instead of stacking them vertically, you need to change the axis." data-hint-2="Use the axis=1 argument to specify that you want to concatenate along the columns." data-hint-3="This will result in a new DataFrame where the columns of df1 are next to the columns of df2." data-hint-4="Be careful not to forget to print the result after making this change." data-hint-5="Your final code should look something like this: df_concat = pd.concat([df1, df2], axis=1) and print(df_concat)."><p><strong>Q3.</strong> Change to <code>axis=1</code> to concatenate side-by-side. Print the result.</p></div>
+<div class="question"><p><strong>Q3.</strong> Change to <code>axis=1</code> to concatenate side-by-side. Print the result.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="If df1 has a column &#x27;A&#x27; and df2 has a column &#x27;B&#x27;, what do you think will happen when you concatenate them vertically?" data-hint-2="Think about what will happen to the values in the columns when you stack the DataFrames." data-hint-3="You can use the pd.concat function to see what happens." data-hint-4="Be careful not to forget to print the result." data-hint-5="Your final code should look something like this: df_concat = pd.concat([df1, df2]) and print(df_concat)."><p><strong>Q4.</strong> What happens if <code>df1</code> has a column <code>"A"</code> and <code>df2</code> has a column <code>"B"</code> and you concat vertically? (Hint: <code>NaN</code>s are generated).</p></div>
+<div class="question"><p><strong>Q4.</strong> What happens if <code>df1</code> has a column <code>"A"</code> and <code>df2</code> has a column <code>"B"</code> and you concat vertically? (Hint: <code>NaN</code>s are generated).</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To append a single row to df1, you can create a new DataFrame with that row and then use the pd.concat function." data-hint-2="Use the pd.concat function to concatenate the new DataFrame with df1." data-hint-3="Make sure to specify that you want to concatenate along the rows by using the axis=0 argument." data-hint-4="Be careful not to forget to print the result." data-hint-5="Your final code should look something like this: new_row = pd.DataFrame({&#x27;A&#x27;: [1], &#x27;B&#x27;: [2]}) and df1_concat = pd.concat([df1, new_row], axis=0) and print(df1_concat)."><p><strong>Q5.</strong> Append a single row (as a DataFrame) to <code>df1</code> using <code>pd.concat</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Append a single row (as a DataFrame) to <code>df1</code> using <code>pd.concat</code>.</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -380,27 +371,27 @@ print(&quot;\nInner Join on Index:\n&quot;, inner_joined)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Index Join</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by creating two DataFrames with matching indexes [&#x27;a&#x27;, &#x27;b&#x27;]. You can use the pandas library to create DataFrames." data-hint-2="Use the concat function to combine two lists of dictionaries into DataFrames, or use the DataFrame constructor to create DataFrames from scratch." data-hint-3="Once you have the DataFrames, use the join method to combine them. The join method takes another DataFrame as an argument and returns a new DataFrame." data-hint-4="Make sure to specify the index to join on, which in this case is the list [&#x27;a&#x27;, &#x27;b&#x27;]. If you forget to specify the index, you might get an error." data-hint-5="Your final code should look something like this: df1 = pd.DataFrame({&#x27;A&#x27;: [1, 2]}); df2 = pd.DataFrame({&#x27;B&#x27;: [3, 4]}; joined_df = df1.join(df2)"><p><strong>Q1.</strong> Create two DataFrames with matching indexes <code>["a", "b"]</code>. Use <code>df1.join(df2)</code>. Print it.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create two DataFrames with matching indexes <code>["a", "b"]</code>. Use <code>df1.join(df2)</code>. Print it.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Create two DataFrames with a column collision, where both DataFrames have a column &#x27;Val&#x27;. You can use the DataFrame constructor to create DataFrames from scratch." data-hint-2="Use the DataFrame constructor to create DataFrames from lists of dictionaries, or use the concat function to combine two lists of dictionaries into DataFrames." data-hint-3="Try to join the two DataFrames using the join method. The join method will raise a ValueError because of the column collision." data-hint-4="A common mistake here is to forget to catch the ValueError exception. Make sure to use a try-except block to handle the exception." data-hint-5="Your final code should look something like this: df1 = pd.DataFrame({&#x27;Val&#x27;: [1, 2]}); df2 = pd.DataFrame({&#x27;Val&#x27;: [3, 4]}; try: joined_df = df1.join(df2); except ValueError as e: print(e)"><p><strong>Q2.</strong> Create a column collision: both DFs have a column <code>"Val"</code>. Try to join. Catch the ValueError.</p></div>
+<div class="question"><p><strong>Q2.</strong> Create a column collision: both DFs have a column <code>"Val"</code>. Try to join. Catch the ValueError.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Fix the column collision by adding lsuffix=&quot;_left&quot;, rsuffix=&quot;_right&quot; to the join method. This will rename the columns in the joined DataFrame." data-hint-2="Use the DataFrame constructor to create DataFrames from lists of dictionaries, or use the concat function to combine two lists of dictionaries into DataFrames." data-hint-3="Once you have the DataFrames, use the join method to combine them. The join method takes another DataFrame as an argument and returns a new DataFrame." data-hint-4="Make sure to specify the index to join on, which in this case is the list [&#x27;a&#x27;, &#x27;b&#x27;]. If you forget to specify the index, you might get an error." data-hint-5="Your final code should look something like this: df1 = pd.DataFrame({&#x27;Val_left&#x27;: [1, 2]}); df2 = pd.DataFrame({&#x27;Val_right&#x27;: [3, 4]}; joined_df = df1.join(df2, lsuffix=&quot;_left&quot;, rsuffix=&quot;_right&quot;)"><p><strong>Q3.</strong> Fix Q2 by adding <code>lsuffix="_left", rsuffix="_right"</code>. Print the result.</p></div>
+<div class="question"><p><strong>Q3.</strong> Fix Q2 by adding <code>lsuffix="_left", rsuffix="_right"</code>. Print the result.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="The pd.merge() equivalent of an index join is pd.merge(left_index=True, right_index=True). This will merge the DataFrames based on their indexes." data-hint-2="Use the DataFrame constructor to create DataFrames from lists of dictionaries, or use the concat function to combine two lists of dictionaries into DataFrames." data-hint-3="Once you have the DataFrames, use the merge method to combine them. The merge method takes another DataFrame as an argument and returns a new DataFrame." data-hint-4="Make sure to specify the left_index and right_index parameters to merge the DataFrames based on their indexes." data-hint-5="Your final code should look something like this: df1 = pd.DataFrame({&#x27;A&#x27;: [1, 2]}); df2 = pd.DataFrame({&#x27;B&#x27;: [3, 4]}; merged_df = pd.merge(df1, df2, left_index=True, right_index=True)"><p><strong>Q4.</strong> What is the <code>pd.merge()</code> equivalent of an index join? (Hint: <code>left_index=True, right_index=True</code>).</p></div>
+<div class="question"><p><strong>Q4.</strong> What is the <code>pd.merge()</code> equivalent of an index join? (Hint: <code>left_index=True, right_index=True</code>).</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Time Series analysis heavily relies on index joining because it allows you to combine data from different sources based on their time stamps." data-hint-2="Index joining is a powerful tool for combining data from different sources, such as stock prices, weather data, and economic indicators." data-hint-3="By using index joining, you can create a single DataFrame that contains all the relevant data for your analysis." data-hint-4="This allows you to perform complex analysis and modeling on the combined data, such as forecasting and trend analysis." data-hint-5="Your final answer should explain why index joining is a crucial step in Time Series analysis."><p><strong>Q5.</strong> Explain why Time Series analysis heavily relies on index joining.</p></div>
+<div class="question"><p><strong>Q5.</strong> Explain why Time Series analysis heavily relies on index joining.</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -732,19 +723,9 @@ print(&quot;\nInner Join on Index:\n&quot;, inner_joined)</textarea>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

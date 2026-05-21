@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 12: Comprehensions — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -245,27 +236,27 @@ print(f&#x27;Labels: {labels}&#x27;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Adv List Comp</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by looking at the given matrix and think about how you can transform it into a one-dimensional list." data-hint-2="You&#x27;ll need to use the built-in list comprehension syntax, which allows you to create a new list by performing an operation on each element of an existing list." data-hint-3="The logic flow should involve iterating over each row in the matrix, and then over each element in each row." data-hint-4="Be careful not to forget to print the result, as the problem statement asks for it." data-hint-5="Your final code should look something like this: [element for row in matrix for element in row]."><p><strong>Q1.</strong> Given <code>matrix = [[1,2,3], [4,5,6]]</code>, write a comprehension to flatten it into <code>[1,2,3,4,5,6]</code>. Print it.</p></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>matrix = [[1,2,3], [4,5,6]]</code>, write a comprehension to flatten it into <code>[1,2,3,4,5,6]</code>. Print it.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Take a close look at the given data and think about how you can map each number to a string." data-hint-2="You&#x27;ll need to use a ternary operator within your list comprehension to make the mapping." data-hint-3="The logic flow should involve iterating over each element in the data list and applying the ternary operator to determine the corresponding string." data-hint-4="Be careful not to forget the colon (:) in the ternary operator, as it&#x27;s a crucial part of the syntax." data-hint-5="Your final code should look something like this: [&quot;Neg&quot; if x &lt; 0 else &quot;Pos&quot; for x in data]."><p><strong>Q2.</strong> Use a comprehension with an if/else ternary to map <code>data = [-1, 2, -3, 4]</code> to <code>["Neg", "Pos", "Neg", "Pos"]</code>.</p></div>
+<div class="question"><p><strong>Q2.</strong> Use a comprehension with an if/else ternary to map <code>data = [-1, 2, -3, 4]</code> to <code>["Neg", "Pos", "Neg", "Pos"]</code>.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about how you can generate all possible combinations of x and y values using nested comprehensions." data-hint-2="You&#x27;ll need to use two separate loops, one for x and one for y, to generate all possible pairs." data-hint-3="The logic flow should involve iterating over each value in the x list and then over each value in the y list." data-hint-4="Be careful not to forget to include the comma (,) in the tuple syntax, as it&#x27;s necessary to create a tuple with two elements." data-hint-5="Your final code should look something like this: [(x, y) for x in [0, 1] for y in [0, 1]]."><p><strong>Q3.</strong> Generate all Cartesian coordinates for <code>x</code> in <code>[0, 1]</code> and <code>y</code> in <code>[0, 1]</code> using a nested comprehension resulting in <code>[(0,0), (0,1), (1,0), (1,1)]</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Generate all Cartesian coordinates for <code>x</code> in <code>[0, 1]</code> and <code>y</code> in <code>[0, 1]</code> using a nested comprehension resulting in <code>[(0,0), (0,1), (1,0), (1,1)]</code>.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Take a close look at the given names list and think about how you can capitalize valid names using a list comprehension." data-hint-2="You&#x27;ll need to use the capitalize() method to capitalize each name, and also a conditional statement to exclude empty strings." data-hint-3="The logic flow should involve iterating over each name in the list and applying the capitalize() method and conditional statement." data-hint-4="Be careful not to forget to include the conditional statement, as it&#x27;s necessary to exclude empty strings." data-hint-5="Your final code should look something like this: [name.capitalize() for name in names if name]."><p><strong>Q4.</strong> Given <code>names = ["alice", "bob", ""]</code>, use a comprehension to capitalize valid names and drop empty strings.</p></div>
+<div class="question"><p><strong>Q4.</strong> Given <code>names = ["alice", "bob", ""]</code>, use a comprehension to capitalize valid names and drop empty strings.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about the difference between filtering and mapping syntax in list comprehensions." data-hint-2="Filtering involves using a conditional statement to include or exclude elements, while mapping involves applying a function to each element." data-hint-3="In this case, the syntax [x if x &gt; 0 for x in data] is invalid because it&#x27;s trying to use the if-else syntax for filtering, but it&#x27;s not properly formatted." data-hint-4="Be careful not to confuse the syntax for filtering and mapping, as they are different and have different uses." data-hint-5="Your final code should look something like this: [x for x in data if x &gt; 0]."><p><strong>Q5.</strong> Why is <code>[x if x > 0 for x in data]</code> invalid syntax? Explain the difference between filtering and mapping syntax.</p></div>
+<div class="question"><p><strong>Q5.</strong> Why is <code>[x if x > 0 for x in data]</code> invalid syntax? Explain the difference between filtering and mapping syntax.</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -313,27 +304,27 @@ print(f&#x27;Expensive: {expensive}&#x27;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Dict/Set Comp</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by looking at the list of words provided: words = [&quot;data&quot;, &quot;science&quot;, &quot;python&quot;]. Think about what you need to do to create a dictionary mapping each word to its first letter." data-hint-2="To solve this, you&#x27;ll need to use a dictionary comprehension or a for loop with the dict() function. You can use the index() method to get the first letter of each word." data-hint-3="The step-by-step logic flow is to iterate over the list of words, extract the first letter of each word, and use it as the value in the dictionary. Then, use the word as the key." data-hint-4="A common mistake here is to forget to handle the case where the word is empty or has no letters. Make sure to add a condition to handle such cases." data-hint-5="Your final code should look something like this: a dictionary with keys as the words from the list and values as the first letter of each word."><p><strong>Q1.</strong> Given <code>words = ["data", "science", "python"]</code>, create a dict mapping each word to its first letter. Print it.</p></div>
+<div class="question"><p><strong>Q1.</strong> Given <code>words = ["data", "science", "python"]</code>, create a dict mapping each word to its first letter. Print it.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by thinking about what you need to do to create a set comprehension of the squares of numbers from 1 to 10 that are divisible by 3." data-hint-2="To solve this, you&#x27;ll need to use a set comprehension with a conditional statement to filter the numbers. You can use the ** operator to calculate the square of a number." data-hint-3="The step-by-step logic flow is to generate a range of numbers from 1 to 10, calculate the square of each number, and check if it&#x27;s divisible by 3. If it is, add it to the set." data-hint-4="A common mistake here is to forget to use the correct operator for checking divisibility. Make sure to use the % operator correctly." data-hint-5="Your final code should look something like this: a set containing the squares of numbers from 1 to 10 that are divisible by 3."><p><strong>Q2.</strong> Create a set comprehension of the squares of numbers from 1 to 10 that are divisible by 3. Print it.</p></div>
+<div class="question"><p><strong>Q2.</strong> Create a set comprehension of the squares of numbers from 1 to 10 that are divisible by 3. Print it.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by looking at the dictionary d = {&quot;a&quot;: 10, &quot;b&quot;: -5, &quot;c&quot;: 20}. Think about what you need to do to create a new dictionary containing only positive values." data-hint-2="To solve this, you&#x27;ll need to use a dictionary comprehension with a conditional statement to filter the values. You can use the &gt; operator to check if a value is positive." data-hint-3="The step-by-step logic flow is to iterate over the items in the dictionary, check if the value is positive, and if it is, add it to the new dictionary." data-hint-4="A common mistake here is to forget to handle the case where the value is zero. Make sure to add a condition to handle such cases." data-hint-5="Your final code should look something like this: a dictionary with keys as the original keys and values as the positive values from the original dictionary."><p><strong>Q3.</strong> Given <code>d = {"a": 10, "b": -5, "c": 20}</code>, create a new dict containing only positive values.</p></div>
+<div class="question"><p><strong>Q3.</strong> Given <code>d = {"a": 10, "b": -5, "c": 20}</code>, create a new dict containing only positive values.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by looking at the dictionary codes = {&quot;NY&quot;: &quot;New York&quot;, &quot;CA&quot;: &quot;California&quot;}. Think about what you need to do to swap keys and values using a dictionary comprehension." data-hint-2="To solve this, you&#x27;ll need to use a dictionary comprehension with the zip() function to swap the keys and values. You can use the ** operator to unpack the key-value pairs." data-hint-3="The step-by-step logic flow is to use the zip() function to swap the keys and values, and then use a dictionary comprehension to create the new dictionary." data-hint-4="A common mistake here is to forget to use the correct function to swap the keys and values. Make sure to use the zip() function correctly." data-hint-5="Your final code should look something like this: a dictionary with keys as the original values and values as the original keys."><p><strong>Q4.</strong> Swap keys and values for <code>codes = {"NY": "New York", "CA": "California"}</code> using a dict comp.</p></div>
+<div class="question"><p><strong>Q4.</strong> Swap keys and values for <code>codes = {"NY": "New York", "CA": "California"}</code> using a dict comp.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by looking at the lists keys = [&quot;x&quot;, &quot;y&quot;] and values = [1, 2]. Think about what you need to do to create a dictionary comprehension combining these lists using zip()." data-hint-2="To solve this, you&#x27;ll need to use a dictionary comprehension with the zip() function to combine the keys and values. You can use the ** operator to unpack the key-value pairs." data-hint-3="The step-by-step logic flow is to use the zip() function to combine the keys and values, and then use a dictionary comprehension to create the new dictionary." data-hint-4="A common mistake here is to forget to use the correct function to combine the keys and values. Make sure to use the zip() function correctly." data-hint-5="Your final code should look something like this: a dictionary with keys as the elements from the keys list and values as the elements from the values list."><p><strong>Q5.</strong> Create a dict comprehension combining <code>keys=["x", "y"]</code> and <code>values=[1, 2]</code> using <code>zip()</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Create a dict comprehension combining <code>keys=["x", "y"]</code> and <code>values=[1, 2]</code> using <code>zip()</code>.</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -662,19 +653,9 @@ print(f&#x27;Expensive: {expensive}&#x27;)</textarea>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

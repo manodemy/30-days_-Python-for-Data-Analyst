@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 20: Capstone Project — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -245,27 +236,27 @@ print(&quot;Are you ready? Let&#x27;s go.&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Capstone</code></b>
 </h3></div>
-<div class="question" data-hint-1="Let&#x27;s start by defining the purpose of the LogEntry class. What information do you think it should store about each log entry?" data-hint-2="To store the timestamp, level, and message, you&#x27;ll likely need to use Python&#x27;s built-in datetime module for the timestamp and a string for the level and message." data-hint-3="The step-by-step logic flow would be to first initialize the LogEntry class with the required attributes, then create a method to print out the log entry details." data-hint-4="A common mistake here might be forgetting to handle the case where the level or message is missing, so make sure to add some error checking code." data-hint-5="Your final code should look something like this: a LogEntry class with a constructor that takes in the timestamp, level, and message, and a method to print out the log entry details."><p><strong>Q1.</strong> Before coding, plan: What attributes should a <code>LogEntry</code> class have? (e.g., timestamp, level, message).</p></div>
+<div class="question"><p><strong>Q1.</strong> Before coding, plan: What attributes should a <code>LogEntry</code> class have? (e.g., timestamp, level, message).</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To extract the date and error message from the log entry, you&#x27;ll need to use a regular expression pattern that matches the format of the log entry." data-hint-2="The regex pattern would likely involve using the re module and creating a pattern that matches the date and error message, possibly using groups to extract the individual parts." data-hint-3="The step-by-step logic flow would be to first import the re module, then define the regex pattern, and finally use the pattern to search for matches in the log entry string." data-hint-4="A common mistake here might be forgetting to escape any special characters in the regex pattern, so make sure to use the re.escape function." data-hint-5="Your final code should look something like this: a regex pattern that matches the date and error message, and a function that uses the pattern to extract the individual parts."><p><strong>Q2.</strong> What regex pattern would you use to extract <code>[2023-10-01] ERROR: Disk full</code>?</p></div>
+<div class="question"><p><strong>Q2.</strong> What regex pattern would you use to extract <code>[2023-10-01] ERROR: Disk full</code>?</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="When handling missing or corrupt lines in the file, you&#x27;ll need to use a try/except block to catch any exceptions that occur when reading the file." data-hint-2="You can use the open function to open the file in read mode, and then use a for loop to iterate over the lines in the file." data-hint-3="The step-by-step logic flow would be to first open the file, then use a try/except block to catch any exceptions that occur when reading the file, and finally handle the missing or corrupt lines." data-hint-4="A common mistake here might be forgetting to close the file after you&#x27;re done with it, so make sure to use the close method." data-hint-5="Your final code should look something like this: a try/except block that catches any exceptions that occur when reading the file, and a function that handles the missing or corrupt lines."><p><strong>Q3.</strong> How will you handle missing or corrupt lines in the file? (Hint: try/except).</p></div>
+<div class="question"><p><strong>Q3.</strong> How will you handle missing or corrupt lines in the file? (Hint: try/except).</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To aggregate the data, you can use the collections.Counter class to count the number of each error type." data-hint-2="You can use the Counter class to create a dictionary where the keys are the error types and the values are the counts." data-hint-3="The step-by-step logic flow would be to first import the Counter class, then create a Counter object to count the error types, and finally use the Counter object to get the counts." data-hint-4="A common mistake here might be forgetting to handle the case where there are no error types, so make sure to add some error checking code." data-hint-5="Your final code should look something like this: a Counter object that counts the error types, and a function that uses the Counter object to get the counts."><p><strong>Q4.</strong> How will you aggregate the data? (Hint: <code>collections.Counter</code> for counting error types).</p></div>
+<div class="question"><p><strong>Q4.</strong> How will you aggregate the data? (Hint: <code>collections.Counter</code> for counting error types).</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To set up your working directory, you can use the os module to create a new directory and navigate to it." data-hint-2="You can use the open function to create a new file, and then use a for loop to write the fake data to the file." data-hint-3="The step-by-step logic flow would be to first create a new directory, then navigate to it, and finally create a new file and write the fake data to it." data-hint-4="A common mistake here might be forgetting to close the file after you&#x27;re done with it, so make sure to use the close method." data-hint-5="Your final code should look something like this: a function that creates a new directory, navigates to it, and creates a new file with the fake data."><p><strong>Q5.</strong> Set up your working directory. Create a dummy <code>server.log</code> file with 10 lines of fake data to test against.</p></div>
+<div class="question"><p><strong>Q5.</strong> Set up your working directory. Create a dummy <code>server.log</code> file with 10 lines of fake data to test against.</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -302,27 +293,27 @@ if match:
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Architecture</code></b>
 </h3></div>
-<div class="question" data-hint-1="To start, let&#x27;s think about what the LogEntry class should look like. What are the essential attributes it needs to represent a log entry?" data-hint-2="For the init method, you&#x27;ll need to use the __init__ function in Python, which is a special method that gets called when an object is instantiated. What parameters should it take?" data-hint-3="The repr method should return a string that represents the object in a human-readable way. Think about what information you&#x27;d want to see when printing a LogEntry object." data-hint-4="Don&#x27;t forget to handle any potential errors that might occur when creating a LogEntry object. What could go wrong, and how would you handle it?" data-hint-5="Your final LogEntry class should have an init method that takes in relevant parameters and a repr method that returns a string representation of the object."><p><strong>Q1.</strong> Implement the <code>LogEntry</code> class with an <code><strong>init</strong></code> and <code><strong>repr</strong></code> method.</p></div>
+<div class="question"><p><strong>Q1.</strong> Implement the <code>LogEntry</code> class with an <code><strong>init</strong></code> and <code><strong>repr</strong></code> method.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="When implementing the parse_line method, you&#x27;ll need to use the re.match function from the re module to match the log entry pattern. What pattern should you be looking for?" data-hint-2="The re.match function returns a match object if the pattern matches, so you&#x27;ll need to use the group method to extract the matched groups. What groups do you need to extract?" data-hint-3="If the pattern doesn&#x27;t match, you&#x27;ll need to raise a ValueError. What message should the error contain?" data-hint-4="Don&#x27;t forget to handle any potential errors that might occur when calling re.match. What could go wrong, and how would you handle it?" data-hint-5="Your final parse_line method should use re.match to extract the relevant information from the log entry and return a LogEntry object."><p><strong>Q2.</strong> Implement the <code>parse_line</code> method using <code>re.match</code>. Return a <code>LogEntry</code>. Raise <code>ValueError</code> if it fails.</p></div>
+<div class="question"><p><strong>Q2.</strong> Implement the <code>parse_line</code> method using <code>re.match</code>. Return a <code>LogEntry</code>. Raise <code>ValueError</code> if it fails.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="When testing the parse_line method, you&#x27;ll need to create a valid and an invalid log entry string. What should these strings look like?" data-hint-2="You&#x27;ll need to use a try-except block to catch the ValueError that&#x27;s raised when the pattern doesn&#x27;t match. What should you do in the except block?" data-hint-3="In the except block, you can print an error message to indicate that the log entry was invalid. What message should you print?" data-hint-4="Don&#x27;t forget to test the parse_line method with both valid and invalid log entry strings. What should you expect to happen in each case?" data-hint-5="Your final test should print the parsed LogEntry object for the valid log entry string and an error message for the invalid log entry string."><p><strong>Q3.</strong> Test <code>parse_line</code> on a valid string and an invalid string. Catch the error.</p></div>
+<div class="question"><p><strong>Q3.</strong> Test <code>parse_line</code> on a valid string and an invalid string. Catch the error.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="When implementing the process_file method, you&#x27;ll need to use a with open statement to open the file and a for loop to iterate over the lines. What should you do with each line?" data-hint-2="You&#x27;ll need to use the parse_line method to parse each line and yield the parsed LogEntry object. What should you do if the line is invalid?" data-hint-3="You can use a try-except block to catch the ValueError that&#x27;s raised when the line is invalid. What should you do in the except block?" data-hint-4="Don&#x27;t forget to handle any potential errors that might occur when opening the file. What could go wrong, and how would you handle it?" data-hint-5="Your final process_file method should yield the parsed LogEntry objects for each valid line in the file."><p><strong>Q4.</strong> Implement <code>process_file(path)</code>. Use <code>with open</code> and a <code>for</code> loop. <code>yield</code> parsed entries, use <code>try/except</code> to ignore bad lines.</p></div>
+<div class="question"><p><strong>Q4.</strong> Implement <code>process_file(path)</code>. Use <code>with open</code> and a <code>for</code> loop. <code>yield</code> parsed entries, use <code>try/except</code> to ignore bad lines.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="When looping over the process_file method, you&#x27;ll need to use a for loop to iterate over the yielded LogEntry objects. What should you do with each object?" data-hint-2="You&#x27;ll need to use the print function to print the LogEntry object. What should you expect to see?" data-hint-3="Don&#x27;t forget to handle any potential errors that might occur when printing the LogEntry object. What could go wrong, and how would you handle it?" data-hint-4="You can use a try-except block to catch any errors that might occur when printing the LogEntry object. What should you do in the except block?" data-hint-5="Your final loop should print the parsed LogEntry objects for each valid line in the file."><p><strong>Q5.</strong> Loop over <code>process_file</code> and print the entries.</p></div>
+<div class="question"><p><strong>Q5.</strong> Loop over <code>process_file</code> and print the entries.</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -353,27 +344,27 @@ if match:
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Execution</code></b>
 </h3></div>
-<div class="question" data-hint-1="Understand that you need to import a specific module to use its functionality." data-hint-2="Use the import statement to bring in the collections module and its Counter class." data-hint-3="Structure your code by importing the module first, then using the Counter class." data-hint-4="Pitfall: Don&#x27;t forget to import the Counter class from the collections module." data-hint-5="Final Check: Your code should start with &#x27;import collections&#x27; and then use &#x27;Counter&#x27; to create a counter object."><p><strong>Q1.</strong> Import <code>collections.Counter</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Import <code>collections.Counter</code>.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Understand that you need to create a function that takes &#x27;entries&#x27; as an argument and returns a report." data-hint-2="Use the function to initialize counters for each level of entries." data-hint-3="Structure your code by defining the function, then initializing the counters inside the function." data-hint-4="Pitfall: Make sure to initialize the counters before looping through the entries." data-hint-5="Final Check: Your function should take &#x27;entries&#x27; as an argument and return a dictionary with initialized counters."><p><strong>Q2.</strong> Create a <code>generate_report(entries)</code> function. Initialize counters.</p></div>
+<div class="question"><p><strong>Q2.</strong> Create a <code>generate_report(entries)</code> function. Initialize counters.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Understand that you need to loop through each entry in the &#x27;entries&#x27; list." data-hint-2="Use the &#x27;if-elif-else&#x27; statement to increment the corresponding counter based on the &#x27;entry.level&#x27;." data-hint-3="Structure your code by looping through the entries, then using the if-elif-else statement to increment the counters." data-hint-4="Pitfall: Don&#x27;t forget to check the level of each entry before incrementing the counter." data-hint-5="Final Check: Your code should loop through each entry and increment the corresponding counter based on its level."><p><strong>Q3.</strong> Loop through <code>entries</code>. Increment counters based on <code>entry.level</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Loop through <code>entries</code>. Increment counters based on <code>entry.level</code>.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Understand that you need to construct a dictionary with the counters as values." data-hint-2="Use the dictionary comprehension to create a dictionary with the level as keys and the counters as values." data-hint-3="Structure your code by using the dictionary comprehension to create the dictionary." data-hint-4="Pitfall: Make sure to use the correct keys and values in the dictionary comprehension." data-hint-5="Final Check: Your code should create a dictionary with the counters as values and the level as keys."><p><strong>Q4.</strong> Construct the final dictionary format shown above.</p></div>
+<div class="question"><p><strong>Q4.</strong> Construct the final dictionary format shown above.</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Understand that you need to use the json.dump function to save the dictionary to a file." data-hint-2="Use the json.dump function to serialize the dictionary to a JSON file." data-hint-3="Structure your code by using the json.dump function to save the dictionary to a file." data-hint-4="Pitfall: Don&#x27;t forget to specify the file path and the indent parameter." data-hint-5="Final Check: Your code should use json.dump to save the dictionary to &#x27;report.json&#x27; with an indent of 4."><p><strong>Q5.</strong> Use <code>json.dump(..., indent=4)</code> to save the dictionary to <code>"report.json"</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Use <code>json.dump(..., indent=4)</code> to save the dictionary to <code>"report.json"</code>.</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -705,19 +696,9 @@ if match:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

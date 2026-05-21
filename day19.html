@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 19: Generators and Iterators — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -247,27 +238,27 @@ print(f&quot;Flattened: {flat}&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Yield From</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by thinking about what the generator gen_a() should yield. What are the two numbers you want it to produce?" data-hint-2="To create a generator in Python, you can use a function with the &#x27;yield&#x27; keyword. Think about how you can use this to create gen_a()." data-hint-3="First, gen_a() should yield 1, then it should yield 2. Think about how you can structure this logic." data-hint-4="Remember that when you&#x27;re working with generators, you need to use the &#x27;next()&#x27; function to get the next value. Don&#x27;t forget to test your generator!" data-hint-5="Your final code should look something like this: def gen_a(): yield 1; yield 2. Then you can call gen_b() and print the result."><p><strong>Q1.</strong> Write a generator <code>gen_a()</code> yielding 1, 2. Write <code>gen_b()</code> yielding <code>yield from gen_a()</code> then 3. Test it.</p></div>
+<div class="question"><p><strong>Q1.</strong> Write a generator <code>gen_a()</code> yielding 1, 2. Write <code>gen_b()</code> yielding <code>yield from gen_a()</code> then 3. Test it.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about what numbers you want to yield from the generator. You want to yield numbers 1 to 3, then yield from range(4, 6)." data-hint-2="To create a generator that yields from a range, you can use the &#x27;range()&#x27; function and the &#x27;yield from&#x27; keyword." data-hint-3="First, create a generator that yields numbers 1 to 3. Then, use &#x27;yield from&#x27; to yield from the range(4, 6)." data-hint-4="Remember to test your generator by printing the result as a list." data-hint-5="Your final code should look something like this: def gen(): yield from range(1, 4); yield from range(4, 6). Then you can print(list(gen()))."><p><strong>Q2.</strong> Create a generator that yields numbers 1 to 3, then yields from <code>range(4, 6)</code>. Print as list.</p></div>
+<div class="question"><p><strong>Q2.</strong> Create a generator that yields numbers 1 to 3, then yields from <code>range(4, 6)</code>. Print as list.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about how you can create a generator that maintains a running total. You&#x27;ll need to keep track of the current total and yield it at each step." data-hint-2="To create a generator that maintains state, you can use a loop and the &#x27;yield&#x27; keyword. Think about how you can use this to create your generator." data-hint-3="First, initialize the current total to 0. Then, loop over the list of numbers and update the total at each step. Yield the total at each step." data-hint-4="Remember to test your generator by passing in a list of numbers and printing the result." data-hint-5="Your final code should look something like this: def gen_total(lst): total = 0; for num in lst: total += num; yield total. Then you can call gen_total([1, 2, 3])."><p><strong>Q3.</strong> Write a generator that maintains state: a running total. It takes a list of numbers and yields the running total at each step.</p></div>
+<div class="question"><p><strong>Q3.</strong> Write a generator that maintains state: a running total. It takes a list of numbers and yields the running total at each step.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about what happens when you try to call len() on a generator. What error message do you get?" data-hint-2="The error message is a TypeError because len() is not defined for generators. Think about why this is the case." data-hint-3="Generators are iterators, so they don&#x27;t have a fixed length. You can&#x27;t get the length of a generator because it&#x27;s infinite." data-hint-4="Remember to catch the TypeError when you try to call len() on a generator." data-hint-5="Your final code should look something like this: try: len(gen()); except TypeError: print(&#x27;TypeError: object of type generator is not iterable&#x27;)."><p><strong>Q4.</strong> Try to call <code>len()</code> on a generator. Catch the TypeError. Why doesn't it work?</p></div>
+<div class="question"><p><strong>Q4.</strong> Try to call <code>len()</code> on a generator. Catch the TypeError. Why doesn't it work?</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about why yield from is cleaner than for x in sub_gen(): yield x. What makes yield from better?" data-hint-2="Yield from is cleaner because it&#x27;s more concise and easier to read. It eliminates the need for a loop and a yield statement." data-hint-3="When you use yield from, you can directly yield from the sub-generator without having to iterate over it." data-hint-4="Remember that yield from is a shorthand for iterating over a sub-generator and yielding each value." data-hint-5="Your final code should look something like this: def gen(): yield from sub_gen(). Then you can call gen() and get the same result as for x in sub_gen(): yield x."><p><strong>Q5.</strong> Explain why <code>yield from</code> is cleaner than <code>for x in sub_gen(): yield x</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Explain why <code>yield from</code> is cleaner than <code>for x in sub_gen(): yield x</code>.</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -322,27 +313,27 @@ print(f&quot;Sent 30, Avg: {coro.send(30)}&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Coroutines</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by defining a coroutine function greeter() that takes no arguments. Think about what it should do when it&#x27;s called." data-hint-2="You&#x27;ll need to use the yield keyword to make greeter() a coroutine. This will allow it to wait for input from the caller." data-hint-3="When the coroutine is waiting for input, it will pause and return control to the caller. The caller can then send a value to the coroutine using the send() method." data-hint-4="Remember to use the print() function to output the greeting message. But don&#x27;t forget to handle the case where the coroutine is waiting for input!" data-hint-5="Your final code should look something like this: def greeter(): yield; print(f&#x27;Hello {yield}&#x27;)"><p><strong>Q1.</strong> Write a coroutine <code>greeter()</code> that waits for a name (<code>yield</code>) and prints <code>"Hello [name]"</code>. Prime it, then send <code>"Alice"</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Write a coroutine <code>greeter()</code> that waits for a name (<code>yield</code>) and prints <code>"Hello [name]"</code>. Prime it, then send <code>"Alice"</code>.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by modifying the averager coroutine to keep track of the sum and count of numbers it&#x27;s received so far." data-hint-2="You&#x27;ll need to use the yield keyword to make averager() a coroutine. This will allow it to wait for input from the caller." data-hint-3="When the coroutine receives a number, it should add it to the sum and increment the count. Then, it should yield the average." data-hint-4="Remember to use the print() function to output the final average. But don&#x27;t forget to handle the case where the coroutine is waiting for input!" data-hint-5="Your final code should look something like this: def averager(): total = 0; count = 0; while True: n = yield; total += n; count += 1; print(total / count)"><p><strong>Q2.</strong> Modify the averager above. Send <code>5</code>, <code>10</code>, <code>15</code>. Print the final average.</p></div>
+<div class="question"><p><strong>Q2.</strong> Modify the averager above. Send <code>5</code>, <code>10</code>, <code>15</code>. Print the final average.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about what happens when you try to send() to a coroutine without calling next() first. What kind of error do you think you&#x27;ll get?" data-hint-2="You&#x27;ll need to use a try-except block to catch the TypeError that&#x27;s raised when you try to send() to a coroutine without calling next() first." data-hint-3="Remember to call next() on the coroutine before trying to send() to it. This will ensure that the coroutine is in a state where it can receive input." data-hint-4="Your final code should look something like this: def greeter(): yield; print(f&#x27;Hello {yield}&#x27;) g = greeter(); next(g); g.send(&#x27;Alice&#x27;)" data-hint-5="By catching the TypeError, you can handle the case where the user tries to send() to a coroutine without calling next() first."><p><strong>Q3.</strong> What happens if you try to <code>send()</code> to a coroutine without calling <code>next()</code> first? Catch the <code>TypeError</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> What happens if you try to <code>send()</code> to a coroutine without calling <code>next()</code> first? Catch the <code>TypeError</code>.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about what happens when you send None to the averager coroutine. What kind of error do you think you&#x27;ll get?" data-hint-2="You&#x27;ll need to use a try-except block to catch the StopIteration that&#x27;s raised when you send None to the averager coroutine." data-hint-3="Remember to use the send() method to send None to the averager coroutine. This will cause the coroutine to stop iterating." data-hint-4="Your final code should look something like this: def averager(): total = 0; count = 0; while True: n = yield; total += n; count += 1; print(total / count) a = averager(); next(a); a.send(5); a.send(10); a.send(None)" data-hint-5="By catching the StopIteration, you can handle the case where the user tries to send None to the averager coroutine."><p><strong>Q4.</strong> Send <code>None</code> to the averager coroutine above to break the loop. Catch the <code>StopIteration</code>.</p></div>
+<div class="question"><p><strong>Q4.</strong> Send <code>None</code> to the averager coroutine above to break the loop. Catch the <code>StopIteration</code>.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about how a coroutine differs from a standard function. What happens when you call a standard function versus a coroutine?" data-hint-2="A standard function returns a value when it&#x27;s called, while a coroutine pauses and waits for input from the caller." data-hint-3="When you call a coroutine, it returns an iterator object that you can use to send input to the coroutine." data-hint-4="Remember that a coroutine can be paused and resumed multiple times, while a standard function runs to completion and then returns." data-hint-5="Your final answer should explain how a coroutine&#x27;s ability to pause and resume makes it fundamentally different from a standard function."><p><strong>Q5.</strong> Explain how a coroutine differs fundamentally from a standard function (hint: pausing vs returning).</p></div>
+<div class="question"><p><strong>Q5.</strong> Explain how a coroutine differs fundamentally from a standard function (hint: pausing vs returning).</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -398,27 +389,27 @@ with timing(&quot;Loop Test&quot;):
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Contextlib</code></b>
 </h3></div>
-<div class="question" data-hint-1="Let&#x27;s start by understanding the core requirement: you need to create a context manager called tag(name) that prints, yields, and then prints. Think about what data or variables you should start with." data-hint-2="To create a context manager, you&#x27;ll need to use the @contextmanager decorator from the contextlib module. This decorator is used to define a generator-based context manager." data-hint-3="The step-by-step logic flow is as follows: first, print a message indicating the start of the context manager, then yield to allow the code to execute, and finally print a message indicating the end of the context manager." data-hint-4="A common mistake to watch out for is forgetting to use the @contextmanager decorator or not properly handling the yield statement." data-hint-5="Your final code should look something like this: @contextmanager def tag(name): print(f&#x27;Starting {name}&#x27;); yield; print(f&#x27;Ending {name}&#x27;)"><p><strong>Q1.</strong> Import <code>contextmanager</code>. Write a <code>@contextmanager</code> called <code>tag(name)</code> that prints <code><name></code>, yields, then prints <code></name></code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Import <code>contextmanager</code>. Write a <code>@contextmanager</code> called <code>tag(name)</code> that prints <code><name></code>, yields, then prints <code></name></code>.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Now that you have the tag function, let&#x27;s use it in a with block to print &#x27;Hello&#x27; inside the tag. Think about how you can use the tag function to create a context manager." data-hint-2="To use the tag function, you&#x27;ll need to call it with the desired name and use the result in a with block. This will allow you to execute the code inside the tag context manager." data-hint-3="The step-by-step logic flow is as follows: first, call the tag function with the desired name, then use the result in a with block to execute the code inside the tag context manager." data-hint-4="A common mistake to watch out for is forgetting to call the tag function or not using the result in a with block." data-hint-5="Your final code should look something like this: with tag(&#x27;div&#x27;): print(&#x27;Hello&#x27;)"><p><strong>Q2.</strong> Use your <code>tag("div")</code> in a <code>with</code> block and print <code>"Hello"</code> inside it.</p></div>
+<div class="question"><p><strong>Q2.</strong> Use your <code>tag("div")</code> in a <code>with</code> block and print <code>"Hello"</code> inside it.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Now that you have the ignore_errors function, let&#x27;s use it to ignore the 1/0 error. Think about how you can use the ignore_errors function to create a context manager." data-hint-2="To use the ignore_errors function, you&#x27;ll need to call it and use the result in a with block. This will allow you to execute the code inside the ignore_errors context manager." data-hint-3="The step-by-step logic flow is as follows: first, call the ignore_errors function, then use the result in a with block to execute the code inside the ignore_errors context manager." data-hint-4="A common mistake to watch out for is forgetting to call the ignore_errors function or not using the result in a with block." data-hint-5="Your final code should look something like this: with ignore_errors(): try: 1/0 except Exception: pass"><p><strong>Q3.</strong> Write a context manager <code>ignore_errors</code> that yields inside a try/except block catching <code>Exception</code>. Use it to ignore <code>1/0</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Write a context manager <code>ignore_errors</code> that yields inside a try/except block catching <code>Exception</code>. Use it to ignore <code>1/0</code>.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Let&#x27;s think about why we need to use try/finally around the yield in a context manager for resource cleanup. Think about what happens when an exception is raised inside the context manager." data-hint-2="To properly clean up resources, we need to ensure that the finally block is executed even if an exception is raised. This is where try/finally comes in." data-hint-3="The step-by-step logic flow is as follows: first, use a try block to execute the code inside the context manager, then use a finally block to clean up resources." data-hint-4="A common mistake to watch out for is forgetting to use try/finally or not properly cleaning up resources." data-hint-5="Your final code should look something like this: def context_manager(): try: yield finally: print(&#x27;Cleaning up resources&#x27;)"><p><strong>Q4.</strong> Why must you use <code>try/finally</code> around the <code>yield</code> in a context manager for resource cleanup?</p></div>
+<div class="question"><p><strong>Q4.</strong> Why must you use <code>try/finally</code> around the <code>yield</code> in a context manager for resource cleanup?</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Let&#x27;s think about whether a context manager has to yield a value. Think about what happens when a context manager yields a value versus not yielding a value." data-hint-2="To create a context manager that yields a value, you&#x27;ll need to use the yield statement inside the context manager function." data-hint-3="The step-by-step logic flow is as follows: first, define a context manager function, then use the yield statement to yield a value." data-hint-4="A common mistake to watch out for is forgetting to use the yield statement or not properly handling the yielded value." data-hint-5="Your final code should look something like this: def context_manager(): yield &#x27;some value&#x27;"><p><strong>Q5.</strong> Does a context manager have to yield a value? (e.g., <code>yield f</code> vs just <code>yield</code>). Explain.</p></div>
+<div class="question"><p><strong>Q5.</strong> Does a context manager have to yield a value? (e.g., <code>yield f</code> vs just <code>yield</code>). Explain.</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -750,19 +741,9 @@ with timing(&quot;Loop Test&quot;):
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

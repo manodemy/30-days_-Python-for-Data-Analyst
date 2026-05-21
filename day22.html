@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 22: NumPy Advanced — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -244,27 +235,27 @@ print(f&quot;\nLast column:\n{matrix[:, -1]}&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Slicing</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by importing the numpy library and creating an array of 10 elements using np.arange(10)." data-hint-2="Use the slicing feature of numpy arrays to extract the first 5 elements. Think about the syntax for slicing arrays." data-hint-3="The logic flow is to create the array, then use slicing to extract the desired elements. Remember to assign the result to a new variable." data-hint-4="A common mistake is to forget to assign the result of the slicing operation to a new variable, so make sure to do that." data-hint-5="Your final code should look something like arr = np.arange(10); result = arr[:5]; print(result)"><p><strong>Q1.</strong> Create <code>arr = np.arange(10)</code>. Slice the first 5 elements.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create <code>arr = np.arange(10)</code>. Slice the first 5 elements.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="First, import the numpy library and use np.arange(16) to create a 1D array of 16 elements." data-hint-2="Then, use the reshape method to transform the 1D array into a 4x4 matrix. Think about the arguments to the reshape method." data-hint-3="The logic flow is to create the 1D array, then reshape it into a 4x4 matrix. Remember to print the result." data-hint-4="A common mistake is to forget to print the result, so make sure to do that." data-hint-5="Your final code should look something like arr = np.arange(16); matrix = arr.reshape((4,4)); print(matrix)"><p><strong>Q2.</strong> Create a 4x4 matrix using <code>np.arange(16).reshape((4,4))</code>. Print it.</p></div>
+<div class="question"><p><strong>Q2.</strong> Create a 4x4 matrix using <code>np.arange(16).reshape((4,4))</code>. Print it.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by importing the numpy library and creating a 4x4 matrix using np.arange(16).reshape((4,4))." data-hint-2="Then, use array indexing to extract the 2x2 square in the top-right corner. Think about the indices you need to use." data-hint-3="The logic flow is to create the matrix, then use array indexing to extract the desired square. Remember to print the result." data-hint-4="A common mistake is to use the wrong indices, so double-check your indexing." data-hint-5="Your final code should look something like matrix = np.arange(16).reshape((4,4)); square = matrix[2:, 2:]; print(square)"><p><strong>Q3.</strong> From the 4x4 matrix, extract the 2x2 square in the top-right corner. Print it.</p></div>
+<div class="question"><p><strong>Q3.</strong> From the 4x4 matrix, extract the 2x2 square in the top-right corner. Print it.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by importing the numpy library and creating a 4x4 matrix using np.arange(16).reshape((4,4))." data-hint-2="Then, use array indexing to extract the first row of the matrix. Think about the indices you need to use." data-hint-3="The logic flow is to create the matrix, then use array indexing to extract the first row, change its first element to 999, and print the original matrix." data-hint-4="A common mistake is to forget to print the original matrix, so make sure to do that." data-hint-5="Your final code should look something like matrix = np.arange(16).reshape((4,4)); row = matrix[0]; row[0] = 999; print(matrix)"><p><strong>Q4.</strong> Demonstrate the view trap: extract the first row, change its first element to <code>999</code>, and print the original matrix to see it changed.</p></div>
+<div class="question"><p><strong>Q4.</strong> Demonstrate the view trap: extract the first row, change its first element to <code>999</code>, and print the original matrix to see it changed.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by importing the numpy library and creating a 4x4 matrix using np.arange(16).reshape((4,4))." data-hint-2="Then, use array indexing to extract the second column of the matrix as a 1D array. Think about the syntax for indexing arrays." data-hint-3="The logic flow is to create the matrix, then use array indexing to extract the second column. Remember to print the result." data-hint-4="A common mistake is to forget to print the result, so make sure to do that." data-hint-5="Your final code should look something like matrix = np.arange(16).reshape((4,4)); column = matrix[:, 1]; print(column)"><p><strong>Q5.</strong> Extract the second column from the matrix as a 1D array using <code>matrix[:, 1]</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Extract the second column from the matrix as a 1D array using <code>matrix[:, 1]</code>.</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -314,27 +305,27 @@ print(f&quot;Negatives zeroed: {arr}&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Boolean Masking</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by importing the numpy library and creating the array arr with the given values: arr = np.array([10, 50, 30, 80, 20])." data-hint-2="To create a mask for values greater than 40, you&#x27;ll need to use the numpy function np.where() or the comparison operator &gt;." data-hint-3="The mask should be a boolean array where each element corresponds to the element in arr, indicating whether it&#x27;s greater than 40 or not." data-hint-4="Be careful not to confuse the mask with the original array, as they will have different data types." data-hint-5="Your final code should look something like this: mask = arr &gt; 40; print(mask)."><p><strong>Q1.</strong> Create <code>arr = np.array([10, 50, 30, 80, 20])</code>. Create a mask for values <code>> 40</code> and print the mask.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create <code>arr = np.array([10, 50, 30, 80, 20])</code>. Create a mask for values <code>> 40</code> and print the mask.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="You&#x27;ve already created the mask in Q5, so start by recalling what that mask looks like." data-hint-2="To extract and print the values greater than 40, you&#x27;ll need to use the mask to index into the original array arr." data-hint-3="This can be done using numpy&#x27;s boolean indexing feature, which allows you to select elements based on a boolean mask." data-hint-4="Remember to use the mask to select the elements from arr, not the other way around." data-hint-5="Your final code should look something like this: print(arr[mask])."><p><strong>Q2.</strong> Use the mask from Q1 to extract and print the values greater than 40.</p></div>
+<div class="question"><p><strong>Q2.</strong> Use the mask from Q1 to extract and print the values greater than 40.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="You&#x27;ve already created a mask in Q5, and now you want to combine it with another mask." data-hint-2="To create a combined mask, you can use the bitwise AND operator &amp; between the two masks." data-hint-3="This will create a new mask where each element is True only if both corresponding elements in the original masks are True." data-hint-4="Be careful not to confuse the combined mask with the individual masks, as they will have different data types." data-hint-5="Your final code should look something like this: combined_mask = (arr &gt; 20) &amp; (arr &gt; 40); print(combined_mask)."><p><strong>Q3.</strong> Use a combined mask <code>(arr > 20) & (arr < 60)</code> to filter the array. Print the result.</p></div>
+<div class="question"><p><strong>Q3.</strong> Use a combined mask <code>(arr > 20) & (arr < 60)</code> to filter the array. Print the result.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="You want to try using the and keyword instead of the bitwise AND operator &amp; for the combined mask." data-hint-2="However, the and keyword is a logical operator, not a bitwise operator, and it will not work as expected in this case." data-hint-3="When you use the and keyword, it will return a boolean value indicating whether both conditions are True, but it will not create a new mask." data-hint-4="To catch the ValueError, you can use a try-except block to catch the exception and print an error message." data-hint-5="Your final code should look something like this: try: combined_mask = (arr &gt; 20) and (arr &gt; 40); print(combined_mask); except ValueError: print(&#x27;Error: cannot use and keyword for bitwise operation&#x27;)."><p><strong>Q4.</strong> Try to use the Python <code>and</code> keyword instead of <code>&</code> for the combined mask. Catch the ValueError.</p></div>
+<div class="question"><p><strong>Q4.</strong> Try to use the Python <code>and</code> keyword instead of <code>&</code> for the combined mask. Catch the ValueError.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="You want to replace all values in the array that are less than 20 with -1 using a mask assignment." data-hint-2="To do this, you&#x27;ll need to create a mask where each element is True if the corresponding element in arr is less than 20, and False otherwise." data-hint-3="Then, you can use the mask to assign the value -1 to the corresponding elements in arr." data-hint-4="Remember to use the mask to assign the value, not the other way around." data-hint-5="Your final code should look something like this: arr[arr &lt; 20] = -1; print(arr)."><p><strong>Q5.</strong> Replace all values in the array that are <code>< 30</code> with <code>-1</code> using a mask assignment. Print the updated array.</p></div>
+<div class="question"><p><strong>Q5.</strong> Replace all values in the array that are <code>< 30</code> with <code>-1</code> using a mask assignment. Print the updated array.</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -385,27 +376,27 @@ print(&quot;\nAdd Column Vector:\n&quot;, matrix + col_vector)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Broadcasting</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by understanding what a 3x2 matrix means. You&#x27;ll need to create a 3x2 array filled with ones." data-hint-2="To create a 3x2 matrix of ones, you can use the numpy library and its ones function. You&#x27;ll need to import numpy first." data-hint-3="The next step is to multiply this matrix by the scalar 10. Think about how this operation will change the matrix." data-hint-4="Remember to handle the multiplication operation carefully. Make sure you&#x27;re using the correct function and passing the scalar value correctly." data-hint-5="Your final code should look something like this: numpy.ones((3, 2)) * 10. Print the result to see the final matrix."><p><strong>Q1.</strong> Create a <code>3x2</code> matrix of ones. Multiply it by the scalar <code>10</code>. Print the result.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create a <code>3x2</code> matrix of ones. Multiply it by the scalar <code>10</code>. Print the result.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To create a 3x3 matrix of zeros, you can use the numpy library and its zeros function. Think about the shape of the matrix." data-hint-2="When adding the 1D array [1, 2, 3] to the 3x3 matrix, numpy will broadcast the array across the rows of the matrix." data-hint-3="The broadcasting operation will change the shape of the 1D array. Think about how numpy will add the array to each row." data-hint-4="Remember to handle the broadcasting operation carefully. Make sure you&#x27;re using the correct function and passing the array correctly." data-hint-5="Your final code should look something like this: numpy.zeros((3, 3)) + numpy.array([1, 2, 3]). Print the result to see the final matrix."><p><strong>Q2.</strong> Create a <code>3x3</code> matrix of zeros. Add a <code>1D</code> array <code>[1, 2, 3]</code> to it. Observe how it broadcasts across rows.</p></div>
+<div class="question"><p><strong>Q2.</strong> Create a <code>3x3</code> matrix of zeros. Add a <code>1D</code> array <code>[1, 2, 3]</code> to it. Observe how it broadcasts across rows.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To reshape the 1D array [1, 2, 3] into a column (3, 1), you can use the numpy library and its reshape function." data-hint-2="When adding the reshaped array to the 3x3 matrix, numpy will broadcast the array across the columns of the matrix." data-hint-3="The broadcasting operation will change the shape of the reshaped array. Think about how numpy will add the array to each column." data-hint-4="Remember to handle the broadcasting operation carefully. Make sure you&#x27;re using the correct function and passing the array correctly." data-hint-5="Your final code should look something like this: numpy.zeros((3, 3)) + numpy.array([1, 2, 3]).reshape(3, 1). Print the result to see the final matrix."><p><strong>Q3.</strong> Reshape <code>[1, 2, 3]</code> into a column <code>(3, 1)</code>. Add it to the zeros matrix. Observe how it broadcasts across columns.</p></div>
+<div class="question"><p><strong>Q3.</strong> Reshape <code>[1, 2, 3]</code> into a column <code>(3, 1)</code>. Add it to the zeros matrix. Observe how it broadcasts across columns.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To add a 1D array of length 4 to a 3x3 matrix, you&#x27;ll need to think about the broadcasting operation. Will it work or not?" data-hint-2="Remember to handle the ValueError carefully. You can use a try-except block to catch the error and print the error message." data-hint-3="The broadcasting operation will fail because the shapes of the two arrays are incompatible. Think about why this is the case." data-hint-4="Make sure you&#x27;re using the correct function and passing the arrays correctly. The error message should give you a hint about what&#x27;s going wrong." data-hint-5="Your final code should look something like this: try: numpy.zeros((3, 3)) + numpy.array([1, 2, 3, 4]); except ValueError as e: print(e)."><p><strong>Q4.</strong> Try to add a <code>1D</code> array of length <code>4</code> to a <code>3x3</code> matrix. Catch the <code>ValueError</code> and print the error message.</p></div>
+<div class="question"><p><strong>Q4.</strong> Try to add a <code>1D</code> array of length <code>4</code> to a <code>3x3</code> matrix. Catch the <code>ValueError</code> and print the error message.</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To understand why (4, 3) broadcasts with (3,) but fails with (4,), you&#x27;ll need to think about the broadcasting rules." data-hint-2="The broadcasting rules state that when the number of dimensions is different, the shape with fewer dimensions is padded with ones." data-hint-3="Think about how this rule applies to the shapes (4, 3) and (3,). Why does it work in this case?" data-hint-4="Now think about how this rule applies to the shapes (4, 3) and (4,). Why does it fail in this case?" data-hint-5="Your final answer should explain the broadcasting rules and how they apply to the given shapes."><p><strong>Q5.</strong> Explain why <code>(4, 3)</code> broadcasts with <code>(3,)</code> but fails with <code>(4,)</code>. (Hint: Right-to-left dimension matching).</p></div>
+<div class="question"><p><strong>Q5.</strong> Explain why <code>(4, 3)</code> broadcasts with <code>(3,)</code> but fails with <code>(4,)</code>. (Hint: Right-to-left dimension matching).</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -737,19 +728,9 @@ print(&quot;\nAdd Column Vector:\n&quot;, matrix + col_vector)</textarea>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

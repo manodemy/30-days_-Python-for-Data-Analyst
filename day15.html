@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 15: File Handling — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -246,27 +237,27 @@ with open(&#x27;sample.txt&#x27;, &#x27;r&#x27;) as file:
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>File I/O</code></b>
 </h3></div>
-<div class="question" data-hint-1="Let&#x27;s start by understanding what the core requirement is. We need to open a file called &#x27;test.txt&#x27; in write mode." data-hint-2="To open a file in write mode, we&#x27;ll use the &#x27;w&#x27; argument in the open() function. You can also specify the file path and name here." data-hint-3="The step-by-step logic flow is to first open the file, then write your name to it. You can use the write() method for this." data-hint-4="A common mistake here is forgetting to close the file after writing to it. Make sure to use the close() method to avoid any issues." data-hint-5="Your final code should look something like this: open(&#x27;test.txt&#x27;, &#x27;w&#x27;).write(&#x27;Your Name&#x27;).close()"><p><strong>Q1.</strong> Write code to open a file <code>"test.txt"</code> in write mode (<code>"w"</code>) and write your name to it.</p></div>
+<div class="question"><p><strong>Q1.</strong> Write code to open a file <code>"test.txt"</code> in write mode (<code>"w"</code>) and write your name to it.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To solve this question, we need to understand that we&#x27;re opening a file called &#x27;test.txt&#x27; in read mode." data-hint-2="We&#x27;ll use the &#x27;r&#x27; argument in the open() function to read the file. You can also specify the file path and name here." data-hint-3="The step-by-step logic flow is to first open the file, then read its contents using the read() method, and finally print the contents." data-hint-4="A common mistake here is trying to read the file without opening it first. Make sure to use the open() function to open the file." data-hint-5="Your final code should look something like this: open(&#x27;test.txt&#x27;, &#x27;r&#x27;).read().print()"><p><strong>Q2.</strong> Open <code>"test.txt"</code> in read mode (<code>"r"</code>). Read the contents and print them.</p></div>
+<div class="question"><p><strong>Q2.</strong> Open <code>"test.txt"</code> in read mode (<code>"r"</code>). Read the contents and print them.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To solve this question, we need to understand that we&#x27;re opening a file called &#x27;test.txt&#x27; in append mode." data-hint-2="We&#x27;ll use the &#x27;a&#x27; argument in the open() function to append a new line to the file. You can also specify the file path and name here." data-hint-3="The step-by-step logic flow is to first open the file, then use the write() method to add a new line, and finally print the full file again." data-hint-4="A common mistake here is trying to read the file without opening it first. Make sure to use the open() function to open the file." data-hint-5="Your final code should look something like this: open(&#x27;test.txt&#x27;, &#x27;a&#x27;).write(&#x27;Welcome to Python\n&#x27;).print(open(&#x27;test.txt&#x27;, &#x27;r&#x27;).read())"><p><strong>Q3.</strong> Open <code>"test.txt"</code> in append mode (<code>"a"</code>). Add a new line <code>"Welcome to Python"</code>. Print the full file again.</p></div>
+<div class="question"><p><strong>Q3.</strong> Open <code>"test.txt"</code> in append mode (<code>"a"</code>). Add a new line <code>"Welcome to Python"</code>. Print the full file again.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To understand why with open() as f: is superior to f = open(); f.read(); f.close(), let&#x27;s break it down." data-hint-2="The with open() as f: syntax ensures that the file is properly closed after it is no longer needed, even if an exception is thrown." data-hint-3="This is achieved by using a context manager, which automatically takes care of closing the file when it goes out of scope." data-hint-4="A common mistake here is not using the with statement, which can lead to file descriptor leaks and other issues." data-hint-5="Your final code should look something like this: with open(&#x27;test.txt&#x27;, &#x27;r&#x27;) as f: f.read()"><p><strong>Q4.</strong> Explain why <code>with open() as f:</code> is superior to <code>f = open(); f.read(); f.close()</code>.</p></div>
+<div class="question"><p><strong>Q4.</strong> Explain why <code>with open() as f:</code> is superior to <code>f = open(); f.read(); f.close()</code>.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To write a memory-efficient for loop to read a file line-by-line, we need to understand how to iterate over a file." data-hint-2="We&#x27;ll use the readlines() method to get a list of all lines in the file, and then use a for loop to iterate over each line." data-hint-3="The step-by-step logic flow is to first open the file, then use the readlines() method to get the lines, and finally use a for loop to print each line." data-hint-4="A common mistake here is trying to read the file line-by-line without using the readlines() method. Make sure to use readlines() to get the lines." data-hint-5="Your final code should look something like this: with open(&#x27;test.txt&#x27;, &#x27;r&#x27;) as f: for line in f.readlines(): print(line)"><p><strong>Q5.</strong> Write a memory-efficient <code>for</code> loop to read a file line-by-line. (Assume file is "test.txt").</p></div>
+<div class="question"><p><strong>Q5.</strong> Write a memory-efficient <code>for</code> loop to read a file line-by-line. (Assume file is "test.txt").</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -319,27 +310,27 @@ with open(&#x27;config.json&#x27;, &#x27;w&#x27;) as f:
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>JSON</code></b>
 </h3></div>
-<div class="question" data-hint-1="First, let&#x27;s understand what the core requirement is: we need to parse a JSON string into a Python dictionary." data-hint-2="To do this, we&#x27;ll use the json.loads() function, which is specifically designed for this task." data-hint-3="The json.loads() function takes a JSON string as input and returns a Python dictionary." data-hint-4="Be careful not to confuse json.loads() with json.load(), which is used to parse a JSON file." data-hint-5="Your final code should look something like this: json.loads(&#x27;{&quot;x&quot;: 10, &quot;y&quot;: 20}&#x27;)"><p><strong>Q1.</strong> Import <code>json</code>. Use <code>json.loads()</code> to parse <code>'{"x": 10, "y": 20}'</code> into a dictionary.</p></div>
+<div class="question"><p><strong>Q1.</strong> Import <code>json</code>. Use <code>json.loads()</code> to parse <code>'{"x": 10, "y": 20}'</code> into a dictionary.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Let&#x27;s start by understanding what data we&#x27;re working with: a dictionary containing a color and a list of sizes." data-hint-2="To convert this dictionary to a JSON string, we&#x27;ll use the json.dumps() function." data-hint-3="The json.dumps() function takes a Python object (in this case, a dictionary) and returns a JSON string." data-hint-4="Don&#x27;t forget to print the resulting JSON string so we can see the output." data-hint-5="Your final code should look something like this: json.dumps({&quot;color&quot;: &quot;red&quot;, &quot;sizes&quot;: [1, 2]})"><p><strong>Q2.</strong> Convert the dictionary <code>{"color": "red", "sizes": [1, 2]}</code> to a JSON string using <code>json.dumps()</code>. Print it.</p></div>
+<div class="question"><p><strong>Q2.</strong> Convert the dictionary <code>{"color": "red", "sizes": [1, 2]}</code> to a JSON string using <code>json.dumps()</code>. Print it.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="We&#x27;re given a dictionary with a nested structure, and we want to pretty-print it using json.dumps() with indent=4." data-hint-2="The indent=4 argument tells json.dumps() to indent the JSON string with 4 spaces for readability." data-hint-3="We&#x27;ll use the json.dumps() function to convert the dictionary to a JSON string." data-hint-4="Be careful not to confuse indent=4 with indent=2 or indent=1, as this can affect the output." data-hint-5="Your final code should look something like this: json.dumps({&quot;a&quot;: {&quot;b&quot;: 1}}, indent=4)"><p><strong>Q3.</strong> Use <code>json.dumps()</code> with the <code>indent=4</code> argument to pretty-print <code>{"a": {"b": 1}}</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>json.dumps()</code> with the <code>indent=4</code> argument to pretty-print <code>{"a": {"b": 1}}</code>.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Let&#x27;s start by understanding what data we&#x27;re working with: a dictionary we want to save to a file." data-hint-2="To save the dictionary to a file, we&#x27;ll use the json.dump() function in combination with the with open() function." data-hint-3="The with open() function opens a file and automatically closes it when we&#x27;re done." data-hint-4="Don&#x27;t forget to specify the file name and mode (in this case, &#x27;w&#x27; for write) when opening the file." data-hint-5="Your final code should look something like this: with open(&#x27;data.json&#x27;, &#x27;w&#x27;) as f: json.dump(d, f)"><p><strong>Q4.</strong> Write code to save a dictionary <code>d</code> directly to a file <code>"data.json"</code> using <code>with open()</code> and <code>json.dump()</code>.</p></div>
+<div class="question"><p><strong>Q4.</strong> Write code to save a dictionary <code>d</code> directly to a file <code>"data.json"</code> using <code>with open()</code> and <code>json.dump()</code>.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="We&#x27;re given a file containing a JSON object, and we want to read it back into a dictionary using json.load()." data-hint-2="The json.load() function takes a file object as input and returns a Python dictionary." data-hint-3="We&#x27;ll use the with open() function to open the file and read its contents." data-hint-4="Be careful not to confuse json.load() with json.loads(), which is used to parse a JSON string." data-hint-5="Your final code should look something like this: with open(&#x27;data.json&#x27;, &#x27;r&#x27;) as f: json.load(f)"><p><strong>Q5.</strong> Read <code>"data.json"</code> back into a dictionary using <code>json.load()</code>. Print the type of the loaded object.</p></div>
+<div class="question"><p><strong>Q5.</strong> Read <code>"data.json"</code> back into a dictionary using <code>json.load()</code>. Print the type of the loaded object.</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -392,27 +383,27 @@ print(f&quot;File name: {test_file.name}&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Pathlib</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by importing the Path class from the pathlib module. You&#x27;ll need this to create a Path object for the file path." data-hint-2="Use the Path constructor to create a Path object for the path &quot;folder/subfolder/file.csv&quot;. You can pass the path as a string." data-hint-3="Now that you have a Path object, you can use its methods to work with the file. Think about what methods you might need to print the path." data-hint-4="Don&#x27;t forget to print the Path object to see its value. You can use the print() function to do this." data-hint-5="Your code should look something like this: import pathlib; path = pathlib.Path(&#x27;folder/subfolder/file.csv&#x27;); print(path)."><p><strong>Q1.</strong> Import <code>Path</code> from <code>pathlib</code>. Create a Path object for <code>"folder" / "subfolder" / "file.csv"</code>. Print it.</p></div>
+<div class="question"><p><strong>Q1.</strong> Import <code>Path</code> from <code>pathlib</code>. Create a Path object for <code>"folder" / "subfolder" / "file.csv"</code>. Print it.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="First, create a Path object for the file &quot;demo.txt&quot;. You&#x27;ll need this to write text to the file." data-hint-2="Use the write_text() method to write the string &quot;Hello&quot; to the file. Make sure to pass the string as an argument." data-hint-3="Think about how you can use the Path object to write the text to the file. You might need to create the file first." data-hint-4="Don&#x27;t forget to handle any potential errors that might occur when writing to the file. You can use a try-except block to do this." data-hint-5="Your code should look something like this: import pathlib; p = pathlib.Path(&#x27;demo.txt&#x27;); p.write_text(&#x27;Hello&#x27;)."><p><strong>Q2.</strong> Create a Path object <code>p = Path("demo.txt")</code>. Use <code>p.write_text("Hello")</code> to create the file.</p></div>
+<div class="question"><p><strong>Q2.</strong> Create a Path object <code>p = Path("demo.txt")</code>. Use <code>p.write_text("Hello")</code> to create the file.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To read the file, use the read_text() method on the Path object. This will return the contents of the file as a string." data-hint-2="Think about how you can use the read_text() method to read the file. You might need to assign the result to a variable." data-hint-3="Use the print() function to print the contents of the file. You can pass the string returned by read_text() as an argument." data-hint-4="Don&#x27;t forget to check if the file exists before trying to read it. You can use the exists() method to do this." data-hint-5="Your code should look something like this: import pathlib; p = pathlib.Path(&#x27;demo.txt&#x27;); contents = p.read_text(); print(contents); print(p.exists())."><p><strong>Q3.</strong> Use <code>p.read_text()</code> to read the file created in Q2 and print it. Then check <code>p.exists()</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>p.read_text()</code> to read the file created in Q2 and print it. Then check <code>p.exists()</code>.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="First, create a Path object for the file &quot;image.jpg&quot;. You&#x27;ll need this to access its properties." data-hint-2="Use the suffix attribute to get the file extension (e.g., .jpg). Think about how you can use this attribute to get the extension." data-hint-3="Use the stem attribute to get the file name without the extension (e.g., image). Think about how you can use this attribute to get the stem." data-hint-4="Don&#x27;t forget to print the suffix and stem to see their values. You can use the print() function to do this." data-hint-5="Your code should look something like this: import pathlib; p = pathlib.Path(&#x27;image.jpg&#x27;); print(p.suffix); print(p.stem)."><p><strong>Q4.</strong> Create a Path for <code>"image.jpg"</code>. Print its <code>.suffix</code> and <code>.stem</code> (the name without extension).</p></div>
+<div class="question"><p><strong>Q4.</strong> Create a Path for <code>"image.jpg"</code>. Print its <code>.suffix</code> and <code>.stem</code> (the name without extension).</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Use the cwd() method to get the current working directory. This will return a Path object representing the current directory." data-hint-2="Think about how you can use the Path object to get the current directory. You might need to assign the result to a variable." data-hint-3="Use the print() function to print the current directory. You can pass the Path object as an argument." data-hint-4="Don&#x27;t forget to handle any potential errors that might occur when getting the current directory. You can use a try-except block to do this." data-hint-5="Your code should look something like this: import pathlib; print(pathlib.Path.cwd())."><p><strong>Q5.</strong> Use <code>Path.cwd()</code> to get the current working directory. Print it.</p></div>
+<div class="question"><p><strong>Q5.</strong> Use <code>Path.cwd()</code> to get the current working directory. Print it.</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -744,19 +735,9 @@ print(f&quot;File name: {test_file.name}&quot;)</textarea>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 30: Phase Analysis & Review — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -251,27 +242,27 @@ print(&quot;Ready for the final challenge?&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Capstone</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by looking at the &#x27;Cleaning Phase&#x27; and think about what data or variables you need to handle missing values and wrong data types." data-hint-2="You&#x27;ll need to use the following Pandas methods: dropna(), fillna(), and astype() to handle missing values and wrong data types." data-hint-3="First, use dropna() to remove rows with missing values, then use fillna() to replace missing values with a specific value, and finally use astype() to convert data types." data-hint-4="A common mistake here is to forget to check the data types of the columns before converting them, which can lead to incorrect results." data-hint-5="Your final code should look something like this: df.dropna(), df.fillna(), df.astype() - make sure to apply these methods to the correct columns and data types."><p><strong>Q1.</strong> Plan the Cleaning Phase. What 3 Pandas methods will you use to handle missing data and wrong types?</p></div>
+<div class="question"><p><strong>Q1.</strong> Plan the Cleaning Phase. What 3 Pandas methods will you use to handle missing data and wrong types?</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about the difference between a LEFT JOIN and an INNER JOIN in the context of the &#x27;Merge Phase&#x27; and the tables &#x27;Customers&#x27; and &#x27;Txns&#x27;." data-hint-2="You&#x27;ll use a LEFT JOIN because you want to include all customers, even if they don&#x27;t have any transactions." data-hint-3="First, use the merge() function to join the &#x27;Customers&#x27; and &#x27;Txns&#x27; tables on the &#x27;customer_id&#x27; column, then specify the type of join as &#x27;left&#x27;." data-hint-4="A common mistake here is to forget to specify the type of join, which can lead to incorrect results." data-hint-5="Your final code should look something like this: pd.merge(df_customers, df_txns, on=&#x27;customer_id&#x27;, how=&#x27;left&#x27;) - make sure to specify the correct join type and columns."><p><strong>Q2.</strong> Plan the Merge Phase. Why would you use a <code>LEFT JOIN</code> (Customers -> Txns) instead of an <code>INNER JOIN</code>?</p></div>
+<div class="question"><p><strong>Q2.</strong> Plan the Merge Phase. Why would you use a <code>LEFT JOIN</code> (Customers -> Txns) instead of an <code>INNER JOIN</code>?</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about how you can calculate the &#x27;Total_Spent&#x27; per user in the &#x27;Feature Engineering Phase&#x27;." data-hint-2="You&#x27;ll use the groupby() function to group the data by &#x27;user_id&#x27; and then apply the sum() function to calculate the total spent." data-hint-3="First, use the groupby() function to group the data by &#x27;user_id&#x27;, then use the transform() function to apply the sum() function to each group." data-hint-4="A common mistake here is to forget to reset the index after grouping, which can lead to incorrect results." data-hint-5="Your final code should look something like this: df.groupby(&#x27;user_id&#x27;)[&#x27;amount&#x27;].transform(&#x27;sum&#x27;) - make sure to apply the correct function and group by the correct column."><p><strong>Q3.</strong> Plan the Feature Engineering Phase. How will you calculate <code>Total_Spent</code> per user? (Hint: <code>groupby().transform("sum")</code>).</p></div>
+<div class="question"><p><strong>Q3.</strong> Plan the Feature Engineering Phase. How will you calculate <code>Total_Spent</code> per user? (Hint: <code>groupby().transform("sum")</code>).</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about what type of plot is best to show the distribution of &#x27;Age&#x27; in the &#x27;Vis Phase&#x27;." data-hint-2="You&#x27;ll use a histogram to show the distribution of &#x27;Age&#x27; because it&#x27;s a continuous variable." data-hint-3="First, use the seaborn library to create a histogram of &#x27;Age&#x27;, then use the matplotlib library to customize the plot." data-hint-4="A common mistake here is to forget to set the x-axis label, which can make the plot hard to understand." data-hint-5="Your final code should look something like this: sns.histplot(df[&#x27;Age&#x27;], kde=True) - make sure to customize the plot with the correct labels and title."><p><strong>Q4.</strong> Plan the Vis Phase. What Seaborn plot is best to show the distribution of <code>Age</code>? What about <code>Total_Spent</code> by <code>Gender</code>?</p></div>
+<div class="question"><p><strong>Q4.</strong> Plan the Vis Phase. What Seaborn plot is best to show the distribution of <code>Age</code>? What about <code>Total_Spent</code> by <code>Gender</code>?</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about what libraries you need to import to set up your notebook." data-hint-2="You&#x27;ll need to import pandas as pd, numpy as np, seaborn as sns, and matplotlib.pyplot as plt." data-hint-3="First, use the import statement to import each library, then assign an alias to each library for easier use." data-hint-4="A common mistake here is to forget to import the correct libraries, which can lead to errors." data-hint-5="Your final code should look something like this: import pandas as pd; import numpy as np; import seaborn as sns; import matplotlib.pyplot as plt - make sure to import the correct libraries and assign the correct aliases."><p><strong>Q5.</strong> Set up your notebook: Import <code>pandas as pd</code>, <code>numpy as np</code>, <code>seaborn as sns</code>, and <code>matplotlib.pyplot as plt</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Set up your notebook: Import <code>pandas as pd</code>, <code>numpy as np</code>, <code>seaborn as sns</code>, and <code>matplotlib.pyplot as plt</code>.</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -312,27 +303,27 @@ print(&quot;Customers:\n&quot;, cust_df.head(3))</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Simulation</code></b>
 </h3></div>
-<div class="question" data-hint-1="First, let&#x27;s understand the core requirement: you need to execute the customer generation code and then use the cust_df.info() method to see the missing values." data-hint-2="To execute the code, you&#x27;ll likely need to use the pandas library, specifically the read_csv function to load the data." data-hint-3="The step-by-step logic flow is to first load the data, then execute the cust_df.info() method to inspect the DataFrame." data-hint-4="A common mistake here is forgetting to load the data correctly, so make sure you&#x27;ve imported pandas and loaded the data properly." data-hint-5="Your final code should look something like this: cust_df = pd.read_csv(&#x27;customer_data.csv&#x27;); cust_df.info()"><p><strong>Q1.</strong> Execute the customer generation code above. Run <code>cust_df.info()</code> to see the missing values.</p></div>
+<div class="question"><p><strong>Q1.</strong> Execute the customer generation code above. Run <code>cust_df.info()</code> to see the missing values.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To generate a txn_df with 500 rows, let&#x27;s start by understanding the core requirement: you need to create a DataFrame with Txn_ID and Cust_ID." data-hint-2="You&#x27;ll likely need to use the pandas library, specifically the DataFrame constructor and the numpy library for random number generation." data-hint-3="The step-by-step logic flow is to first import the necessary libraries, then create the DataFrame with the required columns and data." data-hint-4="A common mistake here is not setting the data types correctly, so make sure you&#x27;ve specified the correct data types for Txn_ID and Cust_ID." data-hint-5="Your final code should look something like this: txn_df = pd.DataFrame({&#x27;Txn_ID&#x27;: range(1, 501), &#x27;Cust_ID&#x27;: np.random.randint(1, 101, 500)})"><p><strong>Q2.</strong> Generate a <code>txn_df</code> with 500 rows. <code>Txn_ID</code> (1 to 500), <code>Cust_ID</code> (random 1 to 100).</p></div>
+<div class="question"><p><strong>Q2.</strong> Generate a <code>txn_df</code> with 500 rows. <code>Txn_ID</code> (1 to 500), <code>Cust_ID</code> (random 1 to 100).</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To add an Amount column to txn_df, let&#x27;s start by understanding the core requirement: you need to create a column with 90% floats and 10% messy strings." data-hint-2="You&#x27;ll likely need to use the pandas library, specifically the apply method to apply a function to each row." data-hint-3="The step-by-step logic flow is to first create a function that randomly generates either a float or a messy string, then apply this function to each row in the DataFrame." data-hint-4="A common mistake here is not handling the messy strings correctly, so make sure you&#x27;ve specified the correct data type for the Amount column." data-hint-5="Your final code should look something like this: txn_df[&#x27;Amount&#x27;] = txn_df.apply(lambda row: np.random.choice([&#x27;float&#x27;, &#x27;messy_string&#x27;], p=[0.9, 0.1]), axis=1)"><p><strong>Q3.</strong> Add an <code>Amount</code> column to <code>txn_df</code>. Make 90% of them floats, and 10% of them messy strings like <code>"$50"</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Add an <code>Amount</code> column to <code>txn_df</code>. Make 90% of them floats, and 10% of them messy strings like <code>"$50"</code>.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To add a Date column to txn_df, let&#x27;s start by understanding the core requirement: you need to create a column with random dates." data-hint-2="You&#x27;ll likely need to use the pandas library, specifically the date_range function and the numpy library for random number generation." data-hint-3="The step-by-step logic flow is to first create a date range, then use np.random.choice to select a random date from this range." data-hint-4="A common mistake here is not specifying the correct date range, so make sure you&#x27;ve specified the correct start and end dates." data-hint-5="Your final code should look something like this: txn_df[&#x27;Date&#x27;] = pd.date_range(&#x27;2022-01-01&#x27;, periods=500).sample(500)"><p><strong>Q4.</strong> Add a <code>Date</code> column using <code>pd.date_range()</code> and <code>np.random.choice()</code>.</p></div>
+<div class="question"><p><strong>Q4.</strong> Add a <code>Date</code> column using <code>pd.date_range()</code> and <code>np.random.choice()</code>.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To verify both DataFrames exist and inspect their heads, let&#x27;s start by understanding the core requirement: you need to check if both DataFrames are loaded correctly." data-hint-2="You&#x27;ll likely need to use the pandas library, specifically the head method to inspect the first few rows of each DataFrame." data-hint-3="The step-by-step logic flow is to first load both DataFrames, then use the head method to inspect their contents." data-hint-4="A common mistake here is not loading the DataFrames correctly, so make sure you&#x27;ve imported pandas and loaded the data properly." data-hint-5="Your final code should look something like this: pd.set_option(&#x27;display.max_rows&#x27;, None); print(cust_df.head()); print(txn_df.head())"><p><strong>Q5.</strong> Verify both DataFrames exist and inspect their heads.</p></div>
+<div class="question"><p><strong>Q5.</strong> Verify both DataFrames exist and inspect their heads.</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -365,27 +356,27 @@ print(&quot;The stage is yours. Build the pipeline.&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Execution</code></b>
 </h3></div>
-<div class="question" data-hint-1="First, take a closer look at the txn_df DataFrame and identify the column that contains the &#x27;Amount&#x27; values. You&#x27;ll notice that these values are currently strings, but you need to clean them up to perform calculations." data-hint-2="To clean the &#x27;Amount&#x27; column, you can use the str.replace() method to remove the &#x27;$&#x27; sign and then convert the resulting string to a float using the astype() method. For example, you might use txn_df[&#x27;Amount&#x27;] = txn_df[&#x27;Amount&#x27;].str.replace(&#x27;$&#x27;, &#x27;&#x27;).astype(float)." data-hint-3="Next, focus on the cust_df DataFrame and locate the &#x27;Age&#x27; column. You&#x27;ll see that it contains some missing values (NaN). To replace these missing values, you can use the median() function to find the median age and then use the fillna() method to fill in the NaN values with the median age." data-hint-4="Be careful not to forget to assign the result back to the &#x27;Age&#x27; column after filling in the missing values. You might also want to verify that the median age is calculated correctly before proceeding." data-hint-5="After cleaning the &#x27;Amount&#x27; column in txn_df and filling in the missing values in the &#x27;Age&#x27; column of cust_df, your code should look something like this: txn_df[&#x27;Amount&#x27;] = txn_df[&#x27;Amount&#x27;].str.replace(&#x27;$&#x27;, &#x27;&#x27;).astype(float); cust_df[&#x27;Age&#x27;] = cust_df[&#x27;Age&#x27;].fillna(cust_df[&#x27;Age&#x27;].median())"><p><strong>Q1.</strong> Clean <code>Amount</code> in <code>txn_df</code> (remove <code>$</code> and cast to float). Clean <code>Age</code> in <code>cust_df</code> (fill NaN with median).</p></div>
+<div class="question"><p><strong>Q1.</strong> Clean <code>Amount</code> in <code>txn_df</code> (remove <code>$</code> and cast to float). Clean <code>Age</code> in <code>cust_df</code> (fill NaN with median).</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To perform a LEFT JOIN between cust_df and txn_df on the &#x27;ID&#x27; column, start by importing the pandas library and loading the necessary DataFrames." data-hint-2="Next, use the merge() function to join the two DataFrames on the &#x27;ID&#x27; column. Make sure to specify the &#x27;left&#x27; parameter to indicate that you want a LEFT JOIN." data-hint-3="When merging the DataFrames, you&#x27;ll need to specify the &#x27;on&#x27; parameter to indicate that you want to join on the &#x27;ID&#x27; column. You might also want to verify that the resulting DataFrame contains all the rows from cust_df." data-hint-4="Be careful not to forget to assign the result back to a new DataFrame after merging the two DataFrames. You might also want to check the resulting DataFrame to ensure that the join was performed correctly." data-hint-5="After performing the LEFT JOIN, your code should look something like this: merged_df = pd.merge(cust_df, txn_df, on=&#x27;ID&#x27;, how=&#x27;left&#x27;)"><p><strong>Q2.</strong> Merge <code>cust_df</code> and <code>txn_df</code> on ID using a LEFT JOIN.</p></div>
+<div class="question"><p><strong>Q2.</strong> Merge <code>cust_df</code> and <code>txn_df</code> on ID using a LEFT JOIN.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To create a correlation heatmap, start by importing the seaborn library and loading the necessary DataFrame." data-hint-2="Next, use the corr() function to calculate the correlation between the &#x27;Age&#x27; and &#x27;Amount&#x27; columns. You might also want to use the heatmap() function to visualize the correlation matrix." data-hint-3="When creating the heatmap, you&#x27;ll need to specify the &#x27;annot&#x27; parameter to indicate that you want to display the correlation coefficients. You might also want to adjust the color palette to make the heatmap more readable." data-hint-4="Be careful not to forget to assign the result back to a new DataFrame after calculating the correlation. You might also want to check the resulting DataFrame to ensure that the correlation was calculated correctly." data-hint-5="After creating the correlation heatmap, your code should look something like this: corr_matrix = cust_df[[&#x27;Age&#x27;, &#x27;Amount&#x27;]].corr(); sns.heatmap(corr_matrix, annot=True, cmap=&#x27;coolwarm&#x27;)"><p><strong>Q3.</strong> Create the Correlation Heatmap. Is <code>Age</code> correlated with <code>Amount</code>?</p></div>
+<div class="question"><p><strong>Q3.</strong> Create the Correlation Heatmap. Is <code>Age</code> correlated with <code>Amount</code>?</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To create a barplot, start by importing the matplotlib library and loading the necessary DataFrame." data-hint-2="Next, use the groupby() function to group the &#x27;Amount&#x27; column by the &#x27;Region&#x27; column. You might also want to use the sum() function to calculate the total amount for each region." data-hint-3="When creating the barplot, you&#x27;ll need to specify the &#x27;x&#x27; parameter to indicate that you want to plot the &#x27;Region&#x27; column on the x-axis. You might also want to adjust the title and labels to make the plot more informative." data-hint-4="Be careful not to forget to assign the result back to a new DataFrame after grouping and summing the data. You might also want to check the resulting DataFrame to ensure that the data was grouped correctly." data-hint-5="After creating the barplot, your code should look something like this: region_amounts = txn_df.groupby(&#x27;Region&#x27;)[&#x27;Amount&#x27;].sum(); plt.bar(region_amounts.index, region_amounts.values)"><p><strong>Q4.</strong> Create the Barplot: <code>x="Region"</code>, <code>y="Amount"</code>, <code>estimator=sum</code>. Which region brings the most revenue?</p></div>
+<div class="question"><p><strong>Q4.</strong> Create the Barplot: <code>x="Region"</code>, <code>y="Amount"</code>, <code>estimator=sum</code>. Which region brings the most revenue?</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To create a boxplot, start by importing the matplotlib library and loading the necessary DataFrame." data-hint-2="Next, use the groupby() function to group the &#x27;Age&#x27; column by the &#x27;Churned&#x27; column. You might also want to use the plot() function to create the boxplot." data-hint-3="When creating the boxplot, you&#x27;ll need to specify the &#x27;x&#x27; parameter to indicate that you want to plot the &#x27;Churned&#x27; column on the x-axis. You might also want to adjust the title and labels to make the plot more informative." data-hint-4="Be careful not to forget to assign the result back to a new DataFrame after grouping the data. You might also want to check the resulting DataFrame to ensure that the data was grouped correctly." data-hint-5="After creating the boxplot, your code should look something like this: age_by_churned = cust_df.groupby(&#x27;Churned&#x27;)[&#x27;Age&#x27;].plot(kind=&#x27;box&#x27;); plt.title(&#x27;Age by Churned Status&#x27;)"><p><strong>Q5.</strong> Create the Boxplot: <code>x="Churned"</code>, <code>y="Age"</code>. Do older users churn more?</p></div>
+<div class="question"><p><strong>Q5.</strong> Create the Boxplot: <code>x="Churned"</code>, <code>y="Age"</code>. Do older users churn more?</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -718,19 +709,9 @@ print(&quot;The stage is yours. Build the pipeline.&quot;)</textarea>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

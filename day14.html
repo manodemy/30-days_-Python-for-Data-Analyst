@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 14: Exceptions — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -245,27 +236,27 @@ print(f&#x27;Clean data: {clean_data}&#x27;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Try/Except</code></b>
 </h3></div>
-<div class="question" data-hint-1="First, understand the problem: you need to write a try/except block that catches a specific error when dividing by zero. Start by defining the division operation and the value that will cause the error." data-hint-2="To catch the ZeroDivisionError, you&#x27;ll use a try/except block with the specific error type. Look up the syntax for try/except blocks in Python." data-hint-3="The logic flow is simple: try to perform the division, and if it fails, catch the error and print the error message. Think about what code you&#x27;ll write inside the try block and the except block." data-hint-4="A common mistake here is forgetting to print the error message in the except block, so make sure to include that. Also, be careful with the indentation and syntax of the try/except block." data-hint-5="Your final code should look something like this: try: result = 10 / 0; except ZeroDivisionError: print(&#x27;Cannot divide by zero&#x27;)."><p><strong>Q1.</strong> Write a try/except block that catches <code>ZeroDivisionError</code> when calculating <code>10 / 0</code>. Print "Cannot divide by zero".</p></div>
+<div class="question"><p><strong>Q1.</strong> Write a try/except block that catches <code>ZeroDivisionError</code> when calculating <code>10 / 0</code>. Print "Cannot divide by zero".</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by understanding what&#x27;s happening: you&#x27;re trying to access a key in a dictionary that doesn&#x27;t exist. Think about what dictionary you&#x27;re working with and what key you&#x27;re trying to access." data-hint-2="To catch the KeyError, you&#x27;ll use a try/except block with the specific error type. Look up the syntax for try/except blocks in Python." data-hint-3="The logic flow is simple: try to access the key, and if it fails, catch the error and print a warning. Think about what code you&#x27;ll write inside the try block and the except block." data-hint-4="A common mistake here is forgetting to print the warning message in the except block, so make sure to include that. Also, be careful with the dictionary syntax and the key you&#x27;re trying to access." data-hint-5="Your final code should look something like this: try: print(d[&#x27;b&#x27;]); except KeyError: print(&#x27;Warning: key not found&#x27;)."><p><strong>Q2.</strong> Try accessing <code>d = {"a": 1}; print(d["b"])</code>. Catch the <code>KeyError</code> and print a warning.</p></div>
+<div class="question"><p><strong>Q2.</strong> Try accessing <code>d = {"a": 1}; print(d["b"])</code>. Catch the <code>KeyError</code> and print a warning.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by understanding what&#x27;s happening: you&#x27;re trying to add a number and a string. Think about what values you&#x27;re working with and what operation you&#x27;re trying to perform." data-hint-2="To catch any error, you&#x27;ll use a try/except block with a bare except clause. Look up the syntax for try/except blocks in Python." data-hint-3="The logic flow is simple: try to perform the addition, and if it fails, catch the error and print the error message. Think about what code you&#x27;ll write inside the try block and the except block." data-hint-4="A common mistake here is not being careful with the type of error that&#x27;s caught. Remember that a bare except clause can catch exceptions you don&#x27;t want to catch, like SystemExit or KeyboardInterrupt." data-hint-5="Your final code should look something like this: try: result = 1 + &#x27;a&#x27;; except Exception as e: print(e)."><p><strong>Q3.</strong> Use <code>except Exception as e:</code> to catch ANY error in <code>1 + "a"</code>. Print <code>e</code> to see the actual error message.</p></div>
+<div class="question"><p><strong>Q3.</strong> Use <code>except Exception as e:</code> to catch ANY error in <code>1 + "a"</code>. Print <code>e</code> to see the actual error message.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by understanding what&#x27;s happening: you&#x27;re trying to open a file that doesn&#x27;t exist. Think about what file you&#x27;re trying to open and what operation you&#x27;re trying to perform." data-hint-2="To catch the FileNotFoundError, you&#x27;ll use a try/except block with the specific error type. Look up the syntax for try/except blocks in Python." data-hint-3="The logic flow is simple: try to open the file, and if it fails, catch the error and print a message. Think about what code you&#x27;ll write inside the try block and the except block." data-hint-4="A common mistake here is forgetting to specify the file path correctly, so make sure to include the correct path in the open function." data-hint-5="Your final code should look something like this: try: open(&#x27;fake.txt&#x27;); except FileNotFoundError: print(&#x27;File not found&#x27;)."><p><strong>Q4.</strong> Write a try/except block to catch <code>FileNotFoundError</code> when trying to open <code>"fake.txt"</code>. Print "File not found".</p></div>
+<div class="question"><p><strong>Q4.</strong> Write a try/except block to catch <code>FileNotFoundError</code> when trying to open <code>"fake.txt"</code>. Print "File not found".</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by understanding why a bare except clause is dangerous: it can catch exceptions you don&#x27;t want to catch, like SystemExit or KeyboardInterrupt. Think about what exceptions you might catch that you don&#x27;t want to catch." data-hint-2="A good example of an exception a bare except clause might catch that you don&#x27;t want to catch is SystemExit. Look up the documentation for the sys module to see what exceptions it raises." data-hint-3="To avoid catching exceptions you don&#x27;t want to catch, use a try/except block with a specific error type. Look up the syntax for try/except blocks in Python." data-hint-4="The logic flow is simple: try to perform the operation, and if it fails, catch the specific error type and handle it accordingly. Think about what code you&#x27;ll write inside the try block and the except block." data-hint-5="Your final code should look something like this: try: 1 / 0; except ZeroDivisionError: print(&#x27;Cannot divide by zero&#x27;)."><p><strong>Q5.</strong> Why is a bare <code>except:</code> dangerous? Give an example of an exception it might catch that you don't want it to.</p></div>
+<div class="question"><p><strong>Q5.</strong> Why is a bare <code>except:</code> dangerous? Give an example of an exception it might catch that you don't want it to.</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -315,27 +306,27 @@ divide(10, 0)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Else & Finally</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by understanding the core requirement: you need to write a try/except/else block that attempts to convert the string &quot;10&quot; to an integer." data-hint-2="To achieve this, you&#x27;ll need to use Python&#x27;s built-in int() function, which attempts to convert a given string to an integer." data-hint-3="The step-by-step logic flow is: try to convert the string to an integer, catch any exceptions that occur during this process, and if no exceptions occur, print a success message with the converted value." data-hint-4="A common mistake to watch out for is forgetting to handle the exception properly, which could lead to a program crash." data-hint-5="Your final code should look something like this: try, except, else blocks with the int() function and a print statement in the else block."><p><strong>Q1.</strong> Write a try/except/else block. Try <code>val = int("10")</code>. In <code>else</code>, print <code>"Success: [val]"</code>. Test it.</p></div>
+<div class="question"><p><strong>Q1.</strong> Write a try/except/else block. Try <code>val = int("10")</code>. In <code>else</code>, print <code>"Success: [val]"</code>. Test it.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Now that you&#x27;ve mastered the try/except/else block, let&#x27;s modify the input to &quot;abc&quot; and see what happens." data-hint-2="As you test it, pay attention to how the except block runs and the else block skips, demonstrating the difference between a successful conversion and a failed one." data-hint-3="The step-by-step logic flow remains the same: try to convert the string to an integer, catch any exceptions, and if no exceptions occur, skip the else block." data-hint-4="Remember to keep your except block specific to the type of exception you&#x27;re expecting, in this case, a ValueError." data-hint-5="Your final code should still have the try, except, else blocks, but now with the input &quot;abc&quot;."><p><strong>Q2.</strong> Change the input in Q1 to <code>"abc"</code>. Watch the <code>except</code> run and the <code>else</code> skip.</p></div>
+<div class="question"><p><strong>Q2.</strong> Change the input in Q1 to <code>"abc"</code>. Watch the <code>except</code> run and the <code>else</code> skip.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="It&#x27;s time to add a finally block to your try/except/else block, which will execute regardless of whether an exception occurred or not." data-hint-2="To do this, you&#x27;ll need to use the finally keyword and place your cleanup code inside it." data-hint-3="The step-by-step logic flow is: try to convert the string to an integer, catch any exceptions, print a success message if no exceptions occur, and finally, execute the cleanup code." data-hint-4="A common mistake to watch out for is forgetting to place the finally block after the try and except blocks." data-hint-5="Your final code should have the try, except, else, finally blocks with the int() function, a print statement in the else block, and a print statement in the finally block."><p><strong>Q3.</strong> Add a <code>finally</code> block to Q1 that prints <code>"Cleanup complete"</code>. Run it with both "10" and "abc".</p></div>
+<div class="question"><p><strong>Q3.</strong> Add a <code>finally</code> block to Q1 that prints <code>"Cleanup complete"</code>. Run it with both "10" and "abc".</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="In this exercise, you&#x27;ll write a function that opens a file in the try block and closes it in the finally block, simulating file operations with print statements." data-hint-2="To achieve this, you&#x27;ll need to use the open() function to open a file and the close() method to close it." data-hint-3="The step-by-step logic flow is: try to open the file, catch any exceptions that occur during this process, and if no exceptions occur, close the file in the finally block." data-hint-4="A common mistake to watch out for is forgetting to close the file in the finally block, which could lead to file descriptor leaks." data-hint-5="Your final code should have a function with a try block that opens a file, a finally block that closes the file, and print statements to simulate file operations."><p><strong>Q4.</strong> Write a function that opens a file in the <code>try</code>, and closes it in the <code>finally</code>. (Simulate with print statements).</p></div>
+<div class="question"><p><strong>Q4.</strong> Write a function that opens a file in the <code>try</code>, and closes it in the <code>finally</code>. (Simulate with print statements).</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="When deciding where to place code in a try/except/else block, remember that the else block is meant to handle successful execution, not just general code that should run at the end." data-hint-2="Code belonging in the else block should be directly related to the successful execution of the try block, such as printing a success message or performing a specific action." data-hint-3="Placing code in the else block that doesn&#x27;t relate to the try block&#x27;s success can lead to confusing code and make it harder to understand the program&#x27;s logic." data-hint-4="A common mistake to watch out for is placing code in the else block that could also run in the finally block, which would make the code redundant." data-hint-5="Your final code should have a clear separation of concerns between the try, except, and else blocks, with the else block containing code directly related to the try block&#x27;s success."><p><strong>Q5.</strong> Explain why code belonging in the <code>else</code> block shouldn't just be put at the bottom of the <code>try</code> block.</p></div>
+<div class="question"><p><strong>Q5.</strong> Explain why code belonging in the <code>else</code> block shouldn't just be put at the bottom of the <code>try</code> block.</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -385,27 +376,27 @@ except InvalidTransactionError as e:
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Raising Errors</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by defining a function named divide that takes two parameters, a and b." data-hint-2="Inside the divide function, use an if statement to check if b is equal to 0." data-hint-3="If b is 0, use the raise keyword to explicitly raise a ValueError with a specific message." data-hint-4="Remember to use the ValueError class when raising the exception, and provide a descriptive message." data-hint-5="Your final code should look like a simple function definition with an if-else statement and a raise statement."><p><strong>Q1.</strong> Write a function <code>divide(a, b)</code> that explicitly raises a <code>ValueError</code> with message <code>"b cannot be zero"</code> if <code>b == 0</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Write a function <code>divide(a, b)</code> that explicitly raises a <code>ValueError</code> with message <code>"b cannot be zero"</code> if <code>b == 0</code>.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Begin by defining a custom exception class named InvalidAgeError that inherits from the built-in Exception class." data-hint-2="Inside the InvalidAgeError class, use the pass statement to indicate that the class does not have any specific implementation." data-hint-3="When creating an instance of the InvalidAgeError class, pass the age value as an argument." data-hint-4="In the main code, use an if statement to check if the age is greater than 150." data-hint-5="If the age is greater than 150, use the raise keyword to raise an instance of the InvalidAgeError class."><p><strong>Q2.</strong> Create a custom exception class <code>InvalidAgeError(Exception): pass</code>. Raise it if age is > 150.</p></div>
+<div class="question"><p><strong>Q2.</strong> Create a custom exception class <code>InvalidAgeError(Exception): pass</code>. Raise it if age is > 150.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by defining a try block that contains the code that might raise an exception." data-hint-2="Inside the try block, create an instance of the InvalidAgeError class and raise it." data-hint-3="Use an except block to catch the InvalidAgeError exception." data-hint-4="Inside the except block, print a friendly message to the user." data-hint-5="Remember to handle the exception properly to avoid crashing the program."><p><strong>Q3.</strong> Write a try/except block to catch your <code>InvalidAgeError</code> from Q2 and print a friendly message.</p></div>
+<div class="question"><p><strong>Q3.</strong> Write a try/except block to catch your <code>InvalidAgeError</code> from Q2 and print a friendly message.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Both raise Exception(&quot;msg&quot;) and raise ValueError(&quot;msg&quot;) are used to raise exceptions, but they serve different purposes." data-hint-2="The Exception class is a base class for all exceptions in Python, while the ValueError class is a specific type of exception." data-hint-3="Raising an Exception instance is more general, while raising a ValueError instance is more specific." data-hint-4="In general, it&#x27;s a good practice to raise the most specific exception type possible." data-hint-5="Your final code should compare the two raise statements and understand their differences."><p><strong>Q4.</strong> What is the difference between <code>raise Exception("msg")</code> and <code>raise ValueError("msg")</code>?</p></div>
+<div class="question"><p><strong>Q4.</strong> What is the difference between <code>raise Exception("msg")</code> and <code>raise ValueError("msg")</code>?</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Start by defining a try block that contains the code that might raise an exception." data-hint-2="Inside the try block, use a logging statement to log the exception." data-hint-3="Use the bare raise keyword to re-raise the exception." data-hint-4="Remember to handle the exception properly to avoid crashing the program." data-hint-5="Your final code should demonstrate logging and re-raising the exception."><p><strong>Q5.</strong> Catch an exception, log it, and then re-raise it using the bare <code>raise</code> keyword. Demonstrate this.</p></div>
+<div class="question"><p><strong>Q5.</strong> Catch an exception, log it, and then re-raise it using the bare <code>raise</code> keyword. Demonstrate this.</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -737,19 +728,9 @@ except InvalidTransactionError as e:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 11: Modules — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -251,27 +242,27 @@ print(f&#x27;Tomorrow is: {tomorrow}&#x27;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Modules</code></b>
 </h3></div>
-<div class="question" data-hint-1="Let&#x27;s start by understanding what the core requirement is. You need to import the random module and use it to print a random number between 1 and 10." data-hint-2="To achieve this, you&#x27;ll need to use the random.randint function, which takes two arguments: the lower and upper bounds of the range." data-hint-3="The step-by-step logic flow is to import the random module, define the lower and upper bounds, and then use the randint function to generate a random number." data-hint-4="A common mistake to watch out for is forgetting to import the random module or using the wrong function to generate the random number." data-hint-5="Your final code should look something like this: import random; print(random.randint(1, 10))."><p><strong>Q1.</strong> Import the <code>random</code> module. Use <code>random.randint(1, 10)</code> to print a random number.</p></div>
+<div class="question"><p><strong>Q1.</strong> Import the <code>random</code> module. Use <code>random.randint(1, 10)</code> to print a random number.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="First, let&#x27;s break down the core requirement. You need to import the math module using an alias and then print the value of pi." data-hint-2="To import the math module with an alias, you can use the &#x27;as&#x27; keyword followed by the alias name. In this case, you can use &#x27;m&#x27; as the alias." data-hint-3="The step-by-step logic flow is to import the math module with the alias, access the pi value using the alias, and then print it." data-hint-4="A common mistake to watch out for is forgetting to use the alias when accessing the pi value or importing the math module without an alias." data-hint-5="Your final code should look something like this: import math as m; print(m.pi)."><p><strong>Q2.</strong> Import <code>math</code> using an alias <code>m</code>. Print the value of <code>m.pi</code>.</p></div>
+<div class="question"><p><strong>Q2.</strong> Import <code>math</code> using an alias <code>m</code>. Print the value of <code>m.pi</code>.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Let&#x27;s start by understanding what the core requirement is. You need to import only the choice function from the random module and use it to pick a random color from a list." data-hint-2="To achieve this, you&#x27;ll need to use the from keyword to import only the choice function from the random module." data-hint-3="The step-by-step logic flow is to import the choice function from the random module, define the list of colors, and then use the choice function to pick a random color." data-hint-4="A common mistake to watch out for is forgetting to import only the choice function or using the wrong function to pick the random color." data-hint-5="Your final code should look something like this: from random import choice; colors = [&#x27;Red&#x27;, &#x27;Blue&#x27;, &#x27;Green&#x27;]; print(choice(colors))."><p><strong>Q3.</strong> Import ONLY the <code>choice</code> function from <code>random</code>. Use it to pick a random color from <code>["Red", "Blue", "Green"]</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Import ONLY the <code>choice</code> function from <code>random</code>. Use it to pick a random color from <code>["Red", "Blue", "Green"]</code>.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="First, let&#x27;s break down the core requirement. You need to try to import a module that doesn&#x27;t exist and catch the ModuleNotFoundError that&#x27;s raised." data-hint-2="To achieve this, you&#x27;ll need to use a try-except block to catch the ModuleNotFoundError exception." data-hint-3="The step-by-step logic flow is to try to import the fake_module, catch the ModuleNotFoundError exception, and then print a friendly message." data-hint-4="A common mistake to watch out for is forgetting to use a try-except block or catching the wrong exception." data-hint-5="Your final code should look something like this: try: import fake_module; except ModuleNotFoundError: print(&#x27;The module does not exist.&#x27;)."><p><strong>Q4.</strong> Try to import a module that doesn't exist (e.g., <code>import fake_module</code>). Catch the <code>ModuleNotFoundError</code> and print a friendly message.</p></div>
+<div class="question"><p><strong>Q4.</strong> Try to import a module that doesn't exist (e.g., <code>import fake_module</code>). Catch the <code>ModuleNotFoundError</code> and print a friendly message.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Let&#x27;s start by understanding why importing pandas as pd is preferred over from pandas import *." data-hint-2="When you use from pandas import *, you&#x27;re importing all the functions and variables from the pandas module into the current namespace, which can lead to naming conflicts." data-hint-3="The step-by-step logic flow is to understand the difference between importing modules and importing specific functions or variables." data-hint-4="A common mistake to watch out for is not understanding the implications of importing all functions and variables from a module." data-hint-5="Your final understanding should be that importing pandas as pd is preferred because it allows you to use the pandas module while avoiding naming conflicts."><p><strong>Q5.</strong> Explain why <code>import pandas as pd</code> is preferred over <code>from pandas import *</code>.</p></div>
+<div class="question"><p><strong>Q5.</strong> Explain why <code>import pandas as pd</code> is preferred over <code>from pandas import *</code>.</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -322,27 +313,27 @@ print(f&#x27;Python version: {sys.version.split()[0]}&#x27;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Standard Lib</code></b>
 </h3></div>
-<div class="question" data-hint-1="Let&#x27;s start by understanding what the core requirement is. We need to import the json module and parse a given JSON string into a dictionary." data-hint-2="To parse the JSON string, we&#x27;ll use the json.loads() function. This function takes a JSON string as input and returns a Python dictionary." data-hint-3="The step-by-step logic flow is to import the json module, define the JSON string, use json.loads() to parse it into a dictionary, and finally print the dictionary." data-hint-4="A common mistake here is to forget to import the json module or to use the wrong function to parse the JSON string." data-hint-5="Your final code should look like this: import json; json_string = &#x27;{&quot;name&quot;: &quot;Alice&quot;}&#x27;; dictionary = json.loads(json_string); print(dictionary)."><p><strong>Q1.</strong> Import <code>json</code>. Parse <code>'{"name": "Alice"}'</code> into a dictionary using <code>json.loads()</code>. Print the dictionary.</p></div>
+<div class="question"><p><strong>Q1.</strong> Import <code>json</code>. Parse <code>'{"name": "Alice"}'</code> into a dictionary using <code>json.loads()</code>. Print the dictionary.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To solve this question, we need to understand that we&#x27;re creating a dictionary that defaults to 0. This means that if a key doesn&#x27;t exist, it should be initialized to 0." data-hint-2="We&#x27;ll use the collections.defaultdict function to create this dictionary. This function takes a type as an argument, which in this case is int." data-hint-3="The step-by-step logic flow is to import the collections module, create a defaultdict that defaults to 0, increment the key &#x27;x&#x27;, and print the value." data-hint-4="A common mistake here is to forget to import the collections module or to use the wrong type for the defaultdict." data-hint-5="Your final code should look like this: from collections import defaultdict; d = defaultdict(int); d[&#x27;x&#x27;] += 1; print(d[&#x27;x&#x27;])."><p><strong>Q2.</strong> Import <code>collections.defaultdict</code>. Create a dict that defaults to <code>0</code>. Increment a key <code>"x"</code> and print it.</p></div>
+<div class="question"><p><strong>Q2.</strong> Import <code>collections.defaultdict</code>. Create a dict that defaults to <code>0</code>. Increment a key <code>"x"</code> and print it.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To print the list of command-line arguments, we need to understand that sys.argv is a list of strings where the first element is the script name." data-hint-2="We&#x27;ll use the sys module to access this list. Specifically, we&#x27;ll use the argv attribute of the sys module." data-hint-3="The step-by-step logic flow is to import the sys module, print the sys.argv list, and make sure to handle the case where there are no command-line arguments." data-hint-4="A common mistake here is to forget to import the sys module or to use the wrong attribute to access the command-line arguments." data-hint-5="Your final code should look like this: import sys; print(sys.argv)."><p><strong>Q3.</strong> Import <code>sys</code>. Print the list of command-line arguments using <code>sys.argv</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Import <code>sys</code>. Print the list of command-line arguments using <code>sys.argv</code>.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To calculate the factorial of 5, we need to understand that the math.factorial() function takes an integer as input and returns its factorial." data-hint-2="We&#x27;ll use the math module to access this function. Specifically, we&#x27;ll use the factorial() function of the math module." data-hint-3="The step-by-step logic flow is to import the math module, call the math.factorial() function with the argument 5, and print the result." data-hint-4="A common mistake here is to forget to import the math module or to use the wrong function to calculate the factorial." data-hint-5="Your final code should look like this: import math; print(math.factorial(5))."><p><strong>Q4.</strong> Import <code>math</code>. Calculate the factorial of 5 using <code>math.factorial()</code>. Print it.</p></div>
+<div class="question"><p><strong>Q4.</strong> Import <code>math</code>. Calculate the factorial of 5 using <code>math.factorial()</code>. Print it.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To pause execution for 1 second, we need to understand that the time.sleep() function takes a float as input and pauses execution for that many seconds." data-hint-2="We&#x27;ll use the time module to access this function. Specifically, we&#x27;ll use the sleep() function of the time module." data-hint-3="The step-by-step logic flow is to import the time module, call the time.sleep() function with the argument 1, and then print &#x27;Done&#x27;." data-hint-4="A common mistake here is to forget to import the time module or to use the wrong function to pause execution." data-hint-5="Your final code should look like this: import time; time.sleep(1); print(&#x27;Done&#x27;)."><p><strong>Q5.</strong> Import <code>time</code>. Use <code>time.sleep(1)</code> to pause execution for 1 second, then print "Done".</p></div>
+<div class="question"><p><strong>Q5.</strong> Import <code>time</code>. Use <code>time.sleep(1)</code> to pause execution for 1 second, then print "Done".</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -391,27 +382,27 @@ print(&quot;5. Restore: pip install -r requirements.txt&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Pip & Venv</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by recalling the basic command to create a new virtual environment in Python." data-hint-2="You&#x27;ll need to use the &#x27;python -m venv&#x27; command, which is a built-in tool for creating virtual environments." data-hint-3="Structure your command by specifying the name of the environment you want to create, which in this case is &#x27;env&#x27;." data-hint-4="Be careful not to forget the name of the environment, as this will be used to activate and deactivate it later." data-hint-5="The final command should look something like &#x27;python -m venv env&#x27;, which creates a new virtual environment named &#x27;env&#x27;."><p><strong>Q1.</strong> What command creates a new virtual environment named <code>env</code>?</p></div>
+<div class="question"><p><strong>Q1.</strong> What command creates a new virtual environment named <code>env</code>?</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To activate the virtual environment on Windows, you&#x27;ll need to use the &#x27;Scripts&#x27; directory." data-hint-2="You can use the &#x27;activate&#x27; command, but you&#x27;ll need to specify the path to the &#x27;Scripts&#x27; directory." data-hint-3="On Windows, the command should look something like &#x27;env\Scripts\activate&#x27;." data-hint-4="On Mac/Linux, you can simply use the &#x27;source&#x27; command followed by the path to the &#x27;bin&#x27; directory, like &#x27;source env/bin/activate&#x27;." data-hint-5="Make sure to use the correct path for your operating system to avoid any activation issues."><p><strong>Q2.</strong> What command activates the environment on Windows? On Mac/Linux?</p></div>
+<div class="question"><p><strong>Q2.</strong> What command activates the environment on Windows? On Mac/Linux?</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To install a specific version of the pandas library, you&#x27;ll need to use the &#x27;pip install&#x27; command with the &#x27;--upgrade&#x27; option." data-hint-2="You can specify the exact version you want to install using the &#x27;==&#x27; operator, like &#x27;pandas==1.5.3&#x27;." data-hint-3="Structure your command by specifying the package name, the version number, and the &#x27;--upgrade&#x27; option." data-hint-4="Be careful not to forget the version number, as this will determine which version of the library is installed." data-hint-5="The final command should look something like &#x27;pip install --upgrade pandas==1.5.3&#x27;."><p><strong>Q3.</strong> Write the command to install exactly version <code>1.5.3</code> of the <code>pandas</code> library.</p></div>
+<div class="question"><p><strong>Q3.</strong> Write the command to install exactly version <code>1.5.3</code> of the <code>pandas</code> library.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="The &#x27;pip freeze&#x27; command lists all installed packages and their versions in a format suitable for a requirements file." data-hint-2="The &#x27;&gt;&#x27; operator is used to redirect the output to a file, in this case &#x27;requirements.txt&#x27;." data-hint-3="This is important for version control because it allows you to easily reproduce the same environment on other machines." data-hint-4="By listing all installed packages and their versions, you can ensure that everyone working on the project has the same dependencies." data-hint-5="This also makes it easier to manage dependencies and avoid conflicts between different versions of the same package."><p><strong>Q4.</strong> Explain what <code>pip freeze > requirements.txt</code> does and why it is important for version control.</p></div>
+<div class="question"><p><strong>Q4.</strong> Explain what <code>pip freeze > requirements.txt</code> does and why it is important for version control.</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="The virtual environment folder (e.g., &#x27;venv/&#x27;) should be excluded from GitHub using &#x27;.gitignore&#x27; because it&#x27;s not relevant to the project code." data-hint-2="Including the virtual environment folder in the repository would make it difficult to manage dependencies across different machines." data-hint-3="By excluding it, you can ensure that everyone working on the project has the same dependencies and avoid conflicts." data-hint-4="This is a common practice in version control to keep the repository clean and focused on the project code." data-hint-5="The final &#x27;.gitignore&#x27; file should contain a line specifying the virtual environment folder, like &#x27;venv/&#x27; or &#x27;env/&#x27;."><p><strong>Q5.</strong> Why should you exclude the virtual environment folder (e.g., <code>venv/</code>) from GitHub using <code>.gitignore</code>?</p></div>
+<div class="question"><p><strong>Q5.</strong> Why should you exclude the virtual environment folder (e.g., <code>venv/</code>) from GitHub using <code>.gitignore</code>?</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -743,19 +734,9 @@ print(&quot;5. Restore: pip install -r requirements.txt&quot;)</textarea>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-

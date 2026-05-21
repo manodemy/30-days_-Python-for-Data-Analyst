@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 16: OOP Basics — Manodemy</title>
-<script src="supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- Authentication + Enrollment Route Guard -->
 <script>
   // PaywallGuard — executes before DOM render
@@ -91,15 +91,6 @@
          aria-haspopup="true">
       <div class="avatar-circle" id="avatarCircle"></div>
       <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-        <!-- Engagement Timer -->
-    <div class="nav-timer-card" id="pageTimerCard" title="Time spent focusing on this module">
-      <div class="timer-info">
-        <span class="timer-label">Active Focus</span>
-        <span class="timer-display" id="pageTimerDisplay">00:00</span>
-      </div>
-      <div class="timer-pulse-ring"></div>
     </div>
 
     <!-- Score Card -->
@@ -247,27 +238,27 @@ print(c1 == c2) # False, they are distinct objects in memory</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Classes</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by defining a class named Car with its attributes and methods." data-hint-2="Use the class keyword to define a class in Python, and don&#x27;t forget to use indentation for readability." data-hint-3="Inside the class definition, you can define methods like __init__ to initialize attributes." data-hint-4="Be careful not to confuse class attributes with instance attributes." data-hint-5="Your code should look something like this: class Car: pass, followed by two instances, car1 and car2."><p><strong>Q1.</strong> Define a class <code>Car</code>. Create two instances, <code>car1</code> and <code>car2</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Define a class <code>Car</code>. Create two instances, <code>car1</code> and <code>car2</code>.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To assign a color attribute to car1, recall that you&#x27;re working with an instance of the Car class." data-hint-2="Use the dot notation to access and modify instance attributes, like car1.color = &quot;Red&quot;." data-hint-3="Remember to print the color attribute after assigning it to car1." data-hint-4="Don&#x27;t forget to handle any potential errors that might occur when printing the color attribute." data-hint-5="Your code should look something like this: car1.color = &quot;Red&quot;; print(car1.color)"><p><strong>Q2.</strong> Assign a <code>color</code> attribute to <code>car1</code> (e.g., <code>"Red"</code>). Print it.</p></div>
+<div class="question"><p><strong>Q2.</strong> Assign a <code>color</code> attribute to <code>car1</code> (e.g., <code>"Red"</code>). Print it.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="When trying to access the color attribute on car2, you&#x27;ll encounter an AttributeError." data-hint-2="Use a try-except block to catch this exception and handle it gracefully." data-hint-3="Inside the except block, you can print an error message or take any other necessary action." data-hint-4="Be sure to handle the exception before the code that might raise it." data-hint-5="Your code should look something like this: try: print(car2.color); except AttributeError: print(&quot;Error: car2 has no color attribute&quot;)"><p><strong>Q3.</strong> Try to access the <code>color</code> attribute on <code>car2</code>. Catch the <code>AttributeError</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Try to access the <code>color</code> attribute on <code>car2</code>. Catch the <code>AttributeError</code>.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To print the type() of car1, recall that you&#x27;re working with an instance of the Car class." data-hint-2="Use the type() function to get the type of the object, like type(car1)." data-hint-3="Remember to print the result of the type() function." data-hint-4="Be careful not to confuse the type() function with the isinstance() function." data-hint-5="Your code should look something like this: print(type(car1))"><p><strong>Q4.</strong> Print the <code>type()</code> of <code>car1</code>. What does it say?</p></div>
+<div class="question"><p><strong>Q4.</strong> Print the <code>type()</code> of <code>car1</code>. What does it say?</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To explain the difference between a Class and an Object, think of a blueprint for a house." data-hint-2="A Class is like the blueprint, which defines the structure and attributes of the house." data-hint-3="An Object is like a specific house built from the blueprint, with its own unique attributes and values." data-hint-4="Just as a house can have different rooms and furniture, an Object can have different attributes and methods." data-hint-5="Your explanation should highlight the key differences between a Class and an Object, using the house analogy to make it more relatable."><p><strong>Q5.</strong> Explain the difference between a Class and an Object using a real-world analogy.</p></div>
+<div class="question"><p><strong>Q5.</strong> Explain the difference between a Class and an Object using a real-world analogy.</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6"># Write your answer here</textarea>
@@ -318,27 +309,27 @@ print(f&quot;In stock? {laptop.in_stock}&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Init & Self</code></b>
 </h3></div>
-<div class="question" data-hint-1="To start, think about what a Book class should have. What are the essential attributes of a book? You&#x27;ll need to define these in the init method." data-hint-2="For the init method, you&#x27;ll need to use the __init__ function, which is a special method in Python classes. You can also use the print function to verify your work." data-hint-3="First, create a new Book instance with a title and author. Then, think about how you can access these attributes later in your code." data-hint-4="Be careful not to confuse the instance attributes with local variables. Make sure to use the self keyword to access the attributes." data-hint-5="Your final code should look something like this: class Book: def __init__(self, title, author): ... and then you can create a new Book instance like this: book = Book(&#x27;Title&#x27;, &#x27;Author&#x27;)"><p><strong>Q1.</strong> Create a <code>Book</code> class with an <code><strong>init</strong></code> that takes <code>title</code> and <code>author</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create a <code>Book</code> class with an <code><strong>init</strong></code> that takes <code>title</code> and <code>author</code>.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To print the title of a Book instance, you&#x27;ll need to access the title attribute. Think about how you can do this." data-hint-2="You can use the print function to print the title. Make sure to use the correct syntax to access the attribute." data-hint-3="First, create a new Book instance with a title and author. Then, use the print function to print the title." data-hint-4="Don&#x27;t forget to use the correct attribute name to access the title. If you get an AttributeError, check your attribute name." data-hint-5="Your final code should look something like this: book = Book(&#x27;Title&#x27;, &#x27;Author&#x27;); print(book.title)"><p><strong>Q2.</strong> Create an instance of <code>Book</code> and print its <code>title</code>.</p></div>
+<div class="question"><p><strong>Q2.</strong> Create an instance of <code>Book</code> and print its <code>title</code>.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To add a method to the Book class, you&#x27;ll need to define a new function inside the class. Think about what this function should do." data-hint-2="You can use the print function to print a message. Make sure to use the correct syntax to access the instance attributes." data-hint-3="First, define the summary method inside the Book class. Then, use the print function to print a message with the title and author." data-hint-4="Be careful not to confuse the instance attributes with local variables. Make sure to use the self keyword to access the attributes." data-hint-5="Your final code should look something like this: class Book: def summary(self): ... and then you can call the method like this: book.summary()"><p><strong>Q3.</strong> Add a method <code>summary(self)</code> to <code>Book</code> that prints <code>"[title] by [author]"</code>. Call it.</p></div>
+<div class="question"><p><strong>Q3.</strong> Add a method <code>summary(self)</code> to <code>Book</code> that prints <code>"[title] by [author]"</code>. Call it.</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To add a default argument to the init method, you&#x27;ll need to use the = operator. Think about what the default value should be." data-hint-2="You can use the print function to verify that the default value is working correctly. Make sure to use the correct syntax to access the attribute." data-hint-3="First, create a new Book instance with a title and no author. Then, use the print function to print the is_read attribute." data-hint-4="Be careful not to confuse the instance attributes with local variables. Make sure to use the self keyword to access the attributes." data-hint-5="Your final code should look something like this: book = Book(&#x27;Title&#x27;); print(book.is_read)"><p><strong>Q4.</strong> Add a default argument <code>is_read=False</code> to the <code><strong>init</strong></code>. Prove it works by creating a book and checking the attribute.</p></div>
+<div class="question"><p><strong>Q4.</strong> Add a default argument <code>is_read=False</code> to the <code><strong>init</strong></code>. Prove it works by creating a book and checking the attribute.</p></div>
 <div class="code-cell" id="cell-11">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-11"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="Think about why the self keyword is required as the first argument in instance methods. What would happen if you forgot it?" data-hint-2="You can use the print function to verify that the self keyword is working correctly. Make sure to use the correct syntax to access the instance attributes." data-hint-3="First, define an instance method without the self keyword. Then, try to call the method on an instance." data-hint-4="If you get an error, think about what happened. Did you forget to use the self keyword?" data-hint-5="Your final code should look something like this: class Book: def method(self): ... and then you can call the method like this: book.method()"><p><strong>Q5.</strong> Why is <code>self</code> required as the first argument in instance methods? What happens if you forget it?</p></div>
+<div class="question"><p><strong>Q5.</strong> Why is <code>self</code> required as the first argument in instance methods? What happens if you forget it?</p></div>
 <div class="code-cell" id="cell-12">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-12"># Write your answer here</textarea>
@@ -396,27 +387,27 @@ print(f&quot;{c.color} cat {c.name}: {c.speak()}&quot;)</textarea>
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
     <b>🧪 Concept Checks: <code>Inheritance</code></b>
 </h3></div>
-<div class="question" data-hint-1="Start by defining a parent class called Vehicle with an initializer method init that takes two parameters: self and speed." data-hint-2="You&#x27;ll need to use the def keyword to define the init method and the self parameter is a reference to the instance of the class." data-hint-3="The next step is to define the move method inside the Vehicle class. This method should take self as a parameter." data-hint-4="Be careful not to forget to include the self parameter in the move method&#x27;s definition." data-hint-5="Your final code should look something like this: class Vehicle: def __init__(self, speed): ... def move(self): ..."><p><strong>Q1.</strong> Create a parent class <code>Vehicle</code> with <code><strong>init</strong>(self, speed)</code>. Add a <code>move</code> method.</p></div>
+<div class="question"><p><strong>Q1.</strong> Create a parent class <code>Vehicle</code> with <code><strong>init</strong>(self, speed)</code>. Add a <code>move</code> method.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-14"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To create a child class called Bicycle that inherits from Vehicle, use the (class_name)(parent_class) syntax." data-hint-2="Make sure to call the parent class&#x27;s init method using super().__init__(speed) to ensure the speed attribute is set." data-hint-3="The Bicycle class should have the same structure as the Vehicle class, but with the added benefit of inheriting the move method." data-hint-4="Don&#x27;t forget to call the parent class&#x27;s init method when creating an instance of the Bicycle class." data-hint-5="Your final code should look something like this: class Bicycle(Vehicle): def __init__(self, speed): super().__init__(speed) ..."><p><strong>Q2.</strong> Create a child class <code>Bicycle(Vehicle)</code>. Call its <code>move</code> method to prove it inherited it.</p></div>
+<div class="question"><p><strong>Q2.</strong> Create a child class <code>Bicycle(Vehicle)</code>. Call its <code>move</code> method to prove it inherited it.</p></div>
 <div class="code-cell" id="cell-15">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-15"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To override the move method in the Bicycle class, define a new method with the same name but different behavior." data-hint-2="Use the print function to print a message indicating that the bicycle is pedaling at a certain speed." data-hint-3="Make sure to include the speed parameter in the print statement to display the correct value." data-hint-4="Be careful not to forget to call the parent class&#x27;s move method if you want to inherit its behavior." data-hint-5="Your final code should look something like this: class Bicycle(Vehicle): def move(self): print(f&#x27;Pedaling at {self.speed}&#x27;)"><p><strong>Q3.</strong> Override the <code>move</code> method in <code>Bicycle</code> to print <code>"Pedaling at [speed]"</code>. Call it.</p></div>
+<div class="question"><p><strong>Q3.</strong> Override the <code>move</code> method in <code>Bicycle</code> to print <code>"Pedaling at [speed]"</code>. Call it.</p></div>
 <div class="code-cell" id="cell-16">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-16"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To create a child class called Car that inherits from Vehicle, use the (class_name)(parent_class) syntax." data-hint-2="Use the super().init(speed) method to call the parent class&#x27;s init method and set the speed attribute." data-hint-3="Add a new attribute called brand to the Car class using the self parameter." data-hint-4="Make sure to include the brand attribute in the Car class&#x27;s initializer method." data-hint-5="Your final code should look something like this: class Car(Vehicle): def __init__(self, speed, brand): super().__init__(speed) self.brand = brand"><p><strong>Q4.</strong> Create a child class <code>Car(Vehicle)</code>. Use <code>super().<strong>init</strong>(speed)</code> to add a new <code>brand</code> attribute.</p></div>
+<div class="question"><p><strong>Q4.</strong> Create a child class <code>Car(Vehicle)</code>. Use <code>super().<strong>init</strong>(speed)</code> to add a new <code>brand</code> attribute.</p></div>
 <div class="code-cell" id="cell-17">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-17"># Write your answer here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question" data-hint-1="To check if the Car class is a subclass of Vehicle, use the issubclass() function." data-hint-2="Pass the Car and Vehicle classes as arguments to the issubclass() function." data-hint-3="Make sure to print the result of the issubclass() function to display the outcome." data-hint-4="Be careful not to confuse the issubclass() function with the isinstance() function." data-hint-5="Your final code should look something like this: if issubclass(Car, Vehicle): print(&#x27;Car is a subclass of Vehicle&#x27;)"><p><strong>Q5.</strong> Check if <code>Car</code> is a subclass of <code>Vehicle</code> using <code>issubclass(Car, Vehicle)</code>. Print the result.</p></div>
+<div class="question"><p><strong>Q5.</strong> Check if <code>Car</code> is a subclass of <code>Vehicle</code> using <code>issubclass(Car, Vehicle)</code>. Print the result.</p></div>
 <div class="code-cell" id="cell-18">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-18"># Write your answer here</textarea>
@@ -748,19 +739,9 @@ print(f&quot;{c.color} cat {c.name}: {c.speak()}&quot;)</textarea>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script src="notebook.js"></script>\n<script src="voice.js" defer></script>
+<script src="notebook.js"></script>
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
 </body>
 </html>
-
