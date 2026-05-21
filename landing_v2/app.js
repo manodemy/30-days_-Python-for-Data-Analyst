@@ -168,36 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.5 });
   document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
 
-  /* ═══ CURRICULUM FILTER ═══ */
-  const tabs = document.querySelectorAll('.filter-tab');
-  const cards = document.querySelectorAll('.day-card');
-  let filterTimeouts = [];
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      // Clear pending timeouts to avoid race conditions
-      filterTimeouts.forEach(clearTimeout);
-      filterTimeouts = [];
-
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const cat = tab.dataset.filter;
-      cards.forEach(card => {
-        if (cat === 'all' || card.dataset.category === cat) {
-          card.style.display = '';
-          // Force layout reflow so the transition animation behaves correctly
-          void card.offsetWidth;
-          card.style.opacity = '1';
-        } else {
-          card.style.opacity = '0';
-          const t = setTimeout(() => { card.style.display = 'none'; }, 400); // matches the 400ms CSS transition
-          filterTimeouts.push(t);
-        }
-      });
-    });
-  });
-
   /* ═══ DAY CARD CLICKS ═══ */
+  const cards = document.querySelectorAll('.day-card');
   cards.forEach(card => {
     card.addEventListener('click', () => {
       if (card.dataset.day === '01') {
