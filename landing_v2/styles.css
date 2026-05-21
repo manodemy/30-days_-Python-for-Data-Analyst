@@ -361,7 +361,7 @@ button {
 /* ══════ HERO SECTION (Visual Chameleon Masterpiece) ══════ */
 .hero {
   min-height: auto;
-  padding: 5.5rem 0 1.5rem;
+  padding: 5.5rem 0 2rem;
   display: flex;
   align-items: center;
   position: relative;
@@ -1259,7 +1259,7 @@ button {
   background: rgba(11, 15, 25, 0.5);
   border-top: 1px solid var(--rim);
   border-bottom: 1px solid var(--rim);
-  padding: 1.75rem 0;
+  padding: 2rem 0;
   position: relative;
 }
 
@@ -1278,20 +1278,30 @@ button {
 }
 
 .proof-strip .container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
 }
 
 .proof-stat {
-  padding: 1rem 4rem;
+  padding: 1.25rem 1rem;
   text-align: center;
   border-right: 1px solid var(--rim);
   transition: var(--transition);
 }
 
 .proof-stat:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.proof-stat:hover .proof-num {
+  color: #fff;
+  text-shadow: 0 0 25px var(--cyan), 0 0 10px var(--cyan-glow);
+}
+
+.proof-stat:hover .proof-label {
+  color: var(--ink);
 }
 
 .proof-stat:last-child {
@@ -1335,7 +1345,7 @@ button {
   margin-top: 4px;
 }
 
-@media(max-width:768px) {
+@media(max-width:992px) {
   .proof-strip .container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1344,7 +1354,7 @@ button {
   .proof-stat {
     border-right: none;
     border-bottom: 1px solid var(--rim);
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
   }
 
   .proof-stat:nth-child(odd) {
@@ -1356,10 +1366,26 @@ button {
   }
 }
 
+@media(max-width:576px) {
+  .proof-strip .container {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-stat {
+    border-right: none !important;
+    border-bottom: 1px solid var(--rim) !important;
+    padding: 1.5rem 1rem;
+  }
+
+  .proof-stat:last-child {
+    border-bottom: none !important;
+  }
+}
+
 /* ═══ FREE PREVIEW (High Contrast Interactive Section) ═══ */
 .preview {
   background: var(--base);
-  padding: 3rem 0;
+  padding: 2rem 0 3rem;
   position: relative;
   overflow: hidden;
 }
