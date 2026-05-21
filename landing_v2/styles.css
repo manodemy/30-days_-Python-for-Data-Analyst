@@ -3146,57 +3146,32 @@ button {
   color: #fff;
 }
 
-/* Trust Metrics Pillar */
+/* Trust Metrics Pillar / Write a Review CTA Container */
 .rev-trust-col {
   border-left: 1px solid rgba(255, 255, 255, 0.06);
   padding-left: 2rem;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.rev-trust-metric {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.rev-trust-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: rgba(0, 230, 246, 0.06);
-  border: 1px solid rgba(0, 230, 246, 0.12);
-  display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--cyan);
-  flex-shrink: 0;
-  box-shadow: 0 0 12px rgba(0, 230, 246, 0.05);
+  width: 100%;
+  height: 100%;
 }
 
-.rev-trust-metric--gold .rev-trust-icon {
-  background: rgba(255, 176, 32, 0.06);
-  border-color: rgba(255, 176, 32, 0.12);
-  color: var(--gold);
+.rev-trust-col .btn-write-review {
+  height: 52px;
+  padding: 0 2rem;
+  font-size: 15px;
+  background: linear-gradient(135deg, rgba(255, 176, 32, 0.2) 0%, rgba(255, 138, 0, 0.08) 100%);
+  border: 1px solid rgba(255, 176, 32, 0.45);
+  box-shadow: 0 6px 20px rgba(255, 176, 32, 0.08);
 }
 
-.rev-trust-text h4 {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 20px;
-  color: #fff;
-  line-height: 1.1;
-  margin-bottom: 2px;
+.rev-trust-col .btn-write-review:hover {
+  background: linear-gradient(135deg, rgba(255, 176, 32, 0.3) 0%, rgba(255, 138, 0, 0.15) 100%);
+  border-color: var(--gold);
+  box-shadow: 0 8px 30px rgba(255, 176, 32, 0.25), 0 0 15px rgba(255, 176, 32, 0.1);
+  transform: translateY(-2px);
 }
-
-.rev-trust-text p {
-  font-size: 11px;
-  color: var(--ink-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
 /* Filters & Write Review Toolbar */
 .reviews-toolbar {
   display: flex;
@@ -4091,9 +4066,10 @@ button {
     border-top: 1px solid rgba(255, 255, 255, 0.06);
     padding-left: 0;
     padding-top: 1.5rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
 }
 
