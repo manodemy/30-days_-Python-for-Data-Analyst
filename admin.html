@@ -1601,6 +1601,9 @@
         <div class="nav-item" data-tab="tab-pricing">
           <span class="nav-icon">⬡</span> Coupons &amp; Pricing
         </div>
+        <div class="nav-item" data-tab="tab-reviews">
+          <span class="nav-icon">★</span> Reviews Moderation
+        </div>
         <div class="nav-item" data-tab="tab-settings">
           <span class="nav-icon">◎</span> Settings
         </div>
@@ -2377,6 +2380,83 @@
               <div class="coming-soon-icon">⬡</div>
               <div class="coming-soon-label">API Key Management</div>
               <span class="badge badge-warn">Coming Soon</span>
+            </div>
+          </div>
+        </div>
+        <!-- ══ TAB 8: REVIEWS MODERATION ══ -->
+        <div class="tab-pane" id="tab-reviews">
+          <div class="tab-header">
+            <h2 class="tab-title">Reviews <em>Moderation</em></h2>
+            <span class="tab-period-label">Feedback Management</span>
+          </div>
+
+          <!-- Reviews Stats KPIs -->
+          <div class="kpi-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 1.5rem;">
+            <div class="kpi-card">
+              <div class="kpi-label">Total Reviews</div>
+              <div class="kpi-value" id="kpiTotalReviews">0</div>
+              <div class="kpi-meta" id="metaTotalReviews">Lifetime count</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Pending Approval</div>
+              <div class="kpi-value" id="kpiPendingReviews" style="color:var(--amber);">0</div>
+              <div class="kpi-meta" id="metaPendingReviews">Action required</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Average Rating</div>
+              <div class="kpi-value" id="kpiAvgRating" style="color:var(--gold);">0.0</div>
+              <div class="kpi-meta" id="metaAvgRating">★ ★ ★ ★ ★</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Flagged Reviews</div>
+              <div class="kpi-value" id="kpiFlaggedReviews" style="color:var(--rose);">0</div>
+              <div class="kpi-meta" id="metaFlaggedReviews">Reported by users</div>
+            </div>
+          </div>
+
+          <!-- Controls & Toolbar -->
+          <div class="form-panel" style="margin-bottom:1.5rem; padding: 1.25rem;">
+            <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
+              <div style="flex:1; min-width:260px;">
+                <input type="text" id="reviewSearchInput" placeholder="Search by reviewer name, email, review title, comment..." style="width:100%; padding:0.55rem 0.75rem; background:rgba(255,255,255,0.03); border:1px solid var(--rim); color:var(--ink); border-radius:4px; font-family:var(--font-body); font-size:0.8rem;" />
+              </div>
+              <div style="display:flex; gap:0.4rem; flex-wrap:wrap;" id="reviewStatusFilters">
+                <button class="pill active" data-status="all">All Statuses</button>
+                <button class="pill" data-status="pending">Pending</button>
+                <button class="pill" data-status="approved">Approved</button>
+                <button class="pill" data-status="flagged">Flagged</button>
+                <button class="pill" data-status="rejected">Rejected</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reviews Moderation Roster Table -->
+          <div class="table-panel">
+            <div class="table-panel-header">
+              <span class="table-panel-title">Reviews Ledger &amp; Moderation Controls</span>
+            </div>
+            <div class="table-wrap">
+              <table id="reviewsAdminTable">
+                <thead>
+                  <tr>
+                    <th style="width:180px;">Reviewer</th>
+                    <th style="width:110px;">Rating &amp; Rec</th>
+                    <th style="width:300px;">Review Title &amp; Comment</th>
+                    <th style="width:160px;">Pros &amp; Cons</th>
+                    <th style="width:90px;">Reported</th>
+                    <th style="width:110px;">Created At</th>
+                    <th style="width:80px;">Status</th>
+                    <th style="width:140px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="reviewsAdminBody">
+                  <tr>
+                    <td colspan="8" style="text-align:center; padding:3rem; color:var(--ink-muted); font-family:var(--font-mono); font-size:0.8rem;">
+                      Loading reviews database...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -3349,10 +3429,14 @@
         const tabId = item.dataset.tab;
         document.getElementById(tabId).classList.add('active');
         
-        // Hide global filter bar on Engagement page since it handles all-time data
+        // Hide global filter bar on Engagement and Reviews pages since they handle self-filtered / all-time data
         const filterBar = document.querySelector('.top-filter-bar');
         if (filterBar) {
-          filterBar.style.display = (tabId === 'tab-engagement') ? 'none' : 'block';
+          filterBar.style.display = (tabId === 'tab-engagement' || tabId === 'tab-reviews') ? 'none' : 'block';
+        }
+
+        if (tabId === 'tab-reviews') {
+          fetchAdminReviews();
         }
 
         if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
@@ -3601,6 +3685,278 @@
       }
       if (btn) btn.textContent = '↺ Refresh';
     }
+
+    // ── REVIEWS MODERATION ────────────────────────────
+    let allReviewsCache = [];
+    window.reviewsFilter = { status: 'all', search: '' };
+
+    async function fetchAdminReviews() {
+      const tbody = document.getElementById('reviewsAdminBody');
+      if (!tbody) return;
+
+      try {
+        const { data, error } = await sb
+          .from('reviews')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching reviews:', error);
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:3rem; color:var(--rose); font-family:var(--font-mono); font-size:0.85rem;">Error loading reviews: ${error.message}</td></tr>`;
+          return;
+        }
+
+        allReviewsCache = data || [];
+        updateReviewsDashboard(allReviewsCache);
+        renderReviewsList();
+      } catch (err) {
+        console.error('Catch error fetching reviews:', err);
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:3rem; color:var(--rose); font-family:var(--font-mono); font-size:0.85rem;">Error loading reviews: ${err.message}</td></tr>`;
+      }
+    }
+
+    function updateReviewsDashboard(reviews) {
+      const total = reviews.length;
+      const pending = reviews.filter(r => r.status === 'pending').length;
+      const flagged = reviews.filter(r => r.status === 'flagged' || r.reported_count > 0).length;
+
+      // Avg Rating of approved reviews
+      const approved = reviews.filter(r => r.status === 'approved');
+      const avg = approved.length > 0
+        ? (approved.reduce((acc, r) => acc + r.rating, 0) / approved.length).toFixed(1)
+        : '0.0';
+
+      document.getElementById('kpiTotalReviews').textContent = total;
+      document.getElementById('kpiPendingReviews').textContent = pending;
+      document.getElementById('kpiAvgRating').textContent = avg;
+      document.getElementById('kpiFlaggedReviews').textContent = flagged;
+
+      // Render stars under average
+      const starsMeta = document.getElementById('metaAvgRating');
+      if (starsMeta) {
+        const roundedAvg = Math.round(parseFloat(avg));
+        starsMeta.textContent = '★'.repeat(roundedAvg) + '☆'.repeat(5 - roundedAvg);
+      }
+    }
+
+    function renderReviewsList() {
+      const tbody = document.getElementById('reviewsAdminBody');
+      if (!tbody) return;
+
+      let filtered = [...allReviewsCache];
+
+      // Apply status filter
+      if (window.reviewsFilter.status !== 'all') {
+        filtered = filtered.filter(r => r.status === window.reviewsFilter.status);
+      }
+
+      // Apply search keyword filter
+      if (window.reviewsFilter.search.trim()) {
+        const query = window.reviewsFilter.search.toLowerCase().trim();
+        filtered = filtered.filter(r => 
+          (r.reviewer_name || '').toLowerCase().includes(query) ||
+          (r.reviewer_email || '').toLowerCase().includes(query) ||
+          (r.title || '').toLowerCase().includes(query) ||
+          (r.comment || '').toLowerCase().includes(query) ||
+          (r.cohort_date || '').toLowerCase().includes(query)
+        );
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:3rem; color:var(--ink-muted); font-family:var(--font-mono); font-size:0.8rem;">No matching reviews found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(rev => {
+        const initials = (rev.reviewer_name || 'G').split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+        
+        // Render media urls
+        let mediaHtml = '';
+        if (rev.media_urls && rev.media_urls.length > 0) {
+          mediaHtml = `<div style="display:flex; gap:0.25rem; flex-wrap:wrap; margin-top:0.4rem;">`;
+          rev.media_urls.forEach(url => {
+            if (url) {
+              mediaHtml += `<a href="${url}" target="_blank" style="position:relative; width:36px; height:36px; border-radius:3px; border:1px solid var(--rim); overflow:hidden; background:#000; display:inline-block; transition: transform var(--transition);" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                <img src="${url}" style="width:100%; height:100%; object-fit:cover;" />
+              </a>`;
+            }
+          });
+          mediaHtml += `</div>`;
+        }
+
+        // Pros and cons arrays
+        const prosList = Array.isArray(rev.pros) ? rev.pros.filter(Boolean) : [];
+        const consList = Array.isArray(rev.cons) ? rev.cons.filter(Boolean) : [];
+
+        // Actions buttons based on status
+        let actionsHtml = `
+          <div style="display:flex; gap:0.3rem; flex-wrap:wrap; align-items:center;">
+        `;
+        if (rev.status !== 'approved') {
+          actionsHtml += `<button onclick="updateReviewStatus('${rev.id}', 'approved')" style="padding:4px 8px; font-size:0.68rem; background:rgba(45,212,191,0.1); color:var(--emerald); border:1px solid rgba(45,212,191,0.25); cursor:pointer; border-radius:2px; font-family:var(--font-body); transition:all 0.2s;" onmouseover="this.style.background='var(--emerald)';this.style.color='#16162a'" onmouseout="this.style.background='rgba(45,212,191,0.1)';this.style.color='var(--emerald)'">Approve</button>`;
+        }
+        if (rev.status !== 'rejected') {
+          actionsHtml += `<button onclick="updateReviewStatus('${rev.id}', 'rejected')" style="padding:4px 8px; font-size:0.68rem; background:rgba(248,113,113,0.1); color:var(--rose); border:1px solid rgba(248,113,113,0.25); cursor:pointer; border-radius:2px; font-family:var(--font-body); transition:all 0.2s;" onmouseover="this.style.background='var(--rose)';this.style.color='#16162a'" onmouseout="this.style.background='rgba(248,113,113,0.1)';this.style.color='var(--rose)'">Reject</button>`;
+        }
+        if (rev.status !== 'flagged') {
+          actionsHtml += `<button onclick="updateReviewStatus('${rev.id}', 'flagged')" style="padding:4px 8px; font-size:0.68rem; background:rgba(251,191,36,0.1); color:var(--amber); border:1px solid rgba(251,191,36,0.25); cursor:pointer; border-radius:2px; font-family:var(--font-body); transition:all 0.2s;" onmouseover="this.style.background='var(--amber)';this.style.color='#16162a'" onmouseout="this.style.background='rgba(251,191,36,0.1)';this.style.color='var(--amber)'">Flag</button>`;
+        }
+        actionsHtml += `<button onclick="deleteReview('${rev.id}')" style="padding:4px 8px; font-size:0.68rem; background:rgba(248,113,113,0.25); color:#fff; border:1px solid var(--rose); cursor:pointer; border-radius:2px; font-family:var(--font-body); transition:all 0.2s;" onmouseover="this.style.background='var(--rose)';this.style.borderColor='var(--rose)'" onmouseout="this.style.background='rgba(248,113,113,0.25)'">Delete</button>`;
+        actionsHtml += `</div>`;
+
+        // Avatar gradient colors based on name initials
+        const nameColors = [
+          'linear-gradient(135deg, #FF6B6B, #FF8E53)',
+          'linear-gradient(135deg, #4E54C8, #8F94FB)',
+          'linear-gradient(135deg, #11998E, #38EF7D)',
+          'linear-gradient(135deg, #FC466B, #3F5EFB)',
+          'linear-gradient(135deg, #FF9966, #FF5E62)',
+          'linear-gradient(135deg, #00C6FF, #0072FF)'
+        ];
+        const colorIdx = Math.abs(rev.reviewer_name.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % nameColors.length;
+        const avatarBg = nameColors[colorIdx];
+
+        return `
+          <tr>
+            <td>
+              <div style="display:flex; align-items:center; gap:0.65rem;">
+                <div style="width:34px; height:34px; border-radius:50%; background:${avatarBg}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:600; flex-shrink:0; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                  ${initials}
+                </div>
+                <div style="display:flex; flex-direction:column; overflow:hidden;">
+                  <span style="font-weight:600; font-size:0.8rem; text-overflow:ellipsis; white-space:nowrap; overflow:hidden; color:var(--ink);">${rev.reviewer_name}</span>
+                  <span style="font-size:0.7rem; color:var(--ink-muted); text-overflow:ellipsis; white-space:nowrap; overflow:hidden;">${rev.reviewer_email}</span>
+                  ${rev.cohort_date ? `<span style="font-size:0.65rem; color:var(--amber); font-family:var(--font-mono); margin-top:2px;">📅 ${rev.cohort_date}</span>` : ''}
+                  ${rev.is_verified ? `<span class="badge badge-ok" style="font-size:0.55rem; padding:1px 4px; margin-top:3px; display:inline-block; width:fit-content;">✓ Verified Buyer</span>` : ''}
+                </div>
+              </div>
+            </td>
+            <td>
+              <div style="display:flex; flex-direction:column; gap:0.25rem;">
+                <span style="color:var(--gold); letter-spacing:0.05em; font-size:0.75rem;">${'★'.repeat(rev.rating)}${'☆'.repeat(5 - rev.rating)}</span>
+                <span style="font-size:0.68rem; color:${rev.recommend ? 'var(--emerald)' : 'var(--rose)'}; font-weight: 500;">
+                  ${rev.recommend ? '👍 Recommend' : '👎 Dislike'}
+                </span>
+              </div>
+            </td>
+            <td>
+              <div style="display:flex; flex-direction:column; gap:0.2rem; max-width:320px;">
+                <strong style="color:var(--ink); font-size:0.78rem;">${rev.title}</strong>
+                <p style="color:var(--ink-muted); font-size:0.72rem; line-height:1.35; margin:0; white-space:pre-wrap; word-break:break-word; font-family:var(--font-body);">${rev.comment}</p>
+                ${mediaHtml}
+              </div>
+            </td>
+            <td>
+              <div style="display:flex; flex-direction:column; gap:0.4rem; font-size:0.7rem;">
+                ${prosList.length > 0 ? `<div><span style="color:var(--emerald); font-weight:600; font-family:var(--font-mono); font-size:0.65rem; text-transform:uppercase;">Pros:</span> <span style="color:var(--ink-muted);">${prosList.join(', ')}</span></div>` : ''}
+                ${consList.length > 0 ? `<div><span style="color:var(--rose); font-weight:600; font-family:var(--font-mono); font-size:0.65rem; text-transform:uppercase;">Cons:</span> <span style="color:var(--ink-muted);">${consList.join(', ')}</span></div>` : ''}
+                ${prosList.length === 0 && consList.length === 0 ? '<span style="color:var(--ink-muted); font-style:italic;">None</span>' : ''}
+              </div>
+            </td>
+            <td>
+              <span style="font-family:var(--font-mono); font-size:0.8rem; font-weight:bold; color:${rev.reported_count > 0 ? 'var(--rose)' : 'var(--ink-muted)'};">
+                ${rev.reported_count}
+              </span>
+            </td>
+            <td>
+              <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-muted);">
+                ${new Date(rev.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+              </span>
+            </td>
+            <td>
+              <span class="badge ${
+                rev.status === 'approved' ? 'badge-ok' :
+                rev.status === 'pending' ? 'badge-warn' :
+                rev.status === 'flagged' ? 'badge-err' :
+                'badge-neutral'
+              }">${rev.status}</span>
+            </td>
+            <td>
+              ${actionsHtml}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function updateReviewStatus(reviewId, newStatus) {
+      try {
+        const { error } = await sb
+          .from('reviews')
+          .update({ status: newStatus, updated_at: new Date().toISOString() })
+          .eq('id', reviewId);
+
+        if (error) {
+          showToast('Failed to update status: ' + error.message, 'error');
+          return;
+        }
+
+        showToast(`Review successfully ${newStatus}`, 'success');
+        
+        // Update cached review status locally
+        const idx = allReviewsCache.findIndex(r => r.id === reviewId);
+        if (idx !== -1) {
+          allReviewsCache[idx].status = newStatus;
+        }
+
+        updateReviewsDashboard(allReviewsCache);
+        renderReviewsList();
+      } catch (err) {
+        showToast('Error updating status: ' + err.message, 'error');
+      }
+    }
+
+    async function deleteReview(reviewId) {
+      if (!confirm('Are you sure you want to permanently delete this review? This action cannot be undone.')) {
+        return;
+      }
+
+      try {
+        const { error } = await sb
+          .from('reviews')
+          .delete()
+          .eq('id', reviewId);
+
+        if (error) {
+          showToast('Failed to delete review: ' + error.message, 'error');
+          return;
+        }
+
+        showToast('Review permanently deleted', 'success');
+
+        // Remove from cache
+        allReviewsCache = allReviewsCache.filter(r => r.id !== reviewId);
+        updateReviewsDashboard(allReviewsCache);
+        renderReviewsList();
+      } catch (err) {
+        showToast('Error deleting review: ' + err.message, 'error');
+      }
+    }
+
+    // Attach reviews operations globally
+    window.fetchAdminReviews = fetchAdminReviews;
+    window.updateReviewStatus = updateReviewStatus;
+    window.deleteReview = deleteReview;
+
+    // Attach listeners once loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('reviewSearchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          window.reviewsFilter.search = e.target.value;
+          renderReviewsList();
+        });
+      }
+
+      document.querySelectorAll('#reviewStatusFilters .pill').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('#reviewStatusFilters .pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          window.reviewsFilter.status = btn.dataset.status;
+          renderReviewsList();
+        });
+      });
+    });
 
     // ── INIT ─────────────────────────────────────────
     (async function init() {
