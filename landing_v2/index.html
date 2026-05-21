@@ -865,11 +865,15 @@
       </div>
     </section>
 
-    <!-- Urgency and Pricing Section -->
-    <section class="pricing" id="pricing">
-      <div class="container">
+    <!-- Pricing section anchor for background links -->
+    <div id="pricing" style="height: 0; margin: 0; padding: 0; overflow: hidden; visibility: hidden;"></div>
 
-        <div class="pricing-card reveal">
+    <!-- Pricing Modal Overlay -->
+    <div class="pricing-modal-overlay" id="pricingModal">
+      <div class="pricing-modal-card">
+        <button class="btn-close-pricing-modal" id="btnClosePricingModal" aria-label="Close modal">&times;</button>
+        
+        <div class="pricing-card modal-version">
           <span class="popular-badge">Special Cohort Offer</span>
           <span class="price-old">$99 / &#x20B9;8,200 Upfront</span>
           <span class="price-now"><span>$19</span></span>
@@ -901,7 +905,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
     <!-- FAQ Section -->
     <section class="faq" id="faq">

@@ -168,6 +168,55 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.5 });
   document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
 
+  /* ═══ PRICING MODAL CONTROLLER ═══ */
+  const pricingModal = document.getElementById('pricingModal');
+  const closePricingModalBtn = document.getElementById('btnClosePricingModal');
+
+  const openPricingModal = () => {
+    if (window._userHasPurchased) {
+      window.location.href = '../day01.html';
+      return;
+    }
+    if (pricingModal) {
+      pricingModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  const closePricingModal = () => {
+    if (pricingModal) {
+      pricingModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  };
+
+  if (closePricingModalBtn) {
+    closePricingModalBtn.addEventListener('click', closePricingModal);
+  }
+  if (pricingModal) {
+    pricingModal.addEventListener('click', e => {
+      if (e.target === pricingModal) {
+        closePricingModal();
+      }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && pricingModal.classList.contains('active')) {
+        closePricingModal();
+      }
+    });
+  }
+
+  // Intercept click on elements linking to pricing to open pricing modal
+  document.querySelectorAll('a[href="#pricing"], [data-cta="buy"]').forEach(el => {
+    if (el.id === 'navSignin') return;
+    if (el.closest('.modal-version')) return;
+
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      openPricingModal();
+    });
+  });
+
   /* ═══ DAY CARD CLICKS ═══ */
   const cards = document.querySelectorAll('.day-card');
   cards.forEach(card => {
@@ -179,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (window._userHasPurchased) {
         window.location.href = `../day${card.dataset.day}.html`;
       } else {
-        document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+        openPricingModal();
       }
     });
     card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); } });
