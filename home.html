@@ -1532,7 +1532,7 @@
             <div class="coding-score-number" id="codingScoreNumber">0</div>
             <div class="coding-score-sublabel">
               <span class="coding-score-level" id="rankLevelText">Level 1 (Novice) 🌱</span>
-              <span class="coding-score-progress-text" id="xpNumberText">0 / 1,000 XP</span>
+              <span class="coding-score-progress-text" id="xpNumberText">0 / 1,000 Marks</span>
             </div>
           </div>
           <div class="xp-progress-container" style="margin: 0;">
@@ -1797,35 +1797,35 @@
           levelText = "Level 1 (Novice) 🌱";
           currentLvl = 1;
           progressPct = Math.min(Math.floor((xp / 200) * 100), 100);
-          nextRankXPText = `${xp.toFixed(1)} / 200 XP`;
+          nextRankXPText = `${xp.toFixed(1)} / 200 Marks`;
         } else if (xp < 500) {
           rankName = "Syntax Scout";
           rankClass = "rank-badge--scout";
           levelText = "Level 2 (Scout) 🌿";
           currentLvl = 2;
           progressPct = Math.min(Math.floor(((xp - 200) / 300) * 100), 100);
-          nextRankXPText = `${xp.toFixed(1)} / 500 XP`;
+          nextRankXPText = `${xp.toFixed(1)} / 500 Marks`;
         } else if (xp < 750) {
           rankName = "Logic Lancer";
           rankClass = "rank-badge--lancer";
           levelText = "Level 3 (Lancer) ⚔️";
           currentLvl = 3;
           progressPct = Math.min(Math.floor(((xp - 500) / 250) * 100), 100);
-          nextRankXPText = `${xp.toFixed(1)} / 750 XP`;
+          nextRankXPText = `${xp.toFixed(1)} / 750 Marks`;
         } else if (xp < 900) {
           rankName = "Data Alchemist";
           rankClass = "rank-badge--alchemist";
           levelText = "Level 4 (Alchemist) 🔮";
           currentLvl = 4;
           progressPct = Math.min(Math.floor(((xp - 750) / 150) * 100), 100);
-          nextRankXPText = `${xp.toFixed(1)} / 900 XP`;
+          nextRankXPText = `${xp.toFixed(1)} / 900 Marks`;
         } else {
           rankName = "Antigravity Guru";
           rankClass = "rank-badge--guru";
           levelText = "Level 5 (Guru) 👑";
           currentLvl = 5;
           progressPct = 100;
-          nextRankXPText = `${xp.toFixed(1)} XP — MAX LEVEL 🏆`;
+          nextRankXPText = `${xp.toFixed(1)} Marks — MAX LEVEL 🏆`;
         }
         
         const badge = document.getElementById('rankBadge');
@@ -2075,36 +2075,36 @@
       // ═══ ENRICHED DYNAMIC QUEST ENGINE ═══
       // Day-specific educational quests with rich guidance + daily rotating bonus based on 1000 XP cap
       const DAY_QUESTS = {
-        "01": { icon: "🔢", quest: "<strong>Understand Python's memory model</strong> — learn why <code>int</code>, <code>float</code>, <code>bool</code> and <code>str</code> are stored differently. Completing today earns up to <strong>+54.0 XP</strong>!", tip: "💡 Tip: Use <code>type()</code> and <code>sys.getsizeof()</code> to inspect values." },
-        "02": { icon: "➕", quest: "<strong>Master all 7 arithmetic operators</strong> and understand short-circuit evaluation in boolean logic. Completing today earns up to <strong>+54.0 XP</strong>!", tip: "💡 Tip: Python uses <code>//</code> for floor division and <code>**</code> for exponentiation." },
-        "03": { icon: "📝", quest: "<strong>Become a string manipulation expert</strong> — slicing, formatting, and f-strings are used in every real Python project. Completing today earns up to <strong>+46.8 XP</strong>!", tip: "💡 Tip: f-strings (f\"Hello {name}\") are 3x faster than .format()." },
-        "04": { icon: "📋", quest: "<strong>Build your collection toolkit</strong> — Lists and Tuples are the backbone of all data pipelines. Completing today earns up to <strong>+46.8 XP</strong>!", tip: "💡 Tip: Tuples are 50% faster to iterate than lists — use them for constants." },
-        "05": { icon: "📦", quest: "<strong>Unlock key-value power</strong> — Dictionaries are how Python handles JSON, configs & APIs. Completing today earns up to <strong>+39.6 XP</strong>!", tip: "💡 Tip: dict.get(key, default) is safer than dict[key] — no KeyError!" },
-        "06": { icon: "🔐", quest: "<strong>Understand immutability</strong> — Tuples prevent accidental mutations, a critical concept for data integrity. Completing today earns up to <strong>+39.6 XP</strong>!", tip: "💡 Tip: Immutable objects are hashable, meaning they can be dict keys." },
-        "07": { icon: "🧩", quest: "<strong>Harness mathematical sets</strong> — union, intersection, and difference operations are core to data deduplication. Completing today earns up to <strong>+43.2 XP</strong>!", tip: "💡 Tip: Set lookups are O(1) — the fastest way to check membership." },
-        "08": { icon: "🛑", quest: "<strong>Control your code's flow</strong> — conditional branching with if/elif/else is the logic engine behind every algorithm. Completing today earns up to <strong>+36.0 XP</strong>!", tip: "💡 Tip: Use walrus operator <code>:=</code> in Python 3.8+ for inline assignments." },
-        "09": { icon: "🔄", quest: "<strong>Loop like a pro</strong> — mastering for, while, break, continue and enumerate unlocks efficient data processing. Completing today earns up to <strong>+43.2 XP</strong>!", tip: "💡 Tip: <code>enumerate()</code> gives you index+value — no need for range(len())." },
-        "10": { icon: "📦", quest: "<strong>Write reusable, clean functions</strong> — Functions are the #1 way to write maintainable data analysis code. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: Default arguments and *args/**kwargs make functions incredibly flexible." },
-        "11": { icon: "🛠️", quest: "<strong>Explore Python's standard library</strong> — os, sys, math, datetime are used in every real-world script. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: <code>from datetime import datetime</code> lets you work with timestamps in 1 line." },
-        "12": { icon: "⚡", quest: "<strong>Write Pythonic one-liners</strong> — List & dict comprehensions are 30-50% faster than equivalent for-loops. Completing today earns up to <strong>+25.2 XP</strong>!", tip: "💡 Tip: [x**2 for x in range(10) if x%2==0] — filter + transform in one line!" },
-        "13": { icon: "λ", quest: "<strong>Unlock functional programming</strong> — Lambda functions with map(), filter(), reduce() are data transformation superpowers. Completing today earns up to <strong>+25.2 XP</strong>!", tip: "💡 Tip: sorted(data, key=lambda x: x['age']) sorts any list of dicts by a field." },
-        "14": { icon: "⚠️", quest: "<strong>Master Python's error system</strong> — Professional code never crashes silently; learn try/except/finally today. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: Always catch specific exceptions (ValueError, TypeError) — never bare <code>except:</code>." },
-        "15": { icon: "💾", quest: "<strong>Read and write data files</strong> — CSV, JSON and text I/O are the entry points for every real dataset. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: Always use <code>with open(file) as f:</code> — it auto-closes files even on errors." },
-        "16": { icon: "🏗️", quest: "<strong>Build your first Python class</strong> — OOP allows you to model real-world entities and scale your codebase. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: <code>__repr__</code> makes your objects print meaningfully — always define it." },
-        "17": { icon: "🧬", quest: "<strong>Explore inheritance & polymorphism</strong> — the pillars of enterprise Python code and ML framework design. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: <code>super().__init__()</code> calls the parent class constructor — essential in inheritance." },
-        "18": { icon: "🔍", quest: "<strong>Tame text with Regex</strong> — Regular expressions parse emails, logs, HTML and any structured text. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: Use raw strings r\"pattern\" in regex — avoids interpreting backslashes as escapes." },
-        "19": { icon: "⚙️", quest: "<strong>Unlock lazy evaluation with generators</strong> — process millions of rows without loading them into RAM. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: A generator function uses <code>yield</code> instead of <code>return</code> — saves massive memory." },
-        "20": { icon: "🏢", quest: "<strong>Query databases with Python</strong> — SQL + Python is the most powerful combination in data analytics. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: Always parameterize SQL queries with <code>?</code> placeholders to prevent injection." },
-        "21": { icon: "🧮", quest: "<strong>Harness NumPy arrays</strong> — NumPy processes 100M numbers in seconds; your Pandas career starts here. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: NumPy vectorization is 100–1000× faster than Python for-loops on arrays." },
-        "22": { icon: "📈", quest: "<strong>Run matrix math like a data scientist</strong> — broadcasting, linear algebra and statistical ops power every ML model. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: <code>np.where(condition, x, y)</code> is a vectorized if-else — incredibly useful." },
-        "23": { icon: "📊", quest: "<strong>Master DataFrames</strong> — The DataFrame is the most important data structure in modern data analysis. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: <code>df.dtypes</code> and <code>df.info()</code> should be the first thing you run on any dataset." },
-        "24": { icon: "🧹", quest: "<strong>Select and filter data precisely</strong> — <code>loc</code>, <code>iloc</code>, boolean indexing are daily tools for every analyst. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: <code>df.query('age > 30 & salary > 50000')</code> is the most readable filter syntax." },
-        "25": { icon: "🧼", quest: "<strong>Clean your first messy dataset</strong> — 80% of a data scientist's time is cleaning; master it and outperform peers. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: <code>df.isnull().sum()</code> instantly reveals which columns have missing data." },
-        "26": { icon: "🔄", quest: "<strong>Aggregate and group like a pro</strong> — groupby + agg is the core of every business report and KPI dashboard. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: <code>df.groupby('region').agg({'sales': ['sum','mean','count']})</code> — one line, full insight." },
-        "27": { icon: "🔗", quest: "<strong>Join datasets like a SQL expert</strong> — merge and join allow you to combine multiple data sources into one truth. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: Always check <code>df.shape</code> before and after a merge to detect row duplications." },
-        "28": { icon: "📈", quest: "<strong>Master Series operations</strong> — Individual column manipulation with apply(), map(), rolling() are analyst daily tools. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: <code>df['col'].apply(lambda x: x*2)</code> is the most flexible column transformation method." },
-        "29": { icon: "📉", quest: "<strong>Visualize data with Seaborn</strong> — A chart is worth 1000 numbers; this skill makes insights visible. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "💡 Tip: <code>sns.heatmap(df.corr())</code> reveals all correlations in your dataset at once." },
-        "30": { icon: "🔬", quest: "<strong>Complete the Capstone Project!</strong> Build a full E-Commerce Funnel Analysis — this is your certification project. Completing today earns up to <strong>+28.8 XP</strong>!", tip: "🏆 You made it to Day 30! Every challenge you solve here proves Python mastery." }
+        "01": { icon: "🔢", quest: "<strong>Understand Python's memory model</strong> — learn why <code>int</code>, <code>float</code>, <code>bool</code> and <code>str</code> are stored differently. Completing today earns up to <strong>+54.0 Marks</strong>!", tip: "💡 Tip: Use <code>type()</code> and <code>sys.getsizeof()</code> to inspect values." },
+        "02": { icon: "➕", quest: "<strong>Master all 7 arithmetic operators</strong> and understand short-circuit evaluation in boolean logic. Completing today earns up to <strong>+54.0 Marks</strong>!", tip: "💡 Tip: Python uses <code>//</code> for floor division and <code>**</code> for exponentiation." },
+        "03": { icon: "📝", quest: "<strong>Become a string manipulation expert</strong> — slicing, formatting, and f-strings are used in every real Python project. Completing today earns up to <strong>+46.8 Marks</strong>!", tip: "💡 Tip: f-strings (f\"Hello {name}\") are 3x faster than .format()." },
+        "04": { icon: "📋", quest: "<strong>Build your collection toolkit</strong> — Lists and Tuples are the backbone of all data pipelines. Completing today earns up to <strong>+46.8 Marks</strong>!", tip: "💡 Tip: Tuples are 50% faster to iterate than lists — use them for constants." },
+        "05": { icon: "📦", quest: "<strong>Unlock key-value power</strong> — Dictionaries are how Python handles JSON, configs & APIs. Completing today earns up to <strong>+39.6 Marks</strong>!", tip: "💡 Tip: dict.get(key, default) is safer than dict[key] — no KeyError!" },
+        "06": { icon: "🔐", quest: "<strong>Understand immutability</strong> — Tuples prevent accidental mutations, a critical concept for data integrity. Completing today earns up to <strong>+39.6 Marks</strong>!", tip: "💡 Tip: Immutable objects are hashable, meaning they can be dict keys." },
+        "07": { icon: "🧩", quest: "<strong>Harness mathematical sets</strong> — union, intersection, and difference operations are core to data deduplication. Completing today earns up to <strong>+43.2 Marks</strong>!", tip: "💡 Tip: Set lookups are O(1) — the fastest way to check membership." },
+        "08": { icon: "🛑", quest: "<strong>Control your code's flow</strong> — conditional branching with if/elif/else is the logic engine behind every algorithm. Completing today earns up to <strong>+36.0 Marks</strong>!", tip: "💡 Tip: Use walrus operator <code>:=</code> in Python 3.8+ for inline assignments." },
+        "09": { icon: "🔄", quest: "<strong>Loop like a pro</strong> — mastering for, while, break, continue and enumerate unlocks efficient data processing. Completing today earns up to <strong>+43.2 Marks</strong>!", tip: "💡 Tip: <code>enumerate()</code> gives you index+value — no need for range(len())." },
+        "10": { icon: "📦", quest: "<strong>Write reusable, clean functions</strong> — Functions are the #1 way to write maintainable data analysis code. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: Default arguments and *args/**kwargs make functions incredibly flexible." },
+        "11": { icon: "🛠️", quest: "<strong>Explore Python's standard library</strong> — os, sys, math, datetime are used in every real-world script. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: <code>from datetime import datetime</code> lets you work with timestamps in 1 line." },
+        "12": { icon: "⚡", quest: "<strong>Write Pythonic one-liners</strong> — List & dict comprehensions are 30-50% faster than equivalent for-loops. Completing today earns up to <strong>+25.2 Marks</strong>!", tip: "💡 Tip: [x**2 for x in range(10) if x%2==0] — filter + transform in one line!" },
+        "13": { icon: "λ", quest: "<strong>Unlock functional programming</strong> — Lambda functions with map(), filter(), reduce() are data transformation superpowers. Completing today earns up to <strong>+25.2 Marks</strong>!", tip: "💡 Tip: sorted(data, key=lambda x: x['age']) sorts any list of dicts by a field." },
+        "14": { icon: "⚠️", quest: "<strong>Master Python's error system</strong> — Professional code never crashes silently; learn try/except/finally today. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: Always catch specific exceptions (ValueError, TypeError) — never bare <code>except:</code>." },
+        "15": { icon: "💾", quest: "<strong>Read and write data files</strong> — CSV, JSON and text I/O are the entry points for every real dataset. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: Always use <code>with open(file) as f:</code> — it auto-closes files even on errors." },
+        "16": { icon: "🏗️", quest: "<strong>Build your first Python class</strong> — OOP allows you to model real-world entities and scale your codebase. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: <code>__repr__</code> makes your objects print meaningfully — always define it." },
+        "17": { icon: "🧬", quest: "<strong>Explore inheritance & polymorphism</strong> — the pillars of enterprise Python code and ML framework design. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: <code>super().__init__()</code> calls the parent class constructor — essential in inheritance." },
+        "18": { icon: "🔍", quest: "<strong>Tame text with Regex</strong> — Regular expressions parse emails, logs, HTML and any structured text. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: Use raw strings r\"pattern\" in regex — avoids interpreting backslashes as escapes." },
+        "19": { icon: "⚙️", quest: "<strong>Unlock lazy evaluation with generators</strong> — process millions of rows without loading them into RAM. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: A generator function uses <code>yield</code> instead of <code>return</code> — saves massive memory." },
+        "20": { icon: "🏢", quest: "<strong>Query databases with Python</strong> — SQL + Python is the most powerful combination in data analytics. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: Always parameterize SQL queries with <code>?</code> placeholders to prevent injection." },
+        "21": { icon: "🧮", quest: "<strong>Harness NumPy densified arrays</strong> — NumPy processes 100M numbers in seconds; your Pandas career starts here. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: NumPy vectorization is 100–1000× faster than Python for-loops on arrays." },
+        "22": { icon: "📈", quest: "<strong>Run matrix math like a data scientist</strong> — broadcasting, linear algebra and statistical ops power every ML model. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: <code>np.where(condition, x, y)</code> is a vectorized if-else — incredibly useful." },
+        "23": { icon: "📊", quest: "<strong>Master DataFrames</strong> — The DataFrame is the most important data structure in modern data analysis. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: <code>df.dtypes</code> and <code>df.info()</code> should be the first thing you run on any dataset." },
+        "24": { icon: "🧹", quest: "<strong>Select and filter data precisely</strong> — <code>loc</code>, <code>iloc</code>, boolean indexing are daily tools for every analyst. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: <code>df.query('age > 30 & salary > 50000')</code> is the most readable filter syntax." },
+        "25": { icon: "🧼", quest: "<strong>Clean your first messy dataset</strong> — 80% of a data scientist's time is cleaning; master it and outperform peers. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: <code>df.isnull().sum()</code> instantly reveals which columns have missing data." },
+        "26": { icon: "🔄", quest: "<strong>Aggregate and group like a pro</strong> — groupby + agg is the core of every business report and KPI dashboard. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: <code>df.groupby('region').agg({'sales': ['sum','mean','count']})</code> — one line, full insight." },
+        "27": { icon: "🔗", quest: "<strong>Join datasets like a SQL expert</strong> — merge and join allow you to combine multiple data sources into one truth. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: Always check <code>df.shape</code> before and after a merge to detect row duplications." },
+        "28": { icon: "📈", quest: "<strong>Master Series operations</strong> — Individual column manipulation with apply(), map(), rolling() are analyst daily tools. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: <code>df['col'].apply(lambda x: x*2)</code> is the most flexible column transformation method." },
+        "29": { icon: "📉", quest: "<strong>Visualize data with Seaborn</strong> — A chart is worth 1000 numbers; this skill makes insights visible. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "💡 Tip: <code>sns.heatmap(df.corr())</code> reveals all correlations in your dataset at once." },
+        "30": { icon: "🔬", quest: "<strong>Complete the Capstone Project!</strong> Build a full E-Commerce Funnel Analysis — this is your certification project. Completing today earns up to <strong>+28.8 Marks</strong>!", tip: "🏆 You made it to Day 30! Every challenge you solve here proves Python mastery." }
       };
 
       // Daily bonus quest — rotated to match the countdown speed multipliers
@@ -2174,9 +2174,9 @@
         
         let xpBadgeHTML = '';
         if (bestScore > 0) {
-          xpBadgeHTML = `<div class="day-xp-badge">${bestScore.toFixed(1)} / ${maxDayXP.toFixed(1)} XP</div>`;
+          xpBadgeHTML = `<div class="day-xp-badge">${bestScore.toFixed(1)} / ${maxDayXP.toFixed(1)} Marks</div>`;
         } else {
-          xpBadgeHTML = `<div class="day-xp-badge" style="color: rgba(255,255,255,0.25); background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); text-shadow: none; box-shadow: none;">0.0 / ${maxDayXP.toFixed(1)} XP</div>`;
+          xpBadgeHTML = `<div class="day-xp-badge" style="color: rgba(255,255,255,0.25); background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); text-shadow: none; box-shadow: none;">0.0 / ${maxDayXP.toFixed(1)} Marks</div>`;
         }
 
         const isCurrentActive = resumeTarget === `day${item.day}.html`;
@@ -2296,7 +2296,7 @@
               recalculateStatsAndReload();
               buildHeatmap();
               
-              alert("🎉 Excellent job! You completed a 25-minute study sprint. +100 XP & 0.4 Hrs Focus credited!");
+              alert("🎉 Excellent job! You completed a 25-minute study sprint. +100 Marks & 0.4 Hrs Focus credited!");
             }
           }, 1000);
         }

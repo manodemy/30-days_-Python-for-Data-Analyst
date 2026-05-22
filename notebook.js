@@ -479,22 +479,24 @@ function setupGamifiedMarkingSystem() {
     };
   }
   
-  // 2. Inject XP Earned Row into .nav-score-card
+  // 2. Redesign .nav-score-card into a clean side-by-side horizontal grid
   const scoreCard = document.querySelector('.nav-score-card');
-  if (scoreCard && !document.getElementById('scoreXPEarned')) {
-    const scoreInfo = scoreCard.querySelector('.score-info');
-    if (scoreInfo) {
-      const xpInfo = document.createElement('div');
-      xpInfo.className = 'score-info';
-      xpInfo.style.marginTop = '4px';
-      xpInfo.style.borderTop = '1px solid rgba(255,255,255,0.06)';
-      xpInfo.style.paddingTop = '4px';
-      xpInfo.innerHTML = `
-        <span class="score-label">XP Earned</span>
-        <span class="score-values"><span id="scoreXPEarned" class="score-highlight" style="color: var(--cyan); text-shadow: 0 0 8px rgba(0,230,246,0.5);">0.0</span> / <span id="scoreMaxXP">0.0</span> XP</span>
-      `;
-      scoreInfo.parentNode.insertBefore(xpInfo, scoreInfo.nextSibling);
-    }
+  if (scoreCard && !scoreCard.querySelector('.score-grid')) {
+    scoreCard.innerHTML = `
+      <div class="score-grid">
+        <div class="score-col">
+          <span class="score-label">Solved</span>
+          <span class="score-val"><span id="scoreSolved" class="score-highlight">0</span><span class="score-slash">/</span><span id="scoreTotal">0</span></span>
+        </div>
+        <div class="score-divider"></div>
+        <div class="score-col">
+          <span class="score-label">Marks</span>
+          <span class="score-val"><span id="scoreXPEarned" class="score-highlight">0.0</span><span class="score-slash">/</span><span id="scoreMaxXP">0.0</span></span>
+        </div>
+      </div>
+      <div class="score-track"><div class="score-fill" id="scoreProgress" style="width:0%"></div></div>
+    `;
+    updateScore();
   }
   
   // 3. Check start state
