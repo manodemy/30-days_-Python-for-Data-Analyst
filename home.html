@@ -1371,6 +1371,115 @@
         transform: translateY(0) scale(1);
       }
     }
+
+    /* ═══════════ SEGMENTED TIMELINE & PREMIUM HEADER SCORE CARD ═══════════ */
+    .header-score-card {
+      background: rgba(11, 15, 26, 0.65) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-top-color: rgba(255, 255, 255, 0.18) !important;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6) !important;
+    }
+    
+    .section-score-box {
+      cursor: pointer;
+      position: relative;
+    }
+    .section-score-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+    
+    .section-score-box:hover {
+      background: rgba(19, 24, 37, 0.5) !important;
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.1) !important;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+    
+    .timeline-segment {
+      height: 100%;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.04);
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(255, 255, 255, 0.02);
+    }
+    
+    .timeline-segment:hover {
+      transform: scaleY(1.6);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 12px rgba(0, 230, 246, 0.4);
+      z-index: 10;
+    }
+    
+    .timeline-segment-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      border-radius: 3px;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 8px rgba(0, 230, 246, 0.3);
+    }
+    
+    .timeline-segment.active-segment {
+      border-color: rgba(0, 230, 246, 0.4);
+      box-shadow: 0 0 8px rgba(0, 230, 246, 0.2);
+    }
+
+    .timeline-labels-row {
+      display: grid;
+      grid-template-columns: repeat(30, 1fr);
+      gap: 4px;
+      width: 100%;
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    .timeline-segment-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.25);
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+
+    .timeline-segment-label.active-label {
+      color: var(--cyan) !important;
+      font-weight: 800;
+      text-shadow: 0 0 6px rgba(0, 230, 246, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .timeline-labels-row {
+        display: none !important;
+      }
+      .score-hero-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1.5rem !important;
+      }
+      .sections-breakdown-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        width: 100% !important;
+      }
+    }
+    @media (max-width: 480px) {
+      .sections-breakdown-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1433,53 +1542,121 @@
       <!-- Left Column: Curriculum Grid (Top Left) -->
       <div class="dashboard-left-col">
         
-        <!-- Roadmap Main Header with Integrated Resized Progress Gauge -->
-        <div class="glass-card roadmap-header-card" style="display: flex; align-items: center; gap: 1.75rem; margin-bottom: 2rem; padding: 1.5rem 1.75rem;">
+        <!-- Premium Score Card and Segmented Milestone Timeline Dashboard -->
+        <div class="glass-card header-score-card" style="margin-bottom: 2rem; padding: 2rem; display: flex; flex-direction: column; gap: 1.75rem; position: relative;">
           
-          <!-- Resized Progress Radial Gauge -->
-          <div class="radial-container" style="width: 90px; height: 90px; margin-bottom: 0; flex-shrink: 0; position: relative;">
-            <svg class="radial-svg" viewBox="0 0 160 160" style="width: 100%; height: 100%; transform: rotate(-90deg);">
-              <defs>
-                <linearGradient id="cyanPurpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#00E6F6" />
-                  <stop offset="100%" stop-color="#8A2BE2" />
-                </linearGradient>
-              </defs>
-              <circle class="radial-bg" cx="80" cy="80" r="70" style="fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 14;" />
-              <circle class="radial-fill" id="radialProgressFill" cx="80" cy="80" r="70" style="fill: none; stroke: url(#cyanPurpleGrad); stroke-width: 14; stroke-linecap: round; stroke-dasharray: 440; stroke-dashoffset: 440; transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1); filter: drop-shadow(0 0 6px rgba(0, 230, 246, 0.4));" />
-            </svg>
-            <div class="radial-text-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center;">
-              <div class="radial-pct" id="radialProgressPct" style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: #fff; line-height: 1;">0%</div>
-              <div class="radial-label" style="font-size: 8px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;">complete</div>
-            </div>
-          </div>
-
-          <!-- Header Text and CTA Area -->
-          <div style="flex: 1; display: flex; flex-direction: column; gap: 0.75rem;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.25rem;">
-              <div style="flex: 1; min-width: 250px;">
-                <h2 class="dashboard-greeting" style="font-size: 26px; margin: 0; letter-spacing: -0.015em; font-family: 'Outfit', sans-serif; font-weight: 800; color: #fff; line-height: 1.2;">30-Day Masterclass Roadmap</h2>
-                <p class="dashboard-subtitle" style="font-size: 14px; margin: 6px 0 0; color: var(--ink-dim); line-height: 1.5;">Zero passive videos, pure muscle memory. Click a day card to resume training.</p>
+          <!-- Top Row: Overall Marks Hero + 4 Section Breakdown Columns -->
+          <div class="score-hero-row" style="display: flex; gap: 2rem; align-items: center; justify-content: space-between; width: 100%; flex-wrap: wrap;">
+            
+            <!-- Left Panel: Large Bold Overall Score + CTA -->
+            <div class="score-hero-display" style="display: flex; align-items: center; gap: 2rem; min-width: 320px; flex: 1;">
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div style="font-size: 10px; font-weight: 800; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 0.15em;">CODING SCORE</div>
+                <div style="display: flex; align-items: baseline; gap: 8px;">
+                  <span id="heroTotalMarks" style="font-family: 'Outfit', sans-serif; font-size: 64px; font-weight: 950; line-height: 1; color: #fff; text-shadow: 0 0 30px rgba(0, 230, 246, 0.35);">0.0</span>
+                  <span style="font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 800; color: rgba(255, 255, 255, 0.25);">/ 1,000.0 Marks</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+                  <span class="rank-badge rank-badge--cadet" id="headerRankBadge" style="font-size: 9px; padding: 2px 8px; border-radius: 4px;">Code Cadet</span>
+                  <span id="headerRankLevelText" style="font-size: 12.5px; font-weight: 600; color: rgba(255, 255, 255, 0.75); display: flex; align-items: center; gap: 4px;">Level 1 (Novice) 🌱</span>
+                  <span id="heroScorePercentage" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--cyan); background: rgba(0, 230, 246, 0.08); padding: 2px 6px; border-radius: 6px; border: 1px solid rgba(0, 230, 246, 0.15); font-weight: 700;">0.0%</span>
+                </div>
               </div>
               
-              <!-- Resume learning primary action -->
-              <a href="#" id="resumeLearningBtn" class="resume-cta" style="padding: 10px 22px; font-size: 13.5px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; height: fit-content; margin-top: 2px;">
+              <!-- Resume Learning primary action button inside header-score-card -->
+              <a href="#" id="resumeLearningBtn" class="resume-cta" style="padding: 10px 22px; font-size: 13.5px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; height: fit-content; margin-top: 10px;">
                 Resume Learning
               </a>
             </div>
 
-            <!-- Stats Subbar & Dynamic Progress Bar -->
-            <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.6rem; display: flex; flex-direction: column; gap: 8px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <span class="progress-stats-summary" id="progressSummary" style="font-size: 12.5px; color: var(--ink-dim);">
-                  Solved <strong>0</strong> of <strong>1668</strong> challenges
-                </span>
-                <span id="completionMotivationText" style="font-size: 11.5px; font-weight: 700; color: var(--cyan); font-family: 'Outfit', sans-serif; letter-spacing: 0.02em;">Start your journey!</span>
+            <!-- Right Panel: 4 Section Breakdown Grid -->
+            <div class="sections-breakdown-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; flex: 1.5; min-width: 320px;">
+              
+              <!-- Basics Section Card -->
+              <div class="section-score-box box-basics" style="background: rgba(19, 24, 37, 0.25); border: 1px solid rgba(255,255,255,0.04); border-left: 3px solid #64748b; border-radius: 12px; padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 4px; transition: all 0.3s;">
+                <span style="font-size: 9.5px; font-weight: 700; color: rgba(148, 163, 184, 0.6); text-transform: uppercase; letter-spacing: 0.08em;">1. Basics</span>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 14.5px; font-weight: 700; color: #fff;">
+                  <span id="sectionBasicsScore">0.0</span> <span style="font-size: 10.5px; color: rgba(255, 255, 255, 0.3);">/ 384.9</span>
+                </div>
+                <!-- Visual progress bar -->
+                <div style="width: 100%; height: 3px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; margin-top: 4px; overflow: hidden;">
+                  <div id="sectionBasicsBar" style="height: 100%; width: 0%; background: #64748b; border-radius: 2px; transition: width 0.8s ease;"></div>
+                </div>
+                <div style="font-size: 9px; color: var(--ink-dim); margin-top: 2px;">Max Marks: 384.9</div>
               </div>
-              <div style="width: 100%; height: 5px; background: rgba(255,255,255,0.04); border-radius: 100px; overflow: hidden;">
-                <div id="headerMiniProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--purple)); transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 8px rgba(0, 230, 246, 0.3);"></div>
+
+              <!-- Structures Section Card -->
+              <div class="section-score-box box-structures" style="background: rgba(19, 24, 37, 0.25); border: 1px solid rgba(255,255,255,0.04); border-left: 3px solid #a855f7; border-radius: 12px; padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 4px; transition: all 0.3s;">
+                <span style="font-size: 9.5px; font-weight: 700; color: rgba(168, 85, 247, 0.6); text-transform: uppercase; letter-spacing: 0.08em;">2. Structures</span>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 14.5px; font-weight: 700; color: #fff;">
+                  <span id="sectionStructuresScore">0.0</span> <span style="font-size: 10.5px; color: rgba(255, 255, 255, 0.3);">/ 298.6</span>
+                </div>
+                <!-- Visual progress bar -->
+                <div style="width: 100%; height: 3px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; margin-top: 4px; overflow: hidden;">
+                  <div id="sectionStructuresBar" style="height: 100%; width: 0%; background: #a855f7; border-radius: 2px; transition: width 0.8s ease;"></div>
+                </div>
+                <div style="font-size: 9px; color: var(--ink-dim); margin-top: 2px;">Max Marks: 298.6</div>
               </div>
+
+              <!-- Analysis Section Card -->
+              <div class="section-score-box box-analysis" style="background: rgba(19, 24, 37, 0.25); border: 1px solid rgba(255,255,255,0.04); border-left: 3px solid #00e6f6; border-radius: 12px; padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 4px; transition: all 0.3s;">
+                <span style="font-size: 9.5px; font-weight: 700; color: rgba(0, 230, 246, 0.6); text-transform: uppercase; letter-spacing: 0.08em;">3. Analysis</span>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 14.5px; font-weight: 700; color: #fff;">
+                  <span id="sectionAnalysisScore">0.0</span> <span style="font-size: 10.5px; color: rgba(255, 255, 255, 0.3);">/ 259.0</span>
+                </div>
+                <!-- Visual progress bar -->
+                <div style="width: 100%; height: 3px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; margin-top: 4px; overflow: hidden;">
+                  <div id="sectionAnalysisBar" style="height: 100%; width: 0%; background: #00e6f6; border-radius: 2px; transition: width 0.8s ease;"></div>
+                </div>
+                <div style="font-size: 9px; color: var(--ink-dim); margin-top: 2px;">Max Marks: 259.0</div>
+              </div>
+
+              <!-- Advanced Section Card -->
+              <div class="section-score-box box-advanced" style="background: rgba(19, 24, 37, 0.25); border: 1px solid rgba(255,255,255,0.04); border-left: 3px solid #f5a623; border-radius: 12px; padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 4px; transition: all 0.3s;">
+                <span style="font-size: 9.5px; font-weight: 700; color: rgba(245, 166, 35, 0.6); text-transform: uppercase; letter-spacing: 0.08em;">4. Advanced</span>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 14.5px; font-weight: 700; color: #fff;">
+                  <span id="sectionAdvancedScore">0.0</span> <span style="font-size: 10.5px; color: rgba(255, 255, 255, 0.3);">/ 57.5</span>
+                </div>
+                <!-- Visual progress bar -->
+                <div style="width: 100%; height: 3px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; margin-top: 4px; overflow: hidden;">
+                  <div id="sectionAdvancedBar" style="height: 100%; width: 0%; background: #f5a623; border-radius: 2px; transition: width 0.8s ease;"></div>
+                </div>
+                <div style="font-size: 9px; color: var(--ink-dim); margin-top: 2px;">Max Marks: 57.5</div>
+              </div>
+
             </div>
+
+          </div>
+
+          <!-- Bottom Row: 30-Day Segmented Milestone Timeline Bar -->
+          <div class="timeline-wrapper" style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.25rem; display: flex; flex-direction: column; gap: 10px; position: relative;">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; color: rgba(255,255,255,0.5); text-transform: uppercase;">Milestone Timeline</span>
+                <span id="activeTimelineHighlight" style="font-size: 11px; color: var(--cyan); background: rgba(0, 230, 246, 0.08); border: 1px solid rgba(0, 230, 246, 0.18); padding: 1px 8px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; opacity: 0; transition: opacity 0.25s;">Hover a milestone split</span>
+              </div>
+              <span id="timelineMotivationText" style="font-size: 11px; font-weight: 700; color: var(--cyan); font-family: 'Outfit', sans-serif; text-transform: uppercase; letter-spacing: 0.04em;">Start your journey! 🚀</span>
+            </div>
+
+            <!-- The Segmented Timeline Track -->
+            <div class="timeline-segmented-track" id="timelineSegmentedTrack" style="display: grid; grid-template-columns: repeat(30, 1fr); gap: 4px; width: 100%; height: 8px; margin-top: 4px; position: relative;">
+              <!-- 30 segments will be rendered dynamically by JavaScript here -->
+            </div>
+
+            <!-- Dynamic Labels Row for Timeline Splits -->
+            <div class="timeline-labels-row" id="timelineLabelsRow">
+              <!-- 30 labels will be rendered dynamically by JavaScript here -->
+            </div>
+
+            <!-- Gorgeous Hover Tooltip -->
+            <div id="timelineTooltip" style="position: absolute; bottom: 38px; transform: translateX(-50%); background: rgba(11, 15, 26, 0.95); border: 1px solid rgba(0, 230, 246, 0.3); border-radius: 8px; padding: 8px 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: none; pointer-events: none; z-index: 100; transition: left 0.1s ease, opacity 0.1s ease; opacity: 0; min-width: 180px;">
+              <div id="tooltipDayTitle" style="font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Day 01</div>
+              <div id="tooltipDayTopic" style="font-size: 12px; color: rgba(255,255,255,0.8); margin-bottom: 4px; font-weight: 600;">Data Types and Memory</div>
+              <div id="tooltipDaySolved" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-dim);">Solved: 0 / 90 (0%)</div>
+              <div id="tooltipDayMarks" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--cyan); font-weight: 700; margin-top: 2px;">0.0 / 54.0 Marks</div>
+            </div>
+
           </div>
 
         </div>
@@ -1757,6 +1934,46 @@
         window.location.replace("landing_v2/index.html");
       });
 
+      // Retrieve resume learning link mapping to last active day and pre-calculate totalSolvedCount
+      let totalSolvedCount = 0;
+      let totalTimeSpentSeconds = 0;
+      DAY_METADATA.forEach(d => {
+        const solved = parseInt(localStorage.getItem(`manodemy_day${d.day}_solved_count`) || '0', 10);
+        const time = parseInt(localStorage.getItem(`manodemy_day${d.day}_time_spent`) || '0', 10);
+        totalSolvedCount += solved;
+        totalTimeSpentSeconds += time;
+      });
+
+      const lastVisitedDayId = localStorage.getItem('mano_last_day');
+      let resumeTarget = "day01.html";
+      let resumeText = "Resume Learning";
+      
+      if (lastVisitedDayId) {
+        const match = lastVisitedDayId.match(/(\d{2})/);
+        if (match) {
+          resumeTarget = `day${match[1]}.html`;
+          resumeText = `Resume Day ${match[1]}`;
+        }
+      } else if (totalSolvedCount > 0) {
+        let highestDay = 1;
+        DAY_METADATA.forEach(d => {
+          const solved = parseInt(localStorage.getItem(`manodemy_day${d.day}_solved_count`) || '0', 10);
+          if (solved > 0) highestDay = Math.max(highestDay, parseInt(d.day, 10));
+        });
+        const nextDayNum = Math.min(highestDay + 1, 30);
+        const dayStr = nextDayNum < 10 ? `0${nextDayNum}` : nextDayNum;
+        resumeTarget = `day${dayStr}.html`;
+        resumeText = `Continue to Day ${dayStr}`;
+      }
+
+      const ctaBtn = document.getElementById('resumeLearningBtn');
+      if (ctaBtn) {
+        ctaBtn.href = resumeTarget;
+        ctaBtn.innerHTML = `${resumeText} <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`;
+      }
+      const dropDownResume = document.getElementById('dropdownResumeLink');
+      if (dropDownResume) dropDownResume.href = resumeTarget;
+
       // Calculate XP from stats — scaled to 1668 real challenges
       // Formula: Each challenge = 10 XP | Focus = 200 XP/hr | Streak = 50 XP/day
       // Day completion bonus: 50 XP per fully completed day
@@ -1833,9 +2050,18 @@
           badge.textContent = rankName;
           badge.className = `rank-badge ${rankClass}`;
         }
+
+        const headerBadge = document.getElementById('headerRankBadge');
+        if (headerBadge) {
+          headerBadge.textContent = rankName;
+          headerBadge.className = `rank-badge ${rankClass}`;
+        }
         
         const levelEl = document.getElementById('rankLevelText');
         if (levelEl) levelEl.textContent = levelText;
+
+        const headerLevelEl = document.getElementById('headerRankLevelText');
+        if (headerLevelEl) headerLevelEl.textContent = levelText;
         
         const numText = document.getElementById('xpNumberText');
         if (numText) numText.textContent = nextRankXPText;
@@ -1963,16 +2189,54 @@
         document.getElementById('rankFocusValCard').textContent = `${hoursSpent}h`;
 
         const solvedPercentage = Math.round((totalSolvedCount / TOTAL_CHALLENGES) * 100) || 0;
-        document.getElementById('radialProgressPct').textContent = `${solvedPercentage}%`;
-        document.getElementById('progressSummary').innerHTML = `Solved <strong>${totalSolvedCount}</strong> of <strong>${TOTAL_CHALLENGES}</strong> challenges`;
 
-        // Update premium visual progress tracking elements
-        const miniProgressBar = document.getElementById('headerMiniProgressBar');
-        if (miniProgressBar) {
-          miniProgressBar.style.width = `${solvedPercentage}%`;
+        // Calculate Category Scores
+        let categoryScores = {
+          basics: 0,
+          structures: 0,
+          analysis: 0,
+          advanced: 0
+        };
+        DAY_METADATA.forEach(d => {
+          const bestScore = parseFloat(localStorage.getItem(`manodemy_day${d.day}_best_score`) || '0');
+          if (categoryScores[d.category] !== undefined) {
+            categoryScores[d.category] += bestScore;
+          }
+        });
+
+        // Update section score elements in the header card
+        const basicsScoreEl = document.getElementById('sectionBasicsScore');
+        if (basicsScoreEl) basicsScoreEl.textContent = categoryScores.basics.toFixed(1);
+        const structuresScoreEl = document.getElementById('sectionStructuresScore');
+        if (structuresScoreEl) structuresScoreEl.textContent = categoryScores.structures.toFixed(1);
+        const analysisScoreEl = document.getElementById('sectionAnalysisScore');
+        if (analysisScoreEl) analysisScoreEl.textContent = categoryScores.analysis.toFixed(1);
+        const advancedScoreEl = document.getElementById('sectionAdvancedScore');
+        if (advancedScoreEl) advancedScoreEl.textContent = categoryScores.advanced.toFixed(1);
+
+        // Update visual progress bars for each section
+        const basicsBar = document.getElementById('sectionBasicsBar');
+        if (basicsBar) basicsBar.style.width = `${Math.min((categoryScores.basics / 384.9) * 100, 100)}%`;
+        const structuresBar = document.getElementById('sectionStructuresBar');
+        if (structuresBar) structuresBar.style.width = `${Math.min((categoryScores.structures / 298.6) * 100, 100)}%`;
+        const analysisBar = document.getElementById('sectionAnalysisBar');
+        if (analysisBar) analysisBar.style.width = `${Math.min((categoryScores.analysis / 259.0) * 100, 100)}%`;
+        const advancedBar = document.getElementById('sectionAdvancedBar');
+        if (advancedBar) advancedBar.style.width = `${Math.min((categoryScores.advanced / 57.5) * 100, 100)}%`;
+
+        // Update overall score hero display
+        const totalMarksSum = categoryScores.basics + categoryScores.structures + categoryScores.analysis + categoryScores.advanced;
+        const boundedTotalMarks = Math.min(totalMarksSum, 1000);
+        const totalMarksEl = document.getElementById('heroTotalMarks');
+        if (totalMarksEl) totalMarksEl.textContent = boundedTotalMarks.toFixed(1);
+        const scorePercentageEl = document.getElementById('heroScorePercentage');
+        if (scorePercentageEl) {
+          const overallPct = ((boundedTotalMarks / 1000) * 100).toFixed(1);
+          scorePercentageEl.textContent = `${overallPct}%`;
         }
-        
-        const motivationLabel = document.getElementById('completionMotivationText');
+
+        // Update timeline motivation text
+        const motivationLabel = document.getElementById('timelineMotivationText');
         if (motivationLabel) {
           let text = "Start your coding journey! 🚀";
           if (solvedPercentage === 100) {
@@ -1989,8 +2253,99 @@
           motivationLabel.textContent = text;
         }
 
-        const offset = 440 - (440 * (Math.min(solvedPercentage, 100) / 100));
-        document.getElementById('radialProgressFill').style.strokeDashoffset = offset;
+        // Render 30-Day Segmented Milestone Timeline
+        const timelineTrack = document.getElementById('timelineSegmentedTrack');
+        const timelineLabelsRow = document.getElementById('timelineLabelsRow');
+        if (timelineTrack) {
+          timelineTrack.innerHTML = '';
+          if (timelineLabelsRow) timelineLabelsRow.innerHTML = '';
+
+          DAY_METADATA.forEach(item => {
+            const solvedCount = parseInt(localStorage.getItem(`manodemy_day${item.day}_solved_count`) || '0', 10);
+            const targetPercent = Math.min(Math.round((solvedCount / item.totalCells) * 100), 100);
+            const maxDayXP = 1000 * (item.totalCells / 1668);
+            const bestScore = parseFloat(localStorage.getItem(`manodemy_day${item.day}_best_score`) || '0');
+            
+            const segment = document.createElement('div');
+            segment.className = 'timeline-segment' + (resumeTarget === `day${item.day}.html` ? ' active-segment' : '');
+            segment.setAttribute('data-day', item.day);
+            segment.setAttribute('tabindex', '0');
+            
+            const fill = document.createElement('div');
+            fill.className = 'timeline-segment-fill';
+            fill.style.width = `${targetPercent}%`;
+            
+            segment.appendChild(fill);
+
+            // Create label element
+            let label = null;
+            if (timelineLabelsRow) {
+              label = document.createElement('span');
+              label.id = `timeline-label-day-${item.day}`;
+              label.className = 'timeline-segment-label' + (resumeTarget === `day${item.day}.html` ? ' active-label' : '');
+              label.textContent = item.day;
+              timelineLabelsRow.appendChild(label);
+            }
+            
+            // Hover logic
+            segment.addEventListener('mouseenter', (e) => {
+              const highlight = document.getElementById('activeTimelineHighlight');
+              if (highlight) {
+                highlight.textContent = `Day ${item.day}: ${item.title} • ${solvedCount}/${item.totalCells} Solved • ${bestScore.toFixed(1)}/${maxDayXP.toFixed(1)} Marks`;
+                highlight.style.opacity = '1';
+              }
+
+              if (label) {
+                label.style.color = '#00e6f6';
+                label.style.transform = 'scale(1.2)';
+                label.style.textShadow = '0 0 8px rgba(0, 230, 246, 0.6)';
+              }
+              
+              // Tooltip positioning
+              const tooltip = document.getElementById('timelineTooltip');
+              if (tooltip) {
+                document.getElementById('tooltipDayTitle').textContent = `Day ${item.day}`;
+                document.getElementById('tooltipDayTopic').textContent = item.title;
+                document.getElementById('tooltipDaySolved').textContent = `Solved: ${solvedCount} / ${item.totalCells} (${targetPercent}%)`;
+                document.getElementById('tooltipDayMarks').textContent = `${bestScore.toFixed(1)} / ${maxDayXP.toFixed(1)} Marks`;
+                
+                tooltip.style.display = 'block';
+                // Calculate coordinates relative to parent .timeline-wrapper
+                const wrapperRect = timelineTrack.parentElement.getBoundingClientRect();
+                const segmentRect = segment.getBoundingClientRect();
+                const leftPos = segmentRect.left - wrapperRect.left + (segmentRect.width / 2);
+                
+                tooltip.style.left = `${leftPos}px`;
+                tooltip.style.opacity = '1';
+              }
+            });
+            
+            segment.addEventListener('mouseleave', () => {
+              const highlight = document.getElementById('activeTimelineHighlight');
+              if (highlight) {
+                highlight.style.opacity = '0';
+              }
+
+              if (label) {
+                label.style.color = (resumeTarget === `day${item.day}.html`) ? 'var(--cyan)' : 'rgba(255, 255, 255, 0.25)';
+                label.style.transform = 'none';
+                label.style.textShadow = (resumeTarget === `day${item.day}.html`) ? '0 0 6px rgba(0, 230, 246, 0.4)' : 'none';
+              }
+              
+              const tooltip = document.getElementById('timelineTooltip');
+              if (tooltip) {
+                tooltip.style.opacity = '0';
+                tooltip.style.display = 'none';
+              }
+            });
+            
+            segment.addEventListener('click', () => {
+              window.location.href = `day${item.day}.html`;
+            });
+            
+            timelineTrack.appendChild(segment);
+          });
+        }
         
         // Calculate XP
         const xp = calculateXP();
@@ -2018,15 +2373,6 @@
       let activeDates = JSON.parse(localStorage.getItem('manodemy_active_dates') || '[]');
       const todayStr = new Date().toISOString().split('T')[0];
       
-      let totalSolvedCount = 0;
-      let totalTimeSpentSeconds = 0;
-      DAY_METADATA.forEach(d => {
-        const solved = parseInt(localStorage.getItem(`manodemy_day${d.day}_solved_count`) || '0', 10);
-        const time = parseInt(localStorage.getItem(`manodemy_day${d.day}_time_spent`) || '0', 10);
-        totalSolvedCount += solved;
-        totalTimeSpentSeconds += time;
-      });
-
       if (totalTimeSpentSeconds > 10 && !activeDates.includes(todayStr)) {
         activeDates.push(todayStr);
         const yesterday = new Date();
@@ -2041,36 +2387,6 @@
 
       // Initial stats load
       recalculateStatsAndReload();
-
-      // Retrieve resume learning link mapping to last active day
-      const lastVisitedDayId = localStorage.getItem('mano_last_day');
-      let resumeTarget = "day01.html";
-      let resumeText = "Resume Learning";
-      
-      if (lastVisitedDayId) {
-        const match = lastVisitedDayId.match(/(\d{2})/);
-        if (match) {
-          resumeTarget = `day${match[1]}.html`;
-          resumeText = `Resume Day ${match[1]}`;
-        }
-      } else if (totalSolvedCount > 0) {
-        let highestDay = 1;
-        DAY_METADATA.forEach(d => {
-          const solved = parseInt(localStorage.getItem(`manodemy_day${d.day}_solved_count`) || '0', 10);
-          if (solved > 0) highestDay = Math.max(highestDay, parseInt(d.day, 10));
-        });
-        const nextDayNum = Math.min(highestDay + 1, 30);
-        const dayStr = nextDayNum < 10 ? `0${nextDayNum}` : nextDayNum;
-        resumeTarget = `day${dayStr}.html`;
-        resumeText = `Continue to Day ${dayStr}`;
-      }
-
-      const ctaBtn = document.getElementById('resumeLearningBtn');
-      if (ctaBtn) {
-        ctaBtn.href = resumeTarget;
-        ctaBtn.innerHTML = `${resumeText} <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`;
-      }
-      document.getElementById('dropdownResumeLink').href = resumeTarget;
 
       // ═══ ENRICHED DYNAMIC QUEST ENGINE ═══
       // Day-specific educational quests with rich guidance + daily rotating bonus based on 1000 XP cap
