@@ -2,7 +2,7 @@
 
 // --- StateManagement & Profile Avatar Constants ---
 const SAVE_DEBOUNCE_MS = 400;
-const TOTAL_QUESTIONS = 120; // approximate total across 30 days
+const TOTAL_QUESTIONS = 640; // total across 30 days
 const AVATAR_COLORS = ['--avatar-bg-1', '--avatar-bg-2', '--avatar-bg-3'];
 const TOAST_DURATION_MS = 6000;
 
