@@ -1543,85 +1543,83 @@
       <div class="dashboard-left-col">
         
         <!-- Premium Score Card and Segmented Milestone Timeline Dashboard -->
-        <div class="glass-card header-score-card" style="margin-bottom: 2rem; padding: 2rem; display: flex; flex-direction: column; gap: 1.75rem; position: relative;">
+        <!-- Premium Score Card and Segmented Milestone Timeline Dashboard -->
+        <div class="glass-card header-score-card" style="margin-bottom: 1.5rem; padding: 0.85rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; position: relative;">
           
           <!-- Top Row: Overall Marks Hero + 4 Section Breakdown Columns -->
-          <div class="score-hero-row" style="display: flex; gap: 2rem; align-items: center; justify-content: space-between; width: 100%; flex-wrap: wrap;">
+          <div class="score-hero-row" style="display: flex; gap: 1.5rem; align-items: center; justify-content: space-between; width: 100%; flex-wrap: wrap;">
             
-            <!-- Left Panel: Large Bold Overall Score + CTA -->
-            <div class="score-hero-display" style="display: flex; align-items: center; gap: 2rem; min-width: 320px; flex: 1;">
-              <div style="display: flex; flex-direction: column; gap: 4px;">
-                <div style="font-size: 10px; font-weight: 800; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 0.15em;">CODING SCORE</div>
-                <div style="display: flex; align-items: baseline; gap: 8px;">
-                  <span id="heroTotalMarks" style="font-family: 'Outfit', sans-serif; font-size: 64px; font-weight: 950; line-height: 1; color: #fff; text-shadow: 0 0 30px rgba(0, 230, 246, 0.35);">0.0</span>
-                  <span style="font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 800; color: rgba(255, 255, 255, 0.25);">/ 1,000.0 Marks</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
-                  <span class="rank-badge rank-badge--cadet" id="headerRankBadge" style="font-size: 9px; padding: 2px 8px; border-radius: 4px;">Code Cadet</span>
-                  <span id="headerRankLevelText" style="font-size: 12.5px; font-weight: 600; color: rgba(255, 255, 255, 0.75); display: flex; align-items: center; gap: 4px;">Level 1 (Novice) 🌱</span>
-                  <span id="heroScorePercentage" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--cyan); background: rgba(0, 230, 246, 0.08); padding: 2px 6px; border-radius: 6px; border: 1px solid rgba(0, 230, 246, 0.15); font-weight: 700;">0.0%</span>
-                </div>
+            <!-- Left Panel: Large Bold Overall Score (Compact) -->
+            <div class="score-hero-display" style="display: flex; flex-direction: column; gap: 2px; min-width: 260px; flex: 0.8;">
+              <div style="font-size: 9px; font-weight: 800; color: rgba(255, 255, 255, 0.45); text-transform: uppercase; letter-spacing: 0.15em;">CODING SCORE</div>
+              <div style="display: flex; align-items: baseline; gap: 6px;">
+                <span id="heroTotalMarks" style="font-family: 'Outfit', sans-serif; font-size: 38px; font-weight: 950; line-height: 1; color: #fff; text-shadow: 0 0 20px rgba(0, 230, 246, 0.35);">0.0</span>
+                <span style="font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 800; color: rgba(255, 255, 255, 0.3);">/ 1,000.0 Marks</span>
               </div>
-              
-              <!-- Resume Learning primary action button inside header-score-card -->
-              <a href="#" id="resumeLearningBtn" class="resume-cta" style="padding: 10px 22px; font-size: 13.5px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; height: fit-content; margin-top: 10px;">
-                Resume Learning
-              </a>
+              <div style="display: flex; align-items: center; gap: 6px; margin-top: 1px; flex-wrap: wrap;">
+                <span class="rank-badge rank-badge--cadet" id="headerRankBadge" style="font-size: 8.5px; padding: 1px 6px; border-radius: 4px; line-height: 1.2;">Code Cadet</span>
+                <span id="headerRankLevelText" style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 2px;">Level 1 (Novice) 🌱</span>
+                <span id="heroScorePercentage" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--cyan); background: rgba(0, 230, 246, 0.06); padding: 1px 4px; border-radius: 4px; border: 1px solid rgba(0, 230, 246, 0.12); font-weight: 700;">0.0%</span>
+              </div>
             </div>
 
             <!-- Right Panel: 4 Section Breakdown Grid -->
-            <div class="sections-breakdown-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; flex: 1.5; min-width: 320px;">
+            <div class="sections-breakdown-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; flex: 1.6; min-width: 320px;">
               
               <!-- Basics Section Card -->
-              <div class="section-score-box box-basics" style="background: rgba(19, 24, 37, 0.25); border: 1px solid rgba(255,255,255,0.04); border-left: 3px solid #64748b; border-radius: 12px; padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 4px; transition: all 0.3s;">
-                <span style="font-size: 9.5px; font-weight: 700; color: rgba(148, 163, 184, 0.6); text-transform: uppercase; letter-spacing: 0.08em;">1. Basics</span>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size: 14.5px; font-weight: 700; color: #fff;">
-                  <span id="sectionBasicsScore">0.0</span> <span style="font-size: 10.5px; color: rgba(255, 255, 255, 0.3);">/ 384.9</span>
+              <div class="section-score-box box-basics" style="background: rgba(19, 24, 37, 0.2); border: 1px solid rgba(255,255,255,0.03); border-left: 2px solid #64748b; border-radius: 8px; padding: 0.45rem 0.65rem; display: flex; flex-direction: column; gap: 3px; transition: all 0.25s;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                  <span style="font-size: 9px; font-weight: 700; color: rgba(148, 163, 184, 0.6); text-transform: uppercase; letter-spacing: 0.05em;">1. Basics</span>
+                </div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; color: #fff;">
+                  <span id="sectionBasicsScore">0.0</span> <span style="font-size: 9.5px; color: rgba(255, 255, 255, 0.3);">/ 384.9</span>
                 </div>
                 <!-- Visual progress bar -->
-                <div style="width: 100%; height: 3px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; margin-top: 4px; overflow: hidden;">
-                  <div id="sectionBasicsBar" style="height: 100%; width: 0%; background: #64748b; border-radius: 2px; transition: width 0.8s ease;"></div>
+                <div style="width: 100%; height: 2px; background: rgba(255, 255, 255, 0.04); border-radius: 1px; margin-top: 1px; overflow: hidden;">
+                  <div id="sectionBasicsBar" style="height: 100%; width: 0%; background: #64748b; border-radius: 1px; transition: width 0.8s ease;"></div>
                 </div>
-                <div style="font-size: 9px; color: var(--ink-dim); margin-top: 2px;">Max Marks: 384.9</div>
               </div>
 
               <!-- Structures Section Card -->
-              <div class="section-score-box box-structures" style="background: rgba(19, 24, 37, 0.25); border: 1px solid rgba(255,255,255,0.04); border-left: 3px solid #a855f7; border-radius: 12px; padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 4px; transition: all 0.3s;">
-                <span style="font-size: 9.5px; font-weight: 700; color: rgba(168, 85, 247, 0.6); text-transform: uppercase; letter-spacing: 0.08em;">2. Structures</span>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size: 14.5px; font-weight: 700; color: #fff;">
-                  <span id="sectionStructuresScore">0.0</span> <span style="font-size: 10.5px; color: rgba(255, 255, 255, 0.3);">/ 298.6</span>
+              <div class="section-score-box box-structures" style="background: rgba(19, 24, 37, 0.2); border: 1px solid rgba(255,255,255,0.03); border-left: 2px solid #a855f7; border-radius: 8px; padding: 0.45rem 0.65rem; display: flex; flex-direction: column; gap: 3px; transition: all 0.25s;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                  <span style="font-size: 9px; font-weight: 700; color: rgba(168, 85, 247, 0.6); text-transform: uppercase; letter-spacing: 0.05em;">2. Structures</span>
+                </div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; color: #fff;">
+                  <span id="sectionStructuresScore">0.0</span> <span style="font-size: 9.5px; color: rgba(255, 255, 255, 0.3);">/ 298.6</span>
                 </div>
                 <!-- Visual progress bar -->
-                <div style="width: 100%; height: 3px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; margin-top: 4px; overflow: hidden;">
-                  <div id="sectionStructuresBar" style="height: 100%; width: 0%; background: #a855f7; border-radius: 2px; transition: width 0.8s ease;"></div>
+                <div style="width: 100%; height: 2px; background: rgba(255, 255, 255, 0.04); border-radius: 1px; margin-top: 1px; overflow: hidden;">
+                  <div id="sectionStructuresBar" style="height: 100%; width: 0%; background: #a855f7; border-radius: 1px; transition: width 0.8s ease;"></div>
                 </div>
-                <div style="font-size: 9px; color: var(--ink-dim); margin-top: 2px;">Max Marks: 298.6</div>
               </div>
 
               <!-- Analysis Section Card -->
-              <div class="section-score-box box-analysis" style="background: rgba(19, 24, 37, 0.25); border: 1px solid rgba(255,255,255,0.04); border-left: 3px solid #00e6f6; border-radius: 12px; padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 4px; transition: all 0.3s;">
-                <span style="font-size: 9.5px; font-weight: 700; color: rgba(0, 230, 246, 0.6); text-transform: uppercase; letter-spacing: 0.08em;">3. Analysis</span>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size: 14.5px; font-weight: 700; color: #fff;">
-                  <span id="sectionAnalysisScore">0.0</span> <span style="font-size: 10.5px; color: rgba(255, 255, 255, 0.3);">/ 259.0</span>
+              <div class="section-score-box box-analysis" style="background: rgba(19, 24, 37, 0.2); border: 1px solid rgba(255,255,255,0.03); border-left: 2px solid #00e6f6; border-radius: 8px; padding: 0.45rem 0.65rem; display: flex; flex-direction: column; gap: 3px; transition: all 0.25s;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                  <span style="font-size: 9px; font-weight: 700; color: rgba(0, 230, 246, 0.6); text-transform: uppercase; letter-spacing: 0.05em;">3. Analysis</span>
+                </div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; color: #fff;">
+                  <span id="sectionAnalysisScore">0.0</span> <span style="font-size: 9.5px; color: rgba(255, 255, 255, 0.3);">/ 259.0</span>
                 </div>
                 <!-- Visual progress bar -->
-                <div style="width: 100%; height: 3px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; margin-top: 4px; overflow: hidden;">
-                  <div id="sectionAnalysisBar" style="height: 100%; width: 0%; background: #00e6f6; border-radius: 2px; transition: width 0.8s ease;"></div>
+                <div style="width: 100%; height: 2px; background: rgba(255, 255, 255, 0.04); border-radius: 1px; margin-top: 1px; overflow: hidden;">
+                  <div id="sectionAnalysisBar" style="height: 100%; width: 0%; background: #00e6f6; border-radius: 1px; transition: width 0.8s ease;"></div>
                 </div>
-                <div style="font-size: 9px; color: var(--ink-dim); margin-top: 2px;">Max Marks: 259.0</div>
               </div>
 
               <!-- Advanced Section Card -->
-              <div class="section-score-box box-advanced" style="background: rgba(19, 24, 37, 0.25); border: 1px solid rgba(255,255,255,0.04); border-left: 3px solid #f5a623; border-radius: 12px; padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 4px; transition: all 0.3s;">
-                <span style="font-size: 9.5px; font-weight: 700; color: rgba(245, 166, 35, 0.6); text-transform: uppercase; letter-spacing: 0.08em;">4. Advanced</span>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size: 14.5px; font-weight: 700; color: #fff;">
-                  <span id="sectionAdvancedScore">0.0</span> <span style="font-size: 10.5px; color: rgba(255, 255, 255, 0.3);">/ 57.5</span>
+              <div class="section-score-box box-advanced" style="background: rgba(19, 24, 37, 0.2); border: 1px solid rgba(255,255,255,0.03); border-left: 2px solid #f5a623; border-radius: 8px; padding: 0.45rem 0.65rem; display: flex; flex-direction: column; gap: 3px; transition: all 0.25s;">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                  <span style="font-size: 9px; font-weight: 700; color: rgba(245, 166, 35, 0.6); text-transform: uppercase; letter-spacing: 0.05em;">4. Advanced</span>
+                </div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; color: #fff;">
+                  <span id="sectionAdvancedScore">0.0</span> <span style="font-size: 9.5px; color: rgba(255, 255, 255, 0.3);">/ 57.5</span>
                 </div>
                 <!-- Visual progress bar -->
-                <div style="width: 100%; height: 3px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; margin-top: 4px; overflow: hidden;">
-                  <div id="sectionAdvancedBar" style="height: 100%; width: 0%; background: #f5a623; border-radius: 2px; transition: width 0.8s ease;"></div>
+                <div style="width: 100%; height: 2px; background: rgba(255, 255, 255, 0.04); border-radius: 1px; margin-top: 1px; overflow: hidden;">
+                  <div id="sectionAdvancedBar" style="height: 100%; width: 0%; background: #f5a623; border-radius: 1px; transition: width 0.8s ease;"></div>
                 </div>
-                <div style="font-size: 9px; color: var(--ink-dim); margin-top: 2px;">Max Marks: 57.5</div>
               </div>
 
             </div>
@@ -1629,32 +1627,32 @@
           </div>
 
           <!-- Bottom Row: 30-Day Segmented Milestone Timeline Bar -->
-          <div class="timeline-wrapper" style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.25rem; display: flex; flex-direction: column; gap: 10px; position: relative;">
+          <div class="timeline-wrapper" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.6rem; display: flex; flex-direction: column; gap: 6px; position: relative;">
             
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; color: rgba(255,255,255,0.5); text-transform: uppercase;">Milestone Timeline</span>
-                <span id="activeTimelineHighlight" style="font-size: 11px; color: var(--cyan); background: rgba(0, 230, 246, 0.08); border: 1px solid rgba(0, 230, 246, 0.18); padding: 1px 8px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; opacity: 0; transition: opacity 0.25s;">Hover a milestone split</span>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; color: rgba(255,255,255,0.4); text-transform: uppercase;">Milestone Timeline</span>
+                <span id="activeTimelineHighlight" style="font-size: 10px; color: var(--cyan); background: rgba(0, 230, 246, 0.06); border: 1px solid rgba(0, 230, 246, 0.12); padding: 1px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; opacity: 0; transition: opacity 0.2s;">Hover a milestone split</span>
               </div>
-              <span id="timelineMotivationText" style="font-size: 11px; font-weight: 700; color: var(--cyan); font-family: 'Outfit', sans-serif; text-transform: uppercase; letter-spacing: 0.04em;">Start your journey! 🚀</span>
+              <span id="timelineMotivationText" style="font-size: 10px; font-weight: 700; color: var(--cyan); font-family: 'Outfit', sans-serif; text-transform: uppercase; letter-spacing: 0.04em;">Start your journey! 🚀</span>
             </div>
 
             <!-- The Segmented Timeline Track -->
-            <div class="timeline-segmented-track" id="timelineSegmentedTrack" style="display: grid; grid-template-columns: repeat(30, 1fr); gap: 4px; width: 100%; height: 8px; margin-top: 4px; position: relative;">
+            <div class="timeline-segmented-track" id="timelineSegmentedTrack" style="display: grid; grid-template-columns: repeat(30, 1fr); gap: 3px; width: 100%; height: 6px; margin-top: 2px; position: relative;">
               <!-- 30 segments will be rendered dynamically by JavaScript here -->
             </div>
 
             <!-- Dynamic Labels Row for Timeline Splits -->
-            <div class="timeline-labels-row" id="timelineLabelsRow">
+            <div class="timeline-labels-row" id="timelineLabelsRow" style="margin-top: 2px;">
               <!-- 30 labels will be rendered dynamically by JavaScript here -->
             </div>
 
             <!-- Gorgeous Hover Tooltip -->
-            <div id="timelineTooltip" style="position: absolute; bottom: 38px; transform: translateX(-50%); background: rgba(11, 15, 26, 0.95); border: 1px solid rgba(0, 230, 246, 0.3); border-radius: 8px; padding: 8px 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: none; pointer-events: none; z-index: 100; transition: left 0.1s ease, opacity 0.1s ease; opacity: 0; min-width: 180px;">
-              <div id="tooltipDayTitle" style="font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Day 01</div>
-              <div id="tooltipDayTopic" style="font-size: 12px; color: rgba(255,255,255,0.8); margin-bottom: 4px; font-weight: 600;">Data Types and Memory</div>
-              <div id="tooltipDaySolved" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-dim);">Solved: 0 / 90 (0%)</div>
-              <div id="tooltipDayMarks" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--cyan); font-weight: 700; margin-top: 2px;">0.0 / 54.0 Marks</div>
+            <div id="timelineTooltip" style="position: absolute; bottom: 32px; transform: translateX(-50%); background: rgba(11, 15, 26, 0.95); border: 1px solid rgba(0, 230, 246, 0.35); border-radius: 8px; padding: 6px 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: none; pointer-events: none; z-index: 100; transition: left 0.1s ease, opacity 0.1s ease; opacity: 0; min-width: 180px;">
+              <div id="tooltipDayTitle" style="font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Day 01</div>
+              <div id="tooltipDayTopic" style="font-size: 11px; color: rgba(255,255,255,0.8); margin-bottom: 4px; font-weight: 600;">Data Types and Memory</div>
+              <div id="tooltipDaySolved" style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--ink-dim);">Solved: 0 / 90 (0%)</div>
+              <div id="tooltipDayMarks" style="font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--cyan); font-weight: 700; margin-top: 2px;">0.0 / 54.0 Marks</div>
             </div>
 
           </div>
