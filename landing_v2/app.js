@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const openPricingModal = () => {
     if (window._userHasPurchased || localStorage.getItem('manodemy_enrolled') === 'true') {
-      window.location.href = '../day01.html';
+      window.location.href = '../home.html';
       return;
     }
     if (pricingModal) {
@@ -624,7 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
           unlockAllDays();
           updateCTAsForPaidUser();
           closePricingModal();
-          window.location.href = '../day01.html';
+          window.location.href = '../home.html';
           return;
         }
         throw new Error(data.error);
@@ -960,7 +960,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const signInBtn = document.getElementById('navSignin');
     if (signInBtn) {
       signInBtn.textContent = 'Dashboard';
-      signInBtn.href = '../day01.html';
+      signInBtn.href = '../home.html';
     }
   }
 
@@ -976,7 +976,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateCTAsForPaidUser() {
     document.querySelectorAll('[data-cta="buy"]').forEach(btn => {
       btn.textContent = 'Continue Learning →';
-      btn.href = '../day01.html';
+      btn.href = '../home.html';
       btn.onclick = null;
     });
     const stickyBar = document.getElementById('mobileSticky');

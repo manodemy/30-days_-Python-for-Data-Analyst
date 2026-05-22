@@ -1,0 +1,2309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard &mdash; Manodemy</title>
+  
+  <!-- Font Setup -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Supabase SDK -->
+  <script src="supabase.js"></script>
+
+  <!-- Route Paywall Guard -->
+  <script>
+    (async function Guard() {
+      try {
+        const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
+        const SUPA_KEY = 'sb_publishable_ZWfeHvv41ErWTcx2BtfdIQ_jw1EO4_0';
+        const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+        
+        const { data: { session }, error } = await sb.auth.getSession();
+        if (error || !session) {
+          window.location.replace("landing_v2/index.html?reason=login_required");
+          return;
+        }
+
+        const isEnrolledLocal = localStorage.getItem('manodemy_enrolled') === 'true';
+        const plan = session.user.user_metadata?.plan;
+
+        if (plan === 'pro' || isEnrolledLocal) {
+          document.documentElement.classList.add('authorized');
+          return;
+        }
+
+        // Verify with Supabase RPC
+        const { data: enrolled } = await sb.rpc('check_enrollment', { p_course_id: 'python-30day' });
+        if (enrolled) {
+          localStorage.setItem('manodemy_enrolled', 'true');
+          document.documentElement.classList.add('authorized');
+          return;
+        }
+
+        // Not enrolled, take to pricing
+        window.location.replace("landing_v2/index.html#pricing?locked=true");
+      } catch (err) {
+        console.warn("Offline or SDK load issue. Relying on local session.");
+        if (localStorage.getItem('manodemy_enrolled') === 'true') {
+          document.documentElement.classList.add('authorized');
+        } else {
+          window.location.replace("landing_v2/index.html");
+        }
+      }
+    })();
+  </script>
+
+  <!-- External V2 Stylesheet -->
+  <link rel="stylesheet" href="landing_v2/styles.css">
+
+  <!-- Dashboard Custom Styles -->
+  <style>
+    /* Prevent flashing of unauthorized content */
+    html:not(.authorized) body {
+      display: none !important;
+    }
+
+    body {
+      background-color: #060810;
+      background-image: 
+        radial-gradient(ellipse at 12% 18%, rgba(138, 43, 226, 0.18) 0px, transparent 55%),
+        radial-gradient(ellipse at 88% 85%, rgba(0, 230, 246, 0.12) 0px, transparent 55%),
+        radial-gradient(ellipse at 50% 110%, rgba(16, 185, 129, 0.07) 0px, transparent 45%);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Navbar customization */
+    .nav {
+      background: rgba(11, 15, 25, 0.8) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-brand-name {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .nav-brand-name span {
+      color: var(--cyan);
+    }
+
+    /* Profile Avatar wrapper */
+    .avatar-wrapper {
+      position: relative;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .avatar-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(0, 230, 246, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .avatar-wrapper:hover .avatar-circle {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(0, 230, 246, 0.5);
+    }
+
+    .avatar-dropdown {
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background: rgba(19, 24, 37, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      width: 240px;
+      padding: 1rem 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .avatar-wrapper.active .avatar-dropdown {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .dropdown-user-info {
+      padding: 0 1.25rem 0.75rem;
+    }
+
+    .dropdown-name {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: #fff;
+      font-size: 15px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dropdown-email {
+      font-size: 12px;
+      color: var(--ink-dim);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    .dropdown-divider {
+      border: 0;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      margin: 0.5rem 0;
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: 0.6rem 1.25rem;
+      color: var(--ink-dim);
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      padding-left: 1.5rem;
+    }
+
+    .dropdown-item.active {
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    .dropdown-logout-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 0.6rem 1.25rem;
+      background: none;
+      border: none;
+      color: #FF5353;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .dropdown-logout-btn:hover {
+      background: rgba(255, 83, 83, 0.08);
+      padding-left: 1.5rem;
+    }
+
+    /* Main Dashboard Layout */
+    .dashboard-container {
+      max-width: 1400px;
+      width: 100%;
+      margin: 100px auto 4rem;
+      padding: 0 1.5rem;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 2.5rem;
+      margin-bottom: 2.5rem;
+      align-items: start;
+    }
+
+    .dashboard-right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 992px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    /* Glassmorphic Cards */
+    .glass-card {
+      background: rgba(11, 15, 26, 0.62);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-top-color: rgba(255, 255, 255, 0.16);
+      border-radius: 24px;
+      padding: 2.25rem;
+      box-shadow: 0 28px 56px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Welcome Hero Card */
+    .hero-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 230, 246, 0.08);
+      border: 1px solid rgba(0, 230, 246, 0.2);
+      padding: 6px 12px;
+      border-radius: 100px;
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+      align-self: flex-start;
+    }
+
+    .hero-badge span {
+      width: 6px;
+      height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--cyan);
+      animation: pulse 1.5s infinite;
+    }
+
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .hero-desc {
+      color: var(--ink-dim);
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      max-width: 600px;
+    }
+
+    .resume-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 20px rgba(0, 230, 246, 0.3);
+      align-self: flex-start;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .resume-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 230, 246, 0.5);
+    }
+
+    .resume-cta svg {
+      transition: transform 0.3s;
+    }
+
+    .resume-cta:hover svg {
+      transform: translateX(4px);
+    }
+
+    /* Overall Completion Radial gauge */
+    .progress-radial-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .radial-container {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin-bottom: 1.5rem;
+    }
+
+    .radial-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .radial-bg {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.05);
+      stroke-width: 12;
+    }
+
+    .radial-fill {
+      fill: none;
+      stroke: url(#cyanPurpleGrad);
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-dasharray: 440;
+      stroke-dashoffset: 440;
+      transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+      filter: drop-shadow(0 0 6px rgba(0, 230, 246, 0.4));
+    }
+
+    .radial-text-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .radial-pct {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .radial-label {
+      font-size: 10px;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    .progress-stats-summary {
+      font-size: 13px;
+      color: var(--ink-dim);
+    }
+
+    .progress-stats-summary strong {
+      color: var(--cyan);
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .metric-card {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.5rem;
+      background: rgba(19, 24, 37, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      transition: all 0.3s;
+    }
+
+    .metric-card:hover {
+      background: rgba(19, 24, 37, 0.5);
+      border-color: rgba(0, 230, 246, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .metric-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .metric-card--streak .metric-icon-box {
+      background: rgba(245, 166, 35, 0.08);
+      border-color: rgba(245, 166, 35, 0.2);
+      box-shadow: 0 0 10px rgba(245, 166, 35, 0.05);
+    }
+
+    .metric-card--solved .metric-icon-box {
+      background: rgba(0, 230, 246, 0.08);
+      border-color: rgba(0, 230, 246, 0.2);
+      box-shadow: 0 0 10px rgba(0, 230, 246, 0.05);
+    }
+
+    .metric-card--time .metric-icon-box {
+      background: rgba(138, 43, 226, 0.08);
+      border-color: rgba(138, 43, 226, 0.2);
+      box-shadow: 0 0 10px rgba(138, 43, 226, 0.05);
+    }
+
+    .metric-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--ink-dim);
+      margin-top: 2px;
+    }
+
+    /* Personalized dashboard header style */
+    .dashboard-header {
+      margin-bottom: 2.25rem;
+      text-align: left;
+    }
+
+    .dashboard-greeting {
+      font-family: 'Outfit', sans-serif;
+      font-size: 36px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .dashboard-subtitle {
+      color: var(--ink-dim);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    /* Dynamic Curriculum Completion & Progress Badges */
+    .completed-badge {
+      background: rgba(16, 185, 129, 0.15) !important;
+      color: var(--emerald) !important;
+      border: 1px solid rgba(16, 185, 129, 0.3) !important;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+    }
+
+    .in-progress-badge {
+      background: rgba(168, 85, 247, 0.15) !important;
+      color: var(--purple) !important;
+      border: 1px solid rgba(168, 85, 247, 0.3) !important;
+      box-shadow: 0 2px 8px rgba(168, 85, 247, 0.15);
+    }
+
+    /* Active Recommendation Glowing Outline & Badge */
+    .day-card.active-day {
+      border-color: var(--cyan) !important;
+      box-shadow: 0 0 25px rgba(0, 230, 246, 0.35), 0 15px 35px rgba(0, 0, 0, 0.45) !important;
+      background: var(--elevated) !important;
+      transform: translateY(-4px) scale(1.02) !important;
+    }
+
+    .day-card.active-day::after {
+      content: 'NEXT';
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Outfit', sans-serif;
+      font-size: 8px;
+      font-weight: 900;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      background: rgba(0, 230, 246, 0.15);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 230, 246, 0.3);
+      box-shadow: 0 0 10px rgba(0, 230, 246, 0.2);
+    }
+
+    /* Responsive Curriculum Grid Overrides for Dashboard Layout */
+    .curriculum-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+      gap: 12px !important;
+    }
+
+    /* Responsive roadmap integrated progress gauge */
+    @media (max-width: 640px) {
+      .roadmap-header-card {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1.5rem !important;
+        padding: 1.5rem !important;
+      }
+      .roadmap-header-card .resume-cta {
+        width: 100% !important;
+        justify-content: center !important;
+      }
+    }
+
+    /* Animation frames */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+
+    /* Footer styling */
+    .footer {
+      margin-top: auto;
+      padding: 2.5rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      text-align: center;
+      background: rgba(11, 15, 25, 0.5);
+    }
+
+    .footer-text {
+      color: var(--ink-dim);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    /* Sleek Nav Stats Widgets */
+    .nav-stats {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 12px;
+      background: rgba(19, 24, 37, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #fff;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .nav-stat-pill:hover {
+      background: rgba(19, 24, 37, 0.6);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-stat-pill--streak {
+      border-color: rgba(245, 166, 35, 0.2);
+    }
+    .nav-stat-pill--streak:hover {
+      border-color: rgba(245, 166, 35, 0.4);
+      box-shadow: 0 0 15px rgba(245, 166, 35, 0.15);
+    }
+
+    .nav-stat-pill--solved {
+      border-color: rgba(0, 230, 246, 0.2);
+    }
+    .nav-stat-pill--solved:hover {
+      border-color: rgba(0, 230, 246, 0.4);
+      box-shadow: 0 0 15px rgba(0, 230, 246, 0.15);
+    }
+
+    .nav-stat-pill--time {
+      border-color: rgba(138, 43, 226, 0.2);
+    }
+    .nav-stat-pill--time:hover {
+      border-color: rgba(138, 43, 226, 0.4);
+      box-shadow: 0 0 15px rgba(138, 43, 226, 0.15);
+    }
+
+    .nav-stat-icon {
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: gentle-float 3s ease-in-out infinite;
+    }
+
+    .nav-stat-pill--streak .nav-stat-icon {
+      animation-delay: 0s;
+    }
+    .nav-stat-pill--solved .nav-stat-icon {
+      animation-delay: 0.5s;
+    }
+    .nav-stat-pill--time .nav-stat-icon {
+      animation-delay: 1s;
+    }
+
+    .nav-stat-value {
+      font-weight: 700;
+    }
+
+    .nav-stat-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-left: 2px;
+    }
+
+    @keyframes gentle-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+
+    /* Hide stats pill on small devices */
+    @media (max-width: 820px) {
+      .nav-stats {
+        display: none;
+      }
+    }
+
+    /* ═══════════ WORLD-CLASS DASHBOARD OVERHAUL STYLES ═══════════ */
+    .success-hub-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.25rem;
+      width: 100%;
+    }
+    @media (max-width: 992px) {
+      .success-hub-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+    }
+
+    .success-card {
+      background: rgba(11, 15, 26, 0.62);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-top-color: rgba(255, 255, 255, 0.16);
+      border-radius: 24px;
+      padding: 1.5rem 1.75rem;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.07), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 200px;
+      transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+    }
+    .success-card:hover {
+      border-color: rgba(255, 255, 255, 0.13);
+      box-shadow: 0 24px 52px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .success-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      width: 100%;
+    }
+    .success-card-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 9.5px;
+      color: rgba(148, 163, 184, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .rank-badge {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #fff;
+      text-transform: uppercase;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .rank-badge--cadet { border-color: rgba(148, 163, 184, 0.4); color: #94A3B8; box-shadow: 0 0 10px rgba(148, 163, 184, 0.1); }
+    .rank-badge--scout { border-color: rgba(16, 185, 129, 0.4); color: var(--emerald); box-shadow: 0 0 10px rgba(16, 185, 129, 0.1); }
+    .rank-badge--lancer { border-color: rgba(168, 85, 247, 0.4); color: var(--purple); box-shadow: 0 0 10px rgba(168, 85, 247, 0.1); }
+    .rank-badge--alchemist { border-color: rgba(0, 230, 246, 0.4); color: var(--cyan); box-shadow: 0 0 10px rgba(0, 230, 246, 0.1); }
+    .rank-badge--guru { border-color: rgba(245, 166, 35, 0.4); color: #F5A623; box-shadow: 0 0 15px rgba(245, 166, 35, 0.25); animation: rainbow-glow 4s linear infinite; }
+
+    @keyframes rainbow-glow {
+      0% { border-color: rgba(0, 230, 246, 0.5); }
+      33% { border-color: rgba(138, 43, 226, 0.5); }
+      66% { border-color: rgba(245, 166, 35, 0.5); }
+      100% { border-color: rgba(0, 230, 246, 0.5); }
+    }
+
+    .xp-progress-container {
+      margin: 0.5rem 0 auto;
+      width: 100%;
+    }
+    .xp-text {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-dim);
+      margin-bottom: 6px;
+    }
+    .xp-text span:first-child {
+      font-family: 'Outfit', sans-serif;
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #fff;
+    }
+    .xp-bar-track {
+      width: 100%;
+      height: 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+    .xp-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      box-shadow: 0 0 12px rgba(0, 230, 246, 0.5), 0 0 24px rgba(0, 230, 246, 0.2);
+      width: 0%;
+      transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Card Level Glow Themes */
+    .xp-card--lvl1 {
+      background: radial-gradient(circle at top right, rgba(148, 163, 184, 0.08), transparent 60%), rgba(19, 24, 37, 0.5) !important;
+      border-color: rgba(148, 163, 184, 0.25) !important;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 0 20px rgba(148, 163, 184, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    }
+    .xp-card--lvl2 {
+      background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.08), transparent 60%), rgba(19, 24, 37, 0.5) !important;
+      border-color: rgba(16, 185, 129, 0.3) !important;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 0 20px rgba(16, 185, 129, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    }
+    .xp-card--lvl3 {
+      background: radial-gradient(circle at top right, rgba(168, 85, 247, 0.08), transparent 60%), rgba(19, 24, 37, 0.5) !important;
+      border-color: rgba(168, 85, 247, 0.3) !important;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 0 20px rgba(168, 85, 247, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    }
+    .xp-card--lvl4 {
+      background: radial-gradient(circle at top right, rgba(0, 230, 246, 0.08), transparent 60%), rgba(19, 24, 37, 0.5) !important;
+      border-color: rgba(0, 230, 246, 0.3) !important;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 0 25px rgba(0, 230, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    }
+    .xp-card--lvl5 {
+      background: radial-gradient(circle at top right, rgba(245, 166, 35, 0.1), transparent 60%), rgba(19, 24, 37, 0.5) !important;
+      border-color: rgba(245, 166, 35, 0.35) !important;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 0 30px rgba(245, 166, 35, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+      animation: card-rainbow-glow 6s linear infinite !important;
+    }
+
+    @keyframes card-rainbow-glow {
+      0% { border-color: rgba(0, 230, 246, 0.35); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 0 25px rgba(0, 230, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+      33% { border-color: rgba(168, 85, 247, 0.35); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 0 25px rgba(168, 85, 247, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+      66% { border-color: rgba(245, 166, 35, 0.35); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 0 30px rgba(245, 166, 35, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+      100% { border-color: rgba(0, 230, 246, 0.35); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 0 25px rgba(0, 230, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    }
+
+    /* Progress Bar Level Gradients */
+    .xp-card--lvl1 .xp-bar-fill {
+      background: linear-gradient(90deg, #64748b, #94a3b8) !important;
+      box-shadow: 0 0 8px rgba(148, 163, 184, 0.4) !important;
+    }
+    .xp-card--lvl2 .xp-bar-fill {
+      background: linear-gradient(90deg, #059669, #10b981) !important;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4) !important;
+    }
+    .xp-card--lvl3 .xp-bar-fill {
+      background: linear-gradient(90deg, #7c3aed, #a855f7) !important;
+      box-shadow: 0 0 8px rgba(168, 85, 247, 0.4) !important;
+    }
+    .xp-card--lvl4 .xp-bar-fill {
+      background: linear-gradient(90deg, #0891b2, #06b6d4) !important;
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.4) !important;
+    }
+    .xp-card--lvl5 .xp-bar-fill {
+      background: linear-gradient(90deg, #d97706, #f5a623) !important;
+      box-shadow: 0 0 12px rgba(245, 166, 35, 0.5) !important;
+    }
+
+    /* ═══ Coding Score Big Display ═══ */
+    .coding-score-display {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 0.25rem 0 0.15rem;
+    }
+    .coding-score-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 44px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      background: linear-gradient(135deg, #ffffff 0%, rgba(190, 215, 255, 0.78) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .coding-score-sublabel {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .coding-score-level {
+      font-family: 'Outfit', sans-serif;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .coding-score-progress-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      color: rgba(148, 163, 184, 0.65);
+    }
+
+    .rank-summary-stats {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .rank-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+    .rank-stat:not(:last-child) {
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .rank-stat-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .rank-stat-lbl {
+      font-size: 9px;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    /* Focus timer styling */
+    .focus-timer-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: 1.25rem;
+    }
+    .circular-timer-wrapper {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+    }
+    .timer-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    .timer-bg {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.04);
+      stroke-width: 6;
+    }
+    .timer-fill {
+      fill: none;
+      stroke: var(--cyan);
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 283;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 1s linear;
+      filter: drop-shadow(0 0 5px rgba(0, 230, 246, 0.4));
+    }
+    .timer-digits {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .timer-btn {
+      flex: 1;
+      padding: 11px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .timer-btn:hover {
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--purple) 100%);
+      border-color: transparent;
+      box-shadow: 0 4px 18px rgba(0, 230, 246, 0.35);
+      transform: translateY(-2px);
+    }
+    .timer-btn.active {
+      background: rgba(239, 68, 68, 0.15) !important;
+      border-color: rgba(239, 68, 68, 0.3) !important;
+      color: #FF5353 !important;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+    .focus-status-pill {
+      font-family: 'Outfit', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.08em;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--ink-dim);
+    }
+    .focus-status-pill.timer-active {
+      background: rgba(0, 230, 246, 0.12);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 230, 246, 0.25);
+      animation: pulse-timer-status 2s infinite;
+    }
+    @keyframes pulse-timer-status {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+
+    /* Achievements styling */
+    .achievements-badges-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 6px;
+      margin-top: 0.25rem;
+    }
+    .achievement-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .achievement-badge.locked {
+      filter: grayscale(1) opacity(0.25);
+    }
+    .achievement-badge:not(.locked) {
+      background: radial-gradient(circle, rgba(138, 43, 226, 0.22) 0%, rgba(8, 12, 22, 0.6) 100%);
+      border-color: rgba(138, 43, 226, 0.45);
+      box-shadow: 0 0 14px rgba(138, 43, 226, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+    .achievement-badge:not(.locked):hover {
+      transform: scale(1.28) rotate(8deg);
+      box-shadow: 0 0 25px rgba(0, 230, 246, 0.6), 0 0 12px rgba(138, 43, 226, 0.4), 0 8px 20px rgba(0,0,0,0.5);
+      border-color: var(--cyan);
+      background: radial-gradient(circle, rgba(0, 230, 246, 0.18) 0%, rgba(8, 12, 22, 0.65) 100%);
+    }
+    .badges-unlocked-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+
+    /* Quest card styling */
+    .quest-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 230, 246, 0.04);
+      border: 1px solid rgba(0, 230, 246, 0.12);
+      border-radius: 16px;
+      padding: 10px 18px;
+      box-shadow: 0 4px 15px rgba(0, 230, 246, 0.05);
+      max-width: 580px;
+      width: 100%;
+    }
+    .quest-icon {
+      font-size: 22px;
+      animation: gentle-quest-float 2.5s ease-in-out infinite;
+    }
+    @keyframes gentle-quest-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+    .quest-content {
+      display: flex;
+      flex-direction: column;
+    }
+    .quest-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 9px;
+      font-weight: 900;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .quest-text {
+      font-size: 13px;
+      color: #fff;
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    .header-main {
+      flex: 1;
+      min-width: 320px;
+    }
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 2.25rem;
+      width: 100%;
+    }
+    @media (max-width: 992px) {
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .quest-card {
+        max-width: 100%;
+      }
+    }
+
+    /* Heatmap styling */
+    .heatmap-card {
+      margin-bottom: 2rem;
+    }
+    .heatmap-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      width: 100%;
+    }
+    .heatmap-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 13.5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .heatmap-subtitle {
+      font-size: 11px;
+      color: var(--ink-dim);
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      margin-left: 4px;
+    }
+    .heatmap-legend {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .legend-box {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+    .legend-box--0 { background: rgba(255, 255, 255, 0.05); }
+    .legend-box--1 { background: rgba(16, 185, 129, 0.25); }
+    .legend-box--2 { background: rgba(168, 85, 247, 0.5); }
+    .legend-box--3 { background: rgba(0, 230, 246, 0.8); }
+
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      width: 100%;
+    }
+    .heatmap-cell {
+      aspect-ratio: 1.4;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.02);
+      position: relative;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .heatmap-cell:hover {
+      transform: scale(1.15);
+      z-index: 10;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    .heatmap-cell--0 { background: rgba(255, 255, 255, 0.03); }
+    .heatmap-cell--1 { background: rgba(16, 185, 129, 0.25); box-shadow: 0 0 5px rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.1); }
+    .heatmap-cell--2 { background: rgba(168, 85, 247, 0.5); box-shadow: 0 0 8px rgba(168, 85, 247, 0.3); border-color: rgba(168, 85, 247, 0.15); }
+    .heatmap-cell--3 { background: rgba(0, 230, 246, 0.8); box-shadow: 0 0 12px rgba(0, 230, 246, 0.5); border-color: rgba(0, 230, 246, 0.3); }
+
+    /* Left column header label */
+    .curriculum-section-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 14.5px;
+      color: #fff;
+      margin: 1.75rem 0 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 0.5rem;
+      width: 100%;
+    }
+
+    /* Filter Tabs Styling */
+    .filter-tabs-container {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      background: rgba(11, 15, 25, 0.6);
+      padding: 6px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      width: fit-content;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .filter-tab {
+      background: none;
+      border: none;
+      color: var(--ink-dim);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 8px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid transparent;
+    }
+    
+    .filter-tab:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.03);
+    }
+    
+    .filter-tab.active {
+      color: #fff;
+      background: linear-gradient(135deg, rgba(0, 230, 246, 0.15) 0%, rgba(138, 43, 226, 0.15) 100%);
+      border-color: rgba(0, 230, 246, 0.35);
+      box-shadow: 0 0 15px rgba(0, 230, 246, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+
+    /* Premium Glassmorphic Reflective Border Highlight */
+    .glass-card, .success-card, .quest-card {
+      position: relative;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .glass-card::before, .success-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.01) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .glass-card:hover, .success-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Shifting color outline for Daily Quest Widget */
+    .quest-card {
+      position: relative;
+      border: 1px solid transparent !important;
+      background: rgba(0, 230, 246, 0.03) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .quest-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(90deg, rgba(0, 230, 246, 0.4), rgba(138, 43, 226, 0.4), rgba(0, 230, 246, 0.4));
+      background-size: 200% auto;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 2;
+      animation: gradient-shift 4s linear infinite;
+    }
+
+    .quest-card:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 12px 28px rgba(0, 230, 246, 0.1), 0 8px 20px rgba(0, 0, 0, 0.3);
+      background: rgba(0, 230, 246, 0.05) !important;
+    }
+
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* Card Fade-in & Scale Animation for Filtering */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════ TOP NAV BAR ═══════════ -->
+  <header>
+    <nav class="nav" aria-label="Primary site navigation">
+      <div class="container">
+        <a href="#" class="nav-brand" aria-label="Manodemy Home">
+          <span class="nav-brand-name">Mano<span>demy</span></span>
+          <span class="nav-brand-sub">Hands-on EdTech</span>
+        </a>
+        
+        <div class="nav-stats">
+          <div class="nav-stat-pill nav-stat-pill--streak" title="Daily study streak">
+            <span class="nav-stat-icon">🔥</span>
+            <span class="nav-stat-value" id="navStreakVal">0 Days</span>
+            <span class="nav-stat-label">Streak</span>
+          </div>
+          <div class="nav-stat-pill nav-stat-pill--solved" title="Total solved challenges">
+            <span class="nav-stat-icon">🏆</span>
+            <span class="nav-stat-value" id="navSolvedVal">0 / 142</span>
+            <span class="nav-stat-label">Solved</span>
+          </div>
+          <div class="nav-stat-pill nav-stat-pill--time" title="Total spent coding">
+            <span class="nav-stat-icon">⏱️</span>
+            <span class="nav-stat-value" id="navTimeVal">0.0 Hrs</span>
+            <span class="nav-stat-label">Focus</span>
+          </div>
+        </div>
+
+        <div class="nav-right">
+          <!-- Profile Avatar with settings dropdown -->
+          <div class="avatar-wrapper" id="profileAvatar">
+            <div class="avatar-circle" id="avatarCircle">U</div>
+            <div class="avatar-dropdown" id="avatarDropdown">
+              <div class="dropdown-user-info">
+                <div class="dropdown-name" id="profileName">Loading...</div>
+                <div class="dropdown-email" id="profileEmail">loading@manodemy.com</div>
+              </div>
+              <hr class="dropdown-divider">
+              <a href="#" class="dropdown-item active">Dashboard</a>
+              <a href="day01.html" id="dropdownResumeLink" class="dropdown-item">Resume Learning</a>
+              <a href="admin.html" class="dropdown-item" id="adminLink" style="display: none;">⚙️ Admin Panel</a>
+              <hr class="dropdown-divider">
+              <button class="dropdown-logout-btn" id="logoutBtn">Log Out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ═══════════ MAIN CONTENT ═══════════ -->
+  <main class="dashboard-container">
+    
+    <!-- 2-Column Dashboard Layout -->
+    <div class="dashboard-grid">
+      
+      <!-- Left Column: Curriculum Grid (Top Left) -->
+      <div class="dashboard-left-col">
+        
+        <!-- Roadmap Main Header with Integrated Resized Progress Gauge -->
+        <div class="glass-card roadmap-header-card" style="display: flex; align-items: center; gap: 1.75rem; margin-bottom: 2rem; padding: 1.5rem 1.75rem;">
+          
+          <!-- Resized Progress Radial Gauge -->
+          <div class="radial-container" style="width: 90px; height: 90px; margin-bottom: 0; flex-shrink: 0; position: relative;">
+            <svg class="radial-svg" viewBox="0 0 160 160" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+              <defs>
+                <linearGradient id="cyanPurpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00E6F6" />
+                  <stop offset="100%" stop-color="#8A2BE2" />
+                </linearGradient>
+              </defs>
+              <circle class="radial-bg" cx="80" cy="80" r="70" style="fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 14;" />
+              <circle class="radial-fill" id="radialProgressFill" cx="80" cy="80" r="70" style="fill: none; stroke: url(#cyanPurpleGrad); stroke-width: 14; stroke-linecap: round; stroke-dasharray: 440; stroke-dashoffset: 440; transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1); filter: drop-shadow(0 0 6px rgba(0, 230, 246, 0.4));" />
+            </svg>
+            <div class="radial-text-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center;">
+              <div class="radial-pct" id="radialProgressPct" style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: #fff; line-height: 1;">0%</div>
+              <div class="radial-label" style="font-size: 8px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;">complete</div>
+            </div>
+          </div>
+
+          <!-- Header Text and CTA Area -->
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.25rem;">
+              <div style="flex: 1; min-width: 250px;">
+                <h2 class="dashboard-greeting" style="font-size: 26px; margin: 0; letter-spacing: -0.015em; font-family: 'Outfit', sans-serif; font-weight: 800; color: #fff; line-height: 1.2;">30-Day Masterclass Roadmap</h2>
+                <p class="dashboard-subtitle" style="font-size: 14px; margin: 6px 0 0; color: var(--ink-dim); line-height: 1.5;">Zero passive videos, pure muscle memory. Click a day card to resume training.</p>
+              </div>
+              
+              <!-- Resume learning primary action -->
+              <a href="#" id="resumeLearningBtn" class="resume-cta" style="padding: 10px 22px; font-size: 13.5px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; height: fit-content; margin-top: 2px;">
+                Resume Learning
+              </a>
+            </div>
+
+            <!-- Stats Subbar & Dynamic Progress Bar -->
+            <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.6rem; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <span class="progress-stats-summary" id="progressSummary" style="font-size: 12.5px; color: var(--ink-dim);">
+                  Solved <strong>0</strong> of <strong>142</strong> challenges
+                </span>
+                <span id="completionMotivationText" style="font-size: 11.5px; font-weight: 700; color: var(--cyan); font-family: 'Outfit', sans-serif; letter-spacing: 0.02em;">Start your journey!</span>
+              </div>
+              <div style="width: 100%; height: 5px; background: rgba(255,255,255,0.04); border-radius: 100px; overflow: hidden;">
+                <div id="headerMiniProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--purple)); transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 8px rgba(0, 230, 246, 0.3);"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        
+        <!-- Category Filter Tabs -->
+        <div class="filter-tabs-container">
+          <button class="filter-tab active" data-filter="all">All Modules</button>
+          <button class="filter-tab" data-filter="basics">Basics</button>
+          <button class="filter-tab" data-filter="structures">Structures</button>
+          <button class="filter-tab" data-filter="analysis">Analysis</button>
+          <button class="filter-tab" data-filter="advanced">Advanced</button>
+        </div>
+
+        <!-- 30-Day Grid curriculum -->
+        <div class="curriculum-grid" id="curriculumGrid">
+          <!-- Rendered dynamically by javascript -->
+        </div>
+      </div>
+
+      <!-- Right Column: Motivation Sidebar containing ALL other content stacked vertically -->
+      <div class="dashboard-right-col">
+        
+        <!-- Personalized Welcome Box & Daily Quest Card -->
+        <div class="glass-card" style="padding: 1.5rem 1.75rem; display: flex; flex-direction: column; gap: 1.25rem;">
+          <div>
+            <h2 class="dashboard-greeting" id="welcomeGreeting" style="font-size: 24px; margin-bottom: 0.35rem; line-height: 1.2; font-family: 'Outfit', sans-serif; font-weight: 900; color: #fff;">Welcome back!</h2>
+            <p class="dashboard-subtitle" id="welcomeSubtitle" style="font-size: 14px; margin: 0; color: var(--ink-dim);">Start your Python journey today — every line of code matters!</p>
+          </div>
+          
+          <!-- Quest Card -->
+          <div class="quest-card" id="questCard" style="max-width: 100%;">
+            <span class="quest-icon" id="questIcon">🎯</span>
+            <div class="quest-content">
+              <span class="quest-tag">Daily Quest</span>
+              <span class="quest-text" id="questText">Loading today's coding mission...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coding Score Card -->
+        <div class="success-card" id="xpCard" style="min-height: auto; gap: 0.75rem;">
+          <div class="success-card-header" style="margin-bottom: 0;">
+            <span class="success-card-title">Coding Score</span>
+            <span class="rank-badge rank-badge--cadet" id="rankBadge">Code Cadet</span>
+          </div>
+          <!-- Big Score Number Display -->
+          <div class="coding-score-display">
+            <div class="coding-score-number" id="codingScoreNumber">0</div>
+            <div class="coding-score-sublabel">
+              <span class="coding-score-level" id="rankLevelText">Level 1 (Novice) 🌱</span>
+              <span class="coding-score-progress-text" id="xpNumberText">0 / 1,500 XP</span>
+            </div>
+          </div>
+          <div class="xp-progress-container" style="margin: 0;">
+            <div class="xp-bar-track">
+              <div class="xp-bar-fill" id="xpBarFill"></div>
+            </div>
+          </div>
+          <div class="rank-summary-stats" style="margin-top: 0; padding-top: 0.75rem;">
+            <div class="rank-stat">
+              <span class="rank-stat-val" id="rankStreakValCard">0</span>
+              <span class="rank-stat-lbl">🔥 Streak</span>
+            </div>
+            <div class="rank-stat">
+              <span class="rank-stat-val" id="rankSolvedValCard">0</span>
+              <span class="rank-stat-lbl">✅ Solved</span>
+            </div>
+            <div class="rank-stat">
+              <span class="rank-stat-val" id="rankFocusValCard">0.0h</span>
+              <span class="rank-stat-lbl">⏱ Focus</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zen Focus Pomodoro Sprint Card -->
+        <div class="success-card" style="min-height: auto; gap: 1rem;">
+          <div class="success-card-header" style="margin-bottom: 0;">
+            <span class="success-card-title">Zen Focus Pomodoro</span>
+            <span class="focus-status-pill" id="focusStatusPill">IDLE</span>
+          </div>
+          <div class="focus-timer-container">
+            <div class="circular-timer-wrapper">
+              <svg class="timer-svg" viewBox="0 0 100 100">
+                <circle class="timer-bg" cx="50" cy="50" r="45" />
+                <circle class="timer-fill" id="timerCircleFill" cx="50" cy="50" r="45" />
+              </svg>
+              <div class="timer-digits" id="timerDisplay" style="cursor: pointer;" title="Double-click to fast forward sprint for testing">25:00</div>
+            </div>
+            <button class="timer-btn" id="pomodoroBtn">Start Sprint</button>
+          </div>
+          <div class="xp-text" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.75rem; margin: 0;">
+            <span>🎯 Rewards:</span>
+            <span>+100 XP &bull; 0.4h Focus</span>
+          </div>
+        </div>
+
+        <!-- Collectible Achievements & Trophies Card -->
+        <div class="success-card" style="min-height: auto; gap: 1rem;">
+          <div class="success-card-header" style="margin-bottom: 0;">
+            <span class="success-card-title">Achievements</span>
+            <span class="badges-unlocked-count" id="unlockedBadgesCount">0 / 5</span>
+          </div>
+          <div class="achievements-badges-grid">
+            <div class="achievement-badge locked" id="badge-initiated" title="Initiated: Solved your very first Python challenge! (🚀)">🚀</div>
+            <div class="achievement-badge locked" id="badge-consistent" title="Consistent Coder: Achieved a 3+ day active streak! (🔥)">🔥</div>
+            <div class="achievement-badge locked" id="badge-numpy" title="NumPy Ninja: Started learning numerical arrays and matrices! (🧮)">🧮</div>
+            <div class="achievement-badge locked" id="badge-datacleaner" title="Data Alchemist: Successfully cleaned messy raw datasets! (🧹)">🧹</div>
+            <div class="achievement-badge locked" id="badge-graduate" title="Mastery Graduate: Completed the Day 30 Capstone Funnel! (🎓)">🎓</div>
+          </div>
+          <div class="xp-text" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.75rem; margin: 0;">
+            <span>Status:</span>
+            <span id="badgeStatusText" style="color: var(--ink-dim); text-align: right; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Hover icons to view details</span>
+          </div>
+        </div>
+
+        <!-- Sleek Contribution Calendar Heatmap -->
+        <div class="glass-card heatmap-card">
+          <div class="heatmap-header">
+            <div class="heatmap-title">
+              Contribution Calendar
+              <span class="heatmap-subtitle">Consistency Logs</span>
+            </div>
+            <div class="heatmap-legend">
+              <span>Less</span>
+              <div class="legend-box legend-box--0"></div>
+              <div class="legend-box legend-box--1"></div>
+              <div class="legend-box legend-box--2"></div>
+              <div class="legend-box legend-box--3"></div>
+              <span>More</span>
+            </div>
+          </div>
+          <div class="heatmap-grid" id="heatmapGrid">
+            <!-- 28 Cells dynamically rendered -->
+          </div>
+        </div>
+
+
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-text">&copy; 2026 Manodemy. Handcrafted dark mode education environment. Stop passive watching, start actual coding.</p>
+    </div>
+  </footer>
+
+  <!-- ═══════════ DASHBOARD CONTROLLER JS ═══════════ -->
+  <script>
+    const DAY_METADATA = [
+      { day: "01", title: "Data Types and Memory", emoji: "🔢", totalCells: 4, category: "basics" },
+      { day: "02", title: "Operators and Control Flow", emoji: "➕", totalCells: 4, category: "basics" },
+      { day: "03", title: "Strings Manipulation", emoji: "📝", totalCells: 5, category: "structures" },
+      { day: "04", title: "Lists & Tuples Essentials", emoji: "📋", totalCells: 5, category: "structures" },
+      { day: "05", title: "Dictionaries & Sets Deep Dive", emoji: "📦", totalCells: 4, category: "structures" },
+      { day: "06", title: "Tuples & Immutability", emoji: "🔐", totalCells: 4, category: "structures" },
+      { day: "07", title: "Sets & Unique Collections", emoji: "🧩", totalCells: 5, category: "structures" },
+      { day: "08", title: "Conditionals & Boolean Logic", emoji: "🛑", totalCells: 5, category: "basics" },
+      { day: "09", title: "Loops & Iteration Control", emoji: "🔄", totalCells: 5, category: "basics" },
+      { day: "10", title: "Functions & Scope", emoji: "📦", totalCells: 5, category: "basics" },
+      { day: "11", title: "Modules & Libraries", emoji: "🛠️", totalCells: 4, category: "basics" },
+      { day: "12", title: "List & Dict Comprehensions", emoji: "⚡", totalCells: 4, category: "structures" },
+      { day: "13", title: "Lambda & Anonymous Functions", emoji: "λ", totalCells: 4, category: "basics" },
+      { day: "14", title: "Exception Handling & Debugging", emoji: "⚠️", totalCells: 4, category: "basics" },
+      { day: "15", title: "File Input & Output", emoji: "💾", totalCells: 5, category: "basics" },
+      { day: "16", title: "OOP: Classes & Objects", emoji: "🏗️", totalCells: 5, category: "basics" },
+      { day: "17", title: "OOP: Advanced Concepts", emoji: "🧬", totalCells: 5, category: "basics" },
+      { day: "18", title: "Regular Expressions (Regex)", emoji: "🔍", totalCells: 4, category: "structures" },
+      { day: "19", title: "Generators & Yield", emoji: "⚙️", totalCells: 4, category: "structures" },
+      { day: "20", title: "SQL Integration & Queries", emoji: "🏢", totalCells: 6, category: "advanced" },
+      { day: "21", title: "NumPy Arrays & Matrices", emoji: "🧮", totalCells: 5, category: "analysis" },
+      { day: "22", title: "Advanced NumPy Math", emoji: "📈", totalCells: 5, category: "analysis" },
+      { day: "23", title: "Pandas Series & DataFrames", emoji: "📊", totalCells: 5, category: "analysis" },
+      { day: "24", title: "Data Selection & Filtering", emoji: "🧹", totalCells: 5, category: "analysis" },
+      { day: "25", title: "Cleaning Messy Data", emoji: "🧼", totalCells: 5, category: "analysis" },
+      { day: "26", title: "Aggregating & Grouping", emoji: "🔄", totalCells: 5, category: "analysis" },
+      { day: "27", title: "Merging & Joining Datasets", emoji: "🔗", totalCells: 5, category: "analysis" },
+      { day: "28", title: "Pandas Series Operations", emoji: "📈", totalCells: 5, category: "analysis" },
+      { day: "29", title: "Data Visualization with Seaborn", emoji: "📉", totalCells: 5, category: "analysis" },
+      { day: "30", title: "Capstone: E-Commerce Funnel Analysis", emoji: "🎓", totalCells: 6, category: "advanced" }
+    ];
+
+    const TOTAL_CHALLENGES = DAY_METADATA.reduce((sum, item) => sum + item.totalCells, 0);
+
+
+
+    // Sound effect generator using Web Audio API
+    function playSuccessSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        const now = ctx.currentTime;
+        osc.type = 'sine';
+        
+        osc.frequency.setValueAtTime(523.25, now); // C5
+        osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+        osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+        osc.frequency.setValueAtTime(1046.50, now + 0.24); // C6
+        
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.55);
+        
+        osc.start(now);
+        osc.stop(now + 0.55);
+      } catch (e) {
+        console.log("AudioContext blocked or unsupported", e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Setup Supabase
+      const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
+      const SUPA_KEY = 'sb_publishable_ZWfeHvv41ErWTcx2BtfdIQ_jw1EO4_0';
+      const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+
+      // Load session details
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) return;
+
+      const user = session.user;
+      const profileName = user.user_metadata?.full_name || user.email.split('@')[0];
+      const firstName = profileName.split(' ')[0];
+
+      // Update Navigation User UI
+      document.getElementById('profileName').textContent = profileName;
+      document.getElementById('profileEmail').textContent = user.email;
+      
+      const avatarText = profileName.charAt(0).toUpperCase();
+      document.getElementById('avatarCircle').textContent = avatarText;
+
+      // Tailor Greeting
+      const hrs = new Date().getHours();
+      let greetWord = "Welcome back";
+      if (hrs < 12) greetWord = "Good morning";
+      else if (hrs < 18) greetWord = "Good afternoon";
+      else greetWord = "Good evening";
+      document.getElementById('welcomeGreeting').textContent = `${greetWord}, ${firstName}! 🚀`;
+
+      // Profile Dropdown Toggle Logic
+      const avatarWrapper = document.getElementById('profileAvatar');
+      avatarWrapper.addEventListener('click', (e) => {
+        e.stopPropagation();
+        avatarWrapper.classList.toggle('active');
+      });
+      document.addEventListener('click', () => {
+        avatarWrapper.classList.remove('active');
+      });
+
+      // Admin access toggle
+      try {
+        const { data: profile } = await sb.from('profiles').select('role').eq('id', user.id).single();
+        if (profile?.role === 'admin') {
+          document.getElementById('adminLink').style.display = 'block';
+        }
+      } catch(err) {
+        console.warn("Failed checking admin privileges", err);
+      }
+
+      // Logout handler
+      document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+        e.preventDefault();
+        await sb.auth.signOut();
+        localStorage.removeItem('manodemy_auth');
+        localStorage.removeItem('manodemy_enrolled');
+        window.location.replace("landing_v2/index.html");
+      });
+
+      // Calculate XP from stats
+      const calculateXP = (solved, timeSeconds, streak) => {
+        let solvedXP = solved * 100;
+        let focusHours = timeSeconds / 3600;
+        let focusXP = Math.round(focusHours * 200);
+        let streakXP = streak * 150;
+        
+        let milestoneXP = 0;
+        
+        // Milestone checkpoints
+        const d10Solved = parseInt(localStorage.getItem('manodemy_day10_solved_count') || '0', 10);
+        if (d10Solved >= 5) milestoneXP += 1000;
+        
+        const d20Solved = parseInt(localStorage.getItem('manodemy_day20_solved_count') || '0', 10);
+        if (d20Solved >= 6) milestoneXP += 2000;
+        
+        const d30Solved = parseInt(localStorage.getItem('manodemy_day30_solved_count') || '0', 10);
+        if (d30Solved >= 6) milestoneXP += 5000;
+        
+        return solvedXP + focusXP + streakXP + milestoneXP;
+      };
+
+      const syncXPWithSupabase = async (xp, rank) => {
+        try {
+          const { error } = await sb.auth.updateUser({
+            data: { xp: xp, rank: rank }
+          });
+          if (error) console.warn("Supabase user meta sync issue:", error.message);
+        } catch (e) {
+          console.warn("Supabase offline or update issue:", e);
+        }
+      };
+
+      const updateXPAndRank = (xp) => {
+        let rankName = "Code Cadet";
+        let rankClass = "rank-badge--cadet";
+        let levelText = "Level 1 (Novice) 🌱";
+        let currentLvl = 1;
+        let progressPct = 0;
+        let nextRankXPText = "";
+        
+        if (xp < 1500) {
+          rankName = "Code Cadet";
+          rankClass = "rank-badge--cadet";
+          levelText = "Level 1 (Novice) 🌱";
+          currentLvl = 1;
+          progressPct = Math.min(Math.floor((xp / 1500) * 100), 100);
+          nextRankXPText = `${xp.toLocaleString()} / 1,500 XP`;
+        } else if (xp < 5000) {
+          rankName = "Syntax Scout";
+          rankClass = "rank-badge--scout";
+          levelText = "Level 2 (Scout) 🌿";
+          currentLvl = 2;
+          progressPct = Math.min(Math.floor(((xp - 1500) / 3500) * 100), 100);
+          nextRankXPText = `${xp.toLocaleString()} / 5,000 XP`;
+        } else if (xp < 10000) {
+          rankName = "Logic Lancer";
+          rankClass = "rank-badge--lancer";
+          levelText = "Level 3 (Lancer) ⚔️";
+          currentLvl = 3;
+          progressPct = Math.min(Math.floor(((xp - 5000) / 5000) * 100), 100);
+          nextRankXPText = `${xp.toLocaleString()} / 10,000 XP`;
+        } else if (xp < 20000) {
+          rankName = "Data Alchemist";
+          rankClass = "rank-badge--alchemist";
+          levelText = "Level 4 (Alchemist) 🔮";
+          currentLvl = 4;
+          progressPct = Math.min(Math.floor(((xp - 10000) / 10000) * 100), 100);
+          nextRankXPText = `${xp.toLocaleString()} / 20,000 XP`;
+        } else {
+          rankName = "Antigravity Guru";
+          rankClass = "rank-badge--guru";
+          levelText = "Level 5 (Guru) 👑";
+          currentLvl = 5;
+          progressPct = 100;
+          nextRankXPText = `${xp.toLocaleString()} XP (Max Level)`;
+        }
+        
+        const badge = document.getElementById('rankBadge');
+        if (badge) {
+          badge.textContent = rankName;
+          badge.className = `rank-badge ${rankClass}`;
+        }
+        
+        const levelEl = document.getElementById('rankLevelText');
+        if (levelEl) levelEl.textContent = levelText;
+        
+        const numText = document.getElementById('xpNumberText');
+        if (numText) numText.textContent = nextRankXPText;
+        
+        const barFill = document.getElementById('xpBarFill');
+        if (barFill) barFill.style.width = `${progressPct}%`;
+
+        // Update the big Coding Score number
+        const scoreNum = document.getElementById('codingScoreNumber');
+        if (scoreNum) scoreNum.textContent = xp.toLocaleString();
+
+        // Update the card level glow class dynamically
+        const xpCard = document.getElementById('xpCard');
+        if (xpCard) {
+          xpCard.classList.remove('xp-card--lvl1', 'xp-card--lvl2', 'xp-card--lvl3', 'xp-card--lvl4', 'xp-card--lvl5');
+          xpCard.classList.add(`xp-card--lvl${currentLvl}`);
+        }
+
+        syncXPWithSupabase(xp, rankName);
+      };
+
+      const updateAchievements = (solved, streak) => {
+        let unlockedCount = 0;
+        
+        // 1. Initiated
+        const initiatedBadge = document.getElementById('badge-initiated');
+        if (solved >= 1) {
+          initiatedBadge.classList.remove('locked');
+          unlockedCount++;
+        } else {
+          initiatedBadge.classList.add('locked');
+        }
+        
+        // 2. Consistent Coder
+        const consistentBadge = document.getElementById('badge-consistent');
+        if (streak >= 3) {
+          consistentBadge.classList.remove('locked');
+          unlockedCount++;
+        } else {
+          consistentBadge.classList.add('locked');
+        }
+        
+        // 3. NumPy Ninja (Day 21 started)
+        const numpyBadge = document.getElementById('badge-numpy');
+        const d21Solved = parseInt(localStorage.getItem('manodemy_day21_solved_count') || '0', 10);
+        if (d21Solved > 0) {
+          numpyBadge.classList.remove('locked');
+          unlockedCount++;
+        } else {
+          numpyBadge.classList.add('locked');
+        }
+        
+        // 4. Data Cleaner (Day 25 solved count > 0)
+        const cleanBadge = document.getElementById('badge-datacleaner');
+        const d25Solved = parseInt(localStorage.getItem('manodemy_day25_solved_count') || '0', 10);
+        if (d25Solved > 0) {
+          cleanBadge.classList.remove('locked');
+          unlockedCount++;
+        } else {
+          cleanBadge.classList.add('locked');
+        }
+        
+        // 5. Mastery Graduate (Day 30 completed)
+        const gradBadge = document.getElementById('badge-graduate');
+        const d30Solved = parseInt(localStorage.getItem('manodemy_day30_solved_count') || '0', 10);
+        if (d30Solved >= 6) {
+          gradBadge.classList.remove('locked');
+          unlockedCount++;
+        } else {
+          gradBadge.classList.add('locked');
+        }
+        
+        document.getElementById('unlockedBadgesCount').textContent = `${unlockedCount} / 5`;
+      };
+
+      // Recalculator Core
+      const recalculateStatsAndReload = () => {
+        let totalSolvedCount = 0;
+        let totalTimeSpentSeconds = 0;
+        
+        DAY_METADATA.forEach(d => {
+          const solved = parseInt(localStorage.getItem(`manodemy_day${d.day}_solved_count`) || '0', 10);
+          const time = parseInt(localStorage.getItem(`manodemy_day${d.day}_time_spent`) || '0', 10);
+          
+          totalSolvedCount += solved;
+          totalTimeSpentSeconds += time;
+        });
+        
+        // Recalculate streak
+        let simulatedStreak = 0;
+        let activeDates = JSON.parse(localStorage.getItem('manodemy_active_dates') || '[]');
+        if (activeDates.length > 0) {
+          const uniqueDates = [...new Set(activeDates)].sort((a, b) => new Date(b) - new Date(a));
+          const formatLocal = (d) => d.toISOString().split('T')[0];
+          const today = new Date();
+          const yesterday = new Date();
+          yesterday.setDate(yesterday.getDate() - 1);
+
+          const lastActiveDateStr = uniqueDates[0];
+          const isRecentlyActive = lastActiveDateStr === formatLocal(today) || lastActiveDateStr === formatLocal(yesterday);
+          
+          if (isRecentlyActive) {
+            simulatedStreak = 1;
+            let currentCheckingDate = new Date(lastActiveDateStr);
+            
+            for (let i = 1; i < uniqueDates.length; i++) {
+              const nextDateExpected = new Date(currentCheckingDate);
+              nextDateExpected.setDate(nextDateExpected.getDate() - 1);
+              
+              if (uniqueDates[i] === formatLocal(nextDateExpected)) {
+                simulatedStreak++;
+                currentCheckingDate = nextDateExpected;
+              } else {
+                break;
+              }
+            }
+          }
+        }
+        
+        const streakStr = `${simulatedStreak} Day${simulatedStreak === 1 ? '' : 's'}`;
+        document.getElementById('navStreakVal').textContent = streakStr;
+        
+        const solvedStr = `${totalSolvedCount} / ${TOTAL_CHALLENGES}`;
+        document.getElementById('navSolvedVal').textContent = solvedStr;
+        
+        const hoursSpent = (totalTimeSpentSeconds / 3600).toFixed(1);
+        const hoursStr = `${hoursSpent} Hr${hoursSpent === "1.0" ? '' : 's'}`;
+        document.getElementById('navTimeVal').textContent = hoursStr;
+
+        // Card statistics updates
+        document.getElementById('rankStreakValCard').textContent = simulatedStreak;
+        document.getElementById('rankSolvedValCard').textContent = totalSolvedCount;
+        document.getElementById('rankFocusValCard').textContent = `${hoursSpent}h`;
+
+        const solvedPercentage = Math.round((totalSolvedCount / TOTAL_CHALLENGES) * 100) || 0;
+        document.getElementById('radialProgressPct').textContent = `${solvedPercentage}%`;
+        document.getElementById('progressSummary').innerHTML = `Solved <strong>${totalSolvedCount}</strong> of <strong>${TOTAL_CHALLENGES}</strong> challenges`;
+
+        // Update premium visual progress tracking elements
+        const miniProgressBar = document.getElementById('headerMiniProgressBar');
+        if (miniProgressBar) {
+          miniProgressBar.style.width = `${solvedPercentage}%`;
+        }
+        
+        const motivationLabel = document.getElementById('completionMotivationText');
+        if (motivationLabel) {
+          let text = "Start your coding journey! 🚀";
+          if (solvedPercentage === 100) {
+            text = "Python Alchemist Certified! 🏆";
+          } else if (solvedPercentage >= 80) {
+            text = "Almost a Python Master! Finish strong! 🎓";
+          } else if (solvedPercentage >= 50) {
+            text = "Incredible progress, you are mastering Python! ⚡";
+          } else if (solvedPercentage >= 20) {
+            text = "Approaching the half-way milestone! 🔥";
+          } else if (solvedPercentage > 0) {
+            text = "Off to a strong start! Keep going! 🚀";
+          }
+          motivationLabel.textContent = text;
+        }
+
+        const offset = 440 - (440 * (Math.min(solvedPercentage, 100) / 100));
+        document.getElementById('radialProgressFill').style.strokeDashoffset = offset;
+        
+        // Calculate XP
+        const bonusXP = parseInt(localStorage.getItem('manodemy_bonus_xp') || '0', 10);
+        const xp = calculateXP(totalSolvedCount, totalTimeSpentSeconds, simulatedStreak) + bonusXP;
+        updateXPAndRank(xp);
+        
+        // Update achievements
+        updateAchievements(totalSolvedCount, simulatedStreak);
+
+        // Dynamic welcome subtitle based on real progress
+        const welcomeSub = document.getElementById('welcomeSubtitle');
+        if (welcomeSub) {
+          let sub;
+          if (totalSolvedCount >= 120) sub = "You're in elite territory! Python mastery is within reach! 🏆";
+          else if (totalSolvedCount >= 80) sub = "Incredible progress — you're clearly built for this! 🔥";
+          else if (totalSolvedCount >= 50) sub = "Half the course done! Your skills are growing exponentially! ⚡";
+          else if (totalSolvedCount >= 20) sub = "Solid momentum! Each challenge makes you sharper! 🚀";
+          else if (totalSolvedCount >= 5) sub = "Great start! Consistency is your superpower — keep going! 💪";
+          else if (totalSolvedCount >= 1) sub = "You've begun the journey — the hardest step is taken! ✨";
+          else sub = "Start your Python journey today — every line of code matters! 🌟";
+          welcomeSub.textContent = sub;
+        }
+      };
+
+      // Seed study stats if user has study data but no active dates tracker
+      let activeDates = JSON.parse(localStorage.getItem('manodemy_active_dates') || '[]');
+      const todayStr = new Date().toISOString().split('T')[0];
+      
+      let totalSolvedCount = 0;
+      let totalTimeSpentSeconds = 0;
+      DAY_METADATA.forEach(d => {
+        const solved = parseInt(localStorage.getItem(`manodemy_day${d.day}_solved_count`) || '0', 10);
+        const time = parseInt(localStorage.getItem(`manodemy_day${d.day}_time_spent`) || '0', 10);
+        totalSolvedCount += solved;
+        totalTimeSpentSeconds += time;
+      });
+
+      if (totalTimeSpentSeconds > 10 && !activeDates.includes(todayStr)) {
+        activeDates.push(todayStr);
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toISOString().split('T')[0];
+        
+        if (totalSolvedCount > 3 && !activeDates.includes(yesterdayStr)) {
+          activeDates.push(yesterdayStr);
+        }
+        localStorage.setItem('manodemy_active_dates', JSON.stringify(activeDates));
+      }
+
+      // Initial stats load
+      recalculateStatsAndReload();
+
+      // Retrieve resume learning link mapping to last active day
+      const lastVisitedDayId = localStorage.getItem('mano_last_day');
+      let resumeTarget = "day01.html";
+      let resumeText = "Resume Learning";
+      
+      if (lastVisitedDayId) {
+        const match = lastVisitedDayId.match(/(\d{2})/);
+        if (match) {
+          resumeTarget = `day${match[1]}.html`;
+          resumeText = `Resume Day ${match[1]}`;
+        }
+      } else if (totalSolvedCount > 0) {
+        let highestDay = 1;
+        DAY_METADATA.forEach(d => {
+          const solved = parseInt(localStorage.getItem(`manodemy_day${d.day}_solved_count`) || '0', 10);
+          if (solved > 0) highestDay = Math.max(highestDay, parseInt(d.day, 10));
+        });
+        const nextDayNum = Math.min(highestDay + 1, 30);
+        const dayStr = nextDayNum < 10 ? `0${nextDayNum}` : nextDayNum;
+        resumeTarget = `day${dayStr}.html`;
+        resumeText = `Continue to Day ${dayStr}`;
+      }
+
+      const ctaBtn = document.getElementById('resumeLearningBtn');
+      if (ctaBtn) {
+        ctaBtn.href = resumeTarget;
+        ctaBtn.innerHTML = `${resumeText} <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`;
+      }
+      document.getElementById('dropdownResumeLink').href = resumeTarget;
+
+      // Quest Engine
+      let nextQuestDay = null;
+      let nextQuestTitle = "";
+      for (let i = 0; i < DAY_METADATA.length; i++) {
+        const item = DAY_METADATA[i];
+        const solved = parseInt(localStorage.getItem(`manodemy_day${item.day}_solved_count`) || '0', 10);
+        if (solved < item.totalCells) {
+          nextQuestDay = item.day;
+          nextQuestTitle = item.title;
+          break;
+        }
+      }
+      
+      const questTextEl = document.getElementById('questText');
+      if (questTextEl) {
+        if (nextQuestDay) {
+          questTextEl.innerHTML = `🎯 <strong>Launch Day ${nextQuestDay}</strong> and solve the challenges in "${nextQuestTitle}" to secure +100 XP!`;
+        } else {
+          questTextEl.innerHTML = `🎓 <strong>Capstone Completed!</strong> You are a certified Python Alchemist. Start building personal projects!`;
+          const questIcon = document.getElementById('questIcon');
+          if (questIcon) questIcon.textContent = "🏆";
+        }
+      }
+
+      // Render Curriculum Grid Cards matching landing page style
+      const grid = document.getElementById('curriculumGrid');
+      DAY_METADATA.forEach(item => {
+        const solvedCount = parseInt(localStorage.getItem(`manodemy_day${item.day}_solved_count`) || '0', 10);
+        const targetPercent = Math.min(Math.round((solvedCount / item.totalCells) * 100), 100);
+
+        let badgeHTML = '';
+        if (targetPercent === 100) {
+          badgeHTML = `<span class="day-badge completed-badge">✓</span>`;
+        } else if (targetPercent > 0) {
+          badgeHTML = `<span class="day-badge in-progress-badge">${solvedCount}/${item.totalCells}</span>`;
+        } else if (item.day === "01" || item.day === "02") {
+          badgeHTML = `<span class="day-badge free-badge">FREE</span>`;
+        }
+
+        const isCurrentActive = resumeTarget === `day${item.day}.html`;
+
+        const card = document.createElement('a');
+        card.className = 'day-card' + (isCurrentActive ? ' active-day' : '');
+        card.href = `day${item.day}.html`;
+        card.setAttribute('data-day', item.day);
+        card.setAttribute('data-category', item.category);
+        card.setAttribute('tabindex', '0');
+        
+        card.innerHTML = `
+          <span class="day-num">Day ${item.day}</span>
+          <span class="day-emoji">${item.emoji}</span>
+          <span class="day-title">${item.title}</span>
+          ${badgeHTML}
+        `;
+        grid.appendChild(card);
+      });
+
+      // Category Filter Tabs Interactive Logic
+      const filterTabs = document.querySelectorAll('.filter-tab');
+      filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          filterTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          
+          const filterValue = tab.getAttribute('data-filter');
+          const dayCards = document.querySelectorAll('.day-card');
+          
+          dayCards.forEach(card => {
+            const cardCat = card.getAttribute('data-category');
+            if (filterValue === 'all' || cardCat === filterValue) {
+              card.style.display = 'block';
+              card.style.animation = 'fadeIn 0.35s ease forwards';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+
+      // Zen Focus Pomodoro Widget timer logic
+      let pomodoroInterval = null;
+      let pomodoroSecondsLeft = 25 * 60;
+      let isTimerRunning = false;
+      const totalTimerSeconds = 25 * 60;
+
+      const pBtn = document.getElementById('pomodoroBtn');
+      const tFill = document.getElementById('timerCircleFill');
+      const tDisp = document.getElementById('timerDisplay');
+      const fPill = document.getElementById('focusStatusPill');
+
+      const updatePomodoroUI = () => {
+        const mins = Math.floor(pomodoroSecondsLeft / 60);
+        const secs = pomodoroSecondsLeft % 60;
+        tDisp.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        const offset = 283 - (283 * (pomodoroSecondsLeft / totalTimerSeconds));
+        tFill.style.strokeDashoffset = offset;
+      };
+
+      pBtn.addEventListener('click', () => {
+        if (isTimerRunning) {
+          clearInterval(pomodoroInterval);
+          isTimerRunning = false;
+          pBtn.textContent = "Start Sprint";
+          pBtn.classList.remove('active');
+          fPill.textContent = "IDLE";
+          fPill.classList.remove('timer-active');
+          pomodoroSecondsLeft = totalTimerSeconds;
+          updatePomodoroUI();
+        } else {
+          isTimerRunning = true;
+          pBtn.textContent = "Cancel";
+          pBtn.classList.add('active');
+          fPill.textContent = "FOCUSING";
+          fPill.classList.add('timer-active');
+          
+          pomodoroInterval = setInterval(() => {
+            pomodoroSecondsLeft--;
+            updatePomodoroUI();
+            
+            if (pomodoroSecondsLeft <= 0) {
+              clearInterval(pomodoroInterval);
+              isTimerRunning = false;
+              pBtn.textContent = "Start Sprint";
+              pBtn.classList.remove('active');
+              fPill.textContent = "IDLE";
+              fPill.classList.remove('timer-active');
+              pomodoroSecondsLeft = totalTimerSeconds;
+              updatePomodoroUI();
+              
+              playSuccessSound();
+              
+              let currentActiveDayNum = nextQuestDay || "01";
+              let timeSpent = parseInt(localStorage.getItem(`manodemy_day${currentActiveDayNum}_time_spent`) || '0', 10);
+              timeSpent += 1500; // +25 mins
+              localStorage.setItem(`manodemy_day${currentActiveDayNum}_time_spent`, timeSpent.toString());
+              
+              let bonusXP = parseInt(localStorage.getItem('manodemy_bonus_xp') || '0', 10);
+              bonusXP += 100;
+              localStorage.setItem('manodemy_bonus_xp', bonusXP.toString());
+
+              // Track daily pomodoro count for accurate heatmap
+              const dailyPoms = JSON.parse(localStorage.getItem('manodemy_daily_pomodoros') || '{}');
+              const sprintDateStr = new Date().toISOString().split('T')[0];
+              dailyPoms[sprintDateStr] = (dailyPoms[sprintDateStr] || 0) + 1;
+              localStorage.setItem('manodemy_daily_pomodoros', JSON.stringify(dailyPoms));
+              // Ensure today is in activeDates
+              const allActDates = JSON.parse(localStorage.getItem('manodemy_active_dates') || '[]');
+              if (!allActDates.includes(sprintDateStr)) {
+                allActDates.push(sprintDateStr);
+                localStorage.setItem('manodemy_active_dates', JSON.stringify(allActDates));
+              }
+              
+              recalculateStatsAndReload();
+              buildHeatmap();
+              
+              alert("🎉 Excellent job! You completed a 25-minute study sprint. +100 XP & 0.4 Hrs Focus credited!");
+            }
+          }, 1000);
+        }
+      });
+
+      // Secret fast-forward for testing via double click on digits
+      tDisp.addEventListener('dblclick', () => {
+        if (isTimerRunning) {
+          pomodoroSecondsLeft = 3;
+          updatePomodoroUI();
+        }
+      });
+
+      // Achievements hover handlers
+      const badges = document.querySelectorAll('.achievement-badge');
+      const badgeStatusText = document.getElementById('badgeStatusText');
+      
+      badges.forEach(badge => {
+        badge.addEventListener('mouseenter', () => {
+          const isLocked = badge.classList.contains('locked');
+          const title = badge.getAttribute('title').split(': ')[1];
+          badgeStatusText.textContent = (isLocked ? '🔒 Locked: ' : '🔓 Unlocked: ') + title;
+        });
+        badge.addEventListener('mouseleave', () => {
+          badgeStatusText.textContent = "Hover icons to view details";
+        });
+      });
+
+      // GitHub contribution heatmap grid builder
+      const buildHeatmap = () => {
+        const heatmap = document.getElementById('heatmapGrid');
+        if (!heatmap) return;
+        heatmap.innerHTML = '';
+        
+        const activeDates = JSON.parse(localStorage.getItem('manodemy_active_dates') || '[]');
+        const today = new Date();
+        
+        const daysArray = [];
+        for (let i = 27; i >= 0; i--) {
+          const d = new Date();
+          d.setDate(today.getDate() - i);
+          daysArray.push(d);
+        }
+        
+        daysArray.forEach(date => {
+          const dateStr = date.toISOString().split('T')[0];
+          const isActive = activeDates.includes(dateStr);
+          
+          const dailyPomodoros = JSON.parse(localStorage.getItem('manodemy_daily_pomodoros') || '{}');
+          const pomCount = dailyPomodoros[dateStr] || 0;
+
+          let intensityClass = 'heatmap-cell--0';
+          let intensityDesc = 'No study activity logged';
+
+          if (isActive || pomCount > 0) {
+            if (pomCount >= 3) {
+              intensityClass = 'heatmap-cell--3';
+              intensityDesc = `Intense study: ${pomCount} focus sprints completed! 🔥`;
+            } else if (pomCount === 2) {
+              intensityClass = 'heatmap-cell--2';
+              intensityDesc = 'Great focus: 2 sprints completed ⚡';
+            } else if (pomCount === 1) {
+              intensityClass = 'heatmap-cell--2';
+              intensityDesc = '1 focus sprint completed — keep the momentum!';
+            } else {
+              intensityClass = 'heatmap-cell--1';
+              intensityDesc = 'Active coding day: Logged in & reviewed roadmap';
+            }
+          }
+          
+          const cell = document.createElement('div');
+          cell.className = `heatmap-cell ${intensityClass}`;
+          
+          const options = { month: 'short', day: 'numeric', year: 'numeric' };
+          const formattedDate = date.toLocaleDateString('en-US', options);
+          cell.setAttribute('title', `${formattedDate}: ${intensityDesc}`);
+          
+          heatmap.appendChild(cell);
+        });
+      };
+
+      buildHeatmap();
+
+
+    });
+  </script>
+</body>
+</html>
