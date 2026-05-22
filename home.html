@@ -1550,16 +1550,26 @@
           <div class="score-hero-row" style="display: flex; gap: 1.5rem; align-items: center; justify-content: space-between; width: 100%; flex-wrap: wrap;">
             
             <!-- Left Panel: Large Bold Overall Score (Compact) -->
-            <div class="score-hero-display" style="display: flex; flex-direction: column; gap: 2px; min-width: 260px; flex: 0.8;">
-              <div style="font-size: 9px; font-weight: 800; color: rgba(255, 255, 255, 0.45); text-transform: uppercase; letter-spacing: 0.15em;">CODING SCORE</div>
-              <div style="display: flex; align-items: baseline; gap: 6px;">
-                <span id="heroTotalMarks" style="font-family: 'Outfit', sans-serif; font-size: 38px; font-weight: 950; line-height: 1; color: #fff; text-shadow: 0 0 20px rgba(0, 230, 246, 0.35);">0.0</span>
-                <span style="font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 800; color: rgba(255, 255, 255, 0.3);">/ 1,000.0 Marks</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px; margin-top: 1px; flex-wrap: wrap;">
-                <span class="rank-badge rank-badge--cadet" id="headerRankBadge" style="font-size: 8.5px; padding: 1px 6px; border-radius: 4px; line-height: 1.2;">Code Cadet</span>
-                <span id="headerRankLevelText" style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 2px;">Level 1 (Novice) 🌱</span>
-                <span id="heroScorePercentage" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--cyan); background: rgba(0, 230, 246, 0.06); padding: 1px 4px; border-radius: 4px; border: 1px solid rgba(0, 230, 246, 0.12); font-weight: 700;">0.0%</span>
+            <div class="score-hero-display" style="display: flex; flex-direction: column; gap: 3px; min-width: 260px; flex: 0.8; justify-content: center;">
+              <div style="font-size: 9px; font-weight: 800; color: rgba(255, 255, 255, 0.45); text-transform: uppercase; letter-spacing: 0.15em;">MARKS</div>
+              <div id="headerRankLevelText" style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 2px; margin-top: 1px;">Level 1 (Novice) 🌱</div>
+              
+              <div style="display: flex; align-items: center; gap: 14px; margin-top: 4px;">
+                <!-- Fraction Stacker -->
+                <div style="display: flex; flex-direction: column; align-items: center; min-width: 75px; line-height: 1;">
+                  <span id="heroTotalMarks" style="font-family: 'Outfit', sans-serif; font-size: 32px; font-weight: 950; color: #fff; text-shadow: 0 0 20px rgba(0, 230, 246, 0.35); text-align: center;">0.0</span>
+                  <div style="width: 100%; height: 1.5px; background: rgba(255, 255, 255, 0.2); margin: 3px 0;"></div>
+                  <span style="font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 800; color: rgba(255, 255, 255, 0.3); text-align: center;">1,000.0</span>
+                </div>
+                
+                <span style="font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 800; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 6px;">Marks</span>
+
+                <!-- Dynamic Donut Pie Circle -->
+                <div id="percentageCircle" style="width: 44px; height: 44px; border-radius: 50%; background: conic-gradient(var(--cyan) 0%, rgba(255, 255, 255, 0.05) 0); display: flex; align-items: center; justify-content: center; padding: 2.5px; box-shadow: 0 0 10px rgba(0, 230, 246, 0.15); margin-left: auto;">
+                  <div style="width: 100%; height: 100%; border-radius: 50%; background: #0b0f1a; display: flex; align-items: center; justify-content: center;">
+                    <span id="heroScorePercentage" style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--cyan); font-weight: 800;">0.0%</span>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -2231,6 +2241,10 @@
         if (scorePercentageEl) {
           const overallPct = ((boundedTotalMarks / 1000) * 100).toFixed(1);
           scorePercentageEl.textContent = `${overallPct}%`;
+          const percentageCircle = document.getElementById('percentageCircle');
+          if (percentageCircle) {
+            percentageCircle.style.background = `conic-gradient(var(--cyan) ${overallPct}%, rgba(255, 255, 255, 0.05) 0)`;
+          }
         }
 
         // Update timeline motivation text
