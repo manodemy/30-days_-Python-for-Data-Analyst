@@ -1374,33 +1374,122 @@
 
     /* ═══════════ SEGMENTED TIMELINE & PREMIUM HEADER SCORE CARD ═══════════ */
     .header-score-card {
-      background: rgba(11, 15, 26, 0.65) !important;
+      background: linear-gradient(135deg, rgba(16, 22, 38, 0.75) 0%, rgba(10, 14, 26, 0.88) 100%) !important;
       border: 1px solid rgba(255, 255, 255, 0.08) !important;
       border-top-color: rgba(255, 255, 255, 0.18) !important;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6) !important;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.08), inset 0 0 20px rgba(0, 230, 246, 0.03) !important;
+      backdrop-filter: blur(25px) !important;
+      -webkit-backdrop-filter: blur(25px) !important;
     }
     
+    #headerRankLevelText {
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 10px !important;
+      font-weight: 800 !important;
+      color: #fff !important;
+      background: rgba(255, 255, 255, 0.03) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      padding: 3.5px 10px !important;
+      border-radius: 20px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+      backdrop-filter: blur(4px) !important;
+      -webkit-backdrop-filter: blur(4px) !important;
+      transition: all 0.3s ease !important;
+    }
+    #headerRankLevelText:hover {
+      background: rgba(255, 255, 255, 0.06) !important;
+      border-color: rgba(255, 255, 255, 0.15) !important;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 6px 16px rgba(0, 0, 0, 0.25) !important;
+      transform: translateY(-1px);
+    }
+    
+    #percentageCircle {
+      width: 100px !important;
+      height: 100px !important;
+      border-radius: 50% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 6px !important;
+      box-shadow: 0 0 25px rgba(0, 230, 246, 0.15), inset 0 0 15px rgba(0, 230, 246, 0.05) !important;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+      position: relative !important;
+    }
+    #percentageCircle::after {
+      content: '' !important;
+      position: absolute !important;
+      inset: 0 !important;
+      border-radius: 50% !important;
+      padding: 1px !important;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02)) !important;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
+      -webkit-mask-composite: xor !important;
+      mask-composite: exclude !important;
+      pointer-events: none !important;
+    }
+    #percentageCircle:hover {
+      transform: scale(1.05) rotate(5deg);
+      box-shadow: 0 0 35px rgba(0, 230, 246, 0.3), inset 0 0 20px rgba(0, 230, 246, 0.1) !important;
+    }
+
     .section-score-box {
       cursor: pointer;
       position: relative;
+      background: rgba(255, 255, 255, 0.015) !important;
+      border: 1px solid rgba(255, 255, 255, 0.04) !important;
+      border-radius: 10px !important;
+      padding: 0.5rem 0.75rem !important;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
     }
     .section-score-box::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
+      content: '' !important;
+      position: absolute !important;
+      inset: 0 !important;
+      border-radius: inherit !important;
+      padding: 1px !important;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.005)) !important;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
+      -webkit-mask-composite: xor !important;
+      mask-composite: exclude !important;
+      pointer-events: none !important;
     }
+    .section-score-box.box-basics { border-left: 3px solid #64748b !important; }
+    .section-score-box.box-structures { border-left: 3px solid #a855f7 !important; }
+    .section-score-box.box-analysis { border-left: 3px solid #00e6f6 !important; }
+    .section-score-box.box-advanced { border-left: 3px solid #f5a623 !important; }
     
     .section-score-box:hover {
-      background: rgba(19, 24, 37, 0.5) !important;
-      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.05) !important;
+      transform: translateY(-3px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    .section-score-box.box-basics:hover {
+      border-left-color: #94a3b8 !important;
+      box-shadow: 0 10px 20px rgba(100, 116, 139, 0.15), 0 0 15px rgba(100, 116, 139, 0.08) !important;
+    }
+    .section-score-box.box-structures:hover {
+      border-left-color: #c084fc !important;
+      box-shadow: 0 10px 20px rgba(168, 85, 247, 0.15), 0 0 15px rgba(168, 85, 247, 0.08) !important;
+    }
+    .section-score-box.box-analysis:hover {
+      border-left-color: #22d3ee !important;
+      box-shadow: 0 10px 20px rgba(0, 230, 246, 0.15), 0 0 15px rgba(0, 230, 246, 0.08) !important;
+    }
+    .section-score-box.box-advanced:hover {
+      border-left-color: #fbbf24 !important;
+      box-shadow: 0 10px 20px rgba(245, 166, 35, 0.15), 0 0 15px rgba(245, 166, 35, 0.08) !important;
+    }
+    .section-score-box:hover {
       border-color: rgba(255, 255, 255, 0.1) !important;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
     }
@@ -1543,98 +1632,100 @@
       <div class="dashboard-left-col">
         
         <!-- Premium Score Card and Segmented Milestone Timeline Dashboard -->
-        <!-- Premium Score Card and Segmented Milestone Timeline Dashboard -->
-        <div class="glass-card header-score-card" style="margin-bottom: 1.5rem; padding: 0.85rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; position: relative;">
+        <div class="glass-card header-score-card" style="margin-bottom: 1.5rem; padding: 0.9rem 1.4rem; display: flex; flex-direction: column; gap: 0.75rem; position: relative;">
           
           <!-- Top Row: Overall Marks Hero + 4 Section Breakdown Columns -->
           <div class="score-hero-row" style="display: flex; gap: 1.5rem; align-items: center; justify-content: space-between; width: 100%; flex-wrap: wrap;">
             
             <!-- Left Panel: Large Bold Overall Score (Compact) -->
             <div class="score-hero-display" style="display: flex; flex-direction: column; gap: 3px; min-width: 260px; flex: 0.8; justify-content: center;">
-              <div style="font-size: 9px; font-weight: 800; color: rgba(255, 255, 255, 0.45); text-transform: uppercase; letter-spacing: 0.15em;">MARKS</div>
+              <div style="font-size: 10px; font-weight: 900; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.15em; display: flex; align-items: center; gap: 6px;">
+                <span style="width: 5px; height: 5px; background: var(--cyan); border-radius: 50%; display: inline-block; box-shadow: 0 0 8px var(--cyan);"></span>
+                MARKS
+              </div>
               
               <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 4px;">
                 <!-- Fraction Stacker -->
                 <div style="display: flex; flex-direction: column; align-items: center; min-width: 75px; line-height: 1;">
-                  <span id="heroTotalMarks" style="font-family: 'Outfit', sans-serif; font-size: 32px; font-weight: 950; color: #fff; text-shadow: 0 0 20px rgba(0, 230, 246, 0.35); text-align: center;">0.0</span>
-                  <div style="width: 100%; height: 1.5px; background: rgba(255, 255, 255, 0.2); margin: 3px 0;"></div>
-                  <span style="font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 800; color: rgba(255, 255, 255, 0.3); text-align: center;">1000</span>
+                  <span id="heroTotalMarks" style="font-family: 'Outfit', sans-serif; font-size: 34px; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(0, 230, 246, 0.45); text-align: center; line-height: 1.1;">0.0</span>
+                  <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.25) 20%, rgba(255, 255, 255, 0.25) 80%, transparent 100%); margin: 4px 0;"></div>
+                  <span style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 800; color: rgba(255, 255, 255, 0.35); text-align: center; letter-spacing: 0.05em;">1000</span>
                 </div>
-
+ 
                 <!-- Right Column: Level Label + Circle -->
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; margin-left: auto; transform: translateY(-30px); margin-bottom: -30px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; margin-left: auto; transform: translateY(-4px); margin-bottom: -4px;">
                   <div id="headerRankLevelText" style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 2px;">Level 1 (Novice) 🌱</div>
                   <!-- Dynamic Donut Pie Circle (3x Larger) -->
                   <div id="percentageCircle" style="width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(var(--cyan) 0%, rgba(255, 255, 255, 0.05) 0); display: flex; align-items: center; justify-content: center; padding: 5px; box-shadow: 0 0 20px rgba(0, 230, 246, 0.25);">
-                    <div style="width: 100%; height: 100%; border-radius: 50%; background: #0b0f1a; display: flex; align-items: center; justify-content: center;">
-                      <span id="heroScorePercentage" style="font-family: 'JetBrains Mono', monospace; font-size: 16px; color: var(--cyan); font-weight: 800;">0.0%</span>
+                    <div style="width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle at center, #0f172a 0%, #070a13 100%); backdrop-filter: blur(8px); border: 1.5px solid rgba(255, 255, 255, 0.04); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.7);">
+                      <span id="heroScorePercentage" style="font-family: 'JetBrains Mono', monospace; font-size: 17.5px; color: var(--cyan); font-weight: 900; text-shadow: 0 0 10px rgba(0, 230, 246, 0.6);">0.0%</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
+ 
             <!-- Right Panel: 4 Section Breakdown Grid -->
             <div class="sections-breakdown-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; flex: 1.6; min-width: 320px;">
               
               <!-- Basics Section Card -->
-              <div class="section-score-box box-basics" style="background: rgba(19, 24, 37, 0.2); border: 1px solid rgba(255,255,255,0.03); border-left: 2px solid #64748b; border-radius: 8px; padding: 0.45rem 0.65rem; display: flex; flex-direction: column; gap: 3px; transition: all 0.25s;">
+              <div class="section-score-box box-basics">
                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                  <span style="font-size: 9px; font-weight: 700; color: rgba(148, 163, 184, 0.6); text-transform: uppercase; letter-spacing: 0.05em;">1. Basics</span>
+                  <span style="font-size: 9px; font-weight: 800; color: rgba(148, 163, 184, 0.55); text-transform: uppercase; letter-spacing: 0.08em;">1. Basics</span>
                 </div>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; color: #fff;">
-                  <span id="sectionBasicsScore">0.0</span> <span style="font-size: 9.5px; color: rgba(255, 255, 255, 0.3);">/ 384.9</span>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: baseline; gap: 3px;">
+                  <span id="sectionBasicsScore" style="color: #fff;">0.0</span> <span style="font-size: 9.5px; color: rgba(255, 255, 255, 0.35);">/ 384.9</span>
                 </div>
                 <!-- Visual progress bar -->
-                <div style="width: 100%; height: 2px; background: rgba(255, 255, 255, 0.04); border-radius: 1px; margin-top: 1px; overflow: hidden;">
-                  <div id="sectionBasicsBar" style="height: 100%; width: 0%; background: #64748b; border-radius: 1px; transition: width 0.8s ease;"></div>
+                <div style="width: 100%; height: 3px; background: rgba(255, 255, 255, 0.06); border-radius: 2px; margin-top: 2px; overflow: hidden; position: relative;">
+                  <div id="sectionBasicsBar" style="height: 100%; width: 0%; background: #64748b; border-radius: 2px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 6px #64748b;"></div>
                 </div>
               </div>
-
+ 
               <!-- Structures Section Card -->
-              <div class="section-score-box box-structures" style="background: rgba(19, 24, 37, 0.2); border: 1px solid rgba(255,255,255,0.03); border-left: 2px solid #a855f7; border-radius: 8px; padding: 0.45rem 0.65rem; display: flex; flex-direction: column; gap: 3px; transition: all 0.25s;">
+              <div class="section-score-box box-structures">
                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                  <span style="font-size: 9px; font-weight: 700; color: rgba(168, 85, 247, 0.6); text-transform: uppercase; letter-spacing: 0.05em;">2. Structures</span>
+                  <span style="font-size: 9px; font-weight: 800; color: rgba(168, 85, 247, 0.55); text-transform: uppercase; letter-spacing: 0.08em;">2. Structures</span>
                 </div>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; color: #fff;">
-                  <span id="sectionStructuresScore">0.0</span> <span style="font-size: 9.5px; color: rgba(255, 255, 255, 0.3);">/ 298.6</span>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: baseline; gap: 3px;">
+                  <span id="sectionStructuresScore" style="color: #fff;">0.0</span> <span style="font-size: 9.5px; color: rgba(255, 255, 255, 0.35);">/ 298.6</span>
                 </div>
                 <!-- Visual progress bar -->
-                <div style="width: 100%; height: 2px; background: rgba(255, 255, 255, 0.04); border-radius: 1px; margin-top: 1px; overflow: hidden;">
-                  <div id="sectionStructuresBar" style="height: 100%; width: 0%; background: #a855f7; border-radius: 1px; transition: width 0.8s ease;"></div>
+                <div style="width: 100%; height: 3px; background: rgba(255, 255, 255, 0.06); border-radius: 2px; margin-top: 2px; overflow: hidden; position: relative;">
+                  <div id="sectionStructuresBar" style="height: 100%; width: 0%; background: #a855f7; border-radius: 2px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 6px #a855f7;"></div>
                 </div>
               </div>
-
+ 
               <!-- Analysis Section Card -->
-              <div class="section-score-box box-analysis" style="background: rgba(19, 24, 37, 0.2); border: 1px solid rgba(255,255,255,0.03); border-left: 2px solid #00e6f6; border-radius: 8px; padding: 0.45rem 0.65rem; display: flex; flex-direction: column; gap: 3px; transition: all 0.25s;">
+              <div class="section-score-box box-analysis">
                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                  <span style="font-size: 9px; font-weight: 700; color: rgba(0, 230, 246, 0.6); text-transform: uppercase; letter-spacing: 0.05em;">3. Analysis</span>
+                  <span style="font-size: 9px; font-weight: 800; color: rgba(0, 230, 246, 0.55); text-transform: uppercase; letter-spacing: 0.08em;">3. Analysis</span>
                 </div>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; color: #fff;">
-                  <span id="sectionAnalysisScore">0.0</span> <span style="font-size: 9.5px; color: rgba(255, 255, 255, 0.3);">/ 259.0</span>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: baseline; gap: 3px;">
+                  <span id="sectionAnalysisScore" style="color: #fff;">0.0</span> <span style="font-size: 9.5px; color: rgba(255, 255, 255, 0.35);">/ 259.0</span>
                 </div>
                 <!-- Visual progress bar -->
-                <div style="width: 100%; height: 2px; background: rgba(255, 255, 255, 0.04); border-radius: 1px; margin-top: 1px; overflow: hidden;">
-                  <div id="sectionAnalysisBar" style="height: 100%; width: 0%; background: #00e6f6; border-radius: 1px; transition: width 0.8s ease;"></div>
+                <div style="width: 100%; height: 3px; background: rgba(255, 255, 255, 0.06); border-radius: 2px; margin-top: 2px; overflow: hidden; position: relative;">
+                  <div id="sectionAnalysisBar" style="height: 100%; width: 0%; background: #00e6f6; border-radius: 2px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 6px #00e6f6;"></div>
                 </div>
               </div>
-
+ 
               <!-- Advanced Section Card -->
-              <div class="section-score-box box-advanced" style="background: rgba(19, 24, 37, 0.2); border: 1px solid rgba(255,255,255,0.03); border-left: 2px solid #f5a623; border-radius: 8px; padding: 0.45rem 0.65rem; display: flex; flex-direction: column; gap: 3px; transition: all 0.25s;">
+              <div class="section-score-box box-advanced">
                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                  <span style="font-size: 9px; font-weight: 700; color: rgba(245, 166, 35, 0.6); text-transform: uppercase; letter-spacing: 0.05em;">4. Advanced</span>
+                  <span style="font-size: 9px; font-weight: 800; color: rgba(245, 166, 35, 0.55); text-transform: uppercase; letter-spacing: 0.08em;">4. Advanced</span>
                 </div>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; color: #fff;">
-                  <span id="sectionAdvancedScore">0.0</span> <span style="font-size: 9.5px; color: rgba(255, 255, 255, 0.3);">/ 57.5</span>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: baseline; gap: 3px;">
+                  <span id="sectionAdvancedScore" style="color: #fff;">0.0</span> <span style="font-size: 9.5px; color: rgba(255, 255, 255, 0.35);">/ 57.5</span>
                 </div>
                 <!-- Visual progress bar -->
-                <div style="width: 100%; height: 2px; background: rgba(255, 255, 255, 0.04); border-radius: 1px; margin-top: 1px; overflow: hidden;">
-                  <div id="sectionAdvancedBar" style="height: 100%; width: 0%; background: #f5a623; border-radius: 1px; transition: width 0.8s ease;"></div>
+                <div style="width: 100%; height: 3px; background: rgba(255, 255, 255, 0.06); border-radius: 2px; margin-top: 2px; overflow: hidden; position: relative;">
+                  <div id="sectionAdvancedBar" style="height: 100%; width: 0%; background: #f5a623; border-radius: 2px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 6px #f5a623;"></div>
                 </div>
               </div>
-
+ 
             </div>
-
+ 
           </div>
 
           <!-- Bottom Row: 30-Day Segmented Milestone Timeline Bar -->
