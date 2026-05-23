@@ -3799,7 +3799,7 @@ button {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 230, 246, 0.03);
   border-radius: 20px;
   width: 100%;
-  max-width: 620px;
+  max-width: 960px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -4164,6 +4164,7 @@ button {
 
   .rev-modal-card {
     max-height: calc(100vh - 20px);
+    max-width: 620px;
   }
 }
 
@@ -4285,6 +4286,106 @@ button {
 .btn-remove-media:hover {
   background: var(--rose);
   border-color: transparent;
+}
+
+/* Landscape Modal Two-Column Layout */
+.rev-modal-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.rev-modal-col-left,
+.rev-modal-col-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.rev-modal-col-left {
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  padding-right: 2rem;
+}
+
+/* Photo Upload Dropzone */
+.rev-media-dropzone {
+  border: 2px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 250ms var(--ease), background 250ms var(--ease);
+  background: rgba(11, 15, 25, 0.3);
+  min-height: 100px;
+}
+
+.rev-media-dropzone:hover,
+.rev-media-dropzone.drag-over {
+  border-color: rgba(0, 230, 246, 0.4);
+  background: rgba(0, 230, 246, 0.03);
+}
+
+.rev-media-dropzone.has-file {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.03);
+}
+
+.dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.dropzone-icon {
+  width: 32px;
+  height: 32px;
+  color: rgba(255, 255, 255, 0.2);
+  transition: color 250ms var(--ease);
+}
+
+.rev-media-dropzone:hover .dropzone-icon,
+.rev-media-dropzone.drag-over .dropzone-icon {
+  color: var(--cyan);
+}
+
+.dropzone-text {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+
+.dropzone-text strong {
+  color: var(--cyan);
+}
+
+.dropzone-hint {
+  font-family: var(--font-data);
+  font-size: 10px;
+  color: var(--ink-muted);
+  letter-spacing: 0.03em;
+}
+
+/* Responsive: Stack columns on mobile */
+@media (max-width: 768px) {
+  .rev-modal-columns {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .rev-modal-col-left {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .rev-modal-card {
+    max-width: 620px;
+  }
 }
 
 /* Spinner Keyframes */

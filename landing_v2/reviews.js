@@ -149,9 +149,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const consContainer = document.getElementById('cons-tags-list');
         if (prosContainer) prosContainer.innerHTML = '';
         if (consContainer) consContainer.innerHTML = '';
-        // Reset Media Previews
+        // Reset Media Previews and file upload state
         const mediaPreview = document.getElementById('media-previews');
         if (mediaPreview) mediaPreview.innerHTML = '';
+        pendingUploadFile = null;
+        pendingUploadBase64 = null;
+        const dz = document.getElementById('mediaDropzone');
+        if (dz) dz.classList.remove('has-file');
       }
     }
   };
@@ -209,65 +213,63 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Media URL Upload and Previews
-  const mediaInput = document.getElementById('rev-input-media');
+  // Photo Upload Dropzone Controller
+  const fileInput = document.getElementById('rev-file-input');
+  const dropzone = document.getElementById('mediaDropzone');
   const mediaPreviewsContainer = document.getElementById('media-previews');
-  if (mediaInput && mediaPreviewsContainer) {
-    const addMediaUrl = (url) => {
-      const cleanUrl = url.trim();
-      if (!cleanUrl) return;
+  let pendingUploadFile = null; // Holds the File object for submission
+  let pendingUploadBase64 = null; // Holds the Base64 Data URL for submission
 
-      // Basic URL verification
-      try {
-        new URL(cleanUrl);
-      } catch {
-        alert("Please enter a valid HTTP/HTTPS media URL.");
+  if (dropzone && fileInput && mediaPreviewsContainer) {
+    const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
+
+    const handleFile = (file) => {
+      if (!file.type.startsWith('image/')) {
+        showSleekToast('Only image files are allowed.');
+        return;
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        showSleekToast('File exceeds 2 MB limit.');
         return;
       }
 
-      // Check if already added
-      const existing = Array.from(mediaPreviewsContainer.querySelectorAll('.media-preview-item')).map(el => el.dataset.url);
-      if (existing.includes(cleanUrl)) {
-        mediaInput.value = '';
-        return;
-      }
-
-      const isVideo = cleanUrl.match(/\.(mp4|webm|ogg|mov)$/i) || cleanUrl.includes('youtube.com') || cleanUrl.includes('youtu.be');
-
-      const item = document.createElement('div');
-      item.className = 'media-preview-item';
-      item.dataset.url = cleanUrl;
-
-      if (isVideo) {
-        item.innerHTML = `
-          <div class="media-preview-icon video-icon">🎬</div>
-          <button type="button" class="btn-remove-media">&times;</button>
+      pendingUploadFile = file;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        pendingUploadBase64 = e.target.result;
+        mediaPreviewsContainer.innerHTML = `
+          <div class="media-preview-item" style="width:80px; height:80px;">
+            <img src="${e.target.result}" alt="Preview">
+            <button type="button" class="btn-remove-media">&times;</button>
+          </div>
         `;
-      } else {
-        item.innerHTML = `
-          <img src="${cleanUrl}" alt="Preview" onerror="this.src='https://placehold.co/80x80/161c2d/00E6F6?text=Image';">
-          <button type="button" class="btn-remove-media">&times;</button>
-        `;
-      }
-
-      item.querySelector('.btn-remove-media').addEventListener('click', () => {
-        item.remove();
-      });
-
-      mediaPreviewsContainer.appendChild(item);
-      mediaInput.value = '';
+        mediaPreviewsContainer.querySelector('.btn-remove-media').addEventListener('click', () => {
+          pendingUploadFile = null;
+          pendingUploadBase64 = null;
+          mediaPreviewsContainer.innerHTML = '';
+          dropzone.classList.remove('has-file');
+        });
+        dropzone.classList.add('has-file');
+      };
+      reader.readAsDataURL(file);
     };
 
-    mediaInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        addMediaUrl(mediaInput.value);
-      }
+    dropzone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files[0]) handleFile(fileInput.files[0]);
     });
 
-    const addMediaBtn = document.getElementById('btn-add-media');
-    addMediaBtn?.addEventListener('click', () => {
-      addMediaUrl(mediaInput.value);
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('drag-over');
+    });
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.classList.remove('drag-over');
+    });
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('drag-over');
+      if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
     });
   }
 
@@ -306,20 +308,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const name = document.getElementById('rev-input-name').value.trim();
       const email = document.getElementById('rev-input-email').value.trim();
-      const title = document.getElementById('rev-input-title').value.trim();
       const comment = commentTextarea.value.trim();
-      const cohortDate = document.getElementById('rev-input-cohort').value;
-      const avatarUrl = document.getElementById('rev-input-avatar-url').value.trim();
       const recommend = document.getElementById('rev-input-recommend').checked;
 
-      if (!name || !email || !title || !comment) {
-        alert("Please fill in all required fields.");
+      if (!name || !email || !comment) {
+        alert("Please fill in all required fields (Name, Email, Feedback).");
         return;
       }
 
       const pros = Array.from(document.querySelectorAll('#pros-tags-list .rev-tag-item span')).map(s => s.textContent);
       const cons = Array.from(document.querySelectorAll('#cons-tags-list .rev-tag-item span')).map(s => s.textContent);
-      const mediaUrls = Array.from(document.querySelectorAll('#media-previews .media-preview-item')).map(item => item.dataset.url);
+
+      // Handle photo upload directly as robust Base64 Data URL
+      let uploadedMediaUrls = [];
+      if (pendingUploadBase64) {
+        uploadedMediaUrls.push(pendingUploadBase64);
+      }
 
       const submitBtn = reviewForm.querySelector('.btn-modal-submit');
       const originalBtnHtml = submitBtn.innerHTML;
@@ -333,20 +337,25 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
       try {
+        let avatarSource = null;
+        if (activeUser?.user_metadata?.avatar_url) {
+          avatarSource = activeUser.user_metadata.avatar_url;
+        } else if (activeUser?.user_metadata?.picture) {
+          avatarSource = activeUser.user_metadata.picture;
+        }
+
         const reviewPayload = {
           reviewer_name: name,
           reviewer_email: email,
           rating: rating,
-          title: title,
           comment: comment,
           pros: pros,
           cons: cons,
           recommend: recommend,
-          cohort_date: cohortDate || null,
-          media_urls: mediaUrls,
-          reviewer_avatar: avatarUrl || null,
+          media_urls: uploadedMediaUrls,
+          reviewer_avatar: avatarSource,
           user_id: activeUser ? activeUser.id : null,
-          status: 'approved' // Automatically approved, but can be moderated/flagged
+          status: 'approved'
         };
 
         const { data, error } = await sb.from('reviews').insert(reviewPayload).select();
@@ -485,6 +494,11 @@ document.addEventListener('DOMContentLoaded', () => {
         massiveScoreEl.innerHTML = `${averageScore || '0.0'} <span>/ 5</span>`;
       }
 
+      const heroScoreEl = document.getElementById('hero-average-rating');
+      if (heroScoreEl && averageScore > 0) {
+        heroScoreEl.textContent = `${averageScore}/5 Student Rating`;
+      }
+
       // Render overall stars representation
       const starsRowEl = document.querySelector('.rev-stars-row');
       if (starsRowEl) {
@@ -585,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchWord = currentFilters.search.toLowerCase();
         // Since Postgres searches are better handled using ilike on columns,
         // we can filter using or(title.ilike.%search%,comment.ilike.%search%)
-        query = query.or(`title.ilike.%${searchWord}%,comment.ilike.%${searchWord}%,reviewer_name.ilike.%${searchWord}%`);
+        query = query.or(`comment.ilike.%${searchWord}%,reviewer_name.ilike.%${searchWord}%`);
       }
 
       // 5. Sort Order
@@ -650,8 +664,8 @@ document.addEventListener('DOMContentLoaded', () => {
         year: 'numeric'
       });
 
-      // Cohort string
-      const cohortStr = rev.cohort_date ? `Cohort: ${rev.cohort_date}` : 'Self-Paced Learner';
+      // Date-based subtitle
+      const cohortStr = 'Self-Paced Learner';
 
       // Verified Learner indicator
       const verifiedBadgeHtml = rev.is_verified ? `
@@ -743,10 +757,10 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `;
 
-      // Profile picture / Avatar setup
+      // Profile picture / Avatar setup — Google login photo → initials fallback
       let avatarHtml = '';
       if (rev.reviewer_avatar) {
-        avatarHtml = `<img class="rev-avatar" src="${rev.reviewer_avatar}" alt="${rev.reviewer_name}" onerror="this.outerHTML='<div class=&quot;rev-avatar&quot; style=&quot;background:${getAvatarGradient(rev.reviewer_name)}; border-color:${getAvatarBorderColor(rev.reviewer_name)}; color:${getAvatarTextColor(rev.reviewer_name)}&quot;>${rev.reviewer_name.substring(0,2).toUpperCase()}</div>'">`;
+        avatarHtml = `<img class="rev-avatar" src="${rev.reviewer_avatar}" alt="${rev.reviewer_name}" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=&quot;rev-avatar&quot; style=&quot;background:${getAvatarGradient(rev.reviewer_name)}; border-color:${getAvatarBorderColor(rev.reviewer_name)}; color:${getAvatarTextColor(rev.reviewer_name)}&quot;>${rev.reviewer_name.substring(0,2).toUpperCase()}</div>'">`;
       } else {
         avatarHtml = `
           <div class="rev-avatar" style="background: ${getAvatarGradient(rev.reviewer_name)}; border-color: ${getAvatarBorderColor(rev.reviewer_name)}; color: ${getAvatarTextColor(rev.reviewer_name)};">
@@ -775,7 +789,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ${starsHtml}
           </div>
           
-          <div class="rev-card-title">${rev.title}</div>
           <div class="rev-card-comment">${rev.comment}</div>
           
           ${mediaHtml}

@@ -2418,7 +2418,7 @@
           <div class="form-panel" style="margin-bottom:1.5rem; padding: 1.25rem;">
             <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
               <div style="flex:1; min-width:260px;">
-                <input type="text" id="reviewSearchInput" placeholder="Search by reviewer name, email, review title, comment..." style="width:100%; padding:0.55rem 0.75rem; background:rgba(255,255,255,0.03); border:1px solid var(--rim); color:var(--ink); border-radius:4px; font-family:var(--font-body); font-size:0.8rem;" />
+                <input type="text" id="reviewSearchInput" placeholder="Search by reviewer name, email, or comment..." style="width:100%; padding:0.55rem 0.75rem; background:rgba(255,255,255,0.03); border:1px solid var(--rim); color:var(--ink); border-radius:4px; font-family:var(--font-body); font-size:0.8rem;" />
               </div>
               <div style="display:flex; gap:0.4rem; flex-wrap:wrap;" id="reviewStatusFilters">
                 <button class="pill active" data-status="all">All Statuses</button>
@@ -2441,7 +2441,7 @@
                   <tr>
                     <th style="width:180px;">Reviewer</th>
                     <th style="width:110px;">Rating &amp; Rec</th>
-                    <th style="width:300px;">Review Title &amp; Comment</th>
+                    <th style="width:300px;">Comment &amp; Media</th>
                     <th style="width:160px;">Pros &amp; Cons</th>
                     <th style="width:90px;">Reported</th>
                     <th style="width:110px;">Created At</th>
@@ -3756,9 +3756,7 @@
         filtered = filtered.filter(r => 
           (r.reviewer_name || '').toLowerCase().includes(query) ||
           (r.reviewer_email || '').toLowerCase().includes(query) ||
-          (r.title || '').toLowerCase().includes(query) ||
-          (r.comment || '').toLowerCase().includes(query) ||
-          (r.cohort_date || '').toLowerCase().includes(query)
+          (r.comment || '').toLowerCase().includes(query)
         );
       }
 
@@ -3826,7 +3824,6 @@
                 <div style="display:flex; flex-direction:column; overflow:hidden;">
                   <span style="font-weight:600; font-size:0.8rem; text-overflow:ellipsis; white-space:nowrap; overflow:hidden; color:var(--ink);">${rev.reviewer_name}</span>
                   <span style="font-size:0.7rem; color:var(--ink-muted); text-overflow:ellipsis; white-space:nowrap; overflow:hidden;">${rev.reviewer_email}</span>
-                  ${rev.cohort_date ? `<span style="font-size:0.65rem; color:var(--amber); font-family:var(--font-mono); margin-top:2px;">📅 ${rev.cohort_date}</span>` : ''}
                   ${rev.is_verified ? `<span class="badge badge-ok" style="font-size:0.55rem; padding:1px 4px; margin-top:3px; display:inline-block; width:fit-content;">✓ Verified Buyer</span>` : ''}
                 </div>
               </div>
@@ -3841,7 +3838,6 @@
             </td>
             <td>
               <div style="display:flex; flex-direction:column; gap:0.2rem; max-width:320px;">
-                <strong style="color:var(--ink); font-size:0.78rem;">${rev.title}</strong>
                 <p style="color:var(--ink-muted); font-size:0.72rem; line-height:1.35; margin:0; white-space:pre-wrap; word-break:break-word; font-family:var(--font-body);">${rev.comment}</p>
                 ${mediaHtml}
               </div>
