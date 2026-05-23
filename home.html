@@ -1733,7 +1733,7 @@
 
     .day-num {
       font-family: 'JetBrains Mono', monospace !important;
-      font-size: 11px !important;
+      font-size: 14px !important;
       font-weight: 700 !important;
       letter-spacing: 0.12em !important;
       text-transform: uppercase !important;
@@ -1877,7 +1877,7 @@
           </div>
           <div class="nav-stat-pill nav-stat-pill--solved" title="Total solved challenges">
             <span class="nav-stat-icon">🏆</span>
-            <span class="nav-stat-value" id="navSolvedVal">0 / 1668</span>
+            <span class="nav-stat-value" id="navSolvedVal">0 / 1530</span>
             <span class="nav-stat-label">Solved</span>
           </div>
           <div class="nav-stat-pill nav-stat-pill--time" title="Total spent coding">
@@ -2202,36 +2202,36 @@
   <!-- ═══════════ DASHBOARD CONTROLLER JS ═══════════ -->
   <script>
     const DAY_METADATA = [
-      { day: "01", title: "Data Types and Memory", emoji: "🔢", totalCells: 90, category: "basics" },
-      { day: "02", title: "Operators and Expressions", emoji: "➕", totalCells: 90, category: "basics" },
-      { day: "03", title: "Strings", emoji: "📝", totalCells: 78, category: "structures" },
-      { day: "04", title: "Lists", emoji: "📋", totalCells: 78, category: "structures" },
-      { day: "05", title: "Tuples", emoji: "📦", totalCells: 66, category: "structures" },
-      { day: "06", title: "Sets", emoji: "⭕", totalCells: 66, category: "structures" },
-      { day: "07", title: "Dictionaries", emoji: "🗂️", totalCells: 72, category: "structures" },
-      { day: "08", title: "Conditionals", emoji: "🔀", totalCells: 60, category: "basics" },
-      { day: "09", title: "Loops", emoji: "🔄", totalCells: 72, category: "basics" },
-      { day: "10", title: "Functions", emoji: "⚙️", totalCells: 48, category: "basics" },
-      { day: "11", title: "Modules", emoji: "📦", totalCells: 48, category: "basics" },
-      { day: "12", title: "Comprehensions", emoji: "🧮", totalCells: 42, category: "structures" },
-      { day: "13", title: "Lambda Functions", emoji: "λ", totalCells: 42, category: "basics" },
-      { day: "14", title: "Exceptions", emoji: "⚠️", totalCells: 48, category: "basics" },
-      { day: "15", title: "File Handling", emoji: "📂", totalCells: 48, category: "basics" },
-      { day: "16", title: "OOP Basics", emoji: "🧩", totalCells: 48, category: "basics" },
-      { day: "17", title: "OOP Advanced", emoji: "🏗️", totalCells: 48, category: "basics" },
-      { day: "18", title: "Regex", emoji: "🔍", totalCells: 48, category: "structures" },
-      { day: "19", title: "Generators and Iterators", emoji: "⚡", totalCells: 48, category: "structures" },
-      { day: "20", title: "Capstone Project", emoji: "🏆", totalCells: 48, category: "advanced" },
-      { day: "21", title: "NumPy Fundamentals", emoji: "📊", totalCells: 48, category: "analysis" },
-      { day: "22", title: "NumPy Advanced", emoji: "📈", totalCells: 48, category: "analysis" },
-      { day: "23", title: "Pandas Introduction", emoji: "🐼", totalCells: 48, category: "analysis" },
-      { day: "24", title: "Pandas Selection", emoji: "🎯", totalCells: 48, category: "analysis" },
-      { day: "25", title: "Pandas Cleaning", emoji: "🧹", totalCells: 48, category: "analysis" },
-      { day: "26", title: "Pandas GroupBy", emoji: "🗃️", totalCells: 48, category: "analysis" },
-      { day: "27", title: "Pandas Merging", emoji: "🔗", totalCells: 48, category: "analysis" },
-      { day: "28", title: "Pandas Time Series", emoji: "📉", totalCells: 48, category: "analysis" },
-      { day: "29", title: "Data Visualization", emoji: "🎨", totalCells: 48, category: "analysis" },
-      { day: "30", title: "Phase Analysis & Review", emoji: "🔬", totalCells: 48, category: "advanced" }
+      { day: "01", title: "Data Types and Memory", emoji: "🔢", totalCells: 80, category: "basics" },
+      { day: "02", title: "Operators and Expressions", emoji: "➕", totalCells: 80, category: "basics" },
+      { day: "03", title: "Strings", emoji: "📝", totalCells: 70, category: "structures" },
+      { day: "04", title: "Lists", emoji: "📋", totalCells: 70, category: "structures" },
+      { day: "05", title: "Tuples", emoji: "📦", totalCells: 60, category: "structures" },
+      { day: "06", title: "Sets", emoji: "⭕", totalCells: 60, category: "structures" },
+      { day: "07", title: "Dictionaries", emoji: "🗂️", totalCells: 65, category: "structures" },
+      { day: "08", title: "Conditionals", emoji: "🔀", totalCells: 55, category: "basics" },
+      { day: "09", title: "Loops", emoji: "🔄", totalCells: 65, category: "basics" },
+      { day: "10", title: "Functions", emoji: "⚙️", totalCells: 45, category: "basics" },
+      { day: "11", title: "Modules", emoji: "📦", totalCells: 45, category: "basics" },
+      { day: "12", title: "Comprehensions", emoji: "🧮", totalCells: 40, category: "structures" },
+      { day: "13", title: "Lambda Functions", emoji: "λ", totalCells: 40, category: "basics" },
+      { day: "14", title: "Exceptions", emoji: "⚠️", totalCells: 45, category: "basics" },
+      { day: "15", title: "File Handling", emoji: "📂", totalCells: 45, category: "basics" },
+      { day: "16", title: "OOP Basics", emoji: "🧩", totalCells: 45, category: "basics" },
+      { day: "17", title: "OOP Advanced", emoji: "🏗️", totalCells: 45, category: "basics" },
+      { day: "18", title: "Regex", emoji: "🔍", totalCells: 45, category: "structures" },
+      { day: "19", title: "Generators and Iterators", emoji: "⚡", totalCells: 45, category: "structures" },
+      { day: "20", title: "Capstone Project", emoji: "🏆", totalCells: 45, category: "advanced" },
+      { day: "21", title: "NumPy Fundamentals", emoji: "📊", totalCells: 45, category: "analysis" },
+      { day: "22", title: "NumPy Advanced", emoji: "📈", totalCells: 45, category: "analysis" },
+      { day: "23", title: "Pandas Introduction", emoji: "🐼", totalCells: 45, category: "analysis" },
+      { day: "24", title: "Pandas Selection", emoji: "🎯", totalCells: 45, category: "analysis" },
+      { day: "25", title: "Pandas Cleaning", emoji: "🧹", totalCells: 45, category: "analysis" },
+      { day: "26", title: "Pandas GroupBy", emoji: "🗃️", totalCells: 45, category: "analysis" },
+      { day: "27", title: "Pandas Merging", emoji: "🔗", totalCells: 45, category: "analysis" },
+      { day: "28", title: "Pandas Time Series", emoji: "📉", totalCells: 45, category: "analysis" },
+      { day: "29", title: "Data Visualization", emoji: "🎨", totalCells: 45, category: "analysis" },
+      { day: "30", title: "Phase Analysis & Review", emoji: "🔬", totalCells: 45, category: "advanced" }
     ];
 
     const TOTAL_CHALLENGES = DAY_METADATA.reduce((sum, item) => sum + item.totalCells, 0);
@@ -2515,7 +2515,7 @@
           const solvedCount = parseInt(localStorage.getItem(`manodemy_day${d.day}_solved_count`) || '0', 10);
           
           if (solvedCount > 0 && existingBest === 0) {
-            const maxDayXP = 1000 * (solvedCount / 1668);
+            const maxDayXP = 1000 * (solvedCount / TOTAL_CHALLENGES);
             localStorage.setItem(bestScoreKey, maxDayXP.toFixed(2));
           }
         });
@@ -2656,7 +2656,7 @@
           DAY_METADATA.forEach(item => {
             const solvedCount = parseInt(localStorage.getItem(`manodemy_day${item.day}_solved_count`) || '0', 10);
             const targetPercent = Math.min(Math.round((solvedCount / item.totalCells) * 100), 100);
-            const maxDayXP = 1000 * (item.totalCells / 1668);
+            const maxDayXP = 1000 * (item.totalCells / TOTAL_CHALLENGES);
             const bestScore = parseFloat(localStorage.getItem(`manodemy_day${item.day}_best_score`) || '0');
             
             const segment = document.createElement('div');
@@ -2878,7 +2878,7 @@
           badgeHTML = `<span class="day-badge free-badge">FREE</span>`;
         }
 
-        const maxDayXP = 1000 * (item.totalCells / 1668);
+        const maxDayXP = 1000 * (item.totalCells / TOTAL_CHALLENGES);
         const bestScore = parseFloat(localStorage.getItem(`manodemy_day${item.day}_best_score`) || '0');
         
         let xpBadgeHTML = '';

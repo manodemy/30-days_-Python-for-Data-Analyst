@@ -2,7 +2,7 @@
 
 // --- StateManagement & Profile Avatar Constants ---
 const SAVE_DEBOUNCE_MS = 400;
-const TOTAL_QUESTIONS = 1668; // total across 30 days
+const TOTAL_QUESTIONS = 1530; // total across 30 days
 const AVATAR_COLORS = ['--avatar-bg-1', '--avatar-bg-2', '--avatar-bg-3'];
 const TOAST_DURATION_MS = 6000;
 
@@ -342,7 +342,7 @@ function calculateDayXP() {
   const solved = successfulCells.size;
   if (totalCells === 0) return 0;
   
-  const dayXP = 1000 * (solved / 1668) * timeMultiplier;
+  const dayXP = 1000 * (solved / TOTAL_QUESTIONS) * timeMultiplier;
   return dayXP;
 }
 
@@ -402,7 +402,7 @@ function startCountdownTicker() {
     
     const xpEarnedEl = document.getElementById('scoreXPEarned');
     const maxBarXPEl = document.getElementById('scoreMaxXP');
-    const maxDayXP = 1000 * (totalCells / 1668);
+    const maxDayXP = 1000 * (totalCells / TOTAL_QUESTIONS);
     
     if (xpEarnedEl) xpEarnedEl.textContent = dayXP.toFixed(1);
     if (maxBarXPEl) maxBarXPEl.textContent = maxDayXP.toFixed(1);
@@ -621,7 +621,7 @@ function updateScore() {
     
     const xpEarnedEl = document.getElementById('scoreXPEarned');
     const maxBarXPEl = document.getElementById('scoreMaxXP');
-    const maxDayXP = 1000 * (totalCells / 1668);
+    const maxDayXP = 1000 * (totalCells / TOTAL_QUESTIONS);
     
     if (xpEarnedEl) xpEarnedEl.textContent = dayXP.toFixed(1);
     if (maxBarXPEl) maxBarXPEl.textContent = maxDayXP.toFixed(1);
