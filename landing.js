@@ -357,16 +357,30 @@ async function setupGeoPricing() {
 
 
   // Fetch dynamic pricing from Supabase settings
-
   let prices = { inr: 149900, usd: 1900, original_inr: 499900, original_usd: 6900, discount_label_inr: '70% OFF', discount_label_usd: '72% OFF' };
-
   try {
-
-    const pRes = await fetch(SUPABASE_URL + '/functions/v1/get-pricing');
-
-    if (pRes.ok) prices = await pRes.json();
-
-  } catch (e) { console.log('Using fallback pricing'); }
+    if (supabaseClient) {
+      const { data: dbPricing } = await supabaseClient.from('settings').select('value').eq('key', 'pricing').single();
+      if (dbPricing && dbPricing.value) {
+        prices = {
+          inr: dbPricing.value.inr,
+          usd: dbPricing.value.usd,
+          original_inr: dbPricing.value.original_inr,
+          original_usd: dbPricing.value.original_usd,
+          discount_label_inr: dbPricing.value.discount_label,
+          discount_label_usd: dbPricing.value.discount_label_usd
+        };
+      } else {
+        const pRes = await fetch(SUPABASE_URL + '/functions/v1/get-pricing');
+        if (pRes.ok) prices = await pRes.json();
+      }
+    } else {
+      const pRes = await fetch(SUPABASE_URL + '/functions/v1/get-pricing');
+      if (pRes.ok) prices = await pRes.json();
+    }
+  } catch (e) {
+    console.log('Using fallback pricing:', e.message);
+  }
 
 
 
