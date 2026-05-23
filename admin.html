@@ -3835,7 +3835,7 @@
 
     async function toggleCoupon(code, isActive) {
       const { error } = await sb.from('coupons')
-        .update({ is_active: isActive, active: isActive })
+        .update({ is_active: isActive })
         .eq('code', code);
 
       if (error) {
