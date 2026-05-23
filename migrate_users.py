@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-Manodemy User & Status Migration Script (V1 to V2)
+Manodemy User & Relational Database Migration Script (V1 to V2)
 Author: Antigravity AI Coding Assistant
 
-This script securely migrates auth users, profiles, and premium course enrollments
-from the legacy Supabase database (V1) to the active Version 2 database (V2).
+This script securely migrates auth users, profiles, purchases, orders, payments,
+enrollments, page views, and activity logs from the legacy Supabase database (V1)
+to the active Version 2 database (V2).
 It preserves original credentials, payment statuses, and includes automatic 
 conflict reconciliation for pre-existing V2 emails.
 """
@@ -21,7 +22,7 @@ from datetime import datetime
 # ═══════════════════════════════════════════════════════════════
 # CONFIGURATION
 # ═══════════════════════════════════════════════════════════════
-LEGACY_URL = "https://erqoyvbuhmkyvcqgwcbz.supabase.co"
+LEGACY_URL = "https://gvhnwmuyrwissgkumeif.supabase.co"
 V2_URL = "https://erqoyvbuhmkyvcqgwcbz.supabase.co"
 
 # Set up SSL context to handle certificate verification gracefully if needed
@@ -206,9 +207,12 @@ def run_migration(legacy_key, v2_key, dry_run=False):
         "dry_run": dry_run,
         "users": {"total_legacy": 0, "migrated": 0, "skipped_existing": 0, "failed": 0},
         "profiles": {"total_legacy": 0, "upserted": 0},
+        "purchases": {"total_legacy": 0, "upserted": 0},
         "orders": {"total_legacy": 0, "upserted": 0},
         "payments": {"total_legacy": 0, "upserted": 0},
-        "enrollments": {"total_legacy": 0, "upserted": 0}
+        "enrollments": {"total_legacy": 0, "upserted": 0},
+        "page_views": {"total_legacy": 0, "upserted": 0},
+        "activity_logs": {"total_legacy": 0, "upserted": 0}
     }
     
     # ─── STEP 1: FETCH DATA FROM LEGACY DB ───
@@ -223,6 +227,9 @@ def run_migration(legacy_key, v2_key, dry_run=False):
     legacy_profiles = fetch_relational_table(LEGACY_URL, legacy_key, "profiles")
     report["profiles"]["total_legacy"] = len(legacy_profiles)
     
+    legacy_purchases = fetch_relational_table(LEGACY_URL, legacy_key, "purchases")
+    report["purchases"]["total_legacy"] = len(legacy_purchases)
+    
     legacy_orders = fetch_relational_table(LEGACY_URL, legacy_key, "orders")
     report["orders"]["total_legacy"] = len(legacy_orders)
     
@@ -231,6 +238,12 @@ def run_migration(legacy_key, v2_key, dry_run=False):
     
     legacy_enrollments = fetch_relational_table(LEGACY_URL, legacy_key, "enrollments")
     report["enrollments"]["total_legacy"] = len(legacy_enrollments)
+    
+    legacy_pageviews = fetch_relational_table(LEGACY_URL, legacy_key, "page_views")
+    report["page_views"]["total_legacy"] = len(legacy_pageviews)
+    
+    legacy_activity_logs = fetch_relational_table(LEGACY_URL, legacy_key, "activity_logs")
+    report["activity_logs"]["total_legacy"] = len(legacy_activity_logs)
     
     # ─── STEP 2: LOAD V2 ACCOUNTS & RECONCILE DUPLICATES ───
     log_step(2, "Analyzing V2 database and mapping duplicates")
@@ -294,7 +307,7 @@ def run_migration(legacy_key, v2_key, dry_run=False):
     log_step(4, "Re-mapping relational records and syncing public tables")
     
     # 1. Profiles Sync
-    v2_profile_keys = {"id", "full_name", "email", "country", "role", "plan_type", "last_sign_in_at", "created_at"}
+    v2_profile_keys = {"id", "full_name", "email", "country", "role", "plan", "plan_type", "last_sign_in_at", "created_at"}
     migrated_profiles = []
     for p in legacy_profiles:
         legacy_uid = p.get("id")
@@ -306,7 +319,20 @@ def run_migration(legacy_key, v2_key, dry_run=False):
     upserted_p = upsert_relational_rows(V2_URL, v2_key, "profiles", migrated_profiles, dry_run)
     report["profiles"]["upserted"] = upserted_p
     
-    # 2. Orders Sync
+    # 2. Purchases Sync (Main Analytics Table)
+    v2_purchase_keys = {"id", "user_id", "course_id", "amount_inr", "amount_original", "currency", "coupon_used", "payment_gateway", "status", "refunded_at", "created_at"}
+    migrated_purchases = []
+    for pu in legacy_purchases:
+        legacy_uid = pu.get("user_id")
+        if legacy_uid in uuid_map:
+            new_pu = {k: v for k, v in pu.items() if k in v2_purchase_keys}
+            new_pu["user_id"] = uuid_map[legacy_uid]
+            migrated_purchases.append(new_pu)
+            
+    upserted_pu = upsert_relational_rows(V2_URL, v2_key, "purchases", migrated_purchases, dry_run)
+    report["purchases"]["upserted"] = upserted_pu
+    
+    # 3. Orders Sync
     v2_order_keys = {"id", "user_id", "course_id", "amount", "currency", "gateway", "gateway_order_id", "status", "created_at", "updated_at"}
     migrated_orders = []
     for o in legacy_orders:
@@ -319,7 +345,7 @@ def run_migration(legacy_key, v2_key, dry_run=False):
     upserted_o = upsert_relational_rows(V2_URL, v2_key, "orders", migrated_orders, dry_run)
     report["orders"]["upserted"] = upserted_o
     
-    # 3. Payments Sync (Payments link to Orders, keep same order IDs and details)
+    # 4. Payments Sync (Payments link to Orders, keep same order IDs and details)
     v2_payment_keys = {"id", "order_id", "gateway_payment_id", "gateway_signature", "amount", "currency", "method", "status", "raw_response", "verified_at", "created_at"}
     migrated_payments = []
     # Verify order exists before inserting payment (to maintain relational sanity)
@@ -332,7 +358,7 @@ def run_migration(legacy_key, v2_key, dry_run=False):
     upserted_py = upsert_relational_rows(V2_URL, v2_key, "payments", migrated_payments, dry_run)
     report["payments"]["upserted"] = upserted_py
     
-    # 4. Enrollments Sync (Primary access bypass gates)
+    # 5. Enrollments Sync (Primary access bypass gates)
     v2_enrollment_keys = {"id", "user_id", "course_id", "payment_id", "enrolled_at", "expires_at"}
     migrated_enrollments = []
     for en in legacy_enrollments:
@@ -347,6 +373,35 @@ def run_migration(legacy_key, v2_key, dry_run=False):
             
     upserted_en = upsert_relational_rows(V2_URL, v2_key, "enrollments", migrated_enrollments, dry_run)
     report["enrollments"]["upserted"] = upserted_en
+    
+    # 6. Page Views Sync
+    v2_pageview_keys = {"id", "session_id", "page_url", "referrer", "country", "user_id", "created_at"}
+    migrated_pageviews = []
+    for pv in legacy_pageviews:
+        new_pv = {k: v for k, v in pv.items() if k in v2_pageview_keys}
+        # Remap user_id if authenticated, keep NULL if anonymous
+        if new_pv.get("user_id"):
+            if new_pv["user_id"] in uuid_map:
+                new_pv["user_id"] = uuid_map[new_pv["user_id"]]
+            else:
+                new_pv["user_id"] = None
+        migrated_pageviews.append(new_pv)
+        
+    upserted_pv = upsert_relational_rows(V2_URL, v2_key, "page_views", migrated_pageviews, dry_run)
+    report["page_views"]["upserted"] = upserted_pv
+    
+    # 7. Activity Logs Sync
+    v2_activity_keys = {"id", "user_id", "event_type", "page_url", "metadata", "created_at"}
+    migrated_activity = []
+    for al in legacy_activity_logs:
+        legacy_uid = al.get("user_id")
+        if legacy_uid in uuid_map:
+            new_al = {k: v for k, v in al.items() if k in v2_activity_keys}
+            new_al["user_id"] = uuid_map[legacy_uid]
+            migrated_activity.append(new_al)
+            
+    upserted_al = upsert_relational_rows(V2_URL, v2_key, "activity_logs", migrated_activity, dry_run)
+    report["activity_logs"]["upserted"] = upserted_al
     
     # Write migration report
     report_file = "migration_report.json"
@@ -377,7 +432,7 @@ if __name__ == "__main__":
         legacy_key = input("🔑 Legacy Service Role Key: ").strip()
         
     if not v2_key:
-        print(f"\n{YELLOW}Please obtain the service_role key from Version 2 Supabase Dashboard (gvhnwmuyrwissgkumeif):{RESET}")
+        print(f"\n{YELLOW}Please obtain the service_role key from Version 2 Supabase Dashboard (erqoyvbuhmkyvcqgwcbz):{RESET}")
         v2_key = input("🔑 V2 Service Role Key: ").strip()
         
     if not legacy_key or not v2_key:
@@ -394,9 +449,12 @@ if __name__ == "__main__":
         print(f"Auth Users Reconciled: {report['users']['skipped_existing']}")
         print(f"Auth Users Failed    : {report['users']['failed']}")
         print(f"Profiles Synced      : {report['profiles']['upserted']}")
+        print(f"Purchases Synced     : {report['purchases']['upserted']}")
         print(f"Orders Synced        : {report['orders']['upserted']}")
         print(f"Payments Synced      : {report['payments']['upserted']}")
         print(f"Enrollments Synced   : {report['enrollments']['upserted']}")
+        print(f"Page Views Synced    : {report['page_views']['upserted']}")
+        print(f"Activity Logs Synced : {report['activity_logs']['upserted']}")
         print(f"─" * 40)
         
     except KeyboardInterrupt:
