@@ -23,9 +23,13 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 -- Enable RLS
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can read own profile" ON public.profiles;
 CREATE POLICY "Users can read own profile" ON public.profiles FOR SELECT USING (auth.uid() = id);
+DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
 CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
+DROP POLICY IF EXISTS "Admins can select all profiles" ON public.profiles;
 CREATE POLICY "Admins can select all profiles" ON public.profiles FOR SELECT USING (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin') OR auth.role() = 'service_role');
+DROP POLICY IF EXISTS "Admins can update all profiles" ON public.profiles;
 CREATE POLICY "Admins can update all profiles" ON public.profiles FOR UPDATE USING (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin') OR auth.role() = 'service_role');
 
 -- Trigger to automatically create a profile on signup
@@ -65,7 +69,9 @@ CREATE TABLE IF NOT EXISTS public.orders (
 );
 
 ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Users can read own orders" ON public.orders;
 CREATE POLICY "Users can read own orders" ON public.orders FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Service role full access on orders" ON public.orders;
 CREATE POLICY "Service role full access on orders" ON public.orders FOR ALL USING (auth.role() = 'service_role');
 
 CREATE TABLE IF NOT EXISTS public.payments (
@@ -83,7 +89,9 @@ CREATE TABLE IF NOT EXISTS public.payments (
 );
 
 ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Users can read own payments" ON public.payments;
 CREATE POLICY "Users can read own payments" ON public.payments FOR SELECT USING (EXISTS (SELECT 1 FROM public.orders WHERE orders.id = payments.order_id AND orders.user_id = auth.uid()));
+DROP POLICY IF EXISTS "Service role full access on payments" ON public.payments;
 CREATE POLICY "Service role full access on payments" ON public.payments FOR ALL USING (auth.role() = 'service_role');
 
 
@@ -101,7 +109,9 @@ CREATE TABLE IF NOT EXISTS public.enrollments (
 );
 
 ALTER TABLE public.enrollments ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Users can read own enrollments" ON public.enrollments;
 CREATE POLICY "Users can read own enrollments" ON public.enrollments FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Service role full access on enrollments" ON public.enrollments;
 CREATE POLICY "Service role full access on enrollments" ON public.enrollments FOR ALL USING (auth.role() = 'service_role');
 
 -- Helper function to check if active session has purchased course
@@ -136,7 +146,9 @@ CREATE TABLE IF NOT EXISTS public.coupons (
 );
 
 ALTER TABLE public.coupons ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Anyone can read active coupons" ON public.coupons;
 CREATE POLICY "Anyone can read active coupons" ON public.coupons FOR SELECT USING (is_active = true AND (expires_at IS NULL OR expires_at > now()));
+DROP POLICY IF EXISTS "Service role full access on coupons" ON public.coupons;
 CREATE POLICY "Service role full access on coupons" ON public.coupons FOR ALL USING (auth.role() = 'service_role');
 
 
@@ -159,8 +171,10 @@ CREATE TABLE IF NOT EXISTS public.admin_audit_log (
 );
 
 ALTER TABLE public.admin_audit_log ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admins can view audit logs" ON public.admin_audit_log;
 CREATE POLICY "Admins can view audit logs" ON public.admin_audit_log FOR SELECT TO authenticated
   USING (EXISTS (SELECT 1 FROM public.profiles WHERE profiles.id = auth.uid() AND role = 'admin'));
+DROP POLICY IF EXISTS "Service role full access on audit" ON public.admin_audit_log;
 CREATE POLICY "Service role full access on audit" ON public.admin_audit_log FOR ALL USING (auth.role() = 'service_role');
 
 CREATE TABLE IF NOT EXISTS public.settings (
@@ -171,7 +185,9 @@ CREATE TABLE IF NOT EXISTS public.settings (
 );
 
 ALTER TABLE public.settings ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Anyone can read settings" ON public.settings;
 CREATE POLICY "Anyone can read settings" ON public.settings FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Service role can write settings" ON public.settings;
 CREATE POLICY "Service role can write settings" ON public.settings FOR ALL USING (auth.role() = 'service_role');
 
 -- Insert standard settings configuration
@@ -196,6 +212,7 @@ CREATE TABLE IF NOT EXISTS public.notifications (
 );
 
 ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Service role full access on notifications" ON public.notifications;
 CREATE POLICY "Service role full access on notifications" ON public.notifications FOR ALL USING (auth.role() = 'service_role');
 
 -- Helper to verify admin privileges
@@ -237,10 +254,15 @@ CREATE TABLE IF NOT EXISTS public.reviews (
 
 ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can read approved reviews" ON public.reviews;
 CREATE POLICY "Anyone can read approved reviews" ON public.reviews FOR SELECT USING (status = 'approved' OR auth.role() = 'service_role');
+DROP POLICY IF EXISTS "Anyone can insert reviews" ON public.reviews;
 CREATE POLICY "Anyone can insert reviews" ON public.reviews FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Anyone can update reviews" ON public.reviews;
 CREATE POLICY "Anyone can update reviews" ON public.reviews FOR UPDATE USING (true);
+DROP POLICY IF EXISTS "Service role full access on reviews" ON public.reviews;
 CREATE POLICY "Service role full access on reviews" ON public.reviews FOR ALL USING (auth.role() = 'service_role');
+DROP POLICY IF EXISTS "Admins can full access on reviews" ON public.reviews;
 CREATE POLICY "Admins can full access on reviews" ON public.reviews FOR ALL USING (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin'));
 
 CREATE TABLE IF NOT EXISTS public.review_votes (
@@ -253,6 +275,7 @@ CREATE TABLE IF NOT EXISTS public.review_votes (
 );
 
 ALTER TABLE public.review_votes ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Anyone can read and write votes" ON public.review_votes;
 CREATE POLICY "Anyone can read and write votes" ON public.review_votes FOR ALL USING (true);
 
 -- reviewer verification trigger on submit
@@ -286,7 +309,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
-CREATE OR REPLACE TRIGGER tr_verify_reviewer_on_submit
+DROP TRIGGER IF EXISTS tr_verify_reviewer_on_submit ON public.reviews;
+CREATE TRIGGER tr_verify_reviewer_on_submit
   BEFORE INSERT ON public.reviews
   FOR EACH ROW EXECUTE FUNCTION public.check_reviewer_verification();
 
