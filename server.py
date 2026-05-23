@@ -436,8 +436,8 @@ def build_page(day_num, title, body, secs, cells):
         window.location.href = 'index.html?reason=sdk_blocked';
         return;
       }}
-      const SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-      const SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
+      const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
+      const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
       const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
       
       const {{ data: {{ session }}, error }} = await sb.auth.getSession();

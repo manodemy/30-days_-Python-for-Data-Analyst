@@ -163,7 +163,6 @@ CREATE INDEX IF NOT EXISTS idx_reviews_created_at ON public.reviews(created_at D
 CREATE INDEX IF NOT EXISTS idx_review_votes_match ON public.review_votes(review_id, client_uuid, vote_type);
 
 -- 11. EXPLICITLY GRANT API PERMISSIONS (Exposes reviews to anon REST queries)
--- Critical: PostgREST won't show the table unless permissions are granted to 'anon' role!
 GRANT ALL ON public.reviews TO anon, authenticated, service_role;
 GRANT ALL ON public.review_votes TO anon, authenticated, service_role;
 GRANT ALL ON public.profiles TO anon, authenticated, service_role;

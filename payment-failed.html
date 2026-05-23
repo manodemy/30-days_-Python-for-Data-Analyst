@@ -1,50 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment Failed — Manodemy</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="landing.css?v=7.0">
-<style>
-  body { display:flex; align-items:center; justify-content:center; min-height:100vh; padding-top:0 }
-  .fail-card { text-align:center; max-width:500px; padding:3rem 2rem;
-    background:var(--surface); border:1px solid rgba(244,63,94,0.2); border-radius:24px;
-    box-shadow:0 40px 80px rgba(0,0,0,0.5); animation:fadeUp .7s ease-out }
-  .fail-icon { font-size:4rem; margin-bottom:1rem }
-  .fail-card h1 { font:900 2rem var(--font-h); color:#fff; margin-bottom:0.5rem }
-  .fail-card p { color:var(--muted); margin-bottom:1.5rem; line-height:1.6 }
-  .retry-btn { display:inline-flex; align-items:center; gap:0.5rem; padding:1rem 2.5rem;
-    background:linear-gradient(135deg, var(--rose), #be123c); color:#fff;
-    font:700 1.1rem var(--font-h); border-radius:14px; text-decoration:none;
-    transition:all .25s; box-shadow:0 4px 20px rgba(244,63,94,0.3) }
-  .retry-btn:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(244,63,94,0.5) }
-  .home-link { display:inline-block; margin-top:1rem; color:var(--cyan); text-decoration:none; font-size:0.9rem }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-</style>
-</head>
-<body>
-<div class="fail-card">
-  <div class="fail-icon">😞</div>
-  <h1>Payment Failed</h1>
-  <p>Your payment could not be processed. No amount has been charged to your account.</p>
-  <p style="font-size:0.85rem;color:#64748b">If money was deducted, it will be auto-refunded within 5–7 business days.</p>
-  <a href="index.html#pricing" class="retry-btn">🔄 Try Again</a>
-  <br>
-  <a href="index.html" class="home-link">← Back to Home</a>
-  <p style="margin-top:1.5rem;font-size:0.8rem;color:var(--muted)">Need help? Email <strong>support@manodemy.com</strong></p>
-</div>
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
-</body>
-</html>
-
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Payment Failed — Manodemy</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="landing.css?v=7.0">
+
+<style>
+
+  body { display:flex; align-items:center; justify-content:center; min-height:100vh; padding-top:0 }
+
+  .fail-card { text-align:center; max-width:500px; padding:3rem 2rem;
+
+    background:var(--surface); border:1px solid rgba(244,63,94,0.2); border-radius:24px;
+
+    box-shadow:0 40px 80px rgba(0,0,0,0.5); animation:fadeUp .7s ease-out }
+
+  .fail-icon { font-size:4rem; margin-bottom:1rem }
+
+  .fail-card h1 { font:900 2rem var(--font-h); color:#fff; margin-bottom:0.5rem }
+
+  .fail-card p { color:var(--muted); margin-bottom:1.5rem; line-height:1.6 }
+
+  .retry-btn { display:inline-flex; align-items:center; gap:0.5rem; padding:1rem 2.5rem;
+
+    background:linear-gradient(135deg, var(--rose), #be123c); color:#fff;
+
+    font:700 1.1rem var(--font-h); border-radius:14px; text-decoration:none;
+
+    transition:all .25s; box-shadow:0 4px 20px rgba(244,63,94,0.3) }
+
+  .retry-btn:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(244,63,94,0.5) }
+
+  .home-link { display:inline-block; margin-top:1rem; color:var(--cyan); text-decoration:none; font-size:0.9rem }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="fail-card">
+
+  <div class="fail-icon">😞</div>
+
+  <h1>Payment Failed</h1>
+
+  <p>Your payment could not be processed. No amount has been charged to your account.</p>
+
+  <p style="font-size:0.85rem;color:#64748b">If money was deducted, it will be auto-refunded within 5–7 business days.</p>
+
+  <a href="index.html#pricing" class="retry-btn">🔄 Try Again</a>
+
+  <br>
+
+  <a href="index.html" class="home-link">← Back to Home</a>
+
+  <p style="margin-top:1.5rem;font-size:0.8rem;color:var(--muted)">Need help? Email <strong>support@manodemy.com</strong></p>
+
+</div>
+
+
+
+  <!-- Manodemy Telemetry & Analytics -->
+
+  <script>
+
+    if (!window.MANODEMY_CONFIG) {
+
+        window.MANODEMY_CONFIG = {};
+
+    }
+
+    window.MANODEMY_CONFIG.SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
+
+    window.MANODEMY_CONFIG.SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
+
+  </script>
+
+  <script src="manodemy-telemetry.js"></script>
+
+</body>
+
+</html>
+
+
+

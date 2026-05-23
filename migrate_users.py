@@ -21,8 +21,8 @@ from datetime import datetime
 # ═══════════════════════════════════════════════════════════════
 # CONFIGURATION
 # ═══════════════════════════════════════════════════════════════
-LEGACY_URL = "https://gvhnwmuyrwissgkumeif.supabase.co"
-V2_URL = "https://gvhnwmuyrwissgkumeif.supabase.co"
+LEGACY_URL = "https://erqoyvbuhmkyvcqgwcbz.supabase.co"
+V2_URL = "https://erqoyvbuhmkyvcqgwcbz.supabase.co"
 
 # Set up SSL context to handle certificate verification gracefully if needed
 ssl_context = ssl.create_default_context()
