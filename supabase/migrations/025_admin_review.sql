@@ -1,14 +1,20 @@
 -- ═══════════════════════════════════════════════════════════════
--- MANODEMY V2 — UNIFIED SCHEMA PATCH & SEED UTILITY
--- Run this in your Supabase SQL Editor to patch legacy tables, create reviews system, and seed data
+-- MANODEMY V2 — COMPLETE RESET & UNIFIED SCHEMA DEPLOYMENT
+-- Run this in your Supabase SQL Editor to wipe manual table drafts,
+-- create clean reviews system, and grant proper API permissions.
 -- ═══════════════════════════════════════════════════════════════
 
--- 1. PATCH PROFILES TABLE (Adds V2 student dashboard plan columns)
+-- 1. DROP EXISTING TABLE DRAFTS TO START FRESH
+DROP TRIGGER IF EXISTS tr_verify_reviewer_on_submit ON public.reviews;
+DROP TABLE IF EXISTS public.review_votes CASCADE;
+DROP TABLE IF EXISTS public.reviews CASCADE;
+
+-- 2. PATCH PROFILES TABLE (Adds V2 student dashboard plan columns)
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS plan TEXT DEFAULT 'free';
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS plan_type TEXT DEFAULT 'free';
 
--- 2. CREATE OR UPDATE REVIEWS TABLE
-CREATE TABLE IF NOT EXISTS public.reviews (
+-- 3. CREATE REVIEWS TABLE WITH PROPER SCHEMAS
+CREATE TABLE public.reviews (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   reviewer_name TEXT NOT NULL,
@@ -30,12 +36,8 @@ CREATE TABLE IF NOT EXISTS public.reviews (
   updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Ensure title and cohort_date are nullable
-ALTER TABLE public.reviews ALTER COLUMN title DROP NOT NULL;
-ALTER TABLE public.reviews ALTER COLUMN cohort_date DROP NOT NULL;
-
--- 3. CREATE VOTES TRACKING TABLE (Helpful / Reports)
-CREATE TABLE IF NOT EXISTS public.review_votes (
+-- 4. CREATE VOTES TRACKING TABLE (Helpful / Reports)
+CREATE TABLE public.review_votes (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   review_id UUID NOT NULL REFERENCES public.reviews(id) ON DELETE CASCADE,
   client_uuid TEXT NOT NULL, -- Browser fingerprint UUID to prevent double votes
@@ -44,21 +46,11 @@ CREATE TABLE IF NOT EXISTS public.review_votes (
   UNIQUE(review_id, client_uuid, vote_type)
 );
 
--- 4. ENABLE ROW LEVEL SECURITY (RLS)
+-- 5. ENABLE ROW LEVEL SECURITY (RLS)
 ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.review_votes ENABLE ROW LEVEL SECURITY;
 
--- 5. DROP LEGACY POLICIES TO AVOID DUPLICATE ERRORS
-DROP POLICY IF EXISTS "Anyone can read approved reviews" ON public.reviews;
-DROP POLICY IF EXISTS "Anyone can insert reviews" ON public.reviews;
-DROP POLICY IF EXISTS "Anyone can update reviews" ON public.reviews;
-DROP POLICY IF EXISTS "Service role full access on reviews" ON public.reviews;
-DROP POLICY IF EXISTS "Admins can select all reviews" ON public.reviews;
-DROP POLICY IF EXISTS "Admins can update reviews" ON public.reviews;
-DROP POLICY IF EXISTS "Admins can delete reviews" ON public.reviews;
-DROP POLICY IF EXISTS "Anyone can read and write votes" ON public.review_votes;
-
--- 6. DEFINE ACCESS CONTROL POLICIES
+-- 6. DEFINE ALL REGULAR & ADMIN ACCESS CONTROL POLICIES
 
 -- Read: Anyone can read approved reviews
 CREATE POLICY "Anyone can read approved reviews" 
@@ -76,8 +68,6 @@ CREATE POLICY "Anyone can update reviews"
   USING (true);
 
 -- Delete & Admin capabilities:
--- We allow admins to perform SELECT, UPDATE, and DELETE on reviews table.
--- Admins are identified by having role = 'admin' inside public.profiles.
 CREATE POLICY "Admins can select all reviews"
   ON public.reviews FOR SELECT
   USING (
@@ -147,7 +137,6 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- Recreate trigger on insert
-DROP TRIGGER IF EXISTS tr_verify_reviewer_on_submit ON public.reviews;
 CREATE TRIGGER tr_verify_reviewer_on_submit
   BEFORE INSERT ON public.reviews
   FOR EACH ROW EXECUTE FUNCTION public.check_reviewer_verification();
@@ -159,6 +148,7 @@ CREATE INDEX IF NOT EXISTS idx_reviews_created_at ON public.reviews(created_at D
 CREATE INDEX IF NOT EXISTS idx_review_votes_match ON public.review_votes(review_id, client_uuid, vote_type);
 
 -- 9. EXPLICITLY GRANT API PERMISSIONS (Exposes reviews to anon REST queries)
+-- Critical: PostgREST won't show the table unless permissions are granted to 'anon' role!
 GRANT ALL ON public.reviews TO anon, authenticated, service_role;
 GRANT ALL ON public.review_votes TO anon, authenticated, service_role;
 GRANT ALL ON public.profiles TO anon, authenticated, service_role;
@@ -166,7 +156,7 @@ GRANT ALL ON public.profiles TO anon, authenticated, service_role;
 -- 10. REBUILD SCHEMA CACHE
 NOTIFY pgrst, 'reload schema';
 
--- 11. INSERT PREMIUM SEED DATA (Only if table is empty)
+-- 11. INSERT PREMIUM SEED DATA
 INSERT INTO public.reviews (
   reviewer_name,
   reviewer_email,
@@ -178,8 +168,7 @@ INSERT INTO public.reviews (
   is_verified,
   helpful_count,
   status
-) 
-SELECT * FROM (VALUES
+) VALUES 
 (
   'Aarav Sharma',
   'aarav.sharma@gmail.com',
@@ -239,6 +228,4 @@ SELECT * FROM (VALUES
   true,
   5,
   'approved'
-)
-) AS seed_data (reviewer_name, reviewer_email, rating, comment, pros, cons, recommend, is_verified, helpful_count, status)
-WHERE NOT EXISTS (SELECT 1 FROM public.reviews LIMIT 1);
+);
