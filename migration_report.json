@@ -1,15 +1,19 @@
 {
-  "timestamp": "2026-05-22T17:08:02.064926",
+  "timestamp": "2026-05-23T17:39:00.648152",
   "dry_run": false,
   "users": {
-    "total_legacy": 14,
+    "total_legacy": 15,
     "migrated": 0,
     "skipped_existing": 14,
-    "failed": 0
+    "failed": 1
   },
   "profiles": {
-    "total_legacy": 14,
-    "upserted": 14
+    "total_legacy": 15,
+    "upserted": 15
+  },
+  "purchases": {
+    "total_legacy": 3,
+    "upserted": 0
   },
   "orders": {
     "total_legacy": 36,
@@ -22,5 +26,13 @@
   "enrollments": {
     "total_legacy": 3,
     "upserted": 3
+  },
+  "page_views": {
+    "total_legacy": 339,
+    "upserted": 339
+  },
+  "activity_logs": {
+    "total_legacy": 499,
+    "upserted": 499
   }
 }

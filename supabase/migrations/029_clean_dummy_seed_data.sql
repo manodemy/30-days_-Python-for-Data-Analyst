@@ -133,5 +133,10 @@ DELETE FROM auth.users WHERE id IN (
   '5c6d7e8f-9a0b-1c2d-3e4f-5a6b7c8d9e0f'
 );
 
+-- 9. FIX purchases.course_id TYPE CONSTRAINT (from UUID to TEXT)
+-- Since V2 courses are referenced by their string handles (like 'python-30day'),
+-- this type conversion is required to support legacy V1 purchase rows.
+ALTER TABLE public.purchases ALTER COLUMN course_id TYPE TEXT;
+
 -- Force schema reload to commit cache instantly
 NOTIFY pgrst, 'reload schema';
