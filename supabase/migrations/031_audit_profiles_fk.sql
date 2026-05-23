@@ -23,3 +23,27 @@ ALTER TABLE public.admin_audit_log
   FOREIGN KEY (admin_id)
   REFERENCES public.profiles(id)
   ON DELETE SET NULL;
+
+-- 3. Fix RLS policies to allow Admins to read and insert audit logs
+DROP POLICY IF EXISTS "Admins can select audit logs" ON public.admin_audit_log;
+CREATE POLICY "Admins can select audit logs"
+ON public.admin_audit_log
+FOR SELECT
+USING (
+  EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid() AND role = 'admin'
+  )
+);
+
+DROP POLICY IF EXISTS "Admins can insert audit logs" ON public.admin_audit_log;
+CREATE POLICY "Admins can insert audit logs"
+ON public.admin_audit_log
+FOR INSERT
+WITH CHECK (
+  EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid() AND role = 'admin'
+  )
+);
+
