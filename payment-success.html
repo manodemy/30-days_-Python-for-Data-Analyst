@@ -1,67 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment Successful — Manodemy</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="landing.css?v=7.0">
-<style>
-  body { display:flex; align-items:center; justify-content:center; min-height:100vh; padding-top:0 }
-  .success-card { text-align:center; max-width:500px; padding:3rem 2rem;
-    background:var(--surface); border:1px solid var(--border); border-radius:24px;
-    box-shadow:0 40px 80px rgba(0,0,0,0.5); animation:fadeUp .7s ease-out }
-  .success-icon { font-size:4rem; margin-bottom:1rem; animation:float 3s ease-in-out infinite }
-  .success-card h1 { font:900 2rem var(--font-h); color:#fff; margin-bottom:0.5rem }
-  .success-card p { color:var(--muted); margin-bottom:1.5rem; line-height:1.6 }
-  .success-card .order-id { font:500 0.8rem var(--font-c); color:#64748b; margin-bottom:1.5rem }
-  .success-cta { display:inline-flex; align-items:center; gap:0.5rem; padding:1rem 2.5rem;
-    background:linear-gradient(135deg, var(--cyan), var(--purple)); color:#fff;
-    font:700 1.1rem var(--font-h); border-radius:14px; text-decoration:none;
-    transition:all .25s; box-shadow:0 4px 20px rgba(0,230,246,0.3) }
-  .success-cta:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(0,230,246,0.5) }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-</style>
-</head>
-<body>
-<div class="success-card">
-  <div class="success-icon">🎉</div>
-  <h1>Payment Successful!</h1>
-  <p>Welcome to the <strong>30-Day Python Data Analytics Masterclass</strong>. Your lifetime access is now active.</p>
-  <p class="order-id" id="orderId"></p>
-  <a href="home.html" class="success-cta">🚀 Start Learning Now</a>
-  <p style="margin-top:1.5rem;font-size:0.8rem;color:var(--muted)">A confirmation has been sent to your email.</p>
-</div>
-<script src="supabase.js"></script>
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const oid = params.get('order_id');
-  if (oid) document.getElementById('orderId').textContent = 'Order ID: ' + oid;
-
-  // Verify enrollment with Supabase
-  const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
-  const SUPA_KEY = 'sb_publishable_ZWfeHvv41ErWTcx2BtfdIQ_jw1EO4_0';
-  const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-
-  sb.rpc('check_enrollment', { p_course_id: 'python-30day' }).then(({ data }) => {
-    if (data === true) {
-      localStorage.setItem('manodemy_auth', 'true');
-      localStorage.setItem('manodemy_enrolled', 'true');
-    }
-  }).catch(e => console.error(e));
-</script>
-
-  <!-- Manodemy Telemetry & Analytics -->
-  <script>
-    if (!window.MANODEMY_CONFIG) {
-        window.MANODEMY_CONFIG = {};
-    }
-    window.MANODEMY_CONFIG.SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
-    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_ZWfeHvv41ErWTcx2BtfdIQ_jw1EO4_0';
-  </script>
-  <script src="manodemy-telemetry.js"></script>
-</body>
-</html>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Successful — Manodemy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="landing.css?v=7.0">
+<style>
+  body { display:flex; align-items:center; justify-content:center; min-height:100vh; padding-top:0 }
+  .success-card { text-align:center; max-width:500px; padding:3rem 2rem;
+    background:var(--surface); border:1px solid var(--border); border-radius:24px;
+    box-shadow:0 40px 80px rgba(0,0,0,0.5); animation:fadeUp .7s ease-out }
+  .success-icon { font-size:4rem; margin-bottom:1rem; animation:float 3s ease-in-out infinite }
+  .success-card h1 { font:900 2rem var(--font-h); color:#fff; margin-bottom:0.5rem }
+  .success-card p { color:var(--muted); margin-bottom:1.5rem; line-height:1.6 }
+  .success-card .order-id { font:500 0.8rem var(--font-c); color:#64748b; margin-bottom:1.5rem }
+  .success-cta { display:inline-flex; align-items:center; gap:0.5rem; padding:1rem 2.5rem;
+    background:linear-gradient(135deg, var(--cyan), var(--purple)); color:#fff;
+    font:700 1.1rem var(--font-h); border-radius:14px; text-decoration:none;
+    transition:all .25s; box-shadow:0 4px 20px rgba(0,230,246,0.3) }
+  .success-cta:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(0,230,246,0.5) }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+<div class="success-card">
+  <div class="success-icon">🎉</div>
+  <h1>Payment Successful!</h1>
+  <p>Welcome to the <strong>30-Day Python Data Analytics Masterclass</strong>. Your lifetime access is now active.</p>
+  <p class="order-id" id="orderId"></p>
+  <a href="home.html" class="success-cta">🚀 Start Learning Now</a>
+  <p style="margin-top:1.5rem;font-size:0.8rem;color:var(--muted)">A confirmation has been sent to your email.</p>
+</div>
+<script src="supabase.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const oid = params.get('order_id');
+  if (oid) document.getElementById('orderId').textContent = 'Order ID: ' + oid;
+
+  // Verify enrollment with Supabase
+  const SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
+  const SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
+  const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+
+  sb.rpc('check_enrollment', { p_course_id: 'python-30day' }).then(({ data }) => {
+    if (data === true) {
+      localStorage.setItem('manodemy_auth', 'true');
+      localStorage.setItem('manodemy_enrolled', 'true');
+    }
+  }).catch(e => console.error(e));
+</script>
+
+  <!-- Manodemy Telemetry & Analytics -->
+  <script>
+    if (!window.MANODEMY_CONFIG) {
+        window.MANODEMY_CONFIG = {};
+    }
+    window.MANODEMY_CONFIG.SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
+    window.MANODEMY_CONFIG.SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
+  </script>
+  <script src="manodemy-telemetry.js"></script>
+</body>
+</html>
+

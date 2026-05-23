@@ -607,8 +607,8 @@ html_content = """<!DOCTYPE html>
 </div>
 
 <script>
-  const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
-  const SUPA_KEY = 'sb_publishable_ZWfeHvv41ErWTcx2BtfdIQ_jw1EO4_0';
+  const SUPA_URL = 'https://gvhnwmuyrwissgkumeif.supabase.co';
+  const SUPA_KEY = 'sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq';
   const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
 
   let INR_TO_USD_RATE = parseFloat(localStorage.getItem('bd_inr_usd_rate')) || 83.5;

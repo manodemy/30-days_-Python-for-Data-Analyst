@@ -22,7 +22,7 @@ from datetime import datetime
 # CONFIGURATION
 # ═══════════════════════════════════════════════════════════════
 LEGACY_URL = "https://gvhnwmuyrwissgkumeif.supabase.co"
-V2_URL = "https://erqoyvbuhmkyvcqgwcbz.supabase.co"
+V2_URL = "https://gvhnwmuyrwissgkumeif.supabase.co"
 
 # Set up SSL context to handle certificate verification gracefully if needed
 ssl_context = ssl.create_default_context()
@@ -377,7 +377,7 @@ if __name__ == "__main__":
         legacy_key = input("🔑 Legacy Service Role Key: ").strip()
         
     if not v2_key:
-        print(f"\n{YELLOW}Please obtain the service_role key from Version 2 Supabase Dashboard (erqoyvbuhmkyvcqgwcbz):{RESET}")
+        print(f"\n{YELLOW}Please obtain the service_role key from Version 2 Supabase Dashboard (gvhnwmuyrwissgkumeif):{RESET}")
         v2_key = input("🔑 V2 Service Role Key: ").strip()
         
     if not legacy_key or not v2_key:
