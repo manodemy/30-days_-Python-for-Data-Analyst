@@ -548,6 +548,99 @@
       color: var(--ink-muted);
       font-weight: 700;
       text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      position: relative;
+    }
+
+    .info-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--ink-muted);
+      font-size: 0.65rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    .info-icon:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--void);
+      box-shadow: 0 0 8px var(--gold);
+    }
+
+    .metric-tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: rgba(20, 20, 35, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 0.55rem 0.8rem;
+      color: var(--ink-dim);
+      font-size: 0.72rem;
+      font-family: var(--font-body);
+      line-height: 1.35;
+      width: 240px;
+      box-shadow: var(--shadow-card), 0 8px 32px rgba(0, 0, 0, 0.5);
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      text-align: left;
+      font-weight: 400;
+      letter-spacing: normal;
+      text-transform: none;
+    }
+
+    .metric-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 5px;
+      border-style: solid;
+      border-color: rgba(20, 20, 35, 0.95) transparent transparent transparent;
+    }
+
+    .info-icon:hover .metric-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Table Zebra Striping and Premium Glow */
+    #transactionsTable tbody tr:nth-child(even),
+    #userRosterTable tbody tr:nth-child(even),
+    #engagementTable tbody tr:nth-child(even),
+    #couponsTable tbody tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.015);
+    }
+    
+    #transactionsTable tbody tr:hover,
+    #userRosterTable tbody tr:hover,
+    #engagementTable tbody tr:hover,
+    #couponsTable tbody tr:hover {
+      background: rgba(201, 168, 76, 0.04) !important;
+      box-shadow: inset 0 0 8px rgba(201, 168, 76, 0.05);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
     }
 
     .kpi-value {
@@ -1075,11 +1168,17 @@
    SKELETONS
 ───────────────────────────────────────────── */
     .skeleton {
-      background: linear-gradient(90deg, var(--elevated) 25%, var(--overlay) 50%, var(--elevated) 75%);
+      background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.03) 25%, 
+        rgba(255, 255, 255, 0.08) 50%, 
+        rgba(255, 255, 255, 0.03) 75%
+      );
       background-size: 200% 100%;
-      animation: shimmer 1.8s infinite;
-      border-radius: 3px;
+      animation: shimmer 1.5s infinite linear;
+      border-radius: 4px;
       display: inline-block;
+      position: relative;
+      overflow: hidden;
     }
 
     @keyframes shimmer {
@@ -1653,7 +1752,12 @@
           </div>
           <div class="kpi-grid">
             <div class="kpi-wrapper">
-              <div class="kpi-label">Gross Revenue</div>
+              <div class="kpi-label">
+                Gross Revenue
+                <span class="info-icon">i
+                  <span class="metric-tooltip">Sum of all payments collected (incl. later refunded). Status: completed + refunded</span>
+                </span>
+              </div>
               <div class="kpi-card">
 
                 <div class="kpi-value" id="kpi-gross-rev">
@@ -1665,7 +1769,12 @@
               </div>
             </div>
             <div class="kpi-wrapper">
-              <div class="kpi-label">Net Revenue</div>
+              <div class="kpi-label">
+                Net Revenue
+                <span class="info-icon">i
+                  <span class="metric-tooltip">Gross Revenue − Refund Amount</span>
+                </span>
+              </div>
               <div class="kpi-card">
 
                 <div class="kpi-value" id="kpi-net-rev">
@@ -1677,7 +1786,12 @@
               </div>
             </div>
             <div class="kpi-wrapper">
-              <div class="kpi-label">Refund Rate</div>
+              <div class="kpi-label">
+                Refund Rate
+                <span class="info-icon">i
+                  <span class="metric-tooltip">(Refund Count / Total Transactions) × 100</span>
+                </span>
+              </div>
               <div class="kpi-card">
 
                 <div class="kpi-value" id="kpi-refund-rate">
@@ -1689,7 +1803,12 @@
               </div>
             </div>
             <div class="kpi-wrapper">
-              <div class="kpi-label">Avg Order Value</div>
+              <div class="kpi-label">
+                Avg Order Value
+                <span class="info-icon">i
+                  <span class="metric-tooltip">Gross Revenue / Total Transactions</span>
+                </span>
+              </div>
               <div class="kpi-card">
 
                 <div class="kpi-value" id="kpi-aov">
@@ -1701,7 +1820,12 @@
               </div>
             </div>
             <div class="kpi-wrapper">
-              <div class="kpi-label">ARPU</div>
+              <div class="kpi-label">
+                ARPU
+                <span class="info-icon">i
+                  <span class="metric-tooltip">Gross Revenue / Distinct Paying Users</span>
+                </span>
+              </div>
               <div class="kpi-card">
 
                 <div class="kpi-value" id="kpi-arpu">
@@ -1775,7 +1899,12 @@
           </div>
           <div class="kpi-grid" style="grid-template-columns: repeat(4, 1fr);">
             <div class="kpi-wrapper">
-              <div class="kpi-label">New Signups</div>
+              <div class="kpi-label">
+                New Signups
+                <span class="info-icon">i
+                  <span class="metric-tooltip">Profiles created within the selected date range</span>
+                </span>
+              </div>
               <div class="kpi-card">
 
                 <div class="kpi-value" id="kpi-new-signups">
@@ -1787,7 +1916,12 @@
               </div>
             </div>
             <div class="kpi-wrapper">
-              <div class="kpi-label">New Paying Users</div>
+              <div class="kpi-label">
+                New Paying Users
+                <span class="info-icon">i
+                  <span class="metric-tooltip">First-time purchasers in this period (excludes repeat buyers)</span>
+                </span>
+              </div>
               <div class="kpi-card">
 
                 <div class="kpi-value" id="kpi-new-paying">
@@ -1799,7 +1933,12 @@
               </div>
             </div>
             <div class="kpi-wrapper">
-              <div class="kpi-label">Conversion Rate</div>
+              <div class="kpi-label">
+                Conversion Rate
+                <span class="info-icon">i
+                  <span class="metric-tooltip">(New Paying Users / New Signups) × 100</span>
+                </span>
+              </div>
               <div class="kpi-card">
 
                 <div class="kpi-value" id="kpi-conv-rate">
@@ -1811,7 +1950,12 @@
               </div>
             </div>
             <div class="kpi-wrapper">
-              <div class="kpi-label">Total Users (All-time)</div>
+              <div class="kpi-label">
+                Total Users (All-time)
+                <span class="info-icon">i
+                  <span class="metric-tooltip">Total registered users in the database since inception</span>
+                </span>
+              </div>
               <div class="kpi-card">
                 <div class="kpi-value" id="kpi-total-users" style="color: var(--ink);">
                   <div class="skeleton sk-val"></div>
@@ -1821,7 +1965,12 @@
           </div>
           <div class="kpi-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom:1.5rem;">
             <div class="kpi-wrapper">
-              <div class="kpi-label">INR Revenue (Period)</div>
+              <div class="kpi-label">
+                INR Revenue (Period)
+                <span class="info-icon">i
+                  <span class="metric-tooltip">Gross revenue generated in Indian Rupees (INR) during this period</span>
+                </span>
+              </div>
               <div class="kpi-card">
                 <div class="kpi-value" id="kpi-inr-rev" style="color: var(--gold);">
                   <div class="skeleton sk-val"></div>
@@ -1829,7 +1978,12 @@
               </div>
             </div>
             <div class="kpi-wrapper">
-              <div class="kpi-label">USD Revenue (Period)</div>
+              <div class="kpi-label">
+                USD Revenue (Period)
+                <span class="info-icon">i
+                  <span class="metric-tooltip">Gross revenue generated in United States Dollars (USD) during this period</span>
+                </span>
+              </div>
               <div class="kpi-card">
                 <div class="kpi-value" id="kpi-usd-rev" style="color: var(--emerald);">
                   <div class="skeleton sk-val"></div>
@@ -2075,7 +2229,12 @@
           </div>
           <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);">
             <div class="kpi-wrapper">
-              <div class="kpi-label">Active Users</div>
+              <div class="kpi-label">
+                Active Users
+                <span class="info-icon">i
+                  <span class="metric-tooltip">Distinct users with any activity_log in this period</span>
+                </span>
+              </div>
               <div class="kpi-card">
 
                 <div class="kpi-value" id="kpi-active-users">
@@ -2087,7 +2246,12 @@
               </div>
             </div>
             <div class="kpi-wrapper">
-              <div class="kpi-label">Churned Users</div>
+              <div class="kpi-label">
+                Churned Users
+                <span class="info-icon">i
+                  <span class="metric-tooltip">Users active in previous period but NOT in current period</span>
+                </span>
+              </div>
               <div class="kpi-card">
 
                 <div class="kpi-value" id="kpi-kpi-churned">
@@ -2097,7 +2261,12 @@
               </div>
             </div>
             <div class="kpi-wrapper">
-              <div class="kpi-label">Retention Rate</div>
+              <div class="kpi-label">
+                Retention Rate
+                <span class="info-icon">i
+                  <span class="metric-tooltip">(Retained Users / Previous Period Active Users) × 100</span>
+                </span>
+              </div>
               <div class="kpi-card">
 
                 <div class="kpi-value" id="kpi-retention-rate">
@@ -2108,7 +2277,12 @@
             </div>
             <div class="kpi-wrapper">
               <div class="kpi-label-row">
-                <div class="kpi-label">DAU / MAU</div>
+                <div class="kpi-label">
+                  DAU / MAU
+                  <span class="info-icon">i
+                    <span class="metric-tooltip">Daily Active Users / Monthly Active Users — measures stickiness</span>
+                  </span>
+                </div>
                 <span id="dauMauLabel">—</span>
               </div>
               <div class="kpi-card" id="card-dau-mau">
@@ -2185,6 +2359,46 @@
             <button class="btn-ghost" id="engNextBtn">Next →</button>
           </div>
 
+          <!-- Engagement Summary Stats Bar -->
+          <div id="engSummaryBar" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:1rem;margin-bottom:1.5rem;">
+            <div class="kpi-card" style="padding:1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.25rem;">
+              <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);display:inline-flex;align-items:center;gap:0.25rem;">
+                👥 Total Users
+                <span class="info-icon">i
+                  <span class="metric-tooltip" style="color:var(--ink-dim);">Total distinct registered users shown in active engagement view.</span>
+                </span>
+              </span>
+              <span id="eng-sum-users" style="font-family:var(--font-data);font-size:1.4rem;color:var(--ink);font-weight:300;">—</span>
+            </div>
+            <div class="kpi-card" style="padding:1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.25rem;">
+              <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);display:inline-flex;align-items:center;gap:0.25rem;">
+                👀 Avg Visits/User
+                <span class="info-icon">i
+                  <span class="metric-tooltip" style="color:var(--ink-dim);">Average number of page visits per user across home and all day pages.</span>
+                </span>
+              </span>
+              <span id="eng-sum-visits" style="font-family:var(--font-data);font-size:1.4rem;color:var(--sapphire);font-weight:300;">—</span>
+            </div>
+            <div class="kpi-card" style="padding:1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.25rem;">
+              <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);display:inline-flex;align-items:center;gap:0.25rem;">
+                ⏱ Avg Time/User
+                <span class="info-icon">i
+                  <span class="metric-tooltip" style="color:var(--ink-dim);">Average active studying time spent per user across all course pages.</span>
+                </span>
+              </span>
+              <span id="eng-sum-time" style="font-family:var(--font-data);font-size:1.4rem;color:var(--emerald);font-weight:300;">—</span>
+            </div>
+            <div class="kpi-card" style="padding:1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.25rem;">
+              <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);display:inline-flex;align-items:center;gap:0.25rem;">
+                ✅ Avg Questions/User
+                <span class="info-icon">i
+                  <span class="metric-tooltip" style="color:var(--ink-dim);">Average number of challenge questions solved per user.</span>
+                </span>
+              </span>
+              <span id="eng-sum-questions" style="font-family:var(--font-data);font-size:1.4rem;color:var(--gold);font-weight:300;">—</span>
+            </div>
+          </div>
+
           <!-- Scrollable Table (both X and Y) -->
           <div style="overflow:auto;max-height:70vh;border-radius:var(--radius-lg);border:1px solid var(--rim);background:var(--surface);">
             <table id="engagementTable" style="border-collapse:collapse;min-width:max-content;width:100%;">
@@ -2199,13 +2413,29 @@
                   <th rowspan="2" style="position:sticky;top:0;z-index:4;background:var(--elevated);min-width:110px;vertical-align:bottom;padding-bottom:12px;">SIGNED UP</th>
                   <th rowspan="2" style="position:sticky;top:0;z-index:4;background:var(--elevated);min-width:110px;vertical-align:bottom;padding-bottom:12px;">LAST SEEN</th>
                   <!-- Home page group -->
-                  <th colspan="2" style="position:sticky;top:0;z-index:4;text-align:center;border-left:2px solid var(--rim-strong);background:linear-gradient(rgba(96,165,250,0.06), rgba(96,165,250,0.06)), var(--elevated);color:var(--sapphire);min-width:160px;">HOME PAGE</th>
+                  <th colspan="3" style="position:sticky;top:0;z-index:4;text-align:center;border-left:2px solid var(--rim-strong);background:linear-gradient(rgba(96,165,250,0.06), rgba(96,165,250,0.06)), var(--elevated);color:var(--sapphire);min-width:240px;">HOME PAGE</th>
                   <!-- Day columns injected by JS -->
                 </tr>
                 <tr id="engagementSubHead">
                   <!-- Home sub-headers -->
-                  <th style="position:sticky;top:auto;z-index:4;text-align:center;border-left:2px solid var(--rim-strong);background:linear-gradient(rgba(96,165,250,0.04), rgba(96,165,250,0.04)), var(--elevated);font-size:0.6rem;color:var(--sapphire);opacity:0.8;">VISITS</th>
-                  <th style="position:sticky;top:auto;z-index:4;text-align:center;background:linear-gradient(rgba(96,165,250,0.04), rgba(96,165,250,0.04)), var(--elevated);font-size:0.6rem;color:var(--sapphire);opacity:0.8;">TIME SPENT</th>
+                  <th style="position:sticky;top:auto;z-index:4;text-align:center;border-left:2px solid var(--rim-strong);background:linear-gradient(rgba(96,165,250,0.04), rgba(96,165,250,0.04)), var(--elevated);font-size:0.6rem;color:var(--sapphire);opacity:0.8;">
+                    VISITS
+                    <span class="info-icon" style="vertical-align: middle; margin-left: 2px;">i
+                      <span class="metric-tooltip">Unique session IDs in page_views for this user/page</span>
+                    </span>
+                  </th>
+                  <th style="position:sticky;top:auto;z-index:4;text-align:center;background:linear-gradient(rgba(96,165,250,0.04), rgba(96,165,250,0.04)), var(--elevated);font-size:0.6rem;color:var(--sapphire);opacity:0.8;">
+                    TIME SPENT
+                    <span class="info-icon" style="vertical-align: middle; margin-left: 2px;">i
+                      <span class="metric-tooltip">GREATEST of (cumulative localStorage sync, SUM of telemetry sessions)</span>
+                    </span>
+                  </th>
+                  <th style="position:sticky;top:auto;z-index:4;text-align:center;background:linear-gradient(rgba(96,165,250,0.04), rgba(96,165,250,0.04)), var(--elevated);font-size:0.6rem;color:var(--sapphire);opacity:0.8;">
+                    Q.SOLVED
+                    <span class="info-icon" style="vertical-align: middle; margin-left: 2px;">i
+                      <span class="metric-tooltip">GREATEST of (notebook_state_sync.solved_count, COUNT of individual question_solved events)</span>
+                    </span>
+                  </th>
                   <!-- Day sub-headers injected by JS -->
                 </tr>
               </thead>
@@ -3373,10 +3603,12 @@
         const hue = idx < 10 ? 'rgba(167,139,250,0.06)' : (idx < 20 ? 'rgba(251,191,36,0.06)' : 'rgba(45,212,191,0.06)');
         const hueSub = idx < 10 ? 'rgba(167,139,250,0.04)' : (idx < 20 ? 'rgba(251,191,36,0.04)' : 'rgba(45,212,191,0.04)');
         const col = idx < 10 ? 'var(--sapphire)' : (idx < 20 ? 'var(--amber)' : 'var(--emerald)');
-        topExtra += `<th colspan="3" style="position:sticky;top:0;z-index:4;text-align:center;border-left:2px solid var(--rim-strong);background:linear-gradient(${hue}, ${hue}), var(--elevated);color:${col};min-width:220px;">${label}</th>`;
-        subExtra += `<th style="position:sticky;top:auto;z-index:4;text-align:center;border-left:2px solid var(--rim-strong);background:linear-gradient(${hueSub}, ${hueSub}), var(--elevated);font-size:0.6rem;color:${col};opacity:0.8;">VISITS</th>`;
-        subExtra += `<th style="position:sticky;top:auto;z-index:4;text-align:center;background:linear-gradient(${hueSub}, ${hueSub}), var(--elevated);font-size:0.6rem;color:${col};opacity:0.8;">TIME SPENT</th>`;
-        subExtra += `<th style="position:sticky;top:auto;z-index:4;text-align:center;background:linear-gradient(${hueSub}, ${hueSub}), var(--elevated);font-size:0.6rem;color:${col};opacity:0.8;">Q.SOLVED</th>`;
+        topExtra += `<th colspan="5" style="position:sticky;top:0;z-index:4;text-align:center;border-left:2px solid var(--rim-strong);background:linear-gradient(${hue}, ${hue}), var(--elevated);color:${col};min-width:350px;">${label}</th>`;
+        subExtra += `<th style="position:sticky;top:auto;z-index:4;text-align:center;border-left:2px solid var(--rim-strong);background:linear-gradient(${hueSub}, ${hueSub}), var(--elevated);font-size:0.6rem;color:${col};opacity:0.8;">VISITS<span class="info-icon" style="vertical-align: middle; margin-left: 2px;">i<span class="metric-tooltip" style="color:var(--ink-dim);">Unique session IDs in page_views for this user/page</span></span></th>`;
+        subExtra += `<th style="position:sticky;top:auto;z-index:4;text-align:center;background:linear-gradient(${hueSub}, ${hueSub}), var(--elevated);font-size:0.6rem;color:${col};opacity:0.8;">TIME SPENT<span class="info-icon" style="vertical-align: middle; margin-left: 2px;">i<span class="metric-tooltip" style="color:var(--ink-dim);">GREATEST of (cumulative localStorage sync, SUM of telemetry sessions)</span></span></th>`;
+        subExtra += `<th style="position:sticky;top:auto;z-index:4;text-align:center;background:linear-gradient(${hueSub}, ${hueSub}), var(--elevated);font-size:0.6rem;color:${col};opacity:0.8;">Q.SOLVED<span class="info-icon" style="vertical-align: middle; margin-left: 2px;">i<span class="metric-tooltip" style="color:var(--ink-dim);">GREATEST of (notebook_state_sync.solved_count, COUNT of individual question_solved events)</span></span></th>`;
+        subExtra += `<th style="position:sticky;top:auto;z-index:4;text-align:center;background:linear-gradient(${hueSub}, ${hueSub}), var(--elevated);font-size:0.6rem;color:${col};opacity:0.8;">IMPROVE ↻<span class="info-icon" style="vertical-align: middle; margin-left: 2px;">i<span class="metric-tooltip" style="color:var(--ink-dim);">Number of times user clicked "Improve Score" button (challenge_started events)</span></span></th>`;
+        subExtra += `<th style="position:sticky;top:auto;z-index:4;text-align:center;background:linear-gradient(${hueSub}, ${hueSub}), var(--elevated);font-size:0.6rem;color:${col};opacity:0.8;">MARKS<span class="info-icon" style="vertical-align: middle; margin-left: 2px;">i<span class="metric-tooltip" style="color:var(--ink-dim);">Latest best_score synced from localStorage via notebook_state_sync</span></span></th>`;
       });
 
       // Append to existing static header rows
@@ -3400,7 +3632,7 @@
       }
 
       if (!engAllData.length) {
-        tbody.innerHTML = '<tr><td colspan="97" style="text-align:center;color:var(--ink-muted);padding:3rem;">No engagement data found for this period</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="157" style="text-align:center;color:var(--ink-muted);padding:3rem;">No engagement data found for this period</td></tr>';
         document.getElementById('engPageInfo').textContent = '0 users';
         return;
       }
@@ -3427,11 +3659,44 @@
         return s + ' secs';
       };
 
+      // Calculate dynamic stats
+      const totalUsers = filtered.length;
+      let totalVisits = 0;
+      let totalTime = 0;
+      let totalQuestions = 0;
+
+      filtered.forEach(u => {
+        const pm = u.page_metrics || {};
+        Object.keys(pm).forEach(k => {
+          const metrics = pm[k] || {};
+          totalVisits += metrics.visits || 0;
+          totalTime += metrics.time_spent_seconds || 0;
+          totalQuestions += metrics.questions_solved || 0;
+        });
+      });
+
+      const avgVisits = totalUsers > 0 ? (totalVisits / totalUsers).toFixed(1) : '0.0';
+      const avgTimeSecs = totalUsers > 0 ? totalTime / totalUsers : 0;
+      const avgQuestions = totalUsers > 0 ? (totalQuestions / totalUsers).toFixed(1) : '0.0';
+
+      const sumUsersEl = document.getElementById('eng-sum-users');
+      const sumVisitsEl = document.getElementById('eng-sum-visits');
+      const sumTimeEl = document.getElementById('eng-sum-time');
+      const sumQuestionsEl = document.getElementById('eng-sum-questions');
+
+      if (sumUsersEl) sumUsersEl.textContent = totalUsers.toLocaleString('en-IN');
+      if (sumVisitsEl) sumVisitsEl.textContent = avgVisits;
+      if (sumTimeEl) {
+        if (avgTimeSecs <= 0) sumTimeEl.textContent = '—';
+        else if (avgTimeSecs >= 3600) sumTimeEl.textContent = (avgTimeSecs / 3600).toFixed(1) + ' hrs';
+        else if (avgTimeSecs >= 60) sumTimeEl.textContent = Math.round(avgTimeSecs / 60) + ' mins';
+        else sumTimeEl.textContent = Math.round(avgTimeSecs) + ' secs';
+      }
+      if (sumQuestionsEl) sumQuestionsEl.textContent = avgQuestions;
+
       // Normalize stored page URL to bare filename matching JS keys
       // e.g. /manodemy_web/day01.html → day01.html
       const normKey = rawKey => rawKey ? rawKey.replace(/^.*\//, '') : rawKey;
-
-
 
       tbody.innerHTML = page.map((u, i) => {
         const pm = u.page_metrics || {};
@@ -3443,7 +3708,8 @@
         const home = normPm[ENG_HOME_KEY] || normPm['index'] || normPm['/'] || normPm[''] || {};
         const hv = home.visits || 0;
         const ht = home.time_spent_seconds || 0;
-        const homeActive = hv > 0;
+        const hq = home.questions_solved || 0;
+        const homeActive = hv > 0 || ht > 0 || hq > 0;
 
         let row = `<tr>
           <td class="cell-mono" style="color:var(--ink-muted);min-width:36px;">${start+i+1}</td>
@@ -3454,7 +3720,8 @@
           <td class="cell-mono" style="color:var(--ink-muted);font-size:0.74rem;">${fmt(u.signed_up_at)}</td>
           <td class="cell-mono" style="color:var(--ink-muted);font-size:0.74rem;">${fmt(u.last_seen_at)}</td>
           <td class="cell-mono" style="text-align:center;border-left:2px solid var(--rim-strong);${homeActive?'color:var(--sapphire);font-weight:500;':'opacity:0.25;'}">${hv||'—'}</td>
-          <td class="cell-mono" style="text-align:center;${homeActive?'color:var(--sapphire);':'opacity:0.25;'}">${fmtTime(ht)}</td>`;
+          <td class="cell-mono" style="text-align:center;${homeActive?'color:var(--sapphire);':'opacity:0.25;'}">${fmtTime(ht)}</td>
+          <td class="cell-mono" style="text-align:center;${hq>0?'color:var(--emerald);font-weight:600;':'opacity:0.25;'}">${hq||'—'}</td>`;
 
         // Day01–Day30 columns — all data comes from the DB (via RPC)
         ENG_DAY_KEYS.forEach((key, idx) => {
@@ -3462,12 +3729,16 @@
           const v  = d.visits || 0;
           const ts = d.time_spent_seconds || 0;
           const qs = d.questions_solved || 0;
-          const active = v > 0 || ts > 0 || qs > 0;
+          const imp = d.improve_score_clicks || 0;
+          const mrk = d.current_marks || 0;
+          const active = v > 0 || ts > 0 || qs > 0 || imp > 0 || mrk > 0;
           const col = idx < 10 ? 'var(--sapphire)' : (idx < 20 ? 'var(--amber)' : 'var(--emerald)');
           row += `
             <td class="cell-mono" style="text-align:center;border-left:2px solid var(--rim-strong);${active?`color:${col};font-weight:500;`:'opacity:0.2;'}">${v||'—'}</td>
             <td class="cell-mono" style="text-align:center;${active?`color:${col};`:'opacity:0.2;'}">${fmtTime(ts)}</td>
-            <td class="cell-mono" style="text-align:center;${qs>0?'color:var(--emerald);font-weight:600;':'opacity:0.2;'}">${qs||'—'}</td>`;
+            <td class="cell-mono" style="text-align:center;${qs>0?'color:var(--emerald);font-weight:600;':'opacity:0.2;'}">${qs||'—'}</td>
+            <td class="cell-mono" style="text-align:center;${imp>0?'color:var(--gold);font-weight:600;':'opacity:0.2;'}">${imp||'—'}</td>
+            <td class="cell-mono" style="text-align:center;${mrk>0?'color:var(--gold);font-weight:600;':'opacity:0.2;'}">${mrk||'—'}</td>`;
         });
 
         row += '</tr>';
@@ -3494,11 +3765,13 @@
         return (secs / 3600).toFixed(1) + 'h';
       };
       const fixedHeaders = ['#','Name','Email','Country','Plan','Signed Up','Last Seen',
-        'Home Visits','Home Time'];
+        'Home Visits','Home Time','Home Q.Solved'];
       const dayHeaders = ENG_DAY_KEYS.flatMap((_, i) => [
         `Day${String(i+1).padStart(2,'0')} Visits`,
         `Day${String(i+1).padStart(2,'0')} Time`,
-        `Day${String(i+1).padStart(2,'0')} Q.Solved`
+        `Day${String(i+1).padStart(2,'0')} Q.Solved`,
+        `Day${String(i+1).padStart(2,'0')} Improve Clicks`,
+        `Day${String(i+1).padStart(2,'0')} Marks`
       ]);
       const headers = [...fixedHeaders, ...dayHeaders];
       const csvRows = rows.map((u, i) => {
@@ -3514,11 +3787,12 @@
           fmt(u.signed_up_at),
           fmt(u.last_seen_at),
           home.visits||0,
-          fmtTime(home.time_spent_seconds)
+          fmtTime(home.time_spent_seconds),
+          home.questions_solved||0
         ];
         const days = ENG_DAY_KEYS.flatMap((key, idx) => {
           const d = pm[key] || pm[key.replace('.html','')] || pm['day'+(idx+1)+'.html'] || {};
-          return [d.visits||0, fmtTime(d.time_spent_seconds), d.questions_solved||0];
+          return [d.visits||0, fmtTime(d.time_spent_seconds), d.questions_solved||0, d.improve_score_clicks||0, d.current_marks||0];
         });
         return [...fixed, ...days].join(',');
       });

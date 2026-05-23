@@ -456,6 +456,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+      // Read best_score and improve_clicks for this day
+      const bestScoreKey = `manodemy_${dayId}_best_score`;
+      const improveClicksKey = `manodemy_${dayId}_improve_clicks`;
+      const bestScore = parseFloat(safeStorageGet(bestScoreKey) || '0');
+      const improveClicks = parseInt(safeStorageGet(improveClicksKey) || '0', 10);
+
       // Write a single comprehensive sync event
 
       await sbClient.from('activity_logs').insert([{
@@ -477,6 +483,10 @@ document.addEventListener('DOMContentLoaded', () => {
           solved_cells:     solvedCellIds,
 
           total_cells:      totalCells,
+
+          best_score:       bestScore,
+
+          improve_clicks:   improveClicks,
 
           page_url:         window.location.pathname,
 
@@ -664,7 +674,7 @@ function calculateDayXP() {
 
   const elapsedMs = now - startTime;
 
-  const elapsedHours = elapsedMs / (3,600,000);
+  const elapsedHours = elapsedMs / 3600000; // FIX: was (3,600,000) — JS comma operator made this elapsedMs/0=Infinity
 
   
 
@@ -928,6 +938,13 @@ function setupGamifiedMarkingSystem() {
 
       safeStorageSet(`manodemy_${dayId}_start_time`, Date.now().toString());
 
+      // ── TRACK IMPROVE SCORE CLICKS ──
+      // Increment per-day counter so admin panel can show how many times
+      // the student attempted to improve their score on this day.
+      const clicksKey = `manodemy_${dayId}_improve_clicks`;
+      const prevClicks = parseInt(safeStorageGet(clicksKey) || '0', 10);
+      safeStorageSet(clicksKey, (prevClicks + 1).toString());
+
       document.getElementById('startCodingModal').classList.remove('show');
 
       document.body.classList.remove('modal-open');
@@ -940,7 +957,9 @@ function setupGamifiedMarkingSystem() {
 
       _notebookWriteActivity('challenge_started', {
 
-        day_id:   dayId,
+        day_id:       dayId,
+
+        improve_clicks: prevClicks + 1,
 
         page_url: window.location.pathname
 
