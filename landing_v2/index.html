@@ -1,1201 +1,2402 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>30-Day Python for Data Analyst Course &mdash; Manodemy</title>
-  <meta name="description" content="Master Python for Data Analysis in 30 days. Escape tutorial hell with interactive coding notebooks, 750+ real-world practice challenges, and no video bloat. $19 one-time.">
-  <meta name="keywords" content="learn python, python data analysis, stop tutorial hell, interactive python notebooks, pandas masterclass, numpy exercises, sql databases, analytics interview, data analyst certification">
-  <link rel="canonical" href="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/">
-  
-  <!-- Open Graph / Facebook SEO -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/">
-  <meta property="og:title" content="30-Day Python for Data Analyst Course — Manodemy">
-  <meta property="og:description" content="Learn Python by actually coding. 30 daily modules, 750+ interactive browser-based challenges, zero video bloat. $19 one-time.">
-  <meta property="og:image" content="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/assets/og-cover.png">
-
-  <!-- Twitter SEO Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/">
-  <meta name="twitter:title" content="30-Day Python for Data Analyst Course — Manodemy">
-  <meta name="twitter:description" content="Escape tutorial hell. Learn Python for Data Analytics through hands-on active coding notebooks in your browser.">
-  <meta name="twitter:image" content="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/assets/og-cover.png">
-  
-  <!-- Font Setup -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,700&family=Caveat:wght@400;700&family=Sacramento&family=Allura&family=Satisfy&family=Dancing+Script:wght@600;700&family=Kalam:wght@700&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="styles.css?v=2.8">
-  
-  <!-- Structured SEO Metadata (JSON-LD) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Course",
-    "name": "30-Day Python for Data Analyst Masterclass",
-    "description": "Learn Python for Data Analytics through interactive browser-based coding notebooks, structured guides, and interview prep questions.",
-    "provider": {
-      "@type": "Organization",
-      "name": "Manodemy",
-      "sameAs": "https://manodemy.github.io/30-days_-Python-for-Data-Analyst/"
-    },
-    "hasCourseInstance": {
-      "@type": "CourseInstance",
-      "courseMode": "Online",
-      "courseWorkload": "PT1H"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": "19.00",
-      "priceCurrency": "USD",
-      "category": "Paid"
-    },
-    "outputs": "Certification of Completion"
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Is there a refund policy?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes! We offer a full 7-day money-back guarantee. If you are not satisfied with the learning quality, email us for a hassle-free refund."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Do I need to install any software or local environments?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No. Everything runs entirely in your browser with our built-in interactive code editor and runtime environment."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Will I have lifetime access to the course content?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. A one-time purchase grants you permanent access to all 30 days, answers, interview prep, and future updates."
-        }
-      }
-    ]
-  }
-  </script>
-</head>
-<body>
-
-  <!-- Navigation -->
-  <header>
-    <nav class="nav" aria-label="Primary site navigation">
-      <div class="container">
-        <a href="../index.html" class="nav-brand" aria-label="Manodemy Home">
-          <span class="nav-brand-name">Mano<span>demy</span></span>
-          <span class="nav-brand-sub">Hands-on EdTech</span>
-        </a>
-        <div class="nav-links">
-          <a href="../day01.html" class="nav-pill nav-pill--free">Try Day 01 Free</a>
-          <a href="#curriculum" class="nav-pill">Curriculum</a>
-          <a href="#testimonials" class="nav-pill">Testimonials</a>
-          <a href="#faq" class="nav-pill">FAQ</a>
-        </div>
-        <div class="nav-right">
-          <a href="#pricing" id="navSignin" class="btn-ghost">Sign In</a>
-          <a href="#pricing" class="btn-nav-buy" data-cta="buy">Buy Now &mdash; $19</a>
-        </div>
-        <button class="hamburger" id="hamburger" aria-expanded="false" aria-label="Toggle Navigation menu" aria-controls="mobileOverlay">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-    </nav>
-  </header>
-
-  <!-- Mobile Menu Overlay -->
-  <div class="mobile-overlay" id="mobileOverlay" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
-    <button class="mobile-close" id="mobileClose" aria-label="Close menu">&times;</button>
-    <a href="../day01.html">Try Day 01 Free</a>
-    <a href="#curriculum">Curriculum</a>
-    <a href="#testimonials">Testimonials</a>
-    <a href="#faq">FAQ</a>
-    <a href="#pricing" class="btn-gold btn-gold--filled" style="width: 80%; justify-content: center; margin-top: 1rem;" data-cta="buy">Buy Now &mdash; $19</a>
-  </div>
-
-  <!-- Main Content -->
-  <main id="main-content">
-    
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="container">
-        <div class="hero-left reveal">
-          <span class="hero-badge">&#x1F4A1; Escape Tutorial Hell</span>
-          <h1 class="hero-title"><span class="typed-learn">Learn</span>PYTHON <svg class="py-logo" viewBox="0 0 459 459" aria-label="Python Logo"><path fill="#306998" d="M229.5 0C161.4 0 122.4 15.6 122.4 53.6v34.4h107.1v15.3H122.4c-47.8 0-76.5 30.6-76.5 76.5v61.2c0 45.9 28.7 76.5 76.5 76.5h30.6v-45.9c0-51 41.3-91.8 91.8-91.8h107.1V107.1c0-53.6-47.8-107.1-122.4-107.1zM175.9 30.6c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3 6.9-15.3 15.3-15.3z"/><path fill="#FFE873" d="M229.5 459c68.1 0 107.1-15.6 107.1-53.6v-34.4H229.5v-15.3h107.1c47.8 0 76.5-30.6 76.5-76.5v-61.2c0-45.9-28.7-76.5-76.5-76.5h-30.6v45.9c0 51-41.3 91.8-91.8 91.8H122.4V351.9c0 53.6 47.8 107.1 122.4 107.1zm53.6-30.6c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3 15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3z"/></svg><br>BY <span class="gradient-actually">ACTUALLY</span> <span class="gradient-coding">CODING.</span></h1>
-          <p class="hero-sub">Master <strong>Python for Data Analytics</strong> with the ultimate 30-day interactive masterclass. Skip passive video bloat—write actual code side-by-side inside live browser notebooks, and ace your technical recruiting with <strong>750+ real-world data science interview challenges</strong>.</p>
-          <div class="hero-ctas">
-            <a href="../day01.html" class="btn-gold btn-gold--filled">&#x26A1; Launch Day 01 Free &mdash; Code Instantly</a>
-            <a href="#pricing" class="btn-gold btn-gold--outline" data-cta="buy">&#x1F4B3; Get Lifetime Access &mdash; $19 / &#x20B9;1,499</a>
-          </div>
-        </div>
-        
-        <div class="hero-right reveal">
-          <div class="terminal-stats">
-            <div class="stat-badge badge-days">
-              <span class="badge-led"></span>
-              <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-              </svg>
-              <span>30 Guided Days</span>
-            </div>
-            <div class="stat-badge badge-challenges">
-              <span class="badge-led"></span>
-              <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <circle cx="12" cy="12" r="6"></circle>
-                <circle cx="12" cy="12" r="2"></circle>
-              </svg>
-              <span>750+ Challenges</span>
-            </div>
-            <div class="stat-badge badge-video">
-              <span class="badge-led"></span>
-              <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"></path>
-                <path d="M10 8L16 12L10 16V8Z"></path>
-                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
-              </svg>
-              <span>No Video Bloat</span>
-            </div>
-          </div>
-          
-          <div class="terminal" role="img" aria-label="Visual demonstration of python data analytics workflow">
-            <div class="terminal-bar">
-              <div class="terminal-dots">
-                <span class="dot dot-r" aria-hidden="true"></span>
-                <span class="dot dot-y" aria-hidden="true"></span>
-                <span class="dot dot-g" aria-hidden="true"></span>
-              </div>
-              <span class="terminal-title">Python Interactive Console</span>
-            </div>
-            <div class="terminal-body">
-              <div class="terminal-mesh" aria-hidden="true"></div>
-              <div class="terminal-blobs" aria-hidden="true">
-                <div class="blob blob-purple"></div>
-                <div class="blob blob-cyan"></div>
-              </div>
-              <div class="terminal-code-wrapper" aria-live="off" aria-atomic="true">
-                <pre><code id="typingDisplay"></code></pre>
-                <span class="cursor-blink" id="typingCursor" aria-hidden="true">&#x2587;</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="hero-proof">
-            <div class="proof-card rating-card">
-              <svg class="proof-icon star-icon" viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-              </svg>
-              <span>4.9/5 Student Rating</span>
-            </div>
-            <div class="proof-card learners-card">
-              <svg class="proof-icon users-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
-              <span>2,400+ Active Learners</span>
-            </div>
-            <div class="proof-card cert-card">
-              <svg class="proof-icon cert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-                <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
-              </svg>
-              <span>Job-Ready Certificate Included</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Social Proof Strip -->
-    <section class="proof-strip">
-      <div class="container">
-        <div class="proof-stat">
-          <span class="proof-num" data-count="2400" data-suffix="+">0</span>
-          <span class="proof-label">Enrolled Learners</span>
-        </div>
-        <div class="proof-stat">
-          <span class="proof-num" data-count="750" data-suffix="+">0</span>
-          <span class="proof-label">Interview Practice Challenges</span>
-        </div>
-        <div class="proof-stat">
-          <span class="proof-num" data-count="30" data-suffix=" Days">0</span>
-          <span class="proof-label">Complete Learning Plan</span>
-        </div>
-        <div class="proof-stat">
-          <span class="proof-num" data-count="100" data-suffix="%">0</span>
-          <span class="proof-label">Interactive Practice Retention</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Free Day 1 Preview -->
-    <section class="preview">
-      <!-- Ambient Bloom Background Elements -->
-      <div class="preview-bg-bloom-left"></div>
-      <div class="preview-bg-bloom-right"></div>
-
-      <div class="container">
-        <div class="preview-text reveal">
-          <h2>Stop Watching. Start Coding.<br><span>Day 01 Sandbox is Fully Unlocked.</span></h2>
-          <p class="preview-body">We are so confident in our hands-on, active-learning curriculum that we don't hide it behind annoying paywalls, email captures, or aggressive sales calls. Experience how simple learning Python can feel when you actually write, run, and test code live in your browser.</p>
-          
-          <ul class="preview-list">
-            <li>
-              <div class="bullet-icon-wrapper">
-                <svg class="bullet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              </div>
-              <span class="bullet-text"><strong>Day 01 Core Mastery:</strong> Variables, memory pointers, and foundational syntax rules.</span>
-            </li>
-            <li>
-              <div class="bullet-icon-wrapper">
-                <svg class="bullet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              </div>
-              <span class="bullet-text"><strong>Jupyter-Style Notebooks:</strong> A fully active in-browser terminal and cell editor.</span>
-            </li>
-            <li>
-              <div class="bullet-icon-wrapper">
-                <svg class="bullet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              </div>
-              <span class="bullet-text"><strong>Instant Test Verification:</strong> Run automated test cases to instantly check your logic.</span>
-            </li>
-            <li>
-              <div class="bullet-icon-wrapper">
-                <svg class="bullet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              </div>
-              <span class="bullet-text"><strong>Zero Setup Required:</strong> 100% cloud-based. No compiler, Docker, or local downloads.</span>
-            </li>
-          </ul>
-        </div>
-        
-        <div class="preview-visual reveal">
-          <div class="preview-card">
-            <!-- Animated Gold Neon Lock Icon -->
-            <div class="premium-lock-wrapper">
-              <svg class="premium-lock-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Outer glowing rings -->
-                <circle cx="32" cy="32" r="28" stroke="rgba(255, 176, 32, 0.15)" stroke-width="2" stroke-dasharray="4 4" class="lock-ring-slow" />
-                <circle cx="32" cy="32" r="24" stroke="rgba(0, 230, 246, 0.2)" stroke-width="1.5" class="lock-ring-fast" />
-                <!-- Unlocked Shackle (Gold Gradient) -->
-                <path d="M22 28V18C22 12.4772 26.4772 8 32 8C37.5228 8 42 12.4772 42 18" stroke="url(#gold-grad)" stroke-width="4.5" stroke-linecap="round" class="shackle-anim" />
-                <!-- Lock Body (High-end Glassmorphic Gold) -->
-                <rect x="16" y="26" width="32" height="26" rx="6" fill="url(#lock-body-grad)" stroke="url(#gold-grad)" stroke-width="2" />
-                <!-- Keyhole -->
-                <circle cx="32" cy="36" r="3" fill="var(--base)" />
-                <path d="M32 39V45" stroke="var(--base)" stroke-width="2" stroke-linecap="round" />
-                
-                <defs>
-                  <linearGradient id="gold-grad" x1="16" y1="10" x2="48" y2="52" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#FFE873" />
-                    <stop offset="0.5" stop-color="#FFB020" />
-                    <stop offset="1" stop-color="#FF8A00" />
-                  </linearGradient>
-                  <linearGradient id="lock-body-grad" x1="16" y1="26" x2="48" y2="52" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="rgba(255, 176, 32, 0.3)" />
-                    <stop offset="1" stop-color="rgba(255, 138, 0, 0.05)" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-            
-            <h3>Instant Day 01 Sandbox</h3>
-            <span class="preview-meta">100% Free &bull; No Login Required</span>
-            
-            <!-- Sleek Mock Jupyter-style Notebook Interface -->
-            <div class="mock-notebook-cell">
-              <div class="cell-header">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-                <span class="cell-title">day01_challenge.py</span>
-              </div>
-              <div class="cell-body">
-                <div class="cell-line"><span class="line-no">In [1]:</span> <span class="code-comment"># Click Launch below to execute</span></div>
-                <div class="cell-line"><span class="line-no"></span> <span class="code-keyword">def</span> <span class="code-func">verify_active_learning</span>():</div>
-                <div class="cell-line"><span class="line-no"></span>     <span class="code-keyword">return</span> <span class="code-string">"Tutorial Hell Escaped! &#x1F680;"</span></div>
-                <div class="cell-line"><span class="line-no"></span> </div>
-                <div class="cell-line"><span class="line-no"></span> verify_active_learning()</div>
-                <div class="cell-output"><span class="output-no">Out [1]:</span> <span class="output-text">'Tutorial Hell Escaped! &#x1F680;'</span></div>
-              </div>
-            </div>
-            
-            <a href="../day01.html" class="btn-gold btn-gold--filled preview-cta">&#x1F680; Start day01 Coding</a>
-            <span class="preview-micro">Build active muscle memory by actually coding.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section class="how">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2>How Manodemy <span>Accelerates Mastery</span></h2>
-          <p>A proven interactive learning framework designed to build true muscle memory.</p>
-        </div>
-        <div class="how-steps">
-          <div class="how-step how-step--cyan reveal">
-            <span class="how-num">01</span>
-            <h3>Conceptual Breakdowns</h3>
-            <p>Skip dry video lectures. Master deep concepts fast using precise, clear technical summaries designed by data team leads.</p>
-          </div>
-          <div class="how-connector how-connector--cyan-purple" aria-hidden="true"><span class="connector-dot"></span></div>
-          <div class="how-step how-step--purple reveal">
-            <span class="how-num">02</span>
-            <h3>Inline Execution</h3>
-            <p>Edit and run real Python script directly within each cell. Play with code side-by-side inside your standard notebook interface.</p>
-          </div>
-          <div class="how-connector how-connector--purple-emerald" aria-hidden="true"><span class="connector-dot"></span></div>
-          <div class="how-step how-step--emerald reveal">
-            <span class="how-num">03</span>
-            <h3>Automated Verification</h3>
-            <p>Solve hundreds of interactive evaluation puzzles. Get direct guidance and absolute confirmation on every test case immediately.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Curriculum Roadmap Section -->
-    <section class="curriculum" id="curriculum">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2>30-Day Structured Curriculum</h2>
-        </div>
-        
-        <div class="curriculum-grid reveal">
-          <!-- Day 01 -->
-          <div class="day-card" data-day="01" data-category="basics" tabindex="0">
-            <span class="day-num">Day 01</span>
-            <span class="day-emoji">🔢</span>
-            <span class="day-title">Data Types and Memory</span>
-            <span class="day-badge free-badge">FREE</span>
-          </div>
-          <!-- Day 02 -->
-          <div class="day-card" data-day="02" data-category="basics" tabindex="0">
-            <span class="day-num">Day 02</span>
-            <span class="day-emoji">➕</span>
-            <span class="day-title">Operators and Expressions</span>
-            <span class="day-badge free-badge">FREE</span>
-          </div>
-          <!-- Day 03 -->
-          <div class="day-card locked" data-day="03" data-category="structures" tabindex="0">
-            <span class="day-num">Day 03</span>
-            <span class="day-emoji">📝</span>
-            <span class="day-title">Strings</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 04 -->
-          <div class="day-card locked" data-day="04" data-category="structures" tabindex="0">
-            <span class="day-num">Day 04</span>
-            <span class="day-emoji">📋</span>
-            <span class="day-title">Lists</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 05 -->
-          <div class="day-card locked" data-day="05" data-category="structures" tabindex="0">
-            <span class="day-num">Day 05</span>
-            <span class="day-emoji">📦</span>
-            <span class="day-title">Tuples</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 06 -->
-          <div class="day-card locked" data-day="06" data-category="structures" tabindex="0">
-            <span class="day-num">Day 06</span>
-            <span class="day-emoji">⭕</span>
-            <span class="day-title">Sets</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 07 -->
-          <div class="day-card locked" data-day="07" data-category="structures" tabindex="0">
-            <span class="day-num">Day 07</span>
-            <span class="day-emoji">🗂️</span>
-            <span class="day-title">Dictionaries</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 08 -->
-          <div class="day-card locked" data-day="08" data-category="basics" tabindex="0">
-            <span class="day-num">Day 08</span>
-            <span class="day-emoji">🔀</span>
-            <span class="day-title">Conditionals</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 09 -->
-          <div class="day-card locked" data-day="09" data-category="basics" tabindex="0">
-            <span class="day-num">Day 09</span>
-            <span class="day-emoji">🔄</span>
-            <span class="day-title">Loops</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 10 -->
-          <div class="day-card locked" data-day="10" data-category="basics" tabindex="0">
-            <span class="day-num">Day 10</span>
-            <span class="day-emoji">⚙️</span>
-            <span class="day-title">Functions</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 11 -->
-          <div class="day-card locked" data-day="11" data-category="basics" tabindex="0">
-            <span class="day-num">Day 11</span>
-            <span class="day-emoji">📦</span>
-            <span class="day-title">Modules</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 12 -->
-          <div class="day-card locked" data-day="12" data-category="structures" tabindex="0">
-            <span class="day-num">Day 12</span>
-            <span class="day-emoji">🧮</span>
-            <span class="day-title">Comprehensions</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 13 -->
-          <div class="day-card locked" data-day="13" data-category="basics" tabindex="0">
-            <span class="day-num">Day 13</span>
-            <span class="day-emoji">λ</span>
-            <span class="day-title">Lambda Functions</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 14 -->
-          <div class="day-card locked" data-day="14" data-category="basics" tabindex="0">
-            <span class="day-num">Day 14</span>
-            <span class="day-emoji">⚠️</span>
-            <span class="day-title">Exceptions</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 15 -->
-          <div class="day-card locked" data-day="15" data-category="basics" tabindex="0">
-            <span class="day-num">Day 15</span>
-            <span class="day-emoji">📂</span>
-            <span class="day-title">File Handling</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 16 -->
-          <div class="day-card locked" data-day="16" data-category="basics" tabindex="0">
-            <span class="day-num">Day 16</span>
-            <span class="day-emoji">🧩</span>
-            <span class="day-title">OOP Basics</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 17 -->
-          <div class="day-card locked" data-day="17" data-category="basics" tabindex="0">
-            <span class="day-num">Day 17</span>
-            <span class="day-emoji">🏗️</span>
-            <span class="day-title">OOP Advanced</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 18 -->
-          <div class="day-card locked" data-day="18" data-category="structures" tabindex="0">
-            <span class="day-num">Day 18</span>
-            <span class="day-emoji">🔍</span>
-            <span class="day-title">Regex</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 19 -->
-          <div class="day-card locked" data-day="19" data-category="structures" tabindex="0">
-            <span class="day-num">Day 19</span>
-            <span class="day-emoji">⚡</span>
-            <span class="day-title">Generators and Iterators</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 20 -->
-          <div class="day-card locked" data-day="20" data-category="advanced" tabindex="0">
-            <span class="day-num">Day 20</span>
-            <span class="day-emoji">🏆</span>
-            <span class="day-title">Capstone Project</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 21 -->
-          <div class="day-card locked" data-day="21" data-category="analysis" tabindex="0">
-            <span class="day-num">Day 21</span>
-            <span class="day-emoji">📊</span>
-            <span class="day-title">NumPy Fundamentals</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 22 -->
-          <div class="day-card locked" data-day="22" data-category="analysis" tabindex="0">
-            <span class="day-num">Day 22</span>
-            <span class="day-emoji">📈</span>
-            <span class="day-title">NumPy Advanced</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 23 -->
-          <div class="day-card locked" data-day="23" data-category="analysis" tabindex="0">
-            <span class="day-num">Day 23</span>
-            <span class="day-emoji">🐼</span>
-            <span class="day-title">Pandas Introduction</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 24 -->
-          <div class="day-card locked" data-day="24" data-category="analysis" tabindex="0">
-            <span class="day-num">Day 24</span>
-            <span class="day-emoji">🎯</span>
-            <span class="day-title">Pandas Selection</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 25 -->
-          <div class="day-card locked" data-day="25" data-category="analysis" tabindex="0">
-            <span class="day-num">Day 25</span>
-            <span class="day-emoji">🧹</span>
-            <span class="day-title">Pandas Cleaning</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 26 -->
-          <div class="day-card locked" data-day="26" data-category="analysis" tabindex="0">
-            <span class="day-num">Day 26</span>
-            <span class="day-emoji">🗃️</span>
-            <span class="day-title">Pandas GroupBy</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 27 -->
-          <div class="day-card locked" data-day="27" data-category="analysis" tabindex="0">
-            <span class="day-num">Day 27</span>
-            <span class="day-emoji">🔗</span>
-            <span class="day-title">Pandas Merging</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 28 -->
-          <div class="day-card locked" data-day="28" data-category="analysis" tabindex="0">
-            <span class="day-num">Day 28</span>
-            <span class="day-emoji">📉</span>
-            <span class="day-title">Pandas Time Series</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 29 -->
-          <div class="day-card locked" data-day="29" data-category="analysis" tabindex="0">
-            <span class="day-num">Day 29</span>
-            <span class="day-emoji">🎨</span>
-            <span class="day-title">Data Visualization</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-          <!-- Day 30 -->
-          <div class="day-card locked" data-day="30" data-category="advanced" tabindex="0">
-            <span class="day-num">Day 30</span>
-            <span class="day-emoji">🔬</span>
-            <span class="day-title">Phase Analysis & Review</span>
-            <span class="day-badge lock-badge">&#x1F512;</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Comparison Table Section -->
-    <section class="compare">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2>Why <span>Choose Manodemy?</span></h2>
-          <p>See how interactive instruction compares to standard learning setups.</p>
-        </div>
-        <div class="compare-wrap reveal">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Feature</th>
-                <th scope="col" class="col-mano">Manodemy Masterclass</th>
-                <th scope="col">Traditional Video Courses</th>
-                <th scope="col">Bootcamps</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Interactive Coding</strong></td>
-                <td class="col-mano yes">
-                  <div class="compare-status">
-                    <span class="compare-badge compare-badge--yes">
-                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </span>
-                    <span>Browser Editor Included</span>
-                  </div>
-                </td>
-                <td class="no">
-                  <div class="compare-status">
-                    <span class="compare-badge compare-badge--no">
-                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </span>
-                    <span>Passive Watching</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="compare-status">
-                    <span class="compare-badge compare-badge--neutral-yes">
-                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </span>
-                    <span>Project Assignments</span>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><strong>No Local Setup Required</strong></td>
-                <td class="col-mano yes">
-                  <div class="compare-status">
-                    <span class="compare-badge compare-badge--yes">
-                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </span>
-                    <span>Zero Installation</span>
-                  </div>
-                </td>
-                <td class="no">
-                  <div class="compare-status">
-                    <span class="compare-badge compare-badge--no">
-                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </span>
-                    <span>Hours of Configuration Debugging</span>
-                  </div>
-                </td>
-                <td class="no">
-                  <div class="compare-status">
-                    <span class="compare-badge compare-badge--no">
-                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </span>
-                    <span>Standard Local CLI Setup</span>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><strong>Structured Daily Plan</strong></td>
-                <td class="col-mano yes">
-                  <div class="compare-status">
-                    <span class="compare-badge compare-badge--yes">
-                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </span>
-                    <span>Clean 30-Day Progression</span>
-                  </div>
-                </td>
-                <td class="no">
-                  <div class="compare-status">
-                    <span class="compare-badge compare-badge--no">
-                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </span>
-                    <span>Unending Playlists</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="compare-status">
-                    <span class="compare-badge compare-badge--neutral-yes">
-                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </span>
-                    <span>Rigid Schedule</span>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><strong>Refund Guarantee</strong></td>
-                <td class="col-mano yes">
-                  <div class="compare-status">
-                    <span class="compare-badge compare-badge--yes">
-                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </span>
-                    <span>7-Day Money-Back Guarantee</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="compare-status">
-                    <span class="compare-badge compare-badge--neutral-yes">
-                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </span>
-                    <span>Variable Policies</span>
-                  </div>
-                </td>
-                <td class="no">
-                  <div class="compare-status">
-                    <span class="compare-badge compare-badge--no">
-                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </span>
-                    <span>None (High-stakes deposits)</span>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><strong>Total Cost</strong></td>
-                <td class="col-mano yes">
-                  <span class="compare-price-mano">$19 / &#x20B9;1,499 (One-Time)</span>
-                </td>
-                <td>
-                  <span>$15 - $200 / Month</span>
-                </td>
-                <td class="no">
-                  <span class="compare-price-bootcamp">$5,000+ Upfront</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- Reviews & Ratings Section -->
-    <section class="reviews-sec" id="testimonials">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2>30 Days Structured Curriculum Reviews</h2>
-          <p>Read experiences and ratings from verified learners who built active coding muscle memory.</p>
-        </div>
-        
-        <!-- Ratings Dashboard Panel -->
-        <div class="reviews-dashboard reveal">
-          <!-- Score Summary Pillar -->
-          <div class="rev-score-col">
-            <div class="rev-score-massive">4.8 <span>/ 5</span></div>
-            <div class="rev-stars-row">
-              <!-- Rendered Dynamically -->
-            </div>
-            <div class="rev-count-sub">Based on 2,400+ reviews</div>
-            <button class="btn-toggle-reviews" id="btnToggleReviews" aria-expanded="false" aria-controls="reviewsCollapseArea">
-              <span>View Reviews</span>
-              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path></svg>
-            </button>
-          </div>
-          
-          <!-- Rating Distribution Column -->
-          <div class="rev-distribution-col">
-            <div class="rev-dist-row" data-rating="5">
-              <span class="rev-dist-label">5 star</span>
-              <div class="rev-dist-track">
-                <div class="rev-dist-fill" style="width: 82%;"></div>
-              </div>
-              <span class="rev-dist-pct">82%</span>
-            </div>
-            <div class="rev-dist-row" data-rating="4">
-              <span class="rev-dist-label">4 star</span>
-              <div class="rev-dist-track">
-                <div class="rev-dist-fill" style="width: 14%;"></div>
-              </div>
-              <span class="rev-dist-pct">14%</span>
-            </div>
-            <div class="rev-dist-row" data-rating="3">
-              <span class="rev-dist-label">3 star</span>
-              <div class="rev-dist-track">
-                <div class="rev-dist-fill" style="width: 3%;"></div>
-              </div>
-              <span class="rev-dist-pct">3%</span>
-            </div>
-            <div class="rev-dist-row" data-rating="2">
-              <span class="rev-dist-label">2 star</span>
-              <div class="rev-dist-track">
-                <div class="rev-dist-fill" style="width: 1%;"></div>
-              </div>
-              <span class="rev-dist-pct">1%</span>
-            </div>
-            <div class="rev-dist-row" data-rating="1">
-              <span class="rev-dist-label">1 star</span>
-              <div class="rev-dist-track">
-                <div class="rev-dist-fill" style="width: 0%;"></div>
-              </div>
-              <span class="rev-dist-pct">0%</span>
-            </div>
-          </div>
-          
-          <!-- Trust Metrics Pillar replaced with Write a Review CTA -->
-          <div class="rev-trust-col">
-            <button class="btn-write-review">
-              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.83 17.017a4.5 4.5 0 01-1.897 1.13L3 19l.85-2.933a4.5 4.5 0 011.13-1.897l8.932-8.932zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
-              <span>Write a Review</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Collapsible Reviews Grid & Controls Container -->
-        <div class="reviews-collapse-wrapper" id="reviewsCollapseArea">
-          <div class="reviews-collapse-inner">
-            
-            <!-- Filter & Search Toolbar -->
-            <div class="reviews-toolbar">
-              <div class="reviews-search-group">
-                <div class="rev-search-wrapper">
-                  <input type="text" class="rev-search-input" placeholder="Search reviews by keyword...">
-                  <svg class="rev-search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </div>
-                
-                <select class="rev-select-dropdown">
-                  <option value="all">All Ratings</option>
-                  <option value="5">5 Stars</option>
-                  <option value="4">4 Stars</option>
-                  <option value="3">3 Stars</option>
-                  <option value="2">2 Stars</option>
-                  <option value="1">1 Star</option>
-                </select>
-
-                <select class="rev-select-dropdown">
-                  <option value="most_recent">Most Recent</option>
-                  <option value="highest">Highest Rating</option>
-                  <option value="helpful">Most Helpful</option>
-                </select>
-
-                <label class="rev-filter-checkbox" for="filter-verified">
-                  <input type="checkbox" id="filter-verified">
-                  <span>Verified Only</span>
-                </label>
-
-                <label class="rev-filter-checkbox" for="filter-media">
-                  <input type="checkbox" id="filter-media">
-                  <span>With Media</span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Dynamic Reviews Cards Roster -->
-            <div class="reviews-grid">
-              <!-- Populated Dynamically via reviews.js -->
-            </div>
-
-            <!-- Pagination Controls -->
-            <div class="reviews-pagination">
-              <!-- Populated Dynamically via reviews.js -->
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Pricing section anchor for background links -->
-    <div id="pricing" style="height: 0; margin: 0; padding: 0; overflow: hidden; visibility: hidden;"></div>
-
-    <!-- Pricing Modal Overlay -->
-    <div class="pricing-modal-overlay" id="pricingModal">
-      <div class="pricing-modal-card">
-        <button class="btn-close-pricing-modal" id="btnClosePricingModal" aria-label="Close modal">&times;</button>
-        
-        <div class="pricing-card modal-version landscape-layout">
-          <!-- Left Column: Price Highlights -->
-          <div class="pricing-left">
-            <span class="popular-badge">Special Cohort Offer</span>
-            <span class="price-old">$99 / &#x20B9;8,200 Upfront</span>
-            <span class="price-now"><span>$19</span></span>
-            <span class="price-inr">or &nbsp;&#x20B9;1,499 one-time payment</span>
-            <span class="discount-pill">You save over 80% today</span>
-          </div>
-          
-          <!-- Right Column: Features and Guarantee Checkout -->
-          <div class="pricing-right">
-            <div class="pricing-details-view" id="pricingDetailsView">
-              <ul class="pricing-features">
-                <li><span class="feat-check">&#x2714;</span> 30 Unlocked Day Notebooks</li>
-                <li><span class="feat-check">&#x2714;</span> 750+ Practice Interview Questions</li>
-                <li><span class="feat-check">&#x2714;</span> Inline evaluation and test runners</li>
-              </ul>
-              
-              <button class="btn-gold btn-gold--filled" style="width:100%; border:none; display:flex;" id="btnPricingBuy" type="button">&#x1F680; Buy Full Masterclass &mdash; Unlocks Instantly</button>
-            </div>
-            
-            <div class="pricing-checkout-view" id="pricingCheckoutView" style="display: none;">
-              <div class="checkout-back-link" id="checkoutBackToDetails">&#x2190; Back to details</div>
-              <div class="checkout-header">
-                <h3>Complete Checkout</h3>
-                <p class="checkout-subtitle">One-time payment &bull; Lifetime access</p>
-              </div>
-              <div class="checkout-price-summary">
-                <span class="checkout-amount" id="checkoutAmount">$19</span>
-                <span class="checkout-original" id="checkoutOriginal">$69</span>
-              </div>
-              <div class="coupon-section">
-                <input type="text" id="couponInput" placeholder="Coupon code (optional)" maxlength="20">
-                <button class="coupon-apply" id="couponApply" type="button">Apply</button>
-              </div>
-              <div class="checkout-divider"><span>Payment Methods</span></div>
-              <div class="gateway-buttons" id="gatewayButtons">
-                <!-- Populated dynamically based on geo -->
-              </div>
-              <div class="checkout-spinner" id="checkoutSpinner"></div>
-            </div>
-            
-            <div class="guarantee">
-              <span class="shield">&#x1F6E1;</span>
-              <div>
-                <strong>7-Day Unconditional Guarantee</strong>
-                <p>We trust our interactive curriculum. If you don't build confidence within 7 days, simply email manodemy25@gmail.com for a full, rapid refund.</p>
-              </div>
-            </div>
-            
-            <div class="trust-trio">
-              <span>&#x1F512; Secure Checkout</span>
-              <span>&#x1F4BE; Instant Access</span>
-              <span>&#x26A0; One-Time Payment</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FAQ Section -->
-    <section class="faq" id="faq">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2>Frequently Asked Questions</h2>
-          <p>Everything you need to know about our interactive format.</p>
-        </div>
-        
-        <div class="faq-list">
-          <details class="faq-item reveal" open>
-            <summary>Is this course suitable for complete beginners?<span class="faq-icon">&#x2B55;</span></summary>
-            <div class="faq-answer">
-              Yes, absolutely! Day 01 assumes no prior programming experience. We teach you Python basic structures, syntax, variables, and logic before transitioning into Pandas, NumPy, and complex analytical workflows.
-            </div>
-          </details>
-          
-          <details class="faq-item reveal">
-            <summary>Do I need to install any heavy programs or IDEs?<span class="faq-icon">&#x2B55;</span></summary>
-            <div class="faq-answer">
-              No local installation or terminal debugging is required. Our interactive browser notebook environment allows you to write, edit, and evaluate real production-grade Python code directly inside the browser.
-            </div>
-          </details>
-          
-          <details class="faq-item reveal">
-            <summary>What is the 7-day money-back guarantee policy?<span class="faq-icon">&#x2B55;</span></summary>
-            <div class="faq-answer">
-              If for any reason you feel the course format is not helping you master Python, simply email our support at <strong>manodemy25@gmail.com</strong> within 7 days of purchase. We will issue a 100% refund immediately, no awkward questions asked.
-            </div>
-          </details>
-          
-          <details class="faq-item reveal">
-            <summary>Will I receive a course completion certificate?<span class="faq-icon">&#x2B55;</span></summary>
-            <div class="faq-answer">
-              Yes. Upon completing all 30 lesson modules and passing the automated capstone project evaluations, you will receive a verifiable digital certificate to showcase on LinkedIn or your portfolio.
-            </div>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <!-- Final CTA Section -->
-    <section class="final-cta">
-      <div class="container">
-        <h2 class="reveal">Stop stalling your data career. Build active skills.</h2>
-        <p class="sub reveal">Gain real muscle memory, master interview algorithms, and prove your capabilities with job-ready capstone analysis.</p>
-        <div class="ctas reveal">
-          <a href="../day01.html" class="btn-gold btn-gold--outline">&#x26A1; Try Day 01 Free First</a>
-          <a href="#pricing" class="btn-gold btn-gold--filled" data-cta="buy">&#x1F3C6; Get Premium Access Now &mdash; $19</a>
-        </div>
-        <span class="micro reveal">&bull; 7-Day Refund Guarantee &bull; Lifetime updates included</span>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <span class="footer-brand-name">Manodemy</span>
-          <p class="footer-tagline">Learn by actually coding.</p>
-          <p class="footer-desc">Professional interactive educational materials designed to unlock complex technical subjects through practice-first retention models.</p>
-          <span class="footer-copy">&copy; 2026 Manodemy. All rights reserved.</span>
-        </div>
-        <div class="footer-col">
-          <h4>Curriculum Links</h4>
-          <a href="../day01.html">Try Day 01 (Free)</a>
-          <a href="#curriculum">Curriculum Overview</a>
-          <a href="#pricing">Pricing Structure</a>
-        </div>
-        <div class="footer-col">
-          <h4>Support & Legal</h4>
-          <a href="#faq">Frequently Asked Questions</a>
-          <a href="mailto:manodemy25@gmail.com">Contact Support</a>
-          <a href="#">Privacy Policy &bull; Terms</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        &copy; 2026 Manodemy. Built for serious Data Analysts, Data Engineers, and Data Scientists. Start Learning by actually coding.
-      </div>
-    </div>
-  </footer>
-
-  <!-- Mobile Sticky Buy Bar -->
-  <div class="mobile-sticky" id="mobileSticky">
-    <a href="../day01.html" class="sticky-free">&#x26A1; Day 01 Free</a>
-    <a href="#pricing" class="sticky-buy" data-cta="buy">&#x1F4B3; Full Access &mdash; $19</a>
-  </div>
-
-  <!-- Frosted Review Submission Dialog Modal Overlay -->
-  <div class="rev-modal-overlay">
-    <div class="rev-modal-card">
-      <div class="rev-modal-header">
-        <h3>
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.83 17.017a4.5 4.5 0 01-1.897 1.13L3 19l.85-2.933a4.5 4.5 0 011.13-1.897l8.932-8.932zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
-          <span>Share Your Coding Journey</span>
-        </h3>
-        <button type="button" class="btn-close-modal" aria-label="Close modal">&times;</button>
-      </div>
-      
-      <div class="rev-modal-body">
-        <form id="rev-submit-form" onsubmit="return false;">
-          <!-- Rating Selector -->
-          <div class="rev-rating-selector">
-            <span class="rev-selector-label">Your Rating</span>
-            <div class="rev-selector-stars">
-              <!-- Star SVGs with data-star -->
-              <svg data-star="1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-              <svg data-star="2" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-              <svg data-star="3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-              <svg data-star="4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-              <svg data-star="5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-            </div>
-            <div class="rev-selector-desc">Click a star to rate</div>
-            <input type="hidden" id="rev-input-rating" required>
-          </div>
-          
-          <!-- Identity Fields -->
-          <div class="rev-form-row">
-            <div class="rev-form-group">
-              <label for="rev-input-name">Your Full Name *</label>
-              <input type="text" id="rev-input-name" placeholder="e.g. Aarav Sharma" required>
-            </div>
-            <div class="rev-form-group">
-              <label for="rev-input-email">Your Email Address *</label>
-              <input type="email" id="rev-input-email" placeholder="e.g. aarav@gmail.com" required>
-            </div>
-          </div>
-          
-          <!-- Review Details -->
-          <div class="rev-form-row">
-            <div class="rev-form-group">
-              <label for="rev-input-title">Review Title *</label>
-              <input type="text" id="rev-input-title" placeholder="Summarize your experience..." required>
-            </div>
-            <div class="rev-form-group">
-              <label for="rev-input-cohort">Cohort / Study Date</label>
-              <input type="text" id="rev-input-cohort" placeholder="e.g. May 2026 or Self-Paced">
-            </div>
-          </div>
-          
-          <div class="rev-form-group full-width">
-            <label for="rev-input-comment">Detailed Feedback *</label>
-            <textarea id="rev-input-comment" placeholder="What did you love? How did it build your active muscle memory by actually coding?" maxlength="1000" required></textarea>
-            <span class="rev-char-counter">0/1000</span>
-          </div>
-
-          <!-- Pros and Cons -->
-          <div class="rev-form-row">
-            <div class="rev-form-group">
-              <label for="rev-input-pro">Pros (What went well?)</label>
-              <input type="text" id="rev-input-pro" placeholder="Type a pro and press Enter or comma">
-              <div class="rev-tags-container" id="pros-tags-list"></div>
-            </div>
-            <div class="rev-form-group">
-              <label for="rev-input-con">Cons (Areas of improvement)</label>
-              <input type="text" id="rev-input-con" placeholder="Type a con and press Enter or comma">
-              <div class="rev-tags-container" id="cons-tags-list"></div>
-            </div>
-          </div>
-
-          <!-- Media URLs and Avatar Profile URL -->
-          <div class="rev-form-row">
-            <div class="rev-form-group">
-              <label for="rev-input-media">Photo / Video URLs</label>
-              <div style="display:flex; gap:8px;">
-                <input type="text" id="rev-input-media" placeholder="Paste direct image or video URL...">
-                <button type="button" class="btn-modal-cancel" id="btn-add-media" style="height:38px; padding:0 12px; margin:0; line-height:36px;">Add</button>
-              </div>
-              <div class="media-previews-container" id="media-previews"></div>
-            </div>
-            <div class="rev-form-group">
-              <label for="rev-input-avatar-url">Optional Profile Picture URL</label>
-              <input type="text" id="rev-input-avatar-url" placeholder="Paste your headshot image URL...">
-            </div>
-          </div>
-
-          <!-- Switch toggle for recommendation -->
-          <div class="rev-form-group full-width">
-            <div class="rev-rec-switch-group">
-              <div class="rev-switch-label">
-                <strong>Would you recommend this course?</strong>
-                <span>Recommend to other python learners</span>
-              </div>
-              <label class="rev-switch-control" for="rev-input-recommend">
-                <input type="checkbox" id="rev-input-recommend" checked>
-                <span class="rev-switch-slider"></span>
-              </label>
-            </div>
-          </div>
-
-          <!-- Modal actions -->
-          <div class="rev-modal-footer">
-            <button type="button" class="btn-modal-cancel">Cancel</button>
-            <button type="submit" class="btn-modal-submit">Submit Review</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Glassmorphic Auth Modal Overlay -->
-  <div class="auth-modal-overlay" id="authModal">
-    <div class="auth-modal-card">
-      <button class="btn-close-auth-modal" id="btnCloseAuthModal" aria-label="Close modal">&times;</button>
-      <div class="auth-modal-header">
-        <h3 id="authTitle">Join the Challenge</h3>
-        <p id="authSubtitle">Sign in to start learning</p>
-      </div>
-      
-      <div class="auth-message-box" id="authMessage"></div>
-      
-      <div class="social-auth-section" id="socialAuthSection">
-        <button type="button" class="google-signin-btn" id="authGoogleBtn">
-          <svg viewBox="0 0 48 48" style="width: 18px; height: 18px; margin-right: 8px;">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-            <path fill="#4285F4" d="M46.5 24c0-1.61-.15-3.16-.42-4.67H24v8.86h12.7c-.55 2.87-2.17 5.3-4.61 6.94l7.19 5.56c4.21-3.88 6.64-9.59 6.64-16.69z"/>
-            <path fill="#FBBC05" d="M10.54 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.98-6.19z"/>
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.19-5.56c-2 1.34-4.55 2.13-7.7 2.13-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-          </svg>
-          Continue with Google
-        </button>
-        <div class="auth-divider" id="authDivider"><span>OR EMAIL</span></div>
-      </div>
-      
-      <form class="auth-form" id="authForm" onsubmit="return false;">
-        <div class="auth-input-group" id="authNameGroup" style="display: none;">
-          <input type="text" id="authName" class="auth-input" placeholder="Full Name">
-        </div>
-        <div class="auth-input-group">
-          <input type="email" id="authEmail" class="auth-input" placeholder="name@example.com" required>
-        </div>
-        <div class="auth-input-group" id="authPasswordGroup">
-          <input type="password" id="authPassword" class="auth-input" placeholder="••••••••">
-        </div>
-        <div class="auth-input-group" id="authConfirmGroup" style="display: none;">
-          <input type="password" id="authConfirmPassword" class="auth-input" placeholder="Confirm Password">
-        </div>
-        <button type="submit" class="btn-auth-submit" id="btnAuthSubmit">Login</button>
-      </form>
-      
-      <div class="auth-footer-links">
-        <a href="#" id="linkForgot">Forgot password?</a>
-        <a href="#" id="linkSignup">Create Account</a>
-        <a href="#" id="linkBackToLogin" style="display: none;">&larr; Back to Login</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Supabase Config Context Injection -->
-  <script>
-    window.MANODEMY_CONFIG = {
-      SUPA_URL: "https://gvhnwmuyrwissgkumeif.supabase.co",
-      SUPA_KEY: "sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq"
-    };
-  </script>
-
-  <!-- External JS Dependencies -->
-  <script src="../supabase.js"></script>
-  <script src="reviews.js"></script>
-  <script src="app.js"></script>
-</body>
-</html>
-
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>30-Day Python for Data Analyst Course &mdash; Manodemy</title>
+
+  <meta name="description" content="Master Python for Data Analysis in 30 days. Escape tutorial hell with interactive coding notebooks, 750+ real-world practice challenges, and no video bloat. $19 one-time.">
+
+  <meta name="keywords" content="learn python, python data analysis, stop tutorial hell, interactive python notebooks, pandas masterclass, numpy exercises, sql databases, analytics interview, data analyst certification">
+
+  <link rel="canonical" href="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/">
+
+  
+
+  <!-- Open Graph / Facebook SEO -->
+
+  <meta property="og:type" content="website">
+
+  <meta property="og:url" content="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/">
+
+  <meta property="og:title" content="30-Day Python for Data Analyst Course — Manodemy">
+
+  <meta property="og:description" content="Learn Python by actually coding. 30 daily modules, 750+ interactive browser-based challenges, zero video bloat. $19 one-time.">
+
+  <meta property="og:image" content="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/assets/og-cover.png">
+
+
+
+  <!-- Twitter SEO Card -->
+
+  <meta name="twitter:card" content="summary_large_image">
+
+  <meta name="twitter:url" content="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/">
+
+  <meta name="twitter:title" content="30-Day Python for Data Analyst Course — Manodemy">
+
+  <meta name="twitter:description" content="Escape tutorial hell. Learn Python for Data Analytics through hands-on active coding notebooks in your browser.">
+
+  <meta name="twitter:image" content="https://manodemy.github.io/30-days_-Python-for-Data-Analyst/assets/og-cover.png">
+
+  
+
+  <!-- Font Setup -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,700&family=Caveat:wght@400;700&family=Sacramento&family=Allura&family=Satisfy&family=Dancing+Script:wght@600;700&family=Kalam:wght@700&display=swap" rel="stylesheet">
+
+  
+
+  <link rel="stylesheet" href="styles.css?v=2.8">
+
+  
+
+  <!-- Structured SEO Metadata (JSON-LD) -->
+
+  <script type="application/ld+json">
+
+  {
+
+    "@context": "https://schema.org",
+
+    "@type": "Course",
+
+    "name": "30-Day Python for Data Analyst Masterclass",
+
+    "description": "Learn Python for Data Analytics through interactive browser-based coding notebooks, structured guides, and interview prep questions.",
+
+    "provider": {
+
+      "@type": "Organization",
+
+      "name": "Manodemy",
+
+      "sameAs": "https://manodemy.github.io/30-days_-Python-for-Data-Analyst/"
+
+    },
+
+    "hasCourseInstance": {
+
+      "@type": "CourseInstance",
+
+      "courseMode": "Online",
+
+      "courseWorkload": "PT1H"
+
+    },
+
+    "offers": {
+
+      "@type": "Offer",
+
+      "price": "19.00",
+
+      "priceCurrency": "USD",
+
+      "category": "Paid"
+
+    },
+
+    "outputs": "Certification of Completion"
+
+  }
+
+  </script>
+
+
+
+  <script type="application/ld+json">
+
+  {
+
+    "@context": "https://schema.org",
+
+    "@type": "FAQPage",
+
+    "mainEntity": [
+
+      {
+
+        "@type": "Question",
+
+        "name": "Is there a refund policy?",
+
+        "acceptedAnswer": {
+
+          "@type": "Answer",
+
+          "text": "Yes! We offer a full 7-day money-back guarantee. If you are not satisfied with the learning quality, email us for a hassle-free refund."
+
+        }
+
+      },
+
+      {
+
+        "@type": "Question",
+
+        "name": "Do I need to install any software or local environments?",
+
+        "acceptedAnswer": {
+
+          "@type": "Answer",
+
+          "text": "No. Everything runs entirely in your browser with our built-in interactive code editor and runtime environment."
+
+        }
+
+      },
+
+      {
+
+        "@type": "Question",
+
+        "name": "Will I have lifetime access to the course content?",
+
+        "acceptedAnswer": {
+
+          "@type": "Answer",
+
+          "text": "Yes. A one-time purchase grants you permanent access to all 30 days, answers, interview prep, and future updates."
+
+        }
+
+      }
+
+    ]
+
+  }
+
+  </script>
+
+</head>
+
+<body>
+
+
+
+  <!-- Navigation -->
+
+  <header>
+
+    <nav class="nav" aria-label="Primary site navigation">
+
+      <div class="container">
+
+        <a href="../index.html" class="nav-brand" aria-label="Manodemy Home">
+
+          <span class="nav-brand-name">Mano<span>demy</span></span>
+
+          <span class="nav-brand-sub">Hands-on EdTech</span>
+
+        </a>
+
+        <div class="nav-links">
+
+          <a href="../day01.html" class="nav-pill nav-pill--free">Try Day 01 Free</a>
+
+          <a href="#curriculum" class="nav-pill">Curriculum</a>
+
+          <a href="#testimonials" class="nav-pill">Testimonials</a>
+
+          <a href="#faq" class="nav-pill">FAQ</a>
+
+        </div>
+
+        <div class="nav-right">
+
+          <a href="#pricing" id="navSignin" class="btn-ghost">Sign In</a>
+
+          <a href="#pricing" class="btn-nav-buy" data-cta="buy">Buy Now &mdash; $19</a>
+
+        </div>
+
+        <button class="hamburger" id="hamburger" aria-expanded="false" aria-label="Toggle Navigation menu" aria-controls="mobileOverlay">
+
+          <span></span>
+
+          <span></span>
+
+          <span></span>
+
+        </button>
+
+      </div>
+
+    </nav>
+
+  </header>
+
+
+
+  <!-- Mobile Menu Overlay -->
+
+  <div class="mobile-overlay" id="mobileOverlay" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+
+    <button class="mobile-close" id="mobileClose" aria-label="Close menu">&times;</button>
+
+    <a href="../day01.html">Try Day 01 Free</a>
+
+    <a href="#curriculum">Curriculum</a>
+
+    <a href="#testimonials">Testimonials</a>
+
+    <a href="#faq">FAQ</a>
+
+    <a href="#pricing" class="btn-gold btn-gold--filled" style="width: 80%; justify-content: center; margin-top: 1rem;" data-cta="buy">Buy Now &mdash; $19</a>
+
+  </div>
+
+
+
+  <!-- Main Content -->
+
+  <main id="main-content">
+
+    
+
+    <!-- Hero Section -->
+
+    <section class="hero">
+
+      <div class="container">
+
+        <div class="hero-left reveal">
+
+          <span class="hero-badge">&#x1F4A1; Escape Tutorial Hell</span>
+
+          <h1 class="hero-title"><span class="typed-learn">Learn</span>PYTHON <svg class="py-logo" viewBox="0 0 459 459" aria-label="Python Logo"><path fill="#306998" d="M229.5 0C161.4 0 122.4 15.6 122.4 53.6v34.4h107.1v15.3H122.4c-47.8 0-76.5 30.6-76.5 76.5v61.2c0 45.9 28.7 76.5 76.5 76.5h30.6v-45.9c0-51 41.3-91.8 91.8-91.8h107.1V107.1c0-53.6-47.8-107.1-122.4-107.1zM175.9 30.6c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3 6.9-15.3 15.3-15.3z"/><path fill="#FFE873" d="M229.5 459c68.1 0 107.1-15.6 107.1-53.6v-34.4H229.5v-15.3h107.1c47.8 0 76.5-30.6 76.5-76.5v-61.2c0-45.9-28.7-76.5-76.5-76.5h-30.6v45.9c0 51-41.3 91.8-91.8 91.8H122.4V351.9c0 53.6 47.8 107.1 122.4 107.1zm53.6-30.6c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3 15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3z"/></svg><br>BY <span class="gradient-actually">ACTUALLY</span> <span class="gradient-coding">CODING.</span></h1>
+
+          <p class="hero-sub">Master <strong>Python for Data Analytics</strong> with the ultimate 30-day interactive masterclass. Skip passive video bloat—write actual code side-by-side inside live browser notebooks, and ace your technical recruiting with <strong>750+ real-world data science interview challenges</strong>.</p>
+
+          <div class="hero-ctas">
+
+            <a href="../day01.html" class="btn-gold btn-gold--filled">&#x26A1; Launch Day 01 Free &mdash; Code Instantly</a>
+
+            <a href="#pricing" class="btn-gold btn-gold--outline" data-cta="buy">&#x1F4B3; Get Lifetime Access &mdash; $19 / &#x20B9;1,499</a>
+
+          </div>
+
+        </div>
+
+        
+
+        <div class="hero-right reveal">
+
+          <div class="terminal-stats">
+
+            <div class="stat-badge badge-days">
+
+              <span class="badge-led"></span>
+
+              <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+
+              </svg>
+
+              <span>30 Guided Days</span>
+
+            </div>
+
+            <div class="stat-badge badge-challenges">
+
+              <span class="badge-led"></span>
+
+              <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+                <circle cx="12" cy="12" r="10"></circle>
+
+                <circle cx="12" cy="12" r="6"></circle>
+
+                <circle cx="12" cy="12" r="2"></circle>
+
+              </svg>
+
+              <span>750+ Challenges</span>
+
+            </div>
+
+            <div class="stat-badge badge-video">
+
+              <span class="badge-led"></span>
+
+              <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"></path>
+
+                <path d="M10 8L16 12L10 16V8Z"></path>
+
+                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+
+              </svg>
+
+              <span>No Video Bloat</span>
+
+            </div>
+
+          </div>
+
+          
+
+          <div class="terminal" role="img" aria-label="Visual demonstration of python data analytics workflow">
+
+            <div class="terminal-bar">
+
+              <div class="terminal-dots">
+
+                <span class="dot dot-r" aria-hidden="true"></span>
+
+                <span class="dot dot-y" aria-hidden="true"></span>
+
+                <span class="dot dot-g" aria-hidden="true"></span>
+
+              </div>
+
+              <span class="terminal-title">Python Interactive Console</span>
+
+            </div>
+
+            <div class="terminal-body">
+
+              <div class="terminal-mesh" aria-hidden="true"></div>
+
+              <div class="terminal-blobs" aria-hidden="true">
+
+                <div class="blob blob-purple"></div>
+
+                <div class="blob blob-cyan"></div>
+
+              </div>
+
+              <div class="terminal-code-wrapper" aria-live="off" aria-atomic="true">
+
+                <pre><code id="typingDisplay"></code></pre>
+
+                <span class="cursor-blink" id="typingCursor" aria-hidden="true">&#x2587;</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          
+
+          <div class="hero-proof">
+
+            <div class="proof-card rating-card">
+
+              <svg class="proof-icon star-icon" viewBox="0 0 24 24" fill="currentColor">
+
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+
+              </svg>
+
+              <span>4.9/5 Student Rating</span>
+
+            </div>
+
+            <div class="proof-card learners-card">
+
+              <svg class="proof-icon users-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+
+                <circle cx="9" cy="7" r="4"></circle>
+
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+
+              </svg>
+
+              <span>2,400+ Active Learners</span>
+
+            </div>
+
+            <div class="proof-card cert-card">
+
+              <svg class="proof-icon cert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+
+                <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+
+              </svg>
+
+              <span>Job-Ready Certificate Included</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Social Proof Strip -->
+
+    <section class="proof-strip">
+
+      <div class="container">
+
+        <div class="proof-stat">
+
+          <span class="proof-num" data-count="2400" data-suffix="+">0</span>
+
+          <span class="proof-label">Enrolled Learners</span>
+
+        </div>
+
+        <div class="proof-stat">
+
+          <span class="proof-num" data-count="750" data-suffix="+">0</span>
+
+          <span class="proof-label">Interview Practice Challenges</span>
+
+        </div>
+
+        <div class="proof-stat">
+
+          <span class="proof-num" data-count="30" data-suffix=" Days">0</span>
+
+          <span class="proof-label">Complete Learning Plan</span>
+
+        </div>
+
+        <div class="proof-stat">
+
+          <span class="proof-num" data-count="100" data-suffix="%">0</span>
+
+          <span class="proof-label">Interactive Practice Retention</span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Free Day 1 Preview -->
+
+    <section class="preview">
+
+      <!-- Ambient Bloom Background Elements -->
+
+      <div class="preview-bg-bloom-left"></div>
+
+      <div class="preview-bg-bloom-right"></div>
+
+
+
+      <div class="container">
+
+        <div class="preview-text reveal">
+
+          <h2>Stop Watching. Start Coding.<br><span>Day 01 Sandbox is Fully Unlocked.</span></h2>
+
+          <p class="preview-body">We are so confident in our hands-on, active-learning curriculum that we don't hide it behind annoying paywalls, email captures, or aggressive sales calls. Experience how simple learning Python can feel when you actually write, run, and test code live in your browser.</p>
+
+          
+
+          <ul class="preview-list">
+
+            <li>
+
+              <div class="bullet-icon-wrapper">
+
+                <svg class="bullet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+              </div>
+
+              <span class="bullet-text"><strong>Day 01 Core Mastery:</strong> Variables, memory pointers, and foundational syntax rules.</span>
+
+            </li>
+
+            <li>
+
+              <div class="bullet-icon-wrapper">
+
+                <svg class="bullet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+              </div>
+
+              <span class="bullet-text"><strong>Jupyter-Style Notebooks:</strong> A fully active in-browser terminal and cell editor.</span>
+
+            </li>
+
+            <li>
+
+              <div class="bullet-icon-wrapper">
+
+                <svg class="bullet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+              </div>
+
+              <span class="bullet-text"><strong>Instant Test Verification:</strong> Run automated test cases to instantly check your logic.</span>
+
+            </li>
+
+            <li>
+
+              <div class="bullet-icon-wrapper">
+
+                <svg class="bullet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+              </div>
+
+              <span class="bullet-text"><strong>Zero Setup Required:</strong> 100% cloud-based. No compiler, Docker, or local downloads.</span>
+
+            </li>
+
+          </ul>
+
+        </div>
+
+        
+
+        <div class="preview-visual reveal">
+
+          <div class="preview-card">
+
+            <!-- Animated Gold Neon Lock Icon -->
+
+            <div class="premium-lock-wrapper">
+
+              <svg class="premium-lock-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                <!-- Outer glowing rings -->
+
+                <circle cx="32" cy="32" r="28" stroke="rgba(255, 176, 32, 0.15)" stroke-width="2" stroke-dasharray="4 4" class="lock-ring-slow" />
+
+                <circle cx="32" cy="32" r="24" stroke="rgba(0, 230, 246, 0.2)" stroke-width="1.5" class="lock-ring-fast" />
+
+                <!-- Unlocked Shackle (Gold Gradient) -->
+
+                <path d="M22 28V18C22 12.4772 26.4772 8 32 8C37.5228 8 42 12.4772 42 18" stroke="url(#gold-grad)" stroke-width="4.5" stroke-linecap="round" class="shackle-anim" />
+
+                <!-- Lock Body (High-end Glassmorphic Gold) -->
+
+                <rect x="16" y="26" width="32" height="26" rx="6" fill="url(#lock-body-grad)" stroke="url(#gold-grad)" stroke-width="2" />
+
+                <!-- Keyhole -->
+
+                <circle cx="32" cy="36" r="3" fill="var(--base)" />
+
+                <path d="M32 39V45" stroke="var(--base)" stroke-width="2" stroke-linecap="round" />
+
+                
+
+                <defs>
+
+                  <linearGradient id="gold-grad" x1="16" y1="10" x2="48" y2="52" gradientUnits="userSpaceOnUse">
+
+                    <stop stop-color="#FFE873" />
+
+                    <stop offset="0.5" stop-color="#FFB020" />
+
+                    <stop offset="1" stop-color="#FF8A00" />
+
+                  </linearGradient>
+
+                  <linearGradient id="lock-body-grad" x1="16" y1="26" x2="48" y2="52" gradientUnits="userSpaceOnUse">
+
+                    <stop stop-color="rgba(255, 176, 32, 0.3)" />
+
+                    <stop offset="1" stop-color="rgba(255, 138, 0, 0.05)" />
+
+                  </linearGradient>
+
+                </defs>
+
+              </svg>
+
+            </div>
+
+            
+
+            <h3>Instant Day 01 Sandbox</h3>
+
+            <span class="preview-meta">100% Free &bull; No Login Required</span>
+
+            
+
+            <!-- Sleek Mock Jupyter-style Notebook Interface -->
+
+            <div class="mock-notebook-cell">
+
+              <div class="cell-header">
+
+                <span class="dot red"></span>
+
+                <span class="dot yellow"></span>
+
+                <span class="dot green"></span>
+
+                <span class="cell-title">day01_challenge.py</span>
+
+              </div>
+
+              <div class="cell-body">
+
+                <div class="cell-line"><span class="line-no">In [1]:</span> <span class="code-comment"># Click Launch below to execute</span></div>
+
+                <div class="cell-line"><span class="line-no"></span> <span class="code-keyword">def</span> <span class="code-func">verify_active_learning</span>():</div>
+
+                <div class="cell-line"><span class="line-no"></span>     <span class="code-keyword">return</span> <span class="code-string">"Tutorial Hell Escaped! &#x1F680;"</span></div>
+
+                <div class="cell-line"><span class="line-no"></span> </div>
+
+                <div class="cell-line"><span class="line-no"></span> verify_active_learning()</div>
+
+                <div class="cell-output"><span class="output-no">Out [1]:</span> <span class="output-text">'Tutorial Hell Escaped! &#x1F680;'</span></div>
+
+              </div>
+
+            </div>
+
+            
+
+            <a href="../day01.html" class="btn-gold btn-gold--filled preview-cta">&#x1F680; Start day01 Coding</a>
+
+            <span class="preview-micro">Build active muscle memory by actually coding.</span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- How It Works Section -->
+
+    <section class="how">
+
+      <div class="container">
+
+        <div class="section-head reveal">
+
+          <h2>How Manodemy <span>Accelerates Mastery</span></h2>
+
+          <p>A proven interactive learning framework designed to build true muscle memory.</p>
+
+        </div>
+
+        <div class="how-steps">
+
+          <div class="how-step how-step--cyan reveal">
+
+            <span class="how-num">01</span>
+
+            <h3>Conceptual Breakdowns</h3>
+
+            <p>Skip dry video lectures. Master deep concepts fast using precise, clear technical summaries designed by data team leads.</p>
+
+          </div>
+
+          <div class="how-connector how-connector--cyan-purple" aria-hidden="true"><span class="connector-dot"></span></div>
+
+          <div class="how-step how-step--purple reveal">
+
+            <span class="how-num">02</span>
+
+            <h3>Inline Execution</h3>
+
+            <p>Edit and run real Python script directly within each cell. Play with code side-by-side inside your standard notebook interface.</p>
+
+          </div>
+
+          <div class="how-connector how-connector--purple-emerald" aria-hidden="true"><span class="connector-dot"></span></div>
+
+          <div class="how-step how-step--emerald reveal">
+
+            <span class="how-num">03</span>
+
+            <h3>Automated Verification</h3>
+
+            <p>Solve hundreds of interactive evaluation puzzles. Get direct guidance and absolute confirmation on every test case immediately.</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Curriculum Roadmap Section -->
+
+    <section class="curriculum" id="curriculum">
+
+      <div class="container">
+
+        <div class="section-head reveal">
+
+          <h2>30-Day Structured Curriculum</h2>
+
+        </div>
+
+        
+
+        <div class="curriculum-grid reveal">
+
+          <!-- Day 01 -->
+
+          <div class="day-card" data-day="01" data-category="basics" tabindex="0">
+
+            <span class="day-num">Day 01</span>
+
+            <span class="day-emoji">🔢</span>
+
+            <span class="day-title">Data Types and Memory</span>
+
+            <span class="day-badge free-badge">FREE</span>
+
+          </div>
+
+          <!-- Day 02 -->
+
+          <div class="day-card" data-day="02" data-category="basics" tabindex="0">
+
+            <span class="day-num">Day 02</span>
+
+            <span class="day-emoji">➕</span>
+
+            <span class="day-title">Operators and Expressions</span>
+
+            <span class="day-badge free-badge">FREE</span>
+
+          </div>
+
+          <!-- Day 03 -->
+
+          <div class="day-card locked" data-day="03" data-category="structures" tabindex="0">
+
+            <span class="day-num">Day 03</span>
+
+            <span class="day-emoji">📝</span>
+
+            <span class="day-title">Strings</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 04 -->
+
+          <div class="day-card locked" data-day="04" data-category="structures" tabindex="0">
+
+            <span class="day-num">Day 04</span>
+
+            <span class="day-emoji">📋</span>
+
+            <span class="day-title">Lists</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 05 -->
+
+          <div class="day-card locked" data-day="05" data-category="structures" tabindex="0">
+
+            <span class="day-num">Day 05</span>
+
+            <span class="day-emoji">📦</span>
+
+            <span class="day-title">Tuples</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 06 -->
+
+          <div class="day-card locked" data-day="06" data-category="structures" tabindex="0">
+
+            <span class="day-num">Day 06</span>
+
+            <span class="day-emoji">⭕</span>
+
+            <span class="day-title">Sets</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 07 -->
+
+          <div class="day-card locked" data-day="07" data-category="structures" tabindex="0">
+
+            <span class="day-num">Day 07</span>
+
+            <span class="day-emoji">🗂️</span>
+
+            <span class="day-title">Dictionaries</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 08 -->
+
+          <div class="day-card locked" data-day="08" data-category="basics" tabindex="0">
+
+            <span class="day-num">Day 08</span>
+
+            <span class="day-emoji">🔀</span>
+
+            <span class="day-title">Conditionals</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 09 -->
+
+          <div class="day-card locked" data-day="09" data-category="basics" tabindex="0">
+
+            <span class="day-num">Day 09</span>
+
+            <span class="day-emoji">🔄</span>
+
+            <span class="day-title">Loops</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 10 -->
+
+          <div class="day-card locked" data-day="10" data-category="basics" tabindex="0">
+
+            <span class="day-num">Day 10</span>
+
+            <span class="day-emoji">⚙️</span>
+
+            <span class="day-title">Functions</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 11 -->
+
+          <div class="day-card locked" data-day="11" data-category="basics" tabindex="0">
+
+            <span class="day-num">Day 11</span>
+
+            <span class="day-emoji">📦</span>
+
+            <span class="day-title">Modules</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 12 -->
+
+          <div class="day-card locked" data-day="12" data-category="structures" tabindex="0">
+
+            <span class="day-num">Day 12</span>
+
+            <span class="day-emoji">🧮</span>
+
+            <span class="day-title">Comprehensions</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 13 -->
+
+          <div class="day-card locked" data-day="13" data-category="basics" tabindex="0">
+
+            <span class="day-num">Day 13</span>
+
+            <span class="day-emoji">λ</span>
+
+            <span class="day-title">Lambda Functions</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 14 -->
+
+          <div class="day-card locked" data-day="14" data-category="basics" tabindex="0">
+
+            <span class="day-num">Day 14</span>
+
+            <span class="day-emoji">⚠️</span>
+
+            <span class="day-title">Exceptions</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 15 -->
+
+          <div class="day-card locked" data-day="15" data-category="basics" tabindex="0">
+
+            <span class="day-num">Day 15</span>
+
+            <span class="day-emoji">📂</span>
+
+            <span class="day-title">File Handling</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 16 -->
+
+          <div class="day-card locked" data-day="16" data-category="basics" tabindex="0">
+
+            <span class="day-num">Day 16</span>
+
+            <span class="day-emoji">🧩</span>
+
+            <span class="day-title">OOP Basics</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 17 -->
+
+          <div class="day-card locked" data-day="17" data-category="basics" tabindex="0">
+
+            <span class="day-num">Day 17</span>
+
+            <span class="day-emoji">🏗️</span>
+
+            <span class="day-title">OOP Advanced</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 18 -->
+
+          <div class="day-card locked" data-day="18" data-category="structures" tabindex="0">
+
+            <span class="day-num">Day 18</span>
+
+            <span class="day-emoji">🔍</span>
+
+            <span class="day-title">Regex</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 19 -->
+
+          <div class="day-card locked" data-day="19" data-category="structures" tabindex="0">
+
+            <span class="day-num">Day 19</span>
+
+            <span class="day-emoji">⚡</span>
+
+            <span class="day-title">Generators and Iterators</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 20 -->
+
+          <div class="day-card locked" data-day="20" data-category="advanced" tabindex="0">
+
+            <span class="day-num">Day 20</span>
+
+            <span class="day-emoji">🏆</span>
+
+            <span class="day-title">Capstone Project</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 21 -->
+
+          <div class="day-card locked" data-day="21" data-category="analysis" tabindex="0">
+
+            <span class="day-num">Day 21</span>
+
+            <span class="day-emoji">📊</span>
+
+            <span class="day-title">NumPy Fundamentals</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 22 -->
+
+          <div class="day-card locked" data-day="22" data-category="analysis" tabindex="0">
+
+            <span class="day-num">Day 22</span>
+
+            <span class="day-emoji">📈</span>
+
+            <span class="day-title">NumPy Advanced</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 23 -->
+
+          <div class="day-card locked" data-day="23" data-category="analysis" tabindex="0">
+
+            <span class="day-num">Day 23</span>
+
+            <span class="day-emoji">🐼</span>
+
+            <span class="day-title">Pandas Introduction</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 24 -->
+
+          <div class="day-card locked" data-day="24" data-category="analysis" tabindex="0">
+
+            <span class="day-num">Day 24</span>
+
+            <span class="day-emoji">🎯</span>
+
+            <span class="day-title">Pandas Selection</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 25 -->
+
+          <div class="day-card locked" data-day="25" data-category="analysis" tabindex="0">
+
+            <span class="day-num">Day 25</span>
+
+            <span class="day-emoji">🧹</span>
+
+            <span class="day-title">Pandas Cleaning</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 26 -->
+
+          <div class="day-card locked" data-day="26" data-category="analysis" tabindex="0">
+
+            <span class="day-num">Day 26</span>
+
+            <span class="day-emoji">🗃️</span>
+
+            <span class="day-title">Pandas GroupBy</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 27 -->
+
+          <div class="day-card locked" data-day="27" data-category="analysis" tabindex="0">
+
+            <span class="day-num">Day 27</span>
+
+            <span class="day-emoji">🔗</span>
+
+            <span class="day-title">Pandas Merging</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 28 -->
+
+          <div class="day-card locked" data-day="28" data-category="analysis" tabindex="0">
+
+            <span class="day-num">Day 28</span>
+
+            <span class="day-emoji">📉</span>
+
+            <span class="day-title">Pandas Time Series</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 29 -->
+
+          <div class="day-card locked" data-day="29" data-category="analysis" tabindex="0">
+
+            <span class="day-num">Day 29</span>
+
+            <span class="day-emoji">🎨</span>
+
+            <span class="day-title">Data Visualization</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+          <!-- Day 30 -->
+
+          <div class="day-card locked" data-day="30" data-category="advanced" tabindex="0">
+
+            <span class="day-num">Day 30</span>
+
+            <span class="day-emoji">🔬</span>
+
+            <span class="day-title">Phase Analysis & Review</span>
+
+            <span class="day-badge lock-badge">&#x1F512;</span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Comparison Table Section -->
+
+    <section class="compare">
+
+      <div class="container">
+
+        <div class="section-head reveal">
+
+          <h2>Why <span>Choose Manodemy?</span></h2>
+
+          <p>See how interactive instruction compares to standard learning setups.</p>
+
+        </div>
+
+        <div class="compare-wrap reveal">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th scope="col">Feature</th>
+
+                <th scope="col" class="col-mano">Manodemy Masterclass</th>
+
+                <th scope="col">Traditional Video Courses</th>
+
+                <th scope="col">Bootcamps</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr>
+
+                <td><strong>Interactive Coding</strong></td>
+
+                <td class="col-mano yes">
+
+                  <div class="compare-status">
+
+                    <span class="compare-badge compare-badge--yes">
+
+                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+                    </span>
+
+                    <span>Browser Editor Included</span>
+
+                  </div>
+
+                </td>
+
+                <td class="no">
+
+                  <div class="compare-status">
+
+                    <span class="compare-badge compare-badge--no">
+
+                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+
+                    </span>
+
+                    <span>Passive Watching</span>
+
+                  </div>
+
+                </td>
+
+                <td>
+
+                  <div class="compare-status">
+
+                    <span class="compare-badge compare-badge--neutral-yes">
+
+                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+                    </span>
+
+                    <span>Project Assignments</span>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+              <tr>
+
+                <td><strong>No Local Setup Required</strong></td>
+
+                <td class="col-mano yes">
+
+                  <div class="compare-status">
+
+                    <span class="compare-badge compare-badge--yes">
+
+                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+                    </span>
+
+                    <span>Zero Installation</span>
+
+                  </div>
+
+                </td>
+
+                <td class="no">
+
+                  <div class="compare-status">
+
+                    <span class="compare-badge compare-badge--no">
+
+                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+
+                    </span>
+
+                    <span>Hours of Configuration Debugging</span>
+
+                  </div>
+
+                </td>
+
+                <td class="no">
+
+                  <div class="compare-status">
+
+                    <span class="compare-badge compare-badge--no">
+
+                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+
+                    </span>
+
+                    <span>Standard Local CLI Setup</span>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+              <tr>
+
+                <td><strong>Structured Daily Plan</strong></td>
+
+                <td class="col-mano yes">
+
+                  <div class="compare-status">
+
+                    <span class="compare-badge compare-badge--yes">
+
+                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+                    </span>
+
+                    <span>Clean 30-Day Progression</span>
+
+                  </div>
+
+                </td>
+
+                <td class="no">
+
+                  <div class="compare-status">
+
+                    <span class="compare-badge compare-badge--no">
+
+                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+
+                    </span>
+
+                    <span>Unending Playlists</span>
+
+                  </div>
+
+                </td>
+
+                <td>
+
+                  <div class="compare-status">
+
+                    <span class="compare-badge compare-badge--neutral-yes">
+
+                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+                    </span>
+
+                    <span>Rigid Schedule</span>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+              <tr>
+
+                <td><strong>Refund Guarantee</strong></td>
+
+                <td class="col-mano yes">
+
+                  <div class="compare-status">
+
+                    <span class="compare-badge compare-badge--yes">
+
+                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+                    </span>
+
+                    <span>7-Day Money-Back Guarantee</span>
+
+                  </div>
+
+                </td>
+
+                <td>
+
+                  <div class="compare-status">
+
+                    <span class="compare-badge compare-badge--neutral-yes">
+
+                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+
+                    </span>
+
+                    <span>Variable Policies</span>
+
+                  </div>
+
+                </td>
+
+                <td class="no">
+
+                  <div class="compare-status">
+
+                    <span class="compare-badge compare-badge--no">
+
+                      <svg class="compare-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+
+                    </span>
+
+                    <span>None (High-stakes deposits)</span>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+              <tr>
+
+                <td><strong>Total Cost</strong></td>
+
+                <td class="col-mano yes">
+
+                  <span class="compare-price-mano">$19 / &#x20B9;1,499 (One-Time)</span>
+
+                </td>
+
+                <td>
+
+                  <span>$15 - $200 / Month</span>
+
+                </td>
+
+                <td class="no">
+
+                  <span class="compare-price-bootcamp">$5,000+ Upfront</span>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Reviews & Ratings Section -->
+
+    <section class="reviews-sec" id="testimonials">
+
+      <div class="container">
+
+        <div class="section-head reveal">
+
+          <h2>30 Days Structured Curriculum Reviews</h2>
+
+          <p>Read experiences and ratings from verified learners who built active coding muscle memory.</p>
+
+        </div>
+
+        
+
+        <!-- Ratings Dashboard Panel -->
+
+        <div class="reviews-dashboard reveal">
+
+          <!-- Score Summary Pillar -->
+
+          <div class="rev-score-col">
+
+            <div class="rev-score-massive">4.8 <span>/ 5</span></div>
+
+            <div class="rev-stars-row">
+
+              <!-- Rendered Dynamically -->
+
+            </div>
+
+            <div class="rev-count-sub">Based on 2,400+ reviews</div>
+
+            <button class="btn-toggle-reviews" id="btnToggleReviews" aria-expanded="false" aria-controls="reviewsCollapseArea">
+
+              <span>View Reviews</span>
+
+              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path></svg>
+
+            </button>
+
+          </div>
+
+          
+
+          <!-- Rating Distribution Column -->
+
+          <div class="rev-distribution-col">
+
+            <div class="rev-dist-row" data-rating="5">
+
+              <span class="rev-dist-label">5 star</span>
+
+              <div class="rev-dist-track">
+
+                <div class="rev-dist-fill" style="width: 82%;"></div>
+
+              </div>
+
+              <span class="rev-dist-pct">82%</span>
+
+            </div>
+
+            <div class="rev-dist-row" data-rating="4">
+
+              <span class="rev-dist-label">4 star</span>
+
+              <div class="rev-dist-track">
+
+                <div class="rev-dist-fill" style="width: 14%;"></div>
+
+              </div>
+
+              <span class="rev-dist-pct">14%</span>
+
+            </div>
+
+            <div class="rev-dist-row" data-rating="3">
+
+              <span class="rev-dist-label">3 star</span>
+
+              <div class="rev-dist-track">
+
+                <div class="rev-dist-fill" style="width: 3%;"></div>
+
+              </div>
+
+              <span class="rev-dist-pct">3%</span>
+
+            </div>
+
+            <div class="rev-dist-row" data-rating="2">
+
+              <span class="rev-dist-label">2 star</span>
+
+              <div class="rev-dist-track">
+
+                <div class="rev-dist-fill" style="width: 1%;"></div>
+
+              </div>
+
+              <span class="rev-dist-pct">1%</span>
+
+            </div>
+
+            <div class="rev-dist-row" data-rating="1">
+
+              <span class="rev-dist-label">1 star</span>
+
+              <div class="rev-dist-track">
+
+                <div class="rev-dist-fill" style="width: 0%;"></div>
+
+              </div>
+
+              <span class="rev-dist-pct">0%</span>
+
+            </div>
+
+          </div>
+
+          
+
+          <!-- Trust Metrics Pillar replaced with Write a Review CTA -->
+
+          <div class="rev-trust-col">
+
+            <button class="btn-write-review">
+
+              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.83 17.017a4.5 4.5 0 01-1.897 1.13L3 19l.85-2.933a4.5 4.5 0 011.13-1.897l8.932-8.932zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
+
+              <span>Write a Review</span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Collapsible Reviews Grid & Controls Container -->
+
+        <div class="reviews-collapse-wrapper" id="reviewsCollapseArea">
+
+          <div class="reviews-collapse-inner">
+
+            
+
+            <!-- Filter & Search Toolbar -->
+
+            <div class="reviews-toolbar">
+
+              <div class="rev-search-wrapper">
+
+                <input type="text" class="rev-search-input" placeholder="Search reviews by keyword...">
+
+                <svg class="rev-search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+
+              </div>
+
+              
+
+              <div class="reviews-filter-group">
+
+                <select class="rev-select-dropdown" id="filter-rating">
+
+                  <option value="all">All Ratings</option>
+
+                  <option value="5">5 Stars</option>
+
+                  <option value="4">4 Stars</option>
+
+                  <option value="3">3 Stars</option>
+
+                  <option value="2">2 Stars</option>
+
+                  <option value="1">1 Star</option>
+
+                </select>
+
+
+
+                <select class="rev-select-dropdown" id="filter-sort">
+
+                  <option value="most_recent">Most Recent</option>
+
+                  <option value="highest">Highest Rating</option>
+
+                  <option value="helpful">Most Helpful</option>
+
+                </select>
+
+
+
+                <label class="rev-filter-checkbox" for="filter-verified">
+
+                  <input type="checkbox" id="filter-verified">
+
+                  <span>Verified Only</span>
+
+                </label>
+
+
+
+                <label class="rev-filter-checkbox" for="filter-media">
+
+                  <input type="checkbox" id="filter-media">
+
+                  <span>With Media</span>
+
+                </label>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Dynamic Reviews Cards Roster -->
+
+            <div class="reviews-grid">
+
+              <!-- Populated Dynamically via reviews.js -->
+
+            </div>
+
+
+
+            <!-- Pagination Controls -->
+
+            <div class="reviews-pagination">
+
+              <!-- Populated Dynamically via reviews.js -->
+
+            </div>
+
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Pricing section anchor for background links -->
+
+    <div id="pricing" style="height: 0; margin: 0; padding: 0; overflow: hidden; visibility: hidden;"></div>
+
+
+
+    <!-- Pricing Modal Overlay -->
+
+    <div class="pricing-modal-overlay" id="pricingModal">
+
+      <div class="pricing-modal-card">
+
+        <button class="btn-close-pricing-modal" id="btnClosePricingModal" aria-label="Close modal">&times;</button>
+
+        
+
+        <div class="pricing-card modal-version landscape-layout">
+
+          <!-- Left Column: Price Highlights -->
+
+          <div class="pricing-left">
+
+            <span class="popular-badge">Special Cohort Offer</span>
+
+            <span class="price-old">$99 / &#x20B9;8,200 Upfront</span>
+
+            <span class="price-now"><span>$19</span></span>
+
+            <span class="price-inr">or &nbsp;&#x20B9;1,499 one-time payment</span>
+
+            <span class="discount-pill">You save over 80% today</span>
+
+          </div>
+
+          
+
+          <!-- Right Column: Features and Guarantee Checkout -->
+
+          <div class="pricing-right">
+
+            <div class="pricing-details-view" id="pricingDetailsView">
+
+              <ul class="pricing-features">
+
+                <li><span class="feat-check">&#x2714;</span> 30 Unlocked Day Notebooks</li>
+
+                <li><span class="feat-check">&#x2714;</span> 750+ Practice Interview Questions</li>
+
+                <li><span class="feat-check">&#x2714;</span> Inline evaluation and test runners</li>
+
+              </ul>
+
+              
+
+              <button class="btn-gold btn-gold--filled" style="width:100%; border:none; display:flex;" id="btnPricingBuy" type="button">&#x1F680; Buy Full Masterclass &mdash; Unlocks Instantly</button>
+
+            </div>
+
+            
+
+            <div class="pricing-checkout-view" id="pricingCheckoutView" style="display: none;">
+
+              <div class="checkout-back-link" id="checkoutBackToDetails">&#x2190; Back to details</div>
+
+              <div class="checkout-header">
+
+                <h3>Complete Checkout</h3>
+
+                <p class="checkout-subtitle">One-time payment &bull; Lifetime access</p>
+
+              </div>
+
+              <div class="checkout-price-summary">
+
+                <span class="checkout-amount" id="checkoutAmount">$19</span>
+
+                <span class="checkout-original" id="checkoutOriginal">$69</span>
+
+              </div>
+
+              <div class="coupon-section">
+
+                <input type="text" id="couponInput" placeholder="Coupon code (optional)" maxlength="20">
+
+                <button class="coupon-apply" id="couponApply" type="button">Apply</button>
+
+              </div>
+
+              <div class="checkout-divider"><span>Payment Methods</span></div>
+
+              <div class="gateway-buttons" id="gatewayButtons">
+
+                <!-- Populated dynamically based on geo -->
+
+              </div>
+
+              <div class="checkout-spinner" id="checkoutSpinner"></div>
+
+            </div>
+
+            
+
+            <div class="guarantee">
+
+              <span class="shield">&#x1F6E1;</span>
+
+              <div>
+
+                <strong>7-Day Unconditional Guarantee</strong>
+
+                <p>We trust our interactive curriculum. If you don't build confidence within 7 days, simply email manodemy25@gmail.com for a full, rapid refund.</p>
+
+              </div>
+
+            </div>
+
+            
+
+            <div class="trust-trio">
+
+              <span>&#x1F512; Secure Checkout</span>
+
+              <span>&#x1F4BE; Instant Access</span>
+
+              <span>&#x26A0; One-Time Payment</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- FAQ Section -->
+
+    <section class="faq" id="faq">
+
+      <div class="container">
+
+        <div class="section-head reveal">
+
+          <h2>Frequently Asked Questions</h2>
+
+          <p>Everything you need to know about our interactive format.</p>
+
+        </div>
+
+        
+
+        <div class="faq-list">
+
+          <details class="faq-item reveal" open>
+
+            <summary>Is this course suitable for complete beginners?<span class="faq-icon">&#x2B55;</span></summary>
+
+            <div class="faq-answer">
+
+              Yes, absolutely! Day 01 assumes no prior programming experience. We teach you Python basic structures, syntax, variables, and logic before transitioning into Pandas, NumPy, and complex analytical workflows.
+
+            </div>
+
+          </details>
+
+          
+
+          <details class="faq-item reveal">
+
+            <summary>Do I need to install any heavy programs or IDEs?<span class="faq-icon">&#x2B55;</span></summary>
+
+            <div class="faq-answer">
+
+              No local installation or terminal debugging is required. Our interactive browser notebook environment allows you to write, edit, and evaluate real production-grade Python code directly inside the browser.
+
+            </div>
+
+          </details>
+
+          
+
+          <details class="faq-item reveal">
+
+            <summary>What is the 7-day money-back guarantee policy?<span class="faq-icon">&#x2B55;</span></summary>
+
+            <div class="faq-answer">
+
+              If for any reason you feel the course format is not helping you master Python, simply email our support at <strong>manodemy25@gmail.com</strong> within 7 days of purchase. We will issue a 100% refund immediately, no awkward questions asked.
+
+            </div>
+
+          </details>
+
+          
+
+          <details class="faq-item reveal">
+
+            <summary>Will I receive a course completion certificate?<span class="faq-icon">&#x2B55;</span></summary>
+
+            <div class="faq-answer">
+
+              Yes. Upon completing all 30 lesson modules and passing the automated capstone project evaluations, you will receive a verifiable digital certificate to showcase on LinkedIn or your portfolio.
+
+            </div>
+
+          </details>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Final CTA Section -->
+
+    <section class="final-cta">
+
+      <div class="container">
+
+        <h2 class="reveal">Stop stalling your data career. Build active skills.</h2>
+
+        <p class="sub reveal">Gain real muscle memory, master interview algorithms, and prove your capabilities with job-ready capstone analysis.</p>
+
+        <div class="ctas reveal">
+
+          <a href="../day01.html" class="btn-gold btn-gold--outline">&#x26A1; Try Day 01 Free First</a>
+
+          <a href="#pricing" class="btn-gold btn-gold--filled" data-cta="buy">&#x1F3C6; Get Premium Access Now &mdash; $19</a>
+
+        </div>
+
+        <span class="micro reveal">&bull; 7-Day Refund Guarantee &bull; Lifetime updates included</span>
+
+      </div>
+
+    </section>
+
+
+
+  </main>
+
+
+
+  <!-- Footer -->
+
+  <footer class="footer">
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-col">
+
+          <span class="footer-brand-name">Manodemy</span>
+
+          <p class="footer-tagline">Learn by actually coding.</p>
+
+          <p class="footer-desc">Professional interactive educational materials designed to unlock complex technical subjects through practice-first retention models.</p>
+
+          <span class="footer-copy">&copy; 2026 Manodemy. All rights reserved.</span>
+
+        </div>
+
+        <div class="footer-col">
+
+          <h4>Curriculum Links</h4>
+
+          <a href="../day01.html">Try Day 01 (Free)</a>
+
+          <a href="#curriculum">Curriculum Overview</a>
+
+          <a href="#pricing">Pricing Structure</a>
+
+        </div>
+
+        <div class="footer-col">
+
+          <h4>Support & Legal</h4>
+
+          <a href="#faq">Frequently Asked Questions</a>
+
+          <a href="mailto:manodemy25@gmail.com">Contact Support</a>
+
+          <a href="#">Privacy Policy &bull; Terms</a>
+
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+
+        &copy; 2026 Manodemy. Built for serious Data Analysts, Data Engineers, and Data Scientists. Start Learning by actually coding.
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- Mobile Sticky Buy Bar -->
+
+  <div class="mobile-sticky" id="mobileSticky">
+
+    <a href="../day01.html" class="sticky-free">&#x26A1; Day 01 Free</a>
+
+    <a href="#pricing" class="sticky-buy" data-cta="buy">&#x1F4B3; Full Access &mdash; $19</a>
+
+  </div>
+
+
+
+  <!-- Frosted Review Submission Dialog Modal Overlay -->
+
+  <div class="rev-modal-overlay">
+
+    <div class="rev-modal-card">
+
+      <div class="rev-modal-header">
+
+        <h3>
+
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.83 17.017a4.5 4.5 0 01-1.897 1.13L3 19l.85-2.933a4.5 4.5 0 011.13-1.897l8.932-8.932zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
+
+          <span>Share Your Coding Journey</span>
+
+        </h3>
+
+        <button type="button" class="btn-close-modal" aria-label="Close modal">&times;</button>
+
+      </div>
+
+      
+
+      <div class="rev-modal-body">
+
+        <form id="rev-submit-form" onsubmit="return false;">
+
+          <!-- Rating Selector -->
+
+          <div class="rev-rating-selector">
+
+            <span class="rev-selector-label">Your Rating</span>
+
+            <div class="rev-selector-stars">
+
+              <!-- Star SVGs with data-star -->
+
+              <svg data-star="1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+
+              <svg data-star="2" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+
+              <svg data-star="3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+
+              <svg data-star="4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+
+              <svg data-star="5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+
+            </div>
+
+            <div class="rev-selector-desc">Click a star to rate</div>
+
+            <input type="hidden" id="rev-input-rating" required>
+
+          </div>
+
+          
+
+          <!-- Identity Fields -->
+
+          <div class="rev-form-row">
+
+            <div class="rev-form-group">
+
+              <label for="rev-input-name">Your Full Name *</label>
+
+              <input type="text" id="rev-input-name" placeholder="e.g. Aarav Sharma" required>
+
+            </div>
+
+            <div class="rev-form-group">
+
+              <label for="rev-input-email">Your Email Address *</label>
+
+              <input type="email" id="rev-input-email" placeholder="e.g. aarav@gmail.com" required>
+
+            </div>
+
+          </div>
+
+          
+
+          <!-- Review Details -->
+
+          <div class="rev-form-row">
+
+            <div class="rev-form-group">
+
+              <label for="rev-input-title">Review Title *</label>
+
+              <input type="text" id="rev-input-title" placeholder="Summarize your experience..." required>
+
+            </div>
+
+            <div class="rev-form-group">
+
+              <label for="rev-input-cohort">Cohort / Study Date</label>
+
+              <input type="text" id="rev-input-cohort" placeholder="e.g. May 2026 or Self-Paced">
+
+            </div>
+
+          </div>
+
+          
+
+          <div class="rev-form-group full-width">
+
+            <label for="rev-input-comment">Detailed Feedback *</label>
+
+            <textarea id="rev-input-comment" placeholder="What did you love? How did it build your active muscle memory by actually coding?" maxlength="1000" required></textarea>
+
+            <span class="rev-char-counter">0/1000</span>
+
+          </div>
+
+
+
+          <!-- Pros and Cons -->
+
+          <div class="rev-form-row">
+
+            <div class="rev-form-group">
+
+              <label for="rev-input-pro">Pros (What went well?)</label>
+
+              <input type="text" id="rev-input-pro" placeholder="Type a pro and press Enter or comma">
+
+              <div class="rev-tags-container" id="pros-tags-list"></div>
+
+            </div>
+
+            <div class="rev-form-group">
+
+              <label for="rev-input-con">Cons (Areas of improvement)</label>
+
+              <input type="text" id="rev-input-con" placeholder="Type a con and press Enter or comma">
+
+              <div class="rev-tags-container" id="cons-tags-list"></div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Media URLs and Avatar Profile URL -->
+
+          <div class="rev-form-row">
+
+            <div class="rev-form-group">
+
+              <label for="rev-input-media">Photo / Video URLs</label>
+
+              <div style="display:flex; gap:8px;">
+
+                <input type="text" id="rev-input-media" placeholder="Paste direct image or video URL...">
+
+                <button type="button" class="btn-modal-cancel" id="btn-add-media" style="height:38px; padding:0 12px; margin:0; line-height:36px;">Add</button>
+
+              </div>
+
+              <div class="media-previews-container" id="media-previews"></div>
+
+            </div>
+
+            <div class="rev-form-group">
+
+              <label for="rev-input-avatar-url">Optional Profile Picture URL</label>
+
+              <input type="text" id="rev-input-avatar-url" placeholder="Paste your headshot image URL...">
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Switch toggle for recommendation -->
+
+          <div class="rev-form-group full-width">
+
+            <div class="rev-rec-switch-group">
+
+              <div class="rev-switch-label">
+
+                <strong>Would you recommend this course?</strong>
+
+                <span>Recommend to other python learners</span>
+
+              </div>
+
+              <label class="rev-switch-control" for="rev-input-recommend">
+
+                <input type="checkbox" id="rev-input-recommend" checked>
+
+                <span class="rev-switch-slider"></span>
+
+              </label>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Modal actions -->
+
+          <div class="rev-modal-footer">
+
+            <button type="button" class="btn-modal-cancel">Cancel</button>
+
+            <button type="submit" class="btn-modal-submit">Submit Review</button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Glassmorphic Auth Modal Overlay -->
+
+  <div class="auth-modal-overlay" id="authModal">
+
+    <div class="auth-modal-card">
+
+      <button class="btn-close-auth-modal" id="btnCloseAuthModal" aria-label="Close modal">&times;</button>
+
+      <div class="auth-modal-header">
+
+        <h3 id="authTitle">Join the Challenge</h3>
+
+        <p id="authSubtitle">Sign in to start learning</p>
+
+      </div>
+
+      
+
+      <div class="auth-message-box" id="authMessage"></div>
+
+      
+
+      <div class="social-auth-section" id="socialAuthSection">
+
+        <button type="button" class="google-signin-btn" id="authGoogleBtn">
+
+          <svg viewBox="0 0 48 48" style="width: 18px; height: 18px; margin-right: 8px;">
+
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+
+            <path fill="#4285F4" d="M46.5 24c0-1.61-.15-3.16-.42-4.67H24v8.86h12.7c-.55 2.87-2.17 5.3-4.61 6.94l7.19 5.56c4.21-3.88 6.64-9.59 6.64-16.69z"/>
+
+            <path fill="#FBBC05" d="M10.54 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.98-6.19z"/>
+
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.19-5.56c-2 1.34-4.55 2.13-7.7 2.13-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+
+          </svg>
+
+          Continue with Google
+
+        </button>
+
+        <div class="auth-divider" id="authDivider"><span>OR EMAIL</span></div>
+
+      </div>
+
+      
+
+      <form class="auth-form" id="authForm" onsubmit="return false;">
+
+        <div class="auth-input-group" id="authNameGroup" style="display: none;">
+
+          <input type="text" id="authName" class="auth-input" placeholder="Full Name">
+
+        </div>
+
+        <div class="auth-input-group">
+
+          <input type="email" id="authEmail" class="auth-input" placeholder="name@example.com" required>
+
+        </div>
+
+        <div class="auth-input-group" id="authPasswordGroup">
+
+          <input type="password" id="authPassword" class="auth-input" placeholder="••••••••">
+
+        </div>
+
+        <div class="auth-input-group" id="authConfirmGroup" style="display: none;">
+
+          <input type="password" id="authConfirmPassword" class="auth-input" placeholder="Confirm Password">
+
+        </div>
+
+        <button type="submit" class="btn-auth-submit" id="btnAuthSubmit">Login</button>
+
+      </form>
+
+      
+
+      <div class="auth-footer-links">
+
+        <a href="#" id="linkForgot">Forgot password?</a>
+
+        <a href="#" id="linkSignup">Create Account</a>
+
+        <a href="#" id="linkBackToLogin" style="display: none;">&larr; Back to Login</a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Supabase Config Context Injection -->
+
+  <script>
+
+    window.MANODEMY_CONFIG = {
+
+      SUPA_URL: "https://gvhnwmuyrwissgkumeif.supabase.co",
+
+      SUPA_KEY: "sb_publishable_x0gyXkcrCSaxSG23Zyi7qA__v1sBgOq"
+
+    };
+
+  </script>
+
+
+
+  <!-- External JS Dependencies -->
+
+  <script src="../supabase.js"></script>
+
+  <script src="reviews.js"></script>
+
+  <script src="app.js"></script>
+
+</body>
+
+</html>
+
+
+

@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // DOM Cache
   const reviewsGrid = document.querySelector('.reviews-grid');
   const searchInput = document.querySelector('.rev-search-input');
-  const ratingFilter = document.querySelector('.rev-select-dropdown');
-  const sortFilter = document.querySelector('.reviews-toolbar .rev-select-dropdown:nth-of-type(2)'); // Wait, let's make sure selector is exact
+  const ratingFilter = document.getElementById('filter-rating');
+  const sortFilter = document.getElementById('filter-sort');
   const verifiedCheckbox = document.getElementById('filter-verified');
   const mediaCheckbox = document.getElementById('filter-media');
   const paginationContainer = document.querySelector('.reviews-pagination');

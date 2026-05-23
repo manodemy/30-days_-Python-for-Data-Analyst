@@ -3249,13 +3249,15 @@ button {
   flex-wrap: wrap;
 }
 
-.reviews-search-group {
+.reviews-filter-group {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-grow: 1;
-  max-width: 580px;
   flex-wrap: wrap;
+}
+
+.reviews-toolbar .rev-search-wrapper {
+  max-width: 320px;
 }
 
 .rev-search-wrapper {
@@ -4146,7 +4148,7 @@ button {
     align-items: stretch;
   }
 
-  .reviews-search-group {
+  .reviews-toolbar .rev-search-wrapper {
     max-width: 100%;
   }
 
