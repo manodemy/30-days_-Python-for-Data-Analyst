@@ -959,8 +959,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateNavForLoggedIn(user) {
     const signInBtn = document.getElementById('navSignin');
     if (signInBtn) {
-      signInBtn.textContent = 'Dashboard';
-      signInBtn.href = '../home.html';
+      if (user && user.email === 'manodamy25@gmail.com') {
+        signInBtn.textContent = '⚙️ Admin Panel';
+        signInBtn.href = '../admin.html';
+        signInBtn.style.display = 'inline-flex';
+      } else {
+        signInBtn.style.display = 'none';
+      }
     }
   }
 
@@ -1148,17 +1153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closePricingModal();
       }
       
-      if (profile?.role === 'admin') {
-        const navRight = document.querySelector('.nav-right');
-        if (navRight && !document.getElementById('adminNavLink')) {
-          const adminLink = document.createElement('a');
-          adminLink.id = 'adminNavLink';
-          adminLink.href = '../admin.html';
-          adminLink.textContent = '⚙️ Admin';
-          adminLink.style.cssText = 'color:#FFB020;font-size:0.85rem;margin-right:0.8rem;text-decoration:none;font-weight:600;';
-          navRight.insertBefore(adminLink, navRight.firstChild);
-        }
-      }
+      // Admin link is handled directly in place of the dashboard button.
     } catch (e) {
       console.warn("Purchase status check skipped:", e.message);
     }
