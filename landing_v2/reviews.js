@@ -4,7 +4,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Global States
   let currentPage = 1;
-  const pageSize = 6;
+  const pageSize = 12;
+  let currentSlideIndex = 0;
   let currentFilters = {
     search: '',
     rating: 'all',
@@ -965,6 +966,153 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
+
+    // Initialize horizontal carousel navigation
+    initCarousel();
+  }
+
+  // Carousel Navigation System
+  function initCarousel() {
+    const track = document.getElementById('carousel-track');
+    const prevBtn = document.getElementById('carousel-prev');
+    const nextBtn = document.getElementById('carousel-next');
+    const dotsContainer = document.getElementById('carousel-dots');
+    
+    if (!track) return;
+    
+    const cards = track.querySelectorAll('.rev-card');
+    
+    // If no cards are found, clean up nav controls and dots
+    if (cards.length === 0) {
+      if (prevBtn) prevBtn.disabled = true;
+      if (nextBtn) nextBtn.disabled = true;
+      if (dotsContainer) dotsContainer.innerHTML = '';
+      return;
+    }
+
+    // Function to calculate and apply sliding offset
+    function updateCarousel() {
+      const cardWidth = cards[0].getBoundingClientRect().width;
+      const gap = 24; // from CSS gap
+      
+      // Determine visible cards count based on viewport breakpoints matching CSS media queries
+      let visibleCards = 3;
+      if (window.innerWidth < 768) {
+        visibleCards = 1;
+      } else if (window.innerWidth < 1200) {
+        visibleCards = 2;
+      }
+      
+      // Clamp index to valid bounds
+      const maxIndex = Math.max(0, cards.length - visibleCards);
+      if (currentSlideIndex > maxIndex) {
+        currentSlideIndex = maxIndex;
+      }
+      if (currentSlideIndex < 0) {
+        currentSlideIndex = 0;
+      }
+      
+      // Calculate dynamic pixel offset and translate the flex-track
+      const offset = currentSlideIndex * (cardWidth + gap);
+      track.style.transform = `translateX(-${offset}px)`;
+      
+      // Configure button states
+      if (prevBtn) prevBtn.disabled = (currentSlideIndex === 0);
+      if (nextBtn) nextBtn.disabled = (currentSlideIndex === maxIndex);
+      
+      // Render Dot Indicators
+      if (dotsContainer) {
+        dotsContainer.innerHTML = '';
+        if (maxIndex > 0) {
+          for (let i = 0; i <= maxIndex; i++) {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = `carousel-dot ${i === currentSlideIndex ? 'active' : ''}`;
+            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+            dot.addEventListener('click', () => {
+              currentSlideIndex = i;
+              updateCarousel();
+            });
+            dotsContainer.appendChild(dot);
+          }
+        }
+      }
+    }
+
+    // Bind Button Click Listeners (cloned/replaced to clear existing event bindings cleanly)
+    if (prevBtn) {
+      const newPrev = prevBtn.cloneNode(true);
+      prevBtn.parentNode.replaceChild(newPrev, prevBtn);
+      newPrev.addEventListener('click', () => {
+        if (currentSlideIndex > 0) {
+          currentSlideIndex--;
+          updateCarousel();
+        }
+      });
+    }
+    
+    if (nextBtn) {
+      const newNext = nextBtn.cloneNode(true);
+      nextBtn.parentNode.replaceChild(newNext, nextBtn);
+      newNext.addEventListener('click', () => {
+        const visibleCards = window.innerWidth < 768 ? 1 : (window.innerWidth < 1200 ? 2 : 3);
+        const maxIndex = Math.max(0, cards.length - visibleCards);
+        if (currentSlideIndex < maxIndex) {
+          currentSlideIndex++;
+          updateCarousel();
+        }
+      });
+    }
+
+    // Set up window resize listener to recalculate translation percentages dynamically
+    window.removeEventListener('resize', window.__reviewsResizeHandler);
+    window.__reviewsResizeHandler = () => {
+      updateCarousel();
+    };
+    window.addEventListener('resize', window.__reviewsResizeHandler);
+
+    // Set up touch swipe listeners to support mobile touch devices seamlessly
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    // Clean and rebind swipe event listeners to track's viewport parent
+    const viewportParent = track.parentElement;
+    
+    // We bind swipe events on the track's viewport parent
+    if (viewportParent && !viewportParent.dataset.swipeBound) {
+      viewportParent.dataset.swipeBound = "true";
+      viewportParent.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+      
+      viewportParent.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      }, { passive: true });
+    }
+    
+    function handleSwipe() {
+      const swipeThreshold = 50; // pixels
+      const visibleCards = window.innerWidth < 768 ? 1 : (window.innerWidth < 1200 ? 2 : 3);
+      const maxIndex = Math.max(0, cards.length - visibleCards);
+      
+      if (touchStartX - touchEndX > swipeThreshold) {
+        // Swiped left -> next card
+        if (currentSlideIndex < maxIndex) {
+          currentSlideIndex++;
+          updateCarousel();
+        }
+      } else if (touchEndX - touchStartX > swipeThreshold) {
+        // Swiped right -> prev card
+        if (currentSlideIndex > 0) {
+          currentSlideIndex--;
+          updateCarousel();
+        }
+      }
+    }
+
+    // Initial render sizing trigger
+    updateCarousel();
   }
 
   // Handle Helpful / Report Database Writing Actions
@@ -1109,6 +1257,7 @@ document.addEventListener('DOMContentLoaded', () => {
       searchDebounce = setTimeout(async () => {
         currentFilters.search = searchInput.value;
         currentPage = 1;
+        currentSlideIndex = 0;
         await fetchReviews();
       }, 350);
     });
@@ -1118,6 +1267,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ratingFilter.addEventListener('change', async () => {
       currentFilters.rating = ratingFilter.value;
       currentPage = 1;
+      currentSlideIndex = 0;
       await fetchReviews();
     });
   }
@@ -1126,6 +1276,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sortFilter.addEventListener('change', async () => {
       currentFilters.sortBy = sortFilter.value;
       currentPage = 1;
+      currentSlideIndex = 0;
       await fetchReviews();
     });
   }
@@ -1134,6 +1285,7 @@ document.addEventListener('DOMContentLoaded', () => {
     verifiedCheckbox.addEventListener('change', async () => {
       currentFilters.verifiedOnly = verifiedCheckbox.checked;
       currentPage = 1;
+      currentSlideIndex = 0;
       await fetchReviews();
     });
   }
@@ -1142,6 +1294,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mediaCheckbox.addEventListener('change', async () => {
       currentFilters.mediaOnly = mediaCheckbox.checked;
       currentPage = 1;
+      currentSlideIndex = 0;
       await fetchReviews();
     });
   }

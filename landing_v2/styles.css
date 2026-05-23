@@ -5046,3 +5046,190 @@ button {
 .checkout-spinner.active {
   display: block;
 }
+
+/* ==========================================================================
+   REVIEWS HORIZONTAL CAROUSEL & NAVIGATION CONTROLS
+   ========================================================================== */
+
+.reviews-carousel-container {
+  position: relative;
+  width: 100%;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.reviews-carousel-viewport {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.reviews-carousel-track-wrapper {
+  overflow: hidden;
+  width: 100%;
+  padding: 15px 0; /* Clear shadow clipping */
+  margin: 0 -15px; /* Offset padding alignment */
+}
+
+/* Carousel track flex behavior override */
+.reviews-grid.reviews-carousel-track {
+  display: flex !important;
+  flex-direction: row !important;
+  grid-template-columns: none !important;
+  gap: 24px !important;
+  margin-bottom: 0 !important;
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  width: auto;
+  padding: 0 15px;
+}
+
+/* Force equal and calculated card widths inside track */
+.reviews-grid.reviews-carousel-track .rev-card {
+  flex: 0 0 calc((100% - 48px) / 3); /* Exactly 3 cards visible */
+  box-sizing: border-box;
+  margin-bottom: 0;
+  height: auto;
+  min-height: 100%; /* Force equal heights */
+  transition: transform 400ms var(--ease), border-color 400ms var(--ease), box-shadow 400ms var(--ease), opacity 400ms var(--ease);
+}
+
+/* Elite Glassmorphic Floating Buttons */
+.btn-carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(13, 19, 32, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 12;
+  transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-carousel-nav:hover:not(:disabled) {
+  background: rgba(0, 230, 246, 0.12);
+  border-color: var(--cyan, #00E6F6);
+  color: var(--cyan, #00E6F6);
+  box-shadow: 0 0 25px rgba(0, 230, 246, 0.4), inset 0 1px 0 rgba(0, 230, 246, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.btn-carousel-nav:active:not(:disabled) {
+  transform: translateY(-50%) scale(0.94);
+}
+
+.btn-carousel-nav:disabled {
+  opacity: 0.15;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.btn-carousel-nav.prev {
+  left: -27px;
+}
+
+.btn-carousel-nav.next {
+  right: -27px;
+}
+
+.btn-carousel-nav svg {
+  width: 22px;
+  height: 22px;
+  transition: transform 300ms var(--ease);
+}
+
+.btn-carousel-nav.prev:hover:not(:disabled) svg {
+  transform: translateX(-2px);
+}
+
+.btn-carousel-nav.next:hover:not(:disabled) svg {
+  transform: translateX(2px);
+}
+
+/* Premium Glowing Dot Indicators */
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2.2rem;
+  width: 100%;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.carousel-dot:hover {
+  background: rgba(0, 230, 246, 0.45);
+  transform: scale(1.2);
+}
+
+.carousel-dot.active {
+  background: var(--cyan, #00E6F6);
+  width: 26px;
+  box-shadow: 0 0 14px rgba(0, 230, 246, 0.65);
+}
+
+/* Dynamic Responsive Sizing Breakpoints */
+@media (max-width: 1199px) and (min-width: 768px) {
+  .reviews-grid.reviews-carousel-track .rev-card {
+    flex: 0 0 calc((100% - 24px) / 2); /* 2 cards visible */
+  }
+  .btn-carousel-nav {
+    width: 48px;
+    height: 48px;
+  }
+  .btn-carousel-nav.prev {
+    left: -18px;
+  }
+  .btn-carousel-nav.next {
+    right: -18px;
+  }
+}
+
+@media (max-width: 767px) {
+  .reviews-grid.reviews-carousel-track .rev-card {
+    flex: 0 0 100%; /* 1 card visible */
+  }
+  .btn-carousel-nav {
+    width: 42px;
+    height: 42px;
+  }
+  .btn-carousel-nav.prev {
+    left: -8px;
+  }
+  .btn-carousel-nav.next {
+    right: -8px;
+  }
+  .btn-carousel-nav svg {
+    width: 18px;
+    height: 18px;
+  }
+  .carousel-indicators {
+    margin-top: 1.5rem;
+  }
+}
