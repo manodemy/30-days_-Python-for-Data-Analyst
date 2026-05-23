@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   email TEXT,
   country TEXT DEFAULT 'US',
   role TEXT DEFAULT 'student',
+  plan TEXT DEFAULT 'free',
   plan_type TEXT DEFAULT 'free',
   last_sign_in_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT now()
