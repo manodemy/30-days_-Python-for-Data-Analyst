@@ -1598,139 +1598,80 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!supabaseClient) return;
 
       couponApplyBtn.textContent = 'Verifying...';
+      couponApplyBtn.disabled = true;
 
-      
+      try {
+        const { data, error } = await supabaseClient
+          .from('coupons')
+          .select('discount_type, discount_value, is_active, expires_at, applies_to')
+          .eq('code', code.toUpperCase())
+          .single();
 
-      const { data, error } = await supabaseClient
+        const isActive = data ? (Boolean(data.is_active) === true) : false;
+        const expiry = data ? data.expires_at : null;
+        const isExpired = expiry && new Date(expiry) < new Date();
+        const appliesTo = data?.applies_to || 'both';
+        const currencyMatch = appliesTo === 'both' || appliesTo === currentPricing.currency;
 
-        .from('coupons')
+        if (data && isActive && !isExpired && currencyMatch) {
+          const type = data.discount_type || 'percentage';
+          const val = data.discount_value ?? 0;
+          
+          let newAmount;
+          let label;
+          
+          if (type === 'percentage') {
+            newAmount = Math.round(currentPricing.amount * (1 - val / 100));
+            label = `✅ ${val}% OFF!`;
+          } else {
+            newAmount = Math.max(0, currentPricing.amount - (val * 100));
+            const currencySymbol = currentPricing.currency === 'INR' ? '₹' : '$';
+            label = `✅ ${currencySymbol}${val} OFF!`;
+          }
 
-        .select('discount_type, discount_value, discount_percent, is_active, active, expires_at, valid_until, applies_to')
+          const displayPrice = currentPricing.currency === 'INR'
+            ? '₹' + (newAmount / 100).toLocaleString('en-IN')
+            : '$' + (newAmount / 100);
 
-        .eq('code', code.toUpperCase())
+          appliedCouponCode = code.toUpperCase();
+          appliedCouponAmount = newAmount;
+          
+          const rzpBtn = document.getElementById('payRazorpay');
+          const stripeBtn = document.getElementById('payStripe');
+          const ppBtn = document.getElementById('payPaypal');
+          
+          if (rzpBtn) rzpBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 4l5.5 16h3L17 7.5 14.5 20h3L23 4h-3l-4 11L12.5 4h-3l-4 11L1.5 4H3z"/></svg> Pay with Razorpay — ${displayPrice}`;
+          if (stripeBtn) stripeBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z"/></svg> Pay with Card — ${displayPrice}`;
+          if (ppBtn) ppBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.603c-.564 0-1.04.408-1.13.964L7.076 21.337z"/></svg> Pay with PayPal — ${displayPrice}`;
 
-        .single();
-
-
-
-      const isActive = data
-
-        ? (Boolean(data.is_active) === true && Boolean(data.active) !== false)
-
-        : false;
-
-
-
-      const expiry = data ? (data.expires_at || data.valid_until) : null;
-
-      const isExpired = expiry && new Date(expiry) < new Date();
-
-      
-
-      const appliesTo = data?.applies_to || 'both';
-
-      const currencyMatch = appliesTo === 'both' || appliesTo === currentPricing.currency;
-
-
-
-      if (data && isActive && !isExpired && currencyMatch) {
-
-        const type = data.discount_type || 'percentage';
-
-        const val = data.discount_value ?? data.discount_percent ?? 0;
-
-        
-
-        let newAmount;
-
-        let label;
-
-        
-
-        if (type === 'percentage') {
-
-          newAmount = Math.round(currentPricing.amount * (1 - val / 100));
-
-          label = `✅ ${val}% OFF!`;
-
+          couponApplyBtn.textContent = label;
+          couponApplyBtn.style.color = '#10B981';
         } else {
+          appliedCouponCode = '';
+          appliedCouponAmount = null;
 
-          newAmount = Math.max(0, currentPricing.amount - (val * 100));
-
-          const currencySymbol = currentPricing.currency === 'INR' ? '₹' : '$';
-
-          label = `✅ ${currencySymbol}${val} OFF!`;
-
+          let msg = '❌ Invalid';
+          if (isExpired) msg = '❌ Expired';
+          else if (!currencyMatch) msg = `❌ Only for ${appliesTo}`;
+          
+          couponApplyBtn.textContent = msg;
+          couponApplyBtn.style.color = '#F43F5E';
+          setTimeout(() => {
+            couponApplyBtn.textContent = 'Apply';
+            couponApplyBtn.style.color = '';
+          }, 2000);
         }
-
-
-
-        const displayPrice = currentPricing.currency === 'INR'
-
-          ? '₹' + (newAmount / 100).toLocaleString('en-IN')
-
-          : '$' + (newAmount / 100);
-
-
-
-        appliedCouponCode = code.toUpperCase();
-
-        appliedCouponAmount = newAmount;
-
-        
-
-        const rzpBtn = document.getElementById('payRazorpay');
-
-        const stripeBtn = document.getElementById('payStripe');
-
-        const ppBtn = document.getElementById('payPaypal');
-
-        
-
-        if (rzpBtn) rzpBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 4l5.5 16h3L17 7.5 14.5 20h3L23 4h-3l-4 11L12.5 4h-3l-4 11L1.5 4H3z"/></svg> Pay with Razorpay — ${displayPrice}`;
-
-        if (stripeBtn) stripeBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z"/></svg> Pay with Card — ${displayPrice}`;
-
-        if (ppBtn) ppBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H9.603c-.564 0-1.04.408-1.13.964L7.076 21.337z"/></svg> Pay with PayPal — ${displayPrice}`;
-
-
-
-        couponApplyBtn.textContent = label;
-
-        couponApplyBtn.style.color = '#10B981';
-
-      } else {
-
-        appliedCouponCode = '';
-
-        appliedCouponAmount = null;
-
-
-
-        let msg = '❌ Invalid';
-
-        if (isExpired) msg = '❌ Expired';
-
-        else if (!currencyMatch) msg = `❌ Only for ${appliesTo}`;
-
-        
-
-        couponApplyBtn.textContent = msg;
-
+      } catch (err) {
+        console.error('[Coupon] Error:', err);
+        couponApplyBtn.textContent = '❌ Error';
         couponApplyBtn.style.color = '#F43F5E';
-
         setTimeout(() => {
-
           couponApplyBtn.textContent = 'Apply';
-
           couponApplyBtn.style.color = '';
-
         }, 2000);
-
-      }
-
+      } finally {
+        couponApplyBtn.disabled = false;
     });
-
   }
 
 
