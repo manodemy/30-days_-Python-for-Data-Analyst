@@ -7792,6 +7792,8 @@
         const monthYear = now.toLocaleString('default', { month: 'long', year: 'numeric' }).toUpperCase();
         document.getElementById('cert-issued-date').textContent = `ISSUED · ${monthYear}`;
 
+        // Certificate ID
+        const certId = `MND-${now.getFullYear()}-${String(Math.floor(Math.random() * 99999)).padStart(5,'0')}`;
         document.getElementById('cert-id-strip').textContent = `CERT-ID: ${certId}`;
 
         // Section grid
