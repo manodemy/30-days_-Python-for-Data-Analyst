@@ -518,11 +518,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let supabaseClient = null;
 
+  async function fetchAndDisplayLivePaidUsers() {
+    if (!supabaseClient) return;
+    try {
+      const { data: count, error } = await supabaseClient.rpc('get_enrolled_users_count');
+      if (error) {
+        console.warn("[Stats] Failed to fetch live paid user count:", error.message);
+        return;
+      }
+      const enrolledCount = parseInt(count, 10);
+      if (isNaN(enrolledCount)) return;
+
+      const baseCount = 2400;
+      const totalCount = baseCount + enrolledCount;
+
+      // 1. Update right column proof card
+      const activeLearnersEl = document.getElementById('hero-active-learners');
+      if (activeLearnersEl) {
+        activeLearnersEl.textContent = totalCount.toLocaleString('en-US') + '+ Active Learners';
+      }
+
+      // 2. Update social proof strip data-count attribute
+      const socialProofEl = document.getElementById('social-proof-learners');
+      if (socialProofEl) {
+        socialProofEl.dataset.count = totalCount;
+        socialProofEl.textContent = totalCount.toLocaleString('en-US') + '+';
+      }
+
+      // 3. Update reviews subtext
+      const revCountSubEl = document.querySelector('.rev-count-sub');
+      if (revCountSubEl) {
+        revCountSubEl.textContent = 'Based on ' + totalCount.toLocaleString('en-US') + '+ reviews';
+      }
+    } catch (e) {
+      console.warn("[Stats] Error loading live paid users:", e);
+    }
+  }
+
   try {
 
     if (window.supabase) {
 
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      fetchAndDisplayLivePaidUsers();
 
     }
 
