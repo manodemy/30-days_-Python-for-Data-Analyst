@@ -7891,68 +7891,72 @@
         });
       }
 
+      // ── Robust certificate-to-canvas helper ──────────────────────────────────
+      // Pre-cleans the certificate clone before html2canvas runs to prevent
+      // "createPattern: canvas element with width or height of 0" errors.
+      async function renderCertToCanvas() {
+        const cert = document.getElementById('certificate-render');
+        if (!cert) throw new Error('Certificate element #certificate-render not found.');
+        const sandbox = document.createElement('div');
+        Object.assign(sandbox.style, {
+          position: 'fixed', top: '-19999px', left: '-19999px',
+          width: '1122px', height: '794px', overflow: 'hidden',
+          background: '#ffffff', zIndex: '-99999', pointerEvents: 'none'
+        });
+        document.body.appendChild(sandbox);
+        try {
+          const clone = cert.cloneNode(true);
+          // Remove all <canvas> elements BEFORE html2canvas sees them
+          clone.querySelectorAll('canvas').forEach(c => c.remove());
+          // Strip any inline background-image (noise canvas data-URLs)
+          clone.querySelectorAll('[style]').forEach(el => { el.style.backgroundImage = 'none'; });
+          clone.style.backgroundImage = 'none';
+          clone.style.width  = '1122px';
+          clone.style.height = '794px';
+          clone.style.margin = '0';
+          clone.style.boxSizing = 'border-box';
+          sandbox.appendChild(clone);
+          // Let layout settle
+          await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+          const canvas = await html2canvas(clone, {
+            scale: 2, useCORS: true, allowTaint: true,
+            backgroundColor: '#ffffff', logging: false,
+            width: 1122, height: 794,
+            onclone: (doc) => {
+              doc.querySelectorAll('canvas').forEach(c => c.remove());
+              const s = doc.createElement('style');
+              s.textContent = `*,*::before,*::after{background-image:none!important;}body::before,body::after{display:none!important;content:none!important;}`;
+              doc.head.appendChild(s);
+            }
+          });
+          return canvas;
+        } finally {
+          document.body.removeChild(sandbox);
+        }
+      }
+
       // PNG export
       const downloadPngBtn = document.getElementById('download-png-btn');
       if (downloadPngBtn) {
         downloadPngBtn.addEventListener('click', async () => {
           if (typeof html2canvas === 'undefined') {
-            alert("Critical Error: The 'html2canvas' library failed to load in your browser. Please check your internet connection or disable ad-blockers.");
+            alert("html2canvas not loaded. Check your internet connection.");
             return;
           }
-          downloadPngBtn.textContent = 'Rendering...';
+          const origText = downloadPngBtn.textContent;
+          downloadPngBtn.textContent = '⏳ Rendering...';
           downloadPngBtn.disabled = true;
-
-          // Create an isolated sandbox to prevent background-image noise and canvas-dimension crashes
-          const sandbox = document.createElement('div');
-          sandbox.style.position = 'fixed';
-          sandbox.style.top = '-9999px';
-          sandbox.style.left = '-9999px';
-          sandbox.style.width = '1100px';
-          sandbox.style.height = '780px';
-          sandbox.style.background = '#ffffff';
-          sandbox.style.zIndex = '-9999';
-          document.body.appendChild(sandbox);
-
           try {
-            const cert = document.getElementById('certificate-render');
-            const clonedCert = cert.cloneNode(true);
-            sandbox.appendChild(clonedCert);
-
-            const canvas = await html2canvas(clonedCert, {
-              scale: 3,
-              useCORS: true,
-              backgroundColor: '#ffffff',
-              logging: false,
-              onclone: (doc) => {
-                // Disable the body::before noise background image in the cloned document
-                const style = doc.createElement('style');
-                style.textContent = `
-                  body::before {
-                    content: none !important;
-                    background-image: none !important;
-                    display: none !important;
-                  }
-                `;
-                doc.head.appendChild(style);
-              }
-            });
-
+            const canvas = await renderCertToCanvas();
             const link = document.createElement('a');
             link.download = `Manodemy_Certificate_${Date.now()}.png`;
             link.href = canvas.toDataURL('image/png', 1.0);
-            link.click();
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
           } catch (err) {
-            console.error("Failed to export certificate as PNG", err);
-            const msg = err.message || err;
-            if (typeof showToast === 'function') {
-              showToast("PNG Export failed: " + msg, "error");
-            } else {
-              alert("PNG Export failed: " + msg);
-            }
-            alert("Diagnostic Details:\nError: " + msg + "\nStack: " + (err.stack || "No stack trace"));
+            console.error('[CertExport] PNG failed:', err);
+            alert('PNG export failed: ' + (err.message || err));
           } finally {
-            document.body.removeChild(sandbox);
-            downloadPngBtn.textContent = '⬇ Download as Image';
+            downloadPngBtn.textContent = origText;
             downloadPngBtn.disabled = false;
           }
         });
@@ -7963,80 +7967,35 @@
       if (downloadPdfBtn) {
         downloadPdfBtn.addEventListener('click', async () => {
           if (typeof html2canvas === 'undefined') {
-            alert("Critical Error: The 'html2canvas' library failed to load in your browser. Please check your internet connection or disable ad-blockers.");
+            alert("html2canvas not loaded. Check your internet connection.");
             return;
           }
           if (typeof window.jspdf === 'undefined') {
-            alert("Critical Error: The 'jsPDF' library failed to load in your browser. Please check your internet connection or disable ad-blockers.");
+            alert("jsPDF not loaded. Check your internet connection.");
             return;
           }
-          downloadPdfBtn.textContent = 'Building PDF...';
+          const origText = downloadPdfBtn.textContent;
+          downloadPdfBtn.textContent = '⏳ Building PDF...';
           downloadPdfBtn.disabled = true;
-
-          // Create an isolated sandbox to prevent background-image noise and canvas-dimension crashes
-          const sandbox = document.createElement('div');
-          sandbox.style.position = 'fixed';
-          sandbox.style.top = '-9999px';
-          sandbox.style.left = '-9999px';
-          sandbox.style.width = '1100px';
-          sandbox.style.height = '780px';
-          sandbox.style.background = '#ffffff';
-          sandbox.style.zIndex = '-9999';
-          document.body.appendChild(sandbox);
-
           try {
-            const cert = document.getElementById('certificate-render');
-            const clonedCert = cert.cloneNode(true);
-            sandbox.appendChild(clonedCert);
-
-            const canvas = await html2canvas(clonedCert, {
-              scale: 3,
-              useCORS: true,
-              backgroundColor: '#ffffff',
-              logging: false,
-              onclone: (doc) => {
-                // Disable the body::before noise background image in the cloned document
-                const style = doc.createElement('style');
-                style.textContent = `
-                  body::before {
-                    content: none !important;
-                    background-image: none !important;
-                    display: none !important;
-                  }
-                `;
-                doc.head.appendChild(style);
-              }
-            });
-
+            const canvas  = await renderCertToCanvas();
             const imgData = canvas.toDataURL('image/png', 1.0);
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-
-            const pw = pdf.internal.pageSize.getWidth();   // 297mm
-            const ph = pdf.internal.pageSize.getHeight();  // 210mm
+            const pw = pdf.internal.pageSize.getWidth();
+            const ph = pdf.internal.pageSize.getHeight();
             const aspect = canvas.width / canvas.height;
             let iw = pw, ih = pw / aspect;
-            if (ih > ph) {
-              ih = ph;
-              iw = ph * aspect;
-            }
+            if (ih > ph) { ih = ph; iw = ph * aspect; }
             const x = (pw - iw) / 2;
             const y = (ph - ih) / 2;
-
             pdf.addImage(imgData, 'PNG', x, y, iw, ih, '', 'FAST');
             pdf.save(`Manodemy_Certificate_${Date.now()}.pdf`);
           } catch (err) {
-            console.error("Failed to export certificate as PDF", err);
-            const msg = err.message || err;
-            if (typeof showToast === 'function') {
-              showToast("PDF Export failed: " + msg, "error");
-            } else {
-              alert("PDF Export failed: " + msg);
-            }
-            alert("Diagnostic Details:\nError: " + msg + "\nStack: " + (err.stack || "No stack trace"));
+            console.error('[CertExport] PDF failed:', err);
+            alert('PDF export failed: ' + (err.message || err));
           } finally {
-            document.body.removeChild(sandbox);
-            downloadPdfBtn.textContent = '⬇ Download as PDF';
+            downloadPdfBtn.textContent = origText;
             downloadPdfBtn.disabled = false;
           }
         });
@@ -8364,129 +8323,70 @@
         });
       }
 
-      // PNG export
-      const downloadPngBtn = document.getElementById('download-png-btn');
-      if (downloadPngBtn) {
-        downloadPngBtn.addEventListener('click', async () => {
+      // PNG export (second block)
+      const downloadPngBtn2 = document.getElementById('download-png-btn');
+      if (downloadPngBtn2 && !downloadPngBtn2.dataset.listenerAttached) {
+        downloadPngBtn2.dataset.listenerAttached = 'true';
+        downloadPngBtn2.addEventListener('click', async () => {
           if (typeof html2canvas === 'undefined') {
-            alert("Critical Error: The 'html2canvas' library failed to load in your browser. Please check your internet connection or disable ad-blockers.");
+            alert("html2canvas not loaded. Check your internet connection.");
             return;
           }
-          downloadPngBtn.textContent = 'Rendering...';
-          downloadPngBtn.disabled = true;
-
-          // Create an isolated sandbox to prevent background-image noise and canvas-dimension crashes
-          const sandbox = document.createElement('div');
-          sandbox.style.position = 'fixed';
-          sandbox.style.top = '-9999px';
-          sandbox.style.left = '-9999px';
-          sandbox.style.width = '1100px';
-          sandbox.style.height = '780px';
-          sandbox.style.background = '#ffffff';
-          sandbox.style.zIndex = '-9999';
-          document.body.appendChild(sandbox);
-
+          const origText = downloadPngBtn2.textContent;
+          downloadPngBtn2.textContent = '⏳ Rendering...';
+          downloadPngBtn2.disabled = true;
           try {
-            const cert = document.getElementById('certificate-render');
-            const clonedCert = cert.cloneNode(true);
-            sandbox.appendChild(clonedCert);
-
-            const canvas = await html2canvas(clonedCert, {
-              scale: 3,
-              useCORS: true,
-              backgroundColor: '#ffffff',
-              logging: false
-            });
-
+            const canvas = await renderCertToCanvas();
             const link = document.createElement('a');
             link.download = `Manodemy_Certificate_${Date.now()}.png`;
             link.href = canvas.toDataURL('image/png', 1.0);
-            link.click();
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
           } catch (err) {
-            console.error("Failed to export certificate as PNG", err);
-            const msg = err.message || err;
-            if (typeof showToast === 'function') {
-              showToast("PNG Export failed: " + msg, "error");
-            } else {
-              alert("PNG Export failed: " + msg);
-            }
-            alert("Diagnostic Details:\nError: " + msg + "\nStack: " + (err.stack || "No stack trace"));
+            console.error('[CertExport] PNG failed:', err);
+            alert('PNG export failed: ' + (err.message || err));
           } finally {
-            document.body.removeChild(sandbox);
-            downloadPngBtn.textContent = '⬇ Download as Image';
-            downloadPngBtn.disabled = false;
+            downloadPngBtn2.textContent = origText;
+            downloadPngBtn2.disabled = false;
           }
         });
       }
 
-      // PDF export
-      const downloadPdfBtn = document.getElementById('download-pdf-btn');
-      if (downloadPdfBtn) {
-        downloadPdfBtn.addEventListener('click', async () => {
+      // PDF export (second block)
+      const downloadPdfBtn2 = document.getElementById('download-pdf-btn');
+      if (downloadPdfBtn2 && !downloadPdfBtn2.dataset.listenerAttached) {
+        downloadPdfBtn2.dataset.listenerAttached = 'true';
+        downloadPdfBtn2.addEventListener('click', async () => {
           if (typeof html2canvas === 'undefined') {
-            alert("Critical Error: The 'html2canvas' library failed to load in your browser. Please check your internet connection or disable ad-blockers.");
+            alert("html2canvas not loaded. Check your internet connection.");
             return;
           }
           if (typeof window.jspdf === 'undefined') {
-            alert("Critical Error: The 'jsPDF' library failed to load in your browser. Please check your internet connection or disable ad-blockers.");
+            alert("jsPDF not loaded. Check your internet connection.");
             return;
           }
-          downloadPdfBtn.textContent = 'Building PDF...';
-          downloadPdfBtn.disabled = true;
-
-          // Create an isolated sandbox to prevent background-image noise and canvas-dimension crashes
-          const sandbox = document.createElement('div');
-          sandbox.style.position = 'fixed';
-          sandbox.style.top = '-9999px';
-          sandbox.style.left = '-9999px';
-          sandbox.style.width = '1100px';
-          sandbox.style.height = '780px';
-          sandbox.style.background = '#ffffff';
-          sandbox.style.zIndex = '-9999';
-          document.body.appendChild(sandbox);
-
+          const origText = downloadPdfBtn2.textContent;
+          downloadPdfBtn2.textContent = '⏳ Building PDF...';
+          downloadPdfBtn2.disabled = true;
           try {
-            const cert = document.getElementById('certificate-render');
-            const clonedCert = cert.cloneNode(true);
-            sandbox.appendChild(clonedCert);
-
-            const canvas = await html2canvas(clonedCert, {
-              scale: 3,
-              useCORS: true,
-              backgroundColor: '#ffffff',
-              logging: false
-            });
-
+            const canvas  = await renderCertToCanvas();
             const imgData = canvas.toDataURL('image/png', 1.0);
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-
-            const pw = pdf.internal.pageSize.getWidth();   // 297mm
-            const ph = pdf.internal.pageSize.getHeight();  // 210mm
+            const pw = pdf.internal.pageSize.getWidth();
+            const ph = pdf.internal.pageSize.getHeight();
             const aspect = canvas.width / canvas.height;
             let iw = pw, ih = pw / aspect;
-            if (ih > ph) {
-              ih = ph;
-              iw = ph * aspect;
-            }
+            if (ih > ph) { ih = ph; iw = ph * aspect; }
             const x = (pw - iw) / 2;
             const y = (ph - ih) / 2;
-
             pdf.addImage(imgData, 'PNG', x, y, iw, ih, '', 'FAST');
             pdf.save(`Manodemy_Certificate_${Date.now()}.pdf`);
           } catch (err) {
-            console.error("Failed to export certificate as PDF", err);
-            const msg = err.message || err;
-            if (typeof showToast === 'function') {
-              showToast("PDF Export failed: " + msg, "error");
-            } else {
-              alert("PDF Export failed: " + msg);
-            }
-            alert("Diagnostic Details:\nError: " + msg + "\nStack: " + (err.stack || "No stack trace"));
+            console.error('[CertExport] PDF failed:', err);
+            alert('PDF export failed: ' + (err.message || err));
           } finally {
-            document.body.removeChild(sandbox);
-            downloadPdfBtn.textContent = '⬇ Download as PDF';
-            downloadPdfBtn.disabled = false;
+            downloadPdfBtn2.textContent = origText;
+            downloadPdfBtn2.disabled = false;
           }
         });
       }
