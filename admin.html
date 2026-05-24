@@ -5193,7 +5193,8 @@
       // 3. Populate dynamic values
       document.getElementById('cert-score-number').textContent = totalScore.toFixed(2);
       document.getElementById('cert-level-value').textContent = level;
-      document.getElementById('cert-verified-score').textContent = `${totalScore.toFixed(2)} / 1000`;
+      const scoreEl = document.getElementById('cert-verified-score');
+      if (scoreEl) scoreEl.textContent = `${totalScore.toFixed(2)} / 1000`;
       document.getElementById('cert-section-grid').innerHTML = gridHtml;
 
       // 4. Issued date (current month & year)
@@ -5201,7 +5202,8 @@
       const now = new Date();
       const currentMonth = months[now.getMonth()];
       const currentYear = now.getFullYear();
-      document.getElementById('cert-issued-date').textContent = `ISSUED · ${currentMonth} ${currentYear}`;
+      const dateEl = document.getElementById('cert-issued-date');
+      if (dateEl) dateEl.textContent = `ISSUED · ${currentMonth} ${currentYear}`;
 
       // 5. Crypto Cert ID MND-YEAR-HASH
       const uniqueHash = userId ? userId.replace(/-/g, '').substring(0, 6).toUpperCase() : Math.random().toString(36).substring(2, 8).toUpperCase();

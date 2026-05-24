@@ -7680,7 +7680,8 @@
 
         // Populate score
         document.getElementById('cert-score-number').textContent = Math.round(totalXP * 100) / 100;
-        document.getElementById('cert-verified-score').textContent = `${(Math.round(totalXP * 100)/100).toFixed(2)} / 1000`;
+        const scoreEl = document.getElementById('cert-verified-score');
+        if (scoreEl) scoreEl.textContent = `${(Math.round(totalXP * 100)/100).toFixed(2)} / 1000`;
 
         // Level
         document.getElementById('cert-level-value').textContent = getLevelTitle(totalXP);
@@ -7688,7 +7689,8 @@
         // Issue date
         const now = new Date();
         const monthYear = now.toLocaleString('default', { month: 'long', year: 'numeric' }).toUpperCase();
-        document.getElementById('cert-issued-date').textContent = `ISSUED · ${monthYear}`;
+        const dateEl = document.getElementById('cert-issued-date');
+        if (dateEl) dateEl.textContent = `ISSUED · ${monthYear}`;
 
         // Certificate ID
         const certId = `MND-${now.getFullYear()}-${String(Math.floor(Math.random() * 99999)).padStart(5,'0')}`;
