@@ -2117,34 +2117,35 @@
       text-transform: uppercase;
     }
 
-    .cert-seal {
-      width: 76px; height: 76px;
-      border: 1.5px solid rgba(0,229,255,0.6);
-      border-radius: 50%;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
+    .cert-crest-emblem {
+      width: 80px;
+      height: 80px;
       margin: 0 auto;
-      background: rgba(0,229,255,0.04);
-      gap: 2px;
       position: relative;
+      filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.25));
+    }
+    .cert-crest-emblem svg {
+      width: 100%;
+      height: 100%;
     }
 
-    .cert-seal::before {
+    /* Glossy Refraction Shine Layer */
+    .certificate-body::after {
       content: '';
       position: absolute;
-      inset: 4px;
-      border: 0.5px solid rgba(0,229,255,0.25);
-      border-radius: 50%;
-    }
-
-    .cert-seal-star svg { width: 22px; height: 22px; }
-
-    .cert-seal-date {
-      font-family: 'Raleway', sans-serif;
-      font-size: 8px;
-      letter-spacing: 1.5px;
-      color: rgba(0,229,255,0.5);
-      text-transform: uppercase;
+      inset: 0;
+      background: linear-gradient(
+        115deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0) 30%,
+        rgba(255, 255, 255, 0.08) 38%,
+        rgba(255, 255, 255, 0.16) 40%,
+        rgba(255, 255, 255, 0.08) 42%,
+        rgba(255, 255, 255, 0) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      pointer-events: none;
+      z-index: 20;
     }
 
     .cert-verify-block-score {
@@ -5271,18 +5272,18 @@
       const totalScore = parseFloat(accumulatedScore.toFixed(2));
       const level = totalScore >= 900 ? 'Data Guru' : 'Alchemist';
 
-      // 3. Populate dynamic values
-      document.getElementById('cert-score-number').textContent = totalScore.toFixed(2);
-      document.getElementById('cert-level-value').textContent = level;
-      document.getElementById('cert-verified-score').textContent = `${totalScore.toFixed(2)} / 1000`;
-      document.getElementById('cert-section-grid').innerHTML = gridHtml;
-
       // 4. Issued date (current month & year)
       const months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
       const now = new Date();
       const currentMonth = months[now.getMonth()];
       const currentYear = now.getFullYear();
+
+      // 3. Populate dynamic values
+      document.getElementById('cert-score-number').textContent = totalScore.toFixed(2);
+      document.getElementById('cert-level-value').textContent = level;
+      document.getElementById('cert-verified-score').textContent = `ISSUED · ${currentMonth} ${currentYear}`;
       document.getElementById('cert-issued-date').textContent = `ISSUED · ${currentMonth} ${currentYear}`;
+      document.getElementById('cert-section-grid').innerHTML = gridHtml;
 
       // 5. Crypto Cert ID MND-YEAR-HASH
       const uniqueHash = userId ? userId.replace(/-/g, '').substring(0, 6).toUpperCase() : Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -5415,22 +5416,25 @@
 
           <div class="cert-footer">
             <div class="cert-footer-left">
-              <div class="cert-sig-block-name">Manodemy V2</div>
+              <div class="cert-sig-block-name">Manojkumar</div>
               <div class="cert-sig-block-line"></div>
-              <div class="cert-sig-block-role">Program Director &nbsp;·&nbsp; Manodemy</div>
+              <div class="cert-sig-block-role">Program Director</div>
             </div>
             <div class="cert-footer-center">
-              <div class="cert-seal">
-                <div class="cert-seal-star">
-                  <svg viewBox="0 0 22 22" fill="none">
-                    <polygon points="11,2 13.5,8.5 20.5,8.5 14.8,12.8 17,19.5 11,15.2 5,19.5 7.2,12.8 1.5,8.5 8.5,8.5" stroke="#00E5FF" stroke-width="1.2" fill="rgba(0,229,255,0.08)"/>
-                  </svg>
-                </div>
-                <div class="cert-seal-date" id="cert-issued-date">ISSUED · JUNE 2026</div>
+              <div class="cert-crest-emblem">
+                <svg viewBox="0 0 80 80" fill="none">
+                  <circle cx="40" cy="40" r="38" stroke="#d4af37" stroke-width="0.75" stroke-dasharray="2 2" opacity="0.6"/>
+                  <circle cx="40" cy="40" r="34" stroke="rgba(0, 229, 255, 0.4)" stroke-width="1"/>
+                  <circle cx="40" cy="40" r="31" stroke="#d4af37" stroke-width="1.5" opacity="0.8"/>
+                  <path d="M40 18 L53 23 L53 38 C53 48 45 57 40 60 C35 57 27 48 27 38 L27 23 L40 18 Z" fill="rgba(212, 175, 55, 0.08)" stroke="#d4af37" stroke-width="1.5"/>
+                  <path d="M40 27 L43 33 H50 L45 37 L47 43 L40 39 L33 43 L35 37 L30 33 H37 L40 27 Z" fill="rgba(0, 229, 255, 0.8)" stroke="#00E5FF" stroke-width="0.5"/>
+                  <path d="M22 40 H28 M52 40 H58 M40 12 V16 M40 64 V68" stroke="#d4af37" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+                </svg>
+                <span id="cert-issued-date" style="display:none;"></span>
               </div>
             </div>
             <div class="cert-footer-right">
-              <div id="cert-verified-score" class="cert-verify-block-score">850.00 / 1000</div>
+              <div id="cert-verified-score" class="cert-verify-block-score">ISSUED · JUNE 2026</div>
               <div class="cert-verify-block-line"></div>
               <div class="cert-verify-block-label">Verified Record &nbsp;·&nbsp; Authenticated</div>
             </div>
