@@ -5068,7 +5068,86 @@
       document.getElementById(id)?.classList.add('hidden');
     }
 
+    function attachDownloadListeners() {
+      const downloadPngBtn = document.getElementById('download-png-btn');
+      if (downloadPngBtn && !downloadPngBtn.dataset.listenerAttached) {
+        downloadPngBtn.dataset.listenerAttached = 'true';
+        downloadPngBtn.addEventListener('click', async () => {
+          downloadPngBtn.textContent = 'Generating Image...';
+          downloadPngBtn.disabled = true;
+
+          const cert = document.getElementById('certificate-render');
+          try {
+            const canvas = await html2canvas(cert, {
+              scale: 3,
+              useCORS: true,
+              backgroundColor: '#ffffff',
+              logging: false,
+              onclone: (doc) => {
+                doc.querySelectorAll('.cert-border-outer, .cert-border-middle, .cert-border-inner')
+                   .forEach(el => el.style.display = 'block');
+              }
+            });
+
+            const link = document.createElement('a');
+            link.download = `Manodemy_Certificate_${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.click();
+          } catch (err) {
+            console.error("Failed to export certificate as PNG", err);
+          } finally {
+            downloadPngBtn.textContent = '⬇ Download as Image';
+            downloadPngBtn.disabled = false;
+          }
+        });
+      }
+
+      const downloadPdfBtn = document.getElementById('download-pdf-btn');
+      if (downloadPdfBtn && !downloadPdfBtn.dataset.listenerAttached) {
+        downloadPdfBtn.dataset.listenerAttached = 'true';
+        downloadPdfBtn.addEventListener('click', async () => {
+          downloadPdfBtn.textContent = 'Building PDF...';
+          downloadPdfBtn.disabled = true;
+
+          const cert = document.getElementById('certificate-render');
+          try {
+            const canvas = await html2canvas(cert, {
+              scale: 3,
+              useCORS: true,
+              backgroundColor: '#ffffff',
+              logging: false
+            });
+
+            const imgData = canvas.toDataURL('image/png', 1.0);
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+            const pw = pdf.internal.pageSize.getWidth();   // 297mm
+            const ph = pdf.internal.pageSize.getHeight();  // 210mm
+            const aspect = canvas.width / canvas.height;
+            let iw = pw, ih = pw / aspect;
+            if (ih > ph) {
+              ih = ph;
+              iw = ph * aspect;
+            }
+            const x = (pw - iw) / 2;
+            const y = (ph - ih) / 2;
+
+            pdf.addImage(imgData, 'PNG', x, y, iw, ih, '', 'FAST');
+            pdf.save(`Manodemy_Certificate_${Date.now()}.pdf`);
+          } catch (err) {
+            console.error("Failed to export certificate as PDF", err);
+          } finally {
+            downloadPdfBtn.textContent = '⬇ Download as PDF';
+            downloadPdfBtn.disabled = false;
+          }
+        });
+      }
+    }
+
     function viewAdminCertificate(studentName, userId) {
+      // 0. Ensure download listeners are attached
+      attachDownloadListeners();
       // 1. Set Student Name
       document.getElementById('cert-name-display').textContent = studentName || 'Student';
 
@@ -5159,79 +5238,6 @@
         });
       });
 
-      // Certificate modal download controls
-      const downloadPngBtn = document.getElementById('download-png-btn');
-      if (downloadPngBtn) {
-        downloadPngBtn.addEventListener('click', async () => {
-          downloadPngBtn.textContent = 'Generating Image...';
-          downloadPngBtn.disabled = true;
-
-          const cert = document.getElementById('certificate-render');
-          try {
-            const canvas = await html2canvas(cert, {
-              scale: 3,
-              useCORS: true,
-              backgroundColor: '#f7f3eb',
-              logging: false,
-              onclone: (doc) => {
-                doc.querySelectorAll('.cert-border-outer, .cert-border-middle, .cert-border-inner')
-                   .forEach(el => el.style.display = 'block');
-              }
-            });
-
-            const link = document.createElement('a');
-            link.download = `Manodemy_Certificate_${Date.now()}.png`;
-            link.href = canvas.toDataURL('image/png', 1.0);
-            link.click();
-          } catch (err) {
-            console.error("Failed to export certificate as PNG", err);
-          } finally {
-            downloadPngBtn.textContent = '⬇ Download as Image';
-            downloadPngBtn.disabled = false;
-          }
-        });
-      }
-
-      const downloadPdfBtn = document.getElementById('download-pdf-btn');
-      if (downloadPdfBtn) {
-        downloadPdfBtn.addEventListener('click', async () => {
-          downloadPdfBtn.textContent = 'Building PDF...';
-          downloadPdfBtn.disabled = true;
-
-          const cert = document.getElementById('certificate-render');
-          try {
-            const canvas = await html2canvas(cert, {
-              scale: 3,
-              useCORS: true,
-              backgroundColor: '#f7f3eb',
-              logging: false
-            });
-
-            const imgData = canvas.toDataURL('image/png', 1.0);
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-
-            const pw = pdf.internal.pageSize.getWidth();   // 297mm
-            const ph = pdf.internal.pageSize.getHeight();  // 210mm
-            const aspect = canvas.width / canvas.height;
-            let iw = pw, ih = pw / aspect;
-            if (ih > ph) {
-              ih = ph;
-              iw = ph * aspect;
-            }
-            const x = (pw - iw) / 2;
-            const y = (ph - ih) / 2;
-
-            pdf.addImage(imgData, 'PNG', x, y, iw, ih, '', 'FAST');
-            pdf.save(`Manodemy_Certificate_${Date.now()}.pdf`);
-          } catch (err) {
-            console.error("Failed to export certificate as PDF", err);
-          } finally {
-            downloadPdfBtn.textContent = '⬇ Download as PDF';
-            downloadPdfBtn.disabled = false;
-          }
-        });
-      }
     });
 
     // ── INIT ─────────────────────────────────────────
