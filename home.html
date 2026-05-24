@@ -4798,94 +4798,17 @@
     .tile.high { border-top-color: #00E5FF; }
     .tile.high .tile-score { color: rgba(0,229,255,0.95); }
 
-    /* Footer / Signature Area */
-    .cert-footer {
-      border-top: 1px solid rgba(0,229,255,0.1);
-      padding-top: 12px;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 20px;
-      width: 90%;
-      margin: 0 auto;
-    }
-
-    .cert-footer-left { text-align: left; }
-    .cert-footer-center { text-align: center; }
-    .cert-footer-right { text-align: right; }
-
-    .cert-sig-block-name {
-      font-family: 'Dancing Script', cursive;
-      font-size: 22px;
-      color: rgba(255,255,255,0.75);
-      margin-bottom: 4px;
-    }
-
-    .cert-sig-block-line { width: 100%; height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 5px; }
-
-    .cert-sig-block-role {
-      font-family: 'Raleway', sans-serif;
-      font-size: 9px;
-      letter-spacing: 3px;
-      color: rgba(255,255,255,0.25);
-      text-transform: uppercase;
-    }
-
-    .cert-seal {
-      width: 76px; height: 76px;
-      border: 1.5px solid rgba(0,229,255,0.6);
-      border-radius: 50%;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      margin: 0 auto;
-      background: rgba(0,229,255,0.04);
-      gap: 2px;
-      position: relative;
-    }
-
-    .cert-seal::before {
-      content: '';
+    .cert-id-bar {
       position: absolute;
-      inset: 4px;
-      border: 0.5px solid rgba(0,229,255,0.25);
-      border-radius: 50%;
-    }
-
-    .cert-seal-star svg { width: 22px; height: 22px; }
-
-    .cert-seal-date {
+      top: 32px;
+      left: 74px;
       font-family: 'Raleway', sans-serif;
       font-size: 8px;
-      letter-spacing: 1.5px;
-      color: rgba(0,229,255,0.5);
-      text-transform: uppercase;
-    }
-
-    .cert-verify-block-score {
-      font-family: 'Cinzel', serif;
-      font-size: 18px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.8);
-      margin-bottom: 4px;
-    }
-
-    .cert-verify-block-line { width: 100%; height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 5px; }
-
-    .cert-verify-block-label {
-      font-family: 'Raleway', sans-serif;
-      font-size: 9px;
-      letter-spacing: 3px;
-      color: rgba(255,255,255,0.25);
-      text-transform: uppercase;
-    }
-
-    .cert-id-bar {
-      text-align: center;
-      margin-top: 8px;
-      font-family: 'Raleway', sans-serif;
-      font-size: 9px;
+      font-weight: 500;
       letter-spacing: 2px;
-      color: rgba(255,255,255,0.15);
+      color: rgba(0, 229, 255, 0.45);
+      z-index: 10;
+      text-transform: uppercase;
     }
     .cert-id-bar span { color: rgba(0,229,255,0.3); margin: 0 8px; }
 
@@ -5878,28 +5801,7 @@
             <div id="cert-section-grid" class="cert-tiles-grid"></div>
           </div>
 
-          <div class="cert-footer">
-            <div class="cert-footer-left">
-              <div class="cert-sig-block-name">Manodemy V2</div>
-              <div class="cert-sig-block-line"></div>
-              <div class="cert-sig-block-role">Program Director &nbsp;·&nbsp; Manodemy</div>
-            </div>
-            <div class="cert-footer-center">
-              <div class="cert-seal">
-                <div class="cert-seal-star">
-                  <svg viewBox="0 0 22 22" fill="none">
-                    <polygon points="11,2 13.5,8.5 20.5,8.5 14.8,12.8 17,19.5 11,15.2 5,19.5 7.2,12.8 1.5,8.5 8.5,8.5" stroke="#00E5FF" stroke-width="1.2" fill="rgba(0,229,255,0.08)"/>
-                  </svg>
-                </div>
-                <div class="cert-seal-date" id="cert-issued-date">ISSUED · JUNE 2026</div>
-              </div>
-            </div>
-            <div class="cert-footer-right">
-              <div id="cert-verified-score" class="cert-verify-block-score">850.00 / 1000</div>
-              <div class="cert-verify-block-line"></div>
-              <div class="cert-verify-block-label">Verified Record &nbsp;·&nbsp; Authenticated</div>
-            </div>
-          </div>
+
 
           <div id="cert-id-strip" class="cert-id-bar">
             CERT-ID <span>·</span> MND-2026-F41FC2 <span>·</span> manodemy.com/verify <span>·</span> Issued May 2026
