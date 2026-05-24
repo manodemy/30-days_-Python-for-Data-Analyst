@@ -488,14 +488,14 @@ button {
   font-weight: 700;
   font-size: 0.85em;
   /* Premium monospaced coding scale next to Outfit */
-  color: var(--gold);
-  -webkit-text-fill-color: var(--gold);
+  color: var(--cyan);
+  -webkit-text-fill-color: var(--cyan);
   -webkit-background-clip: initial;
   background-clip: initial;
-  text-shadow: 0 0 10px rgba(255, 176, 32, 0.45);
+  text-shadow: 0 0 10px rgba(0, 230, 246, 0.45);
   display: inline-block;
   overflow: hidden;
-  border-right: 3px solid var(--gold);
+  border-right: 3px solid var(--cyan);
   /* The sleek coding typewriter cursor */
   white-space: nowrap;
   margin-right: 0.25em;
@@ -552,7 +552,7 @@ button {
   }
 
   50% {
-    border-color: var(--gold);
+    border-color: var(--cyan);
   }
 }
 
