@@ -1957,294 +1957,163 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateCTAsForPaidUser() {
 
     // 1. Update standard buy buttons elsewhere
-
     document.querySelectorAll('[data-cta="buy"]').forEach(btn => {
-
-      if (!btn.closest('.hero-ctas')) {
-
+      if (!btn.closest('.hero-ctas') && !btn.closest('.premium-hero-ctas')) {
         btn.textContent = 'Continue Learning →';
-
         btn.href = '../home.html';
-
         btn.onclick = null;
-
       }
-
     });
 
-
-
-    // 2. Redesign the hero CTAs for purchased V2 users
-
+    // 2. Hide the default hero-ctas in the left column
     const heroCtas = document.querySelector('.hero-ctas');
-
     if (heroCtas) {
-
-      heroCtas.innerHTML = `
-
-        <button id="heroShareBtn" class="premium-btn premium-btn--share" aria-label="Share this course">
-
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-
-            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-
-            <polyline points="16 6 12 2 8 6"></polyline>
-
-            <line x1="12" y1="2" x2="12" y2="15"></line>
-
-          </svg>
-
-          Share this Course
-
-        </button>
-
-        <a href="../home.html" class="premium-btn premium-btn--continue" aria-label="Continue to Dashboard">
-
-          🚀 Continue Learning
-
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px; transition: transform 0.3s ease; vertical-align: middle;">
-
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-
-            <polyline points="12 5 19 12 12 19"></polyline>
-
-          </svg>
-
-        </a>
-
-      `;
-
-
-
-      // 3. Inject premium styles dynamically
-
-      if (!document.getElementById('premium-paid-btn-styles')) {
-
-        const styleEl = document.createElement('style');
-
-        styleEl.id = 'premium-paid-btn-styles';
-
-        styleEl.textContent = `
-
-          .hero-ctas {
-
-            display: flex !important;
-
-            gap: 1rem !important;
-
-            flex-wrap: wrap !important;
-
-            margin-top: 1.5rem !important;
-
-          }
-
-          
-
-          .premium-btn {
-
-            font-family: 'Outfit', sans-serif !important;
-
-            font-weight: 800 !important;
-
-            font-size: 13.5px !important;
-
-            letter-spacing: 0.05em !important;
-
-            text-transform: uppercase !important;
-
-            padding: 14px 28px !important;
-
-            border-radius: 50px !important;
-
-            display: inline-flex !important;
-
-            align-items: center !important;
-
-            justify-content: center !important;
-
-            cursor: pointer !important;
-
-            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-
-            text-decoration: none !important;
-
-            white-space: nowrap !important;
-
-            border: none !important;
-
-          }
-
-          
-
-          .premium-btn--share {
-
-            background: rgba(15, 23, 42, 0.45) !important;
-
-            color: rgba(255, 255, 255, 0.85) !important;
-
-            border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
-
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
-
-          }
-
-          
-
-          .premium-btn--share:hover {
-
-            background: rgba(15, 23, 42, 0.75) !important;
-
-            color: #ffffff !important;
-
-            border-color: rgba(0, 230, 246, 0.45) !important;
-
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 230, 246, 0.15) !important;
-
-            transform: translateY(-2px) !important;
-
-          }
-
-          
-
-          .premium-btn--continue {
-
-            background: linear-gradient(135deg, #00e6f6 0%, #0072ff 100%) !important;
-
-            color: #ffffff !important;
-
-            box-shadow: 0 8px 25px rgba(0, 114, 255, 0.35), 0 0 15px rgba(0, 230, 246, 0.18) !important;
-
-          }
-
-          
-
-          .premium-btn--continue:hover {
-
-            transform: translateY(-3px) scale(1.025) !important;
-
-            box-shadow: 0 12px 35px rgba(0, 114, 255, 0.5), 0 0 25px rgba(0, 230, 246, 0.35) !important;
-
-          }
-
-          
-
-          .premium-btn--continue:hover svg {
-
-            transform: translateX(4px) !important;
-
-          }
-
-          
-
-          /* Premium Toast Style */
-
-          .premium-toast {
-
-            position: fixed !important;
-
-            bottom: 30px !important;
-
-            left: 50% !important;
-
-            transform: translate(-50%, 50px) scale(0.95) !important;
-
-            background: rgba(7, 10, 19, 0.92) !important;
-
-            backdrop-filter: blur(12px) !important;
-
-            border: 1.5px solid rgba(0, 230, 246, 0.45) !important;
-
-            color: #ffffff !important;
-
-            padding: 12px 24px !important;
-
-            border-radius: 12px !important;
-
-            font-family: 'Outfit', sans-serif !important;
-
-            font-weight: 700 !important;
-
-            font-size: 13.5px !important;
-
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 20px rgba(0,230,246,0.2) !important;
-
-            z-index: 999999 !important;
-
-            opacity: 0 !important;
-
-            pointer-events: none !important;
-
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-
-          }
-
-          
-
-          .premium-toast.show {
-
-            opacity: 1 !important;
-
-            transform: translate(-50%, 0) scale(1) !important;
-
-          }
-
-        `;
-
-        document.head.appendChild(styleEl);
-
+      heroCtas.style.display = 'none';
+    }
+
+    // 3. Render the premium CTAs below the hero-proof cards in the right column
+    const heroProof = document.querySelector('.hero-proof');
+    if (heroProof) {
+      let premiumCtas = document.querySelector('.premium-hero-ctas');
+      if (!premiumCtas) {
+        premiumCtas = document.createElement('div');
+        premiumCtas.className = 'premium-hero-ctas';
+        heroProof.parentNode.insertBefore(premiumCtas, heroProof.nextSibling);
       }
 
+      premiumCtas.innerHTML = `
+        <button id="heroShareBtn" class="premium-btn premium-btn--share" aria-label="Share this course">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+            <polyline points="16 6 12 2 8 6"></polyline>
+            <line x1="12" y1="2" x2="12" y2="15"></line>
+          </svg>
+          Share this Course
+        </button>
+        <a href="../home.html" class="premium-btn premium-btn--continue" aria-label="Continue to Dashboard">
+          🚀 Continue Learning
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px; transition: transform 0.3s ease; vertical-align: middle;">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      `;
 
-
-      // 4. Attach Share Handler
-
-      const shareBtn = document.getElementById('heroShareBtn');
-
-      if (shareBtn) {
-
-        shareBtn.addEventListener('click', (e) => {
-
-          e.preventDefault();
-
-          const shareData = {
-
-            title: '30 Days of Python for Data Analyst - V2',
-
-            text: 'Learn Python by actually coding! Check out this incredible hands-on course.',
-
-            url: window.location.origin + '/30-days-Python-for-Data-Analyst-V2/landing_v2/index.html'
-
-          };
-
+      // 4. Inject premium styles dynamically
+      if (!document.getElementById('premium-paid-btn-styles')) {
+        const styleEl = document.createElement('style');
+        styleEl.id = 'premium-paid-btn-styles';
+        styleEl.textContent = `
+          .premium-hero-ctas {
+            display: flex !important;
+            gap: 1rem !important;
+            flex-wrap: wrap !important;
+            margin-top: 1.5rem !important;
+            width: 100% !important;
+            justify-content: center !important;
+          }
           
+          .premium-btn {
+            font-family: 'Outfit', sans-serif !important;
+            font-weight: 800 !important;
+            font-size: 13.5px !important;
+            letter-spacing: 0.05em !important;
+            text-transform: uppercase !important;
+            padding: 14px 28px !important;
+            border-radius: 50px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+            text-decoration: none !important;
+            white-space: nowrap !important;
+            border: none !important;
+          }
+          
+          .premium-btn--share {
+            background: rgba(15, 23, 42, 0.45) !important;
+            color: rgba(255, 255, 255, 0.85) !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+          }
+          
+          .premium-btn--share:hover {
+            background: rgba(15, 23, 42, 0.75) !important;
+            color: #ffffff !important;
+            border-color: rgba(0, 230, 246, 0.45) !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 230, 246, 0.15) !important;
+            transform: translateY(-2px) !important;
+          }
+          
+          .premium-btn--continue {
+            background: linear-gradient(135deg, #00e6f6 0%, #0072ff 100%) !important;
+            color: #ffffff !important;
+            box-shadow: 0 8px 25px rgba(0, 114, 255, 0.35), 0 0 15px rgba(0, 230, 246, 0.18) !important;
+          }
+          
+          .premium-btn--continue:hover {
+            transform: translateY(-3px) scale(1.025) !important;
+            box-shadow: 0 12px 35px rgba(0, 114, 255, 0.5), 0 0 25px rgba(0, 230, 246, 0.35) !important;
+          }
+          
+          .premium-btn--continue:hover svg {
+            transform: translateX(4px) !important;
+          }
+          
+          /* Premium Toast Style */
+          .premium-toast {
+            position: fixed !important;
+            bottom: 30px !important;
+            left: 50% !important;
+            transform: translate(-50%, 50px) scale(0.95) !important;
+            background: rgba(7, 10, 19, 0.92) !important;
+            backdrop-filter: blur(12px) !important;
+            border: 1.5px solid rgba(0, 230, 246, 0.45) !important;
+            color: #ffffff !important;
+            padding: 12px 24px !important;
+            border-radius: 12px !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-weight: 700 !important;
+            font-size: 13.5px !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 20px rgba(0,230,246,0.2) !important;
+            z-index: 999999 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+          }
+          
+          .premium-toast.show {
+            opacity: 1 !important;
+            transform: translate(-50%, 0) scale(1) !important;
+          }
+        `;
+        document.head.appendChild(styleEl);
+      }
 
-          const displayToast = () => {
-
-            let toast = document.getElementById('premiumShareToast');
-
-            if (!toast) {
-
-              toast = document.createElement('div');
-
-              toast.id = 'premiumShareToast';
-
-              toast.className = 'premium-toast';
-
-              toast.innerHTML = '📋 Course link copied to clipboard! Share it with your friends.';
-
-              document.body.appendChild(toast);
-
-            }
-
-            // Trigger animation
-
-            setTimeout(() => toast.classList.add('show'), 50);
-
-            setTimeout(() => toast.classList.remove('show'), 3500);
-
+      // 5. Attach Share Handler
+      const shareBtn = document.getElementById('heroShareBtn');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const shareData = {
+            title: '30 Days of Python for Data Analyst - V2',
+            text: 'Learn Python by actually coding! Check out this incredible hands-on course.',
+            url: window.location.origin + '/30-days-Python-for-Data-Analyst-V2/landing_v2/index.html'
           };
-
-
+          
+          const displayToast = () => {
+            let toast = document.getElementById('premiumShareToast');
+            if (!toast) {
+              toast = document.createElement('div');
+              toast.id = 'premiumShareToast';
+              toast.className = 'premium-toast';
+              toast.innerHTML = '📋 Course link copied to clipboard! Share it with your friends.';
+              document.body.appendChild(toast);
+            }
+            setTimeout(() => toast.classList.add('show'), 50);
+            setTimeout(() => toast.classList.remove('show'), 3500);
+          };
 
           if (navigator.share) {
 
