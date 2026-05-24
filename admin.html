@@ -5078,24 +5078,33 @@
         downloadPngBtn.dataset.listenerAttached = 'true';
         downloadPngBtn.addEventListener('click', async () => {
           if (typeof html2canvas === 'undefined') {
-            alert("Critical Error: The 'html2canvas' library failed to load in your browser. Please check your internet connection or disable ad-blockers that might block cdnjs.cloudflare.com.");
+            alert("Critical Error: The 'html2canvas' library failed to load in your browser. Please check your internet connection or disable ad-blockers.");
             return;
           }
           downloadPngBtn.textContent = 'Generating Image...';
           downloadPngBtn.disabled = true;
 
-          const cert = document.getElementById('certificate-render');
+          // Create an isolated sandbox to prevent background-image noise and canvas-dimension crashes
+          const sandbox = document.createElement('div');
+          sandbox.style.position = 'fixed';
+          sandbox.style.top = '-9999px';
+          sandbox.style.left = '-9999px';
+          sandbox.style.width = '1100px';
+          sandbox.style.height = '780px';
+          sandbox.style.background = '#ffffff';
+          sandbox.style.zIndex = '-9999';
+          document.body.appendChild(sandbox);
+
           try {
-            const canvas = await html2canvas(cert, {
+            const cert = document.getElementById('certificate-render');
+            const clonedCert = cert.cloneNode(true);
+            sandbox.appendChild(clonedCert);
+
+            const canvas = await html2canvas(clonedCert, {
               scale: 3,
               useCORS: true,
               backgroundColor: '#ffffff',
-              logging: false,
-              ignoreElements: (el) => el.tagName === 'CANVAS',
-              onclone: (doc) => {
-                doc.querySelectorAll('.cert-border-outer, .cert-border-middle, .cert-border-inner')
-                   .forEach(el => el.style.display = 'block');
-              }
+              logging: false
             });
 
             const link = document.createElement('a');
@@ -5112,6 +5121,7 @@
             }
             alert("Diagnostic Details:\nError: " + msg + "\nStack: " + (err.stack || "No stack trace"));
           } finally {
+            document.body.removeChild(sandbox);
             downloadPngBtn.textContent = '⬇ Download as Image';
             downloadPngBtn.disabled = false;
           }
@@ -5133,14 +5143,27 @@
           downloadPdfBtn.textContent = 'Building PDF...';
           downloadPdfBtn.disabled = true;
 
-          const cert = document.getElementById('certificate-render');
+          // Create an isolated sandbox to prevent background-image noise and canvas-dimension crashes
+          const sandbox = document.createElement('div');
+          sandbox.style.position = 'fixed';
+          sandbox.style.top = '-9999px';
+          sandbox.style.left = '-9999px';
+          sandbox.style.width = '1100px';
+          sandbox.style.height = '780px';
+          sandbox.style.background = '#ffffff';
+          sandbox.style.zIndex = '-9999';
+          document.body.appendChild(sandbox);
+
           try {
-            const canvas = await html2canvas(cert, {
+            const cert = document.getElementById('certificate-render');
+            const clonedCert = cert.cloneNode(true);
+            sandbox.appendChild(clonedCert);
+
+            const canvas = await html2canvas(clonedCert, {
               scale: 3,
               useCORS: true,
               backgroundColor: '#ffffff',
-              logging: false,
-              ignoreElements: (el) => el.tagName === 'CANVAS'
+              logging: false
             });
 
             const imgData = canvas.toDataURL('image/png', 1.0);
@@ -5170,6 +5193,7 @@
             }
             alert("Diagnostic Details:\nError: " + msg + "\nStack: " + (err.stack || "No stack trace"));
           } finally {
+            document.body.removeChild(sandbox);
             downloadPdfBtn.textContent = '⬇ Download as PDF';
             downloadPdfBtn.disabled = false;
           }
