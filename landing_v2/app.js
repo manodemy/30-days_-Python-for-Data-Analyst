@@ -2006,20 +2006,25 @@ document.addEventListener('DOMContentLoaded', () => {
         styleEl.textContent = `
           .premium-hero-ctas {
             display: flex !important;
-            gap: 1rem !important;
-            flex-wrap: wrap !important;
+            flex-direction: row !important;
+            gap: 12px !important;
+            flex-wrap: nowrap !important;
             margin-top: 1.5rem !important;
             width: 100% !important;
             justify-content: center !important;
+            align-items: center !important;
           }
           
           .premium-btn {
+            flex: 1 1 auto !important;
+            width: auto !important;
+            min-width: 140px !important;
             font-family: 'Outfit', sans-serif !important;
             font-weight: 800 !important;
-            font-size: 13.5px !important;
-            letter-spacing: 0.05em !important;
+            font-size: 12.5px !important;
+            letter-spacing: 0.04em !important;
             text-transform: uppercase !important;
-            padding: 14px 28px !important;
+            padding: 12px 20px !important;
             border-radius: 50px !important;
             display: inline-flex !important;
             align-items: center !important;
