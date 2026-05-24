@@ -575,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let userCountry = 'US';
 
-  let currentPricing = { amount: 1900, currency: 'USD', display: '$19', original: '$69', discount: '72% OFF' };
+  let currentPricing = { amount: 9900, currency: 'USD', display: '$99', original: '$299', discount: '67% OFF' };
 
 
 
@@ -613,7 +613,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    let prices = { inr: 149900, usd: 1900, original_inr: 499900, original_usd: 6900, discount_label_inr: '70% OFF', discount_label_usd: '72% OFF' };
+    let prices = { inr: 999900, usd: 9900, original_inr: 2999900, original_usd: 29900, discount_label_inr: '67% OFF', discount_label_usd: '67% OFF' };
 
     try {
 
