@@ -5276,4 +5276,52 @@ button {
   .carousel-indicators {
     margin-top: 1.5rem;
   }
+}
+
+
+/* ═══ GUEST CTA HORIZONTAL STACKING IN RIGHT COLUMN ═══ */
+.hero-right .hero-ctas {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 12px !important;
+  flex-wrap: nowrap !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0 !important;
+  width: 100% !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.hero-right .hero-ctas .btn-gold {
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 140px !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 12.5px !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  padding: 12px 20px !important;
+  height: auto !important;
+  border-radius: 50px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+.hero-right .hero-ctas .btn-gold--outline:hover {
+  background: rgba(15, 23, 42, 0.75) !important;
+  color: #ffffff !important;
+  border-color: rgba(0, 230, 246, 0.45) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 230, 246, 0.15) !important;
+  transform: translateY(-2px) !important;
+}
+
+.hero-right .hero-ctas .btn-gold--filled:hover {
+  transform: translateY(-3px) scale(1.025) !important;
+  box-shadow: 0 12px 35px rgba(0, 114, 255, 0.5), 0 0 25px rgba(0, 230, 246, 0.35) !important;
 }
