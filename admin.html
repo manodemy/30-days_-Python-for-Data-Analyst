@@ -5284,6 +5284,8 @@
       const currentYear = now.getFullYear();
       document.getElementById('cert-issued-date').textContent = `ISSUED · ${currentMonth} ${currentYear}`;
 
+      // 5. Crypto Cert ID MND-YEAR-HASH
+      const uniqueHash = userId ? userId.replace(/-/g, '').substring(0, 6).toUpperCase() : Math.random().toString(36).substring(2, 8).toUpperCase();
       document.getElementById('cert-id-strip').innerHTML = `CERT-ID: MND-${currentYear}-${uniqueHash}`;
 
       // 6. Open Modal
