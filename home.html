@@ -7860,9 +7860,9 @@
       }
 
       // Add click event listener to certificate button
-      const ctaBtn = document.getElementById('download-certificate-btn');
-      if (ctaBtn) {
-        ctaBtn.addEventListener('click', () => {
+      const certCtaBtn = document.getElementById('download-certificate-btn');
+      if (certCtaBtn) {
+        certCtaBtn.addEventListener('click', () => {
           const totalXP = getTotalXP();
           if (totalXP < 700) {
             showIneligibleModal(totalXP);
