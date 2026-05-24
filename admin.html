@@ -2248,6 +2248,10 @@
         <div class="nav-item" data-tab="tab-settings">
           <span class="nav-icon">◎</span> Settings
         </div>
+        <div class="nav-section-label">Navigation</div>
+        <a href="home.html" class="nav-item" style="text-decoration: none; display: flex; color: var(--ink-dim);">
+          <span class="nav-icon">🎓</span> Student Dashboard
+        </a>
       </nav>
       <div class="sidebar-foot">
         <div class="brand-sub" style="text-align:center;padding:0.5rem 0;">Manodemy Intelligence Suite</div>
@@ -5087,6 +5091,7 @@
               useCORS: true,
               backgroundColor: '#ffffff',
               logging: false,
+              ignoreElements: (el) => el.tagName === 'CANVAS',
               onclone: (doc) => {
                 doc.querySelectorAll('.cert-border-outer, .cert-border-middle, .cert-border-inner')
                    .forEach(el => el.style.display = 'block');
@@ -5134,7 +5139,8 @@
               scale: 3,
               useCORS: true,
               backgroundColor: '#ffffff',
-              logging: false
+              logging: false,
+              ignoreElements: (el) => el.tagName === 'CANVAS'
             });
 
             const imgData = canvas.toDataURL('image/png', 1.0);
