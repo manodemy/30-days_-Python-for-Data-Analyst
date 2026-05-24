@@ -5073,6 +5073,10 @@
       if (downloadPngBtn && !downloadPngBtn.dataset.listenerAttached) {
         downloadPngBtn.dataset.listenerAttached = 'true';
         downloadPngBtn.addEventListener('click', async () => {
+          if (typeof html2canvas === 'undefined') {
+            alert("Critical Error: The 'html2canvas' library failed to load in your browser. Please check your internet connection or disable ad-blockers that might block cdnjs.cloudflare.com.");
+            return;
+          }
           downloadPngBtn.textContent = 'Generating Image...';
           downloadPngBtn.disabled = true;
 
@@ -5095,6 +5099,13 @@
             link.click();
           } catch (err) {
             console.error("Failed to export certificate as PNG", err);
+            const msg = err.message || err;
+            if (typeof showToast === 'function') {
+              showToast("PNG Export failed: " + msg, "error");
+            } else {
+              alert("PNG Export failed: " + msg);
+            }
+            alert("Diagnostic Details:\nError: " + msg + "\nStack: " + (err.stack || "No stack trace"));
           } finally {
             downloadPngBtn.textContent = '⬇ Download as Image';
             downloadPngBtn.disabled = false;
@@ -5106,6 +5117,14 @@
       if (downloadPdfBtn && !downloadPdfBtn.dataset.listenerAttached) {
         downloadPdfBtn.dataset.listenerAttached = 'true';
         downloadPdfBtn.addEventListener('click', async () => {
+          if (typeof html2canvas === 'undefined') {
+            alert("Critical Error: The 'html2canvas' library failed to load in your browser. Please check your internet connection or disable ad-blockers.");
+            return;
+          }
+          if (typeof window.jspdf === 'undefined') {
+            alert("Critical Error: The 'jsPDF' library failed to load in your browser. Please check your internet connection or disable ad-blockers.");
+            return;
+          }
           downloadPdfBtn.textContent = 'Building PDF...';
           downloadPdfBtn.disabled = true;
 
@@ -5137,6 +5156,13 @@
             pdf.save(`Manodemy_Certificate_${Date.now()}.pdf`);
           } catch (err) {
             console.error("Failed to export certificate as PDF", err);
+            const msg = err.message || err;
+            if (typeof showToast === 'function') {
+              showToast("PDF Export failed: " + msg, "error");
+            } else {
+              alert("PDF Export failed: " + msg);
+            }
+            alert("Diagnostic Details:\nError: " + msg + "\nStack: " + (err.stack || "No stack trace"));
           } finally {
             downloadPdfBtn.textContent = '⬇ Download as PDF';
             downloadPdfBtn.disabled = false;
