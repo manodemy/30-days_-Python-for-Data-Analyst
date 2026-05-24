@@ -711,7 +711,9 @@ button {
   position: relative;
   transition: border-color 0.4s var(--ease), box-shadow 0.4s var(--ease), transform 0.4s var(--ease);
   height: 330px !important;
-  flex: 0 0 auto !important;
+  min-height: 330px !important;
+  max-height: 330px !important;
+  flex: 0 0 330px !important;
 }
 
 .terminal:hover {
@@ -821,8 +823,9 @@ button {
   font-family: var(--font-data);
   font-size: 13.5px;
   line-height: 1.8;
-  min-height: 200px;
-  height: calc(100% - 40px) !important;
+  height: 290px !important;
+  min-height: 290px !important;
+  max-height: 290px !important;
   position: relative;
   color: #F1F5F9;
   overflow: hidden;
