@@ -544,11 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
         socialProofEl.textContent = totalCount.toLocaleString('en-US') + '+';
       }
 
-      // 3. Update reviews subtext
-      const revCountSubEl = document.querySelector('.rev-count-sub');
-      if (revCountSubEl) {
-        revCountSubEl.textContent = 'Based on ' + totalCount.toLocaleString('en-US') + '+ reviews';
-      }
+
     } catch (e) {
       console.warn("[Stats] Error loading live paid users:", e);
     }

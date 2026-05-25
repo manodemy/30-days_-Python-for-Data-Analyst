@@ -1517,7 +1517,7 @@
 
 
 
-    <!-- Reviews & Ratings Section -->
+    <!-- Reviews & Testimonials Section -->
 
     <section class="reviews-sec" id="testimonials">
 
@@ -1525,253 +1525,93 @@
 
         <div class="section-head reveal">
 
-          <h2>30 Days Structured Curriculum Reviews</h2>
+          <h2>What Our Students Say</h2>
 
-          <p>Read experiences and ratings from verified learners who built active coding muscle memory.</p>
+          <p>Real experiences from learners who built real Python skills.</p>
 
         </div>
 
-        
+        <!-- Stats Bar -->
 
-        <!-- Ratings Dashboard Panel -->
+        <div class="rev-stats-bar reveal">
 
-        <div class="reviews-dashboard reveal">
+          <div class="rev-stats-left">
 
-          <!-- Score Summary Pillar -->
+            <span class="rev-stats-score" id="revStatsScore">4.8</span>
 
-          <div class="rev-score-col">
-
-            <div class="rev-score-massive">4.8 <span>/ 5</span></div>
-
-            <div class="rev-stars-row">
+            <div class="rev-stars-row" id="revStatsStars">
 
               <!-- Rendered Dynamically -->
 
             </div>
 
-            <div class="rev-count-sub">Based on 2,400+ reviews</div>
-
-            <button class="btn-toggle-reviews" id="btnToggleReviews" aria-expanded="false" aria-controls="reviewsCollapseArea">
-
-              <span>View Reviews</span>
-
-              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path></svg>
-
-            </button>
+            <span class="rev-stats-count" id="revStatsCount">Based on 2,400+ reviews</span>
 
           </div>
 
-          
+          <button class="btn-write-review">
 
-          <!-- Rating Distribution Column -->
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.83 17.017a4.5 4.5 0 01-1.897 1.13L3 19l.85-2.933a4.5 4.5 0 011.13-1.897l8.932-8.932zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
 
-          <div class="rev-distribution-col">
+            <span>Write a Review</span>
 
-            <div class="rev-dist-row" data-rating="5">
-
-              <span class="rev-dist-label">5 star</span>
-
-              <div class="rev-dist-track">
-
-                <div class="rev-dist-fill" style="width: 82%;"></div>
-
-              </div>
-
-              <span class="rev-dist-pct">82%</span>
-
-            </div>
-
-            <div class="rev-dist-row" data-rating="4">
-
-              <span class="rev-dist-label">4 star</span>
-
-              <div class="rev-dist-track">
-
-                <div class="rev-dist-fill" style="width: 14%;"></div>
-
-              </div>
-
-              <span class="rev-dist-pct">14%</span>
-
-            </div>
-
-            <div class="rev-dist-row" data-rating="3">
-
-              <span class="rev-dist-label">3 star</span>
-
-              <div class="rev-dist-track">
-
-                <div class="rev-dist-fill" style="width: 3%;"></div>
-
-              </div>
-
-              <span class="rev-dist-pct">3%</span>
-
-            </div>
-
-            <div class="rev-dist-row" data-rating="2">
-
-              <span class="rev-dist-label">2 star</span>
-
-              <div class="rev-dist-track">
-
-                <div class="rev-dist-fill" style="width: 1%;"></div>
-
-              </div>
-
-              <span class="rev-dist-pct">1%</span>
-
-            </div>
-
-            <div class="rev-dist-row" data-rating="1">
-
-              <span class="rev-dist-label">1 star</span>
-
-              <div class="rev-dist-track">
-
-                <div class="rev-dist-fill" style="width: 0%;"></div>
-
-              </div>
-
-              <span class="rev-dist-pct">0%</span>
-
-            </div>
-
-          </div>
-
-          
-
-          <!-- Trust Metrics Pillar replaced with Write a Review CTA -->
-
-          <div class="rev-trust-col">
-
-            <button class="btn-write-review">
-
-              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.83 17.017a4.5 4.5 0 01-1.897 1.13L3 19l.85-2.933a4.5 4.5 0 011.13-1.897l8.932-8.932zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path></svg>
-
-              <span>Write a Review</span>
-
-            </button>
-
-          </div>
+          </button>
 
         </div>
 
+        <!-- Toolbar -->
 
+        <div class="rev-toolbar reveal">
 
-        <!-- Collapsible Reviews Grid & Controls Container -->
+          <div class="rev-search-wrapper">
 
-        <div class="reviews-collapse-wrapper" id="reviewsCollapseArea">
+            <input type="text" class="rev-search-input" placeholder="Search reviews...">
 
-          <div class="reviews-collapse-inner">
-
-            
-
-            <!-- Filter & Search Toolbar -->
-
-            <div class="reviews-toolbar">
-
-              <div class="rev-search-wrapper">
-
-                <input type="text" class="rev-search-input" placeholder="Search reviews by keyword...">
-
-                <svg class="rev-search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-
-              </div>
-
-              
-
-              <div class="reviews-filter-group">
-
-                <select class="rev-select-dropdown" id="filter-rating">
-
-                  <option value="all">All Ratings</option>
-
-                  <option value="5">5 Stars</option>
-
-                  <option value="4">4 Stars</option>
-
-                  <option value="3">3 Stars</option>
-
-                  <option value="2">2 Stars</option>
-
-                  <option value="1">1 Star</option>
-
-                </select>
-
-
-
-                <select class="rev-select-dropdown" id="filter-sort">
-
-                  <option value="most_recent">Most Recent</option>
-
-                  <option value="highest">Highest Rating</option>
-
-                  <option value="helpful">Most Helpful</option>
-
-                </select>
-
-
-
-                <label class="rev-filter-checkbox" for="filter-verified">
-
-                  <input type="checkbox" id="filter-verified">
-
-                  <span>Verified Only</span>
-
-                </label>
-
-
-
-                <label class="rev-filter-checkbox" for="filter-media">
-
-                  <input type="checkbox" id="filter-media">
-
-                  <span>With Media</span>
-
-                </label>
-
-              </div>
-
-            </div>
-
-
-
-            <!-- Dynamic Reviews Horizontal Carousel Viewport -->
-            <div class="reviews-carousel-container">
-              <div class="reviews-carousel-viewport">
-                <!-- Floating Navigation Buttons -->
-                <button type="button" class="btn-carousel-nav prev" id="carousel-prev" aria-label="Previous review" disabled>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                  </svg>
-                </button>
-
-                <div class="reviews-carousel-track-wrapper">
-                  <div class="reviews-grid reviews-carousel-track" id="carousel-track">
-                    <!-- Populated Dynamically via reviews.js -->
-                  </div>
-                </div>
-
-                <button type="button" class="btn-carousel-nav next" id="carousel-next" aria-label="Next review" disabled>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </button>
-              </div>
-
-              <!-- Interactive dot navigation indicators -->
-              <div class="carousel-indicators" id="carousel-dots"></div>
-            </div>
-
-            <!-- Pagination Controls (Hidden for slider) -->
-            <div class="reviews-pagination" style="display: none;">
-              <!-- Populated Dynamically via reviews.js -->
-            </div>
-
-
+            <svg class="rev-search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
 
           </div>
+
+          <select class="rev-select-dropdown" id="filter-rating">
+
+            <option value="all">All Ratings</option>
+
+            <option value="5">5 Stars</option>
+
+            <option value="4">4 Stars</option>
+
+            <option value="3">3 Stars</option>
+
+            <option value="2">2 Stars</option>
+
+            <option value="1">1 Star</option>
+
+          </select>
+
+          <select class="rev-select-dropdown" id="filter-sort">
+
+            <option value="most_recent">Most Recent</option>
+
+            <option value="highest">Highest Rating</option>
+
+            <option value="helpful">Most Helpful</option>
+
+          </select>
+
+        </div>
+
+        <!-- Reviews Grid -->
+
+        <div class="reviews-grid" id="reviewsGrid">
+
+          <!-- Populated Dynamically via reviews.js -->
+
+        </div>
+
+        <!-- Load More -->
+
+        <div class="rev-load-more-wrap" id="revLoadMoreWrap" style="display:none;">
+
+          <button class="rev-load-more-btn" id="revLoadMoreBtn">Load More Reviews</button>
 
         </div>
 
