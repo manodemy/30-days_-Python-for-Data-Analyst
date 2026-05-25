@@ -336,6 +336,55 @@ tbody tr:hover{background:rgba(0,230,246,.03)}
 .nav-zone--left, .nav-zone--right { display: flex; align-items: center; gap: 1rem; }
 .nav-controls { display: flex; align-items: center; gap: 0.5rem; }
 
+/* Custom CSS Order for Nav Controls children */
+.nav-controls .home-btn {
+  order: 1 !important;
+}
+.nav-controls .start-coding-btn,
+.nav-controls #navCountdownTimer {
+  order: 2 !important;
+}
+.nav-controls .my-score-card-btn {
+  order: 3 !important;
+}
+
+/* My Score Card button hover styles */
+.my-score-card-btn {
+  transition: all 0.3s ease !important;
+}
+.my-score-card-btn:hover {
+  background: rgba(0, 230, 246, 0.15) !important;
+  border-color: rgba(0, 230, 246, 0.45) !important;
+  transform: translateY(-1px) scale(1.02) !important;
+  box-shadow: 0 0 15px rgba(0, 230, 246, 0.25) !important;
+}
+
+/* Neat and well-designed prev and next arrow buttons styling */
+.nav-arrow-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--ink-dim);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-arrow-btn:hover:not(.disabled) {
+  background: rgba(0, 230, 246, 0.08) !important;
+  border-color: rgba(0, 230, 246, 0.35) !important;
+  color: var(--cyan) !important;
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(0, 230, 246, 0.25);
+}
+.nav-arrow-btn.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* ═══════ AVATAR & PROFILE ═══════ */
 .avatar-wrapper { position: relative; width: var(--avatar-size); height: var(--avatar-size); cursor: pointer; border-radius: 50%; padding: 3px; transition: all 0.3s; background: linear-gradient(145deg, #151a28, #0a0d14); box-shadow: 3px 3px 8px rgba(0,0,0,0.6), -2px -2px 5px rgba(255,255,255,0.03), inset 1px 1px 2px rgba(255,255,255,0.1), inset -1px -1px 2px rgba(0,0,0,0.5); }
 .avatar-wrapper:hover { transform: scale(1.05) translateY(-2px); box-shadow: 5px 5px 12px rgba(0,0,0,0.7), -2px -2px 6px rgba(255,255,255,0.05), inset 1px 1px 3px rgba(0,230,246,0.4), 0 0 15px rgba(0,230,246,0.2); }
