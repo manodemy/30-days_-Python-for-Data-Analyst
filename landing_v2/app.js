@@ -1136,7 +1136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return;
       }
-      if (localStorage.getItem('manodemy_auth') === 'true' || navSignin.textContent === 'Dashboard') return;
+      if (localStorage.getItem('manodemy_auth') === 'true' || navSignin.textContent === 'Dashboard' || navSignin.textContent === 'My Score Card') return;
       e.preventDefault();
       openAuthModal('login');
     });
@@ -1966,8 +1966,8 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    signInBtn.textContent = 'Sign Out';
-    signInBtn.href = '#';
+    signInBtn.textContent = 'My Score Card';
+    signInBtn.href = '../home.html';
     signInBtn.style.display = 'inline-flex';
   }
 
