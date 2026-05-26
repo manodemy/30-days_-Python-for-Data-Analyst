@@ -571,7 +571,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let userCountry = 'US';
 
-  let currentPricing = { amount: 9900, currency: 'USD', display: '$99', original: '$299', discount: '67% OFF' };
+  let currentPricing = { amount: 1900, currency: 'USD', display: '$19', original: '$99', discount: '81% OFF' };
 
 
 
@@ -609,7 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    let prices = { inr: 999900, usd: 9900, original_inr: 2999900, original_usd: 29900, discount_label_inr: '67% OFF', discount_label_usd: '67% OFF' };
+    let prices = { inr: 149900, usd: 1900, original_inr: 999900, original_usd: 9900, discount_label_inr: '85% OFF', discount_label_usd: '81% OFF' };
 
     try {
 
@@ -621,17 +621,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
           prices = {
 
-            inr: dbPricing.value.inr,
+            inr: dbPricing.value.inr || 149900,
 
-            usd: dbPricing.value.usd,
+            usd: dbPricing.value.usd || 1900,
 
-            original_inr: dbPricing.value.original_inr,
+            original_inr: 999900,
 
-            original_usd: dbPricing.value.original_usd,
+            original_usd: 9900,
 
-            discount_label_inr: dbPricing.value.discount_label,
+            discount_label_inr: '85% OFF',
 
-            discount_label_usd: dbPricing.value.discount_label_usd
+            discount_label_usd: '81% OFF'
 
           };
 
@@ -701,9 +701,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    document.querySelectorAll('.btn-nav-buy, .btn-gold--outline[data-cta="buy"], .sticky-buy').forEach(btn => {
+    // Update comparison table costs dynamically
 
-      btn.textContent = `Buy Now — ${currentPricing.display}`;
+    const compCostMano = document.getElementById('compare-cost-mano');
+
+    const compCostVideo = document.getElementById('compare-cost-video');
+
+    const compCostSub = document.getElementById('compare-cost-sub');
+
+    const compCostBootcamp = document.getElementById('compare-cost-bootcamp');
+
+
+
+    if (userCountry === 'IN') {
+
+      if (compCostMano) compCostMano.innerHTML = '&#x20B9;1,499 (One-Time)';
+
+      if (compCostVideo) compCostVideo.innerHTML = '&#x20B9;800 - &#x20B9;16,000';
+
+      if (compCostSub) compCostSub.innerHTML = '&#x20B9;13,500 - &#x20B9;40,000 / Year';
+
+      if (compCostBootcamp) compCostBootcamp.innerHTML = '&#x20B9;4,00,000 - &#x20B9;13,00,000 Upfront';
+
+    } else {
+
+      if (compCostMano) compCostMano.innerHTML = '$19 (One-Time)';
+
+      if (compCostVideo) compCostVideo.innerHTML = '$10 - $200';
+
+      if (compCostSub) compCostSub.innerHTML = '$168 - $504 / Year';
+
+      if (compCostBootcamp) compCostBootcamp.innerHTML = '$5,000 - $16,450 Upfront';
+
+    }
+
+
+
+    document.querySelectorAll('[data-cta="buy"], .btn-nav-buy, .sticky-buy').forEach(btn => {
+
+      btn.innerHTML = btn.innerHTML
+
+        .replace(/\$99/g, currentPricing.display)
+
+        .replace(/&#x20B9;9,999/g, currentPricing.display)
+
+        .replace(/₹9,999/g, currentPricing.display)
+
+        .replace(/\$19/g, currentPricing.display)
+
+        .replace(/&#x20B9;1,499/g, currentPricing.display)
+
+        .replace(/₹1,499/g, currentPricing.display);
 
     });
 
