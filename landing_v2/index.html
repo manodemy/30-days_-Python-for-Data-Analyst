@@ -56,7 +56,7 @@
 
   
 
-  <link rel="stylesheet" href="styles.css?v=2.9">
+  <link rel="stylesheet" href="styles.css?v=3.0">
 
   
 
@@ -1498,7 +1498,7 @@
 
                 <td class="no">
 
-                  <span class="compare-price-bootcamp">$5,000+ Upfront</span>
+<span class="compare-price-bootcamp">$5,000+ Upfront</span>
 
                 </td>
 
@@ -1525,9 +1525,7 @@
 
         <div class="section-head reveal">
 
-          <h2>30 Days Structured Curriculum Reviews</h2>
-
-          <p>Read experiences and ratings from verified learners who built active coding muscle memory.</p>
+          <h2>What Our Learners Say</h2>
 
         </div>
 
@@ -1550,14 +1548,6 @@
             </div>
 
             <div class="rev-count-sub">Based on 2,400+ reviews</div>
-
-            <button class="btn-toggle-reviews" id="btnToggleReviews" aria-expanded="false" aria-controls="reviewsCollapseArea">
-
-              <span>View Reviews</span>
-
-              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path></svg>
-
-            </button>
 
           </div>
 
@@ -1641,7 +1631,7 @@
 
           
 
-          <!-- Trust Metrics Pillar replaced with Write a Review CTA -->
+          <!-- Write a Review CTA -->
 
           <div class="rev-trust-col">
 
@@ -1657,123 +1647,25 @@
 
         </div>
 
+        <!-- Scrollable Reviews Carousel -->
+        <div class="rev-carousel-container">
+          <button class="rev-carousel-arrow rev-carousel-arrow--prev" id="revCarouselPrev" aria-label="Previous reviews">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          </button>
 
-
-        <!-- Collapsible Reviews Grid & Controls Container -->
-
-        <div class="reviews-collapse-wrapper" id="reviewsCollapseArea">
-
-          <div class="reviews-collapse-inner">
-
-            
-
-            <!-- Filter & Search Toolbar -->
-
-            <div class="reviews-toolbar">
-
-              <div class="rev-search-wrapper">
-
-                <input type="text" class="rev-search-input" placeholder="Search reviews by keyword...">
-
-                <svg class="rev-search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-
-              </div>
-
-              
-
-              <div class="reviews-filter-group">
-
-                <select class="rev-select-dropdown" id="filter-rating">
-
-                  <option value="all">All Ratings</option>
-
-                  <option value="5">5 Stars</option>
-
-                  <option value="4">4 Stars</option>
-
-                  <option value="3">3 Stars</option>
-
-                  <option value="2">2 Stars</option>
-
-                  <option value="1">1 Star</option>
-
-                </select>
-
-
-
-                <select class="rev-select-dropdown" id="filter-sort">
-
-                  <option value="most_recent">Most Recent</option>
-
-                  <option value="highest">Highest Rating</option>
-
-                  <option value="helpful">Most Helpful</option>
-
-                </select>
-
-
-
-                <label class="rev-filter-checkbox" for="filter-verified">
-
-                  <input type="checkbox" id="filter-verified">
-
-                  <span>Verified Only</span>
-
-                </label>
-
-
-
-                <label class="rev-filter-checkbox" for="filter-media">
-
-                  <input type="checkbox" id="filter-media">
-
-                  <span>With Media</span>
-
-                </label>
-
-              </div>
-
+          <div class="rev-carousel-track" id="revCarouselTrack">
+            <div class="rev-carousel-loading">
+              <svg viewBox="0 0 24 24" style="width:32px;height:32px;color:var(--cyan);animation:spin 1s linear infinite"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="4" opacity=".25"/><path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
             </div>
-
-
-
-            <!-- Dynamic Reviews Horizontal Carousel Viewport -->
-            <div class="reviews-carousel-container">
-              <div class="reviews-carousel-viewport">
-                <!-- Floating Navigation Buttons -->
-                <button type="button" class="btn-carousel-nav prev" id="carousel-prev" aria-label="Previous review" disabled>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                  </svg>
-                </button>
-
-                <div class="reviews-carousel-track-wrapper">
-                  <div class="reviews-grid reviews-carousel-track" id="carousel-track">
-                    <!-- Populated Dynamically via reviews.js -->
-                  </div>
-                </div>
-
-                <button type="button" class="btn-carousel-nav next" id="carousel-next" aria-label="Next review" disabled>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </button>
-              </div>
-
-              <!-- Interactive dot navigation indicators -->
-              <div class="carousel-indicators" id="carousel-dots"></div>
-            </div>
-
-            <!-- Pagination Controls (Hidden for slider) -->
-            <div class="reviews-pagination" style="display: none;">
-              <!-- Populated Dynamically via reviews.js -->
-            </div>
-
-
-
           </div>
 
+          <button class="rev-carousel-arrow rev-carousel-arrow--next" id="revCarouselNext" aria-label="Next reviews">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
         </div>
+
+        <!-- Pagination Dots -->
+        <div class="rev-carousel-dots" id="revCarouselDots"></div>
 
       </div>
 
