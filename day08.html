@@ -391,7 +391,9 @@ match point:
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="checks-Check-28">
-<div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Pattern Matching</code></b>
+</h3></div>
 <div class="question"><p><strong>Q1.</strong> Write a <code>match/case</code> for HTTP status codes: 200→'OK', 404→'Not Found', 500→'Server Error', _→'Unknown'. Test with 4 codes.</p></div>
 <div class="code-cell" id="cell-14">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
@@ -419,16 +421,27 @@ match point:
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="sec-39">
-<h1><strong>4 . Guard Patterns :</strong> Defensive and Clean Code</h1>
-<h3>🔍 What is a Guard Pattern?</h3>
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>4. Defensive Design : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Guard Clauses & Early Returns</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
 <p>A guard clause validates preconditions at the very top of a function and returns or raises an error immediately if they fail. This prevents deep nesting of <code>if</code> statements.</p>
-<h3>💼 Why Data Analysts Care</h3>
+
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
 <p>• <strong>Data Validation</strong>: When receiving a messy dataframe or a raw JSON payload, guards instantly reject invalid schemas before the complex processing logic begins.</p>
 <p>• <strong>Readability</strong>: Code that flows straight down is immensely easier to read than code deeply indented by 5 nested <code>if</code> blocks.</p>
-<h3>⚠️ Common Pitfall</h3>
-<p>Failing to use guards leads to the 'Arrow Anti-Pattern', where code indentation keeps shifting to the right, causing massive horizontal sprawl and confusing scope.</p>
-<h3>🧠 Pro Tip</h3>
-<p>Combine guards with early returns: <code>if not valid: return None</code>. The remainder of the function can then safely assume the input is perfectly valid without wrapping it in an <code>else</code> block.</p>
+
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Common Pitfall</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    Failing to use guards leads to the 'Arrow Anti-Pattern', where code indentation keeps shifting to the right, causing massive horizontal sprawl and confusing scope.
+</div></div>
+
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    Combine guards with early returns: <code>if not valid: return None</code>. The remainder of the function can then safely assume the input is perfectly valid without wrapping it in an <code>else</code> block.
+</div></div>
 <div class="code-cell" id="cell-19">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-19"># Without guard (deeply nested — bad)
@@ -452,7 +465,9 @@ print(process([1, 2, 3, 4, 5]))  # 15</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="checks-Check-41">
-<div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Guard Clauses</code></b>
+</h3></div>
 <div class="question"><p><strong>Q1.</strong> Write a guard clause pattern: <code>if not valid_input: return 'Error'</code> at the top of a function. Show how it simplifies nested <code>if/else</code>.</p></div>
 <div class="code-cell" id="cell-20">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
@@ -480,16 +495,27 @@ print(process([1, 2, 3, 4, 5]))  # 15</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="sec-52">
-<h1><strong>5 . Complex Conditions :</strong> Compound Logic</h1>
-<h3>🔍 Compound Boolean Logic</h3>
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>5. Compound Logic : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Complex Conditions</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
 <p>Python utilizes <code>and</code>, <code>or</code>, and <code>not</code> to combine multiple conditions. Parentheses should be used to explicitly group conditions when mixing operators.</p>
-<h3>💼 Why Data Analysts Care</h3>
+
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
 <p>• <strong>Advanced Filtering</strong>: Filtering a dataframe based on multiple columns (e.g., <code>is_active and (revenue > 1000 or months_tenure > 12)</code>).</p>
 <p>• <strong>Aggregating conditions</strong>: Using <code>all(list)</code> to verify that an entire batch of data passed quality checks.</p>
-<h3>⚠️ Common Pitfall</h3>
-<p>Short-circuit evaluation means Python stops checking an <code>and</code> sequence as soon as it hits a <code>False</code>, and stops checking an <code>or</code> sequence as soon as it hits a <code>True</code>. Do not put side-effects inside conditions!</p>
-<h3>🧠 Under the Hood</h3>
-<p>Python allows chained comparisons like <code>0 < x < 10</code>. This is mathematically elegant and evaluates to <code>x > 0 and x < 10</code> automatically.</p>
+
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Common Pitfall</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    Short-circuit evaluation means Python stops checking an <code>and</code> sequence as soon as it hits a <code>False</code>, and stops checking an <code>or</code> sequence as soon as it hits a <code>True</code>. Do not put side-effects inside conditions!
+</div></div>
+
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Under the Hood</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    Python allows chained comparisons like <code>0 &lt; x &lt; 10</code>. This is mathematically elegant and evaluates to <code>x &gt; 0 and x &lt; 10</code> automatically.
+</div></div>
 <div class="code-cell" id="cell-25">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-25"># Named boolean variables — self-documenting
@@ -512,7 +538,9 @@ print(any(s &gt;= 90 for s in scores))  # True — at least one A</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="checks-Check-54">
-<div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Complex Conditions</code></b>
+</h3></div>
 <div class="question"><p><strong>Q1.</strong> Write a function <code>classify_triangle(a,b,c)</code> returning: 'invalid' (triangle inequality), 'equilateral', 'isosceles', 'scalene'. Test with 5 triangles.</p></div>
 <div class="code-cell" id="cell-26">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
