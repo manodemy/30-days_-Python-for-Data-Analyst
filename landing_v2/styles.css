@@ -4322,6 +4322,30 @@ button {
   background: rgba(16, 185, 129, 0.03);
 }
 
+.rev-media-dropzone.has-file:hover {
+  border-color: rgba(16, 185, 129, 0.6);
+  background: rgba(16, 185, 129, 0.05);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+}
+
+.rev-media-dropzone.has-file .dropzone-content {
+  display: none;
+}
+
+.rev-media-dropzone .media-previews-container {
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.rev-modal-footer-inline {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
 .dropzone-content {
   display: flex;
   flex-direction: column;
