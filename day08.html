@@ -191,16 +191,41 @@
   <main class="notebook" id="notebook">
     <div class="nb-title"><h1>📊 Day 08 : Conditionals</h1></div>
 <div class="nb-section" id="sec-0">
-<h1><strong>1 . if / elif / else :</strong> Branching Logic</h1>
-<h3>🔍 What are Branching Statements?</h3>
+<h2>🎯 Enterprise Objective</h2>
+<p>Control flow is the brain of programming. Today we master decision-making structures in Python, moving from basic conditional branching to high-performance inline ternaries, structural pattern matching, defensive guard clauses, and complex boolean combinations. Writing clean, flat, and bug-free conditionals is the foundation of high-integrity analytics pipelines.</p>
+<h3>📋 Strategic Overview</h3>
+<table>
+<thead><tr><th>#</th><th>Topic</th><th>Key Concept</th><th>Core Use Case</th></tr></thead><tbody>
+<tr><td>1</td><td>Branching Logic</td><td><code>if</code> / <code>elif</code> / <code>else</code></td><td>Standard decision routing</td></tr>
+<tr><td>2</td><td>Inline Conditions</td><td>Ternary Expressions</td><td>Cleaner conditional assignments</td></tr>
+<tr><td>3</td><td>Pattern Matching</td><td><code>match</code> / <code>case</code> (Python 3.10+)</td><td>Structural schemas & complex dispatch</td></tr>
+<tr><td>4</td><td>Defensive Design</td><td>Guard Clauses & Early Returns</td><td>Clean, flat code structures</td></tr>
+<tr><td>5</td><td>Compound Logic</td><td><code>and</code> / <code>or</code> / <code>not</code></td><td>Complex boolean evaluation</td></tr>
+</tbody></table>
+</div>
+
+<div class="nb-section" id="sec-1">
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>1. Branching Logic : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">if / elif / else</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
 <p>Python uses <code>if</code>, <code>elif</code>, and <code>else</code> to control the flow of execution based on boolean conditions. The blocks of code are defined strictly by indentation (usually 4 spaces).</p>
-<h3>💼 Why Data Analysts Care</h3>
-<p>• <strong>Business Rules</strong>: Categorizing a user's age into demographics (e.g., <code><18</code> is Minor, <code>18-65</code> is Adult).</p>
+
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>Business Rules</strong>: Categorizing a user's age into demographics (e.g., <code>&lt;18</code> is Minor, <code>18-65</code> is Adult).</p>
 <p>• <strong>Data Filtering</strong>: Determining whether a specific row of data should be included in a final calculation based on specific thresholds.</p>
-<h3>⚠️ Common Pitfall</h3>
-<p>Using <code>== True</code> or <code>== False</code> is redundant. Instead of <code>if user_is_active == True:</code>, simply write <code>if user_is_active:</code>. Python natively evaluates the 'truthiness' of any object.</p>
-<h3>🧠 Under the Hood</h3>
-<p>The <code>elif</code> chain evaluates conditions sequentially from the top down. The very first condition that evaluates to <code>True</code> will execute its block, and Python will immediately skip the remainder of the chain. Reordering the conditions can completely change the output!</p>
+
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Common Pitfall</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    Using <code>== True</code> or <code>== False</code> is redundant. Instead of <code>if user_is_active == True:</code>, simply write <code>if user_is_active:</code>. Python natively evaluates the 'truthiness' of any object.
+</div></div>
+
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Under the Hood</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    The <code>elif</code> chain evaluates conditions sequentially from the top down. The very first condition that evaluates to <code>True</code> will execute its block, and Python will immediately skip the remainder of the chain. Reordering the conditions can completely change the output!
+</div></div>
 <div class="code-cell" id="cell-1">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-1">score = 82
@@ -224,7 +249,9 @@ if not data:
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="checks-Check-2">
-<div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Branching Logic</code></b>
+</h3></div>
 <div class="question"><p><strong>Q1.</strong> Write an <code>if/elif/else</code> chain that classifies BMI: <18.5 Underweight, 18.5-24.9 Normal, 25-29.9 Overweight, 30+ Obese. Test with <code>bmi=27.5</code>.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
@@ -252,16 +279,27 @@ if not data:
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="sec-13">
-<h1><strong>2 . Ternary Expression :</strong> Inline Conditions</h1>
-<h3>🔍 What is a Ternary Expression?</h3>
-<p>It allows you to assign a value based on a condition in a single line. The syntax is: <code>value_if_true if condition else value_if_false</code>.</p>
-<h3>💼 Why Data Analysts Care</h3>
-<p>• <strong>List Comprehensions</strong>: Applying conditional logic during data transformations: <code>['Pass' if x > 60 else 'Fail' for x in scores]</code>.</p>
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>2. Inline Conditions : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Ternary Expressions</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
+<p>A ternary expression allows you to assign a value based on a condition in a single line. The syntax is: <code>value_if_true if condition else value_if_false</code>.</p>
+
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
+<p>• <strong>List Comprehensions</strong>: Applying conditional logic during data transformations: <code>['Pass' if x &gt; 60 else 'Fail' for x in scores]</code>.</p>
 <p>• <strong>f-strings</strong>: Directly rendering different outputs based on state: <code>f"User is {'Active' if is_active else 'Inactive'}"</code>.</p>
-<h3>⚠️ Common Pitfall</h3>
-<p>Do not nest ternary operators deeply (e.g., <code>A if cond1 else B if cond2 else C</code>). It severely hurts readability. If you need more than one <code>else if</code>, use a standard block.</p>
-<h3>🧠 Pro Tip</h3>
-<p>Ternary expressions always return a value. You cannot put statements (like <code>pass</code>, <code>break</code>, or assignment <code>x = 5</code>) inside the return values of a ternary expression.</p>
+
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Common Pitfall</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    Do not nest ternary operators deeply (e.g., <code>A if cond1 else B if cond2 else C</code>). It severely hurts readability. If you need more than one <code>else if</code>, use a standard block.
+</div></div>
+
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    Ternary expressions always return a value. You cannot put statements (like <code>pass</code>, <code>break</code>, or assignment <code>x = 5</code>) inside the return values of a ternary expression.
+</div></div>
 <div class="code-cell" id="cell-7">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-7"># Simple ternary
@@ -278,7 +316,9 @@ print(labels)</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="checks-Check-15">
-<div class="concept-header"><h3>🧪 Concept Checks: <code>Check</code></h3></div>
+<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+    <b>🧪 Concept Checks: <code>Ternary Expressions</code></b>
+</h3></div>
 <div class="question"><p><strong>Q1.</strong> Write a ternary expression: <code>status = 'Adult' if age >= 18 else 'Minor'</code>. Test with <code>age=15</code> and <code>age=25</code>. Print both results.</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
@@ -306,16 +346,27 @@ print(labels)</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="sec-26">
-<h1><strong>3 . Match-Case :</strong> Structural Pattern Matching (Python 3.10+)</h1>
-<h3>🔍 What is Match-Case?</h3>
+<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
+    <b>3. Pattern Matching : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Match-Case (Python 3.10+)</span></b>
+</h2>
+<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    <b>🔍 What is it?</b><br>
+</div></div>
 <p>Introduced in Python 3.10, <code>match-case</code> is much more than a <code>switch</code> statement. It enables structural pattern matching, allowing you to match variable types, sequence structures, and dict keys.</p>
-<h3>💼 Why Data Analysts Care</h3>
+
+<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
 <p>• <strong>API Parsing</strong>: When an API returns dictionaries with different schemas based on the event type, <code>match-case</code> routes them perfectly.</p>
 <p>• <strong>Complex Dispatch</strong>: Replacing huge blocks of <code>elif</code> chains when parsing commands or states.</p>
-<h3>⚠️ Common Pitfall</h3>
-<p>Unlike C++ or Java, Python's <code>match-case</code> does NOT fall through. Once a case is matched and its block executes, the match block terminates. There is no need for <code>break</code>.</p>
-<h3>🧠 Under the Hood</h3>
-<p>The wildcard <code>case _:</code> acts as the ultimate default. It must always be placed at the very bottom of the <code>match</code> block. Furthermore, you can capture variables directly in the case pattern: <code>case [x, y]: print(x)</code>.</p>
+
+<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Common Pitfall</b></h3>
+<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    Unlike C++ or Java, Python's <code>match-case</code> does NOT fall through. Once a case is matched and its block executes, the match block terminates. There is no need for <code>break</code>.
+</div></div>
+
+<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Under the Hood</b></h3>
+<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
+    The wildcard <code>case _:</code> acts as the ultimate default. It must always be placed at the very bottom of the <code>match</code> block. Furthermore, you can capture variables directly in the case pattern: <code>case [x, y]: print(x)</code>.
+</div></div>
 <div class="code-cell" id="cell-13">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-13">command = &#x27;quit&#x27;
