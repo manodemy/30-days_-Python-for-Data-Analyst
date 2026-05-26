@@ -6,14 +6,14 @@
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>Manodemy — Intelligence Suite</title>
-  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="dns-prefetch" href="https://erqoyvbuhmkyvcqgwcbz.supabase.co">
+  
   <link
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&amp;family=DM+Mono:wght@300;400;500&amp;family=DM+Sans:wght@300;400;500;600&amp;family=Cinzel:wght@400;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=EB+Garamond:ital,wght@0,400;1,400&amp;family=Inter:wght@300;400;500;600&amp;display=swap"
-    rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="supabase.js"></script>
-  <script src="chart.js"></script>
+    rel="stylesheet" media="print" onload="this.media='all'" />
   <style>
     /* ─────────────────────────────────────────────
    DESIGN TOKENS
@@ -3518,6 +3518,12 @@
   <!-- ════════════════════════════════════════
      JAVASCRIPT — ALL LOGIC PRESERVED
 ════════════════════════════════════════ -->
+  <!-- External JS Dependencies (Moved from head for PageSpeed optimisation) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="supabase.js"></script>
+  <script src="chart.js"></script>
+
   <script>
     const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
     const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
