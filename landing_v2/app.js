@@ -591,20 +591,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    try {
+    const geoAPIs = [
+      { url: 'https://get.geojs.io/v1/ip/country.json', parse: d => d.country },
+      { url: 'https://ipapi.co/json/', parse: d => d.country_code },
+      { url: 'https://api.country.is/', parse: d => d.country },
+    ];
 
-      const response = await fetch('https://get.geojs.io/v1/ip/country.json');
+    let geoDetected = false;
+    for (const api of geoAPIs) {
+      try {
+        const response = await fetch(api.url, { signal: AbortSignal.timeout(4000) });
+        const data = await response.json();
+        const code = api.parse(data);
+        if (code && code.length === 2) {
+          userCountry = code.toUpperCase();
+          geoDetected = true;
+          break;
+        }
+      } catch (_) { /* try next */ }
+    }
 
-      const data = await response.json();
-
-      userCountry = data.country || 'US';
-
-    } catch (error) {
-
-      console.error("Geo-pricing API failed. Using default USD.", error);
-
-      userCountry = 'US';
-
+    if (!geoDetected) {
+      // Last resort: use browser language as a hint
+      const lang = navigator.language || navigator.languages?.[0] || '';
+      if (lang === 'en-IN' || lang.endsWith('-IN')) {
+        userCountry = 'IN';
+      } else {
+        console.warn("Geo-pricing: all APIs failed, defaulting to USD.");
+        userCountry = 'US';
+      }
     }
 
 
@@ -1938,7 +1953,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
           options: {
 
-            redirectTo: window.location.href,
+            redirectTo: (() => {
+              // Use production URL when running locally (file:// or localhost)
+              // so it matches Supabase's whitelisted redirect URLs
+              const isLocal = window.location.protocol === 'file:' ||
+                              window.location.hostname === 'localhost' ||
+                              window.location.hostname === '127.0.0.1';
+              return isLocal
+                ? 'https://manodemy.com/landing_v2/index.html'
+                : window.location.href;
+            })(),
 
             queryParams: { access_type: 'offline', prompt: 'consent' }
 
@@ -2318,6 +2342,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event === 'SIGNED_IN' && session) {
 
           await handleUserSession(session);
+
+          if (!window.pendingBuyIntent) {
+            window.location.href = '../home.html';
+          }
 
         } else if (event === 'SIGNED_OUT') {
 
