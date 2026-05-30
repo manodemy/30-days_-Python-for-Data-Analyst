@@ -58,6 +58,35 @@ serve(async (req) => {
 
     if (!order) throw new Error('Order not found')
     if (order.status === 'paid') {
+      // Safeguard: If order was marked paid by webhook first, check if profile phone is set.
+      // If it's missing, fetch from Razorpay API and update.
+      if (gateway === 'razorpay' && body.razorpay_payment_id) {
+        try {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('phone')
+            .eq('id', user.id)
+            .single()
+
+          if (!profile || !profile.phone) {
+            const rzpKeyId = Deno.env.get('RAZORPAY_KEY_ID')!
+            const rzpSecret = Deno.env.get('RAZORPAY_KEY_SECRET')!
+            const rzpPaymentRes = await fetch(
+              `https://api.razorpay.com/v1/payments/${body.razorpay_payment_id}`,
+              { headers: { 'Authorization': 'Basic ' + btoa(`${rzpKeyId}:${rzpSecret}`) } }
+            )
+            const rzpPaymentData = await rzpPaymentRes.json()
+            const buyerPhone = rzpPaymentData.contact || null
+            if (buyerPhone) {
+              await supabase.from('profiles').update({ phone: buyerPhone }).eq('id', user.id)
+              console.log(`[verify-payment] Saved phone ${buyerPhone} for user ${user.id} on early paid path`)
+            }
+          }
+        } catch (e) {
+          console.error('[verify-payment] Could not check or fetch Razorpay payment details on early paid path:', e)
+        }
+      }
+
       return new Response(
         JSON.stringify({ success: true, already_paid: true }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

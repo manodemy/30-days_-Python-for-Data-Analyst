@@ -80,6 +80,15 @@ serve(async (req) => {
             .update({ status: 'paid', updated_at: new Date().toISOString() })
             .eq('id', order.id)
 
+          // Save buyer's phone to profiles if available
+          if (payment.contact) {
+            await supabase
+              .from('profiles')
+              .update({ phone: payment.contact })
+              .eq('id', order.user_id)
+            console.log(`[payment-webhook] Saved phone ${payment.contact} for user ${order.user_id}`)
+          }
+
           // Create enrollment
           await supabase.from('enrollments').upsert({
             user_id: order.user_id,

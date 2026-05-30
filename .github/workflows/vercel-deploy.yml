@@ -63,6 +63,8 @@ jobs:
         run: |
           supabase functions deploy verify-payment --project-ref erqoyvbuhmkyvcqgwcbz --no-verify-jwt
           supabase functions deploy create-order --project-ref erqoyvbuhmkyvcqgwcbz --no-verify-jwt
+          supabase functions deploy payment-webhook --project-ref erqoyvbuhmkyvcqgwcbz --no-verify-jwt
+          supabase functions deploy get-pricing --project-ref erqoyvbuhmkyvcqgwcbz --no-verify-jwt
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
 
