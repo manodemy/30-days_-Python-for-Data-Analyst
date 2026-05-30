@@ -128,6 +128,58 @@ function isChallengeActive() {
 
 }
 
+// ── CHALLENGE EVALUATION & RESOLUTION HELPER ─────────────────────────────────
+// Checks if a challenge has expired, calculates final score, updates high scores if exceeded,
+// and gracefully clears active challenge session state.
+function checkAndResolveExpiredChallenge(dayId) {
+  if (!dayId) return;
+
+  const startTimeStr = safeStorageGet(`manodemy_${dayId}_start_time`);
+  if (!startTimeStr) return;
+
+  const startTime = parseInt(startTimeStr, 10);
+  const elapsedMs = Date.now() - startTime;
+  const total24HoursMs = 24 * 3600 * 1000;
+
+  if (elapsedMs >= total24HoursMs) {
+    console.log(`[Grading] 24h Challenge expired for ${dayId}. Evaluating...`);
+
+    const currentSessionXP = parseFloat(safeStorageGet(`manodemy_${dayId}_xp_earned`) || '0');
+    const currentSessionSolved = parseInt(safeStorageGet(`manodemy_${dayId}_solved_count`) || '0', 10);
+
+    const bestScoreKey = `manodemy_${dayId}_best_score`;
+    const bestSolvedKey = `manodemy_${dayId}_best_solved`;
+
+    const previousBestScore = parseFloat(safeStorageGet(bestScoreKey) || '0');
+
+    if (currentSessionXP > previousBestScore) {
+      safeStorageSet(bestScoreKey, currentSessionXP.toFixed(2));
+      safeStorageSet(bestSolvedKey, currentSessionSolved.toString());
+      console.log(`[Grading] 🎉 New high score achieved! Score: ${currentSessionXP.toFixed(2)}, Solved: ${currentSessionSolved}`);
+    } else {
+      console.log(`[Grading] High score kept: ${previousBestScore.toFixed(2)}`);
+    }
+
+    // Clean up current active session keys so this evaluation only runs once
+    try {
+      localStorage.removeItem(`manodemy_${dayId}_start_time`);
+      localStorage.removeItem(`manodemy_${dayId}_xp_earned`);
+      localStorage.removeItem(`manodemy_${dayId}_solved_count`);
+      sessionStorage.removeItem(`manodemy_${dayId}_start_time`);
+      sessionStorage.removeItem(`manodemy_${dayId}_xp_earned`);
+      sessionStorage.removeItem(`manodemy_${dayId}_solved_count`);
+      
+      // Clean up all _graded_solved keys to reset challenge progress for next start
+      Object.keys(editors).forEach(cellId => {
+        localStorage.removeItem(`manodemy_${dayId}_${cellId}_graded_solved`);
+        sessionStorage.removeItem(`manodemy_${dayId}_${cellId}_graded_solved`);
+      });
+    } catch (e) {}
+
+    successfulCells.clear();
+  }
+}
+
 // Editors are ALWAYS unlocked — grading state does not lock the UI
 const _dayStarted = true;
 
