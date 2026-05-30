@@ -1248,7 +1248,7 @@ button {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  margin-top: 1.75rem;
+  margin-top: 1.15rem;
   margin-bottom: 0;
   width: 100%;
 }
@@ -5205,7 +5205,7 @@ button {
   flex-direction: row !important;
   gap: 12px !important;
   flex-wrap: nowrap !important;
-  margin-top: 1.5rem !important;
+  margin-top: 1.05rem !important;
   margin-bottom: 0 !important;
   width: 100% !important;
   justify-content: center !important;
