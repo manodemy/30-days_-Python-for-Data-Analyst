@@ -67,6 +67,7 @@ serve(async (req) => {
     // ══════════ RAZORPAY VERIFICATION ══════════
     if (gateway === 'razorpay') {
       const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = body
+      const rzpKeyId = Deno.env.get('RAZORPAY_KEY_ID')!
       const rzpSecret = Deno.env.get('RAZORPAY_KEY_SECRET')!
 
       // HMAC-SHA256 signature verification
@@ -75,6 +76,22 @@ serve(async (req) => {
       if (expectedSig !== razorpay_signature) {
         await supabase.from('orders').update({ status: 'failed' }).eq('id', order_id)
         throw new Error('Invalid payment signature — possible tampering detected')
+      }
+
+      // ── Fetch full payment details from Razorpay API to get phone number ──
+      // NOTE: The frontend handler callback only returns payment_id/order_id/signature.
+      // The contact (phone) field is only available via the Razorpay Payments API.
+      let buyerPhone: string | null = null
+      try {
+        const rzpPaymentRes = await fetch(
+          `https://api.razorpay.com/v1/payments/${razorpay_payment_id}`,
+          { headers: { 'Authorization': 'Basic ' + btoa(`${rzpKeyId}:${rzpSecret}`) } }
+        )
+        const rzpPaymentData = await rzpPaymentRes.json()
+        buyerPhone = rzpPaymentData.contact || null
+        console.log(`[verify-payment] Razorpay contact: ${buyerPhone}, method: ${rzpPaymentData.method}`)
+      } catch (e) {
+        console.error('[verify-payment] Could not fetch Razorpay payment details:', e)
       }
 
       // Record payment
@@ -97,8 +114,7 @@ serve(async (req) => {
       // Update order
       await supabase.from('orders').update({ status: 'paid', updated_at: new Date().toISOString() }).eq('id', order_id)
 
-      // Capture buyer's phone number from Razorpay checkout response
-      const buyerPhone = body.contact || body.razorpay_contact || null
+      // Save buyer's phone to profiles (fetched from Razorpay API above)
       if (buyerPhone) {
         await supabase.from('profiles').update({ phone: buyerPhone }).eq('id', user.id)
         console.log(`[verify-payment] Saved phone ${buyerPhone} for user ${user.id}`)
@@ -117,6 +133,7 @@ serve(async (req) => {
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
+
 
 
     // ══════════ PAYPAL CAPTURE ══════════
