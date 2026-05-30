@@ -40,19 +40,14 @@ jobs:
             echo "⚠️  No notebooks found — using pre-built HTML files"
           fi
 
-      - name: 🌐 Deploy Preview (Pull Request)
-        if: github.event_name == 'pull_request'
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+      - name: 📦 Install Vercel CLI (latest)
+        run: npm install -g vercel@latest
 
-      - name: 🚀 Deploy Production (main branch)
-        if: github.event_name == 'push'
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
+      - name: 🔗 Pull Vercel project settings
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: 🏗️ Build with Vercel
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: 🚀 Deploy to Vercel Production
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
