@@ -1177,11 +1177,8 @@ function setupGamifiedMarkingSystem() {
       startBtn.className = 'start-coding-btn';
 
       startBtn.innerHTML = `
-
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="margin-right:2px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M4.5 16.5c-1.5 1.25-2.5 3.5-2.5 3.5s2.25-1 3.5-2.5M12 2C6.5 2 2 6.5 2 12c0 2.5 1 4.5 2.5 6l6-6M22 2l-6 6M13.5 10.5L18 6M11.5 12.5L16 8M10 14l-4 4"/></svg>
         Improve score
-
       `;
 
       navControls.insertBefore(startBtn, navControls.firstChild);

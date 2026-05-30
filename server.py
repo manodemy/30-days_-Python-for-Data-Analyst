@@ -372,15 +372,15 @@ def _flush_table(rows, w):
 def build_page(day_num, title, body, secs, cells):
     dd = f'{day_num:02d}'
 
-    prev = '<a href="#" class="nav-icon-btn prev-btn disabled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Prev</a>' if day_num == 1 \
-        else f'<a href="day{day_num-1:02d}.html" class="nav-icon-btn prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Prev</a>'
+    prev = '<a href="#" class="nav-icon-btn prev-btn disabled" aria-label="Previous Day" title="Previous Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>' if day_num == 1 \
+        else f'<a href="day{day_num-1:02d}.html" class="nav-icon-btn prev-btn" aria-label="Previous Day" title="Previous Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>'
     
     if day_num >= 30:
-        nxt = '<a href="index.html" class="nav-icon-btn next-btn finish-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Finish</a>'
+        nxt = '<a href="index.html" class="nav-icon-btn next-btn finish-btn" aria-label="Finish Course" title="Finish Course"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>'
     elif day_num == 2:
-        nxt = f'<a href="day03.html" id="topNextBtn" class="nav-icon-btn next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>'
+        nxt = f'<a href="day03.html" id="topNextBtn" class="nav-icon-btn next-btn" aria-label="Next Day" title="Next Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>'
     else:
-        nxt = f'<a href="day{day_num+1:02d}.html" class="nav-icon-btn next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>'
+        nxt = f'<a href="day{day_num+1:02d}.html" class="nav-icon-btn next-btn" aria-label="Next Day" title="Next Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>'
 
     def replace_next(m):
         nxt_day = f"{day_num+1:02d}"
@@ -509,11 +509,15 @@ def build_page(day_num, title, body, secs, cells):
   </div>
 
   <div class="nav-center has-dropdown">
-    <button class="nav-dropdown-btn" id="dayDropdownBtn">
-      <span class="day-badge">Day {dd}</span>
-      <span class="day-title">{title}</span>
-      <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-    </button>
+    <div class="nav-center-flex">
+      {prev}
+      <button class="nav-dropdown-btn" id="dayDropdownBtn">
+        <span class="day-badge">Day {dd}</span>
+        <span class="day-title">{title}</span>
+        <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+      {nxt}
+    </div>
     <div class="nav-dropdown-menu" id="dayDropdownMenu">
       <div class="dropdown-header">Jump to another day</div>
       <div class="dropdown-scroll">
@@ -525,11 +529,10 @@ def build_page(day_num, title, body, secs, cells):
   <div class="nav-zone--right">
     <!-- App Navigation -->
     <div class="nav-controls">
-      <a href="home.html" class="nav-icon-btn home-btn" title="Back to Dashboard" aria-label="Home">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      <a href="home.html" class="nav-icon-btn scorecard-btn" title="Back to Dashboard" aria-label="Score Card">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+        Score Card
       </a>
-      {prev}
-      {nxt}
     </div>
   </div>
 </nav>

@@ -334,55 +334,111 @@ tbody tr:hover{background:rgba(0,230,246,.03)}
 /* ═══════ NAV CONTAINER EXTENSIONS ═══════ */
 .nav-container { display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; }
 .nav-zone--left, .nav-zone--right { display: flex; align-items: center; gap: 1rem; }
-.nav-controls { display: flex; align-items: center; gap: 0.5rem; }
+.nav-controls { display: flex; align-items: center; gap: 0.75rem; }
 
-/* Custom CSS Order for Nav Controls children */
-.nav-controls .home-btn {
+/* Navigation Center Flex Wrapper (holding chevrons + dropdown) */
+.nav-center-flex {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Stunning Circular Glassmorphic Chevron Buttons flanking dropdown */
+.nav-center-flex .prev-btn,
+.nav-center-flex .next-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+  box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.02), 2px 2px 5px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.nav-center-flex .prev-btn svg,
+.nav-center-flex .next-btn svg {
+  width: 18px;
+  height: 18px;
+  margin: 0 !important;
+  stroke-width: 2.5;
+}
+
+.nav-center-flex .prev-btn:hover:not(.disabled),
+.nav-center-flex .next-btn:hover:not(.disabled) {
+  background: linear-gradient(145deg, rgba(35, 48, 68, 0.85), rgba(18, 27, 48, 0.95));
+  border-color: rgba(0, 230, 246, 0.5);
+  color: var(--cyan);
+  transform: translateY(-1.5px) scale(1.05);
+  box-shadow: 0 0 12px rgba(0, 230, 246, 0.25);
+}
+
+.nav-center-flex .prev-btn:active:not(.disabled),
+.nav-center-flex .next-btn:active:not(.disabled) {
+  transform: translateY(0.5px);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.nav-center-flex .prev-btn.disabled,
+.nav-center-flex .next-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  background: rgba(15, 23, 42, 0.2);
+  border-color: rgba(255, 255, 255, 0.04);
+  color: var(--dim);
+  box-shadow: none;
+  pointer-events: none;
+}
+
+/* Stunning Glassmorphic 'Score Card' Capsule Button (replacing home button) */
+.scorecard-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(0, 230, 246, 0.03));
+  border: 1px solid rgba(0, 230, 246, 0.25);
+  border-radius: 50px;
+  color: var(--cyan);
+  font: 700 0.85rem var(--font-h) !important;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(0, 230, 246, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  height: 38px; /* Perfectly aligned to chevrons and start-coding-btn height */
+}
+
+.scorecard-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.5;
+}
+
+.scorecard-btn:hover {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(0, 230, 246, 0.08));
+  border-color: rgba(0, 230, 246, 0.6);
+  color: #fff !important;
+  transform: translateY(-1.5px) scale(1.02);
+  box-shadow: 0 0 15px rgba(0, 230, 246, 0.25);
+}
+
+.scorecard-btn:active {
+  transform: translateY(0.5px);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Ensure equal height and seamless layout order inside right nav zone controls */
+.nav-controls .scorecard-btn {
   order: 1 !important;
 }
 .nav-controls .start-coding-btn,
 .nav-controls #navCountdownTimer {
   order: 2 !important;
-}
-.nav-controls .my-score-card-btn {
-  order: 3 !important;
-}
-
-/* My Score Card button hover styles */
-.my-score-card-btn {
-  transition: all 0.3s ease !important;
-}
-.my-score-card-btn:hover {
-  background: rgba(0, 230, 246, 0.15) !important;
-  border-color: rgba(0, 230, 246, 0.45) !important;
-  transform: translateY(-1px) scale(1.02) !important;
-  box-shadow: 0 0 15px rgba(0, 230, 246, 0.25) !important;
-}
-
-/* Neat and well-designed prev and next arrow buttons styling */
-.nav-arrow-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--ink-dim);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.nav-arrow-btn:hover:not(.disabled) {
-  background: rgba(0, 230, 246, 0.08) !important;
-  border-color: rgba(0, 230, 246, 0.35) !important;
-  color: var(--cyan) !important;
-  transform: scale(1.08);
-  box-shadow: 0 0 15px rgba(0, 230, 246, 0.25);
-}
-.nav-arrow-btn.disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  pointer-events: none;
 }
 
 /* ═══════ AVATAR & PROFILE ═══════ */
