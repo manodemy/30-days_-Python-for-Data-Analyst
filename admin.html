@@ -17,7 +17,7 @@
   <link rel="dns-prefetch" href="https://erqoyvbuhmkyvcqgwcbz.supabase.co">
   
   <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&amp;family=DM+Mono:wght@300;400;500&amp;family=DM+Sans:wght@300;400;500;600&amp;family=Cinzel:wght@400;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=EB+Garamond:ital,wght@0,400;1,400&amp;family=Inter:wght@300;400;500;600&amp;display=swap"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;family=DM+Mono:wght@300;400;500&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap"
     rel="stylesheet" media="print" onload="this.media='all'" />
   <style>
     /* ─────────────────────────────────────────────
@@ -3664,10 +3664,10 @@
      JAVASCRIPT — ALL LOGIC PRESERVED
 ════════════════════════════════════════ -->
   <!-- External JS Dependencies (Moved from head for PageSpeed optimisation) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="supabase.js"></script>
-  <script src="chart.js"></script>
+  <script defer src="chart.js"></script>
 
   <script>
     const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
@@ -5484,13 +5484,14 @@
 
     });
 
-    // ── INIT ─────────────────────────────────────────
-    (async function init() {
-      if (!(await guardAdmin())) return;
-      setPresetDates('all_time');
-      applyFilters();
-      loadPricingData();
-    })();
+    window.addEventListener('load', () => {
+      (async function init() {
+        if (!(await guardAdmin())) return;
+        setPresetDates('all_time');
+        applyFilters();
+        loadPricingData();
+      })();
+    });
   </script>
   <!-- ═══════════ ADMIN PREVIEW CERTIFICATE MODAL ═══════════ -->
   <div id="certificate-modal" class="modal-backdrop hidden cert-modal-backdrop">
