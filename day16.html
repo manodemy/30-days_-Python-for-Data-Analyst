@@ -73,6 +73,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 <link rel="stylesheet" href="notebook.css">
+<!-- PWA Web App Manifest and Mobile Capabilities -->
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#060913">
 </head>
 <body>
 <!-- Paywall Preload Screen -->
@@ -746,5 +751,15 @@ print(f&quot;{c.color} cat {c.name}: {c.speak()}&quot;)</textarea>
 <script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
+<!-- PWA Service Worker Registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('[Service Worker] Registered scope:', reg.scope))
+        .catch(err => console.error('[Service Worker] Registration failed:', err));
+    });
+  }
+</script>
 </body>
 </html>

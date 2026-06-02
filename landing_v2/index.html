@@ -7,6 +7,11 @@
   <meta charset="UTF-8">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- PWA Manifest & iOS Standalone Meta -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#060913">
 
   <title>30-Day Python for Data Analyst Course &mdash; Manodemy</title>
 
@@ -2509,6 +2514,16 @@
 
   <script src="app.js?v=3.1"></script>
 
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('[Service Worker] Registered Landing PWA scope:', reg.scope))
+          .catch(err => console.error('[Service Worker] Landing registration failed:', err));
+      });
+    }
+  </script>
 </body>
 
 </html>
