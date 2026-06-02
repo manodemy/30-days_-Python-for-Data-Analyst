@@ -611,6 +611,11 @@ button {
   text-shadow: 0 0 30px rgba(255, 174, 0, 0.15);
 }
 
+.hero-nowrap {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .hero-sub {
   font-size: 17px;
   color: var(--ink-dim);
@@ -5284,18 +5289,30 @@ button {
     gap: 2.5rem !important;
     padding: 2rem var(--mobile-pad) !important;
   }
+  .desktop-only {
+    display: none !important;
+  }
+  .hero-nowrap {
+    white-space: normal !important;
+  }
   .hero h1 {
-    font-size: clamp(28px, 7vw, 42px) !important;
+    font-size: clamp(24px, 6.5vw, 36px) !important;
     text-align: center !important;
     line-height: 1.15 !important;
+    width: 100% !important;
   }
   .hero-left {
     text-align: center !important;
     align-items: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   .hero-sub {
     text-align: center !important;
-    font-size: 15px !important;
+    font-size: 14.5px !important;
+    line-height: 1.6 !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   .hero-proof {
     justify-content: center !important;
