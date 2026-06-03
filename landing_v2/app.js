@@ -1956,10 +1956,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateCTAsForPaidUser() {
 
-    // 1. Update standard buy buttons elsewhere
     document.querySelectorAll('[data-cta="buy"]').forEach(btn => {
       if (!btn.closest('.hero-ctas') && !btn.closest('.premium-hero-ctas')) {
-        btn.textContent = 'Continue Learning →';
+        if (btn.classList.contains('btn-nav-buy')) {
+          btn.textContent = 'Continue →';
+        } else {
+          btn.textContent = 'Continue Learning →';
+        }
         btn.href = '../home.html';
         btn.onclick = null;
       }
