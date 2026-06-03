@@ -5274,22 +5274,72 @@ button {
    MOBILE-FIRST & RESPONSIVE PRODUCTION OVERRIDES (WCAG 2.1 AA compliant)
    ========================================================================== */
 
+/* ── Task 1: Navigation — Compact sticky bar with visible auth buttons ── */
 @media (max-width: 768px) {
-  /* Navigation adjustments */
   .nav {
     height: 56px !important;
-    padding: 0 16px !important;
+    padding: 0 12px !important;
+  }
+  .nav .container {
+    gap: 6px !important;
   }
   .nav-brand-name {
-    font-size: 18px !important;
+    font-size: 17px !important;
   }
-  .mobile-overlay .btn-nav-buy {
-    width: 100% !important;
-    text-align: center;
-    padding: 12px !important;
+  .nav-brand-sub {
+    display: none !important;
+  }
+  .nav-links {
+    display: none !important;
   }
 
-  /* Hero Section Grid Adjustments */
+  /* Show auth buttons on mobile in a compact horizontal row */
+  .nav-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    flex-shrink: 0 !important;
+  }
+  .btn-ghost {
+    font-size: 11px !important;
+    padding: 5px 9px !important;
+    white-space: nowrap !important;
+    min-height: unset !important;
+    height: 30px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    border-radius: 6px !important;
+  }
+  .btn-nav-buy {
+    font-size: 10.5px !important;
+    padding: 5px 10px !important;
+    white-space: nowrap !important;
+    min-height: unset !important;
+    height: 30px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    border-radius: 20px !important;
+  }
+  .hamburger {
+    width: 36px !important;
+    height: 36px !important;
+    flex-shrink: 0 !important;
+    min-height: unset !important;
+  }
+  .hamburger span {
+    width: 16px !important;
+  }
+  .mobile-overlay .btn-nav-buy {
+    width: 80% !important;
+    text-align: center !important;
+    padding: 12px !important;
+    height: auto !important;
+    font-size: 16px !important;
+    border-radius: 50px !important;
+    min-height: unset !important;
+  }
+
+  /* ── Hero Section ── */
   .hero .container {
     grid-template-columns: 1fr !important;
     gap: 2.5rem !important;
@@ -5320,6 +5370,9 @@ button {
     width: 100% !important;
     max-width: 100% !important;
   }
+  .hero-badge {
+    align-self: center !important;
+  }
   .hero-proof {
     justify-content: center !important;
     font-size: 11px !important;
@@ -5334,34 +5387,64 @@ button {
     height: 54px !important;
     font-size: 14.5px !important;
     display: flex !important;
-    align-items: center;
-    justify-content: center;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: unset !important;
   }
   .terminal {
     width: 100% !important;
     max-width: 100% !important;
   }
 
-  /* Steps Section - Horizontal Swipe Carousel */
-  .steps-grid {
+  /* ── Task 5: Step Cards — Fix selector bug + Horizontal Swipe Carousel ── */
+  .how-steps {
     display: flex !important;
+    flex-direction: row !important;
     overflow-x: auto !important;
     scroll-snap-type: x mandatory !important;
-    gap: 16px !important;
+    gap: 14px !important;
     padding: 0 var(--mobile-pad) 20px !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
+    align-items: stretch !important;
   }
-  .steps-grid::-webkit-scrollbar {
+  .how-steps::-webkit-scrollbar {
     display: none !important;
   }
-  .step-card {
-    flex-shrink: 0 !important;
-    width: 280px !important;
+  .how-step {
+    flex: 0 0 270px !important;
+    width: 270px !important;
+    min-width: 270px !important;
     scroll-snap-align: start !important;
   }
+  /* Keep connector dots horizontal between cards during carousel swipe */
+  .how-connector {
+    flex: 0 0 28px !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    height: auto !important;
+    align-self: center !important;
+    padding-top: 0 !important;
+  }
+  .how-connector--cyan-purple::before,
+  .how-connector--purple-emerald::before {
+    top: 50% !important;
+    bottom: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 2px !important;
+    transform: translateY(-50%) !important;
+    display: block !important;
+  }
+  .how-connector--cyan-purple::before {
+    background: linear-gradient(90deg, rgba(0, 230, 246, 0.4) 0%, rgba(168, 85, 247, 0.4) 100%) !important;
+  }
+  .how-connector--purple-emerald::before {
+    background: linear-gradient(90deg, rgba(168, 85, 247, 0.4) 0%, rgba(16, 185, 129, 0.4) 100%) !important;
+  }
 
-  /* Student Reviews Carousel */
+  /* ── Student Reviews Carousel ── */
   .reviews-dashboard {
     display: flex !important;
     overflow-x: auto !important;
@@ -5379,14 +5462,14 @@ button {
     scroll-snap-align: start !important;
   }
 
-  /* Footer stack */
+  /* ── Footer stack ── */
   .footer-grid {
     grid-template-columns: 1fr !important;
     text-align: center !important;
     gap: 2rem !important;
   }
 
-  /* Comparison Feature Table replacement on mobile */
+  /* ── Comparison Feature Table replacement on mobile ── */
   .comparison-tab-switcher {
     display: flex !important;
     background: var(--elevated);
@@ -5441,8 +5524,155 @@ button {
   }
 }
 
+/* ==========================================================================
+   SMALL SCREEN OVERRIDES (≤ 576px) — Social proof strip + misc polish
+   ========================================================================== */
+
+@media (max-width: 576px) {
+
+  /* ── Task 2: Social Proof Strip — Force horizontal 4-column layout ── */
+  .proof-strip .container {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0 !important;
+  }
+  .proof-stat {
+    padding: 10px 4px !important;
+    border-right: 1px solid var(--rim) !important;
+    border-bottom: none !important;
+  }
+  .proof-stat:last-child {
+    border-right: none !important;
+    border-bottom: none !important;
+  }
+  .proof-stat:nth-child(odd) {
+    border-right: 1px solid var(--rim) !important;
+  }
+  .proof-stat:nth-child(n+3) {
+    border-bottom: none !important;
+  }
+  .proof-num {
+    font-size: 18px !important;
+    text-shadow: 0 0 12px var(--cyan-glow) !important;
+    display: block !important;
+  }
+  .proof-label {
+    font-size: 7.5px !important;
+    letter-spacing: 0.04em !important;
+    line-height: 1.2 !important;
+    margin-top: 2px !important;
+    display: block !important;
+    word-break: break-word !important;
+  }
+
+  /* ── Task 3: Bullet checklist — Emerald theme + top alignment ── */
+  .bullet-icon-wrapper {
+    background: rgba(0, 230, 168, 0.12) !important;
+    border-color: rgba(0, 230, 168, 0.3) !important;
+    color: #00e6a8 !important;
+    margin-top: 3px !important;
+    flex-shrink: 0 !important;
+  }
+  .preview-list li:hover .bullet-icon-wrapper {
+    background: #00e6a8 !important;
+    color: var(--base) !important;
+    box-shadow: 0 0 12px rgba(0, 230, 168, 0.5) !important;
+  }
+
+  /* ── Task 4: Day 01 Mock Code Cell — compact for small screens ── */
+  .mock-notebook-cell {
+    font-size: 10.5px !important;
+    padding: 8px 10px !important;
+  }
+  .line-no,
+  .output-no {
+    min-width: 36px !important;
+    font-size: 10px !important;
+    padding-right: 8px !important;
+  }
+  .cell-line {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+
+  /* ── Terminal stat badges — compact wrap row ── */
+  .terminal-stats {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    align-items: center !important;
+  }
+  .stat-badge {
+    font-size: 10.5px !important;
+    padding: 6px 10px !important;
+    justify-content: flex-start !important;
+  }
+
+  /* ── Hero proof cards — compact 3-col row ── */
+  .hero-right .hero-proof {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+  }
+  .proof-card {
+    flex-direction: column !important;
+    padding: 10px 8px !important;
+    gap: 6px !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .proof-card span {
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+  }
+  .proof-icon {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* ── Task 6: Curriculum grid — compact 2-col day cards ── */
+  .curriculum-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .day-card {
+    padding: 16px 10px !important;
+    border-radius: 12px !important;
+  }
+  .day-emoji {
+    font-size: 22px !important;
+  }
+  .day-title {
+    font-size: 11.5px !important;
+    line-height: 1.4 !important;
+  }
+  .day-num {
+    font-size: 9px !important;
+  }
+  .day-badge {
+    font-size: 8px !important;
+    padding: 3px 7px !important;
+    top: 7px !important;
+    right: 7px !important;
+  }
+
+  /* ── Preview card — comfortable mobile padding ── */
+  .preview-card {
+    padding: 1.5rem 1.25rem !important;
+    border-radius: 18px !important;
+  }
+  .preview-card h3 {
+    font-size: 17px !important;
+  }
+  .btn-gold--filled.preview-cta {
+    font-size: 14px !important;
+    height: 52px !important;
+  }
+}
+
+/* ── 480px ── */
 @media (max-width: 480px) {
-  /* Social proof / stats column stacking */
+  /* Stats column stacking */
   .stats-bar {
     flex-wrap: wrap !important;
     justify-content: center !important;
@@ -5453,12 +5683,12 @@ button {
     text-align: center !important;
   }
 
-  /* Curriculum accordions and items */
+  /* Curriculum accordions */
   .phase-body {
     grid-template-columns: 1fr !important;
   }
 
-  /* Auth Modals compressed padding */
+  /* Auth Modals */
   .auth-modal-overlay {
     padding: 12px !important;
   }
@@ -5467,9 +5697,35 @@ button {
   }
 }
 
-/* 44x44px Tap targets enforcement */
+/* ── Extra Small (≤ 380px) — Ultra-compact overrides ── */
+@media (max-width: 380px) {
+  .nav-brand-name {
+    font-size: 15px !important;
+  }
+  .btn-ghost {
+    font-size: 9.5px !important;
+    padding: 4px 7px !important;
+  }
+  .btn-nav-buy {
+    font-size: 9.5px !important;
+    padding: 4px 8px !important;
+  }
+  .proof-label {
+    font-size: 6.5px !important;
+  }
+  .proof-num {
+    font-size: 15px !important;
+  }
+}
+
+/* 44×44px Tap targets enforcement */
 button, a, input, select, .accordion-header {
   min-height: 44px;
+}
+/* Compact nav buttons are explicitly exempt from tap target rule */
+.btn-ghost,
+.btn-nav-buy {
+  min-height: unset !important;
 }
 
 /* Reduced Motion Queries */
