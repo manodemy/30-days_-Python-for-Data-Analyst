@@ -5278,14 +5278,39 @@ button {
 /* ── Task 1: Navigation — Compact sticky bar with visible auth buttons ── */
 @media (max-width: 768px) {
   .nav {
-    height: 56px !important;
-    padding: 0 12px !important;
+    top: 10px !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: calc(100% - 20px) !important;
+    height: 58px !important;
+    border-radius: 50px !important;
+    background: rgba(11, 15, 25, 0.8) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 230, 246, 0.08) !important;
+    padding: 0 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .nav--scrolled {
+    background: rgba(7, 10, 19, 0.92) !important;
+    border-color: rgba(0, 230, 246, 0.2) !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 230, 246, 0.15) !important;
   }
   .nav .container {
-    gap: 6px !important;
+    gap: 8px !important;
+    width: 100% !important;
+    padding: 0 !important;
   }
   .nav-brand-name {
-    font-size: 17px !important;
+    font-size: 16px !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.02em !important;
+  }
+  .nav-brand-name span {
+    color: var(--cyan) !important;
   }
   .nav-brand-sub {
     display: none !important;
@@ -5298,37 +5323,74 @@ button {
   .nav-right {
     display: flex !important;
     align-items: center !important;
-    gap: 5px !important;
+    gap: 6px !important;
     flex-shrink: 0 !important;
+    margin-left: auto !important;
   }
   .btn-ghost {
-    font-size: 11px !important;
-    padding: 5px 9px !important;
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    padding: 5px 12px !important;
     white-space: nowrap !important;
     min-height: unset !important;
-    height: 30px !important;
+    height: 32px !important;
     display: inline-flex !important;
     align-items: center !important;
-    border-radius: 6px !important;
+    justify-content: center !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 50px !important;
+    max-width: 95px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
   }
   .btn-nav-buy {
     font-size: 10.5px !important;
-    padding: 5px 10px !important;
+    font-weight: 800 !important;
+    padding: 5px 14px !important;
     white-space: nowrap !important;
     min-height: unset !important;
-    height: 30px !important;
+    height: 32px !important;
     display: inline-flex !important;
     align-items: center !important;
-    border-radius: 20px !important;
+    justify-content: center !important;
+    background: linear-gradient(135deg, var(--cyan) 0%, #0077f6 100%) !important;
+    color: #fff !important;
+    border-radius: 50px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-bottom: 1.5px solid rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(0, 230, 246, 0.2) !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .btn-nav-buy:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 16px rgba(0, 230, 246, 0.4) !important;
   }
   .hamburger {
     width: 36px !important;
     height: 36px !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     flex-shrink: 0 !important;
+    padding: 0 !important;
+    gap: 4px !important;
     min-height: unset !important;
   }
   .hamburger span {
-    width: 16px !important;
+    width: 14px !important;
+    height: 1.5px !important;
+    background: #fff !important;
   }
   .mobile-overlay .btn-nav-buy {
     width: 80% !important;
@@ -5742,16 +5804,35 @@ button {
 
 /* ── Extra Small (≤ 380px) — Ultra-compact overrides ── */
 @media (max-width: 380px) {
+  .nav {
+    left: 8px !important;
+    right: 8px !important;
+    width: calc(100% - 16px) !important;
+    padding: 0 10px !important;
+  }
   .nav-brand-name {
-    font-size: 15px !important;
+    font-size: 14px !important;
+  }
+  .nav-right {
+    gap: 4px !important;
   }
   .btn-ghost {
     font-size: 9.5px !important;
-    padding: 4px 7px !important;
+    padding: 4px 8px !important;
+    max-width: 75px !important;
+    height: 28px !important;
   }
   .btn-nav-buy {
     font-size: 9.5px !important;
-    padding: 4px 8px !important;
+    padding: 4px 9px !important;
+    height: 28px !important;
+  }
+  .hamburger {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .hamburger span {
+    width: 12px !important;
   }
   .proof-label {
     font-size: 6.5px !important;
