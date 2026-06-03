@@ -609,42 +609,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // Update comparison table costs dynamically
-
-    const compCostMano = document.getElementById('compare-cost-mano');
-
-    const compCostVideo = document.getElementById('compare-cost-video');
-
-    const compCostSub = document.getElementById('compare-cost-sub');
-
-    const compCostBootcamp = document.getElementById('compare-cost-bootcamp');
-
-
-
-    if (userCountry === 'IN') {
-
-      if (compCostMano) compCostMano.innerHTML = '&#x20B9;1,499 (One-Time)';
-
-      if (compCostVideo) compCostVideo.innerHTML = '&#x20B9;800 - &#x20B9;16,000';
-
-      if (compCostSub) compCostSub.innerHTML = '&#x20B9;13,500 - &#x20B9;40,000 / Year';
-
-      if (compCostBootcamp) compCostBootcamp.innerHTML = '&#x20B9;4,00,000 - &#x20B9;13,00,000 Upfront';
-
-    } else {
-
-      if (compCostMano) compCostMano.innerHTML = '$19 (One-Time)';
-
-      if (compCostVideo) compCostVideo.innerHTML = '$10 - $200';
-
-      if (compCostSub) compCostSub.innerHTML = '$168 - $504 / Year';
-
-      if (compCostBootcamp) compCostBootcamp.innerHTML = '$5,000 - $16,450 Upfront';
-
-    }
-
-
-
     document.querySelectorAll('[data-cta="buy"], .btn-nav-buy, .sticky-buy').forEach(btn => {
 
       btn.innerHTML = btn.innerHTML
