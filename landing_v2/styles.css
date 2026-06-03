@@ -5583,55 +5583,110 @@ button {
   /* ── Comparison Feature Table replacement on mobile ── */
   .comparison-tab-switcher {
     display: flex !important;
-    background: var(--elevated);
-    padding: 4px;
-    border-radius: 50px;
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--rim);
-    width: 100%;
+    background: rgba(18, 24, 38, 0.75) !important;
+    padding: 6px !important;
+    border-radius: 12px !important;
+    margin-bottom: 1.5rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    width: 100% !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
   }
   .comparison-tab-pill {
-    flex: 1;
-    text-align: center;
-    padding: 8px 12px;
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: var(--transition);
-    color: var(--ink-dim);
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 44px !important;
+    line-height: 1.15 !important;
+    text-align: center !important;
+    padding: 6px 8px !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 250ms var(--ease) !important;
+    color: var(--ink-dim) !important;
   }
   .comparison-tab-pill.active {
-    background: var(--cyan);
-    color: var(--void);
-    box-shadow: 0 4px 12px var(--cyan-glow);
+    background: linear-gradient(135deg, var(--cyan) 0%, #0077f6 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 230, 246, 0.3) !important;
   }
-  .mobile-feature-list {
-    display: none;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
+
+  /* Mobile table styling and dynamic column switching */
+  .compare-wrap {
+    width: 100% !important;
+    overflow-x: hidden !important;
   }
-  .mobile-feature-list.active {
-    display: flex;
+  .compare table {
+    min-width: unset !important;
+    width: 100% !important;
+    table-layout: fixed !important;
   }
-  .mobile-feature-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    background: var(--surface);
-    border-radius: 10px;
-    border: 1px solid var(--rim);
+  .compare th,
+  .compare td {
+    padding: 12px 8px !important;
+    font-size: 13px !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
-  .mobile-feature-name {
-    font-size: 14px;
-    color: var(--ink);
+  .compare th:first-child,
+  .compare td:first-child {
+    width: 42% !important;
   }
-  .mobile-feature-val {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--cyan);
+  
+  /* Hide all comparison columns by default on mobile */
+  .compare th:nth-child(2),
+  .compare td:nth-child(2),
+  .compare th:nth-child(3),
+  .compare td:nth-child(3),
+  .compare th:nth-child(4),
+  .compare td:nth-child(4),
+  .compare th:nth-child(5),
+  .compare td:nth-child(5) {
+    display: none !important;
+    width: 58% !important;
+  }
+
+  /* Show the active column based on active tab attribute */
+  .compare-wrap[data-active-tab="comp-mano"] th:nth-child(2),
+  .compare-wrap[data-active-tab="comp-mano"] td:nth-child(2) {
+    display: table-cell !important;
+  }
+  .compare-wrap[data-active-tab="comp-traditional"] th:nth-child(3),
+  .compare-wrap[data-active-tab="comp-traditional"] td:nth-child(3) {
+    display: table-cell !important;
+  }
+  .compare-wrap[data-active-tab="comp-sub"] th:nth-child(4),
+  .compare-wrap[data-active-tab="comp-sub"] td:nth-child(4) {
+    display: table-cell !important;
+  }
+  .compare-wrap[data-active-tab="comp-bootcamp"] th:nth-child(5),
+  .compare-wrap[data-active-tab="comp-bootcamp"] td:nth-child(5) {
+    display: table-cell !important;
+  }
+
+  .compare-status {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+    font-size: 12px !important;
+  }
+  .compare-badge {
+    flex-shrink: 0 !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin-top: 2px !important;
+  }
+  .compare-svg {
+    width: 10px !important;
+    height: 10px !important;
+  }
+  .compare-price-mano,
+  [id^="compare-cost-"] {
+    font-size: 13px !important;
   }
 }
 

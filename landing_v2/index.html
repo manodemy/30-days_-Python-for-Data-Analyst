@@ -59,7 +59,7 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=4.1">
+  <link rel="stylesheet" href="styles.css?v=4.2">
 
   
 
@@ -1263,113 +1263,7 @@
           <div class="comparison-tab-pill" onclick="switchComparisonTab('comp-bootcamp')">Bootcamps</div>
         </div>
 
-        <!-- Mobile Feature lists -->
-        <div class="mobile-feature-list active" id="comp-mano">
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Learning Method</span>
-            <span class="mobile-feature-val">Write & Run Code in Browser</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Setup Required</span>
-            <span class="mobile-feature-val">Zero Installation</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Daily Structure</span>
-            <span class="mobile-feature-val">Clean 30-Day Progression</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Practice Challenges</span>
-            <span class="mobile-feature-val">750+ Challenges</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Video Bloat</span>
-            <span class="mobile-feature-val">Zero — 100% Active</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Cost</span>
-            <span class="mobile-feature-val">$19 (One-Time)</span>
-          </div>
-        </div>
-        <div class="mobile-feature-list" id="comp-traditional">
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Learning Method</span>
-            <span class="mobile-feature-val">Passive Video Watching</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Setup Required</span>
-            <span class="mobile-feature-val">Install IDE & libraries</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Daily Structure</span>
-            <span class="mobile-feature-val">Unending Playlists (40-80 hrs)</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Practice Challenges</span>
-            <span class="mobile-feature-val">0-20 Basic Quizzes</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Video Bloat</span>
-            <span class="mobile-feature-val">40-80 Hours of Video</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Cost</span>
-            <span class="mobile-feature-val">$10 - $200</span>
-          </div>
-        </div>
-        <div class="mobile-feature-list" id="comp-sub">
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Learning Method</span>
-            <span class="mobile-feature-val">Short Exercises Between Videos</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Setup Required</span>
-            <span class="mobile-feature-val">Browser-Based</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Daily Structure</span>
-            <span class="mobile-feature-val">Self-Paced, No Deadline</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Practice Challenges</span>
-            <span class="mobile-feature-val">200-350 Small Exercises</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Video Bloat</span>
-            <span class="mobile-feature-val">Mix of Video + Exercises</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Cost</span>
-            <span class="mobile-feature-val">$168 - $504 / Year</span>
-          </div>
-        </div>
-        <div class="mobile-feature-list" id="comp-bootcamp">
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Learning Method</span>
-            <span class="mobile-feature-val">Project Assignments</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Setup Required</span>
-            <span class="mobile-feature-val">Local CLI + Docker Setup</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Daily Structure</span>
-            <span class="mobile-feature-val">Rigid Fixed Schedule</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Practice Challenges</span>
-            <span class="mobile-feature-val">5-10 Capstone Projects</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Video Bloat</span>
-            <span class="mobile-feature-val">Live Lectures (15-20 hrs/w)</span>
-          </div>
-          <div class="mobile-feature-row">
-            <span class="mobile-feature-name">Cost</span>
-            <span class="mobile-feature-val">$5,000 - $16,450 Upfront</span>
-          </div>
-        </div>
-
-        <div class="compare-wrap reveal">
+        <div class="compare-wrap reveal" data-active-tab="comp-mano">
 
           <table>
             <thead>
@@ -2486,13 +2380,12 @@
       document.querySelectorAll('.comparison-tab-pill').forEach(pill => {
         pill.classList.remove('active');
       });
-      document.querySelectorAll('.mobile-feature-list').forEach(list => {
-        list.classList.remove('active');
-      });
       const activePill = Array.from(document.querySelectorAll('.comparison-tab-pill')).find(p => p.getAttribute('onclick').includes(tabId));
       if (activePill) activePill.classList.add('active');
-      const activeList = document.getElementById(tabId);
-      if (activeList) activeList.classList.add('active');
+      const compareWrap = document.querySelector('.compare-wrap');
+      if (compareWrap) {
+        compareWrap.setAttribute('data-active-tab', tabId);
+      }
     }
 
   </script>
