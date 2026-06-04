@@ -67,7 +67,7 @@
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,700&family=Caveat:wght@400;700&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=4.7">
+  <link rel="stylesheet" href="styles.css?v=4.8">
 
 
 
@@ -1858,6 +1858,18 @@
 
             <div class="rev-count-sub">Based on 2,400+ reviews</div>
 
+            <button class="btn-write-review">
+
+              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.83 17.017a4.5 4.5 0 01-1.897 1.13L3 19l.85-2.933a4.5 4.5 0 011.13-1.897l8.932-8.932zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10">
+                </path>
+              </svg>
+
+              <span>Write a <br class="mobile-only-br">Review</span>
+
+            </button>
+
           </div>
 
 
@@ -1935,26 +1947,6 @@
               <span class="rev-dist-pct">0%</span>
 
             </div>
-
-          </div>
-
-
-
-          <!-- Write a Review CTA -->
-
-          <div class="rev-trust-col">
-
-            <button class="btn-write-review">
-
-              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.83 17.017a4.5 4.5 0 01-1.897 1.13L3 19l.85-2.933a4.5 4.5 0 011.13-1.897l8.932-8.932zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10">
-                </path>
-              </svg>
-
-              <span>Write a Review</span>
-
-            </button>
 
           </div>
 
@@ -2713,17 +2705,18 @@
           clearTimeout(scrollTimeout);
           scrollTimeout = setTimeout(() => {
             const scrollLeft = compareWrap.scrollLeft;
+            const maxScrollLeft = compareWrap.scrollWidth - compareWrap.clientWidth;
             let activeTab = 'comp-mano';
             
-            // Map scroll ranges to columns (using midpoints)
-            if (scrollLeft < 100) {
+            // Map scroll ranges to columns (using midpoints and max scroll detection)
+            if (scrollLeft >= maxScrollLeft - 15) {
+              activeTab = 'comp-bootcamp';
+            } else if (scrollLeft < 100) {
               activeTab = 'comp-mano';
             } else if (scrollLeft >= 100 && scrollLeft < 290) {
               activeTab = 'comp-traditional';
-            } else if (scrollLeft >= 290 && scrollLeft < 470) {
-              activeTab = 'comp-sub';
             } else {
-              activeTab = 'comp-bootcamp';
+              activeTab = 'comp-sub';
             }
             
             compareWrap.setAttribute('data-active-tab', activeTab);

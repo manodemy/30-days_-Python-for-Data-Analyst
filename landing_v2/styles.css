@@ -3226,7 +3226,7 @@ button {
 /* Overall Statistics Panel */
 .reviews-dashboard {
   display: grid;
-  grid-template-columns: 1.2fr 2fr 1.5fr;
+  grid-template-columns: 1.4fr 2fr;
   gap: 2.5rem;
   background: linear-gradient(135deg, rgba(18, 24, 38, 0.4) 0%, rgba(11, 15, 25, 0.6) 100%);
   backdrop-filter: blur(16px);
@@ -3410,18 +3410,8 @@ button {
   color: #fff;
 }
 
-/* Trust Metrics Pillar / Write a Review CTA Container */
-.rev-trust-col {
-  border-left: 1px solid rgba(255, 255, 255, 0.06);
-  padding-left: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
-
-.rev-trust-col .btn-write-review {
+/* Trust Metrics Pillar / Write a Review CTA Button */
+.rev-score-col .btn-write-review {
   height: 52px;
   padding: 0 2rem;
   font-size: 15px;
@@ -3436,16 +3426,17 @@ button {
   font-weight: 700;
   cursor: pointer;
   transition: all 300ms var(--ease);
+  margin-top: 1.25rem;
 }
 
-.rev-trust-col .btn-write-review svg {
+.rev-score-col .btn-write-review svg {
   width: 18px;
   height: 18px;
   color: var(--cyan);
   transition: transform 300ms var(--ease);
 }
 
-.rev-trust-col .btn-write-review:hover {
+.rev-score-col .btn-write-review:hover {
   background: linear-gradient(135deg, rgba(0, 230, 246, 0.22) 0%, rgba(0, 119, 246, 0.12) 100%);
   border-color: var(--cyan);
   box-shadow: 0 8px 30px rgba(0, 230, 246, 0.25), 0 0 15px rgba(0, 230, 246, 0.1);
@@ -3453,7 +3444,7 @@ button {
   color: #fff;
 }
 
-.rev-trust-col .btn-write-review:hover svg {
+.rev-score-col .btn-write-review:hover svg {
   transform: rotate(15deg) scale(1.1);
 }
 /* ─────────────────────────────────────────────────────────────
@@ -4271,27 +4262,16 @@ button {
    ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 992px) {
   .reviews-dashboard {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1.2fr 2fr;
     gap: 1.5rem;
     padding: 1.75rem;
   }
 
   .rev-score-col {
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    padding-right: 0;
-    padding-bottom: 1.5rem;
-  }
-
-  .rev-trust-col {
-    border-left: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    padding-left: 0;
-    padding-top: 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: none;
+    padding-right: 1.5rem;
+    padding-bottom: 0;
   }
 }
 
@@ -5568,15 +5548,70 @@ button {
 
   /* ── Student Reviews Carousel ── */
   .reviews-dashboard {
-    display: flex !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
-    gap: 16px !important;
-    padding: 0 var(--mobile-pad) 20px !important;
-    scrollbar-width: none !important;
+    display: grid !important;
+    grid-template-columns: 1.15fr 1fr !important;
+    gap: 12px !important;
+    padding: 1.25rem !important;
+    background: linear-gradient(135deg, rgba(18, 24, 38, 0.4) 0%, rgba(11, 15, 25, 0.6) 100%) !important;
+    border-radius: 16px !important;
+    margin-bottom: 2rem !important;
+    overflow: hidden !important;
+    align-items: center !important;
   }
-  .reviews-dashboard::-webkit-scrollbar {
+  .rev-score-col {
+    border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-bottom: none !important;
+    padding-right: 12px !important;
+    padding-bottom: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .rev-score-col .btn-write-review {
+    width: 100% !important;
+    max-width: 135px !important;
+    padding: 6px 10px !important;
+    height: auto !important;
+    min-height: 44px !important;
+    font-size: 12px !important;
+    border-radius: 22px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    margin-top: 12px !important;
+    box-sizing: border-box !important;
+  }
+  .rev-score-col .btn-write-review svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  .rev-score-col .btn-write-review span {
+    display: block !important;
+    line-height: 1.2 !important;
+    text-align: left !important;
+    font-size: 11px !important;
+  }
+  .rev-distribution-col {
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .rev-dist-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 0 !important;
+  }
+  .rev-dist-track {
     display: none !important;
+  }
+  .rev-dist-pct {
+    min-width: unset !important;
+    color: var(--ink-dim) !important;
+    text-align: right !important;
   }
   .review-card {
     flex-shrink: 0 !important;
