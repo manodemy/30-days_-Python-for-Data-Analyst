@@ -1731,47 +1731,54 @@ body.modal-open nav {
     background: rgba(255, 255, 255, 0.02) !important;
     border: 1px solid rgba(255, 255, 255, 0.05) !important;
     border-radius: 6px !important;
-    padding: 3px 8px !important;
+    padding: 2px 6px !important;
     height: 32px !important;
     box-sizing: border-box !important;
     gap: 0 !important;
     box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.02) !important;
+    min-width: 82px !important;
   }
 
   .score-grid {
     display: flex !important;
-    flex-direction: row !important;
-    gap: 6px !important;
-    align-items: center !important;
+    flex-direction: column !important;
+    gap: 0px !important;
+    align-items: stretch !important;
     margin: 0 !important;
     padding: 0 !important;
     background: none !important;
     border: none !important;
     box-shadow: none !important;
+    width: 100% !important;
   }
 
   .score-col {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
+    justify-content: space-between !important;
     gap: 4px !important;
     margin: 0 !important;
     padding: 0 !important;
+    width: 100% !important;
+    line-height: 1.1 !important;
   }
 
   .score-label {
     color: #64748B !important; /* var(--muted) */
-    font-size: 0.65rem !important;
-    font-weight: 500 !important;
+    font-size: 0.55rem !important;
+    font-weight: 600 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.02em !important;
+    line-height: 1.1 !important;
   }
 
   .score-val {
     color: #F8FAFC !important;
-    font-size: 0.72rem !important;
+    font-size: 0.62rem !important;
     font-weight: 700 !important;
     font-family: 'JetBrains Mono', monospace !important;
+    line-height: 1.1 !important;
   }
 
   .score-highlight {
@@ -1785,12 +1792,7 @@ body.modal-open nav {
   }
 
   .score-divider {
-    width: 1px !important;
-    height: 12px !important;
-    background: rgba(255, 255, 255, 0.1) !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: block !important;
+    display: none !important;
   }
 
   .score-track {
@@ -1914,19 +1916,15 @@ body.modal-open nav {
 
 /* --- Narrow phone (<= 380px) tweaks for top-bar row-1 overflow --- */
 @media (max-width: 380px) {
-  /* Shrink score card values so they don't overflow on 360-380px phones */
   .nav-score-card {
-    padding: 2px 5px !important;
+    padding: 2px 4px !important;
+    min-width: 72px !important;
   }
   .score-label {
+    font-size: 0.52rem !important;
+  }
+  .score-val {
     font-size: 0.58rem !important;
-  }
-  .score-val,
-  .score-values {
-    font-size: 0.65rem !important;
-  }
-  .score-divider {
-    margin: 0 !important;
   }
   /* Tighten the action buttons in the right zone */
   .start-coding-btn,
