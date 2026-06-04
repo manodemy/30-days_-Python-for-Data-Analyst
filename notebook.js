@@ -2711,61 +2711,339 @@ function hideSymbolHelperBar() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const hamburger = document.createElement('button');
-  hamburger.className = 'toc-drawer-toggle';
-  hamburger.type = 'button';
-  hamburger.style.cssText = `
-    display: none;
-    position: fixed;
-    top: 6px;
-    left: 8px;
-    z-index: 1001;
-    background: rgba(19, 24, 37, 0.85);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--cyan);
-    padding: 8px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-  `;
-  hamburger.innerHTML = '☰ TOC';
-  
-  if (window.innerWidth <= 768) {
-    hamburger.style.display = 'block';
-  }
-  window.addEventListener('resize', () => {
-    hamburger.style.display = (window.innerWidth <= 768) ? 'block' : 'none';
-  });
-  
-  const sidebar = document.querySelector('.toc-sidebar');
-  if (sidebar) {
-    const backdrop = document.createElement('div');
-    backdrop.className = 'toc-backdrop';
-    document.body.appendChild(backdrop);
-    
-    const toggleDrawer = () => {
-      sidebar.classList.toggle('open');
-      backdrop.classList.toggle('active');
-    };
-    
-    hamburger.addEventListener('click', toggleDrawer);
-    backdrop.addEventListener('click', toggleDrawer);
-    
-    sidebar.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        sidebar.classList.remove('open');
-        backdrop.classList.remove('active');
-      });
+  const sidebar = document.querySelector('.sidebar');
+  if (!sidebar) return;
+
+  // --- TOC DRAWER BACKDROP ---
+  const backdrop = document.createElement('div');
+  backdrop.className = 'toc-backdrop';
+  document.body.appendChild(backdrop);
+
+  const toggleDrawer = () => {
+    sidebar.classList.toggle('open');
+    backdrop.classList.toggle('active');
+  };
+
+  backdrop.addEventListener('click', toggleDrawer);
+
+  sidebar.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('active');
     });
-    
-    const header = document.querySelector('.notebook-header');
-    if (header) {
-      header.insertBefore(hamburger, header.firstChild);
-      hamburger.style.position = 'static';
-      hamburger.style.marginRight = '8px';
+  });
+
+  // --- INJECT BOTTOM TAB BAR (TIER 1 & 2) ---
+  const bottomBar = document.createElement('div');
+  bottomBar.className = 'mobile-bottom-bar';
+  bottomBar.innerHTML = `
+    <button class="mobile-tab-btn active" id="mobileTabRead">
+      <span class="tab-icon">📖</span>
+      <span class="tab-label">Read</span>
+    </button>
+    <button class="mobile-tab-btn" id="mobileTabPractice">
+      <span class="tab-icon">💻</span>
+      <span class="tab-label">Practice</span>
+    </button>
+    <button class="mobile-tab-btn" id="mobileTabToc">
+      <span class="tab-icon">📑</span>
+      <span class="tab-label">TOC</span>
+    </button>
+  `;
+  document.body.appendChild(bottomBar);
+
+  const readTab = document.getElementById('mobileTabRead');
+  const practiceTab = document.getElementById('mobileTabPractice');
+  const tocTab = document.getElementById('mobileTabToc');
+
+  // Trigger practice mode click programmatically
+  readTab.addEventListener('click', () => {
+    const desktopReadBtn = document.querySelector('.segment-read');
+    if (desktopReadBtn) {
+      desktopReadBtn.click();
     } else {
-      document.body.appendChild(hamburger);
+      // Fallback
+      document.body.classList.remove('practice-mode-active');
+      readTab.classList.add('active');
+      practiceTab.classList.remove('active');
+    }
+  });
+
+  practiceTab.addEventListener('click', () => {
+    const desktopPracticeBtn = document.querySelector('.segment-practice');
+    if (desktopPracticeBtn) {
+      desktopPracticeBtn.click();
+    } else {
+      // Fallback
+      document.body.classList.add('practice-mode-active');
+      readTab.classList.remove('active');
+      practiceTab.classList.add('active');
+    }
+  });
+
+  tocTab.addEventListener('click', toggleDrawer);
+
+  // Sync Bottom Tab Bar active states when desktop segmented toggle is clicked
+  document.addEventListener('click', (e) => {
+    const segmentRead = e.target.closest('.segment-read');
+    const segmentPractice = e.target.closest('.segment-practice');
+    if (segmentRead) {
+      readTab.classList.add('active');
+      practiceTab.classList.remove('active');
+    } else if (segmentPractice) {
+      readTab.classList.remove('active');
+      practiceTab.classList.add('active');
+    }
+  });
+
+  // Sync initial tab states
+  setTimeout(() => {
+    const isPractice = document.body.classList.contains('practice-mode-active');
+    if (isPractice) {
+      readTab.classList.remove('active');
+      practiceTab.classList.add('active');
+    } else {
+      readTab.classList.add('active');
+      practiceTab.classList.remove('active');
+    }
+  }, 100);
+
+
+  // ══════════════════════════════════════════════════════════════════
+  // ⭐ COMPONENT 7: FOCUS MODE IMPLEMENTATION
+  // ══════════════════════════════════════════════════════════════════
+
+  let focusPairs = [];
+  let currentIndex = -1;
+  let focusOverlayEl = null;
+  let focusContentEl = null;
+  let focusCounterEl = null;
+  let focusPrevBtn = null;
+  let focusNextBtn = null;
+
+  // Placeholder storage
+  let currentPlaceholderQ = null;
+  let currentPlaceholderC = null;
+
+  function collectFocusPairs() {
+    focusPairs = [];
+    document.querySelectorAll('.question').forEach(q => {
+      // Find the adjacent code-cell sibling (skip text nodes/comments)
+      let cell = q.nextElementSibling;
+      while (cell && !cell.classList.contains('code-cell') && !cell.classList.contains('question')) {
+        cell = cell.nextElementSibling;
+      }
+      if (cell && cell.classList.contains('code-cell')) {
+        focusPairs.push({ question: q, cell: cell });
+      }
+    });
+  }
+
+  function injectFocusButtons() {
+    focusPairs.forEach((pair, idx) => {
+      if (pair.question.querySelector('.focus-btn')) return;
+      
+      const btn = document.createElement('button');
+      btn.className = 'focus-btn';
+      btn.type = 'button';
+      btn.innerHTML = '⛶ Focus';
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openFocusMode(idx);
+      });
+      
+      // Ensure question has relative positioning
+      if (getComputedStyle(pair.question).position === 'static') {
+        pair.question.style.position = 'relative';
+      }
+      pair.question.appendChild(btn);
+    });
+  }
+
+  function initFocusOverlay() {
+    if (focusOverlayEl) return;
+
+    focusOverlayEl = document.createElement('div');
+    focusOverlayEl.className = 'focus-overlay';
+    focusOverlayEl.id = 'focusOverlay';
+    focusOverlayEl.innerHTML = `
+      <div class="focus-header">
+        <button class="focus-exit-btn" id="focusExitBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+          Exit Focus
+        </button>
+        <div class="focus-counter" id="focusCounter">Question 0 of 0</div>
+      </div>
+      <div class="focus-content" id="focusContent"></div>
+      <div class="focus-action-bar">
+        <button class="focus-nav-btn" id="focusPrevBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          Prev
+        </button>
+        <button class="focus-run-btn" id="focusRunBtn">▶ Run</button>
+        <button class="focus-clear-btn" id="focusClearBtn">✕ Clear</button>
+        <button class="focus-hint-btn" id="focusHintBtn">💡 Hint</button>
+        <button class="focus-nav-btn" id="focusNextBtn">
+          Next
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    `;
+
+    document.body.appendChild(focusOverlayEl);
+
+    focusContentEl = document.getElementById('focusContent');
+    focusCounterEl = document.getElementById('focusCounter');
+    focusPrevBtn = document.getElementById('focusPrevBtn');
+    focusNextBtn = document.getElementById('focusNextBtn');
+
+    // Bind event listeners
+    document.getElementById('focusExitBtn').addEventListener('click', closeFocusMode);
+    focusPrevBtn.addEventListener('click', () => navigateFocus(-1));
+    focusNextBtn.addEventListener('click', () => navigateFocus(1));
+
+    document.getElementById('focusRunBtn').addEventListener('click', () => {
+      if (currentIndex !== -1 && focusPairs[currentIndex]) {
+        const cellId = focusPairs[currentIndex].cell.id;
+        runCell(cellId);
+      }
+    });
+
+    document.getElementById('focusClearBtn').addEventListener('click', () => {
+      if (currentIndex !== -1 && focusPairs[currentIndex]) {
+        const cellId = focusPairs[currentIndex].cell.id;
+        clearOutput(cellId);
+      }
+    });
+
+    document.getElementById('focusHintBtn').addEventListener('click', () => {
+      if (currentIndex !== -1 && focusPairs[currentIndex]) {
+        const cellId = focusPairs[currentIndex].cell.id;
+        if (typeof showHint === 'function') {
+          showHint(cellId);
+        }
+      }
+    });
+  }
+
+  function openFocusMode(index) {
+    if (index < 0 || index >= focusPairs.length) return;
+
+    initFocusOverlay();
+
+    // If already in Focus Mode, put current pair back first
+    if (currentIndex !== -1) {
+      restoreCurrentPair();
+    }
+
+    currentIndex = index;
+    const pair = focusPairs[currentIndex];
+
+    // Create placeholders at original position
+    currentPlaceholderQ = document.createElement('div');
+    currentPlaceholderQ.className = 'focus-placeholder-q';
+    pair.question.parentNode.insertBefore(currentPlaceholderQ, pair.question);
+
+    currentPlaceholderC = document.createElement('div');
+    currentPlaceholderC.className = 'focus-placeholder-c';
+    pair.cell.parentNode.insertBefore(currentPlaceholderC, pair.cell);
+
+    // Move to overlay
+    focusContentEl.appendChild(pair.question);
+    focusContentEl.appendChild(pair.cell);
+
+    // Show overlay
+    document.body.classList.add('focus-mode-active');
+    focusOverlayEl.classList.add('active');
+
+    // Update Counter
+    focusCounterEl.textContent = `Question ${currentIndex + 1} of ${focusPairs.length}`;
+
+    // Update navigation button states
+    focusPrevBtn.classList.toggle('disabled', currentIndex === 0);
+    focusNextBtn.classList.toggle('disabled', currentIndex === focusPairs.length - 1);
+
+    // Refresh CodeMirror layout to recalculate bounds inside the new overlay
+    setTimeout(() => {
+      const cellId = pair.cell.id;
+      if (editors[cellId]) {
+        editors[cellId].refresh();
+        editors[cellId].focus();
+      }
+    }, 100);
+  }
+
+  function restoreCurrentPair() {
+    if (currentIndex === -1) return;
+
+    const pair = focusPairs[currentIndex];
+
+    // Close any open hints for this cell to avoid floating popup issues
+    if (typeof closeHint === 'function') {
+      closeHint(pair.cell.id);
+    }
+
+    // Move back to placeholders
+    if (currentPlaceholderQ && currentPlaceholderQ.parentNode) {
+      currentPlaceholderQ.parentNode.insertBefore(pair.question, currentPlaceholderQ);
+      currentPlaceholderQ.remove();
+    }
+    if (currentPlaceholderC && currentPlaceholderC.parentNode) {
+      currentPlaceholderC.parentNode.insertBefore(pair.cell, currentPlaceholderC);
+      currentPlaceholderC.remove();
+    }
+
+    currentPlaceholderQ = null;
+    currentPlaceholderC = null;
+  }
+
+  function closeFocusMode() {
+    if (currentIndex === -1) return;
+
+    const pair = focusPairs[currentIndex];
+    restoreCurrentPair();
+
+    // Hide overlay
+    document.body.classList.remove('focus-mode-active');
+    if (focusOverlayEl) {
+      focusOverlayEl.classList.remove('active');
+    }
+
+    // Scroll back to question
+    setTimeout(() => {
+      pair.question.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const cellId = pair.cell.id;
+      if (editors[cellId]) {
+        editors[cellId].refresh();
+      }
+    }, 100);
+
+    currentIndex = -1;
+  }
+
+  function navigateFocus(direction) {
+    const nextIdx = currentIndex + direction;
+    if (nextIdx >= 0 && nextIdx < focusPairs.length) {
+      openFocusMode(nextIdx);
     }
   }
+
+  // --- INITIALIZE FOCUS MODE ---
+  collectFocusPairs();
+  injectFocusButtons();
+
+  // Watch for dynamic elements if the page re-renders questions (defensive)
+  const observer = new MutationObserver(() => {
+    collectFocusPairs();
+    injectFocusButtons();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
 });
 

@@ -1426,5 +1426,531 @@ body.modal-open nav {
   100% { background-position: -200% 0; }
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   MOBILE VIEW & FOCUS MODE OVERRIDES
+   ══════════════════════════════════════════════════════════════════ */
+
+/* --- Mobile Bottom Tab Bar (Tiers 1 & 2) --- */
+.mobile-bottom-bar {
+  display: none; /* Hidden on desktop */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: #0B0F19; /* var(--surface) equivalent */
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 2000;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+  }
+}
+
+.mobile-tab-btn {
+  background: none;
+  border: none;
+  color: #94A3B8; /* var(--muted) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.mobile-tab-btn:active {
+  transform: scale(0.95);
+}
+
+.mobile-tab-btn.active {
+  color: #02FFF2; /* var(--cyan) */
+}
+
+.mobile-tab-btn .tab-icon {
+  font-size: 1.1rem;
+}
+
+/* --- TOC Backdrop Overlay --- */
+.toc-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.toc-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* --- Responsive Sidebar (Drawer on mobile) --- */
+@media (max-width: 768px) {
+  .sidebar {
+    display: flex !important; /* Override display: none */
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    width: 290px !important;
+    height: 100% !important;
+    z-index: 3000 !important;
+    background: #060913 !important; /* var(--void) */
+    box-shadow: -8px 0 30px rgba(0, 0, 0, 0.5) !important;
+    transform: translateX(100%) !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+  
+  .sidebar.open {
+    transform: translateX(0) !important;
+  }
+
+  .sidebar-top {
+    padding: 1.2rem 1rem !important;
+  }
+
+  /* Adjust TOC listing for mobile touch targets */
+  .toc-list li {
+    margin-bottom: 8px !important;
+  }
+  .toc-link {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 6px 10px !important;
+  }
+}
+
+/* --- Content Padding adjustments for Mobile (Tiers 1 & 2) --- */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  
+  .layout {
+    margin-top: 0.8rem !important;
+    padding: 0 0.5rem !important;
+  }
+
+  .notebook {
+    padding: 0 0.25rem 3rem 0.25rem !important;
+    max-width: 100% !important;
+  }
+  
+  /* Tables on mobile */
+  .notebook table {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    white-space: nowrap !important;
+    border-collapse: collapse !important;
+  }
+
+  /* Code cells styling overrides for mobile */
+  .code-cell {
+    margin: 12px 0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+  }
+
+  /* Output boxes sizing */
+  .cell-output {
+    max-height: 250px !important;
+  }
+
+  /* Prevent run-btn sticky overrides from previous code block */
+  .run-btn {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 6px 12px !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+/* --- Mobile Top Bar redesign (Tiers 1 & 2) --- */
+@media (max-width: 768px) {
+  .top-bar {
+    height: 56px !important;
+    padding: 0 10px !important;
+    background: #0B0F19 !important; /* var(--surface) */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+  }
+
+  body {
+    padding-top: 0 !important; /* Ensure layout fits nicely under top-bar */
+  }
+
+  .avatar-wrapper {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .avatar-circle {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .avatar-status-dot {
+    display: none !important; /* Hide on mobile */
+  }
+
+  /* Day Selector Pill */
+  .nav-center.has-dropdown {
+    display: flex !important; /* Unhide */
+  }
+
+  .nav-center-flex {
+    gap: 4px !important;
+  }
+
+  .nav-dropdown-btn {
+    padding: 4px 8px !important;
+    height: 32px !important;
+    font-size: 0.78rem !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 20px !important;
+  }
+
+  .day-badge {
+    padding: 1px 6px !important;
+    font-size: 0.65rem !important;
+  }
+
+  .day-title {
+    max-width: 80px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 0.72rem !important;
+  }
+
+  .nav-icon-btn.prev-btn, 
+  .nav-icon-btn.next-btn {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  /* Score card compacting */
+  .nav-score-card {
+    display: none !important; /* Hide full desktop card */
+  }
+
+  /* Compact score text in header zone */
+  .nav-zone--left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+}
+
+/* --- Day dropdown popup overrides --- */
+@media (max-width: 768px) {
+  .nav-dropdown-menu {
+    position: fixed !important;
+    top: 56px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    max-height: 60vh !important;
+    border-radius: 0 0 16px 16px !important;
+    border-top: none !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
+    background: #0B0F19 !important;
+  }
+  
+  .dropdown-scroll {
+    max-height: calc(60vh - 50px) !important;
+  }
+
+  .dropdown-item {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 10px 16px !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+/* --- Ultra-narrow (<= 360px) tweaks --- */
+@media (max-width: 360px) {
+  .day-title {
+    display: none !important; /* Hide text, show only Day 01 badge on tiny screens */
+  }
+  .nav-center-flex {
+    gap: 2px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ⭐ ⭐ FOCUS MODE STYLES
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Focus trigger button on questions */
+.focus-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 6px;
+  background: rgba(2, 255, 242, 0.1) !important;
+  border: 1px solid rgba(2, 255, 242, 0.3) !important;
+  color: #02FFF2 !important; /* var(--cyan) */
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: none; /* Shown via @media */
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.focus-btn:active {
+  transform: scale(0.92);
+  background: rgba(2, 255, 242, 0.2) !important;
+}
+
+@media (max-width: 1024px) {
+  .focus-btn {
+    display: flex !important;
+  }
+}
+
+/* Fullscreen Overlay */
+.focus-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  background: #060913; /* var(--void) */
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(30px);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              visibility 0.25s;
+}
+
+.focus-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.focus-header {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: #0B0F19; /* var(--surface) */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.focus-exit-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #94A3B8; /* var(--muted) */
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 6px 0;
+}
+
+.focus-exit-btn:active {
+  color: #fff;
+}
+
+.focus-counter {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: #02FFF2; /* var(--cyan) */
+  background: rgba(2, 255, 242, 0.08);
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(2, 255, 242, 0.15);
+}
+
+/* Content Area */
+.focus-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Force question and cell to expand clean inside Focus overlay */
+.focus-content .question {
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 16px !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+.focus-content .code-cell {
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  background: #0B0F19 !important;
+}
+
+.focus-content .CodeMirror {
+  flex: 1 !important;
+  min-height: 180px !important;
+  max-height: none !important;
+  font-size: 0.85rem !important;
+}
+
+.focus-content .cell-output {
+  max-height: 200px !important;
+  margin-top: 10px !important;
+}
+
+/* Action Bar */
+.focus-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  background: #0B0F19; /* var(--surface) */
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  gap: 6px;
+  z-index: 5500;
+}
+
+.focus-nav-btn {
+  min-width: 44px;
+  min-height: 40px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #94A3B8;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  padding: 0 8px;
+}
+
+.focus-nav-btn:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.focus-nav-btn.disabled {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.focus-run-btn {
+  flex: 2;
+  min-height: 40px;
+  background: linear-gradient(135deg, #10B981, #059669) !important;
+  color: #fff !important;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 0.8rem;
+  border: none !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2) !important;
+}
+
+.focus-run-btn:active {
+  transform: scale(0.96);
+}
+
+.focus-clear-btn, 
+.focus-hint-btn {
+  flex: 1;
+  min-height: 40px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #E2E8F0;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.focus-clear-btn:active, 
+.focus-hint-btn:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Hide background layout elements when Focus Mode is open */
+body.focus-mode-active #topBar,
+body.focus-mode-active .layout,
+body.focus-mode-active .mobile-bottom-bar,
+body.focus-mode-active .pyodide-status {
+  display: none !important;
+}
+
+/* Reposition Keyboard Symbol Helper Bar inside Focus Mode */
+body.focus-mode-active .symbol-helper-bar {
+  position: fixed !important;
+  bottom: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
+  z-index: 6000 !important;
+}
+
 
 
