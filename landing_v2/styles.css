@@ -164,6 +164,8 @@ button {
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 2rem;
+}.mobile-only-br {
+  display: none;
 }
 
 /* Chromatic Divider (Dissolving light border) */
@@ -5420,12 +5422,15 @@ button {
   .hero .container {
     grid-template-columns: 1fr !important;
     gap: 2.5rem !important;
-    padding: 78px var(--mobile-pad) 2rem !important;
+    padding: 68px var(--mobile-pad) 2rem !important;
     max-width: 100vw !important;
     overflow: hidden !important;
   }
   .desktop-only {
     display: none !important;
+  }
+  .mobile-only-br {
+    display: inline !important;
   }
   /* ── KEY FIX: hero title — prevent Python logo line from overflowing ── */
   .hero-nowrap {
