@@ -346,7 +346,7 @@ button {
 .mobile-overlay {
   display: none;
   position: fixed;
-  top: 76px;
+  top: 60px;
   right: 16px;
   left: auto;
   bottom: auto;
@@ -6044,6 +6044,10 @@ button {
   .hamburger {
     width: 32px !important;
     height: 32px !important;
+  }
+  .mobile-overlay {
+    top: 57px !important;
+    right: 10px !important;
   }
   .hamburger span {
     width: 12px !important;
