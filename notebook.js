@@ -2747,7 +2747,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </button>
     <button class="mobile-tab-btn" id="mobileTabToc">
       <span class="tab-icon">📑</span>
-      <span class="tab-label">TOC</span>
+      <span class="tab-label">Content</span>
     </button>
   `;
   document.body.appendChild(bottomBar);
