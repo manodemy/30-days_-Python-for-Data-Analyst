@@ -2938,9 +2938,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initFocusOverlay();
 
+    // Pause the MutationObserver while we move DOM elements so it doesn't
+    // trigger collectFocusPairs() mid-navigation (which would corrupt references)
+    if (typeof focusModeObserver !== 'undefined' && focusModeObserver) {
+      focusModeObserver.disconnect();
+    }
+
     // If already in Focus Mode, put current pair back first
     if (currentIndex !== -1) {
       restoreCurrentPair();
+    }
+
+    // Safety: clear the content area of any leftover elements before inserting a new pair
+    while (focusContentEl.firstChild) {
+      focusContentEl.removeChild(focusContentEl.firstChild);
     }
 
     currentIndex = index;
@@ -3016,6 +3027,11 @@ document.addEventListener('DOMContentLoaded', () => {
       focusOverlayEl.classList.remove('active');
     }
 
+    // Re-attach the MutationObserver now that DOM is stable again
+    if (typeof focusModeObserver !== 'undefined' && focusModeObserver) {
+      focusModeObserver.observe(document.body, { childList: true, subtree: true });
+    }
+
     // Scroll back to question
     setTimeout(() => {
       pair.question.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -3040,10 +3056,14 @@ document.addEventListener('DOMContentLoaded', () => {
   injectFocusButtons();
 
   // Watch for dynamic elements if the page re-renders questions (defensive)
-  const observer = new MutationObserver(() => {
+  // Stored as focusModeObserver so we can pause it while navigating inside focus mode
+  const focusModeObserver = new MutationObserver(() => {
+    // Don't re-collect while focus mode is active — moving DOM elements
+    // between the overlay and original positions would corrupt references
+    if (currentIndex !== -1) return;
     collectFocusPairs();
     injectFocusButtons();
   });
-  observer.observe(document.body, { childList: true, subtree: true });
+  focusModeObserver.observe(document.body, { childList: true, subtree: true });
 });
 

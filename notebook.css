@@ -1624,6 +1624,8 @@ body.modal-open nav {
     align-items: center !important;
     padding-left: 10px !important;
     gap: 8px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
   }
 
   .nav-zone--right {
@@ -1633,6 +1635,7 @@ body.modal-open nav {
     justify-content: flex-end !important;
     padding-right: 10px !important;
     gap: 6px !important;
+    flex-shrink: 0 !important;
   }
 
   .nav-controls {
@@ -1906,6 +1909,50 @@ body.modal-open nav {
   }
   .nav-center-flex {
     gap: 2px !important;
+  }
+}
+
+/* --- Narrow phone (<= 380px) tweaks for top-bar row-1 overflow --- */
+@media (max-width: 380px) {
+  /* Shrink score card values so they don't overflow on 360-380px phones */
+  .nav-score-card {
+    padding: 2px 5px !important;
+  }
+  .score-label {
+    font-size: 0.58rem !important;
+  }
+  .score-val,
+  .score-values {
+    font-size: 0.65rem !important;
+  }
+  .score-divider {
+    margin: 0 !important;
+  }
+  /* Tighten the action buttons in the right zone */
+  .start-coding-btn,
+  #navStartCodingBtn,
+  #navCountdownTimer {
+    padding: 0 8px !important;
+    font-size: 0.65rem !important;
+    letter-spacing: 0 !important;
+  }
+  .scorecard-btn {
+    padding: 0 7px !important;
+    font-size: 0.65rem !important;
+  }
+  /* Shrink avatar on tiny phones */
+  .avatar-wrapper,
+  .avatar-circle {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .nav-zone--right {
+    gap: 4px !important;
+    padding-right: 8px !important;
+  }
+  .nav-zone--left {
+    gap: 5px !important;
+    padding-left: 8px !important;
   }
 }
 
