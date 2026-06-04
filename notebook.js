@@ -46,13 +46,13 @@ async function _notebookWriteActivity(eventType, metadata) {
 
     await sbClient.from('activity_logs').insert([{
 
-      user_id:    user.id,
+      user_id: user.id,
 
       event_type: eventType,
 
-      page_url:   window.location.pathname,
+      page_url: window.location.pathname,
 
-      metadata:   metadata
+      metadata: metadata
 
     }]);
 
@@ -68,9 +68,9 @@ const safeStorageSet = (key, value) => {
 
   try { localStorage.setItem(key, value); return true; }
 
-  catch(e) { 
+  catch (e) {
 
-    try { sessionStorage.setItem(key, value); return true; } catch(e2) { return false; }
+    try { sessionStorage.setItem(key, value); return true; } catch (e2) { return false; }
 
   }
 
@@ -80,7 +80,7 @@ const safeStorageGet = (key) => {
 
   try { return localStorage.getItem(key) || sessionStorage.getItem(key) || ''; }
 
-  catch(e) { return ''; }
+  catch (e) { return ''; }
 
 };
 
@@ -168,13 +168,13 @@ function checkAndResolveExpiredChallenge(dayId) {
       sessionStorage.removeItem(`manodemy_${dayId}_start_time`);
       sessionStorage.removeItem(`manodemy_${dayId}_xp_earned`);
       sessionStorage.removeItem(`manodemy_${dayId}_solved_count`);
-      
+
       // Clean up all _graded_solved keys to reset challenge progress for next start
       Object.keys(editors).forEach(cellId => {
         localStorage.removeItem(`manodemy_${dayId}_${cellId}_graded_solved`);
         sessionStorage.removeItem(`manodemy_${dayId}_${cellId}_graded_solved`);
       });
-    } catch (e) {}
+    } catch (e) { }
 
     successfulCells.clear();
   }
@@ -237,9 +237,9 @@ document.querySelectorAll('.cm-source').forEach(ta => {
 
     extraKeys: {
 
-      'Shift-Enter': function(cm) { runCell(cellId); },
+      'Shift-Enter': function (cm) { runCell(cellId); },
 
-      'Ctrl-Enter': function(cm) { runCell(cellId); },
+      'Ctrl-Enter': function (cm) { runCell(cellId); },
 
       'Ctrl-/': 'toggleComment',
 
@@ -247,7 +247,7 @@ document.querySelectorAll('.cm-source').forEach(ta => {
 
       'Ctrl-Space': 'autocomplete',
 
-      'Tab': function(cm) {
+      'Tab': function (cm) {
 
         if (cm.somethingSelected()) {
 
@@ -261,9 +261,9 @@ document.querySelectorAll('.cm-source').forEach(ta => {
 
       },
 
-      'Shift-Tab': function(cm) { cm.indentSelection('subtract'); },
+      'Shift-Tab': function (cm) { cm.indentSelection('subtract'); },
 
-      'Ctrl-D': function(cm) {
+      'Ctrl-D': function (cm) {
 
         // Duplicate line (VS Code style)
 
@@ -271,21 +271,21 @@ document.querySelectorAll('.cm-source').forEach(ta => {
 
         const line = cm.getLine(cur.line);
 
-        cm.replaceRange('\n' + line, {line: cur.line, ch: line.length});
+        cm.replaceRange('\n' + line, { line: cur.line, ch: line.length });
 
       },
 
-      'Ctrl-Shift-K': function(cm) {
+      'Ctrl-Shift-K': function (cm) {
 
         // Delete line (VS Code style)
 
         const cur = cm.getCursor();
 
-        cm.replaceRange('', {line: cur.line, ch: 0}, {line: cur.line + 1, ch: 0});
+        cm.replaceRange('', { line: cur.line, ch: 0 }, { line: cur.line + 1, ch: 0 });
 
       },
 
-      'Alt-Up': function(cm) {
+      'Alt-Up': function (cm) {
 
         // Move line up
 
@@ -299,15 +299,15 @@ document.querySelectorAll('.cm-source').forEach(ta => {
 
         cm.replaceRange(line + '\n' + above,
 
-          {line: cur.line - 1, ch: 0},
+          { line: cur.line - 1, ch: 0 },
 
-          {line: cur.line, ch: cm.getLine(cur.line).length});
+          { line: cur.line, ch: cm.getLine(cur.line).length });
 
-        cm.setCursor({line: cur.line - 1, ch: cur.ch});
+        cm.setCursor({ line: cur.line - 1, ch: cur.ch });
 
       },
 
-      'Alt-Down': function(cm) {
+      'Alt-Down': function (cm) {
 
         // Move line down
 
@@ -321,11 +321,11 @@ document.querySelectorAll('.cm-source').forEach(ta => {
 
         cm.replaceRange(below + '\n' + line,
 
-          {line: cur.line, ch: 0},
+          { line: cur.line, ch: 0 },
 
-          {line: cur.line + 1, ch: cm.getLine(cur.line + 1).length});
+          { line: cur.line + 1, ch: cm.getLine(cur.line + 1).length });
 
-        cm.setCursor({line: cur.line + 1, ch: cur.ch});
+        cm.setCursor({ line: cur.line + 1, ch: cur.ch });
 
       }
 
@@ -337,13 +337,13 @@ document.querySelectorAll('.cm-source').forEach(ta => {
 
   editors[cellId] = cm;
 
-  cm.on('focus', function(instance) {
+  cm.on('focus', function (instance) {
     if (window.innerWidth <= 768) {
       showSymbolHelperBar(instance);
     }
   });
 
-  cm.on('blur', function(instance) {
+  cm.on('blur', function (instance) {
     setTimeout(hideSymbolHelperBar, 200);
   });
 
@@ -351,7 +351,7 @@ document.querySelectorAll('.cm-source').forEach(ta => {
 
   // Editors are always interactive — no locked-state intercepts
 
-  
+
 
   // Attach debounced auto-save to CodeMirror
 
@@ -523,31 +523,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
       await sbClient.from('activity_logs').insert([{
 
-        user_id:    user.id,
+        user_id: user.id,
 
         event_type: 'notebook_state_sync',
 
-        page_url:   window.location.pathname,
+        page_url: window.location.pathname,
 
         metadata: {
 
-          session_id:       'notebook_sync_' + dayId,
+          session_id: 'notebook_sync_' + dayId,
 
-          active_seconds:   secs,
+          active_seconds: secs,
 
-          solved_count:     finalSolved,
+          solved_count: finalSolved,
 
-          solved_cells:     solvedCellIds,
+          solved_cells: solvedCellIds,
 
-          total_cells:      totalCells,
+          total_cells: totalCells,
 
-          best_score:       finalBestScore,
+          best_score: finalBestScore,
 
-          improve_clicks:   improveClicks,
+          improve_clicks: improveClicks,
 
-          page_url:         window.location.pathname,
+          page_url: window.location.pathname,
 
-          synced_at:        new Date().toISOString()
+          synced_at: new Date().toISOString()
 
         }
 
@@ -561,19 +561,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         await sbClient.from('activity_logs').insert([{
 
-          user_id:    user.id,
+          user_id: user.id,
 
           event_type: 'session_heartbeat',
 
-          page_url:   window.location.pathname,
+          page_url: window.location.pathname,
 
           metadata: {
 
-            session_id:     'notebook_sync_' + dayId,
+            session_id: 'notebook_sync_' + dayId,
 
             active_seconds: secs,
 
-            page_url:       window.location.pathname
+            page_url: window.location.pathname
 
           }
 
@@ -585,7 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       console.log(`[Notebook] ✅ Synced to Supabase: ${dayId} | Time: ${secs}s | Solved: ${finalSolved}/${totalCells}`);
 
-    } catch(e) { console.warn('[Notebook] Sync error:', e.message); }
+    } catch (e) { console.warn('[Notebook] Sync error:', e.message); }
 
   };
 
@@ -859,7 +859,7 @@ function setupGamifiedMarkingSystem() {
 
   if (!dayId) return;
 
-  
+
 
   const maxDayMarks = (1000 * (totalCells / TOTAL_QUESTIONS)).toFixed(1);
 
@@ -982,7 +982,7 @@ function setupGamifiedMarkingSystem() {
 
     document.body.appendChild(modalDiv);
 
-    
+
 
     // Bind click outside
 
@@ -998,7 +998,7 @@ function setupGamifiedMarkingSystem() {
 
     };
 
-    
+
 
     // Bind buttons
 
@@ -1022,7 +1022,7 @@ function setupGamifiedMarkingSystem() {
         try {
           localStorage.removeItem(`manodemy_${dayId}_${cellId}_code`);
           sessionStorage.removeItem(`manodemy_${dayId}_${cellId}_code`);
-        } catch(e) {}
+        } catch (e) { }
 
         // 3. Remove solved flag and graded solved flag from storage
 
@@ -1031,7 +1031,7 @@ function setupGamifiedMarkingSystem() {
           localStorage.removeItem(`manodemy_${dayId}_${cellId}_graded_solved`);
           sessionStorage.removeItem(`manodemy_${dayId}_${cellId}_solved`);
           sessionStorage.removeItem(`manodemy_${dayId}_${cellId}_graded_solved`);
-        } catch(e) {}
+        } catch (e) { }
 
         // 4. Remove green solved styling from cell
 
@@ -1069,20 +1069,20 @@ function setupGamifiedMarkingSystem() {
         sessionStorage.removeItem(`manodemy_${dayId}_solved_count`);
         sessionStorage.removeItem(`manodemy_${dayId}_completion_time`);
         sessionStorage.removeItem(`manodemy_${dayId}_xp_earned`);
-      } catch(e) {}
+      } catch (e) { }
 
       // 8. Reset navbar scoreboard display to 0
 
       const solvedEl = document.getElementById('scoreSolved');
-      const totalEl  = document.getElementById('scoreTotal');
-      const xpEl     = document.getElementById('scoreXPEarned');
-      const maxXpEl  = document.getElementById('scoreMaxXP');
-      const progEl   = document.getElementById('scoreProgress');
+      const totalEl = document.getElementById('scoreTotal');
+      const xpEl = document.getElementById('scoreXPEarned');
+      const maxXpEl = document.getElementById('scoreMaxXP');
+      const progEl = document.getElementById('scoreProgress');
       if (solvedEl) solvedEl.textContent = '0';
-      if (totalEl)  totalEl.textContent  = totalCells;
-      if (xpEl)     xpEl.textContent     = '0.0';
-      if (maxXpEl)  maxXpEl.textContent  = (1000 * (totalCells / TOTAL_QUESTIONS)).toFixed(1);
-      if (progEl)   progEl.style.width   = '0%';
+      if (totalEl) totalEl.textContent = totalCells;
+      if (xpEl) xpEl.textContent = '0.0';
+      if (maxXpEl) maxXpEl.textContent = (1000 * (totalCells / TOTAL_QUESTIONS)).toFixed(1);
+      if (progEl) progEl.style.width = '0%';
 
       // 9. Set new start time (opens fresh 24-hour grading window)
 
@@ -1100,14 +1100,14 @@ function setupGamifiedMarkingSystem() {
       // 12. Telemetry
 
       _notebookWriteActivity('challenge_started', {
-        day_id:         dayId,
+        day_id: dayId,
         improve_clicks: prevClicks + 1,
-        page_url:       window.location.pathname
+        page_url: window.location.pathname
       });
 
     };
 
-    
+
 
     document.getElementById('cancelStartBtn').onclick = () => {
 
@@ -1119,7 +1119,7 @@ function setupGamifiedMarkingSystem() {
 
   }
 
-  
+
 
   // 2. Redesign .nav-score-card into a clean side-by-side horizontal grid
 
@@ -1159,7 +1159,7 @@ function setupGamifiedMarkingSystem() {
 
   }
 
-  
+
 
   // 3. Determine current challenge state
 
@@ -1196,7 +1196,7 @@ function setupGamifiedMarkingSystem() {
       startBtn.className = 'start-coding-btn';
 
       startBtn.innerHTML = `
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:3px;"><path d="M4.5 16.5c-1.5 1.25-2.5 3.5-2.5 3.5s2.25-1 3.5-2.5M12 2C6.5 2 2 6.5 2 12c0 2.5 1 4.5 2.5 6l6-6M22 2l-6 6M13.5 10.5L18 6M11.5 12.5L16 8M10 14l-4 4"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:0.5px;"><path d="M4.5 16.5c-1.5 1.25-2.5 3.5-2.5 3.5s2.25-1 3.5-2.5M12 2C6.5 2 2 6.5 2 12c0 2.5 1 4.5 2.5 6l6-6M22 2l-6 6M13.5 10.5L18 6M11.5 12.5L16 8M10 14l-4 4"/></svg>
         Improve score
       `;
 
@@ -1274,7 +1274,7 @@ function setupGamifiedMarkingSystem() {
 
     }
 
-    
+
 
     startCountdownTicker();
 
@@ -1312,7 +1312,7 @@ function updateScore() {
         try {
           localStorage.removeItem(`manodemy_${dayId}_completion_time`);
           sessionStorage.removeItem(`manodemy_${dayId}_completion_time`);
-        } catch(e) {}
+        } catch (e) { }
       }
     }
   } else {
@@ -1387,13 +1387,13 @@ function updateScore() {
 
       if (q.id) {
 
-          const tocLink = document.querySelector(`.toc-list a[href="#${q.id}"]`);
+        const tocLink = document.querySelector(`.toc-list a[href="#${q.id}"]`);
 
-          if (tocLink && !tocLink.querySelector('.toc-tick')) {
+        if (tocLink && !tocLink.querySelector('.toc-tick')) {
 
-              tocLink.innerHTML += '<span class="toc-tick" style="float:right; color:var(--emerald, #10B981); font-weight:900; filter: drop-shadow(0 0 4px rgba(16,185,129,0.6));">✓</span>';
+          tocLink.innerHTML += '<span class="toc-tick" style="float:right; color:var(--emerald, #10B981); font-weight:900; filter: drop-shadow(0 0 4px rgba(16,185,129,0.6));">✓</span>';
 
-          }
+        }
 
       }
 
@@ -1403,15 +1403,15 @@ function updateScore() {
 
       if (q.id) {
 
-          const tocLink = document.querySelector(`.toc-list a[href="#${q.id}"]`);
+        const tocLink = document.querySelector(`.toc-list a[href="#${q.id}"]`);
 
-          if (tocLink) {
+        if (tocLink) {
 
-              const tick = tocLink.querySelector('.toc-tick');
+          const tick = tocLink.querySelector('.toc-tick');
 
-              if (tick) tick.remove();
+          if (tick) tick.remove();
 
-          }
+        }
 
       }
 
@@ -1469,7 +1469,7 @@ async function runCell(cellId) {
 
   btn.disabled = true; btn.textContent = '⏳...';
 
-  output.classList.remove('hidden','success','error');
+  output.classList.remove('hidden', 'success', 'error');
 
   output.innerHTML = '';
 
@@ -1503,9 +1503,9 @@ async function runCell(cellId) {
 
     }
 
-    
 
-    output.innerHTML = `<span class="out-label">Out [${cellCounter}]:</span>${esc(text.trim()||'(no output)')}`;
+
+    output.innerHTML = `<span class="out-label">Out [${cellCounter}]:</span>${esc(text.trim() || '(no output)')}`;
 
     output.classList.add('success');
 
@@ -1529,7 +1529,7 @@ async function runCell(cellId) {
 
       isCorrectAndRelated = true; // Assume true if no question binds it
 
-      
+
 
       let prev = cell.previousElementSibling;
 
@@ -1539,7 +1539,7 @@ async function runCell(cellId) {
 
         isCorrectAndRelated = false; // Must prove relevance
 
-        
+
 
         // 1. Check if output matches "Expected: <val>"
 
@@ -1547,51 +1547,51 @@ async function runCell(cellId) {
 
         if (expMatch && expMatch[1] && outText && outText.includes(expMatch[1])) {
 
-            isCorrectAndRelated = true;
+          isCorrectAndRelated = true;
 
         }
 
-        
+
 
         // 2. Token overlap check (ignoring generics)
 
         if (!isCorrectAndRelated) {
 
-            let codeTokens = cleanCode.match(/[a-z0-9_]+/g) || [];
+          let codeTokens = cleanCode.match(/[a-z0-9_]+/g) || [];
 
-            let ignore = ['print', 'type', 'len', 'def', 'class', 'import', 'list', 'dict', 'set', 'tuple', 'int', 'float', 'str', 'bool', 'true', 'false'];
+          let ignore = ['print', 'type', 'len', 'def', 'class', 'import', 'list', 'dict', 'set', 'tuple', 'int', 'float', 'str', 'bool', 'true', 'false'];
 
-            
 
-            for (let token of codeTokens) {
 
-                if (ignore.includes(token)) continue;
+          for (let token of codeTokens) {
 
-                let regex = new RegExp("\\b" + token + "\\b");
+            if (ignore.includes(token)) continue;
 
-                if (regex.test(questionText)) {
+            let regex = new RegExp("\\b" + token + "\\b");
 
-                    isCorrectAndRelated = true;
+            if (regex.test(questionText)) {
 
-                    break;
+              isCorrectAndRelated = true;
 
-                }
+              break;
 
             }
 
+          }
+
         }
 
-        
+
 
         // 3. Fallback for purely symbolic math code
 
         if (!isCorrectAndRelated && /[+\-*/%<>=]/.test(cleanCode)) {
 
-            if (questionText.includes('add ') || questionText.includes('divide') || questionText.includes('multiply') || questionText.includes('operator') || questionText.includes('arithmetic') || questionText.includes('compute')) {
+          if (questionText.includes('add ') || questionText.includes('divide') || questionText.includes('multiply') || questionText.includes('operator') || questionText.includes('arithmetic') || questionText.includes('compute')) {
 
-                isCorrectAndRelated = true;
+            isCorrectAndRelated = true;
 
-            }
+          }
 
         }
 
@@ -1601,75 +1601,75 @@ async function runCell(cellId) {
 
         if (isCorrectAndRelated) {
 
-            let outLines = outText.split('\n').filter(l => l.trim().length > 0);
+          let outLines = outText.split('\n').filter(l => l.trim().length > 0);
 
-            let penalties = 0;
-
-            
-
-            // Requirement A: "types" -> Output must have <class or code must have type(
-
-            if ((questionText.includes('type') || questionText.includes('types')) && questionText.includes('print')) {
-
-                if (!outText.includes('<class') && !cleanCode.includes('type(')) penalties++;
-
-            }
-
-            
-
-            // Requirement B: "explain" or "why" -> Code must contain a comment
-
-            if (questionText.includes('explain') || questionText.includes('describe') || questionText.includes('why is')) {
-
-                if (!rawCode.includes('#')) penalties++;
-
-            }
-
-            
-
-            // Requirement C: "both" or multiple outputs requested -> Output must have multiple lines
-
-            if (questionText.includes('both results') || questionText.includes('print both') || questionText.includes('compute both')) {
-
-                if (outLines.length < 2) penalties++;
-
-            }
+          let penalties = 0;
 
 
 
-            // Requirement D: Question provides multiple distinct numbers to compute
+          // Requirement A: "types" -> Output must have <class or code must have type(
 
-            let qNumbers = questionText.match(/\b\d+\b/g) || [];
+          if ((questionText.includes('type') || questionText.includes('types')) && questionText.includes('print')) {
 
-            let uniqueQNums = [...new Set(qNumbers)];
+            if (!outText.includes('<class') && !cleanCode.includes('type(')) penalties++;
 
-            if (uniqueQNums.length >= 2) {
+          }
 
-                let codeNums = cleanCode.match(/\b\d+\b/g) || [];
 
-                let usedQNums = uniqueQNums.filter(n => codeNums.includes(n));
 
-                // If it only uses 1 of the numbers, and output is only 1 line, it's definitely partial
+          // Requirement B: "explain" or "why" -> Code must contain a comment
 
-                if (usedQNums.length < uniqueQNums.length && outLines.length < 2) {
+          if (questionText.includes('explain') || questionText.includes('describe') || questionText.includes('why is')) {
 
-                    penalties++;
+            if (!rawCode.includes('#')) penalties++;
 
-                }
+          }
+
+
+
+          // Requirement C: "both" or multiple outputs requested -> Output must have multiple lines
+
+          if (questionText.includes('both results') || questionText.includes('print both') || questionText.includes('compute both')) {
+
+            if (outLines.length < 2) penalties++;
+
+          }
+
+
+
+          // Requirement D: Question provides multiple distinct numbers to compute
+
+          let qNumbers = questionText.match(/\b\d+\b/g) || [];
+
+          let uniqueQNums = [...new Set(qNumbers)];
+
+          if (uniqueQNums.length >= 2) {
+
+            let codeNums = cleanCode.match(/\b\d+\b/g) || [];
+
+            let usedQNums = uniqueQNums.filter(n => codeNums.includes(n));
+
+            // If it only uses 1 of the numbers, and output is only 1 line, it's definitely partial
+
+            if (usedQNums.length < uniqueQNums.length && outLines.length < 2) {
+
+              penalties++;
 
             }
 
+          }
 
 
-            // Apply penalty
 
-            if (penalties > 0) {
+          // Apply penalty
 
-                isCorrectAndRelated = false;
+          if (penalties > 0) {
 
-                isPartialMatch = true; // Signal that it was on the right track but incomplete
+            isCorrectAndRelated = false;
 
-            }
+            isPartialMatch = true; // Signal that it was on the right track but incomplete
+
+          }
 
         }
 
@@ -1704,7 +1704,7 @@ async function runCell(cellId) {
 
             question_id: cellId,
 
-            page_url:    window.location.pathname
+            page_url: window.location.pathname
 
           });
 
@@ -1775,13 +1775,13 @@ async function runCell(cellId) {
 
           let tokens = cleanCode.match(/[a-z_]\w*/g) || [];
 
-          let ignore = ['print','type','len','def','class','import','for','in','if','else','return','and','or','not','the','is','a','to','pass','true','false'];
+          let ignore = ['print', 'type', 'len', 'def', 'class', 'import', 'for', 'in', 'if', 'else', 'return', 'and', 'or', 'not', 'the', 'is', 'a', 'to', 'pass', 'true', 'false'];
 
           tokens.forEach(t => { if (!ignore.includes(t) && qText.includes(t)) overlapCount++; });
 
         }
 
-        
+
 
         if (isPartialMatch || overlapCount >= 1) {
 
@@ -1801,13 +1801,13 @@ async function runCell(cellId) {
 
   } catch (err) {
 
-    try { pyodide.runPython('sys.stdout=sys.__stdout__;sys.stderr=sys.__stderr__'); } catch(e) {}
+    try { pyodide.runPython('sys.stdout=sys.__stdout__;sys.stderr=sys.__stderr__'); } catch (e) { }
 
-    let msg = String(err.message||err);
+    let msg = String(err.message || err);
 
-    let lines = msg.split('\n').filter(l=>!l.includes('pyodide')&&!l.includes('wasm'));
+    let lines = msg.split('\n').filter(l => !l.includes('pyodide') && !l.includes('wasm'));
 
-    output.innerHTML = `<span class="out-label">Error:</span>${esc(lines.join('\n')||msg)}`;
+    output.innerHTML = `<span class="out-label">Error:</span>${esc(lines.join('\n') || msg)}`;
 
     output.classList.add('error');
 
@@ -1856,7 +1856,7 @@ function clearOutput(cellId) {
 
   output.classList.add('hidden');
 
-  output.classList.remove('success','error');
+  output.classList.remove('success', 'error');
 
   label.textContent = 'In [ ]:';
 
@@ -1864,7 +1864,7 @@ function clearOutput(cellId) {
 
 
 
-function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
 
 
@@ -1872,7 +1872,7 @@ function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
 
 let sectionEls = [];
 
-window.refreshTocTracking = function() {
+window.refreshTocTracking = function () {
 
   sectionEls = [];
 
@@ -1884,7 +1884,7 @@ window.refreshTocTracking = function() {
 
       const el = document.getElementById(href.slice(1));
 
-      if (el) sectionEls.push({el, link});
+      if (el) sectionEls.push({ el, link });
 
     }
 
@@ -1898,13 +1898,13 @@ function updateToc() {
 
   let current = null;
 
-  for (const {el, link} of sectionEls) {
+  for (const { el, link } of sectionEls) {
 
     if (el.getBoundingClientRect().top <= 140) current = link;
 
   }
 
-  document.querySelectorAll('.toc-link').forEach(l=>l.classList.remove('active'));
+  document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
 
   if (current) current.classList.add('active');
 
@@ -1924,7 +1924,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const menu = document.getElementById('dayDropdownMenu');
 
-  
+
 
   if (btn && menu) {
 
@@ -1936,7 +1936,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       btn.classList.toggle('open');
 
-      
+
 
       // Auto-scroll to active item
 
@@ -1958,7 +1958,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     });
 
-    
+
 
     // Close on click outside
 
@@ -1994,25 +1994,25 @@ if (handle && sidebar) {
 
     if (!dragging) return;
 
-    const w = Math.max(180,Math.min(400,window.innerWidth-clientX-16));
+    const w = Math.max(180, Math.min(400, window.innerWidth - clientX - 16));
 
-    sidebar.style.width = w+'px';
+    sidebar.style.width = w + 'px';
 
     document.querySelector('.notebook').style.maxWidth = `calc(100% - ${w}px)`;
 
   };
 
-  handle.addEventListener('mousedown', e=>{dragging=true;e.preventDefault()});
+  handle.addEventListener('mousedown', e => { dragging = true; e.preventDefault() });
 
-  handle.addEventListener('touchstart', e=>{dragging=true;e.preventDefault()},{passive:false});
+  handle.addEventListener('touchstart', e => { dragging = true; e.preventDefault() }, { passive: false });
 
-  document.addEventListener('mousemove', e=>onMove(e.clientX));
+  document.addEventListener('mousemove', e => onMove(e.clientX));
 
-  document.addEventListener('touchmove', e=>{if(dragging)onMove(e.touches[0].clientX);},{passive:true});
+  document.addEventListener('touchmove', e => { if (dragging) onMove(e.touches[0].clientX); }, { passive: true });
 
-  document.addEventListener('mouseup', ()=>{dragging=false});
+  document.addEventListener('mouseup', () => { dragging = false });
 
-  document.addEventListener('touchend', ()=>{dragging=false});
+  document.addEventListener('touchend', () => { dragging = false });
 
 }
 
@@ -2082,7 +2082,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const avatarCircle = document.getElementById('avatarCircle');
 
-  
+
 
   if (!avatar || !card || !sbClient) return;
 
@@ -2098,7 +2098,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const metadata = user.user_metadata || {};
 
-    
+
 
     if (metadata.avatar_url) {
 
@@ -2122,7 +2122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     }
 
-    
+
 
     document.getElementById('profileName').textContent = metadata.full_name || 'Developer';
 
@@ -2168,15 +2168,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   avatar.addEventListener('click', toggleCard);
 
-  
+
 
   document.addEventListener('focusout', (e) => {
 
-    if (card.classList.contains('is-open') && 
+    if (card.classList.contains('is-open') &&
 
-        !card.contains(e.relatedTarget) && 
+      !card.contains(e.relatedTarget) &&
 
-        !avatar.contains(e.relatedTarget)) {
+      !avatar.contains(e.relatedTarget)) {
 
       toggleCard();
 
@@ -2214,7 +2214,7 @@ window.showUpgradeToast = (dayTitle) => {
 
   let toast = document.querySelector('.upgrade-toast');
 
-  
+
 
   if (!toast) {
 
@@ -2250,7 +2250,7 @@ window.showUpgradeToast = (dayTitle) => {
 
     document.body.appendChild(toast);
 
-    
+
 
     toast.querySelector('.upgrade-toast__dismiss').addEventListener('click', () => {
 
@@ -2262,15 +2262,15 @@ window.showUpgradeToast = (dayTitle) => {
 
   }
 
-  
+
 
   document.getElementById('toastDayTitle').textContent = dayTitle;
 
-  void toast.offsetWidth; 
+  void toast.offsetWidth;
 
   toast.classList.add('is-visible');
 
-  
+
 
   clearTimeout(toastTimeout);
 
@@ -2290,7 +2290,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!displayEl) return;
 
-  
+
 
   const dayId = getDayId();
 
@@ -2302,7 +2302,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let activeSeconds = parseInt(safeStorageGet(storageKey) || '0', 10);
 
-  
+
 
   let isTimerRunning = false;
 
@@ -2406,7 +2406,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   });
 
-  
+
 
   window.addEventListener('beforeunload', pauseTimer);
 
@@ -2424,7 +2424,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const isPracticeMode = localStorage.getItem(storageKey) === 'true';
 
-  
+
 
   if (isPracticeMode) {
 
@@ -2440,15 +2440,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!tocList) return;
 
-    
+
 
     if (!window.originalTOCHTML) {
 
-        window.originalTOCHTML = tocList.innerHTML;
+      window.originalTOCHTML = tocList.innerHTML;
 
     }
 
-    
+
 
     tocList.innerHTML = '';
 
@@ -2456,95 +2456,95 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sections.forEach((sec, sIdx) => {
 
-        const h2 = sec.querySelector('.nb-rich > h2, h2');
+      const h2 = sec.querySelector('.nb-rich > h2, h2');
 
-        if (h2 && !sec.id.includes('checks')) {
+      if (h2 && !sec.id.includes('checks')) {
 
-            const li = document.createElement('li');
+        const li = document.createElement('li');
 
-            const a = document.createElement('a');
+        const a = document.createElement('a');
 
-            a.href = '#' + sec.id;
+        a.href = '#' + sec.id;
 
-            a.className = 'toc-link';
+        a.className = 'toc-link';
 
-            a.textContent = h2.textContent.replace(/🎯|💻|📊|✅|1\.|2\.|3\.|4\.|5\.|6\.|7\.|8\.|9\.|10\./g, '').trim().split(':')[0];
+        a.textContent = h2.textContent.replace(/🎯|💻|📊|✅|1\.|2\.|3\.|4\.|5\.|6\.|7\.|8\.|9\.|10\./g, '').trim().split(':')[0];
 
-            li.appendChild(a);
+        li.appendChild(a);
 
-            tocList.appendChild(li);
+        tocList.appendChild(li);
+
+      }
+
+
+
+      const questions = sec.querySelectorAll('.question');
+
+      questions.forEach((q, qIdx) => {
+
+        if (!q.id) {
+
+          q.id = (sec.id || 'sec-' + sIdx) + '-q' + qIdx;
 
         }
 
-        
 
-        const questions = sec.querySelectorAll('.question');
 
-        questions.forEach((q, qIdx) => {
+        let fullText = q.textContent.trim();
 
-            if (!q.id) {
+        let match = fullText.match(/^(Q\d+|Task \d+)/i);
 
-                q.id = (sec.id || 'sec-' + sIdx) + '-q' + qIdx;
+        if (match) {
 
-            }
+          fullText = match[0];
 
-            
+        } else if (fullText.length > 35) {
 
-            let fullText = q.textContent.trim();
+          fullText = fullText.substring(0, 35) + '...';
 
-            let match = fullText.match(/^(Q\d+|Task \d+)/i);
+        }
 
-            if (match) {
 
-                fullText = match[0];
 
-            } else if (fullText.length > 35) {
+        const li = document.createElement('li');
 
-                fullText = fullText.substring(0, 35) + '...';
+        li.style.paddingLeft = '12px';
 
-            }
+        li.style.fontSize = '0.9em';
 
-            
+        li.style.opacity = '0.85';
 
-            const li = document.createElement('li');
 
-            li.style.paddingLeft = '12px';
 
-            li.style.fontSize = '0.9em';
+        const a = document.createElement('a');
 
-            li.style.opacity = '0.85';
+        a.href = '#' + q.id;
 
-            
+        a.className = 'toc-link';
 
-            const a = document.createElement('a');
+        if (q.classList.contains('is-solved-box')) {
 
-            a.href = '#' + q.id;
+          a.innerHTML = fullText + '<span class="toc-tick" style="float:right; color:var(--emerald, #10B981); font-weight:900; filter: drop-shadow(0 0 4px rgba(16,185,129,0.6));">✓</span>';
 
-            a.className = 'toc-link';
+        } else {
 
-            if (q.classList.contains('is-solved-box')) {
+          a.textContent = fullText;
 
-                a.innerHTML = fullText + '<span class="toc-tick" style="float:right; color:var(--emerald, #10B981); font-weight:900; filter: drop-shadow(0 0 4px rgba(16,185,129,0.6));">✓</span>';
+        }
 
-            } else {
+        li.appendChild(a);
 
-                a.textContent = fullText;
+        tocList.appendChild(li);
 
-            }
-
-            li.appendChild(a);
-
-            tocList.appendChild(li);
-
-        });
+      });
 
     });
 
-    
+
 
     if (typeof window.refreshTocTracking === 'function') {
 
-        window.refreshTocTracking();
+      window.refreshTocTracking();
 
     }
 
@@ -2562,7 +2562,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   toggleContainer.className = 'mode-toggle-segmented';
 
-  
+
 
   const readBtn = document.createElement('button');
 
@@ -2570,7 +2570,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   readBtn.innerHTML = '📖 Read';
 
-  
+
 
   const practiceBtn = document.createElement('button');
 
@@ -2578,13 +2578,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   practiceBtn.innerHTML = '💻 Practice';
 
-  
+
 
   toggleContainer.appendChild(readBtn);
 
   toggleContainer.appendChild(practiceBtn);
 
-  
+
 
   const sidebarTop = document.querySelector('.sidebar-top');
 
@@ -2592,11 +2592,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (sidebarTop && sidebarHeader) {
 
-      sidebarTop.insertBefore(toggleContainer, sidebarHeader);
+    sidebarTop.insertBefore(toggleContainer, sidebarHeader);
 
   } else {
 
-      document.body.appendChild(toggleContainer);
+    document.body.appendChild(toggleContainer);
 
   }
 
@@ -2608,7 +2608,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (toPractice === isCurrentlyPractice) return;
 
-    
+
 
     if (toPractice) {
 
@@ -2653,18 +2653,18 @@ let symbolHelperBarEl = null;
 
 function initSymbolHelperBar() {
   if (symbolHelperBarEl) return;
-  
+
   symbolHelperBarEl = document.createElement('div');
   symbolHelperBarEl.className = 'symbol-helper-bar';
-  
+
   const symbols = ['[ ]', '{ }', '( )', '=', ':', '#', '.', '_', '→', '**', 'print', 'input', 'len', 'type'];
-  
+
   symbols.forEach(sym => {
     const pill = document.createElement('button');
     pill.className = 'symbol-pill';
     pill.type = 'button';
     pill.textContent = sym;
-    pill.addEventListener('mousedown', function(e) {
+    pill.addEventListener('mousedown', function (e) {
       e.preventDefault();
       if (activeEditorInstance) {
         let insertText = sym;
@@ -2672,22 +2672,22 @@ function initSymbolHelperBar() {
         else if (sym === '{ }') insertText = '{}';
         else if (sym === '( )') insertText = '()';
         else if (sym === '→') insertText = '->';
-        
+
         const doc = activeEditorInstance.getDoc();
         const cursor = doc.getCursor();
         doc.replaceRange(insertText, cursor);
         activeEditorInstance.focus();
-        
+
         if (['[]', '{}', '()'].includes(insertText)) {
-          activeEditorInstance.setCursor({line: cursor.line, ch: cursor.ch + 1});
+          activeEditorInstance.setCursor({ line: cursor.line, ch: cursor.ch + 1 });
         } else {
-          activeEditorInstance.setCursor({line: cursor.line, ch: cursor.ch + insertText.length});
+          activeEditorInstance.setCursor({ line: cursor.line, ch: cursor.ch + insertText.length });
         }
       }
     });
     symbolHelperBarEl.appendChild(pill);
   });
-  
+
   document.body.appendChild(symbolHelperBarEl);
 }
 
@@ -2842,7 +2842,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function injectFocusButtons() {
     focusPairs.forEach((pair, idx) => {
       if (pair.question.querySelector('.focus-btn')) return;
-      
+
       const btn = document.createElement('button');
       btn.className = 'focus-btn';
       btn.type = 'button';
@@ -2851,7 +2851,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation();
         openFocusMode(idx);
       });
-      
+
       // Ensure question has relative positioning
       if (getComputedStyle(pair.question).position === 'static') {
         pair.question.style.position = 'relative';
