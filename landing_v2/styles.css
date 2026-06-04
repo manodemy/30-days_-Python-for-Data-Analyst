@@ -5769,46 +5769,61 @@ button {
 }
 
 /* ==========================================================================
-   SMALL SCREEN OVERRIDES (≤ 576px) — Social proof strip + misc polish
+   MOBILE UI/UX REDESIGN (≤ 768px) — Social proof strip
    ========================================================================== */
-
-@media (max-width: 576px) {
-
-  /* ── Task 2: Social Proof Strip — Force horizontal 4-column layout ── */
+@media (max-width: 768px) {
+  .proof-strip {
+    padding: 1.25rem 0 !important;
+    background: rgba(11, 15, 25, 0.7) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.04) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+  }
   .proof-strip .container {
     display: grid !important;
     grid-template-columns: repeat(4, 1fr) !important;
     gap: 0 !important;
+    padding: 0 8px !important;
   }
   .proof-stat {
-    padding: 10px 4px !important;
-    border-right: 1px solid var(--rim) !important;
-    border-bottom: none !important;
+    padding: 8px 2px !important;
+    border: none !important;
+    position: relative !important;
+    background: transparent !important;
+    transform: none !important;
   }
-  .proof-stat:last-child {
-    border-right: none !important;
-    border-bottom: none !important;
-  }
-  .proof-stat:nth-child(odd) {
-    border-right: 1px solid var(--rim) !important;
-  }
-  .proof-stat:nth-child(n+3) {
-    border-bottom: none !important;
+  .proof-stat:not(:last-child)::after {
+    content: '' !important;
+    position: absolute !important;
+    right: 0 !important;
+    top: 20% !important;
+    height: 60% !important;
+    width: 1px !important;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.08) 50%, transparent) !important;
   }
   .proof-num {
-    font-size: 18px !important;
-    text-shadow: 0 0 12px var(--cyan-glow) !important;
+    font-size: clamp(16px, 4vw, 22px) !important;
+    font-weight: 850 !important;
+    color: var(--cyan) !important;
+    text-shadow: 0 0 15px rgba(0, 230, 246, 0.3) !important;
     display: block !important;
+    line-height: 1.1 !important;
   }
   .proof-label {
-    font-size: 7.5px !important;
-    letter-spacing: 0.04em !important;
-    line-height: 1.2 !important;
-    margin-top: 2px !important;
+    font-size: clamp(7.5px, 1.8vw, 9.5px) !important;
+    font-weight: 700 !important;
+    color: var(--ink-dim) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    line-height: 1.35 !important;
+    margin-top: 5px !important;
     display: block !important;
-    word-break: break-word !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    text-align: center !important;
   }
+}
 
+@media (max-width: 576px) {
   /* ── Task 3: Bullet checklist — Emerald theme + top alignment ── */
   .bullet-icon-wrapper {
     background: rgba(0, 230, 168, 0.12) !important;
