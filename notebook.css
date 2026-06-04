@@ -236,7 +236,7 @@ tbody tr:hover{background:rgba(0,230,246,.03)}
 
 /* ═══════ CODEMIRROR VS CODE DARK THEME ═══════ */
 .CodeMirror{background:var(--code-bg)!important;color:#D4D4D4!important;font-family:var(--font-c)!important;font-size:.88rem!important;line-height:1.6!important;height:auto!important;border:none!important;padding:0!important}
-.CodeMirror-gutters{background:#1E1E1E!important;border-right:1px solid #2d2d2d!important;min-width:40px}
+.CodeMirror-gutters{background:#1E1E1E!important;border-right:1px solid #2d2d2d!important;min-width:26px}
 .CodeMirror-linenumber{color:#858585!important;font-size:.75rem!important;padding:0 8px 0 4px!important}
 .CodeMirror-cursor{border-left:2px solid #AEAFAD!important}
 .CodeMirror-selected{background:rgba(38,79,120,0.6)!important}
