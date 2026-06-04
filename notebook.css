@@ -238,8 +238,8 @@ tbody tr:hover{background:rgba(0,230,246,.03)}
 .CodeMirror{background:var(--code-bg)!important;color:#D4D4D4!important;font-family:var(--font-c)!important;font-size:.88rem!important;line-height:1.6!important;height:auto!important;border:none!important;padding:0!important}
 /* Gutter: override CodeMirror JS inline-width via !important max-width */
 .CodeMirror-gutters{background:#1E1E1E!important;border-right:1px solid #2d2d2d!important}
-.CodeMirror-linenumbers{width:28px!important;max-width:28px!important;min-width:0!important}
-.CodeMirror-linenumber{color:#858585!important;font-size:.7rem!important;padding:0 4px 0 2px!important;min-width:0!important}
+.CodeMirror-linenumbers{width:22px!important;max-width:22px!important;min-width:0!important}
+.CodeMirror-linenumber{color:#858585!important;font-size:.7rem!important;padding:0 3px 0 1px!important;min-width:0!important}
 .CodeMirror-cursor{border-left:2px solid #AEAFAD!important}
 .CodeMirror-selected{background:rgba(38,79,120,0.6)!important}
 .CodeMirror-activeline-background{background:#2a2d2e!important}
