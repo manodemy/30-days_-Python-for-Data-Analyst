@@ -1634,29 +1634,29 @@ body.modal-open nav {
     align-items: center !important;
     justify-content: flex-end !important;
     padding-right: 10px !important;
-    gap: 6px !important;
+    gap: 4px !important;
     flex-shrink: 0 !important;
   }
 
   .nav-controls {
     display: flex !important;
     align-items: center !important;
-    gap: 6px !important;
+    gap: 4px !important;
   }
 
   /* Dashboard button styling on mobile */
   .scorecard-btn {
     height: 32px !important;
-    padding: 0 10px !important;
+    padding: 0 8px !important;
     background: rgba(255, 255, 255, 0.03) !important;
     border: 1px solid rgba(255, 255, 255, 0.06) !important;
     border-radius: 8px !important;
-    font-size: 0.72rem !important;
+    font-size: 0.68rem !important;
     font-weight: 600 !important;
     color: #94A3B8 !important;
     display: flex !important;
     align-items: center !important;
-    gap: 4px !important;
+    gap: 3px !important;
     text-transform: none !important;
     box-shadow: none !important;
   }
@@ -1675,8 +1675,8 @@ body.modal-open nav {
   #navStartCodingBtn,
   #navCountdownTimer {
     height: 32px !important;
-    padding: 0 12px !important;
-    font-size: 0.72rem !important;
+    padding: 0 10px !important;
+    font-size: 0.68rem !important;
     font-weight: 800 !important;
     border-radius: 8px !important;
     display: inline-flex !important;
