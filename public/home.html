@@ -7173,11 +7173,11 @@
 
           let sub;
 
-          if (totalSolvedCount >= 1334) sub = "You're in elite territory! Python mastery is within reach! 🏆"; // 80%+
+          if (totalSolvedCount >= Math.round(0.8 * TOTAL_CHALLENGES)) sub = "You're in elite territory! Python mastery is within reach! 🏆"; // 80%+
 
-          else if (totalSolvedCount >= 834) sub = "Incredible progress — you're clearly built for this! 🔥"; // 50%+
+          else if (totalSolvedCount >= Math.round(0.5 * TOTAL_CHALLENGES)) sub = "Incredible progress — you're clearly built for this! 🔥"; // 50%+
 
-          else if (totalSolvedCount >= 417) sub = "Quarter-way through the full curriculum! Skills compounding fast! ⚡"; // 25%+
+          else if (totalSolvedCount >= Math.round(0.25 * TOTAL_CHALLENGES)) sub = "Quarter-way through the full curriculum! Skills compounding fast! ⚡"; // 25%+
 
           else if (totalSolvedCount >= 100) sub = "Solid momentum! Each challenge makes you sharper! 🚀";
 
@@ -7882,7 +7882,7 @@
         const sections = [];
         for (let d = 1; d <= 30; d++) {
           const best = parseFloat(localStorage.getItem(`manodemy_day${d}_best_score`) || '0');
-          const maxXP = parseFloat((1000 * challengesPerDay[d] / 1668).toFixed(2));
+          const maxXP = parseFloat((1000 * challengesPerDay[d] / TOTAL_CHALLENGES).toFixed(2));
           sections.push({
             day: d,
             label: `Day ${String(d).padStart(2, '0')}`,
