@@ -17,7 +17,7 @@
   <link rel="dns-prefetch" href="https://erqoyvbuhmkyvcqgwcbz.supabase.co">
   
   <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;family=DM+Mono:wght@300;400;500&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@300;400;500&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap"
     rel="stylesheet" media="print" onload="this.media='all'" />
   <style>
     /* ─────────────────────────────────────────────
@@ -32,10 +32,10 @@
       --rim: rgba(255, 255, 255, 0.06);
       --rim-strong: rgba(255, 255, 255, 0.10);
 
-      --gold: #C9A84C;
-      --gold-dim: #A07830;
-      --gold-glow: rgba(201, 168, 76, 0.15);
-      --gold-subtle: rgba(201, 168, 76, 0.06);
+      --gold: #00E6F6;
+      --gold-dim: #00B8C4;
+      --gold-glow: rgba(0, 230, 246, 0.15);
+      --gold-subtle: rgba(0, 230, 246, 0.06);
 
       --emerald: #2DD4BF;
       --rose: #F87171;
@@ -46,9 +46,9 @@
       --ink-dim: #A8A090;
       --ink-muted: #60584E;
 
-      --font-display: 'Fraunces', Georgia, serif;
-      --font-data: 'DM Mono', 'Courier New', monospace;
-      --font-body: 'DM Sans', system-ui, sans-serif;
+      --font-display: 'Outfit', system-ui, sans-serif;
+      --font-data: 'JetBrains Mono', 'Courier New', monospace;
+      --font-body: 'Inter', system-ui, sans-serif;
 
       --radius-sm: 4px;
       --radius-md: 8px;
@@ -56,7 +56,7 @@
       --radius-xl: 20px;
 
       --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.5), 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      --shadow-gold: 0 0 40px rgba(201, 168, 76, 0.12), 0 0 80px rgba(201, 168, 76, 0.06);
+      --shadow-gold: 0 0 40px rgba(0, 230, 246, 0.12), 0 0 80px rgba(0, 230, 246, 0.06);
 
       --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -3671,13 +3671,13 @@
   <!-- External JS Dependencies (Moved from head for PageSpeed optimisation) -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="supabase.js"></script>
+  <script src="supabase.js" defer></script>
   <script defer src="chart.js"></script>
 
   <script>
     const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
     const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
-    const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+    let sb;
 
     let INR_TO_USD_RATE = parseFloat(localStorage.getItem('bd_inr_usd_rate')) || 83.5;
     document.getElementById('inrUsdRate').value = INR_TO_USD_RATE;
@@ -4669,11 +4669,14 @@
     // ── EVENTS ───────────────────────────────────────
     document.querySelectorAll('.nav-item').forEach(item => {
       item.addEventListener('click', () => {
+        const tabId = item.dataset.tab;
+        
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
-        item.classList.add('active');
         
-        const tabId = item.dataset.tab;
+        // Activate all nav-items matching this tab (syncing bottom tabs & sidebar)
+        document.querySelectorAll(`.nav-item[data-tab="${tabId}"]`).forEach(n => n.classList.add('active'));
+        
         document.getElementById(tabId).classList.add('active');
         
         // Hide global filter bar on Engagement and Reviews pages since they handle self-filtered / all-time data
@@ -5491,6 +5494,7 @@
 
     window.addEventListener('load', () => {
       (async function init() {
+        sb = supabase.createClient(SUPA_URL, SUPA_KEY);
         if (!(await guardAdmin())) return;
         setPresetDates('all_time');
         applyFilters();

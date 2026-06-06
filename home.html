@@ -22,16 +22,16 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
-  <!-- Supabase SDK (Required immediately for Route Paywall Guard) -->
-  <script src="supabase.js"></script>
+  <!-- Supabase SDK (deferred — no longer render-blocking) -->
+  <script src="supabase.js" defer></script>
 
 
 
-  <!-- Route Paywall Guard -->
+  <!-- Route Paywall Guard (runs after deferred SDK loads) -->
 
   <script>
 
-    (async function Guard() {
+    document.addEventListener('DOMContentLoaded', async function Guard() {
 
       try {
 
@@ -97,7 +97,8 @@
 
       }
 
-    })();
+    });
+
 
   </script>
 

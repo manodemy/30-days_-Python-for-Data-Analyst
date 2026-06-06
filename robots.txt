@@ -5,5 +5,7 @@ Disallow: /supabase/
 Disallow: /admin.html
 Disallow: /admin/
 Disallow: /video_pipeline/
+Disallow: /scratch/
+Disallow: /__pycache__/
 
-Sitemap: https://manodemy.com/sitemap.xml
+Sitemap: https://www.manodemy.com/sitemap.xml

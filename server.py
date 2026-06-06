@@ -403,27 +403,33 @@ def build_page(day_num, title, body, secs, cells):
         active = 'active' if i == day_num else ''
         dropdown_list += f'<a href="day{i:02d}.html" class="dropdown-item {active}"><span class="day-num">Day {i:02d}</span> <span class="day-em">{e}</span> {t}</a>\n'
 
+    noindex_tag = '<meta name="robots" content="noindex, nofollow">' if day_num >= 3 else ''
+
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day {dd}: {title} — Manodemy</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- Authentication + Enrollment Route Guard -->
+<meta name="description" content="Day {dd}: {title} — Interactive Python coding workbook with hands-on challenges. Part of Manodemy's 30-Day Python for Data Analyst course.">
+{noindex_tag}
+<!-- Performance: Preconnect to critical origins -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://erqoyvbuhmkyvcqgwcbz.supabase.co">
+<!-- Supabase SDK (deferred — no longer render-blocking) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<!-- Authentication + Enrollment Route Guard (runs after deferred SDK loads) -->
 <script>
-  // PaywallGuard — executes before DOM render
-  (async function PaywallGuard() {{
+  document.addEventListener('DOMContentLoaded', async function PaywallGuard() {{
     const currentPath = window.location.pathname;
     const isProtectedDay = currentPath.match(/day(0[3-9]|[1-2][0-9]|30)\\.html/);
 
     const removePreload = () => {{
       const p = document.getElementById('paywall-preload-screen');
       if (p) p.remove();
-      else document.addEventListener('DOMContentLoaded', () => {{
-        const p2 = document.getElementById('paywall-preload-screen');
-        if (p2) p2.remove();
-      }});
     }};
 
     if (!isProtectedDay) {{
@@ -472,14 +478,15 @@ def build_page(day_num, title, body, secs, cells):
     }} catch (err) {{
       window.location.href = `index.html`;
     }}
-  }})();
+  }});
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Non-render-blocking fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 <link rel="stylesheet" href="notebook.css">
 <!-- PWA Web App Manifest and Mobile Capabilities -->
 <link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#060913">

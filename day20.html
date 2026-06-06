@@ -4,23 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day 20: Capstone Project — Manodemy</title>
+<meta name="description" content="Day 20: Capstone Project — Interactive Python coding workbook with hands-on challenges. Part of Manodemy's 30-Day Python for Data Analyst course.">
+<meta name="robots" content="noindex, nofollow">
+<!-- Performance: Preconnect to critical origins -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://erqoyvbuhmkyvcqgwcbz.supabase.co">
+<!-- Supabase SDK (deferred — no longer render-blocking) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<!-- Authentication + Enrollment Route Guard (REST-based Performance Optimized) -->
+<!-- Authentication + Enrollment Route Guard (runs after deferred SDK loads) -->
 <script>
-  // PaywallGuard — executes before DOM render (REST-based, non-blocking)
-  (async function PaywallGuard() {
+  document.addEventListener('DOMContentLoaded', async function PaywallGuard() {
     const currentPath = window.location.pathname;
     const isProtectedDay = currentPath.match(/day(0[3-9]|[1-2][0-9]|30)\.html/);
 
     const removePreload = () => {
       const p = document.getElementById('paywall-preload-screen');
       if (p) p.remove();
-      else document.addEventListener('DOMContentLoaded', () => {
-        const p2 = document.getElementById('paywall-preload-screen');
-        if (p2) p2.remove();
-      });
     };
 
     if (!isProtectedDay) {
@@ -29,81 +31,55 @@
     }
 
     try {
-      // Helper to extract access token from localStorage or cookies
-      const getAccessToken = () => {
-        try {
-          const key = Object.keys(localStorage).find(k => k.includes('auth-token'));
-          if (key) {
-            const parsed = JSON.parse(localStorage.getItem(key));
-            return parsed?.access_token || null;
-          }
-        } catch (e) {}
-        const match = document.cookie.match(/(^| )sb-access-token=([^;]+)/);
-        return match ? decodeURIComponent(match[2]) : null;
-      };
-
-      const token = getAccessToken();
-      if (!token) {
-        window.location.href = `index.html?redirect=${encodeURIComponent(currentPath)}`;
+      if (typeof window.supabase === 'undefined') {
+        window.location.href = 'index.html?reason=sdk_blocked';
         return;
       }
-
       const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
       const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
-
-      // 1. Verify session JWT via fetch directly to Supabase REST Auth API
-      const userRes = await fetch(`${SUPA_URL}/auth/v1/user`, {
-        headers: {
-          'apikey': SUPA_KEY,
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (!userRes.ok) {
+      const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+      
+      const { data: { session }, error } = await sb.auth.getSession();
+      
+      if (error || !session) {
         window.location.href = `index.html?redirect=${encodeURIComponent(currentPath)}`;
         return;
       }
-
-      const userData = await userRes.json();
-      const plan = userData?.user_metadata?.plan;
-
-      if (plan === 'pro') {
+      
+      const plan = session.user.user_metadata?.plan;
+      const isEnrolledLocal = localStorage.getItem('manodemy_enrolled') === 'true';
+      
+      if (plan === 'pro' || isEnrolledLocal) {
         removePreload();
         return;
       }
-
-      // 2. Fallback: verify enrollment server-side via Supabase RPC via REST fetch
-      const rpcRes = await fetch(`${SUPA_URL}/rest/v1/rpc/check_enrollment`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPA_KEY,
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ p_course_id: 'python-30day' })
-      });
-
-      if (rpcRes.ok) {
-        const enrolled = await rpcRes.json();
+      
+      // Fallback: verify enrollment server-side via Supabase RPC
+      try {
+        const { data: enrolled } = await sb.rpc('check_enrollment', { p_course_id: 'python-30day' });
         if (enrolled) {
+          localStorage.setItem('manodemy_enrolled', 'true');
           removePreload();
           return;
         }
+      } catch (rpcErr) {
+        // RPC failed — don't grant access
       }
-
+      
       window.location.href = `index.html#pricing?locked=true`;
-
+      
     } catch (err) {
       window.location.href = `index.html`;
     }
-  })();
+  });
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Non-render-blocking fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
-<link rel="stylesheet" href="notebook.css?v=27">
+<link rel="stylesheet" href="notebook.css">
 <!-- PWA Web App Manifest and Mobile Capabilities -->
 <link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#060913">
@@ -218,7 +194,7 @@
   <button class="profile-card__signout" id="signOutBtn">Sign Out</button>
 </div>
 
-<div class="pyodide-status" id="pyStatus" aria-live="polite">⏳ Loading Python Engine...</div>
+<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
 <div class="layout">
   <main class="notebook" id="notebook">
     <div class="nb-title"><h1>📊 Day 20 : Capstone Project</h1></div>
@@ -734,8 +710,7 @@ if match:
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
 <script defer src="notebook.js?v=2.1"></script>
-<script src="voice.js" defer></script>
-
+<script src="voice.js" defer></script>
 <script src="hints.js" defer></script>
 
 <!-- PWA Service Worker Registration -->

@@ -1,9 +1,11 @@
-const CACHE_NAME = 'manodemy-static-cache-v26';
-const DYNAMIC_CACHE_NAME = 'manodemy-dynamic-cache-v26';
+const CACHE_NAME = 'manodemy-static-cache-v27';
+const DYNAMIC_CACHE_NAME = 'manodemy-dynamic-cache-v27';
 
 // Static assets to precache immediately (only truly stable assets)
 const PRECACHE_ASSETS = [
   '/favicon.ico',
+  '/icon-192x192.png',
+  '/icon-512x512.png',
   '/chart.js',
   '/supabase.js',
   '/landing_v2/reviews.js'
