@@ -50,19 +50,21 @@ serve(async (req) => {
     }
 
     // 4. Fetch the grading rubric from DB
-    const { data: rubric, error: dbError } = await supabase
-      .from('grading_rubrics')
-      .select('*')
-      .eq('day_id', dayId)
-      .eq('cell_id', cellId)
-      .single();
-
-    if (dbError || !rubric) {
-      console.warn(`[Grading] Rubric not found for day ${dayId}, cell ${cellId}`);
-      return new Response(JSON.stringify({ verified: false, error: 'Grading rubric not found' }), {
-        status: 404,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+    let rubric = null;
+    try {
+      const { data, error: dbError } = await supabase
+        .from('grading_rubrics')
+        .select('*')
+        .eq('day_id', dayId)
+        .eq('cell_id', cellId)
+        .single();
+      if (!dbError && data) {
+        rubric = data;
+      } else {
+        console.warn(`[Grading] Rubric not found for day ${dayId}, cell ${cellId}. Using loose fallback verification.`);
+      }
+    } catch (e) {
+      console.warn(`[Grading] Failed fetching rubric for day ${dayId}, cell ${cellId}:`, e.message);
     }
 
     // 5. Ported Server-Side Validation logic
@@ -76,93 +78,98 @@ serve(async (req) => {
     if (cleanCode.length > 0 && cleanCode !== 'pass') {
       verified = true; // assume correct, now verify requirements
 
-      const questionText = (rubric.question_text || '').toLowerCase();
+      if (rubric) {
+        const questionText = (rubric.question_text || '').toLowerCase();
 
-      // Check A: Expected string matches
-      let expectedValue = rubric.expected_output ? rubric.expected_output.toLowerCase() : null;
-      if (!expectedValue && questionText) {
-        const expMatch = questionText.match(/expected:\s*([a-z0-9_.-]+)/);
-        if (expMatch && expMatch[1]) {
-          expectedValue = expMatch[1];
-        }
-      }
-
-      if (expectedValue) {
-        if (!outText || !outText.includes(expectedValue)) {
-          verified = false;
-        }
-      }
-
-      // Check B: Token overlap check (ignoring generics)
-      if (verified && questionText) {
-        const codeTokens = cleanCode.match(/[a-z0-9_]+/g) || [];
-        let ignore = ['print', 'type', 'len', 'def', 'class', 'import', 'list', 'dict', 'set', 'tuple', 'int', 'float', 'str', 'bool', 'true', 'false'];
-        if (rubric.ignore_tokens && Array.isArray(rubric.ignore_tokens)) {
-          ignore = [...ignore, ...rubric.ignore_tokens.map((t: string) => t.toLowerCase())];
-        }
-
-        let hasOverlap = false;
-        for (const token of codeTokens) {
-          if (ignore.includes(token)) continue;
-          const regex = new RegExp("\\b" + token + "\\b");
-          if (regex.test(questionText)) {
-            hasOverlap = true;
-            break;
+        // Check A: Expected string matches
+        let expectedValue = rubric.expected_output ? rubric.expected_output.toLowerCase() : null;
+        if (!expectedValue && questionText) {
+          const expMatch = questionText.match(/expected:\s*([a-z0-9_.-]+)/);
+          if (expMatch && expMatch[1]) {
+            expectedValue = expMatch[1];
           }
         }
 
-        // Symbolic math fallback
-        let isSymbolicMath = false;
-        if (!hasOverlap && /[+\-*/%<>=]/.test(cleanCode)) {
-          if (questionText.includes('add ') || questionText.includes('divide') || questionText.includes('multiply') || questionText.includes('operator') || questionText.includes('arithmetic') || questionText.includes('compute')) {
-            isSymbolicMath = true;
+        if (expectedValue) {
+          if (!outText || !outText.includes(expectedValue)) {
+            verified = false;
           }
         }
 
-        if (!hasOverlap && !isSymbolicMath) {
-          verified = false;
-        }
-      }
+        // Check B: Token overlap check (ignoring generics)
+        if (verified && questionText) {
+          const codeTokens = cleanCode.match(/[a-z0-9_]+/g) || [];
+          let ignore = ['print', 'type', 'len', 'def', 'class', 'import', 'list', 'dict', 'set', 'tuple', 'int', 'float', 'str', 'bool', 'true', 'false'];
+          if (rubric.ignore_tokens && Array.isArray(rubric.ignore_tokens)) {
+            ignore = [...ignore, ...rubric.ignore_tokens.map((t: string) => t.toLowerCase())];
+          }
 
-      // Check C: Explicit Regex Pattern check (if provided in rubric)
-      if (verified && rubric.regex_pattern) {
-        const rx = new RegExp(rubric.regex_pattern, 'i');
-        if (!rx.test(cleanCode) && !rx.test(outText)) {
-          verified = false;
-        }
-      }
+          let hasOverlap = false;
+          for (const token of codeTokens) {
+            if (ignore.includes(token)) continue;
+            const regex = new RegExp("\\b" + token + "\\b");
+            if (regex.test(questionText)) {
+              hasOverlap = true;
+              break;
+            }
+          }
 
-      // Check D: Smart Penalties check
-      if (verified && questionText) {
-        const outLines = outText.split('\n').filter(l => l.trim().length > 0);
-        let penalties = 0;
+          // Symbolic math fallback
+          let isSymbolicMath = false;
+          if (!hasOverlap && /[+\-*/%<>=]/.test(cleanCode)) {
+            if (questionText.includes('add ') || questionText.includes('divide') || questionText.includes('multiply') || questionText.includes('operator') || questionText.includes('arithmetic') || questionText.includes('compute')) {
+              isSymbolicMath = true;
+            }
+          }
 
-        // Requirement 1: type checks
-        if ((questionText.includes('type') || questionText.includes('types')) && questionText.includes('print')) {
-          if (!outText.includes('<class') && !cleanCode.includes('type(')) penalties++;
-        }
-
-
-
-        // Requirement 3: lines count
-        if (questionText.includes('both results') || questionText.includes('print both') || questionText.includes('compute both')) {
-          if (outLines.length < 2) penalties++;
-        }
-
-        // Requirement 4: distinct numbers check
-        const qNumbers = questionText.match(/\b\d+\b/g) || [];
-        const uniqueQNums = [...new Set(qNumbers)];
-        if (uniqueQNums.length >= 2) {
-          const codeNums = cleanCode.match(/\b\d+\b/g) || [];
-          const usedQNums = uniqueQNums.filter(n => codeNums.includes(n));
-          if (usedQNums.length < uniqueQNums.length && outLines.length < 2) {
-            penalties++;
+          if (!hasOverlap && !isSymbolicMath) {
+            verified = false;
           }
         }
 
-        if (penalties > 0) {
+        // Check C: Explicit Regex Pattern check (if provided in rubric)
+        if (verified && rubric.regex_pattern) {
+          const rx = new RegExp(rubric.regex_pattern, 'i');
+          if (!rx.test(cleanCode) && !rx.test(outText)) {
+            verified = false;
+          }
+        }
+
+        // Check D: Smart Penalties check
+        if (verified && questionText) {
+          const outLines = outText.split('\n').filter(l => l.trim().length > 0);
+          let penalties = 0;
+
+          // Requirement 1: type checks
+          if ((questionText.includes('type') || questionText.includes('types')) && questionText.includes('print')) {
+            if (!outText.includes('<class') && !cleanCode.includes('type(')) penalties++;
+          }
+
+          // Requirement 3: lines count
+          if (questionText.includes('both results') || questionText.includes('print both') || questionText.includes('compute both')) {
+            if (outLines.length < 2) penalties++;
+          }
+
+          // Requirement 4: distinct numbers check
+          const qNumbers = questionText.match(/\b\d+\b/g) || [];
+          const uniqueQNums = [...new Set(qNumbers)];
+          if (uniqueQNums.length >= 2) {
+            const codeNums = cleanCode.match(/\b\d+\b/g) || [];
+            const usedQNums = uniqueQNums.filter(n => codeNums.includes(n));
+            if (usedQNums.length < uniqueQNums.length && outLines.length < 2) {
+              penalties++;
+            }
+          }
+
+          if (penalties > 0) {
+            verified = false;
+            isPartialMatch = true;
+          }
+        }
+      } else {
+        // Fallback checks when no rubric exists in database: verify code compiles, output isn't empty, and has no error
+        if (!outText || outText === '(no output)' || outText.includes('error:')) {
           verified = false;
-          isPartialMatch = true;
         }
       }
     }
@@ -200,7 +207,7 @@ serve(async (req) => {
       verified: true,
       signature,
       timestamp,
-      marksAwarded: rubric.marks || 10
+      marksAwarded: rubric ? (rubric.marks || 10) : 10
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });

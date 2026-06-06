@@ -497,11 +497,17 @@ function initializeNotebook() {
               const solvedCellsList = dayData.solved_cells || [];
               let hasChanges = false;
 
+              const isChallengeOpen = isChallengeActive();
+
               Object.keys(editors).forEach(cellId => {
                 const isSolvedInDb = solvedCellsList.includes(cellId);
                 const localSolved = safeStorageGet(`manodemy_${dayId}_${cellId}_solved`) === 'true';
                 
                 if (localSolved !== isSolvedInDb) {
+                  if (isChallengeOpen && !isSolvedInDb) {
+                    // Do not delete local active solves during the challenge
+                    return;
+                  }
                   hasChanges = true;
                   safeStorageSet(`manodemy_${dayId}_${cellId}_solved`, isSolvedInDb ? 'true' : 'false');
                   safeStorageSet(`manodemy_${dayId}_${cellId}_graded_solved`, isSolvedInDb ? 'true' : 'false');
@@ -519,9 +525,11 @@ function initializeNotebook() {
                 }
               });
 
-              const dbSolvedCountStr = dayData.solved_count.toString();
-              if (safeStorageGet(`manodemy_${dayId}_solved_count`) !== dbSolvedCountStr) {
-                safeStorageSet(`manodemy_${dayId}_solved_count`, dbSolvedCountStr);
+              const currentSolvedCount = parseInt(safeStorageGet(`manodemy_${dayId}_solved_count`) || '0', 10);
+              const finalSolvedCount = isChallengeOpen ? Math.max(currentSolvedCount, dayData.solved_count) : dayData.solved_count;
+              
+              if (safeStorageGet(`manodemy_${dayId}_solved_count`) !== finalSolvedCount.toString()) {
+                safeStorageSet(`manodemy_${dayId}_solved_count`, finalSolvedCount.toString());
                 hasChanges = true;
               }
 

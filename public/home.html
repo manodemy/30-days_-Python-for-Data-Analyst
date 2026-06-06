@@ -6298,12 +6298,31 @@
               const dayData = progress[dayId] || { solved_count: 0, solved_cells: [] };
               const count = dayData.solved_count || 0;
               
-              localStorage.setItem(`manodemy_${dayId}_solved_count`, count.toString());
+              // Prevent overwriting active challenge progress if a challenge is currently running
+              const startTimeStr = localStorage.getItem(`manodemy_${dayId}_start_time`);
+              let isChallengeActive = false;
+              if (startTimeStr) {
+                const startTime = parseInt(startTimeStr, 10);
+                isChallengeActive = (Date.now() - startTime) < 24 * 3600 * 1000;
+              }
+
+              const localCount = parseInt(localStorage.getItem(`manodemy_${dayId}_solved_count`) || '0', 10);
+              const finalCount = isChallengeActive ? Math.max(localCount, count) : count;
+              
+              localStorage.setItem(`manodemy_${dayId}_solved_count`, finalCount.toString());
               
               // Calculate score exactly matching dashboard XP system
-              const score = 1000 * (count / TOTAL_CHALLENGES);
-              localStorage.setItem(`manodemy_day${item.day}_best_score`, score.toFixed(2));
-              localStorage.setItem(`manodemy_${dayId}_best_solved`, count.toString());
+              const score = 1000 * (finalCount / TOTAL_CHALLENGES);
+              
+              // Only merge local best score if the challenge is actively running; otherwise lock to DB verified score
+              const localBestScore = parseFloat(localStorage.getItem(`manodemy_day${item.day}_best_score`) || '0');
+              const finalBestScore = isChallengeActive ? Math.max(score, localBestScore) : score;
+              
+              localStorage.setItem(`manodemy_day${item.day}_best_score`, finalBestScore.toFixed(2));
+              
+              const localBestSolved = parseInt(localStorage.getItem(`manodemy_${dayId}_best_solved`) || '0', 10);
+              const finalBestSolved = isChallengeActive ? Math.max(finalCount, localBestSolved) : finalCount;
+              localStorage.setItem(`manodemy_${dayId}_best_solved`, finalBestSolved.toString());
             });
           }
         } catch (err) {
