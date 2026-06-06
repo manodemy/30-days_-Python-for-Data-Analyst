@@ -64,6 +64,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);padding-to
 .score-slash{margin:0 2px;color:rgba(255,255,255,0.15)}
 .score-track{height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
 .score-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));transition:width 0.4s cubic-bezier(0.4, 0, 0.2, 1);box-shadow:0 0 10px var(--cyan);border-radius:2px}
+/* ── Backwards-compat for old HTML score-card structure (before JS rewrites it) ── */
+.score-info{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:2px}
+.score-values{font:500 0.8rem var(--font-c);color:var(--muted);white-space:nowrap}
 
 /* ═══════ ENGAGEMENT TIMER CARD ═══════ */
 .nav-timer-card {

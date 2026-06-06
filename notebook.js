@@ -728,13 +728,34 @@ function initializeNotebook() {
 if (typeof window !== 'undefined') {
   window.initializeNotebook = initializeNotebook;
   
-  // For static HTML day pages, run on DOMContentLoaded or immediately
+  // For static HTML day pages, wait for window.load so all defer scripts (CodeMirror) are ready
   const isNextJS = !!window.next || !!document.getElementById('__NEXT_DATA__');
   if (!isNextJS) {
+    // Poll for CodeMirror availability — deferred scripts may load slightly after DOMContentLoaded
+    const _waitForCodeMirror = (attempts) => {
+      if (typeof CodeMirror !== 'undefined') {
+        // CodeMirror is ready; also ensure DOM is parsed
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initializeNotebook, { once: true });
+        } else {
+          initializeNotebook();
+        }
+      } else if (attempts > 0) {
+        setTimeout(() => _waitForCodeMirror(attempts - 1), 80);
+      } else {
+        console.warn('[Notebook] CodeMirror not available after polling — initializing anyway.');
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initializeNotebook, { once: true });
+        } else {
+          initializeNotebook();
+        }
+      }
+    };
+    // Start polling once DOM content is available
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initializeNotebook);
+      document.addEventListener('DOMContentLoaded', () => _waitForCodeMirror(100), { once: true });
     } else {
-      initializeNotebook();
+      _waitForCodeMirror(100);
     }
   }
 }
@@ -1251,9 +1272,10 @@ function setupGamifiedMarkingSystem() {
 
     `;
 
-    updateScore();
-
   }
+
+  // Always update the score display (whether HTML was rewritten or already correct)
+  updateScore();
 
 
 
@@ -1548,6 +1570,18 @@ async function runCell(cellId) {
   const cell = document.getElementById(cellId);
 
   const cm = editors[cellId];
+
+  // Guard: if editor isn't initialized yet (e.g., CodeMirror failed to load), show a warning
+  if (!cm) {
+    const output = cell ? cell.querySelector('.cell-output') : null;
+    if (output) {
+      output.innerHTML = '<span class="out-label">Error:</span>Editor not initialized. Please refresh the page.';
+      output.classList.remove('hidden', 'success');
+      output.classList.add('error');
+    }
+    console.error('[Notebook] Editor not found for cell:', cellId, '- CodeMirror may not have loaded.');
+    return;
+  }
 
   const output = cell.querySelector('.cell-output');
 

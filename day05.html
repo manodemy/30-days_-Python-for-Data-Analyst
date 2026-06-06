@@ -76,7 +76,7 @@
 <!-- Non-render-blocking fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
-<link rel="stylesheet" href="/notebook.css">
+<link rel="stylesheet" href="/notebook.css?v=3.0">
 <!-- PWA Web App Manifest and Mobile Capabilities -->
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png">
@@ -105,9 +105,16 @@
 
     <!-- Score Card -->
     <div class="nav-score-card">
-      <div class="score-info">
-        <span class="score-label">Solved</span>
-        <span class="score-values"><span id="scoreSolved" class="score-highlight">0</span> / <span id="scoreTotal">0</span></span>
+      <div class="score-grid">
+        <div class="score-col">
+          <span class="score-label">Solved</span>
+          <span class="score-val"><span id="scoreSolved" class="score-highlight">0</span><span class="score-slash">/</span><span id="scoreTotal">0</span></span>
+        </div>
+        <div class="score-divider"></div>
+        <div class="score-col">
+          <span class="score-label">Marks</span>
+          <span class="score-val"><span id="scoreXPEarned" class="score-highlight">0.0</span><span class="score-slash">/</span><span id="scoreMaxXP">0.0</span></span>
+        </div>
       </div>
       <div class="score-track"><div class="score-fill" id="scoreProgress" style="width:0%"></div></div>
     </div>
@@ -1026,7 +1033,7 @@ print((2, &#x27;a&#x27;) &lt; (1, &#x27;z&#x27;))  # False — first element dec
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script defer src="/notebook.js?v=2.1"></script>
+<script defer src="/notebook.js?v=3.0"></script>
 <script src="/voice.js" defer></script>
 
 <script src="/hints.js" defer></script>
