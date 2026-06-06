@@ -1896,6 +1896,8 @@ window.refreshTocTracking = function () {
 
 };
 
+let lastActiveLink = null;
+
 function updateToc() {
 
   let current = null;
@@ -1906,9 +1908,17 @@ function updateToc() {
 
   }
 
-  document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
-
-  if (current) current.classList.add('active');
+  if (current !== lastActiveLink) {
+    document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+    if (current) {
+      current.classList.add('active');
+      // Auto-scroll sidebar container to keep active link in view (web only)
+      if (window.innerWidth >= 769) {
+        current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+    lastActiveLink = current;
+  }
 
 }
 
