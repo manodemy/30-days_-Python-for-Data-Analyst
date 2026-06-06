@@ -195,6 +195,11 @@ let statusEl = null;
 
 // Wrap initialization in a function to run after React hydration in Next.js
 function initializeNotebook() {
+  const preloadEl = document.getElementById('paywall-preload-screen');
+  if (preloadEl) {
+    preloadEl.remove();
+  }
+
   statusEl = document.getElementById('pyStatus');
   if (statusEl) {
     statusEl.setAttribute('aria-live', 'polite');
