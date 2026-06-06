@@ -1,20 +1,16 @@
 /**
- * Manodemy Intelligence Suite — Telemetry Engine v3
- * Market-standard visit & engagement tracking.
+ * Manodemy Intelligence Suite — Telemetry Engine v3.1 (Resilient Offline Queue)
+ * Market-standard visit & engagement tracking with offline queuing support.
  *
  * VISIT COUNTING LOGIC (GA4-style):
  *   - A "visit" = one session. Session resets after 30 min of inactivity.
  *   - Every page load within the same session shares the same session_id.
- *   - Sessions are stored in sessionStorage (NOT localStorage), so:
- *       * New browser tab = new session
- *       * Incognito window = new session
- *       * Closing & reopening browser = new session
+ *   - Sessions are stored in sessionStorage (NOT localStorage).
  *
  * TIME SPENT LOGIC (Market-standard):
  *   - Active time only — pauses when tab is hidden (visibilitychange).
  *   - Tracks active_seconds accurately using periodic heartbeats every 30s.
  *   - Final flush on page unload using fetch keepalive.
- *   - Minimum 5s engagement threshold to filter accidental flickers.
  */
 (function () {
   if (window.ManodemyTelemetry) return; // Already initialized
@@ -23,16 +19,152 @@
   const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 min inactivity = new session
   const HEARTBEAT_INTERVAL_MS = 30 * 1000;   // Heartbeat every 30s
   const MIN_ENGAGEMENT_SECS = 5;             // Ignore < 5s sessions
+  const MAX_QUEUE_SIZE = 100;                // Max items in offline queue
+  const DB_NAME = 'ManodemyTelemetryDB';
+  const STORE_NAME = 'telemetry_queue';
+  const LS_KEY = 'manodemy_telemetry_queue';
+
+  // ── IndexedDB Helpers ───────────────────────────────────────────────────────
+  function openDB() {
+    return new Promise((resolve, reject) => {
+      if (!window.indexedDB) {
+        reject(new Error('IndexedDB not supported'));
+        return;
+      }
+      const request = indexedDB.open(DB_NAME, 1);
+      request.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+        }
+      };
+      request.onsuccess = (e) => resolve(e.target.result);
+      request.onerror = (e) => reject(e.target.error);
+    });
+  }
+
+  async function getQueueIndexedDB() {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(STORE_NAME, 'readonly');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.getAll();
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async function pushQueueIndexedDB(item) {
+    const db = await openDB();
+    const current = await getQueueIndexedDB();
+    if (current.length >= MAX_QUEUE_SIZE) {
+      await deleteQueueIndexedDB(current[0].id);
+    }
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(STORE_NAME, 'readwrite');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.add(item);
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async function deleteQueueIndexedDB(id) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(STORE_NAME, 'readwrite');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.delete(id);
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  // ── LocalStorage Fallback Helpers ──────────────────────────────────────────
+  function getQueueLocalStorage() {
+    try {
+      const str = localStorage.getItem(LS_KEY);
+      return str ? JSON.parse(str) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function pushQueueLocalStorage(item) {
+    try {
+      const queue = getQueueLocalStorage();
+      if (queue.length >= MAX_QUEUE_SIZE) {
+        queue.shift(); // Remove oldest
+      }
+      item.id = Date.now() + Math.random();
+      queue.push(item);
+      localStorage.setItem(LS_KEY, JSON.stringify(queue));
+    } catch (e) {}
+  }
+
+  function deleteQueueLocalStorage(id) {
+    try {
+      let queue = getQueueLocalStorage();
+      queue = queue.filter(item => item.id !== id);
+      localStorage.setItem(LS_KEY, JSON.stringify(queue));
+    } catch (e) {}
+  }
+
+  // ── Queue Manager Module ──────────────────────────────────────────────────
+  const QueueManager = {
+    useLS: false,
+
+    init: async function () {
+      try {
+        await openDB();
+        this.useLS = false;
+      } catch (e) {
+        this.useLS = true;
+        console.warn('[Telemetry] IndexedDB unavailable, using localStorage fallback.');
+      }
+    },
+
+    getQueue: async function () {
+      if (this.useLS) return getQueueLocalStorage();
+      try {
+        return await getQueueIndexedDB();
+      } catch (e) {
+        return getQueueLocalStorage();
+      }
+    },
+
+    push: async function (table, payload) {
+      const item = { table, payload, timestamp: Date.now() };
+      if (this.useLS) {
+        pushQueueLocalStorage(item);
+      } else {
+        try {
+          await pushQueueIndexedDB(item);
+        } catch (e) {
+          pushQueueLocalStorage(item);
+        }
+      }
+    },
+
+    remove: async function (id) {
+      if (this.useLS) {
+        deleteQueueLocalStorage(id);
+      } else {
+        try {
+          await deleteQueueIndexedDB(id);
+        } catch (e) {
+          deleteQueueLocalStorage(id);
+        }
+      }
+    }
+  };
 
   // ── Session Management (GA4-style) ─────────────────────────────────────────
-  // Use sessionStorage so each browser tab/window gets its own session.
-  // A new session_id is minted if none exists or if the last activity was > 30 min ago.
   function getOrCreateSession() {
     const now = Date.now();
     let sid = sessionStorage.getItem('mano_sid');
     const lastActivity = parseInt(sessionStorage.getItem('mano_last_activity') || '0', 10);
 
-    // New session if: no ID, or last activity was > 30 min ago
     if (!sid || (now - lastActivity) > SESSION_TIMEOUT_MS) {
       sid = 'sess_' + now + '_' + Math.random().toString(36).substring(2, 10);
       sessionStorage.setItem('mano_sid', sid);
@@ -47,28 +179,26 @@
     sb: null,
     sessionId: null,
     userId: null,
-    _activeStart: null,       // Timestamp when tab became active
-    _totalActiveSecs: 0,      // Accumulated active seconds this page
+    _activeStart: null,
+    _totalActiveSecs: 0,
     _heartbeatTimer: null,
     _flushed: false,
+    _flushing: false,
+    _flushAttempt: 0,
 
-    // ── Init ──────────────────────────────────────────────────────────────────
     init: async function () {
       if (!window.MANODEMY_CONFIG || !window.MANODEMY_CONFIG.SUPA_URL) {
         console.warn('[Telemetry] MANODEMY_CONFIG missing. Disabled.');
         return;
       }
 
-      // Reuse existing Supabase client or create a new one
       this.sb = window.sb || supabase.createClient(
         window.MANODEMY_CONFIG.SUPA_URL,
         window.MANODEMY_CONFIG.SUPA_KEY
       );
 
-      // Get session ID
       this.sessionId = getOrCreateSession();
 
-      // Get logged-in user (if any)
       try {
         const { data: { session } } = await this.sb.auth.getSession();
         this.userId = session?.user?.id || null;
@@ -76,72 +206,58 @@
         this.userId = null;
       }
 
-      // Track this page view
+      // Initialize queue and schedule sync
+      await QueueManager.init();
+      this.flushQueue();
+
+      // Track current page view
       await this._trackPageView();
 
-      // Start active time tracking
       this._startActiveTimer();
 
-      // Pause/resume timer on tab visibility changes
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'hidden') {
           this._pauseActiveTimer();
-          this._flushSession(false); // Flush with keepalive on hide
+          this._flushSession(false);
         } else {
           this._resumeActiveTimer();
         }
       });
 
-      // Final flush on unload
+      // Listen for online events to flush the queue
+      window.addEventListener('online', () => this.flushQueue());
+
       window.addEventListener('pagehide', () => this._flushSession(true));
       window.addEventListener('beforeunload', () => this._flushSession(true));
 
       console.log(`[Telemetry] ✅ Initialized | Session: ${this.sessionId} | User: ${this.userId || 'anon'}`);
     },
 
-    // ── Page View ─────────────────────────────────────────────────────────────
-    // Records one row per page visit. Both anonymous and logged-in users are captured.
     _trackPageView: async function () {
-      try {
-        const pageCount = parseInt(sessionStorage.getItem('mano_session_page_count') || '0', 10);
-        sessionStorage.setItem('mano_session_page_count', String(pageCount + 1));
+      const pageCount = parseInt(sessionStorage.getItem('mano_session_page_count') || '0', 10);
+      sessionStorage.setItem('mano_session_page_count', String(pageCount + 1));
 
-        // IMPORTANT: Only include user_id when logged in.
-        // Sending user_id: null explicitly causes PostgREST RLS to reject the insert.
-        const payload = {
-          session_id: this.sessionId,
-          page_url: window.location.pathname,
-          referrer: document.referrer || null,
-          country: null
-        };
-        if (this.userId) {
-          payload.user_id = this.userId;
-        }
-
-        const { error } = await this.sb.from('page_views').insert([payload]);
-
-        if (error) {
-          console.warn('[Telemetry] ⚠️ Page View insert failed:', error.message);
-        } else {
-          console.log(`[Telemetry] ✅ Page View → ${window.location.pathname}`);
-        }
-      } catch (e) {
-        console.warn('[Telemetry] ⚠️ Page View exception:', e.message);
+      const payload = {
+        session_id: this.sessionId,
+        page_url: window.location.pathname,
+        referrer: document.referrer || null,
+        country: null
+      };
+      if (this.userId) {
+        payload.user_id = this.userId;
       }
+
+      await this._queueOrSend('page_views', payload);
     },
 
-    // ── Active Timer ──────────────────────────────────────────────────────────
     _startActiveTimer: function () {
       if (document.visibilityState !== 'hidden') {
         this._activeStart = Date.now();
       }
 
-      // Heartbeat: write accumulated active time to DB every 30s
       this._heartbeatTimer = setInterval(() => {
         this._accumulateActive();
         if (this.userId && this._totalActiveSecs > 0) {
-          // Also sync the Active Focus localStorage timer (set by notebook.js every 5s)
-          // so admin panel always shows the latest client-side time.
           const dayMatch = window.location.pathname.match(/day(\d{2})\.html/);
           const lsKey = dayMatch ? `manodemy_day${dayMatch[1]}_time_spent` : null;
           const lsSecs = lsKey ? parseInt(localStorage.getItem(lsKey) || '0', 10) : 0;
@@ -171,12 +287,10 @@
       if (this._activeStart) {
         const elapsed = Math.round((Date.now() - this._activeStart) / 1000);
         this._totalActiveSecs += elapsed;
-        this._activeStart = Date.now(); // Reset anchor
+        this._activeStart = Date.now();
       }
     },
 
-    // ── Session Flush ─────────────────────────────────────────────────────────
-    // Records total active time at end of page. Called on hide/unload.
     _flushSession: function (useBeacon) {
       if (this._flushed || !this.userId) return;
       this._flushed = true;
@@ -197,11 +311,15 @@
         metadata: {
           session_id: this.sessionId,
           duration_seconds: finalSecs,
-          active_seconds: finalSecs  // included for RPC compatibility
+          active_seconds: finalSecs
         }
       };
 
-      // Use fetch keepalive for reliability on page unload
+      if (!navigator.onLine) {
+        pushQueueLocalStorage({ table: 'activity_logs', payload, timestamp: Date.now() });
+        return;
+      }
+
       fetch(`${window.MANODEMY_CONFIG.SUPA_URL}/rest/v1/activity_logs`, {
         method: 'POST',
         keepalive: true,
@@ -212,27 +330,110 @@
           'Prefer': 'return=minimal'
         },
         body: JSON.stringify(payload)
-      }).catch(() => {});
+      }).catch(() => {
+        pushQueueLocalStorage({ table: 'activity_logs', payload, timestamp: Date.now() });
+      });
 
       console.log(`[Telemetry] ✅ Session flush | Active: ${this._totalActiveSecs}s`);
     },
 
-    // ── Helper: Write activity log via Supabase client ─────────────────────────
     _writeActivityLog: async function (eventType, metadata) {
-      if (!this.userId || !this.sb) return;
-      try {
-        await this.sb.from('activity_logs').insert([{
-          user_id: this.userId,
-          event_type: eventType,
-          page_url: window.location.pathname,
-          metadata: metadata
-        }]);
-      } catch (e) { /* silent */ }
+      if (!this.userId) return;
+      const payload = {
+        user_id: this.userId,
+        event_type: eventType,
+        page_url: window.location.pathname,
+        metadata: metadata
+      };
+      await this._queueOrSend('activity_logs', payload);
     },
 
-    // ── Helper: Get current Supabase access token ──────────────────────────────
+    _sendEventDirect: async function (table, payload) {
+      if (!this.sb) return false;
+      try {
+        const { error } = await this.sb.from(table).insert([payload]);
+        if (error) {
+          console.warn(`[Telemetry] ⚠️ Direct send failed for ${table}:`, error.message);
+          const status = error.status || 400;
+          if (status >= 400 && status < 500) {
+            return true; // Discard bad client requests or RLS violations (avoid infinite loops)
+          }
+          return false;
+        }
+        return true;
+      } catch (e) {
+        return false;
+      }
+    },
+
+    _queueOrSend: async function (table, payload) {
+      if (!payload.user_id && this.userId) {
+        payload.user_id = this.userId;
+      }
+
+      if (!navigator.onLine) {
+        console.log(`[Telemetry] 📥 Offline. Queued event for ${table}.`);
+        await QueueManager.push(table, payload);
+        return;
+      }
+
+      try {
+        const success = await this._sendEventDirect(table, payload);
+        if (!success) {
+          console.log(`[Telemetry] 📥 Network issue. Queueing event for ${table}.`);
+          await QueueManager.push(table, payload);
+          this.flushQueue();
+        } else {
+          console.log(`[Telemetry] ✅ Event successfully sent directly to ${table}.`);
+        }
+      } catch (err) {
+        console.log(`[Telemetry] 📥 Network exception. Queueing event for ${table}.`);
+        await QueueManager.push(table, payload);
+        this.flushQueue();
+      }
+    },
+
+    flushQueue: async function () {
+      if (this._flushing) return;
+      if (!navigator.onLine) return;
+
+      const queue = await QueueManager.getQueue();
+      if (queue.length === 0) {
+        this._flushAttempt = 0;
+        return;
+      }
+
+      this._flushing = true;
+      console.log(`[Telemetry] 🔄 Flushing ${queue.length} queued events...`);
+
+      for (const item of queue) {
+        try {
+          const success = await this._sendEventDirect(item.table, item.payload);
+          if (success) {
+            await QueueManager.remove(item.id);
+          } else {
+            break; // Pause flush and retry later
+          }
+        } catch (err) {
+          break;
+        }
+      }
+
+      this._flushing = false;
+
+      const remaining = await QueueManager.getQueue();
+      if (remaining.length > 0) {
+        this._flushAttempt++;
+        const delay = Math.min(1000 * Math.pow(2, this._flushAttempt), 60000);
+        console.log(`[Telemetry] Retrying queue flush in ${delay}ms`);
+        setTimeout(() => this.flushQueue(), delay);
+      } else {
+        this._flushAttempt = 0;
+        console.log('[Telemetry] ✅ All queued events successfully flushed.');
+      }
+    },
+
     _getAccessToken: function () {
-      // Try to read from localStorage (Supabase stores it there)
       const storageKey = Object.keys(localStorage).find(k => k.includes('auth-token'));
       if (storageKey) {
         try {
@@ -244,7 +445,6 @@
     }
   };
 
-  // Boot when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => T.init());
   } else {

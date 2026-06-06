@@ -47,10 +47,17 @@
 
         if (error || !session) {
 
+          document.cookie = "sb-access-token=; path=/; max-age=0; SameSite=Lax; Secure";
+
           window.location.replace("landing_v2/index.html?reason=login_required");
 
           return;
 
+        }
+
+        if (session && session.access_token) {
+          const maxAge = session.expires_in || 604800;
+          document.cookie = `sb-access-token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; Secure`;
         }
 
 

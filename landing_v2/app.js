@@ -2209,11 +2209,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+  const setAuthCookie = (token, expiresSec) => {
+    const maxAge = expiresSec || 604800; // default 7 days
+    document.cookie = `sb-access-token=${token}; path=/; max-age=${maxAge}; SameSite=Lax; Secure`;
+  };
+
+  const clearAuthCookie = () => {
+    document.cookie = `sb-access-token=; path=/; max-age=0; SameSite=Lax; Secure`;
+  };
+
   const handleUserSession = async (session) => {
 
     if (session) {
 
       localStorage.setItem('manodemy_auth', 'true');
+
+      if (session.access_token) {
+        setAuthCookie(session.access_token, session.expires_in);
+      }
 
       updateNavForLoggedIn(session.user);
 
@@ -2226,6 +2239,8 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem('manodemy_auth');
 
       localStorage.removeItem('manodemy_enrolled');
+
+      clearAuthCookie();
 
     }
 
@@ -2266,6 +2281,8 @@ document.addEventListener('DOMContentLoaded', () => {
           localStorage.removeItem('manodemy_auth');
 
           localStorage.removeItem('manodemy_enrolled');
+
+          clearAuthCookie();
 
           window.location.reload();
 

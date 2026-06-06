@@ -192,8 +192,9 @@ let cellCounter = 0;
 const editors = {};  // cellId -> CodeMirror instance
 
 const statusEl = document.getElementById('pyStatus');
-
-
+if (statusEl) {
+  statusEl.setAttribute('aria-live', 'polite');
+}
 
 // ── INIT CODEMIRROR EDITORS ──
 
@@ -262,6 +263,22 @@ document.querySelectorAll('.cm-source').forEach(ta => {
       },
 
       'Shift-Tab': function (cm) { cm.indentSelection('subtract'); },
+
+      'Esc': function (cm) {
+        cm.getInputField().blur();
+        if (cellEl) {
+          const runBtn = cellEl.querySelector('.run-btn');
+          if (runBtn) runBtn.focus();
+        }
+      },
+
+      'Escape': function (cm) {
+        cm.getInputField().blur();
+        if (cellEl) {
+          const runBtn = cellEl.querySelector('.run-btn');
+          if (runBtn) runBtn.focus();
+        }
+      },
 
       'Ctrl-D': function (cm) {
 
@@ -337,14 +354,38 @@ document.querySelectorAll('.cm-source').forEach(ta => {
 
   editors[cellId] = cm;
 
+  // Accessibility & Keyboard traps helpers
+  if (cellEl) {
+    cellEl.setAttribute('aria-label', 'Python code cell. Press Escape to exit editor.');
+    
+    // Add visual keyboard tooltip hint
+    const hint = document.createElement('div');
+    hint.className = 'keyboard-hint';
+    hint.innerText = 'Press Esc to exit editor';
+    cellEl.appendChild(hint);
+  }
+
+  const inputField = cm.getInputField();
+  if (inputField) {
+    inputField.setAttribute('aria-label', 'Python code editor. Press Escape to exit editor.');
+  }
+
   cm.on('focus', function (instance) {
     if (window.innerWidth <= 768) {
       showSymbolHelperBar(instance);
+    }
+    if (cellEl) {
+      const hint = cellEl.querySelector('.keyboard-hint');
+      if (hint) hint.classList.add('show');
     }
   });
 
   cm.on('blur', function (instance) {
     setTimeout(hideSymbolHelperBar, 200);
+    if (cellEl) {
+      const hint = cellEl.querySelector('.keyboard-hint');
+      if (hint) hint.classList.remove('show');
+    }
   });
 
 
@@ -1511,236 +1552,94 @@ async function runCell(cellId) {
 
 
 
-    // ── SCORE VERIFICATION HEURISTIC (Smart Validation) ──
-
-    let rawCode = code.trim();
-
-    let cleanCode = rawCode.replace(/#.*/g, '').trim().toLowerCase();
-
-    let outText = (text || '').trim().toLowerCase();
+    // ── SCORE VERIFICATION (Smart Server-Side Validation) ──
 
     let isCorrectAndRelated = false;
-
     let isPartialMatch = false;
 
+    if (cell.classList.contains('is-scored-question')) {
+      const originalText = btn.textContent;
+      btn.textContent = 'Verifying...';
+      const dayId = getDayId();
+      let verified = false;
+      let signature = null;
+      let timestamp = null;
 
+      try {
+        const sessionRes = await sbClient.auth.getSession();
+        const session = sessionRes.data.session;
 
-    if (cleanCode.length > 0 && cleanCode !== 'pass') {
+        if (session) {
+          const verifyRes = await fetch(`${SUPA_URL}/functions/v1/verify-answer`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({
+              userId: session.user.id,
+              dayId: dayId,
+              cellId: cellId,
+              userCode: code,
+              stdout: text
+            })
+          });
 
-      isCorrectAndRelated = true; // Assume true if no question binds it
-
-
-
-      let prev = cell.previousElementSibling;
-
-      if (prev && (prev.classList.contains('question') || prev.classList.contains('interview'))) {
-
-        let questionText = prev.textContent.toLowerCase();
-
-        isCorrectAndRelated = false; // Must prove relevance
-
-
-
-        // 1. Check if output matches "Expected: <val>"
-
-        let expMatch = questionText.match(/expected:\s*([a-z0-9_.-]+)/);
-
-        if (expMatch && expMatch[1] && outText && outText.includes(expMatch[1])) {
-
-          isCorrectAndRelated = true;
-
+          if (verifyRes.ok) {
+            const resData = await verifyRes.json();
+            verified = resData.verified;
+            signature = resData.signature;
+            timestamp = resData.timestamp;
+          }
         }
-
-
-
-        // 2. Token overlap check (ignoring generics)
-
-        if (!isCorrectAndRelated) {
-
-          let codeTokens = cleanCode.match(/[a-z0-9_]+/g) || [];
-
-          let ignore = ['print', 'type', 'len', 'def', 'class', 'import', 'list', 'dict', 'set', 'tuple', 'int', 'float', 'str', 'bool', 'true', 'false'];
-
-
-
-          for (let token of codeTokens) {
-
-            if (ignore.includes(token)) continue;
-
-            let regex = new RegExp("\\b" + token + "\\b");
-
-            if (regex.test(questionText)) {
-
-              isCorrectAndRelated = true;
-
-              break;
-
-            }
-
-          }
-
-        }
-
-
-
-        // 3. Fallback for purely symbolic math code
-
-        if (!isCorrectAndRelated && /[+\-*/%<>=]/.test(cleanCode)) {
-
-          if (questionText.includes('add ') || questionText.includes('divide') || questionText.includes('multiply') || questionText.includes('operator') || questionText.includes('arithmetic') || questionText.includes('compute')) {
-
-            isCorrectAndRelated = true;
-
-          }
-
-        }
-
-
-
-        // ── SMART PENALTY CHECKS (Downgrade to Partial if incomplete) ──
-
-        if (isCorrectAndRelated) {
-
-          let outLines = outText.split('\n').filter(l => l.trim().length > 0);
-
-          let penalties = 0;
-
-
-
-          // Requirement A: "types" -> Output must have <class or code must have type(
-
-          if ((questionText.includes('type') || questionText.includes('types')) && questionText.includes('print')) {
-
-            if (!outText.includes('<class') && !cleanCode.includes('type(')) penalties++;
-
-          }
-
-
-
-          // Requirement B: "explain" or "why" -> Code must contain a comment
-
-          if (questionText.includes('explain') || questionText.includes('describe') || questionText.includes('why is')) {
-
-            if (!rawCode.includes('#')) penalties++;
-
-          }
-
-
-
-          // Requirement C: "both" or multiple outputs requested -> Output must have multiple lines
-
-          if (questionText.includes('both results') || questionText.includes('print both') || questionText.includes('compute both')) {
-
-            if (outLines.length < 2) penalties++;
-
-          }
-
-
-
-          // Requirement D: Question provides multiple distinct numbers to compute
-
-          let qNumbers = questionText.match(/\b\d+\b/g) || [];
-
-          let uniqueQNums = [...new Set(qNumbers)];
-
-          if (uniqueQNums.length >= 2) {
-
-            let codeNums = cleanCode.match(/\b\d+\b/g) || [];
-
-            let usedQNums = uniqueQNums.filter(n => codeNums.includes(n));
-
-            // If it only uses 1 of the numbers, and output is only 1 line, it's definitely partial
-
-            if (usedQNums.length < uniqueQNums.length && outLines.length < 2) {
-
-              penalties++;
-
-            }
-
-          }
-
-
-
-          // Apply penalty
-
-          if (penalties > 0) {
-
-            isCorrectAndRelated = false;
-
-            isPartialMatch = true; // Signal that it was on the right track but incomplete
-
-          }
-
-        }
-
+      } catch (err) {
+        console.error('[Score Verification] Connection failed:', err);
       }
 
-    }
-
-
-
-    if (isCorrectAndRelated) {
-
-      if (cell.classList.contains('is-scored-question')) {
-
-        // ── VISUAL TICK: always applied in both Practice and Active modes ──
+      if (verified) {
+        isCorrectAndRelated = true;
 
         cell.classList.add('is-solved');
-
-        const dayId = getDayId();
-
         if (dayId) safeStorageSet(`manodemy_${dayId}_${cellId}_solved`, 'true');
 
         if (isChallengeActive()) {
-
-          // ── ACTIVE CHALLENGE: update successfulCells set and scoreboard ──
-
           successfulCells.add(cellId);
           if (dayId) safeStorageSet(`manodemy_${dayId}_${cellId}_graded_solved`, 'true');
 
-          // Sync to Supabase
-
+          // Sync to Supabase with HMAC signature payload!
           _notebookWriteActivity('question_solved', {
-
             question_id: cellId,
-
+            day_id: dayId,
+            signature: signature,
+            timestamp: timestamp,
             page_url: window.location.pathname
-
           });
 
           updateScore(); // Live scoreboard update
-
         } else {
           updateScore();
         }
-
-      }
-
-    } else {
-
-      // Wrong/partial: always remove visual tick
-
-      cell.classList.remove('is-solved');
-
-      const dayId = getDayId();
-
-      if (dayId) {
-        safeStorageSet(`manodemy_${dayId}_${cellId}_solved`, 'false');
-        safeStorageSet(`manodemy_${dayId}_${cellId}_graded_solved`, 'false');
-      }
-
-      if (isChallengeActive()) {
-
-        // Only update scoreboard during active challenge
-
-        successfulCells.delete(cellId);
-
-        updateScore();
-
       } else {
-        updateScore();
-      }
+        cell.classList.remove('is-solved');
+        if (dayId) {
+          safeStorageSet(`manodemy_${dayId}_${cellId}_solved`, 'false');
+          safeStorageSet(`manodemy_${dayId}_${cellId}_graded_solved`, 'false');
+        }
 
+        if (isChallengeActive()) {
+          successfulCells.delete(cellId);
+          updateScore();
+        } else {
+          updateScore();
+        }
+      }
+    } else {
+      // Non-scored cells default to correct if code is not empty
+      let rawCode = code.trim();
+      let cleanCode = rawCode.replace(/#.*/g, '').trim().toLowerCase();
+      if (cleanCode.length > 0 && cleanCode !== 'pass') {
+        isCorrectAndRelated = true;
+      }
     }
 
 

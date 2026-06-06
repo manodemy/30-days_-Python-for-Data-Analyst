@@ -224,7 +224,7 @@ tbody td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text
 tbody tr:hover{background:rgba(0,230,246,.03)}
 
 /* ═══════ CODE CELLS — VS CODE CONTAINER ═══════ */
-.code-cell{margin:.6rem 0 1.2rem;border:1px solid rgba(0,230,246,.12);border-radius:var(--r);overflow:hidden;background:var(--code-bg);box-shadow:0 3px 12px rgba(0,0,0,.25)}
+.code-cell{position:relative;margin:.6rem 0 1.2rem;border:1px solid rgba(0,230,246,.12);border-radius:var(--r);overflow:hidden;background:var(--code-bg);box-shadow:0 3px 12px rgba(0,0,0,.25)}
 .cell-bar{display:flex;align-items:center;justify-content:space-between;padding:5px 10px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)}
 .cell-label{font:500 .72rem var(--font-c);color:var(--green)}
 .cell-actions{display:flex;gap:6px}
@@ -233,6 +233,33 @@ tbody tr:hover{background:rgba(0,230,246,.03)}
 .run-btn:disabled{opacity:.5;cursor:wait}
 .clear-btn{padding:3px 10px;background:transparent;color:var(--muted);font:500 .7rem var(--font-h);border:1px solid var(--border);border-radius:5px;cursor:pointer;transition:all .15s}
 .clear-btn:hover{color:var(--rose);border-color:rgba(244,63,94,.3)}
+
+/* Accessibility keyboard hint tooltip */
+.keyboard-hint {
+  position: absolute;
+  top: 38px;
+  right: 12px;
+  background-color: #060913;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  border-radius: 4px;
+  font-family: var(--font-h);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 0 8px rgba(0, 230, 246, 0.25);
+  letter-spacing: 0.02em;
+}
+
+.keyboard-hint.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* ═══════ CODEMIRROR VS CODE DARK THEME ═══════ */
 .CodeMirror{background:var(--code-bg)!important;color:#D4D4D4!important;font-family:var(--font-c)!important;font-size:.88rem!important;line-height:1.6!important;height:auto!important;border:none!important;padding:0!important}
@@ -258,7 +285,7 @@ tbody tr:hover{background:rgba(0,230,246,.03)}
 .cm-s-default .cm-string{color:#CE9178!important}
 .cm-s-default .cm-string-2{color:#CE9178!important}
 .cm-s-default .cm-number{color:#B5CEA8!important}
-.cm-s-default .cm-comment{color:#6A9955!important;font-style:italic!important}
+.cm-s-default .cm-comment{color:#7EC07E!important;font-style:italic!important}
 .cm-s-default .cm-operator{color:#D4D4D4!important}
 .cm-s-default .cm-builtin{color:#4EC9B0!important}
 .cm-s-default .cm-property{color:#9CDCFE!important}
