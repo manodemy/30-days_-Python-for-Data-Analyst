@@ -172,17 +172,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);padding-to
   margin: 0 !important;
   position: relative !important;
 }
-/* Subtle vertical guide line running behind nested elements */
-.toc-list::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 1.5rem !important;
-  bottom: 2.5rem !important;
-  left: 1.7rem !important;
-  width: 1px !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-  pointer-events: none !important;
-}
 .sidebar li {
   margin-bottom: 3px !important;
   position: relative !important;
