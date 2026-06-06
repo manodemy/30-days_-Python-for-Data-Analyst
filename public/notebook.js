@@ -16,11 +16,11 @@ const TOAST_DURATION_MS = 6000;
 
 // Supabase client initialize (assumes loaded in head)
 
+const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
+
 let sbClient = null;
 
 if (typeof window.supabase !== 'undefined') {
-
-  const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
 
   const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
 
@@ -1639,7 +1639,13 @@ async function runCell(cellId) {
 
     output.classList.add('success');
 
+    // ── Reset button immediately after successful Python execution ──
+    output.classList.remove('hidden');
+    btn.disabled = false; btn.textContent = '▶ Run';
 
+    // ── Hoist cleanCode so it's always available (fixes ReferenceError in ManoVoice hook) ──
+    const rawCode = code.trim();
+    const cleanCode = rawCode.replace(/#.*/g, '').trim().toLowerCase();
 
     // ── SCORE VERIFICATION (Smart Server-Side Validation) ──
 
@@ -1647,43 +1653,47 @@ async function runCell(cellId) {
     let isPartialMatch = false;
 
     if (cell.classList.contains('is-scored-question')) {
-      const originalText = btn.textContent;
       btn.textContent = 'Verifying...';
+      btn.disabled = true;
       const dayId = getDayId();
       let verified = false;
       let signature = null;
       let timestamp = null;
 
       try {
-        const sessionRes = await sbClient.auth.getSession();
-        const session = sessionRes.data.session;
+        if (sbClient) {
+          const sessionRes = await sbClient.auth.getSession();
+          const session = sessionRes.data.session;
 
-        if (session) {
-          const verifyRes = await fetch(`${SUPA_URL}/functions/v1/verify-answer`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${session.access_token}`
-            },
-            body: JSON.stringify({
-              userId: session.user.id,
-              dayId: dayId,
-              cellId: cellId,
-              userCode: code,
-              stdout: text
-            })
-          });
+          if (session) {
+            const verifyRes = await fetch(`${SUPA_URL}/functions/v1/verify-answer`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.access_token}`
+              },
+              body: JSON.stringify({
+                userId: session.user.id,
+                dayId: dayId,
+                cellId: cellId,
+                userCode: code,
+                stdout: text
+              })
+            });
 
-          if (verifyRes.ok) {
-            const resData = await verifyRes.json();
-            verified = resData.verified;
-            signature = resData.signature;
-            timestamp = resData.timestamp;
+            if (verifyRes.ok) {
+              const resData = await verifyRes.json();
+              verified = resData.verified;
+              signature = resData.signature;
+              timestamp = resData.timestamp;
+            }
           }
         }
       } catch (err) {
-        console.error('[Score Verification] Connection failed:', err);
+        console.warn('[Score Verification] Connection failed:', err);
       }
+
+      btn.disabled = false; btn.textContent = '▶ Run';
 
       if (verified) {
         isCorrectAndRelated = true;
@@ -1715,17 +1725,11 @@ async function runCell(cellId) {
           safeStorageSet(`manodemy_${dayId}_${cellId}_graded_solved`, 'false');
         }
 
-        if (isChallengeActive()) {
-          successfulCells.delete(cellId);
-          updateScore();
-        } else {
-          updateScore();
-        }
+        successfulCells.delete(cellId);
+        updateScore();
       }
     } else {
-      // Non-scored cells default to correct if code is not empty
-      let rawCode = code.trim();
-      let cleanCode = rawCode.replace(/#.*/g, '').trim().toLowerCase();
+      // Non-scored cells: correct if code is not empty/pass
       if (cleanCode.length > 0 && cleanCode !== 'pass') {
         isCorrectAndRelated = true;
       }
@@ -1752,52 +1756,41 @@ async function runCell(cellId) {
       } else {
 
         // Measure keyword overlap for partial vs wrong
-
         let overlapCount = 0;
-
         let prevEl = cell.previousElementSibling;
 
         if (prevEl && (prevEl.classList.contains('question') || prevEl.classList.contains('interview'))) {
-
-          let qText = prevEl.textContent.toLowerCase();
-
-          let tokens = cleanCode.match(/[a-z_]\w*/g) || [];
-
-          let ignore = ['print', 'type', 'len', 'def', 'class', 'import', 'for', 'in', 'if', 'else', 'return', 'and', 'or', 'not', 'the', 'is', 'a', 'to', 'pass', 'true', 'false'];
-
+          const qText = prevEl.textContent.toLowerCase();
+          // cleanCode is now always defined (hoisted above)
+          const tokens = cleanCode.match(/[a-z_]\w*/g) || [];
+          const ignore = ['print', 'type', 'len', 'def', 'class', 'import', 'for', 'in', 'if', 'else', 'return', 'and', 'or', 'not', 'the', 'is', 'a', 'to', 'pass', 'true', 'false'];
           tokens.forEach(t => { if (!ignore.includes(t) && qText.includes(t)) overlapCount++; });
-
         }
 
-
-
         if (isPartialMatch || overlapCount >= 1) {
-
           ManoVoice.onPartial(cellId, 'close');
-
         } else {
-
           ManoVoice.onWrong(cellId);
-
         }
 
       }
-
-      // ManoVoice.checkMilestone removed
 
     }
 
   } catch (err) {
 
+    // This catch block only handles PYTHON execution errors from pyodide
     try { pyodide.runPython('sys.stdout=sys.__stdout__;sys.stderr=sys.__stderr__'); } catch (e) { }
 
-    let msg = String(err.message || err);
+    const msg = String(err.message || err);
 
-    let lines = msg.split('\n').filter(l => !l.includes('pyodide') && !l.includes('wasm'));
+    // Filter out pyodide/wasm internal stack frames — show only Python traceback lines
+    const lines = msg.split('\n').filter(l => !l.includes('pyodide') && !l.includes('wasm') && !l.includes('at async'));
 
-    output.innerHTML = `<span class="out-label">Error:</span>${esc(lines.join('\n') || msg)}`;
+    output.innerHTML = `<span class="out-label">Error:</span>${esc(lines.join('\n').trim() || msg)}`;
 
     output.classList.add('error');
+    output.classList.remove('hidden');
 
     cell.classList.remove('is-solved');
     const dayId = getDayId();
@@ -1810,7 +1803,7 @@ async function runCell(cellId) {
 
     updateScore();
 
-
+    btn.disabled = false; btn.textContent = '▶ Run';
 
     // ── MANO VOICE ERROR HOOK ──
 
@@ -1821,10 +1814,6 @@ async function runCell(cellId) {
     }
 
   }
-
-  output.classList.remove('hidden');
-
-  btn.disabled = false; btn.textContent = '▶ Run';
 
 }
 
