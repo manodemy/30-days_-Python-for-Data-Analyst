@@ -1914,7 +1914,17 @@ function updateToc() {
       current.classList.add('active');
       // Auto-scroll sidebar container to keep active link in view (web only)
       if (window.innerWidth >= 769) {
-        current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        const container = document.querySelector('.toc-list');
+        if (container) {
+          const containerRect = container.getBoundingClientRect();
+          const linkRect = current.getBoundingClientRect();
+          const relativeTop = linkRect.top - containerRect.top + container.scrollTop;
+          const targetScrollTop = relativeTop - (container.clientHeight / 2) + (linkRect.height / 2);
+          container.scrollTo({
+            top: targetScrollTop,
+            behavior: 'smooth'
+          });
+        }
       }
     }
     lastActiveLink = current;
