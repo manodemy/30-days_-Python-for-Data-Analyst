@@ -145,13 +145,119 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);padding-to
 /* ═══════ SIDEBAR ═══════ */
 .sidebar{position:sticky;top:80px;width:var(--sidebar-w);min-width:200px;max-width:350px;height:calc(100vh - 90px);display:flex;flex-direction:column;border-left:1px solid rgba(255,255,255,.05);flex-shrink:0;background:var(--bg);box-shadow:-5px 0 25px rgba(0,0,0,.3)}
 .sidebar-top{padding:1rem .8rem .8rem;border-bottom:1px solid var(--border);flex-shrink:0}
-.sidebar-header{font:800 1.15rem var(--font-h);color:var(--cyan);letter-spacing:.04em;display:flex;align-items:center;gap:6px;margin:0;padding:6px 10px;background:linear-gradient(145deg,rgba(0,230,246,.08),rgba(0,230,246,.02));border-radius:8px;border-top:1px solid rgba(255,255,255,.05);border-left:1px solid rgba(255,255,255,.02);box-shadow:inset 1px 1px 2px rgba(255,255,255,.05),2px 3px 8px rgba(0,0,0,.3);text-shadow:0 0 10px rgba(0,230,246,.2)}
-.sidebar-header .icon{font-size:1.1rem;filter:drop-shadow(0 0 5px rgba(255,255,255,0.2))}
-.toc-list{flex:1;overflow-y:auto;padding:.8rem .8rem 2rem;list-style:none;margin:0}
-.sidebar li{margin-bottom:6px}
-.toc-link{display:block;padding:.5rem .7rem;font:500 .8rem var(--font-b);color:var(--muted);text-decoration:none;border-radius:8px;background:linear-gradient(135deg,rgba(255,255,255,.02),rgba(0,0,0,.15));border:1px solid rgba(255,255,255,.03);border-top-color:rgba(255,255,255,.06);border-left-color:rgba(255,255,255,.04);box-shadow:2px 3px 6px rgba(0,0,0,.25);transition:all .25s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
-.toc-link:hover{color:var(--cyan);background:linear-gradient(135deg,rgba(0,230,246,.04),rgba(0,0,0,.2));border-color:rgba(0,230,246,.1);border-top-color:rgba(0,230,246,.2);border-left-color:rgba(0,230,246,.15);box-shadow:3px 4px 10px rgba(0,0,0,.4),-1px -1px 4px rgba(255,255,255,.04);transform:translateY(-1px)}
-.toc-link.active{color:var(--cyan);font-weight:600;background:linear-gradient(145deg,rgba(0,230,246,.12),rgba(0,230,246,.02));border:1px solid rgba(0,230,246,.2);border-top-color:rgba(0,230,246,.4);border-left-color:rgba(0,230,246,.3);box-shadow:inset 1px 1px 3px rgba(255,255,255,.1),inset -1px -1px 4px rgba(0,0,0,.4),4px 5px 12px rgba(0,0,0,.5);text-shadow:0 0 10px rgba(0,230,246,.3);transform:translateY(-2px)}
+.sidebar-header {
+  font: 800 0.85rem var(--font-h) !important;
+  color: var(--cyan) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 10px 14px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  text-shadow: 0 0 10px rgba(0, 230, 246, 0.15) !important;
+}
+.sidebar-header .icon {
+  font-size: 1.1rem !important;
+  filter: drop-shadow(0 0 5px rgba(0, 230, 246, 0.4)) !important;
+}
+.toc-list {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  padding: 1.2rem 1rem 2.5rem 1.2rem !important;
+  list-style: none !important;
+  margin: 0 !important;
+  position: relative !important;
+}
+/* Subtle vertical guide line running behind nested elements */
+.toc-list::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 1.5rem !important;
+  bottom: 2.5rem !important;
+  left: 1.7rem !important;
+  width: 1px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  pointer-events: none !important;
+}
+.sidebar li {
+  margin-bottom: 3px !important;
+  position: relative !important;
+}
+.toc-link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0.5rem 0.8rem 0.5rem 1.2rem !important;
+  font: 500 0.85rem var(--font-b) !important;
+  color: var(--muted) !important;
+  text-decoration: none !important;
+  border-radius: 6px !important;
+  border: none !important;
+  border-left: 2px solid transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease-in-out !important;
+  cursor: pointer !important;
+  overflow: visible !important;
+}
+.toc-link:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-left-color: rgba(0, 230, 246, 0.4) !important;
+  padding-left: 1.35rem !important; /* subtle nudge animation */
+}
+.toc-link.active {
+  color: var(--cyan) !important;
+  font-weight: 600 !important;
+  background: linear-gradient(90deg, rgba(0, 230, 246, 0.08) 0%, transparent 100%) !important;
+  border-left-color: var(--cyan) !important;
+  text-shadow: 0 0 10px rgba(0, 230, 246, 0.25) !important;
+  padding-left: 1.35rem !important;
+}
+/* Nested (Question) list items styling */
+.toc-list li[style*="padding-left"] {
+  padding-left: 1.7rem !important; /* Align to the guide line */
+}
+.toc-list li[style*="padding-left"] .toc-link {
+  font-size: 0.8rem !important;
+  font-weight: 400 !important;
+  color: rgba(255, 255, 255, 0.45) !important;
+  padding-left: 0.8rem !important;
+  border-left: none !important;
+  position: relative !important;
+}
+/* Tiny dot on active nested element on the guide line */
+.toc-list li[style*="padding-left"] .toc-link::before {
+  content: '' !important;
+  position: absolute !important;
+  left: -3px !important; /* Align exactly on the guide line */
+  top: 50% !important;
+  transform: translateY(-50%) scale(0) !important;
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  background: var(--cyan) !important;
+  box-shadow: 0 0 8px var(--cyan) !important;
+  transition: transform 0.2s ease !important;
+}
+.toc-list li[style*="padding-left"] .toc-link.active::before {
+  transform: translateY(-50%) scale(1) !important;
+}
+.toc-list li[style*="padding-left"] .toc-link:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  padding-left: 0.95rem !important;
+}
+.toc-list li[style*="padding-left"] .toc-link.active {
+  color: var(--cyan) !important;
+  font-weight: 500 !important;
+  background: linear-gradient(90deg, rgba(0, 230, 246, 0.06) 0%, transparent 100%) !important;
+  padding-left: 0.95rem !important;
+}
 .sidebar-resize{position:absolute;left:-3px;top:0;bottom:0;width:6px;cursor:col-resize;z-index:10}
 .sidebar-resize:hover{background:rgba(0,230,246,.2)}
 
