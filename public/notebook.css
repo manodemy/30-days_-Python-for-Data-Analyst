@@ -144,7 +144,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);padding-to
 
 /* ═══════ SIDEBAR ═══════ */
 .sidebar{position:sticky;top:80px;width:var(--sidebar-w);min-width:200px;max-width:350px;height:calc(100vh - 90px);display:flex;flex-direction:column;border-left:1px solid rgba(255,255,255,.05);flex-shrink:0;background:var(--bg);box-shadow:-5px 0 25px rgba(0,0,0,.3)}
-.sidebar-top{padding:1rem .8rem .8rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.sidebar-top{padding:0.6rem 0.8rem 0.4rem;border-bottom:1px solid var(--border);flex-shrink:0}
 .sidebar-header {
   font: 800 0.85rem var(--font-h) !important;
   color: var(--cyan) !important;
@@ -154,7 +154,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);padding-to
   align-items: center !important;
   gap: 8px !important;
   margin: 0 !important;
-  padding: 10px 14px !important;
+  padding: 6px 14px !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -861,7 +861,7 @@ tbody tr:hover{background:rgba(0,230,246,.03)}
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 14px;
   padding: 4px;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   box-shadow: 
     inset 0 4px 10px rgba(0, 0, 0, 0.6), 
     0 1px 1px rgba(255, 255, 255, 0.05),
