@@ -2,7 +2,6 @@
   "name": "manodemy-web-v2",
   "version": "1.0.0",
   "description": "Manodemy Web V2 Static HTML Platform with Server-side Edge Paywall",
-  "main": "middleware.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
