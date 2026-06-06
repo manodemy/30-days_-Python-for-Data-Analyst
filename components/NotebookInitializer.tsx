@@ -10,17 +10,28 @@ export default function NotebookInitializer() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const runInit = () => {
-      if ((window as any).initializeNotebook) {
-        console.log('[Notebook] Initializing CodeMirror & Pyodide state post-hydration...');
+    let attempts = 0;
+    const checkAndInit = () => {
+      const isReady = (window as any).initializeNotebook && (window as any).CodeMirror;
+      if (isReady) {
+        console.log('[Notebook] All scripts loaded. Initializing CodeMirror & Pyodide state...');
         (window as any).initializeNotebook();
       } else {
-        console.warn('[Notebook] window.initializeNotebook is not defined.');
+        attempts++;
+        if (attempts < 100) { // Poll for up to 10 seconds (100 * 100ms)
+          setTimeout(checkAndInit, 100);
+        } else {
+          console.error('[Notebook] Failed to initialize: CodeMirror or initializeNotebook did not load.');
+          const statusEl = document.getElementById('pyStatus');
+          if (statusEl) {
+            statusEl.textContent = '❌ Failed to load editor. Please check your connection and refresh.';
+          }
+        }
       }
     };
 
-    // Delay initialization slightly to let the browser frame settle post-hydration
-    const timeout = setTimeout(runInit, 100);
+    // Begin polling
+    const timeout = setTimeout(checkAndInit, 100);
     return () => clearTimeout(timeout);
   }, []);
 

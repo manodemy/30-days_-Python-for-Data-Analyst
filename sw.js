@@ -1,5 +1,5 @@
-const CACHE_NAME = 'manodemy-static-cache-v27';
-const DYNAMIC_CACHE_NAME = 'manodemy-dynamic-cache-v27';
+const CACHE_NAME = 'manodemy-static-cache-v28';
+const DYNAMIC_CACHE_NAME = 'manodemy-dynamic-cache-v28';
 
 // Static assets to precache immediately (only truly stable assets)
 const PRECACHE_ASSETS = [
@@ -101,7 +101,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // 4. CACHE-FIRST Strategy for stable assets (fonts, images, third-party libs)
+  // 4. CACHE-FIRST Strategy for stable assets (fonts, images, third-party libs, Next.js chunks)
   event.respondWith(
     caches.match(event.request).then(cachedResponse => {
       if (cachedResponse) {
@@ -109,18 +109,18 @@ self.addEventListener('fetch', event => {
       }
 
       return fetch(event.request).then(response => {
-        if (
-          response.status === 200 &&
-          (url.pathname.endsWith('.woff2') ||
-           url.pathname.endsWith('.png') ||
-           url.pathname.endsWith('.jpg') ||
-           url.pathname.endsWith('.svg') ||
-           url.pathname.endsWith('.ico'))
-        ) {
-          const responseClone = response.clone();
-          caches.open(DYNAMIC_CACHE_NAME).then(cache => {
-            cache.put(event.request, responseClone);
-          });
+        if (response.status === 200) {
+          const isFont = url.pathname.endsWith('.woff2') || url.origin.includes('fonts.gstatic.com') || url.origin.includes('fonts.googleapis.com');
+          const isImage = url.pathname.endsWith('.png') || url.pathname.endsWith('.jpg') || url.pathname.endsWith('.svg') || url.pathname.endsWith('.ico');
+          const isStaticLib = url.origin.includes('cdnjs.cloudflare.com') || url.origin.includes('cdn.jsdelivr.net');
+          const isNextChunk = url.pathname.includes('/_next/static/');
+
+          if (isFont || isImage || isStaticLib || isNextChunk) {
+            const responseClone = response.clone();
+            caches.open(DYNAMIC_CACHE_NAME).then(cache => {
+              cache.put(event.request, responseClone);
+            });
+          }
         }
         return response;
       });
