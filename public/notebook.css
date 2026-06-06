@@ -2381,7 +2381,7 @@ body.focus-mode-active .symbol-helper-bar {
   .layout {
     height: auto !important;
     overflow: visible !important;
-    margin-top: calc(72px + 1.5rem) !important;
+    margin-top: 72px !important;
   }
 
   .notebook {
@@ -2390,7 +2390,7 @@ body.focus-mode-active .symbol-helper-bar {
     background: transparent !important;
     border: none !important;
     border-radius: 0 !important;
-    padding: 0 2.5rem 4rem 1.5rem !important;
+    padding: 1.5rem 2.5rem 4rem 1.5rem !important;
     box-shadow: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -2398,9 +2398,9 @@ body.focus-mode-active .symbol-helper-bar {
   }
 
   .sidebar {
-    height: calc(100vh - 120px) !important;
+    height: calc(100vh - 72px) !important;
     position: sticky !important;
-    top: calc(72px + 1.5rem) !important;
+    top: 72px !important;
     background: transparent !important;
     border: none !important;
     border-left: 1px solid rgba(255, 255, 255, 0.05) !important;
