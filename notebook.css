@@ -2283,9 +2283,9 @@ body.focus-mode-active .symbol-helper-bar {
   }
   
   .layout {
-    height: calc(100vh - 100px) !important;
+    height: calc(100vh - 120px) !important;
     overflow: hidden !important;
-    margin-top: 24px !important;
+    margin-top: calc(72px + 1.5rem) !important;
   }
 
   .notebook {
