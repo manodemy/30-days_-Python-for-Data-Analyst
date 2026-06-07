@@ -3143,7 +3143,9 @@
 
 
 
-    /* ═══════════ SEGMENTED TIMELINE & PREMIUM HEADER SCORE CARD ═══════════ */\n\n    .header-score-card {
+    /* ═══════════ SEGMENTED TIMELINE & PREMIUM HEADER SCORE CARD ═══════════ */
+
+    .header-score-card, .header-timeline-card {
       background: linear-gradient(135deg, rgba(17, 24, 39, 0.75) 0%, rgba(10, 15, 30, 0.9) 100%) !important;
       border: 1px solid rgba(255, 255, 255, 0.08) !important;
       border-top-color: rgba(255, 255, 255, 0.16) !important;
@@ -3152,6 +3154,12 @@
       -webkit-backdrop-filter: blur(25px) !important;
       overflow: visible !important;
       position: relative !important;
+      padding: 1.5rem !important;
+      border-radius: 24px !important;
+    }
+
+    .header-score-card {
+      margin-bottom: 20px !important;
     }
 
     .score-card-bg-glow {
@@ -3286,51 +3294,56 @@
     .marks-fraction-stack {
       display: flex !important;
       flex-direction: column !important;
-      align-items: flex-start !important;
-      line-height: 1.1 !important;
+      align-items: center !important;
       cursor: default !important;
     }
 
-    .marks-number-row {
-      display: flex;
-      align-items: baseline;
-      gap: 4px;
+    .marks-number-row-fraction {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      line-height: 1.1 !important;
     }
 
     .hero-marks-val {
       font-family: 'Outfit', sans-serif !important;
-      font-size: 38px !important;
+      font-size: 34px !important;
       font-weight: 950 !important;
       color: #fff !important;
       background: linear-gradient(135deg, #ffffff 50%, #a5b4fc 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 0 20px rgba(0, 230, 246, 0.15);
+      text-align: center !important;
     }
 
-    .hero-marks-slash {
-      font-size: 20px;
-      font-weight: 500;
-      color: rgba(255, 255, 255, 0.2);
-      margin: 0 2px;
+    .fraction-line {
+      width: 100% !important;
+      height: 2px !important;
+      background: rgba(255, 255, 255, 0.25) !important;
+      margin: 4px 0 !important;
+      box-shadow: 0 0 4px rgba(255, 255, 255, 0.2) !important;
     }
 
     .hero-marks-denom {
       font-family: 'Outfit', sans-serif !important;
       font-size: 16px !important;
       font-weight: 800 !important;
-      color: rgba(255, 255, 255, 0.3) !important;
-      letter-spacing: 0.02em !important;
+      color: rgba(255, 255, 255, 0.45) !important;
+      letter-spacing: 0.05em !important;
+      text-align: center !important;
     }
 
     .hero-score-subtitle {
-      font-family: 'Outfit', sans-serif;
-      font-size: 9px;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.35);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-top: 2px;
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 9px !important;
+      font-weight: 700 !important;
+      color: rgba(255, 255, 255, 0.35) !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+      margin-top: 6px !important;
+      text-align: center !important;
     }
 
     .hologram-progress-circle {
@@ -3529,11 +3542,9 @@
     .section-score-box.box-advanced .section-card-title { color: rgba(245, 166, 35, 0.85); }
 
     .timeline-wrapper {
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 0.85rem;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
       position: relative;
       width: 100%;
     }
@@ -3611,19 +3622,29 @@
       background: rgba(0, 230, 246, 0.06);
     }
 
+    .timeline-labels-row {
+      display: grid !important;
+      grid-template-columns: repeat(30, 1fr) !important;
+      gap: 4px !important;
+      width: 100% !important;
+      margin-top: 6px !important;
+      text-align: center !important;
+    }
+
     .timeline-segment-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8px;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.22);
-      transition: all 0.2s ease;
-      display: inline-block;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 8px !important;
+      font-weight: 700 !important;
+      color: rgba(255, 255, 255, 0.22) !important;
+      transition: all 0.2s ease !important;
+      display: block !important;
+      text-align: center !important;
     }
 
     .timeline-segment-label.active-label {
       color: #00E6F6 !important;
-      font-weight: 800;
-      text-shadow: 0 0 6px rgba(0, 230, 246, 0.5);
+      font-weight: 800 !important;
+      text-shadow: 0 0 6px rgba(0, 230, 246, 0.5) !important;
     }
 
     #timelineTooltip {
@@ -3643,53 +3664,28 @@
       transition: left 0.15s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease;
       opacity: 0;
       min-width: 190px;
-    }\n\n    @media (max-width: 768px) {
-
-      .timeline-labels-row {
-
-        display: none !important;
-
-      }
-
-
-
-      .score-hero-row {
-
-        flex-direction: column !important;
-
-        align-items: flex-start !important;
-
-        gap: 1.5rem !important;
-
-      }
-
-
-
-      .sections-breakdown-grid {
-
-        grid-template-columns: repeat(2, 1fr) !important;
-
-        width: 100% !important;
-
-      }
-
     }
 
-
+    @media (max-width: 768px) {
+      .timeline-labels-row {
+        display: none !important;
+      }
+      .score-hero-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1.5rem !important;
+      }
+      .sections-breakdown-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        width: 100% !important;
+      }
+    }
 
     @media (max-width: 480px) {
-
       .sections-breakdown-grid {
-
         grid-template-columns: 1fr !important;
-
       }
-
-    }
-
-
-
-    /* ==========================================================================
+    }\n\n    /* ==========================================================================
 
        WORLD-CLASS REDESIGN FOR CURRICULUM DAY CARDS (TOP 3 GLOBAL UI/UX STANDARD)
 
@@ -4163,30 +4159,40 @@
 
     /* ===== CERTIFICATE CTA BUTTON ===== */
     .cert-cta-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1.25rem;
-      background: linear-gradient(135deg, #6c63ff, #3ecfcf);
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 600;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      letter-spacing: 0.03em;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      padding: 6px 16px !important;
+      background: linear-gradient(135deg, #6c63ff, #3ecfcf) !important;
+      color: #fff !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 0.8rem !important;
+      font-weight: 700 !important;
+      border: none !important;
+      border-radius: 50px !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4) !important;
+      transition: all 0.2s ease !important;
+      letter-spacing: 0.03em !important;
+      white-space: nowrap !important;
+      width: auto !important;
     }
 
     .cert-cta-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(108, 99, 255, 0.55);
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 20px rgba(108, 99, 255, 0.55) !important;
     }
 
     .cert-cta-btn:active {
-      transform: translateY(0);
+      transform: translateY(0) !important;
+    }
+
+    .cert-icon-svg {
+      width: 16px !important;
+      height: 16px !important;
+      flex-shrink: 0 !important;
+      color: #fff !important;
     }
 
     /* ===== MODAL BASE & BACKDROP ===== */
@@ -5142,7 +5148,8 @@
 
         <!-- Premium Score Card and Segmented Milestone Timeline Dashboard -->
 
-                        <div class="glass-card header-score-card">
+                                <!-- Premium Score Card Dashboard -->
+        <div class="glass-card header-score-card">
           <!-- Ambient glowing orb in the card background -->
           <div class="score-card-bg-glow"></div>
 
@@ -5173,9 +5180,9 @@
                     </svg>
                   </div>
                   <div class="marks-fraction-stack">
-                    <div class="marks-number-row">
+                    <div class="marks-number-row-fraction">
                       <span id="heroTotalMarks" class="hero-marks-val">0.0</span>
-                      <span class="hero-marks-slash">/</span>
+                      <div class="fraction-line"></div>
                       <span class="hero-marks-denom">1000</span>
                     </div>
                     <div class="hero-score-subtitle">ACCUMULATED SCORE</div>
@@ -5280,8 +5287,13 @@
             </div>
 
           </div>
+        </div>
 
-          <!-- Bottom Row: 30-Day Segmented Milestone Timeline Bar -->
+        <!-- Segmented Milestone Timeline Dashboard -->
+        <div class="glass-card header-timeline-card">
+          <!-- Ambient glowing orb in the card background -->
+          <div class="score-card-bg-glow" style="background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, rgba(0, 230, 246, 0.03) 50%, transparent 100%);"></div>
+
           <div class="timeline-wrapper">
             <div class="timeline-header-row">
               <div class="timeline-title-group">
@@ -5317,10 +5329,7 @@
               <div id="tooltipDayMarks">0.0 / 30.0 Marks</div>
             </div>
           </div>
-
-
-
-        <!-- Category Filter Tabs -->
+        </div>\n\n\n\n        <!-- Category Filter Tabs -->
 
         <div class="filter-tabs-container">
 
