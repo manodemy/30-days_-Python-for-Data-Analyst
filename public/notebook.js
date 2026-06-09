@@ -2735,7 +2735,7 @@ function initializeMobileFeatures() {
         </button>
         <button class="focus-run-btn" id="focusRunBtn">▶ Run</button>
         <button class="focus-clear-btn" id="focusClearBtn">✕ Clear</button>
-        <button class="focus-hint-btn" id="focusHintBtn">💡 Hint</button>
+        <button class="focus-hint-btn" id="focusHintBtn">✨ Ask Gemini</button>
         <button class="focus-nav-btn" id="focusNextBtn">
           Next
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">

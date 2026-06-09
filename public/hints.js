@@ -78,7 +78,7 @@
         btn.innerHTML = '✓ Prompt Copied! Opening Gemini...';
         setTimeout(function() {
           btn.classList.remove('copied');
-          btn.innerHTML = '💡 Hint';
+          btn.innerHTML = '✨ Ask Gemini';
         }, 3000);
       }
 
@@ -110,7 +110,7 @@
       var btn = document.createElement('button');
       btn.className = 'hint-btn';
       btn.type = 'button';
-      btn.innerHTML = '💡 Hint';
+      btn.innerHTML = '✨ Ask Gemini';
       btn.setAttribute('data-cell', cell.id);
       btn.setAttribute('onclick', "showHint('" + cell.id + "')");
       actions.insertBefore(btn, actions.firstChild);
