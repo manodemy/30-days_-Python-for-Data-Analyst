@@ -371,8 +371,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let data = null;
         let error = null;
 
+        // 6-second timeout promise
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error("Database connection timed out. Please try again.")), 6000);
+        });
+
         try {
-          const res = await sb.from('reviews').insert(reviewPayload).select();
+          const insertPromise = sb.from('reviews').insert(reviewPayload).select();
+          const res = await Promise.race([insertPromise, timeoutPromise]);
           data = res.data;
           error = res.error;
         } catch (dbErr) {
@@ -385,9 +391,14 @@ document.addEventListener('DOMContentLoaded', () => {
           const fallbackPayload = { ...reviewPayload };
           delete fallbackPayload.reviewer_role;
           
-          const retryRes = await sb.from('reviews').insert(fallbackPayload).select();
-          if (retryRes.error) throw retryRes.error;
-          data = retryRes.data;
+          try {
+            const retryInsertPromise = sb.from('reviews').insert(fallbackPayload).select();
+            const retryRes = await Promise.race([retryInsertPromise, timeoutPromise]);
+            if (retryRes.error) throw retryRes.error;
+            data = retryRes.data;
+          } catch (retryErr) {
+            throw retryErr;
+          }
           
           showSleekToast("✨ Review submitted! (Admin: Run SQL migration for roles.)");
         } else if (error) {
@@ -398,12 +409,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         closeModal();
 
+        // Optimistic UI Fallback: construct review client-side if no data was returned from the DB select
+        const insertedReview = (data && data[0]) ? data[0] : {
+          id: "local-" + Date.now(),
+          reviewer_name: name,
+          reviewer_email: email,
+          reviewer_role: role,
+          rating,
+          comment,
+          pros,
+          cons,
+          recommend,
+          media_urls: [],
+          reviewer_avatar: avatarSource,
+          is_verified: activeUser && activeUser.email?.toLowerCase() === email.toLowerCase(),
+          status: 'approved',
+          created_at: new Date().toISOString(),
+          helpful_count: 0
+        };
+
         // Prepend the new review to the top of the carousel immediately
-        if (data && data[0]) {
-          allReviews.unshift(data[0]);
-          renderCarousel(allReviews);
-          refreshStats();
-        }
+        allReviews.unshift(insertedReview);
+        renderCarousel(allReviews);
+        processAndRenderStats(allReviews);
       } catch (err) {
         console.error("Submission failed:", err);
         alert(`Failed to submit review: ${err.message || err}`);
@@ -762,11 +790,12 @@ document.addEventListener('DOMContentLoaded', () => {
     activeDotIndex = page;
   }
 
-  // Drag-to-scroll (mouse)
+  // Drag-to-scroll (mouse + touch swipe)
   function bindDragScroll() {
     if (!carouselTrack) return;
     let isDown = false, startX = 0, scrollLeft = 0;
 
+    // Mouse Events
     carouselTrack.addEventListener('mousedown', (e) => {
       isDown = true;
       carouselTrack.classList.add('is-dragging');
@@ -784,6 +813,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const walk = (x - startX) * 1.2;
       carouselTrack.scrollLeft = scrollLeft - walk;
     });
+
+    // Touch Events for Mobile Swiping
+    carouselTrack.addEventListener('touchstart', (e) => {
+      isDown = true;
+      startX     = e.touches[0].pageX - carouselTrack.offsetLeft;
+      scrollLeft = carouselTrack.scrollLeft;
+    }, { passive: true });
+
+    carouselTrack.addEventListener('touchend', () => {
+      isDown = false;
+    });
+
+    carouselTrack.addEventListener('touchmove', (e) => {
+      if (!isDown) return;
+      const x    = e.touches[0].pageX - carouselTrack.offsetLeft;
+      const walk = (x - startX) * 1.2;
+      carouselTrack.scrollLeft = scrollLeft - walk;
+    }, { passive: true });
   }
 
   // ─────────────────────────────────────────────────────────────

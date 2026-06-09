@@ -2568,6 +2568,205 @@ body.focus-mode-active .symbol-helper-bar {
   }
 }
 
+/* AI Chat Popup & Conversational Interface CSS additions */
+.mano-chat-popup {
+  display: flex;
+  flex-direction: column;
+  height: 380px !important;
+  max-height: 380px !important;
+}
+.mano-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(10, 15, 26, 0.65);
+}
+.chat-bubble {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+  font-family: var(--font-b);
+}
+.chat-bubble.tutor {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  border-bottom-left-radius: 2px;
+}
+.chat-bubble.tutor pre {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 6px 0;
+  overflow-x: auto;
+}
+.chat-bubble.tutor pre code {
+  background: transparent !important;
+  color: #a5d6ff !important;
+  padding: 0 !important;
+  font-size: 0.82rem !important;
+  font-family: var(--font-c);
+}
+.chat-bubble.student {
+  align-self: flex-end;
+  background: rgba(0, 230, 246, 0.12);
+  border: 1px solid rgba(0, 230, 246, 0.25);
+  color: #e0faff;
+  border-bottom-right-radius: 2px;
+}
+.mano-chat-input-bar {
+  display: flex;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 8px;
+}
+.mano-chat-input-bar input {
+  flex: 1;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.mano-chat-input-bar input:focus {
+  border-color: var(--gold);
+}
+.mano-chat-input-bar button {
+  background: var(--gold);
+  color: #000;
+  border: none;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 0 16px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: opacity 0.2s;
+}
+.mano-chat-input-bar button:hover {
+  opacity: 0.9;
+}
+
+/* Typing loading indicator */
+.loading-dots span {
+  animation: blink 1.4s infinite both;
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: inline-block;
+  margin: 0 2px;
+}
+.loading-dots span:nth-child(2) { animation-delay: .2s; }
+.loading-dots span:nth-child(3) { animation-delay: .4s; }
+
+@keyframes blink {
+  0% { opacity: .2; }
+  20% { opacity: 1; }
+  100% { opacity: .2; }
+}
+
+/* Onboarding / BYOK Key setup styles */
+.mano-chat-onboarding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(10, 15, 26, 0.75);
+  flex: 1;
+  text-align: center;
+  color: var(--text);
+  gap: 16px;
+}
+.mano-onboarding-icon {
+  font-size: 2.2rem;
+  margin-bottom: -4px;
+}
+.mano-onboarding-title {
+  font: 700 1.05rem var(--font-h);
+  color: var(--gold);
+}
+.mano-onboarding-desc {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 90%;
+  margin: 0 auto;
+}
+.mano-onboarding-desc a {
+  color: var(--cyan);
+  text-decoration: underline;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+.mano-onboarding-desc a:hover {
+  opacity: 0.8;
+}
+.mano-onboarding-input-row {
+  display: flex;
+  width: 100%;
+  max-width: 380px;
+  gap: 8px;
+  margin-top: 8px;
+}
+.mano-onboarding-input-row input {
+  flex: 1;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  outline: none;
+  font-family: var(--font-c);
+}
+.mano-onboarding-input-row input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.15);
+}
+.mano-onboarding-input-row button {
+  background: var(--gold);
+  color: #000;
+  border: none;
+  font-weight: 700;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  padding: 0 16px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.mano-onboarding-input-row button:hover {
+  opacity: 0.9;
+}
+.mano-onboarding-error {
+  font-size: 0.78rem;
+  color: var(--rose);
+  margin-top: -6px;
+  font-weight: 600;
+}
+.mano-hint-change-key {
+  font-size: 0.72rem;
+  color: var(--cyan);
+  cursor: pointer;
+  text-decoration: underline;
+  transition: opacity 0.2s;
+}
+.mano-hint-change-key:hover {
+  opacity: 0.8;
+}
+
+
+
 
 
 

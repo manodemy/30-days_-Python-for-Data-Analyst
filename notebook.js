@@ -719,6 +719,8 @@ function initializeNotebook() {
 
   };
 
+  window.syncNotebookState = _syncNotebookState;
+
   // Delay by 3s to let Supabase auth session stabilise after page load
 
   setTimeout(_syncNotebookState, 3000);
@@ -1251,6 +1253,10 @@ function setupGamifiedMarkingSystem() {
         page_url: window.location.pathname
       });
 
+      if (typeof window.syncNotebookState === 'function') {
+        window.syncNotebookState();
+      }
+
     };
 
 
@@ -1741,17 +1747,17 @@ async function runCell(cellId) {
         if (isChallengeActive()) {
           successfulCells.add(cellId);
           if (dayId) safeStorageSet(`manodemy_${dayId}_${cellId}_graded_solved`, 'true');
+        }
 
-          if (verified) {
-            // Sync to Supabase with HMAC signature payload!
-            _notebookWriteActivity('question_solved', {
-              question_id: cellId,
-              day_id: dayId,
-              signature: signature,
-              timestamp: timestamp,
-              page_url: window.location.pathname
-            });
-          }
+        if (verified) {
+          // Sync to Supabase with HMAC signature payload!
+          _notebookWriteActivity('question_solved', {
+            question_id: cellId,
+            day_id: dayId,
+            signature: signature,
+            timestamp: timestamp,
+            page_url: window.location.pathname
+          });
         }
         updateScore(); // Live scoreboard update
       } else {
@@ -2277,6 +2283,11 @@ function initializeEngagementTimer() {
       if (activeSeconds % 5 === 0) {
         safeStorageSet(storageKey, activeSeconds.toString());
       }
+      if (activeSeconds % 30 === 0) {
+        if (typeof window.syncNotebookState === 'function') {
+          window.syncNotebookState();
+        }
+      }
     }, 1000);
     window.manoTimerInterval = timerInterval;
   };
@@ -2290,6 +2301,9 @@ function initializeEngagementTimer() {
 
     safeStorageSet(storageKey, activeSeconds.toString());
 
+    if (typeof window.syncNotebookState === 'function') {
+      window.syncNotebookState();
+    }
   };
 
 

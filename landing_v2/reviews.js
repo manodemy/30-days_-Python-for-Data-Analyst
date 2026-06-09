@@ -762,11 +762,12 @@ document.addEventListener('DOMContentLoaded', () => {
     activeDotIndex = page;
   }
 
-  // Drag-to-scroll (mouse)
+  // Drag-to-scroll (mouse + touch swipe)
   function bindDragScroll() {
     if (!carouselTrack) return;
     let isDown = false, startX = 0, scrollLeft = 0;
 
+    // Mouse Events
     carouselTrack.addEventListener('mousedown', (e) => {
       isDown = true;
       carouselTrack.classList.add('is-dragging');
@@ -784,6 +785,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const walk = (x - startX) * 1.2;
       carouselTrack.scrollLeft = scrollLeft - walk;
     });
+
+    // Touch Events for Mobile Swiping
+    carouselTrack.addEventListener('touchstart', (e) => {
+      isDown = true;
+      startX     = e.touches[0].pageX - carouselTrack.offsetLeft;
+      scrollLeft = carouselTrack.scrollLeft;
+    }, { passive: true });
+
+    carouselTrack.addEventListener('touchend', () => {
+      isDown = false;
+    });
+
+    carouselTrack.addEventListener('touchmove', (e) => {
+      if (!isDown) return;
+      const x    = e.touches[0].pageX - carouselTrack.offsetLeft;
+      const walk = (x - startX) * 1.2;
+      carouselTrack.scrollLeft = scrollLeft - walk;
+    }, { passive: true });
   }
 
   // ─────────────────────────────────────────────────────────────
