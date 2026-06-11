@@ -1,5 +1,5 @@
-const CACHE_NAME = 'manodemy-static-cache-v28';
-const DYNAMIC_CACHE_NAME = 'manodemy-dynamic-cache-v28';
+const CACHE_NAME = 'manodemy-static-cache-v29';
+const DYNAMIC_CACHE_NAME = 'manodemy-dynamic-cache-v29';
 
 // Static assets to precache immediately (only truly stable assets)
 const PRECACHE_ASSETS = [
@@ -41,6 +41,7 @@ self.addEventListener('activate', event => {
 const NETWORK_FIRST_PATHS = [
   '/notebook.css',
   '/notebook.js',
+  '/hints.js',
   '/landing_v2/styles.css',
   '/voice.js',
   '/sw.js'
