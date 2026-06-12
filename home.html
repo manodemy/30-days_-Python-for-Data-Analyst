@@ -118,6 +118,35 @@
   <!-- Dashboard Custom Styles -->
 
   <style>
+    /* Referral Nav Button style */
+    .referral-nav-btn {
+      color: #FFB020 !important;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px dashed rgba(255, 176, 32, 0.5);
+      background: rgba(255, 176, 32, 0.08);
+      padding: 8px 16px;
+      border-radius: 99px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 12px rgba(255, 176, 32, 0.15);
+      transition: all 0.2s ease-in-out;
+      font-family: 'Outfit', sans-serif;
+    }
+    .referral-nav-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(255, 176, 32, 0.35);
+      border-color: rgba(255, 176, 32, 0.855);
+      background: rgba(255, 176, 32, 0.14);
+    }
+    @media (max-width: 480px) {
+      .referral-nav-btn {
+        font-size: 11px !important;
+        padding: 6px 12px !important;
+      }
+    }
 
     /* Prevent flashing of unauthorized content */
 
@@ -5101,7 +5130,11 @@
 
 
 
-        <div class="nav-right">
+        <div class="nav-right" style="display: flex; align-items: center; gap: 1rem;">
+
+          <a href="referral-earnings.html" class="referral-nav-btn">
+            <span>💰</span> Earn upto ₹10,000
+          </a>
 
           <!-- Profile Avatar with settings dropdown -->
 
@@ -5127,7 +5160,7 @@
 
               <a href="admin.html" class="dropdown-item" id="adminLink" style="display: none;">⚙️ Admin Panel</a>
 
-              <a href="referral-earnings.html" class="dropdown-item" id="referralEarningsLink">💰 Referral Earnings</a>
+              <a href="referral-earnings.html" class="dropdown-item" id="referralEarningsLink">💰 Earn upto ₹10,000</a>
 
               <hr class="dropdown-divider">
 
@@ -5556,17 +5589,17 @@
 
 
           <!-- Referral Program Card -->
-          <div class="success-card" style="min-height: auto; gap: 1rem; background: linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(59, 130, 246, 0.05)); border: 1px solid rgba(0, 230, 246, 0.15);">
+          <div class="success-card" style="min-height: auto; gap: 1rem; background: linear-gradient(135deg, rgba(255, 176, 32, 0.04), rgba(255, 138, 0, 0.04)); border: 1px solid rgba(255, 176, 32, 0.2);">
             <div class="success-card-header" style="margin-bottom: 0;">
-              <span class="success-card-title" style="color: #00E6F6;">💰 Referral Program</span>
-              <span class="focus-status-pill" style="background: rgba(0, 230, 246, 0.1); color: #00E6F6; border: 1px solid rgba(0, 230, 246, 0.2);">ACTIVE</span>
+              <span class="success-card-title" style="color: #FFB020;">💰 Earn upto ₹10,000</span>
+              <span class="focus-status-pill" style="background: rgba(255, 176, 32, 0.15); color: #FFB020; border: 1px solid rgba(255, 176, 32, 0.3);">ACTIVE</span>
             </div>
             <div style="font-size: 13px; color: rgba(203,213,225,0.8); line-height: 1.5;">
               Invite friends to learn Python. You earn commission for every purchase, and they get an extra discount!
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.75rem; margin: 0; font-size: 13px;">
               <span style="color: #94a3b8;">Earn up to ₹200 / $2 per sale</span>
-              <a href="referral-earnings.html" class="nav-btn" style="padding: 6px 12px; font-size: 12px; text-decoration: none;">Dashboard</a>
+              <a href="referral-earnings.html" class="nav-btn" style="padding: 6px 12px; font-size: 12px; text-decoration: none; background: #FFB020; color: #000; font-weight: 700; border-radius: 4px; box-shadow: 0 0 10px rgba(255, 176, 32, 0.2); border: none;">Earn Now</a>
             </div>
           </div>
 
