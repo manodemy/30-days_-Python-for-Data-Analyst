@@ -683,6 +683,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setupGatewayButtons();
 
+    // Remove loading state to reveal final dynamic prices
+    document.body.classList.remove('pricing-loading');
   }
 
 

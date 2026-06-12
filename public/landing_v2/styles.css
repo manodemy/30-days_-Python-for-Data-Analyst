@@ -6123,3 +6123,14 @@ button, a, input, select, .accordion-header {
     bottom: 94px;
   }
 }
+
+/* Pricing loading states to avoid layout flash */
+.pricing-loading .dynamic-price,
+.pricing-loading .price-now span,
+.pricing-loading .price-old,
+.pricing-loading .price-inr,
+.pricing-loading .checkout-amount,
+.pricing-loading .checkout-original,
+.pricing-loading .compare-price-mano {
+  visibility: hidden !important;
+}
