@@ -5826,6 +5826,9 @@ button {
   [id^="compare-cost-"] {
     font-size: 13px !important;
   }
+  .terminal-video-body {
+    aspect-ratio: 16 / 9 !important;
+  }
 }
 
 /* ==========================================================================
