@@ -1185,6 +1185,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Intercept click on referral links to prompt for login/signup if not authenticated
+  document.querySelectorAll('a[href="/referral-earnings"]').forEach(el => {
+    el.addEventListener('click', e => {
+      const isLoggedIn = localStorage.getItem('manodemy_auth') === 'true';
+      if (!isLoggedIn) {
+        e.preventDefault();
+        openAuthModal('signup');
+      }
+    });
+  });
+
+  // Open signup modal if redirect reason is login_required
+  const pageParams = new URLSearchParams(window.location.search);
+  if (pageParams.get('reason') === 'login_required') {
+    setTimeout(() => {
+      openAuthModal('signup');
+      // Clean query parameters to avoid showing ?reason=login_required on reload
+      const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+      window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+    }, 200);
+  }
+
 
 
   // ═══════ COUNTRY CAPTURE PIPELINE ═══════
