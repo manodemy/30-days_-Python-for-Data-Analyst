@@ -1191,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const isLoggedIn = localStorage.getItem('manodemy_auth') === 'true';
       if (!isLoggedIn) {
         e.preventDefault();
-        openAuthModal('signup');
+        openAuthModal('login');
       }
     });
   });
@@ -1200,7 +1200,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const pageParams = new URLSearchParams(window.location.search);
   if (pageParams.get('reason') === 'login_required') {
     setTimeout(() => {
-      openAuthModal('signup');
+      openAuthModal('login');
       // Clean query parameters to avoid showing ?reason=login_required on reload
       const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
       window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
