@@ -483,12 +483,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  async function checkReferralProgramStatus() {
+    if (!supabaseClient) return;
+    try {
+      const { data, error } = await supabaseClient
+        .from('settings')
+        .select('value')
+        .eq('key', 'referral_config')
+        .single();
+      if (error) {
+        console.warn("[Referral] Failed to fetch settings:", error.message);
+        return;
+      }
+      const config = data?.value;
+      if (config && config.program_active === false) {
+        document.querySelectorAll('.referral-nav-btn, .btn-nav-referral, a[href="/referral-earnings"], a[href="referral-earnings.html"]').forEach(el => {
+          el.style.setProperty('display', 'none', 'important');
+        });
+      }
+    } catch (e) {
+      console.warn("[Referral] Error checking program status:", e);
+    }
+  }
+
   try {
 
     if (window.supabase) {
 
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       fetchAndDisplayLivePaidUsers();
+      checkReferralProgramStatus();
 
     }
 

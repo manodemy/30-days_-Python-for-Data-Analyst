@@ -5589,7 +5589,7 @@
 
 
           <!-- Referral Program Card -->
-          <div class="success-card" style="min-height: auto; gap: 1rem; background: linear-gradient(135deg, rgba(255, 176, 32, 0.04), rgba(255, 138, 0, 0.04)); border: 1px solid rgba(255, 176, 32, 0.2);">
+          <div class="success-card" id="referralTeaserCard" style="min-height: auto; gap: 1rem; background: linear-gradient(135deg, rgba(255, 176, 32, 0.04), rgba(255, 138, 0, 0.04)); border: 1px solid rgba(255, 176, 32, 0.2);">
             <div class="success-card-header" style="margin-bottom: 0;">
               <span class="success-card-title" style="color: #FFB020;">💰 Earn upto ₹10,000</span>
               <span class="focus-status-pill" style="background: rgba(255, 176, 32, 0.15); color: #FFB020; border: 1px solid rgba(255, 176, 32, 0.3);">ACTIVE</span>
@@ -6128,9 +6128,23 @@
         }
 
       } catch (err) {
-
         console.warn("Failed checking admin privileges", err);
+      }
 
+      // Check referral program status
+      try {
+        const { data: refSetting } = await sb.from('settings').select('value').eq('key', 'referral_config').single();
+        if (refSetting?.value?.program_active === false) {
+          document.querySelectorAll('.referral-nav-btn, #referralEarningsLink, #referralTeaserCard, a[href="/referral-earnings"], a[href="referral-earnings.html"]').forEach(el => {
+            if (el.id === 'referralTeaserCard') {
+              el.style.setProperty('display', 'none', 'important');
+            } else {
+              el.style.display = 'none';
+            }
+          });
+        }
+      } catch (err) {
+        console.warn("Failed checking referral program status", err);
       }
 
 

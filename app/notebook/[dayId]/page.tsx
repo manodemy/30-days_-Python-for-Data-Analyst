@@ -72,6 +72,16 @@ export default async function NotebookPage({ params }: { params: { dayId: string
 
   // 2. Fetch Notebook Content (HTML + Metadata)
   const supabase = getSupabaseServerClient();
+  
+  // Fetch settings to check if referral program is active
+  const { data: settingData } = await supabase
+    .from('settings')
+    .select('value')
+    .eq('key', 'referral_config')
+    .single();
+  const referralConfig = settingData?.value as { program_active?: boolean } | null;
+  const isReferralActive = referralConfig?.program_active !== false;
+
   const { data: notebook, error } = await supabase
     .from('notebook_content')
     .select('*')
@@ -307,9 +317,11 @@ export default async function NotebookPage({ params }: { params: { dayId: string
           <a href="/home.html" style={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', transition: 'color 0.2s' }}>
             <span>🏠</span> Back to Dashboard
           </a>
-          <a href="/referral-earnings" style={{ color: '#FFB020', textDecoration: 'none', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700, transition: 'opacity 0.2s' }}>
-            <span>💰</span> Earn upto ₹10,000
-          </a>
+          {isReferralActive && (
+            <a href="/referral-earnings" style={{ color: '#FFB020', textDecoration: 'none', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700, transition: 'opacity 0.2s' }}>
+              <span>💰</span> Earn upto ₹10,000
+            </a>
+          )}
         </div>
         
         <button className="profile-card__signout" id="signOutBtn">Sign Out</button>
