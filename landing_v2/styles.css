@@ -2,7 +2,7 @@
    MANODEMY LANDING PAGE V2.0 — ELITE DESIGN SYSTEM (TOP-5 WORLD STANDARD)
    Engineered using Advanced Color Science, Cognitive Flow & Chromatic Contrast
    ══════════════════════════════════════════════════════════════════ */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,700&family=Caveat:wght@400;700&family=Sacramento&family=Allura&family=Satisfy&family=Dancing+Script:wght@600;700&family=Kalam:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
   /* ══════ COLOR SCIENCE SYSTEM (60-30-10 Rule) ══════ */
@@ -2340,11 +2340,13 @@ button {
   z-index: 1;
 }
 
-.day-card:hover {
-  border-color: rgba(0, 230, 246, 0.45);
-  transform: translateY(-4px) scale(1.02);
-  background: var(--elevated);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45), 0 0 20px rgba(0, 230, 246, 0.15);
+@media (hover: hover) {
+  .day-card:hover {
+    border-color: rgba(0, 230, 246, 0.45);
+    transform: translateY(-4px) scale(1.02);
+    background: var(--elevated);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45), 0 0 20px rgba(0, 230, 246, 0.15);
+  }
 }
 
 .day-num {
@@ -2468,8 +2470,10 @@ button {
   transition: background 300ms var(--ease);
 }
 
-.compare tbody tr:hover {
-  background: rgba(0, 230, 246, 0.02);
+@media (hover: hover) {
+  .compare tbody tr:hover {
+    background: rgba(0, 230, 246, 0.02);
+  }
 }
 
 .compare thead th {
@@ -2503,8 +2507,10 @@ button {
   border-bottom: 2px solid rgba(0, 230, 246, 0.22);
 }
 
-.compare tbody tr:hover .col-mano {
-  background: rgba(0, 230, 246, 0.06);
+@media (hover: hover) {
+  .compare tbody tr:hover .col-mano {
+    background: rgba(0, 230, 246, 0.06);
+  }
 }
 
 .compare .yes {
@@ -2581,32 +2587,34 @@ button {
 }
 
 /* Beautiful micro-interactions on list badge hovers */
-.compare-status:hover .compare-badge--yes {
-  transform: scale(1.15);
-  background: rgba(16, 185, 129, 0.22);
-  border-color: var(--emerald);
-  box-shadow: 0 0 14px rgba(16, 185, 129, 0.35);
-}
+@media (hover: hover) {
+  .compare-status:hover .compare-badge--yes {
+    transform: scale(1.15);
+    background: rgba(16, 185, 129, 0.22);
+    border-color: var(--emerald);
+    box-shadow: 0 0 14px rgba(16, 185, 129, 0.35);
+  }
 
-.compare-status:hover .compare-badge--no {
-  transform: scale(1.15);
-  background: rgba(244, 63, 94, 0.22);
-  border-color: var(--rose);
-  box-shadow: 0 0 14px rgba(244, 63, 94, 0.35);
-}
+  .compare-status:hover .compare-badge--no {
+    transform: scale(1.15);
+    background: rgba(244, 63, 94, 0.22);
+    border-color: var(--rose);
+    box-shadow: 0 0 14px rgba(244, 63, 94, 0.35);
+  }
 
-.compare-status:hover .compare-badge--warning {
-  transform: scale(1.15);
-  background: rgba(255, 176, 32, 0.22);
-  border-color: var(--gold);
-  box-shadow: 0 0 14px rgba(255, 176, 32, 0.35);
-}
+  .compare-status:hover .compare-badge--warning {
+    transform: scale(1.15);
+    background: rgba(255, 176, 32, 0.22);
+    border-color: var(--gold);
+    box-shadow: 0 0 14px rgba(255, 176, 32, 0.35);
+  }
 
-.compare-status:hover .compare-badge--neutral-yes {
-  transform: scale(1.15);
-  background: rgba(255, 255, 255, 0.15);
-  border-color: var(--ink);
-  color: #fff;
+  .compare-status:hover .compare-badge--neutral-yes {
+    transform: scale(1.15);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--ink);
+    color: #fff;
+  }
 }
 
 /* ═══ TESTIMONIALS (Luxury Cards Grid) ═══ */
@@ -2643,7 +2651,7 @@ button {
   position: absolute;
   top: 12px;
   left: 18px;
-  font-family: 'Playfair Display', serif;
+  font-family: Georgia, serif;
   font-size: 72px;
   font-style: italic;
   color: var(--cyan);
@@ -2653,10 +2661,12 @@ button {
   z-index: 1;
 }
 
-.test-card:hover {
-  border-color: rgba(0, 230, 246, 0.35);
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55), 0 0 25px rgba(0, 230, 246, 0.12);
+@media (hover: hover) {
+  .test-card:hover {
+    border-color: rgba(0, 230, 246, 0.35);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55), 0 0 25px rgba(0, 230, 246, 0.12);
+  }
 }
 
 .test-stars {
@@ -2772,6 +2782,8 @@ button {
   z-index: -1;
   animation: pricing-ring-rotate 8s linear infinite;
   opacity: 0.6;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 @keyframes pricing-ring-rotate {
@@ -2784,10 +2796,12 @@ button {
   z-index: 2;
 }
 
-.pricing-card:hover {
-  transform: translateY(-6px) scale(1.015);
-  border-color: rgba(0, 230, 246, 0.55);
-  box-shadow: 0 45px 90px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 230, 246, 0.35);
+@media (hover: hover) {
+  .pricing-card:hover {
+    transform: translateY(-6px) scale(1.015);
+    border-color: rgba(0, 230, 246, 0.55);
+    box-shadow: 0 45px 90px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 230, 246, 0.35);
+  }
 }
 
 .popular-badge {

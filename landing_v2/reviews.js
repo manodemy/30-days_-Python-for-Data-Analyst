@@ -566,22 +566,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  async function refreshStats() {
-    let statsData = [];
-    if (sb) {
-      try {
-        const { data, error } = await sb.from('reviews').select('rating,is_verified,media_urls').eq('status', 'approved');
-        if (error) throw error;
-        statsData = data || [];
-      } catch (err) {
-        console.warn("Stats fallback:", err);
-        statsData = fallbackReviews;
-      }
-    } else {
-      statsData = fallbackReviews;
-    }
-    processAndRenderStats(statsData);
-  }
+  // Stats calculation logic is now handled in unified refreshAllData fetching.
 
   // ─────────────────────────────────────────────────────────────
   //  Card renderer (shared between grid legacy & carousel)
@@ -857,7 +842,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─────────────────────────────────────────────────────────────
   //  Data fetching
   // ─────────────────────────────────────────────────────────────
-  async function fetchAllReviews() {
+  async function refreshAllData() {
     // Show loading spinner
     if (carouselTrack) {
       carouselTrack.innerHTML = `<div class="rev-carousel-loading"><svg viewBox="0 0 24 24" style="width:32px;height:32px;color:var(--cyan);animation:spin 1s linear infinite"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="4" opacity=".25"/><path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg></div>`;
@@ -880,11 +865,11 @@ document.addEventListener('DOMContentLoaded', () => {
       allReviews = [...fallbackReviews];
     }
 
-    renderCarousel(allReviews);
-  }
+    // Process statistics and render stats dashboard on client side
+    processAndRenderStats(allReviews);
 
-  async function refreshAllData() {
-    await Promise.all([refreshStats(), fetchAllReviews()]);
+    // Render the carousel containing all reviews
+    renderCarousel(allReviews);
   }
 
   // ─────────────────────────────────────────────────────────────

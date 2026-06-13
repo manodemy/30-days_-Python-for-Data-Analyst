@@ -606,18 +606,24 @@ document.addEventListener('DOMContentLoaded', () => {
         { url: 'https://api.country.is/', parse: d => d.country },
       ];
 
-      for (const api of geoAPIs) {
-        try {
-          const response = await fetch(api.url, { signal: AbortSignal.timeout(4000) });
-          const data = await response.json();
-          const code = api.parse(data);
-          if (code && code.length === 2) {
-            userCountry = code.toUpperCase();
-            geoDetected = true;
-            console.log("[Geo-pricing] Detected via API:", userCountry);
-            break;
-          }
-        } catch (_) { /* try next */ }
+      try {
+        const promises = geoAPIs.map(api => 
+          fetch(api.url, { signal: AbortSignal.timeout(1500) })
+            .then(res => res.json())
+            .then(data => {
+              const code = api.parse(data);
+              if (code && code.length === 2) return code.toUpperCase();
+              throw new Error("Invalid code");
+            })
+        );
+        const resolvedCountry = await Promise.any(promises);
+        if (resolvedCountry) {
+          userCountry = resolvedCountry;
+          geoDetected = true;
+          console.log("[Geo-pricing] Detected via parallel API:", userCountry);
+        }
+      } catch (err) {
+        console.warn("[Geo-pricing] Parallel lookup failed or timed out:", err);
       }
     }
 
