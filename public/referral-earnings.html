@@ -833,20 +833,8 @@
     let payoutCurrency = 'INR';
 
     async function initReferralDashboard() {
-      const sb = window.sbClient;
-      const session = window.userSession;
-
-      // Check program status
-      try {
-        const { data: refSetting } = await sb.from('settings').select('value').eq('key', 'referral_config').single();
-        if (refSetting?.value?.program_active === false) {
-          alert("The Referral Program is currently disabled.");
-          window.location.replace("home.html");
-          return;
-        }
-      } catch (err) {
-        console.warn("Failed to check referral program status:", err);
-      }
+      window.location.replace("home.html");
+      return;
       
       // Fetch user profile
       const { data: profile, error } = await sb

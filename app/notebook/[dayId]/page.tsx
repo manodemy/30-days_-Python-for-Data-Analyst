@@ -80,7 +80,7 @@ export default async function NotebookPage({ params }: { params: { dayId: string
     .eq('key', 'referral_config')
     .single();
   const referralConfig = settingData?.value as { program_active?: boolean } | null;
-  const isReferralActive = referralConfig?.program_active !== false;
+  const isReferralActive = false; // Unconditionally hide referral program links
 
   const { data: notebook, error } = await supabase
     .from('notebook_content')

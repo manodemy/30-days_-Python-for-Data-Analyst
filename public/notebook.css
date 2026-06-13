@@ -2858,3 +2858,9 @@ body.focus-mode-active .symbol-helper-bar {
 
 
 
+
+
+/* Unconditional Referral Program Concealment */
+a[href*="referral-earnings"] {
+  display: none !important;
+}
