@@ -16,7 +16,7 @@
       ]
     },
     {
-      "source": "/notebook/day(0[3-9]|[12][0-9]|30)",
+      "source": "/notebook/day:day(0[3-9]|[12][0-9]|30)",
       "headers": [
         { "key": "Cache-Control", "value": "private, no-store, no-cache, must-revalidate" },
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
@@ -55,8 +55,8 @@
       "permanent": true
     },
     {
-      "source": "/day(0[3-9]|[12][0-9]|30).html",
-      "destination": "/notebook/day:1",
+      "source": "/day:day(0[3-9]|[12][0-9]|30).html",
+      "destination": "/notebook/day:day",
       "permanent": true
     },
     {
