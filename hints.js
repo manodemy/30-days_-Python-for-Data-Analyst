@@ -95,7 +95,8 @@
       }, 3000);
 
       // 5. Open Gemini side-by-side or new tab
-      window.open('https://gemini.google.com/', 'GeminiTutor', 'width=450,height=750,resizable=yes,scrollbars=yes');
+      // Note: noopener,noreferrer prevents the new tab from accessing window.opener
+      window.open('https://gemini.google.com/', 'GeminiTutor', 'width=450,height=750,resizable=yes,scrollbars=yes,noopener,noreferrer');
     });
   }
 
@@ -122,6 +123,7 @@
       var btn = document.createElement('button');
       btn.className = 'hint-btn';
       btn.type = 'button';
+      btn.title = 'Opens Google Gemini (external site). Manodemy is not affiliated with Google.';
       var cellId = cell.id;
       btn.innerHTML = '<svg style="width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:6px;" viewBox="0 0 24 24"><defs><linearGradient id="geminiSparkGrad_' + cellId + '" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00E6F6" /><stop offset="100%" stop-color="#8B5CF6" /></linearGradient></defs><path fill="url(#geminiSparkGrad_' + cellId + ')" d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/></svg><span class="gemini-btn-text">Ask Gemini</span>';
       btn.setAttribute('data-cell', cellId);
