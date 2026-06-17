@@ -1587,23 +1587,7 @@ function updateScore() {
 
 // ── RUN CELL ──
 
-async function runCell(cellId) {
 
-  if (document.body.classList.contains('notebook-locked')) {
-
-    const modal = document.getElementById('startCodingModal');
-
-    if (modal) {
-
-      modal.classList.add('show');
-
-      document.body.classList.add('modal-open');
-
-    }
-
-    return;
-
-  }
 
 function evaluateExcelFormula(formula) {
   let expr = formula.substring(1).trim(); // Remove '='
