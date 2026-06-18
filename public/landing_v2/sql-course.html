@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SQL for Data Analyst — 20-Day Course | Manodemy</title>
-  <meta name="description" content="Master SQL from scratch in 20 structured days. Learn SELECT, JOINs, CTEs, Window Functions, and real-world BI analysis with interactive live queries. Part of the Manodemy Data Analytics Bundle.">
+  <title>SQL for Data Analyst — 18-Day Course | Manodemy</title>
+  <meta name="description" content="Master SQL from scratch in 18 structured days. Learn SELECT, JOINs, CTEs, Window Functions, and real-world BI analysis with interactive live queries. Part of the Manodemy Data Analytics Bundle.">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -415,13 +415,13 @@
   <!-- Hero -->
   <section class="course-hero">
     <div class="course-hero-badge">SQL for Data Analyst</div>
-    <h1>Master SQL in <span>20 Structured Days</span></h1>
+    <h1>Master SQL in <span>18 Structured Days</span></h1>
     <p class="course-hero-sub">
       From your very first SELECT to advanced window functions and real-world BI reports — all with a live interactive SQL editor and Mano AI guidance.
     </p>
     <div class="hero-stats-row">
       <div class="hero-stat">
-        <span class="hero-stat-num">20</span>
+        <span class="hero-stat-num">18</span>
         <span class="hero-stat-label">Days</span>
       </div>
       <div class="hero-stat">
@@ -447,7 +447,7 @@
   <section class="curriculum-section">
     <div class="container">
       <div class="sec-head">
-        <h2>The Complete <span>20-Day SQL Curriculum</span></h2>
+        <h2>The Complete <span>18-Day SQL Curriculum</span></h2>
         <p>Every concept a professional Data Analyst uses on the job — in a logical, progressive sequence.</p>
       </div>
 
@@ -455,48 +455,40 @@
       <div class="phase-block">
         <div class="phase-header">
           <span class="phase-badge">Phase 1</span>
-          <span class="phase-title">Foundations — Days 1–5</span>
+          <span class="phase-title">Foundations — Days 1–4</span>
           <span class="phase-db">📦 retail.db</span>
         </div>
         <ul class="day-list">
           <li class="day-item">
             <span class="day-num">Day 01</span>
             <div class="day-content">
-              <div class="day-title">Introduction to SQL &amp; Databases</div>
-              <div class="day-topics">SELECT *, SELECT columns, column aliases (AS), DISTINCT, what is a database?</div>
-              <div class="day-challenge">🎯 List all unique product categories sold</div>
+              <div class="day-title">Database Fundamentals &amp; SQL Environment</div>
+              <div class="day-topics">Relational databases vs spreadsheets, schemas, tables, fields, SELECT *, SELECT columns, aliases (AS), DISTINCT, LIMIT</div>
+              <div class="day-challenge">🎯 Schema Explorer: Fetch unique product categories sold</div>
             </div>
           </li>
           <li class="day-item">
             <span class="day-num">Day 02</span>
             <div class="day-content">
-              <div class="day-title">Filtering Data with WHERE</div>
-              <div class="day-topics">WHERE with comparison ops, AND/OR/NOT, BETWEEN, IN/NOT IN, operator precedence</div>
-              <div class="day-challenge">🎯 Find all sales over ₹5,000 in the "North" region</div>
+              <div class="day-title">SELECT &amp; Filtering — Retrieving Rows</div>
+              <div class="day-topics">WHERE clause filtering, logical operators (AND, OR, NOT), operators (=, &lt;&gt;, &lt;, &gt;, &lt;=, &gt;=), BETWEEN, IN list filters</div>
+              <div class="day-challenge">🎯 High-Value Filter: Find transactions over ₹8,000 in the 'East' region</div>
             </div>
           </li>
           <li class="day-item">
             <span class="day-num">Day 03</span>
             <div class="day-content">
-              <div class="day-title">Pattern Matching &amp; NULL Handling</div>
-              <div class="day-topics">LIKE with % and _, IS NULL / IS NOT NULL, why NULL ≠ empty string, COALESCE</div>
-              <div class="day-challenge">🎯 Find customers whose names start with 'A' or have NULL email</div>
+              <div class="day-title">Sorting, Pattern Matching &amp; CASE</div>
+              <div class="day-topics">ORDER BY sorting (ASC/DESC, multi-column), LIKE wildcard fuzzy match (% and _), NULL comparisons (IS NULL, IS NOT NULL), COALESCE fallback, CASE WHEN conditional logic</div>
+              <div class="day-challenge">🎯 Customer Clean-up: Sort 'Kumar' occurrences by transaction amounts; handle null email defaults</div>
             </div>
           </li>
           <li class="day-item">
             <span class="day-num">Day 04</span>
             <div class="day-content">
-              <div class="day-title">Sorting &amp; Limiting Results</div>
-              <div class="day-topics">ORDER BY (ASC/DESC), multi-column sort, LIMIT, OFFSET, Top-N queries, NULLS FIRST/LAST</div>
-              <div class="day-challenge">🎯 Get the top 10 highest-value sales, most recent first</div>
-            </div>
-          </li>
-          <li class="day-item">
-            <span class="day-num">Day 05</span>
-            <div class="day-content">
-              <div class="day-title">Aggregate Functions</div>
-              <div class="day-topics">COUNT(*) vs COUNT(col), SUM, AVG, MIN, MAX, ROUND, aggregates with WHERE</div>
-              <div class="day-challenge">🎯 What is the average sale value per category?</div>
+              <div class="day-title">Aggregate Functions &amp; GROUP BY</div>
+              <div class="day-topics">Aggregate metrics (COUNT, SUM, AVG, MIN, MAX), GROUP BY groupings, HAVING post-aggregation filter vs WHERE pre-filter</div>
+              <div class="day-challenge">🎯 Category Volume: Summarize average cost and order counts; extract high-volume cohorts</div>
             </div>
           </li>
         </ul>
@@ -506,32 +498,32 @@
       <div class="phase-block">
         <div class="phase-header">
           <span class="phase-badge">Phase 2</span>
-          <span class="phase-title">Grouping &amp; Shaping Data — Days 6–8</span>
-          <span class="phase-db">📦 retail.db (extended)</span>
+          <span class="phase-title">Joins &amp; Advanced Filtering — Days 5–7</span>
+          <span class="phase-db">📦 company.db / ecommerce.db</span>
         </div>
         <ul class="day-list">
           <li class="day-item">
+            <span class="day-num">Day 05</span>
+            <div class="day-content">
+              <div class="day-title">Joins — Combining Multiple Tables</div>
+              <div class="day-topics">Primary/foreign keys, INNER JOIN, LEFT JOIN, SELF JOIN, CROSS JOIN, table aliasing, multiple table joins</div>
+              <div class="day-challenge">🎯 Department Heads: Retrieve active departments with their assigned managers and budgets</div>
+            </div>
+          </li>
+          <li class="day-item">
             <span class="day-num">Day 06</span>
             <div class="day-content">
-              <div class="day-title">GROUP BY &amp; HAVING</div>
-              <div class="day-topics">GROUP BY single/multiple columns, HAVING (post-aggregation filter), frequency analysis patterns</div>
-              <div class="day-challenge">🎯 Find categories with 100+ orders AND avg sale &gt; ₹3,000</div>
+              <div class="day-title">Subqueries</div>
+              <div class="day-topics">Scalar subqueries, multi-row subqueries (IN, NOT IN), correlated subqueries, EXISTS/NOT EXISTS vs JOIN performance</div>
+              <div class="day-challenge">🎯 Spender Cohort: Retrieve orders representing spending values above the cohort's average</div>
             </div>
           </li>
           <li class="day-item">
             <span class="day-num">Day 07</span>
             <div class="day-content">
-              <div class="day-title">Data Types, Casting &amp; Expressions</div>
-              <div class="day-topics">CAST, arithmetic in SELECT, ROUND/ABS/MOD, string concatenation (||), type traps with dates</div>
-              <div class="day-challenge">🎯 Create a "revenue_tier" column based on amount ranges</div>
-            </div>
-          </li>
-          <li class="day-item">
-            <span class="day-num">Day 08</span>
-            <div class="day-content">
-              <div class="day-title">CASE WHEN — Conditional Logic</div>
-              <div class="day-topics">Simple &amp; searched CASE, CASE inside GROUP BY, conditional aggregation (the pivot trick)</div>
-              <div class="day-challenge">🎯 Classify each sale as Low/Medium/High; count each tier</div>
+              <div class="day-title">Common Table Expressions (CTEs)</div>
+              <div class="day-topics">WITH clause syntax, readability improvements, chaining multiple CTEs, recursive CTE basics, CTEs vs derived tables</div>
+              <div class="day-challenge">🎯 Category Revenue: Chaining CTEs to organize and output product sales totals by category</div>
             </div>
           </li>
         </ul>
@@ -541,32 +533,32 @@
       <div class="phase-block">
         <div class="phase-header">
           <span class="phase-badge">Phase 3</span>
-          <span class="phase-title">Joins &amp; Relationships — Days 9–11</span>
-          <span class="phase-db">📦 company.db</span>
+          <span class="phase-title">Window Functions &amp; Analytics — Days 8–10</span>
+          <span class="phase-db">📦 ecommerce.db</span>
         </div>
         <ul class="day-list">
           <li class="day-item">
+            <span class="day-num">Day 08</span>
+            <div class="day-content">
+              <div class="day-title">Window Functions I — Ranking &amp; Numbering</div>
+              <div class="day-topics">OVER(), PARTITION BY, ROW_NUMBER(), RANK(), DENSE_RANK() ties, NTILE(n) distribution quartiles</div>
+              <div class="day-challenge">🎯 Region Rankings: Rank customers by transactions within each region without collapsing rows</div>
+            </div>
+          </li>
+          <li class="day-item">
             <span class="day-num">Day 09</span>
             <div class="day-content">
-              <div class="day-title">Understanding Relationships &amp; INNER JOIN</div>
-              <div class="day-topics">Foreign keys, primary keys, reading ERDs, INNER JOIN, JOIN ON vs USING, multi-table joins</div>
-              <div class="day-challenge">🎯 Get employee names with their department and salary</div>
+              <div class="day-title">Window Functions II — Analytics &amp; Frames</div>
+              <div class="day-topics">LAG(), LEAD() chronological offset tracking, running totals, moving average window framing (ROWS BETWEEN)</div>
+              <div class="day-challenge">🎯 Cumulative Spend: Construct running aggregates of customer orders to trace user lifetime value</div>
             </div>
           </li>
           <li class="day-item">
             <span class="day-num">Day 10</span>
             <div class="day-content">
-              <div class="day-title">LEFT, RIGHT &amp; FULL OUTER JOIN <span class="mini-project-badge">⭐ Mini Project</span></div>
-              <div class="day-topics">LEFT JOIN, RIGHT JOIN, FULL OUTER JOIN, finding unmatched rows pattern, CROSS JOIN</div>
-              <div class="day-challenge">🎯 Find all departments with NO employees assigned</div>
-            </div>
-          </li>
-          <li class="day-item">
-            <span class="day-num">Day 11</span>
-            <div class="day-content">
-              <div class="day-title">SELF JOIN &amp; Complex Multi-Table Queries</div>
-              <div class="day-topics">SELF JOIN for hierarchies, table aliasing, troubleshooting duplicate rows in JOINs</div>
-              <div class="day-challenge">🎯 List every employee with their manager's name</div>
+              <div class="day-title">Date &amp; Time Functions</div>
+              <div class="day-topics">ISO date storage formats, STRFTIME extraction, date math, JULIANDAY intervals, weekend date analysis</div>
+              <div class="day-challenge">🎯 Signup Intervals: Calculate the average day latency between account registration and first purchase</div>
             </div>
           </li>
         </ul>
@@ -576,40 +568,40 @@
       <div class="phase-block">
         <div class="phase-header">
           <span class="phase-badge">Phase 4</span>
-          <span class="phase-title">Advanced Querying — Days 12–15</span>
+          <span class="phase-title">Data Cleaning &amp; Optimization — Days 11–14</span>
           <span class="phase-db">📦 ecommerce.db</span>
         </div>
         <ul class="day-list">
           <li class="day-item">
+            <span class="day-num">Day 11</span>
+            <div class="day-content">
+              <div class="day-title">String &amp; Type Functions</div>
+              <div class="day-topics">Text manipulation (UPPER, LOWER, TRIM, REPLACE, SUBSTR, INSTR), CAST conversions, null fallbacks, NULLIF division safety</div>
+              <div class="day-challenge">🎯 Domain Extraction: Isolate and standardize domain patterns from messy registration emails</div>
+            </div>
+          </li>
+          <li class="day-item">
             <span class="day-num">Day 12</span>
             <div class="day-content">
-              <div class="day-title">Subqueries</div>
-              <div class="day-topics">Scalar subqueries, IN/NOT IN, EXISTS/NOT EXISTS (correlated), subquery in FROM (derived tables)</div>
-              <div class="day-challenge">🎯 Find customers who ordered more than the average order value</div>
+              <div class="day-title">Data Cleaning &amp; Wrangling in SQL</div>
+              <div class="day-topics">Deduplication using ROW_NUMBER(), data profiling, outlier detection, pivoting rows to columns (the pivot trick)</div>
+              <div class="day-challenge">🎯 Status Pivot: Transform and report purchase metrics pivoted across regional sales channels</div>
             </div>
           </li>
           <li class="day-item">
             <span class="day-num">Day 13</span>
             <div class="day-content">
-              <div class="day-title">CTEs (Common Table Expressions)</div>
-              <div class="day-topics">WITH clause, chaining CTEs, recursive CTE intro (org charts), CTE vs temp table</div>
-              <div class="day-challenge">🎯 Use a CTE to rank products by revenue; filter top 5 per category</div>
+              <div class="day-title">Set Operations &amp; Advanced Joins</div>
+              <div class="day-topics">UNION, UNION ALL duplication performance, INTERSECT overlaps, EXCEPT exclusions, anti-joins, semi-joins</div>
+              <div class="day-challenge">🎯 Active Spenders: Intersect Q3 and Q4 buyers; extract list of active dormant accounts</div>
             </div>
           </li>
           <li class="day-item">
             <span class="day-num">Day 14</span>
             <div class="day-content">
-              <div class="day-title">Window Functions Part 1 — Ranking</div>
-              <div class="day-topics">OVER(), PARTITION BY, ROW_NUMBER(), RANK(), DENSE_RANK(), NTILE(n)</div>
-              <div class="day-challenge">🎯 Rank customers by total spend within each region</div>
-            </div>
-          </li>
-          <li class="day-item">
-            <span class="day-num">Day 15</span>
-            <div class="day-content">
-              <div class="day-title">Window Functions Part 2 — Analytic</div>
-              <div class="day-topics">LAG(), LEAD(), FIRST_VALUE(), LAST_VALUE(), running totals, moving averages</div>
-              <div class="day-challenge">🎯 Calculate month-over-month revenue growth % using LAG</div>
+              <div class="day-title">Query Optimisation &amp; Execution Plans</div>
+              <div class="day-topics">EXPLAIN QUERY PLAN analysis, table scans vs index search, sargable predicates, clustered vs non-clustered indexes</div>
+              <div class="day-challenge">🎯 Index Optimization: Analyze table scans and verify index efficiency for subquery filters</div>
             </div>
           </li>
         </ul>
@@ -619,40 +611,32 @@
       <div class="phase-block">
         <div class="phase-header">
           <span class="phase-badge">Phase 5</span>
-          <span class="phase-title">Real-World Skills — Days 16–19</span>
-          <span class="phase-db">📦 mixed datasets</span>
+          <span class="phase-title">Reusability &amp; Advanced Analytics — Days 15–17</span>
+          <span class="phase-db">📦 company.db / ecommerce.db</span>
         </div>
         <ul class="day-list">
           <li class="day-item">
+            <span class="day-num">Day 15</span>
+            <div class="day-content">
+              <div class="day-title">Views, Stored Procedures &amp; Functions</div>
+              <div class="day-topics">Virtual tables (CREATE VIEW), security layers, stored procedures transactions, database triggers and audits</div>
+              <div class="day-challenge">🎯 Management View: Build a reusable view mapping staff members to managers and budgets</div>
+            </div>
+          </li>
+          <li class="day-item">
             <span class="day-num">Day 16</span>
             <div class="day-content">
-              <div class="day-title">String Functions</div>
-              <div class="day-topics">UPPER/LOWER, TRIM/LTRIM/RTRIM, LENGTH, SUBSTR, REPLACE, INSTR, CONCAT — real data cleaning patterns</div>
-              <div class="day-challenge">🎯 Standardize a messy customer names column</div>
+              <div class="day-title">Advanced Analytics Patterns</div>
+              <div class="day-topics">Cohort analysis retention grids, marketing funnel conversion ratios, RFM scoring segmentation profiles</div>
+              <div class="day-challenge">🎯 RFM Segments: Partition customers into monetary and recency brackets using NTILE</div>
             </div>
           </li>
           <li class="day-item">
             <span class="day-num">Day 17</span>
             <div class="day-content">
-              <div class="day-title">Date &amp; Time Functions</div>
-              <div class="day-topics">STRFTIME formatting, date extraction, date arithmetic, JULIANDAY, "last 30 days" pattern</div>
-              <div class="day-challenge">🎯 Find all orders placed on weekends in Q4</div>
-            </div>
-          </li>
-          <li class="day-item">
-            <span class="day-num">Day 18</span>
-            <div class="day-content">
-              <div class="day-title">UNION, INTERSECT &amp; EXCEPT (SET Operations)</div>
-              <div class="day-topics">UNION vs UNION ALL, INTERSECT, EXCEPT, column matching rules, stacking monthly reports</div>
-              <div class="day-challenge">🎯 Stack 2023 and 2024 sales; find customers who bought in both years</div>
-            </div>
-          </li>
-          <li class="day-item">
-            <span class="day-num">Day 19</span>
-            <div class="day-content">
-              <div class="day-title">Query Optimization &amp; Best Practices</div>
-              <div class="day-topics">EXPLAIN QUERY PLAN, index basics, sargable predicates, avoiding SELECT *, query formatting</div>
-              <div class="day-challenge">🎯 Identify and rewrite a slow, poorly-formatted query</div>
+              <div class="day-title">Data Modelling &amp; Analytics Engineering</div>
+              <div class="day-topics">Dimensional schema design (fact/dimension tables), star vs snowflake structures, dbt pipelines, SCD Type 1/2 history</div>
+              <div class="day-challenge">🎯 Schema Design: Inspect foreign relationships and model a grain-specific intermediate mart layer</div>
             </div>
           </li>
         </ul>
@@ -662,16 +646,16 @@
       <div class="phase-block">
         <div class="phase-header">
           <span class="phase-badge" style="background:rgba(255,176,32,0.15);color:var(--gold);border-color:rgba(255,176,32,0.3);">Capstone</span>
-          <span class="phase-title">BI Report Capstone — Day 20</span>
+          <span class="phase-title">BI Capstone &amp; Interview Prep — Day 18</span>
           <span class="phase-db">📦 capstone_retail.db</span>
         </div>
         <ul class="day-list">
           <li class="day-item">
-            <span class="day-num" style="background:rgba(255,176,32,0.12);color:var(--gold);">Day 20</span>
+            <span class="day-num" style="background:rgba(255,176,32,0.12);color:var(--gold);">Day 18</span>
             <div class="day-content">
-              <div class="day-title">🏆 Retail Business Intelligence Report</div>
-              <div class="day-topics">Write 8 production-ready SQL queries answering real business questions: MoM revenue growth, top products, customer segmentation, regional performance, return rates, sales rep ranking, customer cohort LTV, day-of-week analysis.</div>
-              <div class="day-challenge" style="color:var(--gold);">🎯 Final output: a clean, commented SQL script — interview-ready</div>
+              <div class="day-title">🏆 SQL Interview Prep &amp; Real-World Patterns</div>
+              <div class="day-topics">Capstone Business Intelligence Report: write production-ready SQL queries answering senior analytical questions. Top-N rankings, MoM revenue growth, cohort spend intervals, returns and churn rates.</div>
+              <div class="day-challenge" style="color:var(--gold);">🎯 Capstone Project: Output a clean, fully-optimized SQL report detailing retail performance KPIs</div>
             </div>
           </li>
         </ul>
@@ -710,7 +694,7 @@
         <div class="feature-card">
           <div class="feature-icon">🏆</div>
           <div class="feature-title">Completion Certificate</div>
-          <div class="feature-desc">Earn your SQL for Data Analyst certificate on completing all 20 days — shareable on LinkedIn.</div>
+          <div class="feature-desc">Earn your SQL for Data Analyst certificate on completing all 18 days — shareable on LinkedIn.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon">🔗</div>
@@ -734,7 +718,7 @@
           <div>
             <div class="dataset-name">retail.db</div>
             <div class="dataset-desc">sales, products, regions tables — grows from single-table to 3-table queries.</div>
-            <div class="dataset-days">Used in Days 1–8</div>
+            <div class="dataset-days">Used in Days 1–4</div>
           </div>
         </div>
         <div class="dataset-card">
@@ -742,7 +726,7 @@
           <div>
             <div class="dataset-name">company.db</div>
             <div class="dataset-desc">employees, departments, salaries, projects — perfect for JOIN and hierarchy practice.</div>
-            <div class="dataset-days">Used in Days 9–11</div>
+            <div class="dataset-days">Used in Days 5 &amp; 15</div>
           </div>
         </div>
         <div class="dataset-card">
@@ -750,7 +734,7 @@
           <div>
             <div class="dataset-name">ecommerce.db</div>
             <div class="dataset-desc">5-table schema: customers, orders, order_items, products, categories — full complexity.</div>
-            <div class="dataset-days">Used in Days 12–19</div>
+            <div class="dataset-days">Used in Days 6–14 &amp; 16–17</div>
           </div>
         </div>
         <div class="dataset-card">
@@ -758,7 +742,7 @@
           <div>
             <div class="dataset-name">capstone_retail.db</div>
             <div class="dataset-desc">Extended retail dataset with orders, returns, and sales_rep tables for the BI report capstone.</div>
-            <div class="dataset-days">Used in Day 20</div>
+            <div class="dataset-days">Used in Day 18</div>
           </div>
         </div>
       </div>
