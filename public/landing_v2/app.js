@@ -690,39 +690,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 200);
   }
 
-  /* ═══ V6 MOTION SYSTEM: LIVE ACTIVITY TICKER ═══ */
-  async function initLiveTicker() {
-    const tickerContainer = document.getElementById('liveTickerContainer');
-    const ticker = document.getElementById('liveTicker');
-    if (!tickerContainer || !ticker) return;
-
-    try {
-      const res = await fetch('/api/activity/recent');
-      if (!res.ok) throw new Error('API Error');
-      const data = await res.json();
-      
-      if (!data.events || data.events.length === 0) {
-        tickerContainer.style.display = 'none';
-        return;
-      }
-
-      let html = '';
-      data.events.forEach(event => {
-        const typeClass = event.type || 'milestone';
-        html += `
-          <div class="ticker-item ${typeClass}">
-            <span class="ticker-dot"></span>
-            <span>${event.text}</span>
-          </div>
-        `;
-      });
-
-      ticker.innerHTML = html + html + html + html;
-      tickerContainer.style.display = 'block';
-    } catch (err) {
-      console.warn('Failed to initialize dynamic ticker:', err);
-      tickerContainer.style.display = 'none';
-    }
-  }
-  initLiveTicker();
 });
