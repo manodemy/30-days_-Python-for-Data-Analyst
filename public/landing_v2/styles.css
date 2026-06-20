@@ -370,7 +370,7 @@ button {
 
 .hero-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 55fr 45fr;
   gap: 3rem;
   align-items: center;
 }
