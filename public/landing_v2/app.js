@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.5 });
 
-  document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
+  // document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
 
   /* ═══ 3D STACK INTERACTIVE PARALLAX & FLOATING ANIMATIONS ═══ */
   const heroStack = document.getElementById('heroStack');
@@ -446,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.supabase) {
     try {
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      fetchLiveCounts();
+      // fetchLiveCounts(); // Disabled to prevent live count from overwriting static marketing numbers
     } catch (e) {
       console.error("Supabase init error:", e);
     }
@@ -454,6 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Fetch live learner stats from Supabase
   async function fetchLiveCounts() {
+    return; // Disabled to prevent live count from overwriting static marketing numbers
     if (!supabaseClient) return;
     try {
       const { data: count, error } = await supabaseClient.rpc('get_enrolled_users_count');
