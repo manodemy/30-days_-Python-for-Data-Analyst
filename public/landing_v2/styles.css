@@ -445,7 +445,8 @@ button {
 
 .hero-ctas {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-bottom: 2rem;
 }
 
@@ -493,6 +494,15 @@ button {
   border-color: #fff;
   transform: translateY(-2px);
 }
+
+/* Compact button size modifier */
+.btn-sm {
+  height: 42px;
+  padding: 0 16px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
 
 .hero-proof {
   display: flex;
