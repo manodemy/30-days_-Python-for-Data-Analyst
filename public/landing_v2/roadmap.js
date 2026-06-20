@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { start:18, end:30, key:'excel'  },
       { start:30, end:60, key:'python' },
     ];
-    const lw = Math.max(2, OUTER_R * 0.028);
+    const lw = Math.max(1.2, OUTER_R * 0.011);
     phases.forEach(ph => {
       const a1 = dayAngle(ph.start);
       const a2 = dayAngle(ph.end);
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Dim background arc
       ctx.save();
       ctx.strokeStyle = glowColor(col, 0.12);
-      ctx.lineWidth = lw * 3;
+      ctx.lineWidth = lw * 2.2;
       ctx.lineCap = 'butt';
       ctx.beginPath();
       ctx.arc(CX, CY, OUTER_R, a1, a2);
@@ -240,10 +240,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const a2c = dayAngle(completedEnd);
         ctx.save();
         ctx.strokeStyle = glowColor(col, 0.65);
-        ctx.lineWidth = lw * 1.8;
+        ctx.lineWidth = lw * 1.1;
         ctx.lineCap = 'round';
         ctx.shadowColor = col;
-        ctx.shadowBlur = 12;
+        ctx.shadowBlur = 8;
         ctx.beginPath();
         ctx.arc(CX, CY, OUTER_R, a1, a2c);
         ctx.stroke();
@@ -657,7 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillRect(0, 0, W, H);
 
     /* Subtle ambient ring */
-    drawRing(OUTER_R, OUTER_R * 0.01, 'rgba(255,255,255,0.04)', 1);
+    drawRing(OUTER_R, 1.0, 'rgba(255,255,255,0.04)', 1);
 
     /* Phase arc segments */
     drawRingSegments(currentDay + 1);
