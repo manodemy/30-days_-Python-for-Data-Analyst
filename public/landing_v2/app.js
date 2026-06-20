@@ -634,60 +634,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ═══ V6 MOTION SYSTEM: TEXT SCRAMBLER REVEAL ═══ */
   function scrambleText(element, durationMs = 1000) {
-    if (prefersReducedMotion) return;
-    
-    const textNodes = [];
-    const walk = (node) => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        if (node.nodeValue.trim().length > 0) {
-          textNodes.push(node);
-        }
-      } else {
-        node.childNodes.forEach(walk);
-      }
-    };
-    walk(element);
-
-    const glyphs = '#{;01X_$[]/*%&@?+';
-    
-    textNodes.forEach(node => {
-      const originalText = node.nodeValue;
-      const length = originalText.length;
-      let iterations = 0;
-      const maxIterations = 15;
-      
-      let currentText = originalText.split('');
-      
-      const interval = setInterval(() => {
-        for (let i = 0; i < length; i++) {
-          if (i < iterations) {
-            currentText[i] = originalText[i];
-          } else {
-            if (originalText[i] === ' ' || originalText[i] === '\n') {
-              currentText[i] = originalText[i];
-            } else {
-              currentText[i] = glyphs[Math.floor(Math.random() * glyphs.length)];
-            }
-          }
-        }
-        
-        node.nodeValue = currentText.join('');
-        iterations += length / maxIterations;
-        
-        if (iterations >= length) {
-          node.nodeValue = originalText;
-          clearInterval(interval);
-        }
-      }, 30);
-    });
-  }
-
-  // Initial trigger for hero title on load
-  const heroTitle = document.querySelector('.hero-title');
-  if (heroTitle) {
-    setTimeout(() => {
-      scrambleText(heroTitle, 1000);
-    }, 200);
+    // Disabled text scrambling animation to display all content immediately on refresh/scroll
   }
 
 });
