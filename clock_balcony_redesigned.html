@@ -12,7 +12,17 @@
     <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;">
       <div>
         <div style="font-size:11px; font-weight:600; letter-spacing:0.12em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:6px;">60-Days Data Analytics Roadmap</div>
-        <h1 style="margin:0; font-size:22px; font-weight:700; color:var(--ink); letter-spacing:-0.01em;">SQL → Excel → Python</h1>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:4px;">
+          <button class="rm-legendBtn" data-phase="SQL">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--sql);box-shadow:0 0 6px var(--sql);flex:none;"></span>SQL <span style="color:var(--ink-faint); font-weight:400;">· Days 1–18</span>
+          </button>
+          <button class="rm-legendBtn" data-phase="Excel">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--excel);box-shadow:0 0 6px var(--excel);flex:none;"></span>Excel <span style="color:var(--ink-faint); font-weight:400;">· Days 19–30</span>
+          </button>
+          <button class="rm-legendBtn" data-phase="Python">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--py);box-shadow:0 0 6px var(--py);flex:none;"></span>Python <span style="color:var(--ink-faint); font-weight:400;">· Days 31–60</span>
+          </button>
+        </div>
       </div>
       <div id="rm-headerStats" style="display:flex; gap:18px; align-items:center;">
         <div style="text-align:right;">
@@ -33,7 +43,7 @@
 
     <!-- 3D dial -->
     <div id="rm-dialWrap" style="position:relative; flex:1 1 100%; min-width:300px; background:#070b11;">
-      <canvas id="c3d" style="width:100%; display:block; cursor:grab;"></canvas>
+      <canvas id="c3d" style="width:100%; display:block; cursor:default;"></canvas>
 
       <!-- Active day number — tracks the bright highlighted sphere on the
            ring as it orbits to the current day, so the moving marker is
@@ -78,25 +88,6 @@
       <!-- top vignette so legend pills have visible breathing room above dial content -->
       <div style="position:absolute; top:0; left:0; right:0; height:88px; background:linear-gradient(rgba(7,11,17,0.8),transparent); pointer-events:none;"></div>
 
-      <!-- legend / phase filter, anchored top-left, never overlaps dial center -->
-      <div style="position:absolute; top:14px; left:14px; right:14px; display:flex; flex-direction:row; flex-wrap:wrap; gap:8px;">
-        <button class="rm-legendBtn" data-phase="SQL">
-          <span style="width:9px;height:9px;border-radius:50%;background:var(--sql);box-shadow:0 0 6px var(--sql);flex:none;"></span>SQL <span style="color:var(--ink-faint); font-weight:400;">· Days 1–18</span>
-        </button>
-        <button class="rm-legendBtn" data-phase="Excel">
-          <span style="width:9px;height:9px;border-radius:50%;background:var(--excel);box-shadow:0 0 6px var(--excel);flex:none;"></span>Excel <span style="color:var(--ink-faint); font-weight:400;">· Days 19–30</span>
-        </button>
-        <button class="rm-legendBtn" data-phase="Python">
-          <span style="width:9px;height:9px;border-radius:50%;background:var(--py);box-shadow:0 0 6px var(--py);flex:none;"></span>Python <span style="color:var(--ink-faint); font-weight:400;">· Days 31–60</span>
-        </button>
-      </div>
-
-
-      <!-- drag hint -->
-      <div id="rm-dragHint" style="position:absolute; top:14px; right:16px; font-size:11px; font-weight:500; color:var(--ink-faint); opacity:0.9; transition:opacity 0.6s; display:flex; align-items:center; gap:5px; z-index:2;">
-        <span style="font-size:13px;">⟲</span> drag to rotate
-      </div>
-
       <!-- bottom vignette for control contrast -->
       <div style="position:absolute; bottom:0; left:0; right:0; height:64px; background:linear-gradient(transparent,rgba(7,11,17,0.85) 70%); pointer-events:none;"></div>
 
@@ -107,7 +98,6 @@
       </div>
       <button id="btnAuto" class="rm-ctrl rm-ctrlWide" aria-label="Toggle autoplay" style="position:absolute; bottom:16px; right:16px;">⏸ &nbsp;Auto-play</button>
     </div>
-
   </div>
 </div>
 
@@ -681,16 +671,6 @@ root.querySelectorAll('.rm-legendBtn').forEach(btn=>{
   btn.addEventListener('click',()=>applyFilter(btn.getAttribute('data-phase')));
 });
 
-let isDragging=false, dragStartX=0, dragStartAngle=0, dragMoved=false;
-const dragHint=root.querySelector('#rm-dragHint');
-let hintFaded=false;
-
-function fadeHint(){
-  if(hintFaded) return;
-  hintFaded=true;
-  dragHint.style.opacity='0';
-}
-
 function setMouseFromEvent(e){
   const r=canvas.getBoundingClientRect();
   const cx=(e.touches?e.touches[0].clientX:e.clientX);
@@ -700,30 +680,11 @@ function setMouseFromEvent(e){
 }
 
 canvas.addEventListener('mousemove',e=>{
-  if(isDragging){
-    const dx=e.clientX-dragStartX;
-    camAngleTarget = dragStartAngle - dx*0.006;
-    autoRotate=false;
-    if(Math.abs(dx)>3) dragMoved=true;
-    return;
-  }
   setMouseFromEvent(e);
 });
 canvas.addEventListener('mouseleave',()=>{mouse.set(-999,-999);hoveredDay=null;});
 
-canvas.addEventListener('mousedown',e=>{
-  isDragging=true; dragMoved=false;
-  dragStartX=e.clientX; dragStartAngle=camAngleTarget;
-  canvas.style.cursor='grabbing';
-  fadeHint();
-});
-window.addEventListener('mouseup',()=>{
-  isDragging=false;
-  canvas.style.cursor='grab';
-});
-
 canvas.addEventListener('click',()=>{
-  if(dragMoved) return;
   if(hoveredDay!=null){
     stopAutoUI();
     setDay(hoveredDay);
@@ -731,21 +692,13 @@ canvas.addEventListener('click',()=>{
 });
 
 canvas.addEventListener('touchstart',e=>{
-  isDragging=true; dragMoved=false;
-  dragStartX=e.touches[0].clientX; dragStartAngle=camAngleTarget;
   setMouseFromEvent(e);
-  fadeHint();
 },{passive:true});
 canvas.addEventListener('touchmove',e=>{
-  const dx=e.touches[0].clientX-dragStartX;
-  camAngleTarget = dragStartAngle - dx*0.006;
-  autoRotate=false;
-  if(Math.abs(dx)>3) dragMoved=true;
   setMouseFromEvent(e);
 },{passive:true});
 canvas.addEventListener('touchend',()=>{
-  isDragging=false;
-  if(!dragMoved && hoveredDay!=null){
+  if(hoveredDay!=null){
     stopAutoUI();
     setDay(hoveredDay);
   }
@@ -785,7 +738,7 @@ function animate(){
   raycaster.setFromCamera(mouse, camera);
   const hits=raycaster.intersectObjects(spheres);
   hoveredDay=hits.length>0?hits[0].object.userData.day:null;
-  canvas.style.cursor = (hoveredDay!=null && !isDragging) ? 'pointer' : (isDragging?'grabbing':'grab');
+  canvas.style.cursor = (hoveredDay!=null) ? 'pointer' : 'default';
 
   spheres.forEach((s,i)=>{
     const mat=sphereMats[i];

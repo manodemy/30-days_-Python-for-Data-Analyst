@@ -528,16 +528,6 @@ root.querySelectorAll('.rm-legendBtn').forEach(btn=>{
   btn.addEventListener('click',()=>applyFilter(btn.getAttribute('data-phase')));
 });
 
-let isDragging=false, dragStartX=0, dragStartAngle=0, dragMoved=false;
-const dragHint=root.querySelector('#rm-dragHint');
-let hintFaded=false;
-
-function fadeHint(){
-  if(hintFaded) return;
-  hintFaded=true;
-  dragHint.style.opacity='0';
-}
-
 function setMouseFromEvent(e){
   const r=canvas.getBoundingClientRect();
   const cx=(e.touches?e.touches[0].clientX:e.clientX);
@@ -547,30 +537,11 @@ function setMouseFromEvent(e){
 }
 
 canvas.addEventListener('mousemove',e=>{
-  if(isDragging){
-    const dx=e.clientX-dragStartX;
-    camAngleTarget = dragStartAngle - dx*0.006;
-    autoRotate=false;
-    if(Math.abs(dx)>3) dragMoved=true;
-    return;
-  }
   setMouseFromEvent(e);
 });
 canvas.addEventListener('mouseleave',()=>{mouse.set(-999,-999);hoveredDay=null;});
 
-canvas.addEventListener('mousedown',e=>{
-  isDragging=true; dragMoved=false;
-  dragStartX=e.clientX; dragStartAngle=camAngleTarget;
-  canvas.style.cursor='grabbing';
-  fadeHint();
-});
-window.addEventListener('mouseup',()=>{
-  isDragging=false;
-  canvas.style.cursor='grab';
-});
-
 canvas.addEventListener('click',()=>{
-  if(dragMoved) return;
   if(hoveredDay!=null){
     stopAutoUI();
     setDay(hoveredDay);
@@ -578,21 +549,13 @@ canvas.addEventListener('click',()=>{
 });
 
 canvas.addEventListener('touchstart',e=>{
-  isDragging=true; dragMoved=false;
-  dragStartX=e.touches[0].clientX; dragStartAngle=camAngleTarget;
   setMouseFromEvent(e);
-  fadeHint();
 },{passive:true});
 canvas.addEventListener('touchmove',e=>{
-  const dx=e.touches[0].clientX-dragStartX;
-  camAngleTarget = dragStartAngle - dx*0.006;
-  autoRotate=false;
-  if(Math.abs(dx)>3) dragMoved=true;
   setMouseFromEvent(e);
 },{passive:true});
 canvas.addEventListener('touchend',()=>{
-  isDragging=false;
-  if(!dragMoved && hoveredDay!=null){
+  if(hoveredDay!=null){
     stopAutoUI();
     setDay(hoveredDay);
   }
@@ -632,7 +595,7 @@ function animate(){
   raycaster.setFromCamera(mouse, camera);
   const hits=raycaster.intersectObjects(spheres);
   hoveredDay=hits.length>0?hits[0].object.userData.day:null;
-  canvas.style.cursor = (hoveredDay!=null && !isDragging) ? 'pointer' : (isDragging?'grabbing':'grab');
+  canvas.style.cursor = (hoveredDay!=null) ? 'pointer' : 'default';
 
   spheres.forEach((s,i)=>{
     const mat=sphereMats[i];
