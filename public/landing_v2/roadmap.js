@@ -118,7 +118,7 @@ function updateCameraPosition(){
     camHeight,
     Math.cos(camAngle)*camRadius
   );
-  camera.lookAt(0, camLookY, 0);
+  camera.lookAt(0, camLookY, -1.15);
 }
 updateCameraPosition();
 

@@ -8,32 +8,28 @@
 ">
 
   <!-- ============ HEADER ============ -->
-  <div style="padding:22px 24px 18px; border-bottom:1px solid var(--panel-line); background:linear-gradient(180deg,#0d131b,#0a0f16);">
-    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;">
-      <div>
-        <div style="font-size:11px; font-weight:600; letter-spacing:0.12em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:6px;">60-Days Data Analytics Roadmap</div>
-        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:4px;">
-          <button class="rm-legendBtn" data-phase="SQL">
-            <span style="width:8px;height:8px;border-radius:50%;background:var(--sql);box-shadow:0 0 6px var(--sql);flex:none;"></span>SQL <span style="color:var(--ink-faint); font-weight:400;">· Days 1–18</span>
-          </button>
-          <button class="rm-legendBtn" data-phase="Excel">
-            <span style="width:8px;height:8px;border-radius:50%;background:var(--excel);box-shadow:0 0 6px var(--excel);flex:none;"></span>Excel <span style="color:var(--ink-faint); font-weight:400;">· Days 19–30</span>
-          </button>
-          <button class="rm-legendBtn" data-phase="Python">
-            <span style="width:8px;height:8px;border-radius:50%;background:var(--py);box-shadow:0 0 6px var(--py);flex:none;"></span>Python <span style="color:var(--ink-faint); font-weight:400;">· Days 31–60</span>
-          </button>
+  <div style="padding:18px 24px 16px; border-bottom:1px solid var(--panel-line); background:linear-gradient(180deg,#0d131b,#0a0f16);">
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <!-- Top Row: title + stats inline -->
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; width:100%;">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.08em; color:var(--ink-faint); text-transform:uppercase;">60-Days Data Analytics Roadmap</div>
+        <div id="rm-headerStats" style="display:flex; align-items:center; gap:8px; font-size:11px; font-weight:600; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.05em;">
+          <span style="color:var(--ink); font-weight:700; font-variant-numeric:tabular-nums;" id="rm-statDay">Day 1</span> of 60
+          <span style="width:1px; height:12px; background:var(--panel-line);"></span>
+          <span style="color:var(--ink); font-weight:700; font-variant-numeric:tabular-nums;" id="rm-statPct">2%</span> complete
         </div>
       </div>
-      <div id="rm-headerStats" style="display:flex; gap:18px; align-items:center;">
-        <div style="text-align:right;">
-          <div id="rm-statDay" style="font-size:20px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums;">Day 1</div>
-          <div style="font-size:11px; color:var(--ink-faint);">of 60</div>
-        </div>
-        <div style="width:1px; height:30px; background:var(--panel-line);"></div>
-        <div style="text-align:right;">
-          <div id="rm-statPct" style="font-size:20px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums;">2%</div>
-          <div style="font-size:11px; color:var(--ink-faint);">complete</div>
-        </div>
+      <!-- Bottom Row: legend buttons -->
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none;">
+        <button class="rm-legendBtn" data-phase="SQL">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--sql);box-shadow:0 0 6px var(--sql);flex:none;"></span>SQL <span style="color:var(--ink-faint); font-weight:400;">· Days 1–18</span>
+        </button>
+        <button class="rm-legendBtn" data-phase="Excel">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--excel);box-shadow:0 0 6px var(--excel);flex:none;"></span>Excel <span style="color:var(--ink-faint); font-weight:400;">· Days 19–30</span>
+        </button>
+        <button class="rm-legendBtn" data-phase="Python">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--py);box-shadow:0 0 6px var(--py);flex:none;"></span>Python <span style="color:var(--ink-faint); font-weight:400;">· Days 31–60</span>
+        </button>
       </div>
     </div>
   </div>
@@ -261,7 +257,7 @@ function updateCameraPosition(){
     camHeight,
     Math.cos(camAngle)*camRadius
   );
-  camera.lookAt(0, camLookY, 0);
+  camera.lookAt(0, camLookY, -1.15);
 }
 updateCameraPosition();
 
