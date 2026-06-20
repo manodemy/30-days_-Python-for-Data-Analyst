@@ -210,6 +210,26 @@
               background: rgba(16, 23, 33, 0.95);
               box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
             }
+            /* Fade in HUD controls and cards only after WebGL clock is loaded and rendered */
+            #roadmap-root #rm-dayCard,
+            #roadmap-root #rm-activeNum,
+            #roadmap-root .rm-ctrl,
+            #roadmap-root #rm-headerStats,
+            #roadmap-root .rm-legendBtn {
+              opacity: 0;
+              transition: opacity 0.5s ease, background 0.15s, border-color 0.15s, transform 0.2s;
+              pointer-events: none;
+            }
+            #roadmap-root.loaded #rm-dayCard,
+            #roadmap-root.loaded #rm-activeNum,
+            #roadmap-root.loaded #rm-headerStats {
+              opacity: 1;
+            }
+            #roadmap-root.loaded .rm-ctrl,
+            #roadmap-root.loaded .rm-legendBtn {
+              opacity: 1;
+              pointer-events: auto;
+            }
           </style>
 
           <div id="roadmap-root" style="
@@ -1293,7 +1313,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="reviews.js?v=6.0" defer></script>
   <script src="app.js?v=6.4" defer></script>
-  <script src="roadmap.js?v=6.8" defer></script>
+  <script src="roadmap.js?v=6.9" defer></script>
 
   <!-- PWA SW Registration -->
   <script>

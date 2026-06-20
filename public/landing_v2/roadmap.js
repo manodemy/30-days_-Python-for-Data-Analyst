@@ -634,4 +634,5 @@ setDay(0,false);
 updateHUD(0);
 startAuto();
 animate();
+root.classList.add('loaded');
 })();
