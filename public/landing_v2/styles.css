@@ -929,7 +929,6 @@ button {
 /* â•â•â•â•â•â• How it Works Timeline â•â•â•â•â•â• */
 .how-section {
   padding: 80px 0;
-  border-top: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.005);
 }
 
@@ -1001,7 +1000,6 @@ button {
 /* â•â•â•â•â•â• Courses Section â•â•â•â•â•â• */
 .courses-section {
   padding: 80px 0;
-  border-top: 1px solid var(--border);
 }
 
 .courses-grid {
@@ -1170,7 +1168,6 @@ button {
 /* â•â•â•â•â•â• Curriculum Section â•â•â•â•â•â• */
 .curriculum-section {
   padding: 80px 0;
-  border-top: 1px solid var(--border);
 }
 
 .curr-tabs {
@@ -1297,7 +1294,6 @@ button {
 /* â•â•â•â•â•â• Comparison Section â•â•â•â•â•â• */
 .compare-section {
   padding: 80px 0;
-  border-top: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.005);
 }
 
@@ -1350,7 +1346,6 @@ th.col-mano {
 /* â•â•â•â•â•â• Testimonials Section â•â•â•â•â•â• */
 .reviews-section {
   padding: 80px 0;
-  border-top: 1px solid var(--border);
 }
 
 .reviews-container {
@@ -1744,7 +1739,6 @@ th.col-mano {
 /* â•â•â•â•â•â• Pricing Section â•â•â•â•â•â• */
 .pricing-section {
   padding: 80px 0;
-  border-top: 1px solid var(--border);
 }
 
 .pricing-container {
@@ -1882,7 +1876,6 @@ th.col-mano {
 /* â•â•â•â•â•â• FAQ Section â•â•â•â•â•â• */
 .faq-section {
   padding: 80px 0;
-  border-top: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.005);
 }
 
@@ -1950,7 +1943,6 @@ th.col-mano {
 /* â•â•â•â•â•â• Final CTA Section â•â•â•â•â•â• */
 .final-cta-section {
   padding: 100px 0;
-  border-top: 1px solid var(--border);
   text-align: center;
   background: linear-gradient(180deg, var(--base) 0%, var(--void) 100%);
   position: relative;
@@ -3321,19 +3313,19 @@ th.col-mano {
 /* -- UNIFORM SECTION SPACING ------------------------------------- */
 .proof-strip        { padding: 40px 0; }
 .preview-section    { padding: 48px 0 80px; }
-.how-section        { padding: 100px 0; }
-.courses-section    { padding: 100px 0; }
-.curriculum-section { padding: 100px 0; }
-.compare-section    { padding: 100px 0; }
-.reviews-section    { padding: 100px 0; }
-.pricing-section    { padding: 100px 0; }
-.faq-section        { padding: 100px 0; }
-.final-cta-section  { padding: 100px 0; }
+.how-section        { padding: 48px 0 80px; }
+.courses-section    { padding: 48px 0 80px; }
+.curriculum-section { padding: 48px 0 80px; }
+.compare-section    { padding: 48px 0 80px; }
+.reviews-section    { padding: 48px 0 80px; }
+.pricing-section    { padding: 48px 0 80px; }
+.faq-section        { padding: 48px 0 80px; }
+.final-cta-section  { padding: 48px 0 80px; }
 .footer             { padding: 64px 0; }
 
 /* -- SECTION HEAD ------------------------------------------------ */
 .section-head {
-  max-width: 680px;
+  max-width: 900px;
   margin: 0 auto 4rem;
 }
 .section-head h2 {
@@ -3345,7 +3337,7 @@ th.col-mano {
 .section-head p {
   font-size: 16px;
   line-height: 1.75;
-  max-width: 560px;
+  max-width: 850px;
   margin: 0 auto;
 }
 
