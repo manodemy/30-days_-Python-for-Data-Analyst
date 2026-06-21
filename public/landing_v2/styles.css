@@ -196,6 +196,42 @@ button {
   color: #fff;
 }
 
+.nav-pill--sql {
+  border: 1px dashed rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.04);
+  color: var(--emerald);
+}
+
+.nav-pill--sql:hover {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: var(--emerald);
+  color: #fff;
+}
+
+.nav-pill--excel {
+  border: 1px dashed rgba(255, 176, 32, 0.25);
+  background: rgba(255, 176, 32, 0.04);
+  color: var(--gold);
+}
+
+.nav-pill--excel:hover {
+  background: rgba(255, 176, 32, 0.1);
+  border-color: var(--gold);
+  color: #fff;
+}
+
+.nav-pill--python {
+  border: 1px dashed rgba(0, 230, 246, 0.25);
+  background: rgba(0, 230, 246, 0.04);
+  color: var(--cyan);
+}
+
+.nav-pill--python:hover {
+  background: rgba(0, 230, 246, 0.1);
+  border-color: var(--cyan);
+  color: #fff;
+}
+
 .nav-right {
   display: flex;
   align-items: center;
@@ -446,7 +482,7 @@ button {
 .hero-ctas {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 6px;
   margin-bottom: 2rem;
 }
 
@@ -497,10 +533,16 @@ button {
 
 /* Compact button size modifier */
 .btn-sm {
-  height: 42px;
-  padding: 0 16px;
-  font-size: 13px;
+  height: 38px;
+  padding: 0 10px;
+  font-size: 12.5px;
   white-space: nowrap;
+}
+.btn-sm .tech-logo {
+  width: 18px;
+  height: 18px;
+  padding: 1.5px;
+  margin-right: 5px;
 }
 
 
@@ -1258,9 +1300,9 @@ button {
 
 .day-num {
   font-family: var(--font-data);
-  font-size: 11px;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
 }
 
 .day-emoji {
@@ -1271,7 +1313,7 @@ button {
 .day-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 14.5px;
   color: #fff;
   line-height: 1.3;
 }
@@ -1281,14 +1323,18 @@ button {
   top: 1rem;
   right: 1rem;
   font-family: var(--font-data);
-  font-size: 8px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
-.badge-free { background: rgba(16, 185, 129, 0.1); color: var(--emerald); }
-.badge-lock { background: rgba(255, 255, 255, 0.03); color: var(--text-muted); }
+.badge-free { background: rgba(16, 185, 129, 0.16); color: var(--emerald); }
+.badge-lock { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
 .badge-coming { background: rgba(255, 176, 32, 0.1); color: var(--gold); }
 
 .day-card.coming-soon {
@@ -3649,3 +3695,50 @@ th.col-mano { letter-spacing: 0.01em; }
   .final-cta-btn-group { flex-direction: column; align-items: stretch; }
   .section-head { margin-bottom: 2rem; }
 }
+
+/* ═══ TECH LOGO STYLES (Professional Dark Circle Logos) ═══ */
+.tech-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #131926; /* Dark background matching the image */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 1.5px;
+  vertical-align: middle;
+  transition: transform 0.2s, border-color 0.2s;
+  box-sizing: border-box;
+}
+.tech-logo svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.tech-logo:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+ 
+.curr-tab .tech-logo {
+  margin-right: 8px;
+}
+.free-card-badge .tech-logo {
+  margin-right: 6px;
+}
+.btn-primary .tech-logo {
+  margin-right: 8px;
+}
+.dropdown-menu a .tech-logo {
+  margin-right: 8px;
+}
+.day-emoji .tech-logo {
+  width: 32px;
+  height: 32px;
+  padding: 2.5px;
+}
+.nav-links .tech-logo {
+  margin-right: 6px;
+}
+

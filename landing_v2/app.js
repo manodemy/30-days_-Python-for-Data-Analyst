@@ -451,23 +451,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let supabaseClient = null;
 
-  async function fetchAndDisplayLivePaidUsers() {
+  async function fetchAndDisplayLiveSignups() {
     if (!supabaseClient) return;
     try {
-      const { data: count, error } = await supabaseClient.rpc('get_enrolled_users_count');
+      const { data: count, error } = await supabaseClient.rpc('get_signup_count');
       if (error) {
-        console.warn("[Stats] Failed to fetch live paid user count:", error.message);
+        console.warn("[Stats] Failed to fetch live signup count:", error.message);
         return;
       }
-      const enrolledCount = parseInt(count, 10);
-      if (isNaN(enrolledCount)) return;
+      const signupCount = parseInt(count, 10);
+      if (isNaN(signupCount)) return;
 
-      const totalCount = enrolledCount;
+      const totalCount = signupCount;
 
       // 1. Update right column proof card
       const activeLearnersEl = document.getElementById('hero-active-learners');
       if (activeLearnersEl) {
-        activeLearnersEl.textContent = totalCount.toLocaleString('en-US') + '+ Active Learners';
+        activeLearnersEl.textContent = totalCount.toLocaleString('en-US') + '+ Sign Ups';
       }
 
       // 2. Update social proof strip data-count attribute
@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     } catch (e) {
-      console.warn("[Stats] Error loading live paid users:", e);
+      console.warn("[Stats] Error loading live signups:", e);
     }
   }
 
@@ -511,7 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.supabase) {
 
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      fetchAndDisplayLivePaidUsers();
+      fetchAndDisplayLiveSignups();
       checkReferralProgramStatus();
 
     }

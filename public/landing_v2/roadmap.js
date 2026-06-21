@@ -1,5 +1,15 @@
 (function(){
 const root = document.getElementById('roadmap-root');
+function getCourseSvg(phase) {
+  if (phase === 'SQL') {
+    return `<span class="tech-logo logo-sql" title="SQL"><svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"></path><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"></path></svg></span>`;
+  } else if (phase === 'Excel') {
+    return `<span class="tech-logo logo-excel" title="Excel"><svg viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.625 0H8.625L1.5 2.625V20.375L8.625 23H14.625V0Z" fill="#107C41"/><path d="M21.5 2.625H14.625V6.375H21.5V2.625Z" fill="#1F9A55"/><path d="M21.5 6.375H14.625V10.125H21.5V6.375Z" fill="#33C481"/><path d="M21.5 10.125H14.625V13.875H21.5V10.125Z" fill="#107C41"/><path d="M21.5 13.875H14.625V17.625H21.5V13.875Z" fill="#1B9A59"/><path d="M21.5 17.625H14.625V20.375H21.5V17.625Z" fill="#107C41"/><path d="M10.125 6.375H3.375V16.625H10.125V6.375Z" fill="#107C41"/><path d="M11.813 7.875L9.938 11.25L11.813 14.625H9.563L8.438 12.75L7.313 14.625H5.063L6.938 11.25L5.063 7.875H7.313L8.438 9.75L9.563 7.875H11.813Z" fill="white"/></svg></span>`;
+  } else if (phase === 'Python') {
+    return `<span class="tech-logo logo-python" title="Python"><svg viewBox="45.9 0 367.2 459" fill="none"><path fill="#306998" d="M229.5 0C161.4 0 122.4 15.6 122.4 53.6v34.4h107.1v15.3H122.4c-47.8 0-76.5 30.6-76.5 76.5v61.2c0 45.9 28.7 76.5 76.5 76.5h30.6v-45.9c0-51 41.3-91.8 91.8-91.8h107.1V107.1c0-53.6-47.8-107.1-122.4-107.1zM175.9 30.6c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3 6.9-15.3 15.3-15.3z" /><path fill="#FFE873" d="M229.5 459c68.1 0 107.1-15.6 107.1-53.6v-34.4H229.5v-15.3h107.1c47.8 0 76.5-30.6 76.5-76.5v-61.2c0-45.9-28.7-76.5-76.5-76.5h-30.6v45.9c0 51-41.3 91.8-91.8 91.8H122.4V351.9c0 53.6 47.8 107.1 122.4 107.1zm53.6-30.6c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3 15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3z" /></svg></span>`;
+  }
+  return '';
+}
 const DATA=[
   // SQL Phase (Days 1–18)
   {topic:"Intro to SQL & Databases",phase:"SQL",icon:"🗄️",free:true},
@@ -180,25 +190,27 @@ clockGroup.add(bezel);
 // Day numerals
 for(let i=0;i<60;i+=5){
   const label = String(i+1);
-  const size = 176;
+  const size = 256;
   const cnv2 = document.createElement('canvas');
   cnv2.width = size; cnv2.height = size;
   const ctx2 = cnv2.getContext('2d');
   ctx2.clearRect(0,0,size,size);
-  ctx2.font = 'bold 86px Inter, system-ui, sans-serif';
+  ctx2.font = 'bold 120px Inter, system-ui, sans-serif';
   ctx2.fillStyle = '#e4f0fa';
   ctx2.textAlign = 'center';
   ctx2.textBaseline = 'middle';
   ctx2.shadowColor='rgba(56,189,248,0.85)';
-  ctx2.shadowBlur=16;
-  ctx2.fillText(label, size/2, size/2+3);
+  ctx2.shadowBlur=12;
+  ctx2.fillText(label, size/2, size/2+4);
   const tex2 = new THREE.CanvasTexture(cnv2);
+  tex2.minFilter = THREE.LinearFilter;
+  tex2.generateMipmaps = false;
   tex2.needsUpdate = true;
   const mat2 = new THREE.SpriteMaterial({map:tex2, transparent:true, depthWrite:false});
   const sprite2 = new THREE.Sprite(mat2);
-  sprite2.scale.set(0.76, 0.76, 1);
+  sprite2.scale.set(0.95, 0.95, 1);
   const a = angForIndex(i);
-  const r = ORBIT_R - 0.62;
+  const r = ORBIT_R - 1.25;
   sprite2.position.set(Math.cos(a)*r, 0.5, Math.sin(a)*r);
   clockGroup.add(sprite2);
 }
@@ -427,7 +439,7 @@ function updateHUD(idx){
 
   if(idx === 59) {
     cardDayEl.textContent = "Day 60";
-    cardIconEl.textContent = "🏆";
+    cardIconEl.innerHTML = "🏆";
     cardTopicEl.textContent = d.topic; // "Phase Analysis & Review"
     
     pill.textContent = "GRADUATION · CERTIFICATE";
@@ -440,7 +452,7 @@ function updateHUD(idx){
     progLabel.textContent = "60 / 60";
   } else {
     cardDayEl.textContent = `Day ${idx+1}`;
-    cardIconEl.textContent = d.icon;
+    cardIconEl.innerHTML = getCourseSvg(d.phase);
     cardTopicEl.textContent = d.topic;
     
     pill.textContent = `${d.phase} · ${d.free?'FREE':'PREMIUM'}`;

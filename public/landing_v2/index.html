@@ -43,7 +43,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
   <!-- Style Link -->
-  <link rel="stylesheet" href="styles.css?v=7.2">
+  <link rel="stylesheet" href="styles.css?v=7.3">
 </head>
 <body class="pricing-loading">
   <!-- Skip Navigation for Accessibility -->
@@ -59,7 +59,9 @@
         </a>
 
         <div class="nav-links">
-          <a href="#free-preview" class="nav-pill nav-pill--free">Try Day 01 Free</a>
+          <a href="/sql/day01.html" class="nav-pill nav-pill--sql">Try SQL Free</a>
+          <a href="/excel/day01.html" class="nav-pill nav-pill--excel">Try Excel Free</a>
+          <a href="/day01.html" class="nav-pill nav-pill--python">Try Python Free</a>
           <a href="#curriculum" class="nav-pill">Curriculum</a>
           <a href="#testimonials" class="nav-pill">Reviews</a>
           <a href="#faq" class="nav-pill">FAQ</a>
@@ -77,9 +79,9 @@
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </a>
             <div class="dropdown-menu">
-              <a href="/notebook/sql-day01">🗄️ SQL Course</a>
-              <a href="/notebook/excel-day01">📊 Excel Course</a>
-              <a href="/notebook/day01">🐍 Python Course</a>
+              <a href="/notebook/sql-day01"><span class="tech-logo logo-sql" title="SQL"><svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"></path><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"></path></svg></span> SQL Course</a>
+              <a href="/notebook/excel-day01"><span class="tech-logo logo-excel" title="Excel"><svg viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.625 0H8.625L1.5 2.625V20.375L8.625 23H14.625V0Z" fill="#107C41"/><path d="M21.5 2.625H14.625V6.375H21.5V2.625Z" fill="#1F9A55"/><path d="M21.5 6.375H14.625V10.125H21.5V6.375Z" fill="#33C481"/><path d="M21.5 10.125H14.625V13.875H21.5V10.125Z" fill="#107C41"/><path d="M21.5 13.875H14.625V17.625H21.5V13.875Z" fill="#1B9A59"/><path d="M21.5 17.625H14.625V20.375H21.5V17.625Z" fill="#107C41"/><path d="M10.125 6.375H3.375V16.625H10.125V6.375Z" fill="#107C41"/><path d="M11.813 7.875L9.938 11.25L11.813 14.625H9.563L8.438 12.75L7.313 14.625H5.063L6.938 11.25L5.063 7.875H7.313L8.438 9.75L9.563 7.875H11.813Z" fill="white"/></svg></span> Excel Course</a>
+              <a href="/notebook/day01"><span class="tech-logo logo-python" title="Python"><svg viewBox="45.9 0 367.2 459" fill="none"><path fill="#306998" d="M229.5 0C161.4 0 122.4 15.6 122.4 53.6v34.4h107.1v15.3H122.4c-47.8 0-76.5 30.6-76.5 76.5v61.2c0 45.9 28.7 76.5 76.5 76.5h30.6v-45.9c0-51 41.3-91.8 91.8-91.8h107.1V107.1c0-53.6-47.8-107.1-122.4-107.1zM175.9 30.6c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3 6.9-15.3 15.3-15.3z" /><path fill="#FFE873" d="M229.5 459c68.1 0 107.1-15.6 107.1-53.6v-34.4H229.5v-15.3h107.1c47.8 0 76.5-30.6 76.5-76.5v-61.2c0-45.9-28.7-76.5-76.5-76.5h-30.6v45.9c0 51-41.3 91.8-91.8 91.8H122.4V351.9c0 53.6 47.8 107.1 122.4 107.1zm53.6-30.6c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3 15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3z" /></svg></span> Python Course</a>
               <div class="dropdown-divider"></div>
               <a href="/home.html" class="dashboard-link">🏠 Dashboard</a>
             </div>
@@ -98,7 +100,9 @@
 
   <!-- Mobile Dropdown Menu -->
   <div class="mobile-overlay" id="mobileOverlay" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
-    <a href="#free-preview">Try Day 01 Free</a>
+    <a href="/sql/day01.html" style="color: var(--emerald)">Try SQL Free</a>
+    <a href="/excel/day01.html" style="color: var(--gold)">Try Excel Free</a>
+    <a href="/day01.html" style="color: var(--cyan)">Try Python Free</a>
     <a href="#curriculum">Curriculum</a>
     <a href="#testimonials">Reviews</a>
     <a href="#faq">FAQ</a>
@@ -121,9 +125,9 @@
           </p>
 
           <div class="hero-ctas">
-            <a href="/sql/day01.html" class="btn-primary btn-sm">🗄️ Try SQL Free</a>
-            <a href="/excel/day01.html" class="btn-primary btn-sm">📊 Try Excel Free</a>
-            <a href="/day01.html" class="btn-primary btn-sm">🐍 Try Python Free</a>
+            <a href="/sql/day01.html" class="btn-primary btn-sm"><span class="tech-logo logo-sql" title="SQL"><svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"></path><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"></path></svg></span> Try SQL Free</a>
+            <a href="/excel/day01.html" class="btn-primary btn-sm"><span class="tech-logo logo-excel" title="Excel"><svg viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.625 0H8.625L1.5 2.625V20.375L8.625 23H14.625V0Z" fill="#107C41"/><path d="M21.5 2.625H14.625V6.375H21.5V2.625Z" fill="#1F9A55"/><path d="M21.5 6.375H14.625V10.125H21.5V6.375Z" fill="#33C481"/><path d="M21.5 10.125H14.625V13.875H21.5V10.125Z" fill="#107C41"/><path d="M21.5 13.875H14.625V17.625H21.5V13.875Z" fill="#1B9A59"/><path d="M21.5 17.625H14.625V20.375H21.5V17.625Z" fill="#107C41"/><path d="M10.125 6.375H3.375V16.625H10.125V6.375Z" fill="#107C41"/><path d="M11.813 7.875L9.938 11.25L11.813 14.625H9.563L8.438 12.75L7.313 14.625H5.063L6.938 11.25L5.063 7.875H7.313L8.438 9.75L9.563 7.875H11.813Z" fill="white"/></svg></span> Try Excel Free</a>
+            <a href="/day01.html" class="btn-primary btn-sm"><span class="tech-logo logo-python" title="Python"><svg viewBox="45.9 0 367.2 459" fill="none"><path fill="#306998" d="M229.5 0C161.4 0 122.4 15.6 122.4 53.6v34.4h107.1v15.3H122.4c-47.8 0-76.5 30.6-76.5 76.5v61.2c0 45.9 28.7 76.5 76.5 76.5h30.6v-45.9c0-51 41.3-91.8 91.8-91.8h107.1V107.1c0-53.6-47.8-107.1-122.4-107.1zM175.9 30.6c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3 6.9-15.3 15.3-15.3z" /><path fill="#FFE873" d="M229.5 459c68.1 0 107.1-15.6 107.1-53.6v-34.4H229.5v-15.3h107.1c47.8 0 76.5-30.6 76.5-76.5v-61.2c0-45.9-28.7-76.5-76.5-76.5h-30.6v45.9c0 51-41.3 91.8-91.8 91.8H122.4V351.9c0 53.6 47.8 107.1 122.4 107.1zm53.6-30.6c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3 15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3z" /></svg></span> Try Python Free</a>
             <a href="#curriculum" class="btn-secondary btn-sm">📋 View Curriculum</a>
           </div>
 
@@ -142,7 +146,7 @@
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
               </svg>
-              <span id="hero-active-learners">... Active Learners</span>
+              <span id="hero-active-learners">... Sign Ups</span>
             </div>
             <div class="proof-card cert-card">
               <svg class="proof-icon cert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -303,7 +307,7 @@
                     color:var(--sql); transition:color 0.3s,border-color 0.3s,background 0.3s;
                   ">SQL · FREE</div>
                   <div id="rm-cardDay" style="font-size:25px; font-weight:800; color:var(--ink); line-height:1; margin-bottom:5px; letter-spacing:-0.01em;">Day 1</div>
-                  <div id="rm-cardIcon" style="font-size:19px; margin-bottom:5px;">🗄️</div>
+                  <div id="rm-cardIcon" style="display:flex; justify-content:center; align-items:center; height:28px; margin-bottom:5px;"><span class="tech-logo logo-sql" title="SQL"><svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"></path><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"></path></svg></span></div>
                   <div id="rm-cardTopic" style="font-size:11px; font-weight:500; color:var(--ink-dim); line-height:1.4; min-height:28px;">SQL Basics &amp; SELECT</div>
                   <div style="margin-top:9px; height:4px; background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden;">
                     <div id="rm-cardProgBar" style="height:100%; background:linear-gradient(90deg,var(--sql),var(--py)); border-radius:2px; transition:width 0.4s; width:1.67%;"></div>
@@ -335,7 +339,7 @@
       <div class="container proof-grid">
         <div class="proof-stat">
           <span class="proof-num" id="social-proof-learners" data-count="" data-suffix="+">...</span>
-          <span class="proof-label">Enrolled Learners</span>
+          <span class="proof-label">Sign Ups</span>
         </div>
         <div class="proof-stat">
           <span class="proof-num" data-count="1000" data-suffix="+">1,000+</span>
@@ -375,7 +379,7 @@
         <div class="free-preview-grid reveal">
           <!-- SQL Preview Card -->
           <div class="free-card free-card--sql">
-            <div class="free-card-badge">🗄️ SQL</div>
+            <div class="free-card-badge"><span class="tech-logo logo-sql" title="SQL"><svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"></path><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"></path></svg></span> SQL</div>
             <div class="free-card-day">Day 01</div>
             <h3 class="free-card-title">Introduction to SQL & Databases</h3>
             
@@ -402,7 +406,7 @@
 
           <!-- Excel Preview Card -->
           <div class="free-card free-card--excel">
-            <div class="free-card-badge">📊 Excel</div>
+            <div class="free-card-badge"><span class="tech-logo logo-excel" title="Excel"><svg viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.625 0H8.625L1.5 2.625V20.375L8.625 23H14.625V0Z" fill="#107C41"/><path d="M21.5 2.625H14.625V6.375H21.5V2.625Z" fill="#1F9A55"/><path d="M21.5 6.375H14.625V10.125H21.5V6.375Z" fill="#33C481"/><path d="M21.5 10.125H14.625V13.875H21.5V10.125Z" fill="#107C41"/><path d="M21.5 13.875H14.625V17.625H21.5V13.875Z" fill="#1B9A59"/><path d="M21.5 17.625H14.625V20.375H21.5V17.625Z" fill="#107C41"/><path d="M10.125 6.375H3.375V16.625H10.125V6.375Z" fill="#107C41"/><path d="M11.813 7.875L9.938 11.25L11.813 14.625H9.563L8.438 12.75L7.313 14.625H5.063L6.938 11.25L5.063 7.875H7.313L8.438 9.75L9.563 7.875H11.813Z" fill="white"/></svg></span> Excel</div>
             <div class="free-card-day">Day 01</div>
             <h3 class="free-card-title">Excel Fundamentals & Formulas</h3>
             
@@ -422,13 +426,13 @@
               </div>
             </div>
             
-            <a href="/excel/day01.html" class="free-card-cta free-cta--excel">📊 Start Excel Day 01 Free →</a>
+            <a href="/excel/day01.html" class="free-card-cta free-cta--excel"><span class="tech-logo logo-excel" title="Excel"><svg viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.625 0H8.625L1.5 2.625V20.375L8.625 23H14.625V0Z" fill="#107C41"/><path d="M21.5 2.625H14.625V6.375H21.5V2.625Z" fill="#1F9A55"/><path d="M21.5 6.375H14.625V10.125H21.5V6.375Z" fill="#33C481"/><path d="M21.5 10.125H14.625V13.875H21.5V10.125Z" fill="#107C41"/><path d="M21.5 13.875H14.625V17.625H21.5V13.875Z" fill="#1B9A59"/><path d="M21.5 17.625H14.625V20.375H21.5V17.625Z" fill="#107C41"/><path d="M10.125 6.375H3.375V16.625H10.125V6.375Z" fill="#107C41"/><path d="M11.813 7.875L9.938 11.25L11.813 14.625H9.563L8.438 12.75L7.313 14.625H5.063L6.938 11.25L5.063 7.875H7.313L8.438 9.75L9.563 7.875H11.813Z" fill="white"/></svg></span> Start Excel Day 01 Free &rarr;</a>
             <span class="free-card-meta">Interactive formula builder · No setup needed</span>
           </div>
 
           <!-- Python Preview Card -->
           <div class="free-card free-card--python">
-            <div class="free-card-badge">🐍 Python</div>
+            <div class="free-card-badge"><span class="tech-logo logo-python" title="Python"><svg viewBox="45.9 0 367.2 459" fill="none"><path fill="#306998" d="M229.5 0C161.4 0 122.4 15.6 122.4 53.6v34.4h107.1v15.3H122.4c-47.8 0-76.5 30.6-76.5 76.5v61.2c0 45.9 28.7 76.5 76.5 76.5h30.6v-45.9c0-51 41.3-91.8 91.8-91.8h107.1V107.1c0-53.6-47.8-107.1-122.4-107.1zM175.9 30.6c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3 6.9-15.3 15.3-15.3z" /><path fill="#FFE873" d="M229.5 459c68.1 0 107.1-15.6 107.1-53.6v-34.4H229.5v-15.3h107.1c47.8 0 76.5-30.6 76.5-76.5v-61.2c0-45.9-28.7-76.5-76.5-76.5h-30.6v45.9c0 51-41.3 91.8-91.8 91.8H122.4V351.9c0 53.6 47.8 107.1 122.4 107.1zm53.6-30.6c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3 15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3z" /></svg></span> Python</div>
             <div class="free-card-day">Day 01</div>
             <h3 class="free-card-title">Data Types and Memory</h3>
             
@@ -448,7 +452,7 @@
               </div>
             </div>
             
-            <a href="/day01.html" class="free-card-cta free-cta--python">🐍 Start Python Day 01 Free →</a>
+            <a href="/day01.html" class="free-card-cta free-cta--python"><span class="tech-logo logo-python" title="Python"><svg viewBox="45.9 0 367.2 459" fill="none"><path fill="#306998" d="M229.5 0C161.4 0 122.4 15.6 122.4 53.6v34.4h107.1v15.3H122.4c-47.8 0-76.5 30.6-76.5 76.5v61.2c0 45.9 28.7 76.5 76.5 76.5h30.6v-45.9c0-51 41.3-91.8 91.8-91.8h107.1V107.1c0-53.6-47.8-107.1-122.4-107.1zM175.9 30.6c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3 6.9-15.3 15.3-15.3z" /><path fill="#FFE873" d="M229.5 459c68.1 0 107.1-15.6 107.1-53.6v-34.4H229.5v-15.3h107.1c47.8 0 76.5-30.6 76.5-76.5v-61.2c0-45.9-28.7-76.5-76.5-76.5h-30.6v45.9c0 51-41.3 91.8-91.8 91.8H122.4V351.9c0 53.6 47.8 107.1 122.4 107.1zm53.6-30.6c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3 15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3z" /></svg></span> Start Python Day 01 Free &rarr;</a>
             <span class="free-card-meta">Live browser-compiled notebook · No setup needed</span>
           </div>
         </div>
@@ -475,42 +479,17 @@
           <p>Every concept a professional Data Analyst uses — in a logical, progressive sequence.</p>
         </div>
 
-        <!-- Visual Course Roadmap Scene -->
-        <div class="scene roadmap-scene reveal" style="margin-bottom: 2rem;">
-          <div class="stack roadmap-stack" id="roadmapStack">
-            <div class="visual-roadmap">
-              <div class="roadmap-line"></div>
-              <div class="roadmap-nodes">
-                <div class="roadmap-node node-sql pulse-emerald">
-                  <div class="node-dot"></div>
-                  <span class="node-title">SQL</span>
-                  <span class="node-status">Coming Soon</span>
-                </div>
-                <div class="roadmap-node node-excel pulse-gold">
-                  <div class="node-dot"></div>
-                  <span class="node-title">Excel</span>
-                  <span class="node-status">Coming Soon</span>
-                </div>
-                <div class="roadmap-node node-python lit-cyan">
-                  <div class="node-dot"></div>
-                  <span class="node-title">Python</span>
-                  <span class="node-status">Live</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- Tabs -->
         <div class="curr-tabs reveal">
           <button class="curr-tab curr-tab--sql active" data-tab="sql">
-            <span>🗄️</span> SQL <span class="curr-tab-days">18 Days</span>
+            <span class="tech-logo logo-sql" title="SQL"><svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"></path><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"></path></svg></span> SQL <span class="curr-tab-days">18 Days</span>
           </button>
           <button class="curr-tab curr-tab--excel" data-tab="excel">
-            <span>📊</span> Excel <span class="curr-tab-days">12 Days</span>
+            <span class="tech-logo logo-excel" title="Excel"><svg viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.625 0H8.625L1.5 2.625V20.375L8.625 23H14.625V0Z" fill="#107C41"/><path d="M21.5 2.625H14.625V6.375H21.5V2.625Z" fill="#1F9A55"/><path d="M21.5 6.375H14.625V10.125H21.5V6.375Z" fill="#33C481"/><path d="M21.5 10.125H14.625V13.875H21.5V10.125Z" fill="#107C41"/><path d="M21.5 13.875H14.625V17.625H21.5V13.875Z" fill="#1B9A59"/><path d="M21.5 17.625H14.625V20.375H21.5V17.625Z" fill="#107C41"/><path d="M10.125 6.375H3.375V16.625H10.125V6.375Z" fill="#107C41"/><path d="M11.813 7.875L9.938 11.25L11.813 14.625H9.563L8.438 12.75L7.313 14.625H5.063L6.938 11.25L5.063 7.875H7.313L8.438 9.75L9.563 7.875H11.813Z" fill="white"/></svg></span> Excel <span class="curr-tab-days">12 Days</span>
           </button>
           <button class="curr-tab curr-tab--python" data-tab="python">
-            <span>🐍</span> Python <span class="curr-tab-days">30 Days</span>
+            <span class="tech-logo logo-python" title="Python"><svg viewBox="45.9 0 367.2 459" fill="none"><path fill="#306998" d="M229.5 0C161.4 0 122.4 15.6 122.4 53.6v34.4h107.1v15.3H122.4c-47.8 0-76.5 30.6-76.5 76.5v61.2c0 45.9 28.7 76.5 76.5 76.5h30.6v-45.9c0-51 41.3-91.8 91.8-91.8h107.1V107.1c0-53.6-47.8-107.1-122.4-107.1zM175.9 30.6c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3 6.9-15.3 15.3-15.3z" /><path fill="#FFE873" d="M229.5 459c68.1 0 107.1-15.6 107.1-53.6v-34.4H229.5v-15.3h107.1c47.8 0 76.5-30.6 76.5-76.5v-61.2c0-45.9-28.7-76.5-76.5-76.5h-30.6v45.9c0 51-41.3 91.8-91.8 91.8H122.4V351.9c0 53.6 47.8 107.1 122.4 107.1zm53.6-30.6c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3 15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3z" /></svg></span> Python <span class="curr-tab-days">30 Days</span>
           </button>
         </div>
 
@@ -519,7 +498,7 @@
           <div class="curriculum-grid">
             <div class="day-card" data-day="01" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 01</span>
-              <span class="day-emoji">🗄️</span>
+              <span class="day-emoji"><span class="tech-logo logo-sql" title="SQL"><svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"></path><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"></path></svg></span></span>
               <span class="day-title">Intro to SQL &amp; Databases</span>
               <span class="day-badge badge-free">FREE</span>
             </div>
@@ -527,103 +506,103 @@
               <span class="day-num" style="color:var(--emerald)">Day 02</span>
               <span class="day-emoji">🔍</span>
               <span class="day-title">SELECT &amp; Filtering</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="03" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 03</span>
               <span class="day-emoji">📝</span>
               <span class="day-title">Sorting, Patterns &amp; CASE</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="04" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 04</span>
               <span class="day-emoji">📊</span>
               <span class="day-title">Aggregate Functions &amp; GROUP BY</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="05" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 05</span>
               <span class="day-emoji">🔗</span>
               <span class="day-title">Joins &amp; Relationships</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="06" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 06</span>
               <span class="day-emoji">🧠</span>
               <span class="day-title">Subqueries</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="07" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 07</span>
               <span class="day-emoji">🏗️</span>
               <span class="day-title">Common Table Expressions</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="08" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 08</span>
               <span class="day-emoji">🔢</span>
               <span class="day-title">Window Functions I: Ranking</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="09" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 09</span>
               <span class="day-emoji">📈</span>
               <span class="day-title">Window Functions II: Analytics</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="10" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 10</span>
               <span class="day-emoji">📅</span>
               <span class="day-title">Date &amp; Time Functions</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="11" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 11</span>
               <span class="day-emoji">🧹</span>
               <span class="day-title">String &amp; Type Functions</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="12" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 12</span>
               <span class="day-emoji">🛠️</span>
               <span class="day-title">Data Cleaning &amp; Wrangling</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="13" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 13</span>
               <span class="day-emoji">🥞</span>
               <span class="day-title">Set Operations &amp; Joins</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="14" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 14</span>
               <span class="day-emoji">⚡</span>
               <span class="day-title">Query Optimisation</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="15" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 15</span>
               <span class="day-emoji">💾</span>
               <span class="day-title">Views &amp; Reusable Objects</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="16" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 16</span>
               <span class="day-emoji">🔮</span>
               <span class="day-title">Advanced Analytics Patterns</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="17" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 17</span>
               <span class="day-emoji">🧱</span>
               <span class="day-title">Data Modelling &amp; dbt</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="18" tabindex="0">
               <span class="day-num" style="color:var(--emerald)">Day 18</span>
               <span class="day-emoji">🏆</span>
               <span class="day-title">BI Capstone &amp; Interview Prep</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
           </div>
         </div>
@@ -633,7 +612,7 @@
           <div class="curriculum-grid">
             <div class="day-card" data-day="01" tabindex="0">
               <span class="day-num" style="color:var(--gold)">Day 01</span>
-              <span class="day-emoji">📊</span>
+              <span class="day-emoji"><span class="tech-logo logo-excel" title="Excel"><svg viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.625 0H8.625L1.5 2.625V20.375L8.625 23H14.625V0Z" fill="#107C41"/><path d="M21.5 2.625H14.625V6.375H21.5V2.625Z" fill="#1F9A55"/><path d="M21.5 6.375H14.625V10.125H21.5V6.375Z" fill="#33C481"/><path d="M21.5 10.125H14.625V13.875H21.5V10.125Z" fill="#107C41"/><path d="M21.5 13.875H14.625V17.625H21.5V13.875Z" fill="#1B9A59"/><path d="M21.5 17.625H14.625V20.375H21.5V17.625Z" fill="#107C41"/><path d="M10.125 6.375H3.375V16.625H10.125V6.375Z" fill="#107C41"/><path d="M11.813 7.875L9.938 11.25L11.813 14.625H9.563L8.438 12.75L7.313 14.625H5.063L6.938 11.25L5.063 7.875H7.313L8.438 9.75L9.563 7.875H11.813Z" fill="white"/></svg></span></span>
               <span class="day-title">Excel Orientation &amp; Formulas</span>
               <span class="day-badge badge-free">FREE</span>
             </div>
@@ -641,67 +620,67 @@
               <span class="day-num" style="color:var(--gold)">Day 02</span>
               <span class="day-emoji">🎨</span>
               <span class="day-title">Formatting, Sorting &amp; Filtering</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="03" tabindex="0">
               <span class="day-num" style="color:var(--gold)">Day 03</span>
               <span class="day-emoji">🧹</span>
               <span class="day-title">Data Cleaning Essentials</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="04" tabindex="0">
               <span class="day-num" style="color:var(--gold)">Day 04</span>
               <span class="day-emoji">📋</span>
               <span class="day-title">Excel Tables</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="05" tabindex="0">
               <span class="day-num" style="color:var(--gold)">Day 05</span>
               <span class="day-emoji">🔍</span>
               <span class="day-title">Lookup &amp; Reference Functions</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="06" tabindex="0">
               <span class="day-num" style="color:var(--gold)">Day 06</span>
               <span class="day-emoji">🔀</span>
               <span class="day-title">Logic Functions</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="07" tabindex="0">
               <span class="day-num" style="color:var(--gold)">Day 07</span>
               <span class="day-emoji">📝</span>
               <span class="day-title">Text Functions</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="08" tabindex="0">
               <span class="day-num" style="color:var(--gold)">Day 08</span>
               <span class="day-emoji">📅</span>
               <span class="day-title">Date &amp; Time Functions</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="09" tabindex="0">
               <span class="day-num" style="color:var(--gold)">Day 09</span>
               <span class="day-emoji">🧮</span>
               <span class="day-title">Conditional Aggregation</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="10" tabindex="0">
               <span class="day-num" style="color:var(--gold)">Day 10</span>
               <span class="day-emoji">⚙️</span>
               <span class="day-title">PivotTables Core Mechanics</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="11" tabindex="0">
               <span class="day-num" style="color:var(--gold)">Day 11</span>
               <span class="day-emoji">📈</span>
               <span class="day-title">PivotTables Advanced &amp; Charts</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
             <div class="day-card coming-soon" data-day="12" tabindex="0">
               <span class="day-num" style="color:var(--gold)">Day 12</span>
               <span class="day-emoji">🏆</span>
               <span class="day-title">Validation, What-If &amp; Capstone</span>
-              <span class="day-badge badge-coming">SOON</span>
+              <span class="day-badge badge-lock">🔒</span>
             </div>
           </div>
         </div>
@@ -711,7 +690,7 @@
           <div class="curriculum-grid">
             <div class="day-card" data-day="01" tabindex="0">
               <span class="day-num" style="color:var(--cyan)">Day 01</span>
-              <span class="day-emoji">🔢</span>
+              <span class="day-emoji"><span class="tech-logo logo-python" title="Python"><svg viewBox="45.9 0 367.2 459" fill="none"><path fill="#306998" d="M229.5 0C161.4 0 122.4 15.6 122.4 53.6v34.4h107.1v15.3H122.4c-47.8 0-76.5 30.6-76.5 76.5v61.2c0 45.9 28.7 76.5 76.5 76.5h30.6v-45.9c0-51 41.3-91.8 91.8-91.8h107.1V107.1c0-53.6-47.8-107.1-122.4-107.1zM175.9 30.6c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3 6.9-15.3 15.3-15.3z" /><path fill="#FFE873" d="M229.5 459c68.1 0 107.1-15.6 107.1-53.6v-34.4H229.5v-15.3h107.1c47.8 0 76.5-30.6 76.5-76.5v-61.2c0-45.9-28.7-76.5-76.5-76.5h-30.6v45.9c0 51-41.3 91.8-91.8 91.8H122.4V351.9c0 53.6 47.8 107.1 122.4 107.1zm53.6-30.6c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3 15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3z" /></svg></span></span>
               <span class="day-title">Data Types and Memory</span>
               <span class="day-badge badge-free">FREE</span>
             </div>
@@ -1052,63 +1031,6 @@
       </div>
     </div>
 
-    <!-- Pricing Section -->
-    <section class="pricing-section" id="pricing">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2>Simple, <span>Transparent Pricing</span></h2>
-          <p>Gain lifetime access to the entire Data Analytics syllabus with no recurring subscription fees.</p>
-        </div>
-
-        <div class="pricing-container reveal">
-          <div class="pricing-card">
-            <div class="price-header">
-              <h3>Complete Masterclass Bundle</h3>
-              <p>Everything you need to master SQL, Excel, and Python</p>
-            </div>
-            <div class="price-wrapper">
-              <span class="price-now" id="priceNow">$49</span>
-              <span class="price-old" id="priceOld">$199</span>
-              <span class="discount-badge" id="discountBadge">75% OFF</span>
-            </div>
-            <div class="price-badge-row">
-              <span class="price-inr">One-Time Lifetime Access</span>
-            </div>
-            
-            <ul class="price-features">
-              <li>✓ SQL Course (Coming Soon — included free at launch)</li>
-              <li>✓ Excel Course (Coming Soon — included free at launch)</li>
-              <li>✓ Python Course</li>
-              <li>✓ 1,000+ Challenges</li>
-              <li>✓ AI Tutor — all courses</li>
-              <li>✓ Marks System &amp; Leaderboard</li>
-              <li>✓ Lifetime Access</li>
-              <li>✓ Certificates</li>
-              <li>✓ Future Updates</li>
-            </ul>
-
-            <button class="buy-btn" id="buyBtn" data-cta="buy">🛒 Buy Full Masterclass</button>
-            
-            <div class="payment-trust">
-              <span>💳 Secure Checkout via: PayPal &amp; Razorpay</span>
-              <span class="risk-rev-label">🛡️ 7-Day Money-Back Guarantee</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Divider 6 -->
-    <div class="diff-divider-wrapper reveal">
-      <svg class="diff-divider" viewBox="0 0 1200 20" preserveAspectRatio="none" fill="none">
-        <line x1="0" y1="10" x2="1200" y2="10" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="1200" stroke-dashoffset="1200" />
-      </svg>
-      <div class="diff-glyphs">
-        <span class="glyph-group">---</span>
-        <span class="glyph-group">+++</span>
-        <span class="glyph-group">---</span>
-      </div>
-    </div>
 
     <!-- FAQ Section -->
     <section class="faq-section" id="faq">
@@ -1375,7 +1297,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="reviews.js?v=6.0" defer></script>
   <script src="app.js?v=6.4" defer></script>
-  <script src="roadmap.js?v=6.9" defer></script>
+  <script src="roadmap.js?v=7.3" defer></script>
 
   <!-- PWA SW Registration -->
   <script>

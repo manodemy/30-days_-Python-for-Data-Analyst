@@ -456,13 +456,13 @@ document.addEventListener('DOMContentLoaded', () => {
   async function fetchLiveCounts() {
     if (!supabaseClient) return;
     try {
-      const { data: count, error } = await supabaseClient.rpc('get_enrolled_users_count');
+      const { data: count, error } = await supabaseClient.rpc('get_signup_count');
       if (error) throw error;
       const num = parseInt(count, 10);
       if (isNaN(num)) return;
 
       const activeLearnersEl = document.getElementById('hero-active-learners');
-      if (activeLearnersEl) activeLearnersEl.textContent = num.toLocaleString('en-US') + '+ Active Learners';
+      if (activeLearnersEl) activeLearnersEl.textContent = num.toLocaleString('en-US') + '+ Sign Ups';
 
       const socialProofEl = document.getElementById('social-proof-learners');
       if (socialProofEl) {
