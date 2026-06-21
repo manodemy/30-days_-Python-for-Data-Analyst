@@ -1334,7 +1334,12 @@ button {
 }
 
 .badge-free { background: rgba(16, 185, 129, 0.16); color: var(--emerald); }
-.badge-lock { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
+.badge-lock {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  font-size: 24px;
+  padding: 1px 5px;
+}
 .badge-coming { background: rgba(255, 176, 32, 0.1); color: var(--gold); }
 
 .day-card.coming-soon {
