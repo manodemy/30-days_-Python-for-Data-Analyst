@@ -698,6 +698,177 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  /* ═══ LIVE CLASS SCHEDULER & COUNTDOWNS (IST) ═══ */
+  function getISTDate() {
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    return new Date(utc + (3600000 * 5.5)); // IST is UTC + 5:30
+  }
+
+  function getSessionStatus(type) {
+    const istNow = getISTDate();
+    const currentDay = istNow.getDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
+    const currentHours = istNow.getHours();
+    const currentMinutes = istNow.getMinutes();
+    const currentSeconds = istNow.getSeconds();
+
+    const currentWeekMinutes = (currentDay * 24 * 60) + (currentHours * 60) + currentMinutes;
+
+    let sessions = [];
+    if (type === 'demo') {
+      // Saturday & Sunday, 6:00 PM – 7:00 PM IST (Day 6 and 0)
+      sessions = [
+        { day: 6, startH: 18, startM: 0, endH: 19, endM: 0 },
+        { day: 0, startH: 18, startM: 0, endH: 19, endM: 0 }
+      ];
+    } else if (type === 'batch1') {
+      // Daily, 7:30 PM – 8:30 PM IST (Days 0 to 6)
+      for (let d = 0; d < 7; d++) {
+        sessions.push({ day: d, startH: 19, startM: 30, endH: 20, endM: 30 });
+      }
+    } else if (type === 'batch2') {
+      // Daily, 8:30 PM – 9:30 PM IST (Days 0 to 6)
+      for (let d = 0; d < 7; d++) {
+        sessions.push({ day: d, startH: 20, startM: 30, endH: 21, endM: 30 });
+      }
+    }
+
+    // 1. Check if active right now
+    for (let s of sessions) {
+      if (currentDay === s.day) {
+        const nowMin = (currentHours * 60) + currentMinutes;
+        const startMin = (s.startH * 60) + s.startM;
+        const endMin = (s.endH * 60) + s.endM;
+        if (nowMin >= startMin && nowMin < endMin) {
+          const minRemaining = endMin - nowMin - 1;
+          const secRemaining = 60 - currentSeconds;
+          return {
+            isActive: true,
+            statusText: '🟢 LIVE NOW',
+            countdownText: `Ends in ${minRemaining}m ${secRemaining}s`
+          };
+        }
+      }
+    }
+
+    // 2. Calculate time to next session start
+    let minDiff = Infinity;
+    for (let s of sessions) {
+      const sessionWeekMinutes = (s.day * 24 * 60) + (s.startH * 60) + s.startM;
+      let diff = sessionWeekMinutes - currentWeekMinutes;
+      if (diff <= 0) {
+        diff += 7 * 24 * 60; // Next week's slot
+      }
+      if (diff < minDiff) {
+        minDiff = diff;
+      }
+    }
+
+    minDiff = minDiff - 1; // Adjust for second boundary
+    const days = Math.floor(minDiff / (24 * 60));
+    const hours = Math.floor((minDiff % (24 * 60)) / 60);
+    const minutes = minDiff % 60;
+    const seconds = 60 - currentSeconds;
+
+    let countdownText = 'Starts in ';
+    if (days > 0) {
+      countdownText += `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    } else if (hours > 0) {
+      countdownText += `${hours}h ${minutes}m ${seconds}s`;
+    } else {
+      countdownText += `${minutes}m ${seconds}s`;
+    }
+
+    return {
+      isActive: false,
+      statusText: '🔴 Scheduled',
+      countdownText: countdownText
+    };
+  }
+
+  function updateLiveScheduler() {
+    const types = ['demo', 'batch1', 'batch2'];
+    
+    types.forEach(type => {
+      const status = getSessionStatus(type);
+      const statusPill = document.getElementById(`status-${type}`);
+      const countdownBox = document.getElementById(`countdown-${type}`);
+      const joinBtn = document.getElementById(`btn-${type}`);
+      
+      if (statusPill) {
+        statusPill.textContent = status.statusText;
+        if (status.isActive) {
+          statusPill.classList.add('live-now');
+        } else {
+          statusPill.classList.remove('live-now');
+        }
+      }
+      
+      if (countdownBox) {
+        countdownBox.textContent = status.countdownText;
+        if (status.isActive) {
+          countdownBox.classList.add('active');
+        } else {
+          countdownBox.classList.remove('active');
+        }
+      }
+      
+      if (joinBtn) {
+        if (status.isActive) {
+          joinBtn.removeAttribute('disabled');
+          joinBtn.classList.add('active');
+          joinBtn.classList.remove('disabled');
+        } else {
+          joinBtn.setAttribute('disabled', 'true');
+          joinBtn.classList.remove('active');
+          joinBtn.classList.add('disabled');
+        }
+      }
+    });
+  }
+
+  // Bind batch join event handlers
+  const btnBatch1 = document.getElementById('btn-batch1');
+  const btnBatch2 = document.getElementById('btn-batch2');
+  const btnDemo = document.getElementById('btn-demo');
+
+  const checkAndJoinBatch = (meetUrl) => {
+    const enrolled = localStorage.getItem('manodemy_enrolled') === 'true';
+    if (enrolled) {
+      window.open(meetUrl, '_blank', 'noopener,noreferrer');
+    } else {
+      alert("🔒 This batch is for enrolled students only. Please enroll in the Daily Live tier to access cohort links!");
+      openCheckout('live');
+    }
+  };
+
+  if (btnBatch1) {
+    btnBatch1.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!btnBatch1.classList.contains('active')) return;
+      checkAndJoinBatch('https://meet.google.com/ndy-jymp-azz');
+    });
+  }
+
+  if (btnBatch2) {
+    btnBatch2.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!btnBatch2.classList.contains('active')) return;
+      checkAndJoinBatch('https://meet.google.com/gjy-jsxd-txa');
+    });
+  }
+
+  if (btnDemo) {
+    btnDemo.addEventListener('click', (e) => {
+      if (!btnDemo.classList.contains('active')) {
+        e.preventDefault();
+      }
+    });
+  }
+
+  updateLiveScheduler();
+  setInterval(updateLiveScheduler, 1000);
+
   /* ═══ V6 MOTION SYSTEM: TEXT SCRAMBLER REVEAL ═══ */
   function scrambleText(element, durationMs = 1000) {
     // Disabled text scrambling animation to display all content immediately on refresh/scroll
