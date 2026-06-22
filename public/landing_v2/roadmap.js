@@ -471,7 +471,7 @@ function updateHUD(idx){
   activeNumEl.style.boxShadow = `0 0 12px ${pc.css}, 0 0 4px ${pc.css}`;
 }
 
-function setDay(i, doBurst=true){
+function setDay(i, doBurst=true, isUserGesture=false){
   currentDay=((i%N)+N)%N;
   updateHUD(currentDay);
   if(doBurst) {
@@ -482,7 +482,7 @@ function setDay(i, doBurst=true){
       setTimeout(() => burst(30), 450);
     }
     if (clockInViewport) {
-      playMechanicalTick();
+      playMechanicalTick(isUserGesture);
     }
   }
   actMat.color.setHex(PC[DATA[currentDay].phase].hex);
@@ -515,10 +515,10 @@ function startAuto(){
 function stopAuto(){ clearInterval(autoTimer); }
 function stopAutoUI(){ stopAuto(); autoPlay=false; root.querySelector('#btnAuto').innerHTML='▶ &nbsp;Auto-play'; }
 
-root.querySelector('#btnNext').onclick=()=>{stopAutoUI();resumeAudio();setDay(currentDay+1);};
-root.querySelector('#btnPrev').onclick=()=>{stopAutoUI();resumeAudio();setDay(currentDay-1);};
+root.querySelector('#btnNext').onclick=()=>{stopAutoUI();unlockAudio();setDay(currentDay+1, true, true);};
+root.querySelector('#btnPrev').onclick=()=>{stopAutoUI();unlockAudio();setDay(currentDay-1, true, true);};
 root.querySelector('#btnAuto').onclick=()=>{
-  resumeAudio();
+  unlockAudio();
   autoPlay=!autoPlay;
   root.querySelector('#btnAuto').innerHTML=autoPlay?'⏸ &nbsp;Auto-play':'▶ &nbsp;Auto-play';
   if(autoPlay) startAuto(); else stopAuto();
@@ -560,8 +560,8 @@ canvas.addEventListener('mouseleave',()=>{mouse.set(-999,-999);hoveredDay=null;}
 canvas.addEventListener('click',()=>{
   if(hoveredDay!=null){
     stopAutoUI();
-    resumeAudio();
-    setDay(hoveredDay);
+    unlockAudio();
+    setDay(hoveredDay, true, true);
   }
 });
 
@@ -574,8 +574,8 @@ canvas.addEventListener('touchmove',e=>{
 canvas.addEventListener('touchend',()=>{
   if(hoveredDay!=null){
     stopAutoUI();
-    resumeAudio();
-    setDay(hoveredDay);
+    unlockAudio();
+    setDay(hoveredDay, true, true);
   }
   mouse.set(-999,-999); hoveredDay=null;
 });
@@ -652,15 +652,19 @@ function animate(){
   let audioCtx = null;
   let clockInViewport = false;
 
-  function playMechanicalTick() {
+  function playMechanicalTick(isUserGesture = false) {
     try {
       if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (isUserGesture) {
+          unlockAudio();
+        } else {
+          return;
+        }
       }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
+      
+      if (!isUserGesture && audioCtx.state !== 'running') {
+        return;
       }
-      if (audioCtx.state === 'suspended') return;
 
       const now = audioCtx.currentTime;
 
@@ -694,22 +698,29 @@ function animate(){
     }
   }
 
-  function resumeAudio() {
+  function unlockAudio() {
     try {
       if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       }
-      if (audioCtx && audioCtx.state === 'suspended') {
+      if (audioCtx.state === 'suspended') {
         audioCtx.resume();
+      } else if (audioCtx.state === 'running') {
+        return;
       }
-      if (audioCtx && audioCtx.state === 'running') {
-        document.removeEventListener('click', resumeAudio);
-        document.removeEventListener('touchstart', resumeAudio);
-      }
-    } catch (e) {}
+      // Play a tiny silent buffer to unlock iOS Safari
+      const buffer = audioCtx.createBuffer(1, 1, 22050);
+      const source = audioCtx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(audioCtx.destination);
+      source.start(0);
+    } catch (e) {
+      console.warn('[Audio] Failed to unlock audio context:', e);
+    }
   }
-  document.addEventListener('click', resumeAudio);
-  document.addEventListener('touchstart', resumeAudio);
+  document.addEventListener('click', unlockAudio);
+  document.addEventListener('touchstart', unlockAudio, { passive: true });
+  document.addEventListener('touchend', unlockAudio, { passive: true });
 
   // Clock Viewport Visibility Observer
   if (window.IntersectionObserver && wrap) {
