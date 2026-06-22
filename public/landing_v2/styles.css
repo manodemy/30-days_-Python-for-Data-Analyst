@@ -407,7 +407,7 @@ button {
 
 .hero-container {
   display: grid;
-  grid-template-columns: 55fr 45fr;
+  grid-template-columns: 52fr 48fr;
   gap: 3rem;
   align-items: center;
 }
@@ -4896,3 +4896,85 @@ html, body {
   margin-right: 6px;
 }
 
+/* ═══ ROADMAP CLOCK DIAL — MOBILE CLEAN-UP ═══ */
+
+/* Desktop: legend row must never wrap */
+#roadmap-root .rm-legendRow {
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+#roadmap-root .rm-legendRow::-webkit-scrollbar { display: none; }
+
+@media (max-width: 600px) {
+  /* Header: allow pill to shrink on very small screens */
+  #rm-cardPillTitle {
+    font-size: 9px !important;
+    padding: 5px 10px !important;
+    letter-spacing: 0.07em !important;
+  }
+
+  /* Header top row: keep on one line, shrink pill, keep stats visible */
+  #rm-headerTopRow {
+    gap: 8px !important;
+  }
+
+  /* Stats values slightly smaller on mobile */
+  #rm-headerStats {
+    gap: 10px !important;
+  }
+  #rm-headerStats span[style*="font-size:18px"] {
+    font-size: 15px !important;
+  }
+
+  /* Legend row: scroll horizontally, never wrap, never crop */
+  #roadmap-root div[style*="flex-wrap:nowrap"][style*="overflow-x:auto"] {
+    padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Legend buttons: slightly smaller on mobile to all fit */
+  #roadmap-root .rm-legendBtn {
+    font-size: 10px !important;
+    padding: 5px 10px 5px 8px !important;
+    gap: 6px !important;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Dial wrap: add bottom padding so bottom buttons don't clip content */
+  #rm-dialWrap {
+    padding-bottom: 52px;
+  }
+
+  /* Day card: narrower on small screens to not be cropped */
+  #rm-dayCard {
+    width: 152px !important;
+    padding: 10px 12px 10px !important;
+  }
+
+  #rm-cardDay {
+    font-size: 20px !important;
+  }
+
+  #rm-cardTopic {
+    font-size: 10px !important;
+    min-height: 24px !important;
+  }
+
+  /* Prevent bottom vignette from covering controls */
+  #rm-dialWrap > div[style*="bottom:0"][style*="height:64px"] {
+    height: 48px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  /* Extra small: shrink pill text even more */
+  #rm-cardPillTitle {
+    font-size: 8px !important;
+    padding: 4px 8px !important;
+  }
+  #rm-headerStats {
+    gap: 8px !important;
+  }
+}
