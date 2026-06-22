@@ -1273,6 +1273,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   let authState = 'login'; // 'login' | 'signup' | 'forgot'
   window.pendingCheckout = null;
+  window.justSignedIn = false;
   
   const setAuthMessage = (msg, type = 'info') => {
     if (!authMsg) return;
@@ -1373,8 +1374,10 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         if (authState === 'login') {
           btnLandingSubmit.textContent = 'Signing in...';
+          window.justSignedIn = true;
           const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
           if (error) {
+            window.justSignedIn = false;
             if (error.message.toLowerCase().includes('invalid login credentials')) {
               throw new Error("Incorrect email or password. Need an account? Click 'Create Account'.");
             }
@@ -1387,12 +1390,17 @@ document.addEventListener('DOMContentLoaded', () => {
           if (password !== confirmPass) { setAuthMessage("Passwords do not match.", "error"); throw new Error("_handled"); }
 
           btnLandingSubmit.textContent = 'Creating Account...';
+          window.justSignedIn = true;
           const { data, error } = await supabaseClient.auth.signUp({
             email, password,
             options: { data: { full_name: name } }
           });
-          if (error) throw error;
+          if (error) {
+            window.justSignedIn = false;
+            throw error;
+          }
           if (data?.user?.identities?.length === 0) {
+            window.justSignedIn = false;
             setAuthMessage("This email is already registered. Please log in.", "info");
           } else {
             setAuthMessage("Account created! Check your email to verify, then log in.", "success");
@@ -1425,6 +1433,7 @@ document.addEventListener('DOMContentLoaded', () => {
       googleSigninBtn.disabled = true;
       googleSigninBtn.style.opacity = '0.7';
 
+      localStorage.setItem('manodemy_oauth_in_progress', 'true');
       if (window.pendingCheckout) {
         localStorage.setItem('manodemy_pending_checkout', JSON.stringify(window.pendingCheckout));
       }
@@ -1646,6 +1655,9 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   (async () => {
+    const oauthInProgress = localStorage.getItem('manodemy_oauth_in_progress') === 'true';
+    localStorage.removeItem('manodemy_oauth_in_progress');
+
     const storedPending = localStorage.getItem('manodemy_pending_checkout');
     if (storedPending) {
       try {
@@ -1676,7 +1688,8 @@ document.addEventListener('DOMContentLoaded', () => {
             window.pendingCheckout = null;
             openCheckout(currentPending.tier);
             initiatePayment(currentPending.gateway);
-          } else {
+          } else if (window.justSignedIn || oauthInProgress) {
+            window.justSignedIn = false;
             setTimeout(() => {
               if (!window.pendingCheckout) {
                 window.location.href = '/home.html';
