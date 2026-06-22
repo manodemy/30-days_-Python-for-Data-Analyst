@@ -664,22 +664,22 @@ function animate(){
 
       const now = audioCtx.currentTime;
 
-      // 1. High-frequency click (metal strike)
+      // 1. High-frequency click (metal strike) - elevated gain for clear audibility
       const oscHigh = audioCtx.createOscillator();
       const gainHigh = audioCtx.createGain();
       oscHigh.type = 'triangle';
       oscHigh.frequency.setValueAtTime(1600, now);
-      gainHigh.gain.setValueAtTime(0.015, now);
+      gainHigh.gain.setValueAtTime(0.06, now);
       gainHigh.gain.exponentialRampToValueAtTime(0.0001, now + 0.008);
       oscHigh.connect(gainHigh);
       gainHigh.connect(audioCtx.destination);
 
-      // 2. Mid-frequency thud (casing resonance)
+      // 2. Mid-frequency thud (casing resonance) - elevated gain for clear audibility
       const oscLow = audioCtx.createOscillator();
       const gainLow = audioCtx.createGain();
       oscLow.type = 'sine';
       oscLow.frequency.setValueAtTime(320, now);
-      gainLow.gain.setValueAtTime(0.035, now);
+      gainLow.gain.setValueAtTime(0.12, now);
       gainLow.gain.exponentialRampToValueAtTime(0.0001, now + 0.022);
       oscLow.connect(gainLow);
       gainLow.connect(audioCtx.destination);
@@ -695,12 +695,21 @@ function animate(){
   }
 
   function resumeAudio() {
-    if (audioCtx && audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
+    try {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      if (audioCtx && audioCtx.state === 'running') {
+        document.removeEventListener('click', resumeAudio);
+        document.removeEventListener('touchstart', resumeAudio);
+      }
+    } catch (e) {}
   }
-  document.addEventListener('click', resumeAudio, { once: true });
-  document.addEventListener('touchstart', resumeAudio, { once: true });
+  document.addEventListener('click', resumeAudio);
+  document.addEventListener('touchstart', resumeAudio);
 
   // Clock Viewport Visibility Observer
   if (window.IntersectionObserver && wrap) {
