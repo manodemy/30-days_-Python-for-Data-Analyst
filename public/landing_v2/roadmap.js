@@ -651,6 +651,19 @@ function animate(){
   // ── MECHANICAL TICK SYNTHESIZER (WEB AUDIO API) ─────────────
   let audioCtx = null;
   let clockInViewport = false;
+  let noiseBuffer = null;
+
+  function getNoiseBuffer() {
+    if (noiseBuffer) return noiseBuffer;
+    if (!audioCtx) return null;
+    const bufferSize = audioCtx.sampleRate * 0.1; // 100ms
+    noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+    return noiseBuffer;
+  }
 
   function playMechanicalTick(isUserGesture = false) {
     try {
@@ -667,34 +680,83 @@ function animate(){
       }
 
       const now = audioCtx.currentTime;
+      const isTick = currentDay % 2 === 0; // Alternate Tick and Tock
 
-      // 1. High-frequency click (metal strike) - elevated gain for clear audibility
-      const oscHigh = audioCtx.createOscillator();
-      const gainHigh = audioCtx.createGain();
-      oscHigh.type = 'triangle';
-      oscHigh.frequency.setValueAtTime(1600, now);
-      gainHigh.gain.setValueAtTime(0.06, now);
-      gainHigh.gain.exponentialRampToValueAtTime(0.0001, now + 0.008);
-      oscHigh.connect(gainHigh);
-      gainHigh.connect(audioCtx.destination);
+      if (isTick) {
+        // --- TICK ---
+        // 1. High-frequency click noise (metal escapement strike)
+        const noise = audioCtx.createBufferSource();
+        const noiseFilter = audioCtx.createBiquadFilter();
+        const noiseGain = audioCtx.createGain();
 
-      // 2. Mid-frequency thud (casing resonance) - elevated gain for clear audibility
-      const oscLow = audioCtx.createOscillator();
-      const gainLow = audioCtx.createGain();
-      oscLow.type = 'sine';
-      oscLow.frequency.setValueAtTime(320, now);
-      gainLow.gain.setValueAtTime(0.12, now);
-      gainLow.gain.exponentialRampToValueAtTime(0.0001, now + 0.022);
-      oscLow.connect(gainLow);
-      gainLow.connect(audioCtx.destination);
+        noise.buffer = getNoiseBuffer();
+        noiseFilter.type = 'highpass';
+        noiseFilter.frequency.setValueAtTime(2200, now);
+        noiseFilter.Q.setValueAtTime(2, now);
 
-      oscHigh.start(now);
-      oscHigh.stop(now + 0.012);
+        noiseGain.gain.setValueAtTime(0.32, now); // ~4x volume of original clicks
+        noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.012);
 
-      oscLow.start(now);
-      oscLow.stop(now + 0.028);
+        noise.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(audioCtx.destination);
+
+        // 2. High metallic body resonance (spring & pallet snap)
+        const oscHigh = audioCtx.createOscillator();
+        const gainHigh = audioCtx.createGain();
+        
+        oscHigh.type = 'triangle';
+        oscHigh.frequency.setValueAtTime(980, now);
+        
+        gainHigh.gain.setValueAtTime(0.24, now); // 4x volume of original 0.06
+        gainHigh.gain.exponentialRampToValueAtTime(0.0001, now + 0.025);
+
+        oscHigh.connect(gainHigh);
+        gainHigh.connect(audioCtx.destination);
+
+        noise.start(now);
+        noise.stop(now + 0.015);
+        oscHigh.start(now);
+        oscHigh.stop(now + 0.030);
+      } else {
+        // --- TOCK ---
+        // 1. Mid-frequency wood clack noise (casing vibration)
+        const noise = audioCtx.createBufferSource();
+        const noiseFilter = audioCtx.createBiquadFilter();
+        const noiseGain = audioCtx.createGain();
+
+        noise.buffer = getNoiseBuffer();
+        noiseFilter.type = 'bandpass';
+        noiseFilter.frequency.setValueAtTime(850, now);
+        noiseFilter.Q.setValueAtTime(3, now);
+
+        noiseGain.gain.setValueAtTime(0.28, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.018);
+
+        noise.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(audioCtx.destination);
+
+        // 2. Low-frequency thud (wooden hollow pendulum housing resonance)
+        const oscLow = audioCtx.createOscillator();
+        const gainLow = audioCtx.createGain();
+        
+        oscLow.type = 'sine';
+        oscLow.frequency.setValueAtTime(180, now); // deep casing thud
+        
+        gainLow.gain.setValueAtTime(0.48, now); // 4x volume of original 0.12
+        gainLow.gain.exponentialRampToValueAtTime(0.0001, now + 0.065);
+
+        oscLow.connect(gainLow);
+        gainLow.connect(audioCtx.destination);
+
+        noise.start(now);
+        noise.stop(now + 0.022);
+        oscLow.start(now);
+        oscLow.stop(now + 0.075);
+      }
     } catch (e) {
-      console.warn('[Audio] Tick synthesis failed:', e);
+      console.warn('[Audio] Tick-tock synthesis failed:', e);
     }
   }
 
