@@ -438,6 +438,8 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ═══ CHECKOUT & PRICING REGIONAL GATEWAY ═══ */
   const SUPABASE_URL = window.MANODEMY_CONFIG?.SUPA_URL || 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
   const SUPABASE_ANON_KEY = window.MANODEMY_CONFIG?.SUPA_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
+  const RAZORPAY_KEY_ID = 'rzp_live_SnbHZn5Q7rYNAP';
+  const PAYPAL_CLIENT_ID = '';
   
   let supabaseClient = null;
   let userCountry = 'US';
@@ -446,6 +448,10 @@ document.addEventListener('DOMContentLoaded', () => {
     live:      { amount: 14900, currency: 'USD', display: '$149',  original: '$499',    discount: '70% OFF', planName: '60-Day Daily Live Masterclass' }
   };
   let activeTier = 'selfpaced';
+  
+  let appliedCouponCode = '';
+  let appliedCouponAmount = null;
+  let currentPricing = { amount: 4900, currency: 'USD', display: '$49', original: '$149', discount: '67% OFF' };
 
   if (window.supabase) {
     try {
@@ -545,13 +551,19 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCheckoutForTier('selfpaced');
   }
 
-  detectGeoPricing();
-
   // Update checkout modal UI for the selected tier
   function updateCheckoutForTier(tier) {
     activeTier = tier;
     const cfg = pricingConfigs[tier];
     const isLive = tier === 'live';
+
+    currentPricing = {
+      amount: cfg.amount,
+      currency: cfg.currency,
+      display: cfg.display,
+      original: cfg.original,
+      discount: cfg.discount
+    };
 
     const checkoutAmount   = document.getElementById('checkoutAmount');
     const checkoutOriginal = document.getElementById('checkoutOriginal');
@@ -663,32 +675,223 @@ document.addEventListener('DOMContentLoaded', () => {
     
     gateContainer.innerHTML = '';
     
+    const displayPrice = appliedCouponAmount !== null
+      ? (currentPricing.currency === 'INR' ? '₹' + (appliedCouponAmount / 100).toLocaleString('en-IN') : '$' + (appliedCouponAmount / 100))
+      : currentPricing.display;
+    
     if (userCountry === 'IN') {
       const btn = document.createElement('button');
       btn.className = 'btn-auth-submit';
       btn.style.background = '#10B981';
-      btn.innerHTML = '💳 Pay with Razorpay (UPI, Cards, Netbanking)';
-      btn.onclick = triggerRazorpayPayment;
+      btn.innerHTML = `💳 Pay with Razorpay (UPI, Cards, Netbanking) — ${displayPrice}`;
+      btn.onclick = () => handlePaymentClick('razorpay');
       gateContainer.appendChild(btn);
     } else {
       const btn = document.createElement('button');
       btn.className = 'btn-auth-submit';
       btn.style.background = '#FFB020';
       btn.style.color = '#000';
-      btn.innerHTML = '💳 Pay securely with PayPal';
-      btn.onclick = triggerPayPalPayment;
+      btn.innerHTML = `💳 Pay securely with PayPal — ${displayPrice}`;
+      btn.onclick = () => handlePaymentClick('paypal');
       gateContainer.appendChild(btn);
     }
   }
 
-  function triggerRazorpayPayment() {
-    const cfg = pricingConfigs[activeTier];
-    alert("Razorpay checkout mock selected. Plan: " + cfg.planName + " — Price: " + cfg.display);
+  async function handlePaymentClick(gateway) {
+    if (!supabaseClient) {
+      alert("Authentication services are currently offline.");
+      return;
+    }
+    
+    try {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) {
+        window.pendingCheckout = {
+          tier: activeTier,
+          gateway: gateway
+        };
+        closeCheckout();
+        openAuthModal('login');
+        return;
+      }
+      
+      await initiatePayment(gateway);
+    } catch (err) {
+      console.error("Payment click handler failed:", err);
+    }
   }
 
-  function triggerPayPalPayment() {
-    const cfg = pricingConfigs[activeTier];
-    alert("PayPal checkout mock selected. Plan: " + cfg.planName + " — Price: " + cfg.display);
+  async function initiatePayment(gateway) {
+    const spinner = document.getElementById('checkoutSpinner');
+    const buttons = document.getElementById('gatewayButtons');
+
+    try {
+      if (spinner) spinner.classList.add('active');
+      if (buttons) buttons.style.opacity = '0.4';
+
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) throw new Error('Please sign in to proceed with your checkout purchase.');
+
+      const couponEl = document.getElementById('couponInput');
+      const coupon = couponEl ? couponEl.value.trim() : '';
+
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/create-order`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({
+          gateway,
+          currency: currentPricing.currency,
+          coupon_code: appliedCouponCode || coupon || undefined,
+          final_amount: appliedCouponAmount || undefined,
+          referral_code: localStorage.getItem('manodemy_ref') || undefined
+        })
+      });
+
+      const data = await res.json();
+      if (data.error) {
+        if (data.enrolled) {
+          alert('You already have access! Redirecting to curriculum dashboard...');
+          unlockAllDays();
+          updateCTAsForPaidUser();
+          closeCheckout();
+          window.location.href = '/home.html';
+          return;
+        }
+        throw new Error(data.error);
+      }
+
+      if (gateway === 'razorpay') {
+        if (typeof Razorpay === 'undefined') {
+          await new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            s.onload = resolve; s.onerror = reject;
+            document.head.appendChild(s);
+          });
+        }
+
+        const finalAmount = appliedCouponAmount || data.amount;
+        const options = {
+          key: RAZORPAY_KEY_ID,
+          amount: finalAmount,
+          currency: data.currency,
+          order_id: data.razorpay_order_id,
+          name: 'Manodemy',
+          description: '60-Day Data Analyst Masterclass',
+          handler: async function (response) {
+            try {
+              const verifyRes = await fetch(`${SUPABASE_URL}/functions/v1/verify-payment`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${session.access_token}`
+                },
+                body: JSON.stringify({
+                  gateway: 'razorpay',
+                  order_id: data.order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_signature: response.razorpay_signature,
+                  contact: response.contact || ''
+                })
+              });
+              const result = await verifyRes.json();
+              if (result.success) {
+                unlockAllDays();
+                updateCTAsForPaidUser();
+                closeCheckout();
+                window.location.href = `payment-success.html?order_id=${data.order_id}`;
+              } else {
+                window.location.href = `payment-failed.html?order_id=${data.order_id}`;
+              }
+            } catch (e) {
+              window.location.href = `payment-failed.html?reason=verification`;
+            }
+          },
+          prefill: { email: session.user.email },
+          theme: { color: '#0B0F19' },
+          modal: { ondismiss: () => { resetCheckoutUI(); } }
+        };
+        const rzp = new Razorpay(options);
+        rzp.on('payment.failed', function () {
+          window.location.href = `payment-failed.html?reason=declined`;
+        });
+        rzp.open();
+        closeCheckout();
+      } else if (gateway === 'paypal') {
+        await loadPayPalSDK();
+        closeCheckout();
+        await handlePayPalPayment(data, session);
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      alert('Payment processing failed: ' + error.message);
+    } finally {
+      resetCheckoutUI();
+    }
+  }
+
+  function resetCheckoutUI() {
+    const spinner = document.getElementById('checkoutSpinner');
+    const buttons = document.getElementById('gatewayButtons');
+    if (spinner) spinner.classList.remove('active');
+    if (buttons) buttons.style.opacity = '1';
+  }
+
+  let paypalLoaded = false;
+  function loadPayPalSDK() {
+    if (paypalLoaded) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=${currentPricing.currency}`;
+      script.onload = () => { paypalLoaded = true; resolve(); };
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  async function handlePayPalPayment(orderData, session) {
+    const ppContainer = document.createElement('div');
+    ppContainer.id = 'paypal-button-container';
+    ppContainer.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3000;background:#111827;padding:2rem;border-radius:16px;border:1px solid rgba(255,255,255,0.1);min-width:350px';
+    document.body.appendChild(ppContainer);
+
+    paypal.Buttons({
+      createOrder: () => orderData.paypal_order_id,
+      onApprove: async (ppData) => {
+        try {
+          const verifyRes = await fetch(`${SUPABASE_URL}/functions/v1/verify-payment`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({
+              gateway: 'paypal',
+              order_id: orderData.order_id,
+              paypal_order_id: ppData.orderID
+            })
+          });
+          const result = await verifyRes.json();
+          ppContainer.remove();
+          if (result.success) {
+            unlockAllDays();
+            updateCTAsForPaidUser();
+            window.location.href = `payment-success.html?order_id=${orderData.order_id}`;
+          } else {
+            window.location.href = `payment-failed.html?order_id=${orderData.order_id}`;
+          }
+        } catch (e) {
+          ppContainer.remove();
+          window.location.href = 'payment-failed.html?reason=verification';
+        }
+      },
+      onCancel: () => { ppContainer.remove(); },
+      onError: () => { ppContainer.remove(); alert('PayPal error. Checkout session cancelled.'); }
+    }).render('#paypal-button-container');
   }
 
   /* ═══ DAY CARD NAVIGATION ═══ */
@@ -970,4 +1173,527 @@ document.addEventListener('DOMContentLoaded', () => {
     // Disabled text scrambling animation to display all content immediately on refresh/scroll
   }
 
+  // ═══════ COUPON STATE & VALIDATION ═══════
+  const couponApplyBtn = document.getElementById('couponApply');
+  if (couponApplyBtn) {
+    couponApplyBtn.addEventListener('click', async () => {
+      const input = document.getElementById('couponInput');
+      const code = input?.value?.trim();
+      if (!code) return;
+
+      if (!supabaseClient) return;
+      couponApplyBtn.textContent = 'Verifying...';
+      couponApplyBtn.disabled = true;
+
+      try {
+        const { data, error } = await supabaseClient
+          .from('coupons')
+          .select('discount_type, discount_value, is_active, expires_at, applies_to')
+          .eq('code', code.toUpperCase())
+          .single();
+
+        const isActive = data ? (Boolean(data.is_active) === true) : false;
+        const expiry = data ? data.expires_at : null;
+        const isExpired = expiry && new Date(expiry) < new Date();
+        const appliesTo = data?.applies_to || 'both';
+        const currencyMatch = appliesTo === 'both' || appliesTo === currentPricing.currency;
+
+        if (data && isActive && !isExpired && currencyMatch) {
+          const type = data.discount_type || 'percentage';
+          const val = data.discount_value ?? 0;
+          
+          let newAmount;
+          let label;
+          
+          if (type === 'percentage') {
+            newAmount = Math.round(currentPricing.amount * (1 - val / 100));
+            label = `✅ ${val}% OFF!`;
+          } else {
+            newAmount = Math.max(0, currentPricing.amount - (val * 100));
+            const currencySymbol = currentPricing.currency === 'INR' ? '₹' : '$';
+            label = `✅ ${currencySymbol}${val} OFF!`;
+          }
+
+          appliedCouponCode = code.toUpperCase();
+          appliedCouponAmount = newAmount;
+
+          renderPaymentGateways();
+          couponApplyBtn.textContent = label;
+          couponApplyBtn.style.color = '#10B981';
+        } else {
+          appliedCouponCode = '';
+          appliedCouponAmount = null;
+
+          let msg = '❌ Invalid';
+          if (isExpired) msg = '❌ Expired';
+          else if (!currencyMatch) msg = `❌ Only for ${appliesTo}`;
+          
+          couponApplyBtn.textContent = msg;
+          couponApplyBtn.style.color = '#F43F5E';
+          setTimeout(() => {
+            couponApplyBtn.textContent = 'Apply';
+            couponApplyBtn.style.color = '';
+          }, 2000);
+          renderPaymentGateways();
+        }
+      } catch (err) {
+        console.error('[Coupon] Error:', err);
+        couponApplyBtn.textContent = '❌ Error';
+        couponApplyBtn.style.color = '#F43F5E';
+        setTimeout(() => {
+          couponApplyBtn.textContent = 'Apply';
+          couponApplyBtn.style.color = '';
+        }, 2000);
+        renderPaymentGateways();
+      } finally {
+        couponApplyBtn.disabled = false;
+      }
+    });
+  }
+
+  // ═══════ AUTH REGISTRATION & EVENT LISTENERS ═══════
+  const authModal = document.getElementById('authModal');
+  const landingLoginForm = document.getElementById('landingLoginForm');
+  const googleSigninBtn = document.getElementById('google-signin-btn');
+  const btnLandingSubmit = document.getElementById('btnLandingSubmit');
+  
+  const linkLandingForgot = document.getElementById('linkLandingForgot');
+  const linkLandingSignup = document.getElementById('linkLandingSignup');
+  const linkBackToLogin = document.getElementById('linkBackToLogin');
+  
+  const authTitle = document.getElementById('authTitle');
+  const authSubtitle = document.getElementById('authSubtitle');
+  const authMsg = document.getElementById('authMessage');
+  const socialAuthSection = document.getElementById('socialAuthSection');
+  
+  const landingName = document.getElementById('landingName');
+  const landingEmail = document.getElementById('landingEmail');
+  const landingPassword = document.getElementById('landingPassword');
+  const landingConfirmPassword = document.getElementById('landingConfirmPassword');
+  
+  let authState = 'login'; // 'login' | 'signup' | 'forgot'
+  window.pendingCheckout = null;
+  
+  const setAuthMessage = (msg, type = 'info') => {
+    if (!authMsg) return;
+    authMsg.textContent = msg;
+    authMsg.style.display = 'block';
+    if (type === 'error') {
+      authMsg.style.background = 'rgba(244, 63, 94, 0.15)';
+      authMsg.style.color = '#F43F5E';
+      authMsg.style.border = '1px solid rgba(244, 63, 94, 0.3)';
+    } else if (type === 'success') {
+      authMsg.style.background = 'rgba(16, 185, 129, 0.15)';
+      authMsg.style.color = '#10B981';
+      authMsg.style.border = '1px solid rgba(16, 185, 129, 0.3)';
+    } else {
+      authMsg.style.background = 'rgba(0, 230, 246, 0.1)';
+      authMsg.style.color = '#00E6F6';
+      authMsg.style.border = '1px solid rgba(0, 230, 246, 0.2)';
+    }
+  };
+
+  const clearAuthMessage = () => { if (authMsg) authMsg.style.display = 'none'; };
+
+  const openAuthModal = (state = 'login') => {
+    switchAuthState(state);
+    if (authModal) {
+      authModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  const closeAuthModal = () => {
+    if (authModal) {
+      authModal.classList.remove('active');
+      document.body.style.overflow = '';
+      clearAuthMessage();
+    }
+  };
+
+  const switchAuthState = (state) => {
+    authState = state;
+    clearAuthMessage();
+
+    if (state === 'login') {
+      if (authTitle) authTitle.innerHTML = 'Join the Challenge';
+      if (authSubtitle) authSubtitle.textContent = 'Sign in to start learning';
+      if (socialAuthSection) socialAuthSection.style.display = '';
+      if (landingName) landingName.style.display = 'none';
+      if (landingPassword) landingPassword.style.display = '';
+      if (landingConfirmPassword) landingConfirmPassword.style.display = 'none';
+      if (btnLandingSubmit) btnLandingSubmit.textContent = 'Login';
+      if (linkLandingForgot) linkLandingForgot.style.display = '';
+      if (linkLandingSignup) { linkLandingSignup.style.display = ''; linkLandingSignup.textContent = 'Create Account'; }
+      if (linkBackToLogin) linkBackToLogin.style.display = 'none';
+    } else if (state === 'signup') {
+      if (authTitle) authTitle.innerHTML = 'Create Account';
+      if (authSubtitle) authSubtitle.textContent = 'Join thousands of learners';
+      if (socialAuthSection) socialAuthSection.style.display = 'none';
+      if (landingName) landingName.style.display = '';
+      if (landingPassword) landingPassword.style.display = '';
+      if (landingConfirmPassword) landingConfirmPassword.style.display = '';
+      if (btnLandingSubmit) btnLandingSubmit.textContent = 'Sign Up';
+      if (linkLandingForgot) linkLandingForgot.style.display = 'none';
+      if (linkLandingSignup) linkLandingSignup.style.display = 'none';
+      if (linkBackToLogin) linkBackToLogin.style.display = '';
+    } else if (state === 'forgot') {
+      if (authTitle) authTitle.innerHTML = 'Reset Password';
+      if (authSubtitle) authSubtitle.textContent = 'Enter your email to receive a reset link';
+      if (socialAuthSection) socialAuthSection.style.display = 'none';
+      if (landingName) landingName.style.display = 'none';
+      if (landingPassword) landingPassword.style.display = 'none';
+      if (landingConfirmPassword) landingConfirmPassword.style.display = 'none';
+      if (btnLandingSubmit) btnLandingSubmit.textContent = 'Send Reset Link';
+      if (linkLandingForgot) linkLandingForgot.style.display = 'none';
+      if (linkLandingSignup) linkLandingSignup.style.display = 'none';
+      if (linkBackToLogin) linkBackToLogin.style.display = '';
+    }
+  };
+
+  if (linkLandingSignup) linkLandingSignup.addEventListener('click', e => { e.preventDefault(); switchAuthState('signup'); });
+  if (linkLandingForgot) linkLandingForgot.addEventListener('click', e => { e.preventDefault(); switchAuthState('forgot'); });
+  if (linkBackToLogin) linkBackToLogin.addEventListener('click', e => { e.preventDefault(); switchAuthState('login'); });
+
+  if (landingLoginForm) {
+    landingLoginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAuthMessage();
+      if (!supabaseClient) { setAuthMessage("Authentication services are currently offline.", "error"); return; }
+
+      const email = landingEmail.value.trim();
+      const password = landingPassword.value;
+      const name = landingName ? landingName.value.trim() : '';
+      const confirmPass = landingConfirmPassword ? landingConfirmPassword.value : '';
+
+      btnLandingSubmit.disabled = true;
+      btnLandingSubmit.style.opacity = '0.7';
+      const originalText = btnLandingSubmit.textContent;
+
+      try {
+        if (authState === 'login') {
+          btnLandingSubmit.textContent = 'Signing in...';
+          const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+          if (error) {
+            if (error.message.toLowerCase().includes('invalid login credentials')) {
+              throw new Error("Incorrect email or password. Need an account? Click 'Create Account'.");
+            }
+            throw error;
+          }
+          closeAuthModal();
+        } else if (authState === 'signup') {
+          if (!name) { setAuthMessage("Please enter your full name.", "error"); throw new Error("_handled"); }
+          if (password.length < 6) { setAuthMessage("Password must be at least 6 characters.", "error"); throw new Error("_handled"); }
+          if (password !== confirmPass) { setAuthMessage("Passwords do not match.", "error"); throw new Error("_handled"); }
+
+          btnLandingSubmit.textContent = 'Creating Account...';
+          const { data, error } = await supabaseClient.auth.signUp({
+            email, password,
+            options: { data: { full_name: name } }
+          });
+          if (error) throw error;
+          if (data?.user?.identities?.length === 0) {
+            setAuthMessage("This email is already registered. Please log in.", "info");
+          } else {
+            setAuthMessage("Account created! Check your email to verify, then log in.", "success");
+          }
+        } else if (authState === 'forgot') {
+          btnLandingSubmit.textContent = 'Sending...';
+          const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+          const resetUrl = window.location.origin + basePath + '/reset-password.html';
+          const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: resetUrl });
+          if (error) throw error;
+          setAuthMessage("If an account exists, a recovery link has been sent to your email.", "success");
+        }
+      } catch (err) {
+        if (err.message !== "_handled") { setAuthMessage(err.message, "error"); }
+      } finally {
+        btnLandingSubmit.disabled = false;
+        btnLandingSubmit.style.opacity = '1';
+        btnLandingSubmit.textContent = originalText;
+      }
+    });
+  }
+
+  if (googleSigninBtn) {
+    googleSigninBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (!supabaseClient) { setAuthMessage("Authentication services are currently offline.", "error"); return; }
+
+      const originalText = googleSigninBtn.innerHTML;
+      googleSigninBtn.innerHTML = 'Redirecting securely...';
+      googleSigninBtn.disabled = true;
+      googleSigninBtn.style.opacity = '0.7';
+
+      if (window.pendingCheckout) {
+        localStorage.setItem('manodemy_pending_checkout', JSON.stringify(window.pendingCheckout));
+      }
+
+      try {
+        const { error } = await supabaseClient.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: (() => {
+              const isLocal = window.location.protocol === 'file:' ||
+                              window.location.hostname === 'localhost' ||
+                              window.location.hostname === '127.0.0.1';
+              return isLocal
+                ? 'https://manodemy.com/landing_v2/index.html'
+                : window.location.href;
+            })(),
+            queryParams: { access_type: 'offline', prompt: 'consent' }
+          }
+        });
+        if (error) {
+          setAuthMessage('Google Login Error: ' + error.message, "error");
+          googleSigninBtn.innerHTML = originalText;
+          googleSigninBtn.disabled = false;
+          googleSigninBtn.style.opacity = '1';
+        }
+      } catch (err) {
+        googleSigninBtn.innerHTML = originalText;
+        googleSigninBtn.disabled = false;
+        googleSigninBtn.style.opacity = '1';
+      }
+    });
+  }
+
+  const navSignin = document.getElementById('navSignin');
+  if (navSignin) {
+    navSignin.addEventListener('click', async (e) => {
+      const text = navSignin.textContent || '';
+      if (text.includes('Sign Out') || text.includes('Log Out')) {
+        e.preventDefault();
+        if (supabaseClient) {
+          await supabaseClient.auth.signOut();
+          localStorage.removeItem('manodemy_auth');
+          localStorage.removeItem('manodemy_enrolled');
+          window.location.reload();
+        }
+        return;
+      }
+      if (localStorage.getItem('manodemy_auth') === 'true' || text.includes('Dashboard') || text.includes('Score Card') || text.includes('Admin')) return;
+      e.preventDefault();
+      openAuthModal('login');
+    });
+  }
+
+  async function updateNavForLoggedIn(user) {
+    const signInBtn = document.getElementById('navSignin');
+    const coursesDropdown = document.getElementById('navMyCoursesDropdown');
+    
+    if (coursesDropdown) {
+      coursesDropdown.style.display = user ? 'block' : 'none';
+    }
+    
+    if (!signInBtn) return;
+    if (!user) {
+      signInBtn.textContent = 'Sign In';
+      signInBtn.href = 'javascript:void(0)';
+      return;
+    }
+
+    signInBtn.removeAttribute('onclick');
+
+    try {
+      if (supabaseClient) {
+        const { data: profile } = await supabaseClient
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single();
+
+        if (profile && profile.role === 'admin') {
+          signInBtn.textContent = '⚙️ Admin Panel';
+          signInBtn.href = '/admin.html';
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('[Admin] Failed to check admin role:', e);
+    }
+
+    if (user.email === 'manodamy25@gmail.com') {
+      signInBtn.textContent = '⚙️ Admin Panel';
+      signInBtn.href = '/admin.html';
+      return;
+    }
+
+    signInBtn.textContent = 'My Score Card';
+    signInBtn.href = '/home.html';
+  }
+
+  function unlockAllDays() {
+    document.querySelectorAll('.day-card.locked, .day-card.coming-soon').forEach(card => {
+      card.classList.remove('locked');
+      card.classList.remove('coming-soon');
+      const lock = card.querySelector('.badge-lock');
+      if (lock) lock.remove();
+    });
+    window._userHasPurchased = true;
+  }
+
+  function updateCTAsForPaidUser() {
+    const navEnrollBtn = document.getElementById('navEnrollBtn');
+    if (navEnrollBtn) navEnrollBtn.style.display = 'none';
+    const mobEnrollBtn = document.getElementById('mobEnrollBtn');
+    if (mobEnrollBtn) mobEnrollBtn.style.display = 'none';
+    
+    document.querySelectorAll('[data-cta="buy"]').forEach(btn => {
+      btn.textContent = 'Continue Learning →';
+      btn.href = '/home.html';
+      btn.onclick = null;
+    });
+
+    unlockAllDays();
+  }
+
+  async function checkPurchaseStatus(sb, userId) {
+    try {
+      const { data: isEnrolled } = await sb.rpc('check_enrollment', { p_course_id: 'python-30day' });
+      const { data: profile } = await sb.from('profiles').select('plan, role').eq('id', userId).single();
+      
+      if (isEnrolled === true || profile?.plan === 'pro' || profile?.plan === 'paid') {
+        localStorage.setItem('manodemy_enrolled', 'true');
+        unlockAllDays();
+        updateCTAsForPaidUser();
+        const pricingSection = document.getElementById('pricing');
+        if (pricingSection) pricingSection.style.display = 'none';
+        closeCheckout();
+      }
+    } catch (e) {
+      console.warn("Purchase status check skipped:", e.message);
+    }
+  }
+
+  async function saveCountryToProfile(fallbackCountry) {
+    if (!supabaseClient) return;
+    try {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) return;
+
+      const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('country')
+        .eq('id', session.user.id)
+        .single();
+
+      if (profile?.country && profile.country !== 'US' && profile.country !== 'Unknown') {
+        return;
+      }
+
+      let countryCode = fallbackCountry || null;
+      const geoApis = [
+        'https://get.geojs.io/v1/ip/country.json',
+        'https://ipapi.co/json/'
+      ];
+      for (const api of geoApis) {
+        try {
+          const res = await fetch(api, { signal: AbortSignal.timeout(4000) });
+          const json = await res.json();
+          const code = json.country || json.country_code;
+          if (code && code.length === 2) {
+            countryCode = code.toUpperCase();
+            break;
+          }
+        } catch (_) {}
+      }
+
+      if (!countryCode) {
+        const locale = navigator.language || navigator.languages?.[0] || '';
+        const parts = locale.split('-');
+        if (parts.length > 1 && parts[1].length === 2) {
+          countryCode = parts[1].toUpperCase();
+        }
+      }
+
+      if (countryCode) {
+        await supabaseClient
+          .from('profiles')
+          .update({ country: countryCode })
+          .eq('id', session.user.id);
+        console.log('[Manodemy] Country saved to profile:', countryCode);
+      }
+    } catch (e) {
+      console.warn('[Manodemy] Country capture failed:', e.message);
+    }
+  }
+
+  const setAuthCookie = (token, expiresSec) => {
+    const maxAge = expiresSec || 604800; // default 7 days
+    document.cookie = `sb-access-token=${token}; path=/; max-age=${maxAge}; SameSite=Lax; Secure`;
+  };
+
+  const clearAuthCookie = () => {
+    document.cookie = `sb-access-token=; path=/; max-age=0; SameSite=Lax; Secure`;
+  };
+
+  const handleUserSession = async (session) => {
+    if (session) {
+      localStorage.setItem('manodemy_auth', 'true');
+      if (session.access_token) {
+        setAuthCookie(session.access_token, session.expires_in);
+      }
+      updateNavForLoggedIn(session.user);
+      await checkPurchaseStatus(supabaseClient, session.user.id);
+      await saveCountryToProfile(userCountry);
+    } else {
+      localStorage.removeItem('manodemy_auth');
+      localStorage.removeItem('manodemy_enrolled');
+      clearAuthCookie();
+      updateNavForLoggedIn(null);
+    }
+  };
+
+  (async () => {
+    const storedPending = localStorage.getItem('manodemy_pending_checkout');
+    if (storedPending) {
+      try {
+        window.pendingCheckout = JSON.parse(storedPending);
+      } catch (e) {}
+      localStorage.removeItem('manodemy_pending_checkout');
+    }
+
+    await detectGeoPricing();
+
+    if (!supabaseClient) return;
+    try {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      await handleUserSession(session);
+      
+      supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+          await handleUserSession(session);
+          
+          const stored = localStorage.getItem('manodemy_pending_checkout');
+          if (stored) {
+            try { window.pendingCheckout = JSON.parse(stored); } catch(e){}
+            localStorage.removeItem('manodemy_pending_checkout');
+          }
+          
+          if (window.pendingCheckout) {
+            const currentPending = window.pendingCheckout;
+            window.pendingCheckout = null;
+            openCheckout(currentPending.tier);
+            initiatePayment(currentPending.gateway);
+          } else {
+            setTimeout(() => {
+              if (!window.pendingCheckout) {
+                window.location.href = '/home.html';
+              }
+            }, 300);
+          }
+        } else if (event === 'SIGNED_OUT') {
+          localStorage.removeItem('manodemy_auth');
+          localStorage.removeItem('manodemy_enrolled');
+          clearAuthCookie();
+          window.location.reload();
+        }
+      });
+    } catch (e) {
+      console.warn("Session check failed silently:", e);
+    }
+  })();
+
 });
+
