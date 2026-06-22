@@ -207,9 +207,10 @@
               transform: scale(1.06);
               box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
             }
-            /* Arrow buttons circular */
+            /* Arrow and Volume buttons circular */
             #roadmap-root #btnPrev,
-            #roadmap-root #btnNext {
+            #roadmap-root #btnNext,
+            #roadmap-root #btnVolume {
               width: 38px;
               height: 38px;
               border-radius: 50%;
@@ -220,6 +221,9 @@
               font-weight: 700;
               padding: 0;
               line-height: 1;
+            }
+            #roadmap-root #btnVolume {
+              font-size: 14px;
             }
             /* Auto-play button wide pill */
             #roadmap-root #btnAuto {
@@ -307,10 +311,14 @@
                 right: 12px;
               }
               #roadmap-root #btnPrev,
-              #roadmap-root #btnNext {
+              #roadmap-root #btnNext,
+              #roadmap-root #btnVolume {
                 width: 30px;
                 height: 30px;
                 font-size: 15px;
+              }
+              #roadmap-root #btnVolume {
+                font-size: 12px;
               }
               #roadmap-root #btnAuto {
                 height: 30px;
@@ -501,6 +509,7 @@
                 <div class="rm-ctrls-left">
                   <button id="btnPrev" class="rm-ctrl" aria-label="Previous day">‹</button>
                   <button id="btnNext" class="rm-ctrl" aria-label="Next day">›</button>
+                  <button id="btnVolume" class="rm-ctrl" aria-label="Toggle sound">🔇</button>
                 </div>
                 <button id="btnAuto" class="rm-ctrl rm-ctrlWide" aria-label="Toggle autoplay">⏸ &nbsp;Auto-play</button>
               </div>
@@ -1632,7 +1641,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="reviews.js?v=6.0" defer></script>
   <script src="app.js?v=6.7" defer></script>
-  <script src="roadmap.js?v=9.0" defer></script>
+  <script src="roadmap.js?v=10.0" defer></script>
 
   <!-- PWA SW Registration -->
   <script>

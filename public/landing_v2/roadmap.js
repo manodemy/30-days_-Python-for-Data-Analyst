@@ -550,6 +550,28 @@ root.querySelector('#btnAuto').onclick=()=>{
   root.querySelector('#btnAuto').innerHTML=autoPlay?'⏸ &nbsp;Auto-play':'▶ &nbsp;Auto-play';
   if(autoPlay) startAuto(); else stopAuto();
 };
+const btnVol = root.querySelector('#btnVolume');
+if (btnVol) {
+  btnVol.onclick = (e) => {
+    e.stopPropagation();
+    if (!audioCtx) {
+      unlockAudio();
+      soundEnabled = true;
+    } else if (audioCtx.state === 'suspended') {
+      unlockAudio();
+      soundEnabled = true;
+    } else {
+      soundEnabled = !soundEnabled;
+      if (soundEnabled && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+    updateVolumeUI();
+    if (soundEnabled) {
+      playMechanicalTick(true);
+    }
+  };
+}
 
 function applyFilter(phase){
   activeFilter = (activeFilter===phase) ? null : phase;
@@ -679,6 +701,23 @@ function animate(){
   let compressor = null; // Reused to eliminate creation latency/lag
   let clockInViewport = false;
   let noiseBuffer = null;
+  let soundEnabled = true; // Enabled by default, subject to browser autoplay restrictions
+
+  function updateVolumeUI() {
+    const btn = root.querySelector('#btnVolume');
+    if (!btn) return;
+    if (!audioCtx || audioCtx.state !== 'running' || !soundEnabled) {
+      btn.innerHTML = '🔇';
+      btn.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+      btn.style.boxShadow = 'none';
+      btn.style.color = '#a0aec0';
+    } else {
+      btn.innerHTML = '🔊';
+      btn.style.borderColor = 'var(--py)';
+      btn.style.boxShadow = '0 0 10px rgba(56, 189, 248, 0.2)';
+      btn.style.color = 'var(--py)';
+    }
+  }
 
   function getNoiseBuffer() {
     if (noiseBuffer) return noiseBuffer;
@@ -694,6 +733,7 @@ function animate(){
 
   function playMechanicalTick(isUserGesture = false) {
     try {
+      if (!soundEnabled) return;
       if (!audioCtx) {
         if (isUserGesture) {
           unlockAudio();
@@ -776,8 +816,13 @@ function animate(){
         compressor.connect(audioCtx.destination);
       }
       if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      } else if (audioCtx.state === 'running') {
+        audioCtx.resume().then(() => {
+          updateVolumeUI();
+        });
+      } else {
+        updateVolumeUI();
+      }
+      if (audioCtx.state === 'running') {
         return;
       }
       // Play a tiny silent buffer to unlock iOS Safari
@@ -808,6 +853,7 @@ function animate(){
 
 setDay(0,false);
 updateHUD(0);
+updateVolumeUI();
 startAuto();
 animate();
 root.classList.add('loaded');
