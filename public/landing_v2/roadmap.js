@@ -435,15 +435,26 @@ function updateHUD(idx){
   if (statDay) {
     statDay.textContent = `Day ${idx+1}`;
     statDay.style.color = pc.css;
-    statDay.style.textShadow = `0 0 8px ${pc.css}50`;
+    statDay.style.textShadow = `0 0 12px ${pc.css}60`;
   }
   if (statPct) {
     statPct.textContent = `${Math.round((idx+1)/N*100)}%`;
     statPct.style.color = pc.css;
-    statPct.style.textShadow = `0 0 8px ${pc.css}50`;
+    statPct.style.textShadow = `0 0 12px ${pc.css}60`;
   }
   if (headerGlow) {
     headerGlow.style.background = `linear-gradient(90deg, transparent, ${pc.css}, transparent)`;
+  }
+
+  const indicator = root.querySelector('#rm-activeIndicator');
+  if (indicator) {
+    indicator.style.background = pc.css;
+    indicator.style.boxShadow = `0 0 10px ${pc.css}, 0 0 4px ${pc.css}`;
+  }
+
+  const phaseGlow = root.querySelector('#rm-headerPhaseGlow');
+  if (phaseGlow) {
+    phaseGlow.style.background = `radial-gradient(circle, ${pc.css}16 0%, transparent 70%)`;
   }
 
   const cardDayEl = root.querySelector('#rm-cardDay');
@@ -489,6 +500,9 @@ function updateHUD(idx){
 
 function setDay(i, doBurst=true, isUserGesture=false){
   currentDay=((i%N)+N)%N;
+  if(doBurst && clockInViewport) {
+    playMechanicalTick(isUserGesture);
+  }
   updateHUD(currentDay);
   if(doBurst) {
     burst(currentDay);
@@ -496,9 +510,6 @@ function setDay(i, doBurst=true, isUserGesture=false){
       setTimeout(() => burst(0), 150);
       setTimeout(() => burst(18), 300);
       setTimeout(() => burst(30), 450);
-    }
-    if (clockInViewport) {
-      playMechanicalTick(isUserGesture);
     }
   }
   actMat.color.setHex(PC[DATA[currentDay].phase].hex);
@@ -707,6 +718,7 @@ function animate(){
       }
 
       const now = audioCtx.currentTime;
+      const playTime = now + 0.005; // 5ms look-ahead to eliminate jitter/latency
 
       // Play the crisp TICK sound for every transition (replacing alternating TOCK)
       // 1. High-frequency click noise (metal escapement strike)
@@ -716,11 +728,11 @@ function animate(){
 
       noise.buffer = getNoiseBuffer();
       noiseFilter.type = 'highpass';
-      noiseFilter.frequency.setValueAtTime(2400, now); // slightly cleaner/higher pitch
-      noiseFilter.Q.setValueAtTime(3, now);
+      noiseFilter.frequency.setValueAtTime(2400, playTime); // slightly cleaner/higher pitch
+      noiseFilter.Q.setValueAtTime(3, playTime);
 
-      noiseGain.gain.setValueAtTime(2.2, now); // Maximized noise transient (20x perceived volume)
-      noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.022);
+      noiseGain.gain.setValueAtTime(2.2, playTime); // Maximized noise transient (20x perceived volume)
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, playTime + 0.022);
 
       noise.connect(noiseFilter);
       noiseFilter.connect(noiseGain);
@@ -731,18 +743,18 @@ function animate(){
       const gainHigh = audioCtx.createGain();
       
       oscHigh.type = 'triangle';
-      oscHigh.frequency.setValueAtTime(1050, now); // clear metallic ring
+      oscHigh.frequency.setValueAtTime(1050, playTime); // clear metallic ring
       
-      gainHigh.gain.setValueAtTime(1.8, now); // Maximized triangle tone
-      gainHigh.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
+      gainHigh.gain.setValueAtTime(1.8, playTime); // Maximized triangle tone
+      gainHigh.gain.exponentialRampToValueAtTime(0.0001, playTime + 0.045);
 
       oscHigh.connect(gainHigh);
       gainHigh.connect(compressor);
 
-      noise.start(now);
-      noise.stop(now + 0.025);
-      oscHigh.start(now);
-      oscHigh.stop(now + 0.050);
+      noise.start(playTime);
+      noise.stop(playTime + 0.025);
+      oscHigh.start(playTime);
+      oscHigh.stop(playTime + 0.050);
     } catch (e) {
       console.warn('[Audio] Tick synthesis failed:', e);
     }

@@ -194,26 +194,48 @@
           <!-- Custom css styles for 3D Clock Dial -->
           <style>
             #roadmap-root .rm-ctrl {
-              background: rgba(255, 255, 255, 0.05);
+              background: rgba(255, 255, 255, 0.04);
               border: 1px solid rgba(255, 255, 255, 0.12);
               color: #e2ecf5;
-              font-size: 14px;
-              font-weight: 700;
-              padding: 8px 14px;
-              border-radius: 20px;
-              cursor: pointer;
               font-family: inherit;
-              transition: all 0.2s ease;
+              transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+              cursor: pointer;
             }
             #roadmap-root .rm-ctrl:hover {
               background: rgba(255, 255, 255, 0.12);
-              border-color: rgba(255, 255, 255, 0.25);
-              transform: scale(1.05);
+              border-color: rgba(255, 255, 255, 0.28);
+              transform: scale(1.06);
+              box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
             }
-            #roadmap-root .rm-ctrlWide {
+            /* Arrow buttons circular */
+            #roadmap-root #btnPrev,
+            #roadmap-root #btnNext {
+              width: 38px;
+              height: 38px;
+              border-radius: 50%;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 20px;
+              font-weight: 700;
+              padding: 0;
+              line-height: 1;
+            }
+            /* Auto-play button wide pill */
+            #roadmap-root #btnAuto {
+              position: absolute;
+              top: 16px;
+              right: 16px;
+              height: 38px;
+              padding: 0 18px;
+              border-radius: 19px;
               font-size: 11px;
-              padding: 8px 16px;
-              border-radius: 20px;
+              font-weight: 700;
+              z-index: 5;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             }
             #roadmap-root .rm-ctrls-left {
               position: absolute;
@@ -222,13 +244,6 @@
               display: flex;
               align-items: center;
               gap: 8px;
-              z-index: 5;
-              transition: all 0.2s ease;
-            }
-            #roadmap-root #btnAuto {
-              position: absolute;
-              top: 16px;
-              right: 16px;
               z-index: 5;
               transition: all 0.2s ease;
             }
@@ -257,20 +272,20 @@
             }
             #roadmap-root .rm-legendBtn[data-active="true"][data-phase="SQL"] {
               border-color: var(--sql);
-              background: rgba(45, 212, 167, 0.08);
-              box-shadow: 0 0 10px rgba(45, 212, 167, 0.12);
+              background: rgba(45, 212, 167, 0.1);
+              box-shadow: 0 0 12px rgba(45, 212, 167, 0.15), inset 0 0 8px rgba(45, 212, 167, 0.1);
               color: var(--sql);
             }
             #roadmap-root .rm-legendBtn[data-active="true"][data-phase="Excel"] {
               border-color: var(--excel);
-              background: rgba(245, 166, 35, 0.08);
-              box-shadow: 0 0 10px rgba(245, 166, 35, 0.12);
+              background: rgba(245, 166, 35, 0.1);
+              box-shadow: 0 0 12px rgba(245, 166, 35, 0.15), inset 0 0 8px rgba(245, 166, 35, 0.1);
               color: var(--excel);
             }
             #roadmap-root .rm-legendBtn[data-active="true"][data-phase="Python"] {
               border-color: var(--py);
-              background: rgba(56, 189, 248, 0.08);
-              box-shadow: 0 0 10px rgba(56, 189, 248, 0.12);
+              background: rgba(56, 189, 248, 0.1);
+              box-shadow: 0 0 12px rgba(56, 189, 248, 0.15), inset 0 0 8px rgba(56, 189, 248, 0.1);
               color: var(--py);
             }
             
@@ -281,22 +296,27 @@
 
             @media (max-width: 600px) {
               #roadmap-root .rm-ctrls-left {
-                top: 10px;
-                left: 10px;
+                top: auto;
+                bottom: 12px;
+                left: 12px;
                 gap: 6px;
               }
               #roadmap-root #btnAuto {
-                top: 10px;
-                right: 10px;
+                top: auto;
+                bottom: 12px;
+                right: 12px;
               }
-              #roadmap-root .rm-ctrl {
-                font-size: 11px;
-                padding: 4px 8px;
-                border-radius: 12px;
+              #roadmap-root #btnPrev,
+              #roadmap-root #btnNext {
+                width: 30px;
+                height: 30px;
+                font-size: 15px;
               }
-              #roadmap-root .rm-ctrlWide {
-                font-size: 9px;
-                padding: 4px 10px;
+              #roadmap-root #btnAuto {
+                height: 30px;
+                padding: 0 12px;
+                font-size: 10px;
+                border-radius: 15px;
               }
             }
 
@@ -333,11 +353,12 @@
           ">
             <!-- ============ HEADER ============ -->
             <div id="rm-header" style="
-              padding: 20px 24px 18px; 
-              border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-              background: linear-gradient(180deg, rgba(13, 22, 37, 0.85), rgba(7, 11, 20, 0.95));
-              backdrop-filter: blur(12px);
+              padding: 22px 24px 20px; 
+              border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+              background: linear-gradient(180deg, rgba(8, 12, 21, 0.9) 0%, rgba(4, 7, 12, 0.98) 100%);
+              backdrop-filter: blur(16px);
               position: relative;
+              overflow: hidden;
             ">
               <!-- Top ambient glow line -->
               <div id="rm-headerGlow" style="
@@ -345,33 +366,48 @@
                 top: 0; left: 0; right: 0; 
                 height: 1px; 
                 background: linear-gradient(90deg, transparent, var(--sql), transparent);
-                transition: background 0.4s ease;
+                transition: background 0.5s ease;
+                z-index: 2;
+              "></div>
+
+              <!-- Dynamic ambient background phase glow -->
+              <div id="rm-headerPhaseGlow" style="
+                position: absolute; 
+                top: 0; left: 0; width: 160px; height: 160px; 
+                background: radial-gradient(circle, rgba(45, 212, 167, 0.08) 0%, transparent 70%); 
+                pointer-events: none; 
+                filter: blur(25px);
+                transition: background 0.6s ease;
+                z-index: 1;
               "></div>
               
-              <div style="display:flex; flex-direction:column; gap:14px;">
+              <div style="display:flex; flex-direction:column; gap:16px; position:relative; z-index:2;">
                 <!-- Top Row: title + stats inline -->
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; width:100%;">
-                  <div style="
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; width:100%;">
+                  <div id="rm-cardPillTitle" style="
                     display: inline-flex; 
                     align-items: center; 
                     gap: 8px; 
-                    background: rgba(255, 255, 255, 0.03); 
-                    border: 1px solid rgba(255, 255, 255, 0.07); 
-                    padding: 5px 12px; 
+                    background: rgba(255, 255, 255, 0.02); 
+                    border: 1px solid rgba(255, 255, 255, 0.06); 
+                    padding: 6px 14px; 
                     border-radius: 20px; 
                     font-size: 10px; 
-                    font-weight: 700; 
-                    letter-spacing: 0.08em; 
+                    font-weight: 800; 
+                    letter-spacing: 0.1em; 
                     color: var(--ink-dim); 
                     text-transform: uppercase;
+                    font-family: 'Outfit', sans-serif;
+                    transition: all 0.3s ease;
                   ">
-                    <span style="
+                    <span id="rm-activeIndicator" style="
                       width: 6px; 
                       height: 6px; 
                       border-radius: 50%; 
-                      background: #10b981; 
-                      box-shadow: 0 0 8px #10b981;
-                      animation: pulseGlow 1.5s infinite alternate;
+                      background: var(--sql); 
+                      box-shadow: 0 0 8px var(--sql);
+                      animation: pulseGlow 1.2s infinite alternate;
+                      transition: background 0.3s, box-shadow 0.3s;
                     "></span>
                     60-Days Data Analytics Roadmap
                   </div>
@@ -379,16 +415,24 @@
                   <div id="rm-headerStats" style="
                     display: flex; 
                     align-items: center; 
-                    gap: 8px; 
-                    font-size: 11px; 
-                    font-weight: 700; 
-                    color: var(--ink-faint); 
-                    text-transform: uppercase; 
-                    letter-spacing: 0.05em;
+                    gap: 16px;
                   ">
-                    <span id="rm-statDay" style="font-weight:800; font-variant-numeric:tabular-nums;">Day 1</span> of 60
-                    <span style="width:1px; height:12px; background:rgba(255, 255, 255, 0.12);"></span>
-                    <span id="rm-statPct" style="font-weight:800; font-variant-numeric:tabular-nums;">2%</span> complete
+                    <div style="display:flex; flex-direction:column; align-items:flex-end;">
+                      <span style="font-size:8px; color:var(--ink-faint); font-weight:700; letter-spacing:0.12em; text-transform:uppercase; font-family:'Outfit',sans-serif;">Timeline</span>
+                      <span style="font-size:18px; font-weight:900; font-family:'Outfit',sans-serif; color:var(--ink); line-height:1.2;">
+                        <span id="rm-statDay" style="color:var(--sql); text-shadow:0 0 12px rgba(45,212,167,0.3); font-variant-numeric:tabular-nums; transition:all 0.3s ease;">Day 1</span>
+                        <span style="font-size:11px; color:var(--ink-faint); font-weight:500; margin-left:2px;">/ 60</span>
+                      </span>
+                    </div>
+                    
+                    <div style="width:1px; height:20px; background:rgba(255, 255, 255, 0.08);"></div>
+                    
+                    <div style="display:flex; flex-direction:column; align-items:flex-end;">
+                      <span style="font-size:8px; color:var(--ink-faint); font-weight:700; letter-spacing:0.12em; text-transform:uppercase; font-family:'Outfit',sans-serif;">Completion</span>
+                      <span style="font-size:18px; font-weight:900; font-family:'Outfit',sans-serif; color:var(--ink); line-height:1.2;">
+                        <span id="rm-statPct" style="color:var(--sql); text-shadow:0 0 12px rgba(45,212,167,0.3); font-variant-numeric:tabular-nums; transition:all 0.3s ease;">2%</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <!-- Bottom Row: legend buttons -->
@@ -1588,7 +1632,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="reviews.js?v=6.0" defer></script>
   <script src="app.js?v=6.7" defer></script>
-  <script src="roadmap.js?v=8.0" defer></script>
+  <script src="roadmap.js?v=9.0" defer></script>
 
   <!-- PWA SW Registration -->
   <script>
