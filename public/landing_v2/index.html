@@ -83,7 +83,7 @@
               <div class="dropdown-tier-divider"></div>
               <div class="dropdown-tier-item">
                 <div class="dropdown-tier-info">
-                  <span class="dropdown-tier-name">🎥 Daily Live Classes</span>
+                  <span class="dropdown-tier-name">🎥 Live Class Plan</span>
                   <span class="dropdown-tier-price dynamic-price-live">$149</span>
                 </div>
                 <button class="dropdown-tier-buy" data-tier="live">Enroll</button>
@@ -139,7 +139,7 @@
         <div class="dropdown-tier-divider"></div>
         <div class="dropdown-tier-item">
           <div class="dropdown-tier-info">
-            <span class="dropdown-tier-name">🎥 Daily Live Classes</span>
+            <span class="dropdown-tier-name">🎥 Live Class Plan</span>
             <span class="dropdown-tier-price dynamic-price-live">$149</span>
           </div>
           <button class="dropdown-tier-buy" data-tier="live">Enroll</button>
@@ -1294,7 +1294,7 @@
           <!-- Daily Live Card -->
           <div class="pricing-card pricing-card--live">
             <span class="pricing-popular-badge">⭐ Most Popular</span>
-            <span class="pricing-type-badge pricing-type-badge--live">🎥 Daily Live Classes</span>
+            <span class="pricing-type-badge pricing-type-badge--live">🎥 Live Class Plan</span>
             <h3 class="pricing-card-title">Live Masterclass</h3>
             <p class="pricing-card-subtitle">Everything in Self-Paced, plus a daily live session with real-time doubt clearing every evening.</p>
 
@@ -1355,41 +1355,52 @@
 
   <!-- Checkout Modal -->
   <div class="checkout-overlay" id="checkoutOverlay">
-    <div class="checkout-modal">
+    <div class="checkout-modal checkout-modal--grid">
       <button class="checkout-close" id="checkoutClose">✕</button>
-      <div class="checkout-header">
-        <div id="checkoutTierPill" class="checkout-tier-pill checkout-tier-pill--selfpaced">⚡ Self-Paced Plan</div>
-        <h3>🎓 Complete Your Purchase</h3>
-        <p id="checkoutPlanName">60-Day Self-Paced Masterclass</p>
+      
+      <!-- Left side: Pricing Card preview -->
+      <div class="checkout-preview-col">
+        <div id="checkoutCardContainer">
+          <!-- Dynamically cloned card goes here -->
+        </div>
       </div>
+      
+      <!-- Right side: Payment form -->
+      <div class="checkout-form-col">
+        <div class="checkout-header">
+          <div id="checkoutTierPill" class="checkout-tier-pill checkout-tier-pill--selfpaced">⚡ Self-Paced Plan</div>
+          <h3>🎓 Complete Your Purchase</h3>
+          <p id="checkoutPlanName">60-Day Self-Paced Masterclass</p>
+        </div>
 
-      <div class="checkout-price-display">
-        <span class="checkout-amount" id="checkoutAmount">$49</span>
-        <span class="checkout-original" id="checkoutOriginal">$149</span>
-        <span class="checkout-label">One-time payment · Lifetime access</span>
-      </div>
+        <div class="checkout-price-display">
+          <span class="checkout-amount" id="checkoutAmount">$49</span>
+          <span class="checkout-original" id="checkoutOriginal">$149</span>
+          <span class="checkout-label">One-time payment · Lifetime access</span>
+        </div>
 
-      <div class="coupon-section">
-        <input type="text" id="couponInput" placeholder="Coupon code (optional)" maxlength="20">
-        <button class="coupon-apply" id="couponApply">Apply</button>
-      </div>
+        <div class="coupon-section">
+          <input type="text" id="couponInput" placeholder="Coupon code (optional)" maxlength="20">
+          <button class="coupon-apply" id="couponApply">Apply</button>
+        </div>
 
-      <div style="text-align:center; margin-bottom:8px;">
-        <button class="checkout-switch-link" id="checkoutSwitchTier">Switch to Daily Live plan ($149)</button>
-      </div>
+        <div style="text-align:center; margin-bottom:8px;">
+          <button class="checkout-switch-link" id="checkoutSwitchTier">Switch to Live Class Plan ($149)</button>
+        </div>
 
-      <div class="checkout-divider"><span>Choose Payment Method</span></div>
-      <div class="gateway-buttons" id="gatewayButtons">
-        <!-- Populated dynamically by app.js -->
-      </div>
+        <div class="checkout-divider"><span>Choose Payment Method</span></div>
+        <div class="gateway-buttons" id="gatewayButtons">
+          <!-- Populated dynamically by app.js -->
+        </div>
 
-      <div class="checkout-spinner" id="checkoutSpinner"></div>
+        <div class="checkout-spinner" id="checkoutSpinner"></div>
 
-      <div class="checkout-features">
-        <span>🔒 Secure Payment</span>
-        <span>🛡️ 7-Day Refund Policy</span>
-        <span>♾️ Lifetime Access</span>
-        <span>📧 Instant Login Access</span>
+        <div class="checkout-features">
+          <span>🔒 Secure Payment</span>
+          <span>🛡️ 7-Day Refund Policy</span>
+          <span>♾️ Lifetime Access</span>
+          <span>📧 Instant Login Access</span>
+        </div>
       </div>
     </div>
   </div>

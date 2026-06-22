@@ -564,7 +564,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (checkoutPlanName) checkoutPlanName.textContent = cfg.planName;
 
     if (checkoutTierPill) {
-      checkoutTierPill.textContent  = isLive ? '🎥 Daily Live Plan' : '⚡ Self-Paced Plan';
+      checkoutTierPill.textContent  = isLive ? '🎥 Live Class Plan' : '⚡ Self-Paced Plan';
       checkoutTierPill.className    = `checkout-tier-pill checkout-tier-pill--${tier}`;
     }
 
@@ -573,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (switchBtn) {
       switchBtn.textContent = isLive
         ? `Switch to Self-Paced plan (${otherCfg.display})`
-        : `Switch to Daily Live plan (${otherCfg.display})`;
+        : `Switch to Live Class Plan (${otherCfg.display})`;
     }
   }
 
@@ -588,6 +588,22 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     updateCheckoutForTier(tier);
+    
+    // Clone pricing card to show inside checkout
+    const container = document.getElementById('checkoutCardContainer');
+    if (container) {
+      container.innerHTML = '';
+      const originalCard = document.querySelector(`.pricing-card--${tier}`);
+      if (originalCard) {
+        const clonedCard = originalCard.cloneNode(true);
+        const buyBtn = clonedCard.querySelector('.pricing-buy-btn');
+        if (buyBtn) buyBtn.style.display = 'none';
+        const previewLink = clonedCard.querySelector('.pricing-meet-link');
+        if (previewLink) previewLink.style.display = 'none';
+        container.appendChild(clonedCard);
+      }
+    }
+
     if (checkoutOverlay) {
       checkoutOverlay.classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -614,6 +630,21 @@ document.addEventListener('DOMContentLoaded', () => {
     switchTierBtn.addEventListener('click', () => {
       const newTier = activeTier === 'live' ? 'selfpaced' : 'live';
       updateCheckoutForTier(newTier);
+      
+      const container = document.getElementById('checkoutCardContainer');
+      if (container) {
+        container.innerHTML = '';
+        const originalCard = document.querySelector(`.pricing-card--${newTier}`);
+        if (originalCard) {
+          const clonedCard = originalCard.cloneNode(true);
+          const buyBtn = clonedCard.querySelector('.pricing-buy-btn');
+          if (buyBtn) buyBtn.style.display = 'none';
+          const previewLink = clonedCard.querySelector('.pricing-meet-link');
+          if (previewLink) previewLink.style.display = 'none';
+          container.appendChild(clonedCard);
+        }
+      }
+
       renderPaymentGateways();
     });
   }
@@ -837,7 +868,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (enrolled) {
       window.open(meetUrl, '_blank', 'noopener,noreferrer');
     } else {
-      alert("🔒 This batch is for enrolled students only. Please enroll in the Daily Live tier to access cohort links!");
+      alert("🔒 This batch is for enrolled students only. Please enroll in the Live Class Plan to access cohort links!");
       openCheckout('live');
     }
   };
