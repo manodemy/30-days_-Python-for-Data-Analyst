@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 13: Set Operations & Advanced Joins — SQL for Data Analyst — Manodemy</title>
-<meta name="description" content="Day 13: Set Operations & Advanced Joins — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
+<title>Day 13: CTEs (Common Table Expressions) — SQL for Data Analyst — Manodemy</title>
+<meta name="description" content="Day 13: CTEs (Common Table Expressions) — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
 <meta name="robots" content="noindex, nofollow">
 
 <!-- Performance: Preconnect to critical origins -->
@@ -87,7 +87,7 @@
       <a href="day12.html" class="nav-icon-btn prev-btn" aria-label="Previous Day" title="Previous Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
       <button class="nav-dropdown-btn" id="dayDropdownBtn">
         <span class="day-badge">Day 13</span>
-        <span class="day-title">Set Operations & Advanced Joins</span>
+        <span class="day-title">CTEs (Common Table Expressions)</span>
         <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </button>
       <a href="day14.html" class="nav-icon-btn next-btn" aria-label="Next Day" title="Next Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
@@ -95,24 +95,24 @@
     <div class="nav-dropdown-menu" id="dayDropdownMenu">
       <div class="dropdown-header">Jump to another day</div>
       <div class="dropdown-scroll">
-        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🗄️</span> Database Fundamentals & SQL Environment</a>
-<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🔍</span> SELECT & Filtering — Retrieving Rows</a>
-<a href="day03.html" class="dropdown-item "><span class="day-num">Day 03</span> <span class="day-em">📝</span> Sorting, Pattern Matching & CASE</a>
-<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📊</span> Aggregate Functions & GROUP BY</a>
-<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">🔗</span> Joins — Combining Multiple Tables</a>
-<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🧠</span> Subqueries</a>
-<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">🏗️</span> Common Table Expressions (CTEs)</a>
-<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔢</span> Window Functions I — Ranking & Numbering</a>
-<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">📈</span> Window Functions II — Analytics & Frames</a>
-<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">📅</span> Date & Time Functions</a>
-<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">🧹</span> String & Type Functions</a>
-<a href="day12.html" class="dropdown-item "><span class="day-num">Day 12</span> <span class="day-em">🛠️</span> Data Cleaning & Wrangling in SQL</a>
-<a href="day13.html" class="dropdown-item active"><span class="day-num">Day 13</span> <span class="day-em">🥞</span> Set Operations & Advanced Joins</a>
-<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">⚡</span> Query Optimisation & Execution Plans</a>
-<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">💾</span> Views, Stored Procedures & Functions</a>
-<a href="day16.html" class="dropdown-item "><span class="day-num">Day 16</span> <span class="day-em">🔮</span> Advanced Analytics Patterns</a>
-<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">🧱</span> Data Modelling & Analytics Engineering</a>
-<a href="day18.html" class="dropdown-item "><span class="day-num">Day 18</span> <span class="day-em">🏆</span> SQL Interview Prep & Real-World Patterns</a>
+        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🗄️</span> Introduction to SQL & Databases</a>
+<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🔍</span> Filtering Data with WHERE</a>
+<a href="day03.html" class="dropdown-item "><span class="day-num">Day 03</span> <span class="day-em">📝</span> Pattern Matching & NULL Handling</a>
+<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📈</span> Sorting & Limiting Results</a>
+<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">📊</span> Aggregate Functions</a>
+<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🗃️</span> GROUP BY & HAVING</a>
+<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">➕</span> Data Types, Casting & Expressions</a>
+<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔀</span> CASE WHEN (Conditional Logic)</a>
+<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">🔗</span> Understanding Relationships & INNER JOIN</a>
+<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">🔄</span> LEFT, RIGHT & FULL OUTER JOIN</a>
+<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">👥</span> SELF JOIN & Multi-Table Queries</a>
+<a href="day12.html" class="dropdown-item "><span class="day-num">Day 12</span> <span class="day-em">🧠</span> Subqueries</a>
+<a href="day13.html" class="dropdown-item active"><span class="day-num">Day 13</span> <span class="day-em">🏗️</span> CTEs (Common Table Expressions)</a>
+<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">🔢</span> Window Functions Part 1 (Ranking)</a>
+<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">📈</span> Window Functions Part 2 (Analytic)</a>
+<a href="day16.html" class="dropdown-item "><span class="day-num">Day 16</span> <span class="day-em">🧹</span> String Functions</a>
+<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">📅</span> Date & Time Functions</a>
+<a href="day18.html" class="dropdown-item "><span class="day-num">Day 18</span> <span class="day-em">🥞</span> UNION, INTERSECT & EXCEPT (SET Operations)</a>
       </div>
     </div>
   </div>
@@ -147,49 +147,54 @@
 <div class="pyodide-status" id="pyStatus">🔌 Connected to SQL Server Database</div>
 <div class="layout">
   <main class="notebook" id="notebook">
-    <div class="nb-title"><h1>🥞 Day 13 : Set Operations & Advanced Joins</h1></div>
+    <div class="nb-title"><h1>🏗️ Day 13 : CTEs (Common Table Expressions)</h1></div>
 <div class="nb-section" id="sec-0">
 </div>
 <div class="nb-section" id="sec-1">
 <div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>1. Sets and Advanced Joins : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Set Operations and Advanced Joins</span></b>
+    <b>1. CTEs (Common Table Expressions) : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Concept Review</span></b>
 </h2>
 <div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
     <b>🔍 Concept</b><br>
-    Set operators combine result sets from different queries. UNION removes duplicate rows, UNION ALL retains duplicates, INTERSECT returns matching rows, and EXCEPT returns rows in the first query not in the second. Column counts and schemas must align. Advanced join patterns include anti-joins and semi-joins (EXISTS).
+    Learn about CTEs (Common Table Expressions).
 </div></div>
 <div class="code-cell" id="cell-1">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-1">SELECT name FROM customers WHERE region = 'North'
-UNION
-SELECT name FROM customers WHERE region = 'East';</textarea>
+<textarea class="cm-source" id="src-1">SELECT * FROM sales LIMIT 5;</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
-<div class="nb-section" id="checks-Sets & Joins-3">
+<div class="nb-section" id="checks-Concept Checks-3">
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Sets & Joins</code></b>
+    <b>🧪 Concept Checks: <code>Concept Checks</code></b>
 </h3></div>
-<div class="question"><p><strong>Q1.</strong> Find customer IDs who signed up in 2022 and ordered in 2022 using <code>INTERSECT</code>.</p></div>
+<div class="question"><p><strong>Q1.</strong> Rewrite this subquery using a CTE to improve readability:
+``<code>sql
+SELECT e.first_name, e.salary
+FROM employees e
+WHERE e.salary > (SELECT AVG(salary) FROM employees);
+</code>``</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> List all customers who signed up but have placed no orders using <code>EXCEPT</code>.</p></div>
+<div class="question"><p><strong>Q2.</strong> Write a multi-CTE query that first computes the department-wise average salary, then identifies "premium departments" (avg > ₹75,000), then shows all employees from those premium departments along with their department's average.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Combine customer names and email addresses with category names using <code>UNION ALL</code>.</p></div>
+<div class="question"><p><strong>Q3.</strong> Write a recursive CTE to traverse the employee hierarchy starting from the CEO (the employee with <code>manager_id IS NULL</code>). Display each employee's name and their level in the org chart (CEO = Level 1, direct reports = Level 2, etc.).</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> List customer IDs who ordered in 2022 but did not order in 2023.</p></div>
+<div class="question"><p><strong>Q4.</strong> Using a CTE, compute the monthly revenue for 2024. Then, in the outer query, show each month, its revenue, and whether it is 'Above Average', 'Below Average', or 'Average' compared to the annual monthly average.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Write an anti-join query to select products that have never been sold.</p></div>
+<div class="question"><p><strong>Q5.</strong> Use two chained CTEs to: (1) find the top 5 sales reps by total order value, (2) then look up their employee details (name, department) from the employees table. Display the final ranked result.
+
+---</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6">-- Write your SQL query here</textarea>
@@ -197,35 +202,147 @@ SELECT name FROM customers WHERE region = 'East';</textarea>
 </div>
 <div class="nb-section" id="practice">
 <div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
-<div class="question task"><p><strong>Task 1 (Active Spenders):</strong> Find customer IDs who registered in 2022 and ordered in both Q3 and Q4.</p></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong> What is a CTE and what keyword defines it?</p></div>
 <div class="code-cell" id="cell-7">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-7">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="interview">
-<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
-<div class="question interview"><p><strong>Q1.</strong> Explain the difference between UNION and UNION ALL. Which is more performant and why?</p></div>
+<div class="question interview"><p><strong>Q2.</strong> What is the difference between a CTE and a derived table (subquery in FROM)?</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q2.</strong> What is a lateral join (CROSS APPLY in SQL Server)? When would you use one?</p></div>
+<div class="question interview"><p><strong>Q3.</strong> Can a CTE be referenced multiple times in the same query?</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong> What is a recursive CTE? What are the two parts of a recursive CTE?</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong> What is the "anchor member" in a recursive CTE?</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong> What happens if a recursive CTE has no termination condition?</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong> Write a CTE query to find employees earning above the company average.</p></div>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong> What is the difference between <code>WITH RECURSIVE</code> in PostgreSQL and recursive CTEs in SQL Server?</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong> Can a CTE reference another CTE defined before it in the same WITH clause?</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q10.</strong> What is an "optimization fence" in the context of CTEs in PostgreSQL?</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q11.</strong> Write a CTE to traverse an organizational hierarchy 3 levels deep.</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q12.</strong> When should you use a CTE vs. a VIEW?</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q13.</strong> Can CTEs be used with INSERT, UPDATE, or DELETE statements?</p></div>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q14.</strong> What is the lifecycle of a CTE — when does it get materialized?</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q15.</strong> Write a multi-CTE query that computes running totals.</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q16.</strong> What is <code>MATERIALIZED</code> vs. <code>NOT MATERIALIZED</code> in a CTE?</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q17.</strong> What is the maximum depth of recursion in a recursive CTE (in PostgreSQL)?</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q18.</strong> Can you put an ORDER BY inside a CTE? What is the effect?</p></div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q19.</strong> What are the advantages of CTEs over subqueries from a code maintenance perspective?</p></div>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q20.</strong> Write a CTE that finds the top 3 departments by headcount.</p></div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q21.</strong> What is a "bill of materials" query and how does a recursive CTE solve it?</p></div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q22.</strong> How do you debug a multi-CTE query?</p></div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q23.</strong> What is the difference between <code>UNION</code> and <code>UNION ALL</code> inside a recursive CTE?</p></div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q24.</strong> Write a CTE that computes a 3-month rolling average of sales.</p></div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q25.</strong> When should you NOT use a CTE for performance reasons?
+
+---</p></div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="summary">
 <div class="section-header cyan"><h2>📊 Day 13 Executive Summary</h2></div>
-<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">Set operations manipulate query results as logical sets. UNION ALL is faster than UNION as it bypasses deduplication checks. Anti-joins quickly isolate orphaned keys.</div></div>
+<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">CTEs modularize complex scripts. Today you mastered the WITH clause to create temporary named result sets, chained multiple CTEs sequentially, and studied the basics of recursive CTEs for hierarchical traversals.</div></div>
 </div>
   </main>
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
     <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
-<li><a href="#sec-1" class="toc-link">1. Sets and Advanced Joins</a></li>
-<li><a href="#checks-Sets & Joins-3" class="toc-link">🧪 Checks: Sets & Joins</a></li>
+<li><a href="#sec-1" class="toc-link">1. CTEs (Common Table Expressions)</a></li>
+<li><a href="#checks-Concept Checks-3" class="toc-link">🧪 Checks: Concept Checks</a></li>
 <li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
 <li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
 <li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>

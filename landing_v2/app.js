@@ -483,28 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  async function checkReferralProgramStatus() {
-    if (!supabaseClient) return;
-    try {
-      const { data, error } = await supabaseClient
-        .from('settings')
-        .select('value')
-        .eq('key', 'referral_config')
-        .single();
-      if (error) {
-        console.warn("[Referral] Failed to fetch settings:", error.message);
-        return;
-      }
-      const config = data?.value;
-      if (config && config.program_active === false) {
-        document.querySelectorAll('.referral-nav-btn, .btn-nav-referral, a[href="/referral-earnings"], a[href="referral-earnings.html"]').forEach(el => {
-          el.style.setProperty('display', 'none', 'important');
-        });
-      }
-    } catch (e) {
-      console.warn("[Referral] Error checking program status:", e);
-    }
-  }
+
 
   try {
 
@@ -512,7 +491,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       fetchAndDisplayLiveSignups();
-      checkReferralProgramStatus();
 
     }
 
@@ -1215,16 +1193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Intercept click on referral links to prompt for login/signup if not authenticated
-  document.querySelectorAll('a[href="/referral-earnings"]').forEach(el => {
-    el.addEventListener('click', e => {
-      const isLoggedIn = localStorage.getItem('manodemy_auth') === 'true';
-      if (!isLoggedIn) {
-        e.preventDefault();
-        openAuthModal('login');
-      }
-    });
-  });
+
 
   // Open signup modal if redirect reason is login_required
   const pageParams = new URLSearchParams(window.location.search);

@@ -1800,8 +1800,8 @@ async function runCell(cellId) {
       let dbName = 'retail.db';
       if (dayNum >= 1 && dayNum <= 8) dbName = 'retail.db';
       else if (dayNum >= 9 && dayNum <= 11) dbName = 'company.db';
-      else if (dayNum >= 12 && dayNum <= 19) dbName = 'ecommerce.db';
-      else if (dayNum === 20) dbName = 'capstone_retail.db';
+      else if (dayNum >= 12 && dayNum <= 17) dbName = 'ecommerce.db';
+      else if (dayNum === 18) dbName = 'capstone_retail.db';
 
       const res = await fetch('/api/sql', {
         method: 'POST',

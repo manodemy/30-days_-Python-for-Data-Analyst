@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 18: SQL Interview Prep & Real-World Patterns — SQL for Data Analyst — Manodemy</title>
-<meta name="description" content="Day 18: SQL Interview Prep & Real-World Patterns — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
+<title>Day 18: UNION, INTERSECT & EXCEPT (SET Operations) — SQL for Data Analyst — Manodemy</title>
+<meta name="description" content="Day 18: UNION, INTERSECT & EXCEPT (SET Operations) — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
 <meta name="robots" content="noindex, nofollow">
 
 <!-- Performance: Preconnect to critical origins -->
@@ -87,7 +87,7 @@
       <a href="day17.html" class="nav-icon-btn prev-btn" aria-label="Previous Day" title="Previous Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
       <button class="nav-dropdown-btn" id="dayDropdownBtn">
         <span class="day-badge">Day 18</span>
-        <span class="day-title">SQL Interview Prep & Real-World Patterns</span>
+        <span class="day-title">UNION, INTERSECT & EXCEPT (SET Operations)</span>
         <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </button>
       <a href="../index.html" class="nav-icon-btn next-btn finish-btn" aria-label="Finish Course" title="Finish Course"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
@@ -95,24 +95,24 @@
     <div class="nav-dropdown-menu" id="dayDropdownMenu">
       <div class="dropdown-header">Jump to another day</div>
       <div class="dropdown-scroll">
-        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🗄️</span> Database Fundamentals & SQL Environment</a>
-<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🔍</span> SELECT & Filtering — Retrieving Rows</a>
-<a href="day03.html" class="dropdown-item "><span class="day-num">Day 03</span> <span class="day-em">📝</span> Sorting, Pattern Matching & CASE</a>
-<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📊</span> Aggregate Functions & GROUP BY</a>
-<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">🔗</span> Joins — Combining Multiple Tables</a>
-<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🧠</span> Subqueries</a>
-<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">🏗️</span> Common Table Expressions (CTEs)</a>
-<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔢</span> Window Functions I — Ranking & Numbering</a>
-<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">📈</span> Window Functions II — Analytics & Frames</a>
-<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">📅</span> Date & Time Functions</a>
-<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">🧹</span> String & Type Functions</a>
-<a href="day12.html" class="dropdown-item "><span class="day-num">Day 12</span> <span class="day-em">🛠️</span> Data Cleaning & Wrangling in SQL</a>
-<a href="day13.html" class="dropdown-item "><span class="day-num">Day 13</span> <span class="day-em">🥞</span> Set Operations & Advanced Joins</a>
-<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">⚡</span> Query Optimisation & Execution Plans</a>
-<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">💾</span> Views, Stored Procedures & Functions</a>
-<a href="day16.html" class="dropdown-item "><span class="day-num">Day 16</span> <span class="day-em">🔮</span> Advanced Analytics Patterns</a>
-<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">🧱</span> Data Modelling & Analytics Engineering</a>
-<a href="day18.html" class="dropdown-item active"><span class="day-num">Day 18</span> <span class="day-em">🏆</span> SQL Interview Prep & Real-World Patterns</a>
+        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🗄️</span> Introduction to SQL & Databases</a>
+<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🔍</span> Filtering Data with WHERE</a>
+<a href="day03.html" class="dropdown-item "><span class="day-num">Day 03</span> <span class="day-em">📝</span> Pattern Matching & NULL Handling</a>
+<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📈</span> Sorting & Limiting Results</a>
+<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">📊</span> Aggregate Functions</a>
+<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🗃️</span> GROUP BY & HAVING</a>
+<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">➕</span> Data Types, Casting & Expressions</a>
+<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔀</span> CASE WHEN (Conditional Logic)</a>
+<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">🔗</span> Understanding Relationships & INNER JOIN</a>
+<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">🔄</span> LEFT, RIGHT & FULL OUTER JOIN</a>
+<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">👥</span> SELF JOIN & Multi-Table Queries</a>
+<a href="day12.html" class="dropdown-item "><span class="day-num">Day 12</span> <span class="day-em">🧠</span> Subqueries</a>
+<a href="day13.html" class="dropdown-item "><span class="day-num">Day 13</span> <span class="day-em">🏗️</span> CTEs (Common Table Expressions)</a>
+<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">🔢</span> Window Functions Part 1 (Ranking)</a>
+<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">📈</span> Window Functions Part 2 (Analytic)</a>
+<a href="day16.html" class="dropdown-item "><span class="day-num">Day 16</span> <span class="day-em">🧹</span> String Functions</a>
+<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">📅</span> Date & Time Functions</a>
+<a href="day18.html" class="dropdown-item active"><span class="day-num">Day 18</span> <span class="day-em">🥞</span> UNION, INTERSECT & EXCEPT (SET Operations)</a>
       </div>
     </div>
   </div>
@@ -147,47 +147,54 @@
 <div class="pyodide-status" id="pyStatus">🔌 Connected to SQL Server Database</div>
 <div class="layout">
   <main class="notebook" id="notebook">
-    <div class="nb-title"><h1>🏆 Day 18 : SQL Interview Prep & Real-World Patterns</h1></div>
+    <div class="nb-title"><h1>🥞 Day 18 : UNION, INTERSECT & EXCEPT (SET Operations)</h1></div>
 <div class="nb-section" id="sec-0">
 </div>
 <div class="nb-section" id="sec-1">
 <div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>1. SQL Capstone & Interview Patterns : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Retail Business Intelligence</span></b>
+    <b>1. UNION, INTERSECT & EXCEPT (SET Operations) : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Concept Review</span></b>
 </h2>
 <div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
     <b>🔍 Concept</b><br>
-    In this final capstone, you will compile multi-table joins, CTEs, date operations, and window functions on capstone_retail.db. This mimics senior analyst interview challenges: top-N, MoM trends, cohort value, and returns analysis.
+    Learn about UNION, INTERSECT & EXCEPT (SET Operations).
 </div></div>
 <div class="code-cell" id="cell-1">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-1">SELECT s.id, p.name, s.qty, s.amount, s.sale_date FROM sales s JOIN products p ON s.product_id = p.id LIMIT 5;</textarea>
+<textarea class="cm-source" id="src-1">SELECT * FROM sales LIMIT 5;</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
-<div class="nb-section" id="checks-Capstone Queries-3">
+<div class="nb-section" id="checks-Concept Checks-3">
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Capstone Queries</code></b>
+    <b>🧪 Concept Checks: <code>Concept Checks</code></b>
 </h3></div>
-<div class="question"><p><strong>Q1.</strong> Monthly revenue trend: calculate total revenue and order count by month using sale_date.</p></div>
+<div class="question"><p><strong>Q1.</strong> Combine all orders from <code>orders_2023</code> and <code>orders_2024</code> into a single result set. Add a column <code>year</code> (2023 or 2024) to identify the source. Use <code>UNION ALL</code>. Then count total orders and revenue per year in the outer query using a CTE.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Top products: find the top 5 products by revenue, displaying product name and category.</p></div>
+<div class="question"><p><strong>Q2.</strong> Using <code>INTERSECT</code>, find all customers who placed orders in **both** 2023 and 2024. Display their <code>customer_id</code> and fetch their <code>name</code> from the customers table (use a CTE or subquery).</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Regional sales: list total revenue and orders for each region.</p></div>
+<div class="question"><p><strong>Q3.</strong> Using <code>EXCEPT</code>, find all customers who placed orders in 2023 but NOT in 2024 (i.e., they churned). Display their <code>customer_id</code> and <code>name</code>.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Weekend sales: calculate total sales generated on weekends.</p></div>
+<div class="question"><p><strong>Q4.</strong> You are validating a data migration. The <code>source_employees</code> table should match <code>target_employees</code>. Write two queries: (1) records in source missing from target, (2) records in target not in source (using EXCEPT). Combine both results using UNION ALL and add a <code>direction</code> column ('Source Only', 'Target Only').</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Returned orders: calculate the percentage of total sales transactions that were returned using returns table.</p></div>
+<div class="question"><p><strong>Q5.</strong> Build a comprehensive report using <code>UNION ALL</code> that shows:
+- Row 1: Total employees from <code>active_employees</code>
+- Row 2: Total employees from <code>archived_employees</code>
+- Row 3: Grand total across both
+
+Label each with a <code>category</code> column ('Active', 'Archived', 'Total'). Use ROLLUP or UNION ALL with a summary row.
+
+---</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6">-- Write your SQL query here</textarea>
@@ -195,40 +202,147 @@
 </div>
 <div class="nb-section" id="practice">
 <div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
-<div class="question task"><p><strong>Task 1 (Final Query):</strong> Write a query to retrieve the overall return percentage of the retail business.</p></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong> What is a set operation in SQL? Name the three main set operations.</p></div>
 <div class="code-cell" id="cell-7">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-7">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="interview">
-<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
-<div class="question interview"><p><strong>Q1.</strong> Write a query to find the sales representative who generated the second highest revenue in each region using window functions.</p></div>
+<div class="question interview"><p><strong>Q2.</strong> What is the difference between <code>UNION</code> and <code>UNION ALL</code>?</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q2.</strong> Write a query to find customer_ids who spent more than the average spend of repeat buyers (buyers with 2+ orders).</p></div>
+<div class="question interview"><p><strong>Q3.</strong> When should you use <code>UNION ALL</code> instead of <code>UNION</code> for performance?</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q3.</strong> Write a query to calculate the month-over-month growth rate of product sales revenue, handling division by zero using NULLIF.</p></div>
+<div class="question interview"><p><strong>Q4.</strong> What are the three rules that all set operations must follow?</p></div>
 <div class="code-cell" id="cell-10">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-10">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong> What is <code>INTERSECT</code> and what does it return?</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong> What is <code>EXCEPT</code> and what is its Oracle equivalent?</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong> Write a query to find customers who ordered in 2023 but NOT in 2024 using EXCEPT.</p></div>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong> Write a query to find customers who ordered in BOTH 2023 AND 2024 using INTERSECT.</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong> What is the difference between UNION (vertical combine) and JOIN (horizontal combine)?</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q10.</strong> Where does <code>ORDER BY</code> appear when using set operations?</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q11.</strong> Can you use <code>ORDER BY</code> inside each individual SELECT of a UNION? Why not?</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q12.</strong> Does <code>UNION</code> guarantee the order of results? Explain.</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q13.</strong> What happens if the number of columns doesn't match in a UNION query?</p></div>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q14.</strong> Can column data types differ in a UNION query? What does the database do?</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q15.</strong> Write a query to consolidate sales from three regional tables into one summary report.</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q16.</strong> How would you simulate <code>INTERSECT</code> in a database that doesn't support it (e.g., MySQL doesn't support INTERSECT directly)?</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q17.</strong> How would you simulate <code>EXCEPT</code> using a JOIN?</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q18.</strong> What is the difference between <code>EXCEPT</code> and <code>NOT EXISTS</code>/<code>NOT IN</code>?</p></div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q19.</strong> Can you UNION more than two queries?</p></div>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q20.</strong> Write a query that uses UNION ALL to create a year-over-year comparison with a 'Year' label column.</p></div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q21.</strong> When would you use <code>EXCEPT</code> over LEFT JOIN anti-join pattern?</p></div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q22.</strong> What is the performance impact of <code>UNION</code> vs. <code>UNION ALL</code> on large result sets?</p></div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q23.</strong> Write a query to identify data quality issues: rows that exist in a source table but are missing from a target table after a data migration.</p></div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q24.</strong> Can set operations be combined with GROUP BY, HAVING, or window functions?</p></div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q25.</strong> A report requires combining employee data from 5 different subsidiary companies, all with the same schema. Which set operation would you use and why? Write the query structure.
+
+---</p></div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="summary">
 <div class="section-header cyan"><h2>📊 Day 18 Executive Summary</h2></div>
-<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">Congratulations! You have completed the 18-Day SQL course. You have mastered aggregation, joins, subqueries, CTEs, dates, strings, window functions, query planning, cohort metrics, and analytics engineering.</div></div>
+<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">Set operations combine query result sets. Today you mastered UNION (deduplicated), UNION ALL (retained duplicates), INTERSECT (common rows), and EXCEPT (subtracted rows) to perform advanced comparative queries.</div></div>
 </div>
   </main>
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
     <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
-<li><a href="#sec-1" class="toc-link">1. SQL Capstone & Interview Patterns</a></li>
-<li><a href="#checks-Capstone Queries-3" class="toc-link">🧪 Checks: Capstone Queries</a></li>
+<li><a href="#sec-1" class="toc-link">1. UNION, INTERSECT & EXCEPT (SET Operations)</a></li>
+<li><a href="#checks-Concept Checks-3" class="toc-link">🧪 Checks: Concept Checks</a></li>
 <li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
 <li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
 <li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>

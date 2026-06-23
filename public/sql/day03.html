@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 03: Sorting, Pattern Matching & CASE — SQL for Data Analyst — Manodemy</title>
-<meta name="description" content="Day 03: Sorting, Pattern Matching & CASE — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
+<title>Day 03: Pattern Matching & NULL Handling — SQL for Data Analyst — Manodemy</title>
+<meta name="description" content="Day 03: Pattern Matching & NULL Handling — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
 <meta name="robots" content="noindex, nofollow">
 
 <!-- Performance: Preconnect to critical origins -->
@@ -87,7 +87,7 @@
       <a href="day02.html" class="nav-icon-btn prev-btn" aria-label="Previous Day" title="Previous Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
       <button class="nav-dropdown-btn" id="dayDropdownBtn">
         <span class="day-badge">Day 03</span>
-        <span class="day-title">Sorting, Pattern Matching & CASE</span>
+        <span class="day-title">Pattern Matching & NULL Handling</span>
         <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </button>
       <a href="day04.html" class="nav-icon-btn next-btn" aria-label="Next Day" title="Next Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
@@ -95,24 +95,24 @@
     <div class="nav-dropdown-menu" id="dayDropdownMenu">
       <div class="dropdown-header">Jump to another day</div>
       <div class="dropdown-scroll">
-        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🗄️</span> Database Fundamentals & SQL Environment</a>
-<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🔍</span> SELECT & Filtering — Retrieving Rows</a>
-<a href="day03.html" class="dropdown-item active"><span class="day-num">Day 03</span> <span class="day-em">📝</span> Sorting, Pattern Matching & CASE</a>
-<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📊</span> Aggregate Functions & GROUP BY</a>
-<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">🔗</span> Joins — Combining Multiple Tables</a>
-<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🧠</span> Subqueries</a>
-<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">🏗️</span> Common Table Expressions (CTEs)</a>
-<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔢</span> Window Functions I — Ranking & Numbering</a>
-<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">📈</span> Window Functions II — Analytics & Frames</a>
-<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">📅</span> Date & Time Functions</a>
-<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">🧹</span> String & Type Functions</a>
-<a href="day12.html" class="dropdown-item "><span class="day-num">Day 12</span> <span class="day-em">🛠️</span> Data Cleaning & Wrangling in SQL</a>
-<a href="day13.html" class="dropdown-item "><span class="day-num">Day 13</span> <span class="day-em">🥞</span> Set Operations & Advanced Joins</a>
-<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">⚡</span> Query Optimisation & Execution Plans</a>
-<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">💾</span> Views, Stored Procedures & Functions</a>
-<a href="day16.html" class="dropdown-item "><span class="day-num">Day 16</span> <span class="day-em">🔮</span> Advanced Analytics Patterns</a>
-<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">🧱</span> Data Modelling & Analytics Engineering</a>
-<a href="day18.html" class="dropdown-item "><span class="day-num">Day 18</span> <span class="day-em">🏆</span> SQL Interview Prep & Real-World Patterns</a>
+        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🗄️</span> Introduction to SQL & Databases</a>
+<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🔍</span> Filtering Data with WHERE</a>
+<a href="day03.html" class="dropdown-item active"><span class="day-num">Day 03</span> <span class="day-em">📝</span> Pattern Matching & NULL Handling</a>
+<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📈</span> Sorting & Limiting Results</a>
+<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">📊</span> Aggregate Functions</a>
+<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🗃️</span> GROUP BY & HAVING</a>
+<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">➕</span> Data Types, Casting & Expressions</a>
+<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔀</span> CASE WHEN (Conditional Logic)</a>
+<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">🔗</span> Understanding Relationships & INNER JOIN</a>
+<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">🔄</span> LEFT, RIGHT & FULL OUTER JOIN</a>
+<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">👥</span> SELF JOIN & Multi-Table Queries</a>
+<a href="day12.html" class="dropdown-item "><span class="day-num">Day 12</span> <span class="day-em">🧠</span> Subqueries</a>
+<a href="day13.html" class="dropdown-item "><span class="day-num">Day 13</span> <span class="day-em">🏗️</span> CTEs (Common Table Expressions)</a>
+<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">🔢</span> Window Functions Part 1 (Ranking)</a>
+<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">📈</span> Window Functions Part 2 (Analytic)</a>
+<a href="day16.html" class="dropdown-item "><span class="day-num">Day 16</span> <span class="day-em">🧹</span> String Functions</a>
+<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">📅</span> Date & Time Functions</a>
+<a href="day18.html" class="dropdown-item "><span class="day-num">Day 18</span> <span class="day-em">🥞</span> UNION, INTERSECT & EXCEPT (SET Operations)</a>
       </div>
     </div>
   </div>
@@ -147,47 +147,49 @@
 <div class="pyodide-status" id="pyStatus">🔌 Connected to SQL Server Database</div>
 <div class="layout">
   <main class="notebook" id="notebook">
-    <div class="nb-title"><h1>📝 Day 03 : Sorting, Pattern Matching & CASE</h1></div>
+    <div class="nb-title"><h1>📝 Day 03 : Pattern Matching & NULL Handling</h1></div>
 <div class="nb-section" id="sec-0">
 </div>
 <div class="nb-section" id="sec-1">
 <div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>1. ORDER BY & LIKE : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Sorting, Wildcards, and CASE</span></b>
+    <b>1. Pattern Matching & NULL Handling : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Concept Review</span></b>
 </h2>
 <div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
     <b>🔍 Concept</b><br>
-    ORDER BY sorts output in ascending (ASC) or descending (DESC) order, with support for multi-column sorting and NULLS FIRST/LAST. The LIKE operator executes pattern matching using '%' (matches zero or more characters) and '_' (matches exactly one character). CASE WHEN provides conditional if-then-else logic directly in queries. COALESCE returns the first non-NULL value.
+    Learn about Pattern Matching & NULL Handling.
 </div></div>
 <div class="code-cell" id="cell-1">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-1">SELECT product, amount, CASE WHEN amount > 10000 THEN 'Enterprise' ELSE 'Standard' END as deal_size FROM sales ORDER BY amount DESC;</textarea>
+<textarea class="cm-source" id="src-1">SELECT * FROM sales LIMIT 5;</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
-<div class="nb-section" id="checks-Sorting & Case Logic-3">
+<div class="nb-section" id="checks-Concept Checks-3">
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Sorting & Case Logic</code></b>
+    <b>🧪 Concept Checks: <code>Concept Checks</code></b>
 </h3></div>
-<div class="question"><p><strong>Q1.</strong> Sort all records in the <code>sales</code> table by <code>amount</code> in descending order.</p></div>
+<div class="question"><p><strong>Q1.</strong> Find all employees whose <code>email</code> ends with <code>@manodemy.com</code>. Use the <code>LIKE</code> operator.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Find all sales where <code>customer_name</code> starts with 'A' using <code>LIKE</code>.</p></div>
+<div class="question"><p><strong>Q2.</strong> Find all employees whose <code>job_title</code> contains the word 'analyst' (case-insensitive) but does NOT start with 'Senior'. Use <code>ILIKE</code> (or <code>LOWER</code> + <code>LIKE</code>) and <code>NOT LIKE</code>.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Find all sales where the customer email contains 'gmail'.</p></div>
+<div class="question"><p><strong>Q3.</strong> Find all employees who have no manager assigned (<code>manager_id</code> is NULL). These are the top-level employees. Display their <code>first_name</code>, <code>last_name</code>, and <code>job_title</code>.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Classify products: if unit_price > 5000 then 'Premium', if between 2000 and 5000 then 'Mid-range', else 'Budget'.</p></div>
+<div class="question"><p><strong>Q4.</strong> Write a query that displays each employee's <code>first_name</code>, <code>salary</code>, and <code>total_compensation</code>. <code>total_compensation</code> = salary + commission. Employees with a NULL commission should have it treated as 0. Use <code>COALESCE</code>.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Write a query using <code>COALESCE</code> to display customer_email, falling back to 'No Email Provided' if it is NULL.</p></div>
+<div class="question"><p><strong>Q5.</strong> Write a query that calculates <code>revenue_per_unit</code> for products in a <code>sales</code> table (columns: <code>product_id</code>, <code>revenue</code>, <code>units_sold</code>). Ensure the query does not crash when <code>units_sold</code> is 0. Use <code>NULLIF</code>. Display <code>product_id</code>, <code>revenue</code>, <code>units_sold</code>, and <code>revenue_per_unit</code>.
+
+---</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6">-- Write your SQL query here</textarea>
@@ -195,35 +197,147 @@
 </div>
 <div class="nb-section" id="practice">
 <div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
-<div class="question task"><p><strong>Task 1 (Sorted Customer Searches):</strong> Find all customers whose names contain 'Kumar', sorted by sales amount descending.</p></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong> What is NULL in SQL? Is it the same as 0 or an empty string?</p></div>
 <div class="code-cell" id="cell-7">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-7">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="interview">
-<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
-<div class="question interview"><p><strong>Q1.</strong> How does SQL handle NULL values? Explain the difference between comparing with '= NULL' vs 'IS NULL'.</p></div>
+<div class="question interview"><p><strong>Q2.</strong> Why does <code>WHERE column = NULL</code> return 0 rows? What is the correct syntax?</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q2.</strong> Write a query that retrieves all products, sorting them by category ascending, and then by unit_price descending.</p></div>
+<div class="question interview"><p><strong>Q3.</strong> What is the correct operator to check if a value is NULL? Give an example.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong> What does <code>COALESCE</code> do? Write an example where it is used in a salary calculation.</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong> What is <code>NULLIF</code>? Explain its most common real-world use case.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong> How do <code>NULL</code> values interact with aggregate functions like <code>SUM</code> and <code>AVG</code>?</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong> What is the difference between <code>COUNT(*)</code> and <code>COUNT(column_name)</code>?</p></div>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong> How do <code>NULL</code> values sort in ascending vs. descending <code>ORDER BY</code>?</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong> Explain the <code>LIKE</code> operator. What is the difference between <code>%</code> and <code>_</code> wildcards?</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q10.</strong> What is a leading wildcard (<code>LIKE '%text'</code>) and why should it be avoided on large tables?</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q11.</strong> What is <code>ILIKE</code> and which database supports it natively?</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q12.</strong> If you need a case-insensitive LIKE search in a database that doesn't support ILIKE, how do you achieve it?</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q13.</strong> What does <code>NULL AND TRUE</code> evaluate to in SQL? What about <code>NULL OR TRUE</code>? Explain three-valued logic.</p></div>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q14.</strong> A developer wrote <code>WHERE commission != 0</code> to find employees without commission. What is wrong with this? How do you fix it?</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q15.</strong> How does NULL propagate in arithmetic? What is <code>5 + NULL</code>?</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q16.</strong> What is the result of <code>COALESCE(NULL, NULL, NULL)</code>?</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q17.</strong> What is <code>NULLIF(10, 10)</code>? What is <code>NULLIF(10, 5)</code>?</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q18.</strong> Write a query that finds all employees whose <code>first_name</code> starts with 'J' and has exactly 5 characters.</p></div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q19.</strong> Why might a <code>NOT IN</code> query return 0 rows when the list contains a NULL? Explain the mechanism.</p></div>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q20.</strong> How would you replace NULL values in a column with a specific string for reporting purposes?</p></div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q21.</strong> You have a <code>revenue</code> and <code>cost</code> column. Some cost values are NULL. Write a query that safely computes profit as <code>revenue - cost</code>, treating NULL cost as 0.</p></div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q22.</strong> What is the difference between <code>IS NOT NULL</code> and <code><> NULL</code>?</p></div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q23.</strong> In what real business scenarios would a column legitimately contain NULL values?</p></div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q24.</strong> Write a query to identify columns that might have data quality issues (e.g., NULL values) in a table.</p></div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q25.</strong> A report is showing incorrect averages. You suspect NULL values are skewing the result. How do you investigate and fix it?
+
+---</p></div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="summary">
 <div class="section-header cyan"><h2>📊 Day 03 Executive Summary</h2></div>
-<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">Sorting organizes your data, LIKE wildcards enable text searches, and CASE expressions allow you to map data dynamically. COALESCE ensures clean datasets free of empty cells.</div></div>
+<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">Mastering partial matching and missing values is essential. Today you learned to perform search queries using LIKE/ILIKE wildcards (% and _), check for NULLs using IS NULL/IS NOT NULL, fallback to defaults using COALESCE, and prevent division-by-zero errors using NULLIF.</div></div>
 </div>
   </main>
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
     <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
-<li><a href="#sec-1" class="toc-link">1. ORDER BY & LIKE</a></li>
-<li><a href="#checks-Sorting & Case Logic-3" class="toc-link">🧪 Checks: Sorting & Case Logic</a></li>
+<li><a href="#sec-1" class="toc-link">1. Pattern Matching & NULL Handling</a></li>
+<li><a href="#checks-Concept Checks-3" class="toc-link">🧪 Checks: Concept Checks</a></li>
 <li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
 <li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
 <li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>

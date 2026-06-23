@@ -50,7 +50,7 @@ export default async function NotebookPage({ params }: { params: { dayId: string
   const cleanDayId = params.dayId.endsWith('.html') ? params.dayId.replace('.html', '') : params.dayId;
 
   // ── Input Validation: block path traversal & invalid dayId formats ──────────
-  const dayIdPattern = /^(day(0[1-9]|[12][0-9]|30)|sql-day(0[1-9]|1[0-9]|20)|excel-day(0[1-9]|1[0-2]))$/;
+  const dayIdPattern = /^(day(0[1-9]|[12][0-9]|30)|sql-day(0[1-9]|1[0-8])|excel-day(0[1-9]|1[0-2]))$/;
   if (!dayIdPattern.test(cleanDayId)) {
     redirect('/landing_v2/index.html');
   }
@@ -65,7 +65,7 @@ export default async function NotebookPage({ params }: { params: { dayId: string
     courseType = 'sql';
     dayNum = parseInt(cleanDayId.replace('sql-day', ''), 10);
     courseTitle = "SQL for Data Analyst";
-    maxDays = 20;
+    maxDays = 18;
     courseId = 'sql-20day';
   } else if (cleanDayId.startsWith('excel-')) {
     courseType = 'excel';
@@ -110,14 +110,7 @@ export default async function NotebookPage({ params }: { params: { dayId: string
   // 2. Fetch Notebook Content (HTML + Metadata)
   const supabase = getSupabaseServerClient();
   
-  // Fetch settings to check if referral program is active
-  const { data: settingData } = await supabase
-    .from('settings')
-    .select('value')
-    .eq('key', 'referral_config')
-    .single();
-  const referralConfig = settingData?.value as { program_active?: boolean } | null;
-  const isReferralActive = false; // Unconditionally hide referral program links
+
 
   const { data: notebook, error } = await supabase
     .from('notebook_content')
@@ -194,9 +187,7 @@ export default async function NotebookPage({ params }: { params: { dayId: string
     ['Day15_SQL_Blank.ipynb', 'Window Functions Part 2 (Analytic)', '📈'],
     ['Day16_SQL_Blank.ipynb', 'String Functions', '🧹'],
     ['Day17_SQL_Blank.ipynb', 'Date & Time Functions', '📅'],
-    ['Day18_SQL_Blank.ipynb', 'UNION, INTERSECT & EXCEPT (SET Operations)', '🥞'],
-    ['Day19_SQL_Blank.ipynb', 'Query Optimization & Best Practices', '⚡'],
-    ['Day20_SQL_Blank.ipynb', 'SQL Capstone Project', '🏆']
+    ['Day18_SQL_Blank.ipynb', 'UNION, INTERSECT & EXCEPT (SET Operations)', '🥞']
   ];
 
   const EXCEL_DAYS = [
@@ -411,11 +402,7 @@ export default async function NotebookPage({ params }: { params: { dayId: string
           <a href="/home.html" style={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', transition: 'color 0.2s' }}>
             <span>🏠</span> Back to Dashboard
           </a>
-          {isReferralActive && (
-            <a href="/referral-earnings" style={{ color: '#FFB020', textDecoration: 'none', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700, transition: 'opacity 0.2s' }}>
-              <span>💰</span> Earn upto ₹10,000
-            </a>
-          )}
+
         </div>
         
         <button className="profile-card__signout" id="signOutBtn">Sign Out</button>

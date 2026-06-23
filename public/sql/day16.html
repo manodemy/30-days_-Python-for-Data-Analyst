@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 16: Advanced Analytics Patterns — SQL for Data Analyst — Manodemy</title>
-<meta name="description" content="Day 16: Advanced Analytics Patterns — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
+<title>Day 16: String Functions — SQL for Data Analyst — Manodemy</title>
+<meta name="description" content="Day 16: String Functions — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
 <meta name="robots" content="noindex, nofollow">
 
 <!-- Performance: Preconnect to critical origins -->
@@ -87,7 +87,7 @@
       <a href="day15.html" class="nav-icon-btn prev-btn" aria-label="Previous Day" title="Previous Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
       <button class="nav-dropdown-btn" id="dayDropdownBtn">
         <span class="day-badge">Day 16</span>
-        <span class="day-title">Advanced Analytics Patterns</span>
+        <span class="day-title">String Functions</span>
         <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </button>
       <a href="day17.html" class="nav-icon-btn next-btn" aria-label="Next Day" title="Next Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
@@ -95,24 +95,24 @@
     <div class="nav-dropdown-menu" id="dayDropdownMenu">
       <div class="dropdown-header">Jump to another day</div>
       <div class="dropdown-scroll">
-        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🗄️</span> Database Fundamentals & SQL Environment</a>
-<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🔍</span> SELECT & Filtering — Retrieving Rows</a>
-<a href="day03.html" class="dropdown-item "><span class="day-num">Day 03</span> <span class="day-em">📝</span> Sorting, Pattern Matching & CASE</a>
-<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📊</span> Aggregate Functions & GROUP BY</a>
-<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">🔗</span> Joins — Combining Multiple Tables</a>
-<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🧠</span> Subqueries</a>
-<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">🏗️</span> Common Table Expressions (CTEs)</a>
-<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔢</span> Window Functions I — Ranking & Numbering</a>
-<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">📈</span> Window Functions II — Analytics & Frames</a>
-<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">📅</span> Date & Time Functions</a>
-<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">🧹</span> String & Type Functions</a>
-<a href="day12.html" class="dropdown-item "><span class="day-num">Day 12</span> <span class="day-em">🛠️</span> Data Cleaning & Wrangling in SQL</a>
-<a href="day13.html" class="dropdown-item "><span class="day-num">Day 13</span> <span class="day-em">🥞</span> Set Operations & Advanced Joins</a>
-<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">⚡</span> Query Optimisation & Execution Plans</a>
-<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">💾</span> Views, Stored Procedures & Functions</a>
-<a href="day16.html" class="dropdown-item active"><span class="day-num">Day 16</span> <span class="day-em">🔮</span> Advanced Analytics Patterns</a>
-<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">🧱</span> Data Modelling & Analytics Engineering</a>
-<a href="day18.html" class="dropdown-item "><span class="day-num">Day 18</span> <span class="day-em">🏆</span> SQL Interview Prep & Real-World Patterns</a>
+        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🗄️</span> Introduction to SQL & Databases</a>
+<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🔍</span> Filtering Data with WHERE</a>
+<a href="day03.html" class="dropdown-item "><span class="day-num">Day 03</span> <span class="day-em">📝</span> Pattern Matching & NULL Handling</a>
+<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📈</span> Sorting & Limiting Results</a>
+<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">📊</span> Aggregate Functions</a>
+<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🗃️</span> GROUP BY & HAVING</a>
+<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">➕</span> Data Types, Casting & Expressions</a>
+<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔀</span> CASE WHEN (Conditional Logic)</a>
+<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">🔗</span> Understanding Relationships & INNER JOIN</a>
+<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">🔄</span> LEFT, RIGHT & FULL OUTER JOIN</a>
+<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">👥</span> SELF JOIN & Multi-Table Queries</a>
+<a href="day12.html" class="dropdown-item "><span class="day-num">Day 12</span> <span class="day-em">🧠</span> Subqueries</a>
+<a href="day13.html" class="dropdown-item "><span class="day-num">Day 13</span> <span class="day-em">🏗️</span> CTEs (Common Table Expressions)</a>
+<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">🔢</span> Window Functions Part 1 (Ranking)</a>
+<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">📈</span> Window Functions Part 2 (Analytic)</a>
+<a href="day16.html" class="dropdown-item active"><span class="day-num">Day 16</span> <span class="day-em">🧹</span> String Functions</a>
+<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">📅</span> Date & Time Functions</a>
+<a href="day18.html" class="dropdown-item "><span class="day-num">Day 18</span> <span class="day-em">🥞</span> UNION, INTERSECT & EXCEPT (SET Operations)</a>
       </div>
     </div>
   </div>
@@ -147,47 +147,49 @@
 <div class="pyodide-status" id="pyStatus">🔌 Connected to SQL Server Database</div>
 <div class="layout">
   <main class="notebook" id="notebook">
-    <div class="nb-title"><h1>🔮 Day 16 : Advanced Analytics Patterns</h1></div>
+    <div class="nb-title"><h1>🧹 Day 16 : String Functions</h1></div>
 <div class="nb-section" id="sec-0">
 </div>
 <div class="nb-section" id="sec-1">
 <div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>1. Cohort & Funnel Analysis : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Advanced Analytic SQL Patterns</span></b>
+    <b>1. String Functions : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Concept Review</span></b>
 </h2>
 <div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
     <b>🔍 Concept</b><br>
-    Analytical patterns trace client lifecycles. Cohort analysis groups users by sign-up month and measures activity over time. Funnel analysis tracks drop-offs across sequence stages. RFM scoring (Recency, Frequency, Monetary) groups customers into segments using window functions like NTILE.
+    Learn about String Functions.
 </div></div>
 <div class="code-cell" id="cell-1">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-1">SELECT customer_id, COUNT(*) as frequency, SUM(total_amount) as monetary FROM orders GROUP BY customer_id;</textarea>
+<textarea class="cm-source" id="src-1">SELECT * FROM sales LIMIT 5;</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
-<div class="nb-section" id="checks-Analytics Patterns-3">
+<div class="nb-section" id="checks-Concept Checks-3">
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Analytics Patterns</code></b>
+    <b>🧪 Concept Checks: <code>Concept Checks</code></b>
 </h3></div>
-<div class="question"><p><strong>Q1.</strong> Group customers by signup month to count cohorts.</p></div>
+<div class="question"><p><strong>Q1.</strong> The <code>full_name</code> column has inconsistent casing and extra spaces (e.g., '  jOHN dOE  '). Write a query to clean it to proper title case with no extra spaces using <code>TRIM</code>, <code>LOWER</code>, and <code>INITCAP</code>.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Count orders per customer and classify them using NTILE into 5 spend brackets.</p></div>
+<div class="question"><p><strong>Q2.</strong> Extract the <code>username</code> (text before @) and <code>domain</code> (text after @) from the <code>email</code> column as separate columns. Use <code>SPLIT_PART</code> or <code>POSITION</code> + <code>SUBSTRING</code>.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Write a query calculating the time-to-convert between signup date and first order date.</p></div>
+<div class="question"><p><strong>Q3.</strong> The <code>phone_number</code> column contains numbers in formats like '(91) 98765-43210', '91-98765-43210', '+91 98765 43210'. Write a query that standardizes all phone numbers to digits only (remove all non-numeric characters) using <code>REGEXP_REPLACE</code>.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Calculate customer retention: count customers who ordered in 2022 and ordered in 2023.</p></div>
+<div class="question"><p><strong>Q4.</strong> Write a query that finds all customers whose email domain is NOT 'gmail.com' or 'yahoo.com'. Use string functions to extract the domain and then filter.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Write a query to find the customer churn: active in 2022 but inactive in 2023.</p></div>
+<div class="question"><p><strong>Q5.</strong> The <code>address</code> column stores city, state, and pincode separated by '|'. Write a query to extract each component into its own column: <code>city</code>, <code>state</code>, <code>pincode</code>. Then filter to show only customers in the state 'Maharashtra'.
+
+---</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6">-- Write your SQL query here</textarea>
@@ -195,35 +197,147 @@
 </div>
 <div class="nb-section" id="practice">
 <div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
-<div class="question task"><p><strong>Task 1 (RFM Brackets):</strong> Write a query to bucket customers into 3 tiers based on their monetary value using NTILE.</p></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong> What is the difference between <code>LENGTH()</code> and <code>CHAR_LENGTH()</code>?</p></div>
 <div class="code-cell" id="cell-7">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-7">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="interview">
-<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
-<div class="question interview"><p><strong>Q1.</strong> Write a query to calculate customer cohort retention: find the percentage of customers signing up in a month who purchase again in the following month.</p></div>
+<div class="question interview"><p><strong>Q2.</strong> What does <code>TRIM()</code> do? How is it different from <code>LTRIM()</code> and <code>RTRIM()</code>?</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q2.</strong> Describe how you would model customer lifecycle funnel stages in SQL. What joins or aggregation are required?</p></div>
+<div class="question interview"><p><strong>Q3.</strong> Write a query to convert all email addresses to lowercase.</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong> What does <code>CONCAT_WS()</code> do? How is it different from <code>||</code>?</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong> Write a query to extract the first 3 characters of a product code column.</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong> What is <code>LPAD()</code> and when would you use it in data analytics?</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong> How do you find the position of a substring within a string in SQL?</p></div>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong> Write a query to replace all spaces in a product name with underscores.</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong> What is <code>SPLIT_PART()</code>? Give an example of parsing a delimited column.</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q10.</strong> How would you extract the year from a date stored as a VARCHAR column?</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q11.</strong> Write a query to find all emails that are NOT in valid format (using LIKE or REGEXP).</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q12.</strong> What is <code>INITCAP()</code>? Is it available in all databases?</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q13.</strong> How do you remove all non-numeric characters from a phone number column?</p></div>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q14.</strong> What is <code>REGEXP_REPLACE()</code>? Write an example.</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q15.</strong> How would you check if a string contains a specific word?</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q16.</strong> Write a query to count the number of words in a text column (hint: count spaces).</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q17.</strong> What is the difference between <code>POSITION()</code> and <code>STRPOS()</code> in PostgreSQL?</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q18.</strong> Write a query to generate an employee code as 'EMP' + a zero-padded employee_id (e.g., 'EMP00042').</p></div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q19.</strong> How do you reverse a string in SQL?</p></div>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q20.</strong> What does <code>LEFT(email, POSITION('@' IN email) - 1)</code> compute?</p></div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q21.</strong> Write a query to find all customers whose name starts and ends with the same letter.</p></div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q22.</strong> What is string concatenation and what operator or function do you use for it?</p></div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q23.</strong> How would you parse a JSON-like string stored in a VARCHAR column?</p></div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q24.</strong> Write a query to identify email addresses with more than one '@' character.</p></div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q25.</strong> A data pipeline receives first_name and last_name in a single column as 'Last, First'. Write a query to split it into two separate columns.
+
+---</p></div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="summary">
 <div class="section-header cyan"><h2>📊 Day 16 Executive Summary</h2></div>
-<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">Cohorts, funnels, and RFM metrics are vital business logic. Master conditional counts and window groupings to build dashboard reporting pipelines.</div></div>
+<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">Text data is often messy. Today you mastered text manipulation and data cleaning functions: UPPER, LOWER, TRIM, REPLACE, SUBSTR, and INSTR to standardize text columns.</div></div>
 </div>
   </main>
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
     <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
-<li><a href="#sec-1" class="toc-link">1. Cohort & Funnel Analysis</a></li>
-<li><a href="#checks-Analytics Patterns-3" class="toc-link">🧪 Checks: Analytics Patterns</a></li>
+<li><a href="#sec-1" class="toc-link">1. String Functions</a></li>
+<li><a href="#checks-Concept Checks-3" class="toc-link">🧪 Checks: Concept Checks</a></li>
 <li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
 <li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
 <li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>

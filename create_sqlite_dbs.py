@@ -1,45 +1,132 @@
 import os
 import sqlite3
 from datetime import datetime, timedelta
-import random
 
-def create_dbs():
-    os.makedirs('public/sql-data', exist_ok=True)
-    
-    # ----------------------------------------------------
-    # 1. retail.db
-    # ----------------------------------------------------
-    print("Creating retail.db...")
-    conn = sqlite3.connect('public/sql-data/retail.db')
+def populate_all_tables(conn):
     cursor = conn.cursor()
     
-    # Table sales
+    # 1. departments
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS departments (
+        department_id INTEGER PRIMARY KEY,
+        department_name TEXT NOT NULL,
+        budget REAL NOT NULL,
+        manager_id INTEGER
+    )
+    """)
+    
+    # 2. employees
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS employees (
+        employee_id INTEGER PRIMARY KEY,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        salary REAL NOT NULL,
+        hire_date DATE NOT NULL,
+        department_id INTEGER,
+        job_title TEXT NOT NULL,
+        email TEXT NOT NULL,
+        is_active INTEGER NOT NULL,
+        manager_id INTEGER,
+        commission REAL,
+        FOREIGN KEY (department_id) REFERENCES departments(department_id)
+    )
+    """)
+    
+    # 3. customers
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS customers (
+        customer_id INTEGER PRIMARY KEY,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        signup_date DATE NOT NULL,
+        region TEXT NOT NULL
+    )
+    """)
+    
+    # 4. orders
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS orders (
+        order_id INTEGER PRIMARY KEY,
+        customer_id INTEGER,
+        order_date DATE NOT NULL,
+        total_amount REAL NOT NULL,
+        status TEXT NOT NULL,
+        shipped_date DATE,
+        FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+    )
+    """)
+    
+    # 5. products
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS products (
+        product_id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        unit_price REAL NOT NULL,
+        stock_qty INTEGER NOT NULL,
+        category_id INTEGER,
+        cost_price REAL NOT NULL
+    )
+    """)
+    
+    # 6. order_items
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS order_items (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        order_id INTEGER,
+        product_id INTEGER,
+        qty INTEGER NOT NULL,
+        unit_price REAL NOT NULL,
+        FOREIGN KEY (order_id) REFERENCES orders(order_id),
+        FOREIGN KEY (product_id) REFERENCES products(product_id)
+    )
+    """)
+    
+    # 7. categories
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS categories (
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL,
+        parent_id INTEGER
+    )
+    """)
+    
+    # 8. sales
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS sales (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        product TEXT NOT NULL,
-        category TEXT NOT NULL,
-        region TEXT NOT NULL,
-        amount REAL NOT NULL,
-        sale_date DATE NOT NULL,
-        customer_id INTEGER NOT NULL,
-        customer_name TEXT,
-        customer_email TEXT
+        product_id INTEGER,
+        revenue REAL,
+        units_sold INTEGER,
+        amount REAL,
+        sale_date DATE,
+        customer_id INTEGER,
+        customer_signup_month TEXT,
+        order_id INTEGER
     )
     """)
     
-    # Table products
+    # 9. returns
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS products (
+    CREATE TABLE IF NOT EXISTS returns (
+        order_id INTEGER PRIMARY KEY,
+        return_date DATE NOT NULL,
+        reason TEXT NOT NULL,
+        FOREIGN KEY (order_id) REFERENCES orders(order_id)
+    )
+    """)
+    
+    # 10. sales_reps
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS sales_reps (
         id INTEGER PRIMARY KEY,
         name TEXT NOT NULL,
-        category TEXT NOT NULL,
-        unit_price REAL NOT NULL,
-        stock_qty INTEGER NOT NULL
+        region_id INTEGER
     )
     """)
     
-    # Table regions
+    # 11. regions
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS regions (
         id INTEGER PRIMARY KEY,
@@ -49,122 +136,122 @@ def create_dbs():
     )
     """)
     
-    # Populate regions
-    regions_data = [
-        (1, 'North', 'Zone-A', 'Rajesh Sharma'),
-        (2, 'South', 'Zone-B', 'Priya Nair'),
-        (3, 'East', 'Zone-C', 'Amit Das'),
-        (4, 'West', 'Zone-D', 'Sneha Patel')
-    ]
-    cursor.executemany("INSERT OR REPLACE INTO regions VALUES (?, ?, ?, ?)", regions_data)
-    
-    # Populate products
-    products_data = [
-        (101, 'Python Course Book', 'Books', 1500.0, 150),
-        (102, 'Data Science Bundle', 'Books', 4500.0, 80),
-        (103, 'Mechanical Keyboard', 'Electronics', 6000.0, 40),
-        (104, 'Noise Cancelling Headphones', 'Electronics', 12000.0, 30),
-        (105, 'Ergonomic Desk Chair', 'Home', 15000.0, 15),
-        (106, 'LED Monitor 24"', 'Electronics', 11000.0, 25),
-        (107, 'Coffee Mug', 'Home', 500.0, 200),
-        (108, 'Notebook Pack of 3', 'Books', 300.0, 300),
-        (109, 'Wireless Mouse', 'Electronics', 1800.0, 100),
-        (110, 'Standing Desk Converter', 'Home', 18000.0, 10)
-    ]
-    cursor.executemany("INSERT OR REPLACE INTO products VALUES (?, ?, ?, ?, ?)", products_data)
-    
-    # Generate Sales
-    random.seed(42)
-    categories = ['Books', 'Electronics', 'Home']
-    prod_names = {
-        'Books': ['Python Course Book', 'Data Science Bundle', 'Notebook Pack of 3'],
-        'Electronics': ['Mechanical Keyboard', 'Noise Cancelling Headphones', 'LED Monitor 24"', 'Wireless Mouse'],
-        'Home': ['Ergonomic Desk Chair', 'Coffee Mug', 'Standing Desk Converter']
-    }
-    prod_prices = {
-        'Python Course Book': 1500.0, 'Data Science Bundle': 4500.0, 'Notebook Pack of 3': 300.0,
-        'Mechanical Keyboard': 6000.0, 'Noise Cancelling Headphones': 12000.0, 'LED Monitor 24"': 11000.0, 'Wireless Mouse': 1800.0,
-        'Ergonomic Desk Chair': 15000.0, 'Coffee Mug': 500.0, 'Standing Desk Converter': 18000.0
-    }
-    regions_list = ['North', 'South', 'East', 'West']
-    
-    customer_names = [
-        'Amit Sharma', 'Anjali Gupta', 'Abhishek Kumar', 'Aishwarya Sen', 'Anoop Mishra',
-        'Bhavna Patel', 'Chirag Reddy', 'Deepak Verma', 'Divya Teja', 'Eshwar Rao',
-        'Gaurav Joshi', 'Harini Murthy', 'Ishaan Iyer', 'Jyoti Singh', 'Karthik Raja'
-    ]
-    
-    sales_data = []
-    # Ensure some sales matching Day 2 challenge: "sales over 5000 in North region"
-    # Ensure some sales matching Day 3 challenge: "customer names start with A or NULL email"
-    for i in range(1, 151):
-        cat = random.choice(categories)
-        prod = random.choice(prod_names[cat])
-        price = prod_prices[prod]
-        qty = random.randint(1, 3)
-        amount = price * qty
-        region = random.choice(regions_list)
-        
-        # force some high values in North
-        if i % 7 == 0:
-            region = 'North'
-            amount = 6500.0
-        
-        cust_id = random.randint(1, len(customer_names))
-        cust_name = customer_names[cust_id - 1]
-        
-        # Null email or messy names for Day 3 / Day 16
-        cust_email = f"{cust_name.lower().replace(' ', '.')}@example.com"
-        if cust_id % 4 == 0:
-            cust_email = None # NULL email
-            
-        # Day 3 name starts with 'A'
-        if i % 10 == 0:
-            cust_name = "A" + cust_name[1:]
-            
-        sale_date = (datetime(2023, 1, 1) + timedelta(days=random.randint(0, 360))).strftime('%Y-%m-%d')
-        sales_data.append((i, prod, cat, region, amount, sale_date, cust_id, cust_name, cust_email))
-        
-    cursor.executemany("INSERT OR REPLACE INTO sales VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", sales_data)
-    conn.commit()
-    conn.close()
-    
-    # ----------------------------------------------------
-    # 2. company.db
-    # ----------------------------------------------------
-    print("Creating company.db...")
-    conn = sqlite3.connect('public/sql-data/company.db')
-    cursor = conn.cursor()
-    
+    # 12. active_employees
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS departments (
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        budget REAL NOT NULL
+    CREATE TABLE IF NOT EXISTS active_employees (
+        employee_id INTEGER PRIMARY KEY,
+        first_name TEXT NOT NULL,
+        category TEXT
     )
     """)
     
+    # 13. archived_employees
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS employees (
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        dept_id INTEGER,
-        manager_id INTEGER,
-        hire_date DATE NOT NULL,
-        FOREIGN KEY (dept_id) REFERENCES departments(id)
+    CREATE TABLE IF NOT EXISTS archived_employees (
+        employee_id INTEGER PRIMARY KEY,
+        first_name TEXT NOT NULL,
+        category TEXT
     )
     """)
     
+    # 14. source_employees
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS source_employees (
+        employee_id INTEGER PRIMARY KEY,
+        first_name TEXT NOT NULL
+    )
+    """)
+    
+    # 15. target_employees
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS target_employees (
+        employee_id INTEGER PRIMARY KEY,
+        first_name TEXT NOT NULL
+    )
+    """)
+    
+    # 16. orders_2023
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS orders_2023 (
+        order_id INTEGER PRIMARY KEY,
+        customer_id INTEGER,
+        amount REAL NOT NULL
+    )
+    """)
+    
+    # 17. orders_2024
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS orders_2024 (
+        order_id INTEGER PRIMARY KEY,
+        customer_id INTEGER,
+        amount REAL NOT NULL
+    )
+    """)
+    
+    # 18. signups_2023
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS signups_2023 (
+        year INTEGER,
+        signups INTEGER
+    )
+    """)
+    
+    # 19. signups_2024
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS signups_2024 (
+        year INTEGER,
+        signups INTEGER
+    )
+    """)
+    
+    # 20. north_region_sales
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS north_region_sales (
+        region TEXT,
+        product_id INTEGER,
+        sales REAL
+    )
+    """)
+    
+    # 21. south_region_sales
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS south_region_sales (
+        region TEXT,
+        product_id INTEGER,
+        sales REAL
+    )
+    """)
+    
+    # 22. contractors
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS contractors (
+        salary REAL
+    )
+    """)
+    
+    # 23. raw_customers
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS raw_customers (
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        email TEXT,
+        phone TEXT,
+        signup_date DATE
+    )
+    """)
+    
+    # 24. salaries
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS salaries (
         emp_id INTEGER,
         amount REAL NOT NULL,
         effective_date DATE NOT NULL,
         PRIMARY KEY (emp_id, effective_date),
-        FOREIGN KEY (emp_id) REFERENCES employees(id)
+        FOREIGN KEY (emp_id) REFERENCES employees(employee_id)
     )
     """)
     
+    # 25. projects
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS projects (
         id INTEGER PRIMARY KEY,
@@ -174,184 +261,106 @@ def create_dbs():
     )
     """)
     
+    # 26. emp_projects
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS emp_projects (
         emp_id INTEGER,
         project_id INTEGER,
         role TEXT NOT NULL,
         PRIMARY KEY (emp_id, project_id),
-        FOREIGN KEY (emp_id) REFERENCES employees(id),
+        FOREIGN KEY (emp_id) REFERENCES employees(employee_id),
         FOREIGN KEY (project_id) REFERENCES projects(id)
     )
     """)
-    
-    # Seed departments (keep one department without employees for Day 10 Challenge)
+
+    # Seed departments
     depts = [
-        (10, 'Engineering', 5000000.0),
-        (20, 'Data Science', 3500000.0),
-        (30, 'Marketing', 1500000.0),
-        (40, 'Sales', 2000000.0),
-        (50, 'Human Resources', 800000.0),
-        (60, 'Operations & Logistics', 1200000.0) # Unassigned department
+        (1, 'Executive', 10000000.0, 1),
+        (10, 'Engineering', 5000000.0, 2),
+        (20, 'Data Science', 3500000.0, 3),
+        (30, 'Marketing', 1500000.0, 6),
+        (40, 'Sales', 2000000.0, 7),
+        (50, 'Human Resources', 800000.0, 8),
+        (60, 'Operations & Logistics', 1200000.0, None)
     ]
-    cursor.executemany("INSERT OR REPLACE INTO departments VALUES (?, ?, ?)", depts)
-    
-    # Seed employees (hierarchy: Rajesh(1) is manager of Amit(2) and Priya(3). Priya is manager of Sneha(4) and Rahul(5). HR has no manager)
+    cursor.executemany("INSERT OR REPLACE INTO departments VALUES (?, ?, ?, ?)", depts)
+
+    # Seed employees
     emps = [
-        (1, 'Rajesh Sen', 10, None, '2019-01-15'),
-        (2, 'Amit Kumar', 10, 1, '2020-03-10'),
-        (3, 'Priya Nair', 20, 1, '2020-06-01'),
-        (4, 'Sneha Patel', 20, 3, '2021-02-15'),
-        (5, 'Rahul Sharma', 20, 3, '2021-08-20'),
-        (6, 'Vikram Malhotra', 30, 1, '2021-11-05'),
-        (7, 'Ananya Gupta', 40, 2, '2022-01-10'),
-        (8, 'Karan Johar', 50, None, '2022-05-15')
+        (1, 'Rajesh', 'Sen', 160000.0, '2019-01-15', 1, 'Director', 'rajesh.sen@manodemy.com', 1, None, None),
+        (2, 'Amit', 'Kumar', 95000.0, '2020-03-10', 10, 'Senior Engineering Manager', 'amit.kumar@manodemy.com', 1, 1, None),
+        (3, 'Priya', 'Nair', 120000.0, '2020-06-01', 20, 'Lead Data Scientist', 'priya.nair@manodemy.com', 1, 1, 15000.0),
+        (4, 'Sneha', 'Patel', 80000.0, '2021-02-15', 20, 'Senior Data Analyst', 'sneha.patel@manodemy.com', 1, 3, 8000.0),
+        (5, 'Rahul', 'Sharma', 75000.0, '2021-08-20', 20, 'Data Analyst', 'rahul.sharma@manodemy.com', 1, 3, 5000.0),
+        (6, 'Vikram', 'Malhotra', 70000.0, '2021-11-05', 30, 'Senior Marketing Manager', 'vikram.malhotra@manodemy.com', 1, 1, 12000.0),
+        (7, 'Ananya', 'Gupta', 65000.0, '2022-01-10', 40, 'Sales Representative', 'ananya.gupta@manodemy.com', 1, 2, 20000.0),
+        (8, 'Karan', 'Johar', 55000.0, '2022-05-15', 50, 'HR Specialist', 'karan.johar@manodemy.com', 1, None, None),
+        (9, 'Siddharth', 'Roy', 60000.0, '2023-02-10', 10, 'Software Engineer', 'siddharth.roy@manodemy.com', 0, 2, None),
+        (10, 'Riya', 'Sen', 45000.0, '2023-05-20', 30, 'Marketing Executive', 'riya.sen@manodemy.com', 1, 6, 2000.0),
+        (11, 'Devendra', 'Singh', 85000.0, '2022-10-01', 20, 'Data Scientist', 'devendra.singh@manodemy.com', 1, 3, None),
+        (12, 'Neha', 'Sharma', 50000.0, '2023-01-15', 40, 'Sales Executive', 'neha.sharma@manodemy.com', 1, 7, 15000.0),
+        (13, 'Aditi', 'Rao', 42000.0, '2023-04-01', 40, 'Sales Associate', 'aditi.rao@manodemy.com', 1, 7, 8000.0),
+        (14, 'Rohit', 'Verma', 88000.0, '2020-11-15', 10, 'Senior Software Engineer', 'rohit.verma@manodemy.com', 1, 2, None),
+        (15, 'Pooja', 'Patel', 48000.0, '2021-06-10', 50, 'HR Coordinator', 'pooja.patel@manodemy.com', 1, 8, None)
     ]
-    cursor.executemany("INSERT OR REPLACE INTO employees VALUES (?, ?, ?, ?, ?)", emps)
-    
-    # Seed salaries
-    sals = [
-        (1, 150000.0, '2019-01-15'),
-        (1, 160000.0, '2021-01-15'),
-        (2, 90000.0, '2020-03-10'),
-        (2, 95000.0, '2022-03-10'),
-        (3, 110000.0, '2020-06-01'),
-        (3, 120000.0, '2022-06-01'),
-        (4, 80000.0, '2021-02-15'),
-        (5, 75000.0, '2021-08-20'),
-        (6, 70000.0, '2021-11-05'),
-        (7, 65000.0, '2022-01-10'),
-        (8, 55000.0, '2022-05-15')
+    cursor.executemany("INSERT OR REPLACE INTO employees VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", emps)
+
+    # Seed customers
+    custs = [
+        (1, 'Amit', 'Sharma', 'amit.sharma@example.com', '2022-01-15', 'North'),
+        (2, 'Priya', 'Nair', 'priya.nair@example.com', '2022-03-22', 'South'),
+        (3, 'Karthik', 'Raja', 'karthik.raja@example.com', '2022-06-18', 'South'),
+        (4, 'Rahul', 'Sharma', 'rahul.sharma@example.com', '2022-08-05', 'North'),
+        (5, 'Sneha', 'Patel', 'sneha.patel@example.com', '2022-10-12', 'West'),
+        (6, 'Anoop', 'Mishra', 'anoop.mishra@example.com', '2023-01-20', 'East'),
+        (7, 'Gaurav', 'Joshi', 'gaurav.joshi@example.com', '2023-03-15', 'North'),
+        (8, 'Ananya', 'Gupta', 'ananya.gupta@example.com', '2023-04-10', 'East'),
+        (9, 'Deepak', 'Verma', 'deepak.verma@example.com', '2023-05-18', 'West')
     ]
-    cursor.executemany("INSERT OR REPLACE INTO salaries VALUES (?, ?, ?)", sals)
-    
-    # Seed projects
-    projs = [
-        (101, 'Alpha Analytics', 'In Progress', '2023-12-31'),
-        (102, 'Beta Cloud migration', 'Completed', '2023-06-30'),
-        (103, 'Gamma Brand Refresh', 'In Progress', '2024-03-15')
+    cursor.executemany("INSERT OR REPLACE INTO customers VALUES (?, ?, ?, ?, ?, ?)", custs)
+
+    # Seed orders
+    today = datetime.now().date()
+    ords = [
+        (1001, 1, '2024-05-15', 52000.0, 'Shipped', '2024-05-20'),
+        (1002, 2, '2024-08-04', 1600.0, 'Shipped', '2024-08-08'),
+        (1003, 3, '2024-10-05', 120000.0, 'Shipped', '2024-10-15'),
+        (1004, 4, '2024-10-06', 4500.0, 'Shipped', '2024-10-09'),
+        (1005, 5, '2024-11-15', 15000.0, 'Shipped', '2024-11-20'),
+        (1006, 1, '2024-12-22', 121000.0, 'Shipped', '2024-12-23'),
+        (1007, 2, '2024-12-29', 4000.0, 'Processing', None),
+        (1008, 6, '2024-02-14', 2500.0, 'Shipped', '2024-02-16'),
+        (1009, 1, (today - timedelta(days=5)).strftime('%Y-%m-%d'), 3000.0, 'Shipped', (today - timedelta(days=3)).strftime('%Y-%m-%d')),
+        (1010, 3, (today - timedelta(days=12)).strftime('%Y-%m-%d'), 15000.0, 'Shipped', (today - timedelta(days=10)).strftime('%Y-%m-%d')),
+        (1011, 5, (today - timedelta(days=45)).strftime('%Y-%m-%d'), 7500.0, 'Shipped', (today - timedelta(days=40)).strftime('%Y-%m-%d')),
+        (1012, 7, (today - timedelta(days=75)).strftime('%Y-%m-%d'), 900.0, 'Shipped', (today - timedelta(days=74)).strftime('%Y-%m-%d')),
+        (1013, 9, (today - timedelta(days=120)).strftime('%Y-%m-%d'), 4000.0, 'Shipped', (today - timedelta(days=118)).strftime('%Y-%m-%d'))
     ]
-    cursor.executemany("INSERT OR REPLACE INTO projects VALUES (?, ?, ?, ?)", projs)
-    
-    # Seed emp_projects
-    emp_projs = [
-        (2, 101, 'Lead Developer'),
-        (3, 101, 'Data Architect'),
-        (4, 101, 'Data Analyst'),
-        (2, 102, 'Cloud Specialist'),
-        (6, 103, 'Marketing Lead')
-    ]
-    cursor.executemany("INSERT OR REPLACE INTO emp_projects VALUES (?, ?, ?)", emp_projs)
-    
-    conn.commit()
-    conn.close()
-    
-    # ----------------------------------------------------
-    # 3. ecommerce.db
-    # ----------------------------------------------------
-    print("Creating ecommerce.db...")
-    conn = sqlite3.connect('public/sql-data/ecommerce.db')
-    cursor = conn.cursor()
-    
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS categories (
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        parent_id INTEGER
-    )
-    """)
-    
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS products (
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        category_id INTEGER,
-        cost_price REAL NOT NULL,
-        FOREIGN KEY (category_id) REFERENCES categories(id)
-    )
-    """)
-    
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS customers (
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        email TEXT NOT NULL,
-        signup_date DATE NOT NULL,
-        region TEXT NOT NULL
-    )
-    """)
-    
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS orders (
-        id INTEGER PRIMARY KEY,
-        customer_id INTEGER,
-        order_date DATE NOT NULL,
-        status TEXT NOT NULL,
-        FOREIGN KEY (customer_id) REFERENCES customers(id)
-    )
-    """)
-    
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS order_items (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        order_id INTEGER,
-        product_id INTEGER,
-        qty INTEGER NOT NULL,
-        unit_price REAL NOT NULL,
-        FOREIGN KEY (order_id) REFERENCES orders(id),
-        FOREIGN KEY (product_id) REFERENCES products(id)
-    )
-    """)
-    
-    # Seed categories
-    cats = [
-        (1, 'Electronics', None),
-        (2, 'Computers', 1),
-        (3, 'Accessories', 1),
-        (4, 'Books', None),
-        (5, 'Tech Books', 4),
-        (6, 'Home & Living', None)
-    ]
-    cursor.executemany("INSERT OR REPLACE INTO categories VALUES (?, ?, ?)", cats)
-    
+    cursor.executemany("INSERT OR REPLACE INTO orders VALUES (?, ?, ?, ?, ?, ?)", ords)
+
     # Seed products
     prods = [
-        (201, 'MacBook Pro', 2, 120000.0),
-        (202, 'iPad Air', 2, 50000.0),
-        (203, 'Wireless Mouse', 3, 2000.0),
-        (204, 'USB-C Cable', 3, 1000.0),
-        (205, 'SQL Queries in 10 Minutes', 5, 800.0),
-        (206, 'Python Data Science Handbook', 5, 2500.0),
-        (207, 'Ergonomic Chair', 6, 15000.0)
+        (101, 'Python Course Book', 1500.0, 150, 5, 800.0),
+        (102, 'Data Science Bundle', 4500.0, 80, 5, 2500.0),
+        (103, 'Mechanical Keyboard', 6000.0, 40, 3, 3500.0),
+        (104, 'Noise Cancelling Headphones', 12000.0, 30, 3, 8000.0),
+        (105, 'Ergonomic Desk Chair', 15000.0, 15, 6, 10000.0),
+        (106, 'LED Monitor 24"', 11000.0, 25, 2, 7000.0),
+        (107, 'Coffee Mug', 500.0, 200, 6, 200.0),
+        (108, 'Notebook Pack of 3', 300.0, 300, 5, 120.0),
+        (109, 'Wireless Mouse', 1800.0, 100, 3, 1000.0),
+        (110, 'Standing Desk Converter', 18000.0, 10, 6, 12000.0),
+        (201, 'MacBook Pro', 120000.0, 10, 2, 90000.0),
+        (202, 'iPad Air', 50000.0, 15, 2, 38000.0),
+        (203, 'Wireless Mouse Extra', 2000.0, 50, 3, 1200.0),
+        (204, 'USB-C Cable', 1000.0, 100, 3, 400.0),
+        (205, 'SQL Queries in 10 Minutes', 800.0, 80, 5, 400.0),
+        (206, 'Python Data Science Handbook', 2500.0, 40, 5, 1200.0),
+        (207, 'Ergonomic Chair Office', 15000.0, 12, 6, 10000.0)
     ]
-    cursor.executemany("INSERT OR REPLACE INTO products VALUES (?, ?, ?, ?)", prods)
-    
-    # Seed customers (include messy names for Day 16 standardizing challenge)
-    custs = [
-        (1, '  amit SHARMA ', 'amit@gmail.com', '2022-01-15', 'North'),
-        (2, 'priya Nair  ', 'priya@yahoo.com', '2022-03-22', 'South'),
-        (3, '  Karthik Raja', 'karthik@outlook.com', '2022-06-18', 'South'),
-        (4, ' rahul   SHARMA', 'rahul@gmail.com', '2022-08-05', 'North'),
-        (5, 'Sneha Patel', 'sneha@example.com', '2022-10-12', 'West'),
-        (6, 'Anoop M.', 'anoop@example.com', '2023-01-20', 'East')
-    ]
-    cursor.executemany("INSERT OR REPLACE INTO customers VALUES (?, ?, ?, ?, ?)", custs)
-    
-    # Seed orders & items
-    # Need Q4 weekend orders (Day 17 challenge: Q4 is Oct, Nov, Dec. Weekend is Saturday=6, Sunday=0 in sqlite STRFTIME or %w)
-    # Weekend dates in Q4 2022: Oct 1 (Sat), Oct 2 (Sun), Oct 8 (Sat), Oct 9 (Sun), Dec 25 (Sun) etc.
-    ords = [
-        (1001, 1, '2022-05-15', 'Shipped'), # Sunday
-        (1002, 2, '2022-08-04', 'Shipped'), # Thursday
-        (1003, 3, '2022-10-01', 'Shipped'), # Saturday (Q4 Weekend)
-        (1004, 4, '2022-10-02', 'Shipped'), # Sunday (Q4 Weekend)
-        (1005, 5, '2022-11-15', 'Shipped'), # Tuesday
-        (1006, 1, '2022-12-25', 'Shipped'), # Sunday (Q4 Weekend)
-        (1007, 2, '2023-01-05', 'Processing'),
-        (1008, 6, '2023-02-14', 'Shipped')
-    ]
-    cursor.executemany("INSERT OR REPLACE INTO orders VALUES (?, ?, ?, ?)", ords)
-    
+    cursor.executemany("INSERT OR REPLACE INTO products VALUES (?, ?, ?, ?, ?, ?)", prods)
+
+    # Seed order_items
     ord_items = [
         (1, 1001, 202, 1, 50000.0),
         (2, 1001, 203, 1, 2000.0),
@@ -366,55 +375,19 @@ def create_dbs():
         (11, 1008, 206, 1, 2500.0)
     ]
     cursor.executemany("INSERT OR REPLACE INTO order_items VALUES (?, ?, ?, ?, ?)", ord_items)
-    
-    conn.commit()
-    conn.close()
-    
-    # ----------------------------------------------------
-    # 4. capstone_retail.db
-    # ----------------------------------------------------
-    print("Creating capstone_retail.db...")
-    conn = sqlite3.connect('public/sql-data/capstone_retail.db')
-    cursor = conn.cursor()
-    
-    # Copy all retail.db tables
-    conn_src = sqlite3.connect('public/sql-data/retail.db')
-    src_cursor = conn_src.cursor()
-    
-    # Create products & regions
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS products (
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        category TEXT NOT NULL,
-        unit_price REAL NOT NULL,
-        stock_qty INTEGER NOT NULL
-    )
-    """)
-    src_cursor.execute("SELECT * FROM products")
-    cursor.executemany("INSERT OR REPLACE INTO products VALUES (?, ?, ?, ?, ?)", src_cursor.fetchall())
-    
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS regions (
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        zone TEXT NOT NULL,
-        manager TEXT NOT NULL
-    )
-    """)
-    src_cursor.execute("SELECT * FROM regions")
-    cursor.executemany("INSERT OR REPLACE INTO regions VALUES (?, ?, ?, ?)", src_cursor.fetchall())
-    conn_src.close()
-    
-    # Create sales reps
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS sales_reps (
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        region_id INTEGER,
-        FOREIGN KEY (region_id) REFERENCES regions(id)
-    )
-    """)
+
+    # Seed categories
+    cats = [
+        (1, 'Electronics', None),
+        (2, 'Computers', 1),
+        (3, 'Accessories', 1),
+        (4, 'Books', None),
+        (5, 'Tech Books', 4),
+        (6, 'Home & Living', None)
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO categories VALUES (?, ?, ?)", cats)
+
+    # Seed sales reps
     reps = [
         (1, 'Rohan Mehta', 1),
         (2, 'Aditi Rao', 2),
@@ -422,94 +395,163 @@ def create_dbs():
         (4, 'Neha Sharma', 4)
     ]
     cursor.executemany("INSERT OR REPLACE INTO sales_reps VALUES (?, ?, ?)", reps)
-    
-    # Create orders (with customer cohort signup months)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS orders (
-        id INTEGER PRIMARY KEY,
-        customer_id INTEGER,
-        order_date DATE NOT NULL,
-        sales_rep_id INTEGER,
-        FOREIGN KEY (sales_rep_id) REFERENCES sales_reps(id)
-    )
-    """)
-    
-    # Create returns
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS returns (
-        order_id INTEGER PRIMARY KEY,
-        return_date DATE NOT NULL,
-        reason TEXT NOT NULL,
-        FOREIGN KEY (order_id) REFERENCES orders(id)
-    )
-    """)
-    
-    # Create sales (expanded for Capstone queries)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS sales (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        order_id INTEGER,
-        product_id INTEGER,
-        qty INTEGER NOT NULL,
-        amount REAL NOT NULL,
-        sale_date DATE NOT NULL,
-        customer_id INTEGER NOT NULL,
-        customer_signup_month TEXT NOT NULL,
-        FOREIGN KEY (order_id) REFERENCES orders(id),
-        FOREIGN KEY (product_id) REFERENCES products(id)
-    )
-    """)
-    
-    # Let's seed Capstone data that yields meaningful answers for all 8 queries
-    # Seed 100 orders and their sales across 2023, representing different cohort months and regions.
-    random.seed(88)
-    
-    orders_data = []
-    sales_data = []
-    returns_data = []
-    
-    # Customer signup cohorts (months from 2023-01 to 2023-06)
-    cohorts = ['2023-01', '2023-02', '2023-03', '2023-04', '2023-05', '2023-06']
-    customer_cohorts = {cid: random.choice(cohorts) for cid in range(1, 41)}
-    
-    products_list = [
-        (101, 1500.0), (102, 4500.0), (103, 6000.0), (104, 12000.0), (105, 15000.0),
-        (106, 11000.0), (107, 500.0), (108, 300.0), (109, 1800.0), (110, 18000.0)
+
+    # Seed regions
+    regions_data = [
+        (1, 'North', 'Zone-A', 'Rajesh Sharma'),
+        (2, 'South', 'Zone-B', 'Priya Nair'),
+        (3, 'East', 'Zone-C', 'Amit Das'),
+        (4, 'West', 'Zone-D', 'Sneha Patel')
     ]
+    cursor.executemany("INSERT OR REPLACE INTO regions VALUES (?, ?, ?, ?)", regions_data)
+
+    # Seed active_employees and archived_employees
+    active_emps = [
+        (1, 'Rajesh', 'Active'),
+        (2, 'Amit', 'Active'),
+        (3, 'Priya', 'Active'),
+        (4, 'Sneha', 'Active'),
+        (5, 'Rahul', 'Active'),
+        (6, 'Vikram', 'Active'),
+        (7, 'Ananya', 'Active'),
+        (8, 'Karan', 'Active'),
+        (10, 'Riya', 'Active'),
+        (11, 'Devendra', 'Active'),
+        (12, 'Neha', 'Active'),
+        (13, 'Aditi', 'Active'),
+        (14, 'Rohit', 'Active'),
+        (15, 'Pooja', 'Active')
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO active_employees VALUES (?, ?, ?)", active_emps)
+
+    archived_emps = [
+        (9, 'Siddharth', 'Archived'),
+        (99, 'Kunal', 'Archived')
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO archived_employees VALUES (?, ?, ?)", archived_emps)
+
+    # Seed source_employees and target_employees
+    src_emps = [
+        (1, 'Rajesh'), (2, 'Amit'), (3, 'Priya'), (4, 'Sneha'), (5, 'Rahul'), (9, 'Siddharth')
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO source_employees VALUES (?, ?)", src_emps)
+
+    tgt_emps = [
+        (1, 'Rajesh'), (2, 'Amit'), (3, 'Priya'), (4, 'Sneha'), (5, 'Rahul'), (10, 'Riya')
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO target_employees VALUES (?, ?)", tgt_emps)
+
+    # Seed orders_2023 and orders_2024
+    ords_2023 = [
+        (101, 1, 15000.0),
+        (102, 2, 25000.0),
+        (103, 3, 30000.0),
+        (104, 4, 12000.0)
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO orders_2023 VALUES (?, ?, ?)", ords_2023)
+
+    ords_2024 = [
+        (201, 1, 18000.0),
+        (202, 3, 35000.0),
+        (203, 5, 22000.0),
+        (204, 7, 14000.0)
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO orders_2024 VALUES (?, ?, ?)", ords_2024)
+
+    # Seed signups_2023 and signups_2024
+    su_2023 = [(2023, 150)]
+    cursor.executemany("INSERT OR REPLACE INTO signups_2023 VALUES (?, ?)", su_2023)
+    su_2024 = [(2024, 220)]
+    cursor.executemany("INSERT OR REPLACE INTO signups_2024 VALUES (?, ?)", su_2024)
+
+    # Seed north_region_sales and south_region_sales
+    north_sales = [
+        ('North', 101, 45000.0),
+        ('North', 102, 90000.0)
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO north_region_sales VALUES (?, ?, ?)", north_sales)
+
+    south_sales = [
+        ('South', 101, 30000.0),
+        ('South', 103, 60000.0)
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO south_region_sales VALUES (?, ?, ?)", south_sales)
+
+    # Seed contractors
+    conts = [(50000.0,), (65000.0,), (None,)]
+    cursor.executemany("INSERT INTO contractors (salary) VALUES (?)", conts)
+
+    # Seed raw_customers
+    raw_custs = [
+        (1, '  amit SHARMA ', 'amit@gmail.com', ' 9876543210  ', '2022-01-15'),
+        (2, 'priya Nair  ', 'priya@yahoo.com', '9876543211', '2022-03-22'),
+        (3, '  Karthik Raja', 'karthik@outlook.com', '  9876543212 ', '2022-06-18')
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO raw_customers VALUES (?, ?, ?, ?, ?)", raw_custs)
+
+    # Seed returns
+    rets = [
+        (1001, '2024-05-22', 'Defective'),
+        (1005, '2024-11-25', 'Changed Mind')
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO returns VALUES (?, ?, ?)", rets)
+
+    # Seed salaries
+    salaries_data = [
+        (1, 150000.0, '2019-01-15'),
+        (1, 160000.0, '2021-01-15'),
+        (2, 90000.0, '2020-03-10'),
+        (2, 95000.0, '2022-03-10'),
+        (3, 110000.0, '2020-06-01'),
+        (3, 120000.0, '2022-06-01')
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO salaries VALUES (?, ?, ?)", salaries_data)
+
+    # Seed projects
+    projects_data = [
+        (101, 'Alpha Analytics', 'In Progress', '2025-12-31'),
+        (102, 'Beta Cloud migration', 'Completed', '2024-06-30'),
+        (103, 'Gamma Brand Refresh', 'In Progress', '2026-03-15')
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO projects VALUES (?, ?, ?, ?)", projects_data)
+
+    # Seed emp_projects
+    emp_projects_data = [
+        (2, 101, 'Lead Developer'),
+        (3, 101, 'Data Architect'),
+        (4, 101, 'Data Analyst'),
+        (2, 102, 'Cloud Specialist'),
+        (6, 103, 'Marketing Lead')
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO emp_projects VALUES (?, ?, ?)", emp_projects_data)
+
+    # Seed sales (for Capstone etc.)
+    sales_recs = [
+        (1, 101, 15000.0, 10, 15000.0, '2024-05-15', 1, '2022-01', 1001),
+        (2, 102, 45000.0, 10, 45000.0, '2024-08-04', 2, '2022-03', 1002),
+        (3, 103, 60000.0, 10, 60000.0, '2024-10-05', 3, '2022-06', 1003),
+        (4, 104, 120000.0, 10, 120000.0, '2024-10-06', 4, '2022-08', 1004)
+    ]
+    cursor.executemany("INSERT OR REPLACE INTO sales VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", sales_recs)
+
+def create_dbs():
+    os.makedirs('public/sql-data', exist_ok=True)
     
-    # Generate 150 orders
-    start_date = datetime(2023, 1, 1)
-    for oid in range(5001, 5151):
-        cust_id = random.randint(1, 40)
-        rep_id = random.randint(1, 4)
-        
-        # Order date spaced throughout 2023
-        order_date_dt = start_date + timedelta(days=random.randint(0, 360))
-        order_date = order_date_dt.strftime('%Y-%m-%d')
-        
-        orders_data.append((oid, cust_id, order_date, rep_id))
-        
-        # 1-3 items per order
-        num_items = random.randint(1, 3)
-        selected_prods = random.sample(products_list, num_items)
-        for prod_id, price in selected_prods:
-            qty = random.randint(1, 2)
-            amount = qty * price
-            signup_m = customer_cohorts[cust_id]
-            sales_data.append((None, oid, prod_id, qty, amount, order_date, cust_id, signup_m))
-            
-        # 10% return rate
-        if oid % 10 == 0:
-            ret_date = (order_date_dt + timedelta(days=random.randint(2, 10))).strftime('%Y-%m-%d')
-            reason = random.choice(['Defective', 'Wrong Item', 'Not as described', 'Changed Mind'])
-            returns_data.append((oid, ret_date, reason))
-            
-    cursor.executemany("INSERT INTO orders VALUES (?, ?, ?, ?)", orders_data)
-    cursor.executemany("INSERT INTO sales VALUES (?, ?, ?, ?, ?, ?, ?, ?)", sales_data)
-    cursor.executemany("INSERT INTO returns VALUES (?, ?, ?)", returns_data)
+    db_names = ['retail.db', 'company.db', 'ecommerce.db', 'capstone_retail.db']
     
-    conn.commit()
-    conn.close()
+    for db_name in db_names:
+        db_path = f'public/sql-data/{db_name}'
+        if os.path.exists(db_path):
+            try:
+                os.remove(db_path)
+            except Exception as e:
+                print(f"Warning: could not remove {db_path}: {e}")
+        print(f"Creating and seeding {db_name}...")
+        conn = sqlite3.connect(db_path)
+        populate_all_tables(conn)
+        conn.commit()
+        conn.close()
+        
     print("All databases created and seeded successfully!")
 
 if __name__ == '__main__':

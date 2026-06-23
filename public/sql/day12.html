@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 12: Data Cleaning & Wrangling in SQL — SQL for Data Analyst — Manodemy</title>
-<meta name="description" content="Day 12: Data Cleaning & Wrangling in SQL — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
+<title>Day 12: Subqueries — SQL for Data Analyst — Manodemy</title>
+<meta name="description" content="Day 12: Subqueries — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
 <meta name="robots" content="noindex, nofollow">
 
 <!-- Performance: Preconnect to critical origins -->
@@ -87,7 +87,7 @@
       <a href="day11.html" class="nav-icon-btn prev-btn" aria-label="Previous Day" title="Previous Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
       <button class="nav-dropdown-btn" id="dayDropdownBtn">
         <span class="day-badge">Day 12</span>
-        <span class="day-title">Data Cleaning & Wrangling in SQL</span>
+        <span class="day-title">Subqueries</span>
         <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </button>
       <a href="day13.html" class="nav-icon-btn next-btn" aria-label="Next Day" title="Next Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
@@ -95,24 +95,24 @@
     <div class="nav-dropdown-menu" id="dayDropdownMenu">
       <div class="dropdown-header">Jump to another day</div>
       <div class="dropdown-scroll">
-        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🗄️</span> Database Fundamentals & SQL Environment</a>
-<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🔍</span> SELECT & Filtering — Retrieving Rows</a>
-<a href="day03.html" class="dropdown-item "><span class="day-num">Day 03</span> <span class="day-em">📝</span> Sorting, Pattern Matching & CASE</a>
-<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📊</span> Aggregate Functions & GROUP BY</a>
-<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">🔗</span> Joins — Combining Multiple Tables</a>
-<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🧠</span> Subqueries</a>
-<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">🏗️</span> Common Table Expressions (CTEs)</a>
-<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔢</span> Window Functions I — Ranking & Numbering</a>
-<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">📈</span> Window Functions II — Analytics & Frames</a>
-<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">📅</span> Date & Time Functions</a>
-<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">🧹</span> String & Type Functions</a>
-<a href="day12.html" class="dropdown-item active"><span class="day-num">Day 12</span> <span class="day-em">🛠️</span> Data Cleaning & Wrangling in SQL</a>
-<a href="day13.html" class="dropdown-item "><span class="day-num">Day 13</span> <span class="day-em">🥞</span> Set Operations & Advanced Joins</a>
-<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">⚡</span> Query Optimisation & Execution Plans</a>
-<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">💾</span> Views, Stored Procedures & Functions</a>
-<a href="day16.html" class="dropdown-item "><span class="day-num">Day 16</span> <span class="day-em">🔮</span> Advanced Analytics Patterns</a>
-<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">🧱</span> Data Modelling & Analytics Engineering</a>
-<a href="day18.html" class="dropdown-item "><span class="day-num">Day 18</span> <span class="day-em">🏆</span> SQL Interview Prep & Real-World Patterns</a>
+        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🗄️</span> Introduction to SQL & Databases</a>
+<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🔍</span> Filtering Data with WHERE</a>
+<a href="day03.html" class="dropdown-item "><span class="day-num">Day 03</span> <span class="day-em">📝</span> Pattern Matching & NULL Handling</a>
+<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📈</span> Sorting & Limiting Results</a>
+<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">📊</span> Aggregate Functions</a>
+<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🗃️</span> GROUP BY & HAVING</a>
+<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">➕</span> Data Types, Casting & Expressions</a>
+<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔀</span> CASE WHEN (Conditional Logic)</a>
+<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">🔗</span> Understanding Relationships & INNER JOIN</a>
+<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">🔄</span> LEFT, RIGHT & FULL OUTER JOIN</a>
+<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">👥</span> SELF JOIN & Multi-Table Queries</a>
+<a href="day12.html" class="dropdown-item active"><span class="day-num">Day 12</span> <span class="day-em">🧠</span> Subqueries</a>
+<a href="day13.html" class="dropdown-item "><span class="day-num">Day 13</span> <span class="day-em">🏗️</span> CTEs (Common Table Expressions)</a>
+<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">🔢</span> Window Functions Part 1 (Ranking)</a>
+<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">📈</span> Window Functions Part 2 (Analytic)</a>
+<a href="day16.html" class="dropdown-item "><span class="day-num">Day 16</span> <span class="day-em">🧹</span> String Functions</a>
+<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">📅</span> Date & Time Functions</a>
+<a href="day18.html" class="dropdown-item "><span class="day-num">Day 18</span> <span class="day-em">🥞</span> UNION, INTERSECT & EXCEPT (SET Operations)</a>
       </div>
     </div>
   </div>
@@ -147,50 +147,49 @@
 <div class="pyodide-status" id="pyStatus">🔌 Connected to SQL Server Database</div>
 <div class="layout">
   <main class="notebook" id="notebook">
-    <div class="nb-title"><h1>🛠️ Day 12 : Data Cleaning & Wrangling in SQL</h1></div>
+    <div class="nb-title"><h1>🧠 Day 12 : Subqueries</h1></div>
 <div class="nb-section" id="sec-0">
 </div>
 <div class="nb-section" id="sec-1">
 <div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>1. Data Wrangling : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Deduplication and Pivoting</span></b>
+    <b>1. Subqueries : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Concept Review</span></b>
 </h2>
 <div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
     <b>🔍 Concept</b><br>
-    Data wrangling standardizes messy tables. Deduplication is executed using ROW_NUMBER() in a CTE to isolate duplicates (keeping the first entry). Pivoting transforms rows into columns using CASE statement conditional aggregations. Outlier detection uses statistics (like Z-score or IQR) conceptually.
+    Learn about Subqueries.
 </div></div>
 <div class="code-cell" id="cell-1">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-1">WITH RankedOrders AS (
-    SELECT order_id, product_id, qty, ROW_NUMBER() OVER(PARTITION BY order_id, product_id ORDER BY id) as rn FROM order_items
-)
-SELECT * FROM RankedOrders WHERE rn = 1;</textarea>
+<textarea class="cm-source" id="src-1">SELECT * FROM sales LIMIT 5;</textarea>
 <div class="cell-output hidden"></div></div>
 </div>
-<div class="nb-section" id="checks-Deduplication-3">
+<div class="nb-section" id="checks-Concept Checks-3">
 <div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Deduplication</code></b>
+    <b>🧪 Concept Checks: <code>Concept Checks</code></b>
 </h3></div>
-<div class="question"><p><strong>Q1.</strong> Profile categories: count products and find the min/max cost price.</p></div>
+<div class="question"><p><strong>Q1.</strong> Write a query using a subquery in WHERE to find all employees who earn more than the company's average salary. Show their <code>first_name</code>, <code>salary</code>, and the company average for comparison.</p></div>
 <div class="code-cell" id="cell-2">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-2">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Find duplicate records in the customers table where name and email are identical.</p></div>
+<div class="question"><p><strong>Q2.</strong> Write a correlated subquery to find employees who earn more than the average salary of their own department.</p></div>
 <div class="code-cell" id="cell-3">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-3">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Display product name and categorize stock count: 'High' (>50), 'Medium' (20-50), 'Low' (<20).</p></div>
+<div class="question"><p><strong>Q3.</strong> Using a subquery in FROM (derived table), compute the average salary per department, then filter to show only departments with an average salary above ₹65,000.</p></div>
 <div class="code-cell" id="cell-4">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-4">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Calculate total order quantities for categories using conditional aggregates.</p></div>
+<div class="question"><p><strong>Q4.</strong> Write a query using <code>EXISTS</code> to find all departments that have at least one employee earning above ₹90,000. Then write the equivalent query using <code>IN</code>. Compare the two approaches in a comment.</p></div>
 <div class="code-cell" id="cell-5">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-5">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Write a query to pivot order status: display counts of 'Completed' vs 'Pending' in separate columns.</p></div>
+<div class="question"><p><strong>Q5.</strong> Write a query using <code>NOT EXISTS</code> to find all departments that have NO employees. Compare this approach to the LEFT JOIN + IS NULL anti-join approach from Day 10.
+
+---</p></div>
 <div class="code-cell" id="cell-6">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-6">-- Write your SQL query here</textarea>
@@ -198,35 +197,147 @@ SELECT * FROM RankedOrders WHERE rn = 1;</textarea>
 </div>
 <div class="nb-section" id="practice">
 <div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
-<div class="question task"><p><strong>Task 1 (Pivoting Status):</strong> Write a query to display the total orders placed in each region, pivoted by order status.</p></div>
+</div>
+<div class="nb-section" id="interview">
+<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
+<div class="question interview"><p><strong>Q1.</strong> What is a subquery? In what four locations can it appear?</p></div>
 <div class="code-cell" id="cell-7">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-7">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="interview">
-<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
-<div class="question interview"><p><strong>Q1.</strong> Write a query to delete duplicate customer records (duplicate names and emails), keeping only the record with the lowest primary key ID.</p></div>
+<div class="question interview"><p><strong>Q2.</strong> What is the difference between a correlated and a non-correlated subquery?</p></div>
 <div class="code-cell" id="cell-8">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-8">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q2.</strong> How do you calculate a Z-score to detect outliers in SQL? Outline the required query structure.</p></div>
+<div class="question interview"><p><strong>Q3.</strong> Which runs first: the inner query or the outer query?</p></div>
 <div class="code-cell" id="cell-9">
 <div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
 <textarea class="cm-source" id="src-9">-- Write your SQL query here</textarea>
 <div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q4.</strong> What is a derived table (inline view)?</p></div>
+<div class="code-cell" id="cell-10">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-10">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q5.</strong> What is a scalar subquery? What happens if it returns more than one row?</p></div>
+<div class="code-cell" id="cell-11">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-11">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q6.</strong> What is the difference between <code>IN</code> and <code>EXISTS</code>?</p></div>
+<div class="code-cell" id="cell-12">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-12">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q7.</strong> When is <code>EXISTS</code> preferred over <code>IN</code> for performance?</p></div>
+<div class="code-cell" id="cell-13">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-13">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q8.</strong> Write a query to find employees who earn above the company average.</p></div>
+<div class="code-cell" id="cell-14">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-14">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q9.</strong> What is the risk of using <code>NOT IN</code> when the subquery can return NULL values?</p></div>
+<div class="code-cell" id="cell-15">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-15">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q10.</strong> Write a query using <code>NOT EXISTS</code> to find customers with no orders.</p></div>
+<div class="code-cell" id="cell-16">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-16">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q11.</strong> What is a correlated subquery? Write an example.</p></div>
+<div class="code-cell" id="cell-17">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-17">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q12.</strong> Can a subquery reference columns from the outer query?</p></div>
+<div class="code-cell" id="cell-18">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-18">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q13.</strong> What is the difference between a subquery and a JOIN?</p></div>
+<div class="code-cell" id="cell-19">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-19">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q14.</strong> When should you use a subquery vs. a JOIN?</p></div>
+<div class="code-cell" id="cell-20">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-20">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q15.</strong> What is the performance impact of a correlated subquery on 1 million rows?</p></div>
+<div class="code-cell" id="cell-21">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-21">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q16.</strong> Write a query to find the 2nd highest salary using a subquery (without LIMIT/OFFSET or window functions).</p></div>
+<div class="code-cell" id="cell-22">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-22">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q17.</strong> What is the difference between a scalar subquery and a table-returning subquery?</p></div>
+<div class="code-cell" id="cell-23">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-23">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q18.</strong> Can a subquery appear in the GROUP BY clause?</p></div>
+<div class="code-cell" id="cell-24">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-24">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q19.</strong> Write a query to find all departments where the top earner is above ₹1,00,000.</p></div>
+<div class="code-cell" id="cell-25">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-25">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q20.</strong> What is a subquery factoring (WITH clause)? (Preview of CTEs.)</p></div>
+<div class="code-cell" id="cell-26">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-26">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q21.</strong> What does <code>SELECT 1</code> inside an EXISTS clause mean?</p></div>
+<div class="code-cell" id="cell-27">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-27">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q22.</strong> Can you use ORDER BY inside a subquery? Does it have any effect?</p></div>
+<div class="code-cell" id="cell-28">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-28">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q23.</strong> Write a query using a subquery to find the department with the most employees.</p></div>
+<div class="code-cell" id="cell-29">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-29">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q24.</strong> Explain the concept of "query within a query" to a non-technical person.</p></div>
+<div class="code-cell" id="cell-30">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-30">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
+<div class="question interview"><p><strong>Q25.</strong> What is the difference between a view and a derived table (inline subquery)?
+
+---</p></div>
+<div class="code-cell" id="cell-31">
+<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
+<textarea class="cm-source" id="src-31">-- Write your SQL query here</textarea>
+<div class="cell-output hidden"></div></div>
 </div>
 <div class="nb-section" id="summary">
 <div class="section-header cyan"><h2>📊 Day 12 Executive Summary</h2></div>
-<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">Pivoting, profiling, and deduplicating are high-level wrangling skills. Grouping by CASE allows you to reshape tables for dashboards directly in queries.</div></div>
+<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">Subqueries enable multi-stage logic. Today you mastered nested queries across SELECT, FROM, and WHERE clauses, including scalar subqueries, list subqueries (IN/NOT IN), and correlated subqueries (EXISTS/NOT EXISTS).</div></div>
 </div>
   </main>
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
     <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
-<li><a href="#sec-1" class="toc-link">1. Data Wrangling</a></li>
-<li><a href="#checks-Deduplication-3" class="toc-link">🧪 Checks: Deduplication</a></li>
+<li><a href="#sec-1" class="toc-link">1. Subqueries</a></li>
+<li><a href="#checks-Concept Checks-3" class="toc-link">🧪 Checks: Concept Checks</a></li>
 <li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
 <li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
 <li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>

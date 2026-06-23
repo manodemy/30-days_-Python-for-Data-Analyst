@@ -11,7 +11,7 @@ def generate_seeding_migration():
     # Header of the migration file
     sql_lines = [
         "-- ═══════════════════════════════════════════════════════════════",
-        "-- Seed Notebook Content: SQL Days 01 to 20",
+        "-- Seed Notebook Content: SQL Days 01 to 18",
         "-- ═══════════════════════════════════════════════════════════════",
         "",
         "INSERT INTO public.notebook_content (day_id, title, html_body, sections, cells)",
@@ -20,7 +20,7 @@ def generate_seeding_migration():
     
     values = []
     
-    for day in range(1, 21):
+    for day in range(1, 19):
         filename = f"Day{day:02d}_SQL_Blank.ipynb"
         nb_path = nb_dir / filename
         
@@ -71,8 +71,15 @@ def generate_seeding_migration():
         value_tuple = f"('{day_id}', '{escaped_title}', '{escaped_body}', '{escaped_sections}'::jsonb, '{escaped_cells}'::jsonb)"
         values.append(value_tuple)
         
-    # Join value tuples with commas and end with semicolon
-    sql_lines.append(",\n".join(values) + ";")
+    # Join value tuples with commas and add ON CONFLICT upsert clause
+    sql_lines.append(
+        ",\n".join(values) +
+        "\nON CONFLICT (day_id) DO UPDATE SET\n"
+        "  title      = EXCLUDED.title,\n"
+        "  html_body  = EXCLUDED.html_body,\n"
+        "  sections   = EXCLUDED.sections,\n"
+        "  cells      = EXCLUDED.cells;"
+    )
     
     # Write to file
     with open(out_path, 'w', encoding='utf-8') as f:

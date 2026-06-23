@@ -3,9 +3,14 @@ import json
 import re
 from pathlib import Path
 
-def is_question(s):       return s.strip().startswith('### **Q')
+def is_question(s):
+    stripped = s.strip()
+    return stripped.startswith('### **Q') or (stripped.startswith('### ') and not stripped.startswith('### **Task') and not 'Concept Checks' in stripped and not 'Database Source' in stripped)
+
 def is_task(s):           return s.strip().startswith('### **Task')
-def is_interview_q(s):    return bool(re.match(r'^##\s*Q\d+', s.strip()))
+def is_interview_q(s):
+    clean = s.replace('---', '').strip()
+    return bool(re.match(r'^##\s*Q\d+', clean)) or bool(re.match(r'^###\s*Q\d+', clean))
 
 def generate_rubrics():
     sql_dir = Path('notebooks/sql')
@@ -17,8 +22,8 @@ def generate_rubrics():
     
     inserts = []
     
-    # 1. SQL Days 1 to 20
-    for day in range(1, 21):
+    # 1. SQL Days 1 to 18
+    for day in range(1, 19):
         filename = f"Day{day:02d}_SQL_Blank.ipynb"
         nb_path = sql_dir / filename
         if not nb_path.exists(): continue
@@ -34,7 +39,7 @@ def generate_rubrics():
             src = ''.join(c['source']).strip()
             
             # Skip copyright or empty
-            if not src or '©' in src or 'copyright' in src.lower() or 'manodemy' in src.lower():
+            if not src or '©' in src or 'copyright' in src.lower() or ('manodemy' in src.lower() and ('copyright' in src.lower() or 'all rights' in src.lower() or 'protected' in src.lower())):
                 continue
                 
             if ct == 'markdown':
@@ -66,7 +71,7 @@ def generate_rubrics():
             ct = c['cell_type']
             src = ''.join(c['source']).strip()
             
-            if not src or '©' in src or 'copyright' in src.lower() or 'manodemy' in src.lower():
+            if not src or '©' in src or 'copyright' in src.lower() or ('manodemy' in src.lower() and ('copyright' in src.lower() or 'all rights' in src.lower() or 'protected' in src.lower())):
                 continue
                 
             if ct == 'markdown':

@@ -135,11 +135,7 @@
       "destination": "/landing_v2/payment-failed.html",
       "permanent": false
     },
-    {
-      "source": "/referral-earnings",
-      "destination": "/referral-earnings.html",
-      "permanent": false
-    },
+
     {
       "source": "/sql-course",
       "destination": "/landing_v2/sql-course.html",
