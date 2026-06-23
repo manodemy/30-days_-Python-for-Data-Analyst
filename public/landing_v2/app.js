@@ -926,10 +926,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (track === 'sql') {
         if (day === '01') window.location.href = '/sql/day01.html';
+        else if (day === '02') window.location.href = '/sql/day02.html';
         else if (isPaid) window.location.href = `/sql/day${day}.html`;
         else openCheckout();
       } else if (track === 'excel') {
         if (day === '01') window.location.href = '/excel/day01.html';
+        else if (day === '02') window.location.href = '/excel/day02.html';
         else if (isPaid) window.location.href = `/excel/day${day}.html`;
         else openCheckout();
       } else {
