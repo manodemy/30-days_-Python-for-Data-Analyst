@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="rev-card-top">
           ${avatar}
           <div class="rev-card-info">
-            <div class="rev-card-name-row" style="display:flex;align-items:center;">
+            <div class="rev-card-name-row">
               <span class="rev-card-name">${rev.name}</span>
               ${verifiedIcon}
             </div>
@@ -383,6 +383,15 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           carouselTrack.removeEventListener('click', preventClick, true);
         }, 50);
+
+        // Snap to nearest card smoothly
+        const card = carouselTrack.querySelector('.rev-card');
+        if (card) {
+          const gap = getGap();
+          const cardW = card.offsetWidth + gap;
+          const index = Math.round(carouselTrack.scrollLeft / cardW);
+          carouselTrack.scrollTo({ left: index * cardW, behavior: 'smooth' });
+        }
       }
     };
 

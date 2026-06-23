@@ -1579,7 +1579,6 @@ th.col-mano {
   overflow-x: scroll;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
   padding: 10px 2px 16px;
   /* hide scrollbar */
   scrollbar-width: none;
@@ -1594,17 +1593,36 @@ th.col-mano {
   scroll-snap-type: none !important;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .rev-carousel-track {
+    scroll-snap-type: none;
+  }
+}
+
 .rev-card {
   flex: 0 0 calc(33.333% - 1rem);
   min-width: calc(33.333% - 1rem);
   max-width: calc(33.333% - 1rem);
   scroll-snap-align: start;
-  background: var(--surface);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 100%), var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (hover: hover) {
+  .rev-card:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  }
+  .rev-card:hover .rev-avatar {
+    transform: scale(1.05);
+  }
 }
 
 .rev-card-top {
@@ -1625,6 +1643,15 @@ th.col-mano {
   font-weight: 800;
   font-size: 14px;
   border: 2px solid transparent;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.rev-card-name-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .rev-card-name {
@@ -1642,7 +1669,10 @@ th.col-mano {
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  margin-left: 6px;
+  background: rgba(16, 185, 129, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(16, 185, 129, 0.15);
 }
 
 .badge-verified svg {
@@ -1732,6 +1762,8 @@ th.col-mano {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .rev-rec {
@@ -1741,10 +1773,21 @@ th.col-mano {
   display: flex;
   align-items: center;
   gap: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
 }
 
-.rev-rec.yes { color: var(--emerald); }
-.rev-rec.no { color: #ff5a70; }
+.rev-rec.yes {
+  color: var(--emerald);
+  background: rgba(16, 185, 129, 0.06);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.rev-rec.no {
+  color: #ff5a70;
+  background: rgba(244, 63, 94, 0.06);
+  border: 1px solid rgba(244, 63, 94, 0.15);
+}
 
 .rev-rec svg {
   width: 12px;
@@ -1754,14 +1797,21 @@ th.col-mano {
 .rev-helpful-btn {
   font-size: 11px;
   font-family: var(--font-data);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
 }
 
 .rev-helpful-btn:hover {
   color: var(--cyan);
+  border-color: rgba(0, 230, 246, 0.3);
+  background: rgba(0, 230, 246, 0.04);
 }
 
 .rev-helpful-btn svg {
@@ -1771,6 +1821,8 @@ th.col-mano {
 
 .rev-helpful-btn.active {
   color: var(--cyan);
+  border-color: var(--cyan);
+  background: rgba(0, 230, 246, 0.08);
 }
 
 .rev-carousel-btn {
