@@ -446,10 +446,12 @@ function updateHUD(idx){
     headerGlow.style.background = `linear-gradient(90deg, transparent, ${pc.css}, transparent)`;
   }
 
-  const indicator = root.querySelector('#rm-activeIndicator');
-  if (indicator) {
-    indicator.style.background = pc.css;
-    indicator.style.boxShadow = `0 0 10px ${pc.css}, 0 0 4px ${pc.css}`;
+  const pillTitle = root.querySelector('#rm-cardPillTitle');
+  if (pillTitle) {
+    pillTitle.style.background = pc.css + '16'; // ~9% opacity themed background
+    pillTitle.style.borderColor = pc.css + '40'; // 25% opacity themed border
+    pillTitle.style.color = pc.css;
+    pillTitle.style.boxShadow = `0 0 12px ${pc.css}10`;
   }
 
   const phaseGlow = root.querySelector('#rm-headerPhaseGlow');
