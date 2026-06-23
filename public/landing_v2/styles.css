@@ -1588,7 +1588,11 @@ th.col-mano {
   user-select: none;
 }
 .rev-carousel-track::-webkit-scrollbar { display: none; }
-.rev-carousel-track.is-dragging { cursor: grabbing; scroll-behavior: auto; }
+.rev-carousel-track.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto !important;
+  scroll-snap-type: none !important;
+}
 
 .rev-card {
   flex: 0 0 calc(33.333% - 1rem);

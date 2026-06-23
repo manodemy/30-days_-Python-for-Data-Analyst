@@ -269,14 +269,22 @@ document.addEventListener('DOMContentLoaded', () => {
     updateArrows();
   }
 
+  function getGap() {
+    if (!carouselTrack) return 24;
+    const style = window.getComputedStyle(carouselTrack);
+    const gap = parseFloat(style.gap);
+    return isNaN(gap) ? 24 : gap;
+  }
+
   // ── Dots ───────────────────────────────────────────────────
   function getCardsPerView() {
     if (!carouselTrack) return 1;
     const card = carouselTrack.querySelector('.rev-card');
     if (!card) return 1;
     const trackW = carouselTrack.clientWidth;
-    const cardW  = card.offsetWidth + 24; // 24 = gap
-    return Math.max(1, Math.floor(trackW / cardW));
+    const gap = getGap();
+    const cardW  = card.offsetWidth + gap;
+    return Math.max(1, Math.floor((trackW + gap) / cardW));
   }
 
   function buildDots(count) {
@@ -296,7 +304,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!carouselTrack) return;
     const card = carouselTrack.querySelector('.rev-card');
     if (!card) return;
-    const cardW = card.offsetWidth + 24;
+    const gap = getGap();
+    const cardW = card.offsetWidth + gap;
     carouselTrack.scrollTo({ left: page * cardW * getCardsPerView(), behavior: 'smooth' });
   }
 
@@ -305,13 +314,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (carouselPrev) {
       carouselPrev.onclick = () => {
         const card = carouselTrack.querySelector('.rev-card');
-        if (card) carouselTrack.scrollBy({ left: -(card.offsetWidth + 24) * getCardsPerView(), behavior: 'smooth' });
+        if (card) {
+          const gap = getGap();
+          carouselTrack.scrollBy({ left: -(card.offsetWidth + gap) * getCardsPerView(), behavior: 'smooth' });
+        }
       };
     }
     if (carouselNext) {
       carouselNext.onclick = () => {
         const card = carouselTrack.querySelector('.rev-card');
-        if (card) carouselTrack.scrollBy({ left: (card.offsetWidth + 24) * getCardsPerView(), behavior: 'smooth' });
+        if (card) {
+          const gap = getGap();
+          carouselTrack.scrollBy({ left: (card.offsetWidth + gap) * getCardsPerView(), behavior: 'smooth' });
+        }
       };
     }
   }
@@ -330,7 +345,8 @@ document.addEventListener('DOMContentLoaded', () => {
       updateArrows();
       const card = carouselTrack.querySelector('.rev-card');
       if (card && carouselDots) {
-        const cardW  = card.offsetWidth + 24;
+        const gap = getGap();
+        const cardW  = card.offsetWidth + gap;
         const perView = getCardsPerView();
         const page   = Math.round(carouselTrack.scrollLeft / (cardW * perView));
         carouselDots.querySelectorAll('.rev-dot').forEach((d, i) => d.classList.toggle('active', i === page));
@@ -343,17 +359,31 @@ document.addEventListener('DOMContentLoaded', () => {
     let isDown    = false;
     let startX    = 0;
     let scrollLeft = 0;
+    let dragMoved = false;
 
     carouselTrack.addEventListener('mousedown', (e) => {
       isDown = true;
       startX = e.pageX - carouselTrack.offsetLeft;
       scrollLeft = carouselTrack.scrollLeft;
+      dragMoved = false;
       carouselTrack.classList.add('is-dragging');
     });
 
     const stopDrag = () => {
+      if (!isDown) return;
       isDown = false;
       carouselTrack.classList.remove('is-dragging');
+
+      if (dragMoved) {
+        const preventClick = (evt) => {
+          evt.stopImmediatePropagation();
+          evt.preventDefault();
+        };
+        carouselTrack.addEventListener('click', preventClick, true);
+        setTimeout(() => {
+          carouselTrack.removeEventListener('click', preventClick, true);
+        }, 50);
+      }
     };
 
     carouselTrack.addEventListener('mouseleave', stopDrag);
@@ -364,22 +394,11 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const x    = e.pageX - carouselTrack.offsetLeft;
       const walk = (x - startX) * 1.5;
+      if (Math.abs(x - startX) > 5) {
+        dragMoved = true;
+      }
       carouselTrack.scrollLeft = scrollLeft - walk;
     });
-
-    // ── Touch swipe (mobile) ───────────────────────────────
-    let touchStartX  = 0;
-    let touchScrollL = 0;
-
-    carouselTrack.addEventListener('touchstart', (e) => {
-      touchStartX  = e.touches[0].clientX;
-      touchScrollL = carouselTrack.scrollLeft;
-    }, { passive: true });
-
-    carouselTrack.addEventListener('touchmove', (e) => {
-      const dx = touchStartX - e.touches[0].clientX;
-      carouselTrack.scrollLeft = touchScrollL + dx;
-    }, { passive: true });
   }
 
   // ── Write Review modal ────────────────────────────────────
