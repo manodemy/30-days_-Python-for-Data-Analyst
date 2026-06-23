@@ -4597,26 +4597,35 @@ html, body {
   /* ══ CURRICULUM: 2 day cards per row ══ */
   .curr-tabs {
     display: flex;
-    gap: 6px;
-    overflow: hidden;
+    gap: 8px;
+    overflow-x: auto;
     flex-wrap: nowrap;
     width: 100%;
-    padding-bottom: 0;
-    -webkit-overflow-scrolling: auto;
+    padding: 4px 4px 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .curr-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  @media (min-width: 481px) {
+    .curr-tabs {
+      justify-content: center;
+    }
   }
   .curr-tab {
-    flex: 1;
-    min-width: 0;
+    flex: 0 0 auto;
+    min-width: fit-content;
     font-size: 12px;
-    padding: 8px 4px;
+    padding: 8px 14px;
     white-space: nowrap;
     justify-content: center;
-    text-align: center;
   }
   .curr-tab .tech-logo {
     width: 18px;
     height: 18px;
-    margin-right: 4px;
+    margin-right: 5px;
     flex-shrink: 0;
   }
   .curr-tab-days {
@@ -4866,8 +4875,8 @@ html, body {
   .badge-lock { font-size: 16px; padding: 0px 3px; }
   .badge-free { font-size: 9px; }
   .day-emoji .tech-logo { width: 22px; height: 22px; padding: 1.5px; }
-  .curr-tab { font-size: 12px; padding: 8px 14px; }
-  .curr-tab .tech-logo { width: 18px; height: 18px; margin-right: 5px; }
+  .curr-tab { font-size: 11.5px; padding: 8px 10px; }
+  .curr-tab .tech-logo { width: 16px; height: 16px; margin-right: 4px; }
 
   /* Compare */
   table { min-width: 500px; }
