@@ -215,7 +215,29 @@
 
     try {
 
-      const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+      const CustomAuthStorage = {
+        getItem: (key) => {
+          const match = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)'));
+          if (match) {
+            try { return decodeURIComponent(match[2]); } catch (e) {}
+          }
+          try { return localStorage.getItem(key); } catch (e) { return null; }
+        },
+        setItem: (key, value) => {
+          try { document.cookie = `${key}=${encodeURIComponent(value)}; path=/; max-age=604800; secure; samesite=lax`; } catch (e) {}
+          try { localStorage.setItem(key, value); } catch (e) {}
+        },
+        removeItem: (key) => {
+          try { document.cookie = `${key}=; path=/; max-age=0; secure; samesite=lax`; } catch (e) {}
+          try { localStorage.removeItem(key); } catch (e) {}
+        }
+      };
+
+      const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY, {
+        auth: {
+          storage: CustomAuthStorage
+        }
+      });
 
       sb.rpc('check_enrollment', { p_course_id: 'python-30day' }).then(({ data }) => {
 

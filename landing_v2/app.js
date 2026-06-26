@@ -485,11 +485,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+  const CustomAuthStorage = {
+    getItem: (key) => {
+      const match = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)'));
+      if (match) {
+        try { return decodeURIComponent(match[2]); } catch (e) {}
+      }
+      try { return localStorage.getItem(key); } catch (e) { return null; }
+    },
+    setItem: (key, value) => {
+      try { document.cookie = `${key}=${encodeURIComponent(value)}; path=/; max-age=604800; secure; samesite=lax`; } catch (e) {}
+      try { localStorage.setItem(key, value); } catch (e) {}
+    },
+    removeItem: (key) => {
+      try { document.cookie = `${key}=; path=/; max-age=0; secure; samesite=lax`; } catch (e) {}
+      try { localStorage.removeItem(key); } catch (e) {}
+    }
+  };
+
   try {
 
     if (window.supabase) {
 
-      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: {
+          storage: CustomAuthStorage
+        }
+      });
       fetchAndDisplayLiveSignups();
 
     }

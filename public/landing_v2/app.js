@@ -469,9 +469,31 @@ document.addEventListener('DOMContentLoaded', () => {
   let appliedCouponAmount = null;
   let currentPricing = { amount: 4900, currency: 'USD', display: '$49', original: '$149', discount: '67% OFF' };
 
+  const CustomAuthStorage = {
+    getItem: (key) => {
+      const match = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)'));
+      if (match) {
+        try { return decodeURIComponent(match[2]); } catch (e) {}
+      }
+      try { return localStorage.getItem(key); } catch (e) { return null; }
+    },
+    setItem: (key, value) => {
+      try { document.cookie = `${key}=${encodeURIComponent(value)}; path=/; max-age=604800; secure; samesite=lax`; } catch (e) {}
+      try { localStorage.setItem(key, value); } catch (e) {}
+    },
+    removeItem: (key) => {
+      try { document.cookie = `${key}=; path=/; max-age=0; secure; samesite=lax`; } catch (e) {}
+      try { localStorage.removeItem(key); } catch (e) {}
+    }
+  };
+
   if (window.supabase) {
     try {
-      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: {
+          storage: CustomAuthStorage
+        }
+      });
       fetchLiveCounts();
     } catch (e) {
       console.error("Supabase init error:", e);
@@ -915,7 +937,10 @@ document.addEventListener('DOMContentLoaded', () => {
   dayCards.forEach(card => {
     card.addEventListener('click', () => {
       const day = card.dataset.day;
-      const isPaid = localStorage.getItem('manodemy_enrolled') === 'true';
+      const isPaid = localStorage.getItem('manodemy_enrolled') === 'true'
+        || localStorage.getItem('manodemy_enrolled_sql') === 'true'
+        || localStorage.getItem('manodemy_enrolled_excel') === 'true'
+        || localStorage.getItem('manodemy_enrolled_python') === 'true';
       let path = '/day01.html';
 
       // Detect track type
@@ -927,17 +952,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (track === 'sql') {
         if (day === '01') window.location.href = '/sql/day01.html';
         else if (day === '02') window.location.href = '/sql/day02.html';
-        else if (isPaid) window.location.href = `/sql/day${day}.html`;
+        else if (isPaid) window.location.href = `/notebook/sql-day${day}`;
         else openCheckout();
       } else if (track === 'excel') {
         if (day === '01') window.location.href = '/excel/day01.html';
         else if (day === '02') window.location.href = '/excel/day02.html';
-        else if (isPaid) window.location.href = `/excel/day${day}.html`;
+        else if (isPaid) window.location.href = `/notebook/excel-day${day}`;
         else openCheckout();
       } else {
         if (day === '01') window.location.href = '/day01.html';
         else if (day === '02') window.location.href = '/day02.html';
-        else if (isPaid) window.location.href = `/day${day}.html`;
+        else if (isPaid) window.location.href = `/notebook/day${day}`;
         else openCheckout();
       }
     });

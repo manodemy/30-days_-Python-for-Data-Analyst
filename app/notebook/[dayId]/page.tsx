@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { getSupabaseServerClient } from '../../../lib/supabaseServer';
+import { getSupabaseServerClient, getSupabaseAdminClient } from '../../../lib/supabaseServer';
 import { redirect } from 'next/navigation';
 import NotebookInitializer from '../../../components/NotebookInitializer';
 
@@ -86,6 +86,8 @@ export default async function NotebookPage({ params }: { params: { dayId: string
   // ── Server-Side Auth & Enrollment Guard for Protected Days (3+) ───────────
   if (dayNum >= 3 && dayNum <= maxDays) {
     const supabase = getSupabaseServerClient();
+    // Use admin client for profile fetch so RLS never blocks reading plan/plan_type
+    const adminClient = getSupabaseAdminClient();
 
     // getUser() validates JWT with Supabase Auth servers
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -94,25 +96,37 @@ export default async function NotebookPage({ params }: { params: { dayId: string
       redirect(`/landing_v2/index.html?redirect=${encodeURIComponent(`/notebook/${cleanDayId}`)}`);
     }
 
-    // Run enrollment check + admin role check in parallel for performance
-    const [{ data: enrolled }, { data: profile }] = await Promise.all([
-      supabase.rpc('check_enrollment', { p_course_id: courseId }),
-      supabase.from('profiles').select('role').eq('id', user!.id).single(),
-    ]);
+    // Fetch profile via admin client to always get real plan/plan_type values (bypasses RLS)
+    const { data: profile } = await adminClient
+      .from('profiles')
+      .select('role, plan, plan_type')
+      .eq('id', user!.id)
+      .single();
 
     const isAdmin = profile?.role === 'admin';
+    // Check all possible paid-user signals: JWT metadata, profile.plan, or profile.plan_type
+    const isPro =
+      user?.user_metadata?.plan === 'pro' ||
+      profile?.plan === 'pro' ||
+      profile?.plan_type === 'premium' ||
+      profile?.plan_type === 'pro';
 
-    if (!isAdmin && !enrolled) {
-      redirect('/landing_v2/index.html#pricing?locked=true');
+    // If user is admin or paid, grant access immediately — no need for check_enrollment
+    if (!isAdmin && !isPro) {
+      // Fall back to enrollment check only for free users
+      const { data: enrolled } = await supabase.rpc('check_enrollment', { p_course_id: courseId });
+      if (!enrolled) {
+        redirect('/landing_v2/index.html#pricing?locked=true');
+      }
     }
   }
 
   // 2. Fetch Notebook Content (HTML + Metadata)
-  const supabase = getSupabaseServerClient();
+  const adminSupabase = getSupabaseAdminClient();
   
 
 
-  const { data: notebook, error } = await supabase
+  const { data: notebook, error } = await adminSupabase
     .from('notebook_content')
     .select('*')
     .eq('day_id', cleanDayId)

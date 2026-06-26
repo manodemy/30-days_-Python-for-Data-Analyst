@@ -33,6 +33,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(targetUrl, { status: 301 });
   }
 
+  const legacySqlMatch = path.match(/^\/sql\/day(\d{2})\.html$/);
+  if (legacySqlMatch) {
+    const dayId = `sql-day${legacySqlMatch[1]}`;
+    const targetUrl = new URL(`/notebook/${dayId}`, request.url);
+    return NextResponse.redirect(targetUrl, { status: 301 });
+  }
+
+  const legacyExcelMatch = path.match(/^\/excel\/day(\d{2})\.html$/);
+  if (legacyExcelMatch) {
+    const dayId = `excel-day${legacyExcelMatch[1]}`;
+    const targetUrl = new URL(`/notebook/${dayId}`, request.url);
+    return NextResponse.redirect(targetUrl, { status: 301 });
+  }
+
   // ── Layer B: Edge Auth Guard for premium notebook routes ────────────────────
   const dayNum = extractNotebookDayNum(path);
 
@@ -86,6 +100,15 @@ export const config = {
     '/day16.html', '/day17.html', '/day18.html', '/day19.html', '/day20.html',
     '/day21.html', '/day22.html', '/day23.html', '/day24.html', '/day25.html',
     '/day26.html', '/day27.html', '/day28.html', '/day29.html', '/day30.html',
+    // Legacy SQL HTML redirects (days 01–18)
+    '/sql/day01.html', '/sql/day02.html', '/sql/day03.html', '/sql/day04.html', '/sql/day05.html',
+    '/sql/day06.html', '/sql/day07.html', '/sql/day08.html', '/sql/day09.html', '/sql/day10.html',
+    '/sql/day11.html', '/sql/day12.html', '/sql/day13.html', '/sql/day14.html', '/sql/day15.html',
+    '/sql/day16.html', '/sql/day17.html', '/sql/day18.html',
+    // Legacy Excel HTML redirects (days 01–12)
+    '/excel/day01.html', '/excel/day02.html', '/excel/day03.html', '/excel/day04.html', '/excel/day05.html',
+    '/excel/day06.html', '/excel/day07.html', '/excel/day08.html', '/excel/day09.html', '/excel/day10.html',
+    '/excel/day11.html', '/excel/day12.html',
     // Secure notebook routes (days 03–30 are premium)
     '/notebook/:path*',
   ],
