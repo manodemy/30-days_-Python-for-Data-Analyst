@@ -30,14 +30,12 @@
   <!-- Route Paywall Guard (runs after deferred SDK loads) -->
 
   <script>
+    const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
+    const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
 
     document.addEventListener('DOMContentLoaded', async function Guard() {
 
       try {
-
-        const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
-
-        const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
 
         const CustomAuthStorage = {
           getItem: (key) => {
@@ -4748,7 +4746,8 @@
 
     .dl-png  { background: linear-gradient(135deg, #6c63ff, #3ecfcf); color: #fff; }
     .dl-pdf  { background: linear-gradient(135deg, #c9a84c, #f0d080); color: #1a1a2e; }
-    .dl-close { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2        /* ===== THE ACTUAL PREMIUM CERTIFICATE BODY (CYBERNETIC EDITION) ===== */
+    .dl-close { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+    /* ===== THE ACTUAL PREMIUM CERTIFICATE BODY (CYBERNETIC EDITION) ===== */
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600;700&family=Dancing+Script:wght@600&display=swap');
 
     .certificate-body {
@@ -5317,7 +5316,13 @@
         padding: 2px 4px !important;
       }
     }
-    @media (max-width: 380px) {    /* Winding Road Roadmap Redesign Styles */
+    @media (max-width: 380px) {
+      .curriculum-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+
+    /* Winding Road Roadmap Redesign Styles */
     .roadmap-tab-btn:hover {
       color: #fff !important;
       background: rgba(255,255,255,0.05) !important;
