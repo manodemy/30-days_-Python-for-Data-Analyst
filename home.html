@@ -5840,14 +5840,15 @@
 
           <!-- Winding Road Scrollable Viewport -->
           <div class="roadmap-viewport" id="roadmapViewport" style="position: relative; max-height: 520px; overflow-y: auto; padding: 20px 10px; background: rgba(4, 6, 12, 0.4); border-radius: 12px; scroll-behavior: smooth;">
+            <!-- Dynamic SVG Winding Road Track (positioned behind nodes) -->
+            <svg id="roadmapSvg" style="position: absolute; left: 0; top: 0; width: 100%; pointer-events: none; z-index: 1;">
+              <path id="roadmapBorder" fill="none" stroke="#2a3547" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" />
+              <path id="roadmapAsphalt" fill="none" stroke="#0f172a" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" />
+              <path id="roadmapCenterLine" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+
             <!-- Road nodes container (alternating left / right) -->
             <div id="roadmapNodesContainer" style="position: relative; z-index: 2; display: flex; flex-direction: column;">
-              <!-- Dynamic SVG Winding Road Track (positioned behind nodes) -->
-              <svg id="roadmapSvg" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
-                <path id="roadmapBorder" fill="none" stroke="#2a3547" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" />
-                <path id="roadmapAsphalt" fill="none" stroke="#0f172a" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" />
-                <path id="roadmapCenterLine" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 8" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
               <!-- Populated by JavaScript -->
             </div>
           </div>
@@ -7940,7 +7941,7 @@
       const grid = document.getElementById('curriculumGrid');
 
       let isUserEnrolled = false;
-      const isPaidUser = (
+      const isPaidUserGrid = (
         session.user.user_metadata?.plan === 'pro' ||
         localStorage.getItem('manodemy_enrolled') === 'true' ||
         (typeof userProfile !== 'undefined' && userProfile && (
@@ -7951,7 +7952,7 @@
         ))
       );
 
-      if (isPaidUser) {
+      if (isPaidUserGrid) {
         isUserEnrolled = true;
       } else {
         if (currentCourse === 'sql') {
