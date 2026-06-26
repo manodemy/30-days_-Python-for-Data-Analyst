@@ -5322,6 +5322,145 @@
         grid-template-columns: repeat(2, 1fr) !important;
       }
     }
+    /* Winding Road Roadmap Redesign Styles */
+    .roadmap-tab-btn:hover {
+      color: #fff !important;
+      background: rgba(255,255,255,0.05) !important;
+    }
+    .roadmap-tab-btn.active {
+      color: #fff !important;
+      background: rgba(255,255,255,0.1) !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .roadmap-day-node {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      position: relative;
+      width: 100%;
+    }
+    /* Dynamic alternating nodes positioning */
+    .roadmap-day-node.left {
+      justify-content: flex-start;
+      padding-right: 50%;
+    }
+    .roadmap-day-node.right {
+      justify-content: flex-end;
+      padding-left: 50%;
+    }
+    .roadmap-day-card {
+      width: 90%;
+      background: rgba(13, 20, 38, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 10px 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+    }
+    .roadmap-day-node.left .roadmap-day-card {
+      margin-right: 15px;
+      text-align: right;
+    }
+    .roadmap-day-node.right .roadmap-day-card {
+      margin-left: 15px;
+      text-align: left;
+    }
+    
+    /* Hover effects and color codings */
+    .roadmap-day-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      border-color: rgba(255,255,255,0.15);
+    }
+    .roadmap-day-card.completed {
+      background: rgba(16, 185, 129, 0.08) !important;
+      border-color: rgba(16, 185, 129, 0.3) !important;
+    }
+    .roadmap-day-card.completed:hover {
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
+    }
+    .roadmap-day-card.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: rgba(30, 41, 59, 0.3);
+      border-color: rgba(255,255,255,0.02);
+    }
+    .roadmap-day-card.locked:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    
+    /* Central checkpoint node dots */
+    .roadmap-checkpoint-dot {
+      position: absolute;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 2.5px solid #475569;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      box-shadow: 0 0 0 4px rgba(30, 41, 59, 0.5);
+      transition: all 0.3s ease;
+    }
+    /* Shift the dots left/right depending on the node side */
+    .roadmap-day-node.left .roadmap-checkpoint-dot {
+      left: calc(50% + 32px);
+    }
+    .roadmap-day-node.right .roadmap-checkpoint-dot {
+      left: calc(50% - 32px);
+    }
+
+    .roadmap-day-node.excel .roadmap-checkpoint-dot {
+      border-color: #F5A623;
+    }
+    .roadmap-day-node.sql .roadmap-checkpoint-dot {
+      border-color: #06B6D4;
+    }
+    .roadmap-day-node.python .roadmap-checkpoint-dot {
+      border-color: #10B981;
+    }
+    .roadmap-day-node.completed .roadmap-checkpoint-dot {
+      background: #10B981 !important;
+      border-color: #34D399 !important;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+    
+    /* Phase Milestone Banner card */
+    .roadmap-milestone-banner {
+      width: 100%;
+      margin: 15px 0 25px 0;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: #0f172a; /* Solid background to cover the road */
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      position: relative;
+      z-index: 4;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .roadmap-milestone-banner.excel-complete {
+      background: linear-gradient(135deg, #1e1e24, #12131a);
+      border-color: rgba(245, 166, 35, 0.4);
+      box-shadow: 0 4px 20px rgba(245, 166, 35, 0.15);
+    }
+    .roadmap-milestone-banner.sql-complete {
+      background: linear-gradient(135deg, #111e2e, #0c121c);
+      border-color: rgba(6, 182, 212, 0.4);
+      box-shadow: 0 4px 20px rgba(6, 182, 212, 0.15);
+    }
+    .roadmap-milestone-banner.full-complete {
+      background: linear-gradient(135deg, #0e2e28, #071714);
+      border-color: rgba(16, 185, 129, 0.5);
+      box-shadow: 0 4px 25px rgba(16, 185, 129, 0.25);
+      animation: pulseMilestone 2s infinite alternate;
+    }
+    @keyframes pulseMilestone {
+      0% { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.1); }
+      100% { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); }
+    }
 </style>
 
 </head>
@@ -5675,52 +5814,43 @@
 
 
 
-        <!-- Personalized Welcome Box & Daily Quest Card -->
-
-        <div class="glass-card" style="padding: 1.5rem 1.75rem; display: flex; flex-direction: column; gap: 1.25rem;">
-
+        <!-- 60-Day Winding Road Roadmap Card -->
+        <div class="glass-card roadmap-card" style="padding: 1.5rem 1.75rem; display: flex; flex-direction: column; gap: 1.25rem;">
           <div>
-
             <h2 class="dashboard-greeting" id="welcomeGreeting"
-
               style="font-size: 24px; margin-bottom: 0.35rem; line-height: 1.2; font-family: 'Outfit', sans-serif; font-weight: 900; color: #fff;">
-
               Welcome back!</h2>
-
             <p class="dashboard-subtitle" id="welcomeSubtitle"
-
-              style="font-size: 14px; margin: 0; color: var(--ink-dim);">Start your Python journey today — every line of
-
-              code matters!</p>
-
-          </div>
-
-
-
-          <!-- Quest Card -->
-
-          <div class="quest-card" id="questCard" style="max-width: 100%;">
-
-            <span class="quest-icon" id="questIcon">🎯</span>
-
-            <div class="quest-content">
-
-              <span class="quest-tag">Daily Quest</span>
-
-              <span class="quest-text" id="questText">Loading today's coding mission...</span>
-
+              style="font-size: 14px; margin: 0 0 1rem 0; color: var(--ink-dim);">Your personalized 60-day Data Analytics journey</p>
+            
+            <!-- Overall Milestone Completion Tracker -->
+            <div class="roadmap-summary" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+              <span class="roadmap-summary-pill" id="excelRoadmapProgress" style="background: rgba(245, 166, 35, 0.1); border: 1px solid rgba(245, 166, 35, 0.2); color: #F5A623; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;">Excel: 0/12 Days</span>
+              <span class="roadmap-summary-pill" id="sqlRoadmapProgress" style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: #06B6D4; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;">SQL: 0/18 Days</span>
+              <span class="roadmap-summary-pill" id="pythonRoadmapProgress" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #10B981; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;">Python: 0/30 Days</span>
             </div>
 
+            <!-- Phase Selection Tabs -->
+            <div class="roadmap-tabs" style="display: flex; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 3px; border-radius: 8px; margin-bottom: 1rem;">
+              <button class="roadmap-tab-btn" onclick="scrollToRoadmapPhase('excel')" style="flex: 1; background: none; border: none; color: rgba(255,255,255,0.6); padding: 6px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Excel (D1-12)</button>
+              <button class="roadmap-tab-btn" onclick="scrollToRoadmapPhase('sql')" style="flex: 1; background: none; border: none; color: rgba(255,255,255,0.6); padding: 6px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;">SQL (D13-30)</button>
+              <button class="roadmap-tab-btn" onclick="scrollToRoadmapPhase('python')" style="flex: 1; background: none; border: none; color: rgba(255,255,255,0.6); padding: 6px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;">Python (D31-60)</button>
+            </div>
           </div>
 
-          <!-- Bonus Quest (populated by JS, hidden until loaded) -->
-
-          <div id="questBonusText"
-
-            style="display:none; font-size:12px; color:rgba(203,213,225,0.75); line-height:1.6; padding: 0.65rem 0.9rem; border-radius: 10px; background: var(--dashboard-accent-glow); border: 1px solid var(--dashboard-accent); margin-top: -0.25rem;">
-
+          <!-- Winding Road Scrollable Viewport -->
+          <div class="roadmap-viewport" id="roadmapViewport" style="position: relative; max-height: 520px; overflow-y: auto; padding: 20px 10px; background: rgba(4, 6, 12, 0.4); border-radius: 12px; scroll-behavior: smooth;">
+            <!-- Road nodes container (alternating left / right) -->
+            <div id="roadmapNodesContainer" style="position: relative; z-index: 2; display: flex; flex-direction: column;">
+              <!-- Dynamic SVG Winding Road Track (positioned behind nodes) -->
+              <svg id="roadmapSvg" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
+                <path id="roadmapBorder" fill="none" stroke="#2a3547" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" />
+                <path id="roadmapAsphalt" fill="none" stroke="#0f172a" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" />
+                <path id="roadmapCenterLine" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <!-- Populated by JavaScript -->
+            </div>
           </div>
-
         </div>
 
 
@@ -8551,6 +8681,312 @@
           }
         });
       }
+
+      // Define Winding Road Roadmap Data (60 Days)
+      const EXCEL_TOPICS = [
+        { courseDay: "01", title: "Excel Orientation & Formulas", emoji: "📊", cells: 6 },
+        { courseDay: "02", title: "Formatting, Sorting & Filtering", emoji: "🎨", cells: 4 },
+        { courseDay: "03", title: "Data Cleaning Essentials", emoji: "🧹", cells: 4 },
+        { courseDay: "04", title: "Excel Tables", emoji: "📋", cells: 4 },
+        { courseDay: "05", title: "Lookup & Reference Functions", emoji: "🔍", cells: 4 },
+        { courseDay: "06", title: "Logic Functions", emoji: "🔀", cells: 4 },
+        { courseDay: "07", title: "Text Functions", emoji: "📝", cells: 4 },
+        { courseDay: "08", title: "Date & Time Functions", emoji: "📅", cells: 4 },
+        { courseDay: "09", title: "Conditional Aggregation", emoji: "🧮", cells: 4 },
+        { courseDay: "10", title: "PivotTables Core Mechanics", emoji: "⚙️", cells: 4 },
+        { courseDay: "11", title: "PivotTables Advanced & Charts", emoji: "📈", cells: 4 },
+        { courseDay: "12", title: "Data Validation & Capstone", emoji: "🏆", cells: 4 }
+      ];
+
+      const SQL_TOPICS = [
+        { courseDay: "01", title: "Database Fundamentals & SQL", emoji: "🗄️", cells: 23 },
+        { courseDay: "02", title: "SELECT & Filtering", emoji: "🔍", cells: 23 },
+        { courseDay: "03", title: "Sorting, Patterns & CASE", emoji: "📝", cells: 23 },
+        { courseDay: "04", title: "Aggregate & GROUP BY", emoji: "📊", cells: 23 },
+        { courseDay: "05", title: "Joins - Multi-Table", emoji: "🔗", cells: 23 },
+        { courseDay: "06", title: "Subqueries", emoji: "🧠", cells: 23 },
+        { courseDay: "07", title: "CTEs (Common Table Expressions)", emoji: "🏗️", cells: 23 },
+        { courseDay: "08", title: "Window Functions I - Ranking", emoji: "🔢", cells: 23 },
+        { courseDay: "09", title: "Window Functions II - Analytics", emoji: "📈", cells: 23 },
+        { courseDay: "10", title: "Date & Time Functions", emoji: "📅", cells: 23 },
+        { courseDay: "11", title: "String & Type Functions", emoji: "🧹", cells: 23 },
+        { courseDay: "12", title: "Data Cleaning & Wrangling", emoji: "🛠️", cells: 23 },
+        { courseDay: "13", title: "Set Operations & Joins", emoji: "🥞", cells: 23 },
+        { courseDay: "14", title: "Query Optimisation", emoji: "⚡", cells: 23 },
+        { courseDay: "15", title: "Views, Stored Procs & Funcs", emoji: "💾", cells: 23 },
+        { courseDay: "16", title: "Advanced Analytics Patterns", emoji: "🔮", cells: 23 },
+        { courseDay: "17", title: "Data Modelling & Analytics Eng", emoji: "🧱", cells: 23 },
+        { courseDay: "18", title: "SQL Interview Prep & Capstone", emoji: "🏆", cells: 25 }
+      ];
+
+      const PYTHON_TOPICS = [
+        { courseDay: "01", title: "Data Types and Memory", emoji: "🔢", cells: 80 },
+        { courseDay: "02", title: "Operators and Expressions", emoji: "➕", cells: 80 },
+        { courseDay: "03", title: "Strings", emoji: "📝", cells: 70 },
+        { courseDay: "04", title: "Lists", emoji: "📋", cells: 70 },
+        { courseDay: "05", title: "Tuples", emoji: "📦", cells: 60 },
+        { courseDay: "06", title: "Sets", emoji: "⭕", cells: 60 },
+        { courseDay: "07", title: "Dictionaries", emoji: "🗂️", cells: 65 },
+        { courseDay: "08", title: "Conditionals", emoji: "🔀", cells: 55 },
+        { courseDay: "09", title: "Loops", emoji: "🔄", cells: 65 },
+        { courseDay: "10", title: "Functions", emoji: "⚙️", cells: 45 },
+        { courseDay: "11", title: "Modules", emoji: "📦", cells: 45 },
+        { courseDay: "12", title: "Comprehensions", emoji: "🧮", cells: 40 },
+        { courseDay: "13", title: "Lambda Functions", emoji: "λ", cells: 40 },
+        { courseDay: "14", title: "Exceptions", emoji: "⚠️", cells: 45 },
+        { courseDay: "15", title: "File Handling", emoji: "📂", cells: 45 },
+        { courseDay: "16", title: "OOP Basics", emoji: "🧩", cells: 45 },
+        { courseDay: "17", title: "OOP Advanced", emoji: "🏗️", cells: 45 },
+        { courseDay: "18", title: "Regex", emoji: "🔍", cells: 45 },
+        { courseDay: "19", title: "Generators and Iterators", emoji: "⚡", cells: 45 },
+        { courseDay: "20", title: "Capstone Project", emoji: "🏆", cells: 45 },
+        { courseDay: "21", title: "NumPy Fundamentals", emoji: "📊", cells: 45 },
+        { courseDay: "22", title: "NumPy Advanced", emoji: "📈", cells: 45 },
+        { courseDay: "23", title: "Pandas Introduction", emoji: "🐼", cells: 45 },
+        { courseDay: "24", title: "Pandas Selection", emoji: "🎯", cells: 45 },
+        { courseDay: "25", title: "Pandas Cleaning", emoji: "🧹", cells: 45 },
+        { courseDay: "26", title: "Pandas GroupBy", emoji: "🗃️", cells: 45 },
+        { courseDay: "27", title: "Pandas Merging", emoji: "🔗", cells: 45 },
+        { courseDay: "28", title: "Pandas Time Series", emoji: "📉", cells: 45 },
+        { courseDay: "29", title: "Data Visualization", emoji: "🎨", cells: 45 },
+        { courseDay: "30", title: "Phase Analysis & Review", emoji: "🔬", cells: 45 }
+      ];
+
+      // Build 60-day personalized roadmap
+      function renderWindingRoadmap() {
+        const container = document.getElementById('roadmapNodesContainer');
+        if (!container) return;
+        container.innerHTML = '';
+
+        // Combine into unified 60 days roadmap array
+        const roadmapDays = [];
+        let globalDay = 1;
+
+        // Excel: Days 1-12
+        EXCEL_TOPICS.forEach((t, idx) => {
+          roadmapDays.push({
+            globalDay: globalDay++,
+            phase: 'excel',
+            courseDay: t.courseDay,
+            title: t.title,
+            emoji: t.emoji,
+            cells: t.cells,
+            targetUrl: `/notebook/excel-day${t.courseDay}`,
+            key: `excel-day${t.courseDay}`
+          });
+        });
+
+        // SQL: Days 13-30
+        SQL_TOPICS.forEach((t, idx) => {
+          roadmapDays.push({
+            globalDay: globalDay++,
+            phase: 'sql',
+            courseDay: t.courseDay,
+            title: t.title,
+            emoji: t.emoji,
+            cells: t.cells,
+            targetUrl: `/notebook/sql-day${t.courseDay}`,
+            key: `sql-day${t.courseDay}`
+          });
+        });
+
+        // Python: Days 31-60
+        PYTHON_TOPICS.forEach((t, idx) => {
+          roadmapDays.push({
+            globalDay: globalDay++,
+            phase: 'python',
+            courseDay: t.courseDay,
+            title: t.title,
+            emoji: t.emoji,
+            cells: t.cells,
+            targetUrl: `/notebook/day${t.courseDay}`,
+            key: `day${t.courseDay}`
+          });
+        });
+
+        // Compute enrollment details
+        const isExcelEnrolled = localStorage.getItem('manodemy_enrolled_excel') === 'true';
+        const isSqlEnrolled = localStorage.getItem('manodemy_enrolled_sql') === 'true';
+        const isPythonEnrolled = localStorage.getItem('manodemy_enrolled_python') === 'true';
+        const isProGlobal = session.user.user_metadata?.plan === 'pro' || localStorage.getItem('manodemy_enrolled') === 'true';
+
+        let excelDoneCount = 0;
+        let sqlDoneCount = 0;
+        let pythonDoneCount = 0;
+
+        roadmapDays.forEach((day, index) => {
+          // Check completed status
+          const solvedCount = parseInt(localStorage.getItem(`manodemy_${day.key}_solved_count`) || '0', 10);
+          const isCompleted = solvedCount >= day.cells;
+
+          if (isCompleted) {
+            if (day.phase === 'excel') excelDoneCount++;
+            if (day.phase === 'sql') sqlDoneCount++;
+            if (day.phase === 'python') pythonDoneCount++;
+          }
+
+          // Check if day is locked
+          const dayNumInt = parseInt(day.courseDay, 10);
+          let isLocked = false;
+          if (!isProGlobal) {
+            if (day.phase === 'excel' && !isExcelEnrolled && dayNumInt >= 3) isLocked = true;
+            if (day.phase === 'sql' && !isSqlEnrolled && dayNumInt >= 3) isLocked = true;
+            if (day.phase === 'python' && !isPythonEnrolled && dayNumInt >= 3) isLocked = true;
+          }
+
+          // Create node element
+          const node = document.createElement('div');
+          const isLeft = index % 2 === 0;
+          node.className = `roadmap-day-node ${day.phase} ${isLeft ? 'left' : 'right'}` + (isCompleted ? ' completed' : '');
+          node.id = `roadmap-day-${day.globalDay}`;
+
+          // Connect click action
+          const clickHandler = isLocked 
+            ? "window.location.href = 'landing_v2/index.html#pricing?locked=true';"
+            : `window.location.href = '${day.targetUrl}?v=2.1';`;
+
+          node.innerHTML = `
+            <div class="roadmap-checkpoint-dot"></div>
+            <div class="roadmap-day-card ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}" onclick="${clickHandler}">
+              <div style="font-size: 10px; font-weight: 700; color: ${day.phase === 'excel' ? '#F5A623' : (day.phase === 'sql' ? '#06B6D4' : '#10B981')}; margin-bottom: 2px;">
+                DAY ${day.globalDay.toString().padStart(2, '0')} — ${day.phase.toUpperCase()} DAY ${day.courseDay}
+              </div>
+              <div style="font-size: 12px; font-weight: 800; color: #fff; line-height: 1.3;">
+                ${day.emoji} ${day.title}
+              </div>
+              <div style="margin-top: 4px; font-size: 9px; color: rgba(255,255,255,0.4);">
+                ${isCompleted ? '✓ Completed' : (isLocked ? '🔒 Locked' : `⏳ Progress: ${solvedCount}/${day.cells} Cells`)}
+              </div>
+            </div>
+          `;
+
+          container.appendChild(node);
+
+          // Insert milestone banners at completion checkpoints
+          if (day.globalDay === 12) {
+            const banner = document.createElement('div');
+            banner.className = 'roadmap-milestone-banner excel-complete';
+            banner.innerHTML = `
+              <div style="font-size: 16px; font-weight: 900; color: #F5A623;">🏆 Excel Specialist Phase Completed!</div>
+              <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px;">Milestone reached: You have mastered spreadsheet analysis, data cleaning & PivotTable modeling.</div>
+            `;
+            container.appendChild(banner);
+          } else if (day.globalDay === 30) {
+            const banner = document.createElement('div');
+            banner.className = 'roadmap-milestone-banner sql-complete';
+            banner.innerHTML = `
+              <div style="font-size: 16px; font-weight: 900; color: #06B6D4;">🏆 SQL Analyst Phase Completed!</div>
+              <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px;">Milestone reached: You have mastered database querying, multi-table relationships & analytics window functions.</div>
+            `;
+            container.appendChild(banner);
+          } else if (day.globalDay === 60) {
+            const banner = document.createElement('div');
+            banner.className = 'roadmap-milestone-banner full-complete';
+            banner.innerHTML = `
+              <div style="font-size: 18px; font-weight: 900; color: #10B981;">🎓 Data Analytics Masterclass Completed! 🏆</div>
+              <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px;">Final milestone: You have completed all 60 days of Excel, SQL, and Python. Download your graduation certificate now!</div>
+            `;
+            container.appendChild(banner);
+          }
+        });
+
+        // Update progress pills text
+        const excPill = document.getElementById('excelRoadmapProgress');
+        const sqlPill = document.getElementById('sqlRoadmapProgress');
+        const pyPill = document.getElementById('pythonRoadmapProgress');
+
+        if (excPill) excPill.textContent = `Excel: ${excelDoneCount}/12 Days`;
+        if (sqlPill) sqlPill.textContent = `SQL: ${sqlDoneCount}/18 Days`;
+        if (pyPill) pyPill.textContent = `Python: ${pythonDoneCount}/30 Days`;
+
+        // Render SVG curvy road after DOM renders
+        setTimeout(drawRoad, 100);
+      }
+
+      // Dynamic curve drawer for winding road
+      function drawRoad() {
+        const container = document.getElementById('roadmapNodesContainer');
+        const svg = document.getElementById('roadmapSvg');
+        const pathBorder = document.getElementById('roadmapBorder');
+        const pathAsphalt = document.getElementById('roadmapAsphalt');
+        const pathCenterLine = document.getElementById('roadmapCenterLine');
+        
+        if (!container || !svg || !pathBorder || !pathAsphalt || !pathCenterLine) return;
+        
+        const dots = container.querySelectorAll('.roadmap-checkpoint-dot');
+        if (dots.length === 0) return;
+        
+        // Set SVG size to match the nodes container
+        svg.setAttribute('width', container.offsetWidth);
+        svg.setAttribute('height', container.offsetHeight);
+        
+        let points = [];
+        dots.forEach(dot => {
+          const node = dot.parentElement;
+          const x = dot.offsetLeft + dot.offsetWidth / 2;
+          const y = node.offsetTop + dot.offsetTop + dot.offsetHeight / 2;
+          points.push({ x, y });
+        });
+        
+        if (points.length < 2) return;
+        
+        // Build curvy path using Bezier curves with vertical tangency
+        let pathData = `M ${points[0].x} ${points[0].y}`;
+        for (let i = 1; i < points.length; i++) {
+          const p0 = points[i - 1];
+          const p1 = points[i];
+          const dy = p1.y - p0.y;
+          const cp1x = p0.x;
+          const cp1y = p0.y + dy / 2;
+          const cp2x = p1.x;
+          const cp2y = p1.y - dy / 2;
+          pathData += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
+        }
+        
+        pathBorder.setAttribute('d', pathData);
+        pathAsphalt.setAttribute('d', pathData);
+        pathCenterLine.setAttribute('d', pathData);
+      }
+
+      // Resize listener to redraw road when viewport size changes
+      window.addEventListener('resize', drawRoad);
+
+      // Scroll helpers
+      window.scrollToRoadmapPhase = function(phase) {
+        let targetDay = 1;
+        if (phase === 'sql') targetDay = 13;
+        if (phase === 'python') targetDay = 31;
+
+        const targetNode = document.getElementById(`roadmap-day-${targetDay}`);
+        const viewport = document.getElementById('roadmapViewport');
+
+        if (targetNode && viewport) {
+          const offsetTop = targetNode.offsetTop - 30;
+          viewport.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+
+          // Toggle active class on tab buttons
+          const tabBtns = document.querySelectorAll('.roadmap-tab-btn');
+          tabBtns.forEach(btn => {
+            if (btn.getAttribute('onclick').includes(phase)) {
+              btn.classList.add('active');
+            } else {
+              btn.classList.remove('active');
+            }
+          });
+          
+          // Redraw path just in case layout changed during scrolling
+          setTimeout(drawRoad, 100);
+        }
+      }
+
+      // Initialize Winding Roadmap
+      renderWindingRoadmap();
+      // Set active status on first tab initially
+      const firstTab = document.querySelector('.roadmap-tab-btn');
+      if (firstTab) firstTab.classList.add('active');
 
       buildHeatmap();
     });
