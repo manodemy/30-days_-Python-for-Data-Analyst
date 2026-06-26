@@ -5332,100 +5332,214 @@
       background: rgba(255,255,255,0.1) !important;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
+    
+    /* Viewport scrollbar hiding style */
+    #roadmapViewport {
+      scrollbar-width: none;   /* Firefox */
+      -ms-overflow-style: none; /* IE/Edge */
+      overflow-x: hidden;
+    }
+    #roadmapViewport::-webkit-scrollbar {
+      display: none; /* Chrome/Safari/Webkit */
+    }
+
     .roadmap-day-node {
       display: flex;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 32px;
+      min-height: 72px;
       position: relative;
       width: 100%;
-    }
-    /* Dynamic alternating nodes positioning */
-    .roadmap-day-node.left {
-      justify-content: flex-start;
-      padding-right: 50%;
-    }
-    .roadmap-day-node.right {
-      justify-content: flex-end;
-      padding-left: 50%;
-    }
-    .roadmap-day-card {
-      width: 90%;
-      background: rgba(13, 20, 38, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 10px;
-      padding: 10px 12px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
-      position: relative;
-    }
-    .roadmap-day-node.left .roadmap-day-card {
-      margin-right: 15px;
-      text-align: right;
-    }
-    .roadmap-day-node.right .roadmap-day-card {
-      margin-left: 15px;
-      text-align: left;
+      box-sizing: border-box;
     }
     
-    /* Hover effects and color codings */
+    /* Spacing Rule 3: Card sits in the left/right half.
+       - left node: card is on the left, right edge of card at 50% - 8px
+       - right node: card is on the right, left edge of card at 50% + 8px
+    */
+    .roadmap-day-node.left {
+      justify-content: flex-end;
+      padding-right: calc(50% + 8px);
+    }
+    .roadmap-day-node.right {
+      justify-content: flex-start;
+      padding-left: calc(50% + 8px);
+    }
+    
+    .roadmap-day-card {
+      width: 84%;
+      max-width: 225px; /* Hard cap - never lets text stretch into opposite lane */
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: transform .15s, border-color .15s;
+      box-shadow: 0 5px 14px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,0.04) inset;
+      box-sizing: border-box;
+    }
+    
+    /* Card content alignment & right-align status row for left cards */
+    .roadmap-day-node.left .roadmap-day-card {
+      margin-right: 32px;
+      text-align: right;
+      margin-left: auto;
+    }
+    .roadmap-day-node.right .roadmap-day-card {
+      margin-left: 32px;
+      text-align: left;
+    }
+    .roadmap-day-node.left .card-status-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+    }
+    .roadmap-day-node.right .card-status-row {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    
+    /* Card Title line clamping */
+    .roadmap-day-card .card-title-text {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    /* Card Hover (no shadow changes on hover) */
     .roadmap-day-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      border-color: rgba(255,255,255,0.15);
     }
+    
+    /* Color System (Cards) */
     .roadmap-day-card.completed {
-      background: rgba(16, 185, 129, 0.08) !important;
-      border-color: rgba(16, 185, 129, 0.3) !important;
+      background: linear-gradient(180deg, #1f3a2c, #162b21) !important;
+      border: 0.5px solid rgba(93,202,165,0.3) !important;
     }
     .roadmap-day-card.completed:hover {
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
+      border-color: rgba(93,202,165,0.6) !important;
+    }
+    .roadmap-day-card.current {
+      background: linear-gradient(180deg, #1c3148, #142537) !important;
+      border: 0.5px solid rgba(133,183,235,0.35) !important;
+    }
+    .roadmap-day-card.current:hover {
+      border-color: rgba(133,183,235,0.7) !important;
     }
     .roadmap-day-card.locked {
-      opacity: 0.5;
+      opacity: 0.58;
       cursor: not-allowed;
-      background: rgba(30, 41, 59, 0.3);
-      border-color: rgba(255,255,255,0.02);
+      background: linear-gradient(180deg, #252f27, #1d251f) !important;
+      border: 0.5px solid rgba(255,255,255,0.09) !important;
     }
     .roadmap-day-card.locked:hover {
       transform: none;
-      box-shadow: none;
     }
     
-    /* Central checkpoint node dots */
+    /* Node Anatomy: Post shadows beneath post */
+    .postshadow {
+      position: absolute;
+      top: calc(50% + 12px);
+      width: 16px;
+      height: 5px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 50%;
+      filter: blur(2px);
+      transform: translateX(-50%) translateY(-50%);
+      z-index: 1;
+    }
+    .roadmap-day-node.left .postshadow {
+      left: calc(50% + 24px);
+    }
+    .roadmap-day-node.right .postshadow {
+      left: calc(50% - 24px);
+    }
+
+    /* Node Anatomy: Tapered Post planted behind the dot */
+    .post {
+      position: absolute;
+      top: calc(50% - 12px);
+      width: 5px;
+      height: 24px;
+      background: linear-gradient(90deg, #9c948a, #6e6860 60%, #4a453f);
+      border-radius: 1px;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+    .roadmap-day-node.left .post {
+      left: calc(50% + 24px);
+    }
+    .roadmap-day-node.right .post {
+      left: calc(50% - 24px);
+    }
+
+    /* Node Anatomy: Dot is 32px circle, raised 12px above center */
     .roadmap-checkpoint-dot {
       position: absolute;
       top: 50%;
-      width: 14px;
-      height: 14px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background: #1e293b;
-      border: 2.5px solid #475569;
-      transform: translate(-50%, -50%);
+      background: radial-gradient(circle at 35% 30%, #475a66, #2e3a42);
+      border: 3px solid #6b7c87;
+      transform: translate(-50%, -50%) translateY(-12px);
       z-index: 3;
-      box-shadow: 0 0 0 4px rgba(30, 41, 59, 0.5);
       transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #b7c4cc;
+      box-shadow:
+        0 3px 6px rgba(0,0,0,.55),
+        inset 0 1px 2px rgba(255,255,255,.15),
+        inset 0 -2px 3px rgba(0,0,0,.3);
     }
-    /* Shift the dots left/right depending on the node side */
     .roadmap-day-node.left .roadmap-checkpoint-dot {
-      left: calc(50% + 32px);
+      left: calc(50% + 24px);
     }
     .roadmap-day-node.right .roadmap-checkpoint-dot {
-      left: calc(50% - 32px);
+      left: calc(50% - 24px);
     }
 
-    .roadmap-day-node.excel .roadmap-checkpoint-dot {
-      border-color: #F5A623;
+    /* Dot Color State & Radial Gradient Grays, Greens, Blues */
+    .roadmap-checkpoint-dot.completed {
+      background: radial-gradient(circle at 35% 30%, #2bb98a, #157a57) !important;
+      border-color: #5dcaa5 !important;
+      color: #fff;
     }
-    .roadmap-day-node.sql .roadmap-checkpoint-dot {
-      border-color: #06B6D4;
+    .roadmap-checkpoint-dot.current {
+      background: radial-gradient(circle at 35% 30%, #4796da, #1c5fa0) !important;
+      border-color: #85b7eb !important;
+      color: #fff;
+      animation: pulseDotRing 1.8s ease-out infinite;
     }
-    .roadmap-day-node.python .roadmap-checkpoint-dot {
-      border-color: #10B981;
+    .roadmap-checkpoint-dot.locked {
+      background: radial-gradient(circle at 35% 30%, #475a66, #2e3a42) !important;
+      border-width: 3px;
+      border-style: solid;
     }
-    .roadmap-day-node.completed .roadmap-checkpoint-dot {
-      background: #10B981 !important;
-      border-color: #34D399 !important;
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    
+    /* Phase specific border colors for locked state */
+    .roadmap-day-node.excel .roadmap-checkpoint-dot.locked {
+      border-color: #F5A623 !important; /* Amber */
+    }
+    .roadmap-day-node.sql .roadmap-checkpoint-dot.locked {
+      border-color: #06B6D4 !important; /* Teal */
+    }
+    .roadmap-day-node.python .roadmap-checkpoint-dot.locked {
+      border-color: #a855f7 !important; /* Purple */
+    }
+
+    @keyframes pulseDotRing {
+      0%   { box-shadow: 0 3px 6px rgba(0,0,0,.55), inset 0 1px 2px rgba(255,255,255,.15), 0 0 0 0 rgba(71,150,218,0.6); }
+      70%  { box-shadow: 0 3px 6px rgba(0,0,0,.55), inset 0 1px 2px rgba(255,255,255,.15), 0 0 0 12px rgba(71,150,218,0); }
+      100% { box-shadow: 0 3px 6px rgba(0,0,0,.55), inset 0 1px 2px rgba(255,255,255,.15), 0 0 0 0 rgba(71,150,218,0); }
     }
     
     /* Phase Milestone Banner card */
@@ -5440,6 +5554,7 @@
       position: relative;
       z-index: 4;
       box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      box-sizing: border-box;
     }
     .roadmap-milestone-banner.excel-complete {
       background: linear-gradient(135deg, #1e1e24, #12131a);
@@ -5459,8 +5574,6 @@
     }
     @keyframes pulseMilestone {
       0% { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.1); }
-      100% { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); }
-    }20px rgba(16, 185, 129, 0.1); }
       100% { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); }
     }
 </style>
@@ -5817,8 +5930,8 @@
 
 
         <!-- 60-Day Winding Road Roadmap Card -->
-        <div class="glass-card roadmap-card" style="padding: 1.5rem 1.75rem; display: flex; flex-direction: column; gap: 1.25rem;">
-          <div>
+        <div class="glass-card roadmap-card" style="padding: 1.5rem 1.75rem; display: flex; flex-direction: column; gap: 1.25rem; height: 680px; max-height: 680px; box-sizing: border-box; overflow: hidden;">
+          <div style="flex-shrink: 0;">
             <h2 class="dashboard-greeting" id="welcomeGreeting"
               style="font-size: 24px; margin-bottom: 0.35rem; line-height: 1.2; font-family: 'Outfit', sans-serif; font-weight: 900; color: #fff;">
               Welcome back!</h2>
@@ -5841,12 +5954,19 @@
           </div>
 
           <!-- Winding Road Scrollable Viewport -->
-          <div class="roadmap-viewport" id="roadmapViewport" style="position: relative; max-height: 520px; overflow-y: auto; padding: 20px 10px; background: rgba(4, 6, 12, 0.4); border-radius: 12px; scroll-behavior: smooth;">
+          <div class="roadmap-viewport" id="roadmapViewport" style="position: relative; flex: 1; overflow-y: auto; padding: 20px 10px; background: rgba(4, 6, 12, 0.4); border-radius: 12px; scroll-behavior: smooth; box-sizing: border-box;">
             <!-- Dynamic SVG Winding Road Track (positioned behind nodes) -->
             <svg id="roadmapSvg" style="position: absolute; left: 0; top: 0; width: 100%; pointer-events: none; z-index: 1;">
-              <path id="roadmapBorder" fill="none" stroke="#2a3547" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" />
-              <path id="roadmapAsphalt" fill="none" stroke="#0f172a" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" />
-              <path id="roadmapCenterLine" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 8" stroke-linecap="round" stroke-linejoin="round" />
+              <!-- 1. Shoulder/Curb with soft drop shadow -->
+              <path id="roadmapBorder" fill="none" stroke="#554332" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));" />
+              <!-- 2. Dirt transition -->
+              <path id="roadmapDirt" fill="none" stroke="#3d3024" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" />
+              <!-- 3. Edge paint lines -->
+              <path id="roadmapEdgePaint" fill="none" stroke="#cbd5e1" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" />
+              <!-- 4. Asphalt driving surface -->
+              <path id="roadmapAsphalt" fill="none" stroke="#1e2022" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" />
+              <!-- 5. Lane-edge paint and center dashed line -->
+              <path id="roadmapCenterLine" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6 10" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
 
             <!-- Road nodes container (alternating left / right) -->
@@ -8817,6 +8937,8 @@
         let sqlDoneCount = 0;
         let pythonDoneCount = 0;
 
+        let foundCurrent = false;
+
         roadmapDays.forEach((day, index) => {
           // Check completed status
           const solvedCount = parseInt(localStorage.getItem(`manodemy_${day.key}_solved_count`) || '0', 10);
@@ -8837,10 +8959,19 @@
             if (day.phase === 'python' && !isPythonEnrolled && dayNumInt >= 3) isLocked = true;
           }
 
-          // Create node element
+          // Identify Today's Day (Current active incomplete day)
+          let isCurrent = false;
+          if (!isCompleted && !isLocked && !foundCurrent) {
+            isCurrent = true;
+            foundCurrent = true;
+          }
+
+          // Create node element - Invert alternation logic: Day 1 (index 0) = right, Day 2 (index 1) = left...
           const node = document.createElement('div');
-          const isLeft = index % 2 === 0;
-          node.className = `roadmap-day-node ${day.phase} ${isLeft ? 'left' : 'right'}` + (isCompleted ? ' completed' : '');
+          const isRight = index % 2 === 0;
+          const stateClass = isCompleted ? 'completed' : (isCurrent ? 'current' : 'locked');
+          
+          node.className = `roadmap-day-node ${day.phase} ${isRight ? 'right' : 'left'}` + (isCompleted ? ' completed' : '');
           node.id = `roadmap-day-${day.globalDay}`;
 
           // Connect click action
@@ -8848,24 +8979,33 @@
             ? "window.location.href = 'landing_v2/index.html#pricing?locked=true';"
             : `window.location.href = '${day.targetUrl}?v=2.1';`;
 
+          // Inject post shadow, tapered post, raised checkpoint dot, and aligned day card
+          const statusText = isCompleted 
+            ? '✓ Completed' 
+            : (isLocked ? '🔒 Locked' : (isCurrent ? `⚡ Current (Progress: ${solvedCount}/${day.cells})` : `⏳ Progress: ${solvedCount}/${day.cells} Cells`));
+
           node.innerHTML = `
-            <div class="roadmap-checkpoint-dot"></div>
-            <div class="roadmap-day-card ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}" onclick="${clickHandler}">
+            <div class="postshadow"></div>
+            <div class="post"></div>
+            <div class="roadmap-checkpoint-dot ${stateClass}">
+              ${isCompleted ? '✓' : (isLocked ? '🔒' : day.globalDay)}
+            </div>
+            <div class="roadmap-day-card ${stateClass}" onclick="${clickHandler}">
               <div style="font-size: 10px; font-weight: 700; color: ${day.phase === 'excel' ? '#F5A623' : (day.phase === 'sql' ? '#06B6D4' : '#10B981')}; margin-bottom: 2px;">
                 DAY ${day.globalDay.toString().padStart(2, '0')} — ${day.phase.toUpperCase()} DAY ${day.courseDay}
               </div>
-              <div style="font-size: 12px; font-weight: 800; color: #fff; line-height: 1.3;">
+              <div class="card-title-text" style="font-size: 12px; font-weight: 800; color: #fff; line-height: 1.3;">
                 ${day.emoji} ${day.title}
               </div>
-              <div style="margin-top: 4px; font-size: 9px; color: rgba(255,255,255,0.4);">
-                ${isCompleted ? '✓ Completed' : (isLocked ? '🔒 Locked' : `⏳ Progress: ${solvedCount}/${day.cells} Cells`)}
+              <div class="card-status-row" style="margin-top: 4px; font-size: 9px; color: rgba(255,255,255,0.5);">
+                ${statusText}
               </div>
             </div>
           `;
 
           container.appendChild(node);
 
-          // Insert milestone banners at completion checkpoints
+          // Insert milestone banners at completion checkpoints (Opaque solid backgrounds)
           if (day.globalDay === 12) {
             const banner = document.createElement('div');
             banner.className = 'roadmap-milestone-banner excel-complete';
@@ -8911,7 +9051,11 @@
         const container = document.getElementById('roadmapNodesContainer');
         const svg = document.getElementById('roadmapSvg');
         const pathBorder = document.getElementById('roadmapBorder');
+        const pathBorderTexture = document.getElementById('roadmapBorderTexture');
+        const pathDirt = document.getElementById('roadmapDirt');
+        const pathEdgePaint = document.getElementById('roadmapEdgePaint');
         const pathAsphalt = document.getElementById('roadmapAsphalt');
+        const pathAsphaltTexture = document.getElementById('roadmapAsphaltTexture');
         const pathCenterLine = document.getElementById('roadmapCenterLine');
         
         if (!container || !svg || !pathBorder || !pathAsphalt || !pathCenterLine) return;
@@ -8947,8 +9091,52 @@
         }
         
         pathBorder.setAttribute('d', pathData);
+        if (pathBorderTexture) pathBorderTexture.setAttribute('d', pathData);
+        if (pathDirt) pathDirt.setAttribute('d', pathData);
+        if (pathEdgePaint) pathEdgePaint.setAttribute('d', pathData);
         pathAsphalt.setAttribute('d', pathData);
+        if (pathAsphaltTexture) pathAsphaltTexture.setAttribute('d', pathData);
         pathCenterLine.setAttribute('d', pathData);
+
+        // Render organic crack lines with deterministic math to prevent jumping
+        let crack1Data = '';
+        let crack2Data = '';
+        if (points.length >= 2) {
+          crack1Data = `M ${points[0].x} ${points[0].y}`;
+          crack2Data = `M ${points[0].x} ${points[0].y}`;
+          for (let i = 1; i < points.length; i++) {
+            const p0 = points[i - 1];
+            const p1 = points[i];
+            const dy = p1.y - p0.y;
+            
+            // Deterministic pseudo-random seed using sine of coordinates
+            const seed = (p0.x + p0.y) * 0.05 + i;
+            const jitterX1 = Math.sin(seed * 37.4) * 3;
+            const jitterY1 = Math.cos(seed * 19.8) * 2;
+            const jitterX2 = Math.sin(seed * 53.1) * 3;
+            const jitterY2 = Math.cos(seed * 27.4) * 2;
+            crack1Data += ` C ${p0.x + jitterX1} ${p0.y + dy/2 + jitterY1}, ${p1.x + jitterX2} ${p1.y - dy/2 + jitterY2}, ${p1.x} ${p1.y}`;
+            
+            const jitterX3 = Math.cos(seed * 41.2) * 4;
+            const jitterY3 = Math.sin(seed * 12.5) * 3;
+            const jitterX4 = Math.cos(seed * 62.7) * 4;
+            const jitterY4 = Math.sin(seed * 31.9) * 3;
+            crack2Data += ` C ${p0.x + jitterX3} ${p0.y + dy/2 + jitterY3}, ${p1.x + jitterX4} ${p1.y - dy/2 + jitterY4}, ${p1.x} ${p1.y}`;
+          }
+        }
+
+        const pathCracks1 = document.getElementById('roadmapCracks1');
+        const pathCracks2 = document.getElementById('roadmapCracks2');
+        if (pathCracks1) pathCracks1.setAttribute('d', crack1Data);
+        if (pathCracks2) pathCracks2.setAttribute('d', crack2Data);
+
+        const pathEdgeLeft = document.getElementById('roadmapEdgeLineLeft');
+        const pathEdgeRight = document.getElementById('roadmapEdgeLineRight');
+        if (pathEdgeLeft) pathEdgeLeft.setAttribute('d', pathData);
+        if (pathEdgeRight) pathEdgeRight.setAttribute('d', pathData);
+
+        const pathWornCenter = document.getElementById('roadmapWornCenter');
+        if (pathWornCenter) pathWornCenter.setAttribute('d', pathData);
       }
 
       // Resize listener to redraw road when viewport size changes
