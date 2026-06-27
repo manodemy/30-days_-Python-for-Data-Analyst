@@ -6600,35 +6600,7 @@
       }
 
       // Render Course Selector Cards
-      // Declare switchActiveCourse for smooth dynamic transitions between tabs
-        const switchActiveCourse = async (newCourseId) => {
-          const dashboard = document.querySelector('.dashboard-container');
-          if (dashboard) {
-            dashboard.style.transition = 'opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
-            dashboard.style.opacity = '0';
-            dashboard.style.transform = 'translateY(15px)';
-          }
-          
-          await new Promise(r => setTimeout(r, 250));
-          
-          currentCourse = newCourseId;
-          localStorage.setItem('manodemy_active_course', newCourseId);
-          
-          applyDashboardCourseTheme(newCourseId);
-          DAY_METADATA = newCourseId === 'sql' ? SQL_METADATA : (newCourseId === 'excel' ? EXCEL_METADATA : PYTHON_METADATA);
-          TOTAL_CHALLENGES = DAY_METADATA.reduce((sum, item) => sum + item.totalCells, 0);
-          
-          await refreshDashboardUI();
-          
-          await new Promise(r => setTimeout(r, 50));
-          
-          if (dashboard) {
-            dashboard.style.opacity = '1';
-            dashboard.style.transform = 'translateY(0)';
-          }
-        };
-
-        const renderCourseSelectorGrid = () => {
+      const renderCourseSelectorGrid = () => {
           const container = document.getElementById('coursesSelectorGrid');
           if (!container) return;
           
@@ -7308,117 +7280,9 @@
 
 
         // Render Segmented Milestone Timeline
-      const renderMilestoneTimeline = () => {
-        const timelineTrack = document.getElementById('timelineSegmentedTrack');
-        const timelineLabelsRow = document.getElementById('timelineLabelsRow');
-        if (timelineTrack) {
-          timelineTrack.innerHTML = '';
-          if (timelineLabelsRow) timelineLabelsRow.innerHTML = '';
+        renderMilestoneTimeline();
 
-          // Set dynamic columns mapping for the active course day count
-          timelineTrack.style.gridTemplateColumns = `repeat(${DAY_METADATA.length}, 1fr)`;
-          if (timelineLabelsRow) {
-            timelineLabelsRow.style.gridTemplateColumns = `repeat(${DAY_METADATA.length}, 1fr)`;
-          }
-
-          const activePrefix = currentCourse === 'sql' ? 'sql-' : (currentCourse === 'excel' ? 'excel-' : '');
-
-          DAY_METADATA.forEach(item => {
-            const solved = parseInt(localStorage.getItem(`manodemy_${activePrefix}day${item.day}_solved_count`) || '0', 10);
-            const targetPercent = item.totalCells > 0 ? Math.round((solved / item.totalCells) * 100) : 0;
-            const isLocked = item.day > activeDayNum;
-
-            // Create segment track fill
-            const segment = document.createElement('div');
-            segment.className = 'timeline-segment' + (resumeTarget === getDayUrl(currentCourse, item.day) ? ' active-segment' : '');
-            
-            if (solved === item.totalCells) {
-              segment.classList.add('timeline-segment--completed');
-            } else if (solved > 0) {
-              segment.classList.add('timeline-segment--partial');
-            } else if (isLocked) {
-              segment.classList.add('timeline-segment--locked');
-            }
-
-            // Create label element
-            let label = null;
-            if (timelineLabelsRow) {
-              label = document.createElement('div');
-              label.className = 'timeline-segment-label' + (resumeTarget === getDayUrl(currentCourse, item.day) ? ' active-label' : '');
-              
-              if (solved === item.totalCells) {
-                label.classList.add('timeline-segment-label--completed');
-              }
-
-              label.textContent = String(item.day).padStart(2, '0');
-              timelineLabelsRow.appendChild(label);
-            }
-
-            // Hover logic
-            segment.addEventListener('mouseenter', () => {
-              if (label) {
-                label.style.color = '#fff';
-                label.style.transform = 'translateY(-2px) scale(1.1)';
-                label.style.textShadow = '0 0 8px var(--dashboard-accent)';
-              }
-
-              // Tooltip positioning
-              const tooltip = document.getElementById('timelineTooltip');
-              if (tooltip) {
-                const bestScore = parseFloat(localStorage.getItem(`manodemy_${activePrefix}day${item.day}_best_score`) || '0');
-                const maxDayXP = 1000 * (item.totalCells / TOTAL_CHALLENGES);
-                
-                document.getElementById('tooltipDayTitle').textContent = `Day ${item.day}`;
-                document.getElementById('tooltipDayTopic').textContent = item.title;
-                document.getElementById('tooltipDaySolved').textContent = `Solved: ${solved} / ${item.totalCells} (${targetPercent}%)`;
-                document.getElementById('tooltipDayMarks').textContent = `${bestScore.toFixed(1)} / ${maxDayXP.toFixed(1)} Marks`;
-
-                tooltip.style.display = 'block';
-                // Calculate coordinates relative to parent .timeline-wrapper
-                const wrapperRect = timelineTrack.parentElement.getBoundingClientRect();
-                const segmentRect = segment.getBoundingClientRect();
-                let leftPos = segmentRect.left - wrapperRect.left + (segmentRect.width / 2);
-
-                // Keep tooltip inside bounds to prevent cropping at start/end dates
-                const tooltipWidth = tooltip.offsetWidth || 180;
-                const minLeft = (tooltipWidth / 2) + 8;
-                const maxLeft = wrapperRect.width - (tooltipWidth / 2) - 8;
-
-                if (leftPos < minLeft) {
-                  leftPos = minLeft;
-                } else if (leftPos > maxLeft) {
-                  leftPos = maxLeft;
-                }
-
-                tooltip.style.left = `${leftPos}px`;
-                tooltip.style.opacity = '1';
-              }
-            });
-
-            segment.addEventListener('mouseleave', () => {
-              if (label) {
-                label.style.color = (resumeTarget === getDayUrl(currentCourse, item.day)) ? 'var(--dashboard-accent)' : 'rgba(255, 255, 255, 0.25)';
-                label.style.transform = 'none';
-                label.style.textShadow = (resumeTarget === getDayUrl(currentCourse, item.day)) ? '0 0 6px var(--dashboard-accent-glow)' : 'none';
-              }
-
-              const tooltip = document.getElementById('timelineTooltip');
-              if (tooltip) {
-                tooltip.style.opacity = '0';
-                tooltip.style.display = 'none';
-              }
-            });
-
-            segment.addEventListener('click', () => {
-              window.location.href = getDayUrl(currentCourse, item.day) + `?v=2.1`;
-            });
-
-            timelineTrack.appendChild(segment);
-          });
-        }
-      };
-
-      // Calculate XP
+        // Calculate XP
 
         const xp = calculateXP();
 
@@ -7498,9 +7362,7 @@
 
 
 
-      // Initial stats load
-
-      recalculateStatsAndReload();
+      
 
 
 
@@ -7632,126 +7494,6 @@
         "10": { icon: "⚙️", quest: "<strong>Build PivotTables</strong> — summarize thousands of rows of business data instantly. Completing today earns up to <strong>+83.3 Marks</strong>!", tip: "💡 Tip: PivotTables make grouping and aggregations visual and drag-drop." },
         "11": { icon: "📈", quest: "<strong>Create interactive charts</strong> — build dashboards with slicers and timeline controls. Completing today earns up to <strong>+83.3 Marks</strong>!", tip: "💡 Tip: Slicers act as visual filters for PivotTables and Charts." },
         "12": { icon: "🏆", quest: "<strong>Complete the Excel Capstone</strong> — build a full budgeting & analysis model! Completing today earns up to <strong>+83.3 Marks</strong>!", tip: "🏆 Finish strong! Build your own professional financial model." }
-      };
-
-      const renderDailyQuest = () => {
-        const questTextEl = document.getElementById('questText');
-        const questIconEl = document.getElementById('questIcon');
-        if (questTextEl) {
-          // Find the first incomplete day
-          let activeDay = null;
-          const keyPrefix = currentCourse === 'sql' ? 'sql-' : (currentCourse === 'excel' ? 'excel-' : '');
-
-          for (let i = 0; i < DAY_METADATA.length; i++) {
-            const item = DAY_METADATA[i];
-            const solved = parseInt(localStorage.getItem(`manodemy_${keyPrefix}day${item.day}_solved_count`) || '0', 10);
-            if (solved < item.totalCells) {
-              activeDay = item.day;
-              break;
-            }
-          }
-
-          let currentQuests = DAY_QUESTS;
-          if (currentCourse === 'sql') currentQuests = SQL_QUESTS;
-          if (currentCourse === 'excel') currentQuests = EXCEL_QUESTS;
-
-          if (activeDay && currentQuests[activeDay]) {
-            const q = currentQuests[activeDay];
-            const questMain = `${q.quest} <span style="display:block; margin-top:6px; font-size:11px; color:rgba(148,163,184,0.65); font-family:'JetBrains Mono',monospace;">${q.tip}</span>`;
-            questTextEl.innerHTML = questMain;
-            if (questIconEl) questIconEl.textContent = q.icon;
-            nextQuestDay = activeDay;
-
-            // Append daily rotating bonus
-            const bonusDayIndex = new Date().getDay();
-            const bonus = DAILY_BONUS_QUESTS[bonusDayIndex];
-            const bonusEl = document.getElementById('questBonusText');
-            if (bonusEl) {
-              bonusEl.innerHTML = `<span style="color:var(--dashboard-accent);font-size:9.5px;text-transform:uppercase;letter-spacing:0.15em;font-weight:700;">Bonus Quest</span><br>${bonus.icon} ${bonus.text}`;
-              bonusEl.style.display = 'block';
-            }
-          } else {
-            let courseNameText = "Python Data Analyst";
-            if (currentCourse === 'sql') courseNameText = "SQL Data Analyst";
-            if (currentCourse === 'excel') courseNameText = "Excel Data Specialist";
-
-            questTextEl.innerHTML = `🎓 <strong>Capstone Completed!</strong> You're a certified ${courseNameText}. Start your own project today!`;
-            if (questIconEl) questIconEl.textContent = "🏆";
-          }
-        }
-      };
-
-      // Render Curriculum Grid Cards matching landing page style
-      const renderCurriculumGrid = () => {
-        const grid = document.getElementById('curriculumGrid');
-        if (!grid) return;
-        grid.innerHTML = '';
-        let isUserEnrolled = false;
-        const isPaidUserGrid = (
-          session.user.user_metadata?.plan === 'pro' ||
-          localStorage.getItem('manodemy_enrolled') === 'true' ||
-          (typeof userProfile !== 'undefined' && userProfile && (
-            userProfile.plan === 'pro' ||
-            userProfile.plan_type === 'premium' ||
-            userProfile.plan_type === 'pro' ||
-            userProfile.role === 'admin'
-          ))
-        );
-
-        if (isPaidUserGrid) {
-          isUserEnrolled = true;
-        } else {
-          isUserEnrolled = (currentCourse === 'sql' && isEnrolledSql) ||
-                           (currentCourse === 'excel' && isEnrolledExcel) ||
-                           (currentCourse === 'python' && isEnrolledPython);
-        }
-
-        const activePrefix = currentCourse === 'sql' ? 'sql-' : (currentCourse === 'excel' ? 'excel-' : '');
-
-        DAY_METADATA.forEach(item => {
-          const solved = parseInt(localStorage.getItem(`manodemy_${activePrefix}day${item.day}_solved_count`) || '0', 10);
-          const percent = item.totalCells > 0 ? Math.round((solved / item.totalCells) * 100) : 0;
-          const bestScore = parseFloat(localStorage.getItem(`manodemy_${activePrefix}day${item.day}_best_score`) || '0');
-          const maxDayXP = 1000 * (item.totalCells / TOTAL_CHALLENGES);
-
-          const isLockedDay = !isUserEnrolled && item.day > 1;
-
-          const card = document.createElement('a');
-          const isCurrentActive = resumeTarget === getDayUrl(currentCourse, item.day);
-          card.className = 'day-card' + (isCurrentActive ? ' active-day' : '') + (isLockedDay ? ' day-card--locked' : '');
-          
-          if (isLockedDay) {
-            card.href = '#';
-            card.addEventListener('click', (e) => {
-              e.preventDefault();
-              window.location.href = 'landing_v2/index.html#pricing?locked=true';
-            });
-          } else {
-            card.href = getDayUrl(currentCourse, item.day) + `?v=2.1`;
-          }
-
-          let badgeHTML = '';
-          if (solved === item.totalCells) {
-            badgeHTML = `<span class="day-badge day-badge--completed">COMPLETED</span>`;
-          } else if (solved > 0) {
-            badgeHTML = `<span class="day-badge day-badge--progress">IN PROGRESS (${percent}%)</span>`;
-          } else if (isLockedDay) {
-            badgeHTML = `<span class="lock-badge"><span class="lock-icon">🔒</span> LOCKED</span>`;
-          } else {
-            badgeHTML = `<span class="day-badge day-badge--start">START</span>`;
-          }
-
-          let xpBadgeHTML = `<div class="day-xp-badge">${bestScore.toFixed(0)} / ${maxDayXP.toFixed(0)} Marks</div>`;
-
-          card.innerHTML = `
-            <div class="day-number">Day ${item.day}</div>
-            <span class="day-title">${item.title}</span>
-            ${xpBadgeHTML}
-            ${badgeHTML}
-          `;
-
-          grid.appendChild(card);
-        });
       };
 
       // Category Filter Tabs Interactive Logic
@@ -8762,6 +8504,419 @@
         }
       }
 
+      // Define standalone UI update functions
+      const renderMilestoneTimeline = () => {
+        const activePrefix = currentCourse === 'sql' ? 'sql-' : (currentCourse === 'excel' ? 'excel-' : '');
+        // Render Segmented Milestone Timeline
+
+        const timelineTrack = document.getElementById('timelineSegmentedTrack');
+
+        const timelineLabelsRow = document.getElementById('timelineLabelsRow');
+
+        if (timelineTrack) {
+
+          timelineTrack.innerHTML = '';
+
+          if (timelineLabelsRow) timelineLabelsRow.innerHTML = '';
+
+
+
+          // Set dynamic columns mapping for the active course day count
+
+          timelineTrack.style.gridTemplateColumns = `repeat(${DAY_METADATA.length}, 1fr)`;
+
+          if (timelineLabelsRow) {
+
+            timelineLabelsRow.style.gridTemplateColumns = `repeat(${DAY_METADATA.length}, 1fr)`;
+
+          }
+
+
+
+          DAY_METADATA.forEach(item => {
+
+            const solvedCount = parseInt(localStorage.getItem(`manodemy_${activePrefix}day${item.day}_solved_count`) || '0', 10);
+
+            const targetPercent = Math.min(Math.round((solvedCount / item.totalCells) * 100), 100);
+
+            const maxDayXP = 1000 * (item.totalCells / TOTAL_CHALLENGES);
+
+            const bestScore = parseFloat(localStorage.getItem(`manodemy_${activePrefix}day${item.day}_best_score`) || '0');
+
+
+
+            const segment = document.createElement('div');
+
+            segment.className = 'timeline-segment' + (resumeTarget === getDayUrl(currentCourse, item.day) ? ' active-segment' : '');
+
+            segment.setAttribute('data-day', item.day);
+
+            segment.setAttribute('tabindex', '0');
+
+
+
+            const fill = document.createElement('div');
+
+            fill.className = 'timeline-segment-fill';
+
+            fill.style.width = `${targetPercent}%`;
+
+
+
+            segment.appendChild(fill);
+
+
+
+            // Create label element
+
+            let label = null;
+
+            if (timelineLabelsRow) {
+
+              label = document.createElement('span');
+
+              label.id = `timeline-label-day-${item.day}`;
+
+              label.className = 'timeline-segment-label' + (resumeTarget === getDayUrl(currentCourse, item.day) ? ' active-label' : '');
+
+              label.textContent = item.day;
+
+              timelineLabelsRow.appendChild(label);
+
+            }
+
+
+
+            // Hover logic
+
+            segment.addEventListener('mouseenter', (e) => {
+
+              if (label) {
+
+                label.style.color = 'var(--dashboard-accent)';
+
+                label.style.transform = 'scale(1.2)';
+
+                label.style.textShadow = '0 0 8px var(--dashboard-accent-glow)';
+
+              }
+
+
+
+              // Tooltip positioning
+
+              const tooltip = document.getElementById('timelineTooltip');
+
+              if (tooltip) {
+
+                document.getElementById('tooltipDayTitle').textContent = `Day ${item.day}`;
+
+                document.getElementById('tooltipDayTopic').textContent = item.title;
+
+                document.getElementById('tooltipDaySolved').textContent = `Solved: ${solvedCount} / ${item.totalCells} (${targetPercent}%)`;
+
+                document.getElementById('tooltipDayMarks').textContent = `${bestScore.toFixed(1)} / ${maxDayXP.toFixed(1)} Marks`;
+
+
+
+                tooltip.style.display = 'block';
+
+                // Calculate coordinates relative to parent .timeline-wrapper
+
+                const wrapperRect = timelineTrack.parentElement.getBoundingClientRect();
+
+                const segmentRect = segment.getBoundingClientRect();
+
+                let leftPos = segmentRect.left - wrapperRect.left + (segmentRect.width / 2);
+
+
+
+                // Keep tooltip inside bounds to prevent cropping at start/end dates
+
+                const tooltipWidth = tooltip.offsetWidth || 180;
+
+                const minLeft = (tooltipWidth / 2) + 8;
+
+                const maxLeft = wrapperRect.width - (tooltipWidth / 2) - 8;
+
+
+
+                if (leftPos < minLeft) {
+
+                  leftPos = minLeft;
+
+                } else if (leftPos > maxLeft) {
+
+                  leftPos = maxLeft;
+
+                }
+
+
+
+                tooltip.style.left = `${leftPos}px`;
+
+                tooltip.style.opacity = '1';
+
+              }
+
+            });
+
+
+
+            segment.addEventListener('mouseleave', () => {
+
+              if (label) {
+
+                label.style.color = (resumeTarget === getDayUrl(currentCourse, item.day)) ? 'var(--dashboard-accent)' : 'rgba(255, 255, 255, 0.25)';
+
+                label.style.transform = 'none';
+
+                label.style.textShadow = (resumeTarget === getDayUrl(currentCourse, item.day)) ? '0 0 6px var(--dashboard-accent-glow)' : 'none';
+
+              }
+
+
+
+              const tooltip = document.getElementById('timelineTooltip');
+
+              if (tooltip) {
+
+                tooltip.style.opacity = '0';
+
+                tooltip.style.display = 'none';
+
+              }
+
+            });
+
+
+
+            segment.addEventListener('click', () => {
+
+              window.location.href = getDayUrl(currentCourse, item.day) + `?v=2.1`;
+
+            });
+
+
+
+            timelineTrack.appendChild(segment);
+
+          });
+
+        }
+
+
+
+        
+      };
+
+      const renderDailyQuest = () => {
+        const questTextEl = document.getElementById('questText');
+        const questIconEl = document.getElementById('questIcon');
+        if (questTextEl) {
+          const questTextEl = document.getElementById('questText');
+
+      const questIconEl = document.getElementById('questIcon');
+
+      if (questTextEl) {
+
+        // Find the first incomplete day
+
+        let activeDay = null;
+        const keyPrefix = currentCourse === 'sql' ? 'sql-' : (currentCourse === 'excel' ? 'excel-' : '');
+
+        for (let i = 0; i < DAY_METADATA.length; i++) {
+
+          const item = DAY_METADATA[i];
+
+          const solved = parseInt(localStorage.getItem(`manodemy_${keyPrefix}day${item.day}_solved_count`) || '0', 10);
+
+          if (solved < item.totalCells) {
+
+            activeDay = item.day;
+
+            break;
+
+          }
+
+        }
+
+
+
+        let currentQuests = DAY_QUESTS;
+        if (currentCourse === 'sql') currentQuests = SQL_QUESTS;
+        if (currentCourse === 'excel') currentQuests = EXCEL_QUESTS;
+
+        if (activeDay && currentQuests[activeDay]) {
+
+          const q = currentQuests[activeDay];
+
+          // Primary quest
+
+          const questMain = `${q.quest} <span style="display:block; margin-top:6px; font-size:11px; color:rgba(148,163,184,0.65); font-family:'JetBrains Mono',monospace;">${q.tip}</span>`;
+
+          questTextEl.innerHTML = questMain;
+
+          if (questIconEl) questIconEl.textContent = q.icon;
+
+          nextQuestDay = activeDay;
+
+
+
+          // Append daily rotating bonus
+
+          const bonusDayIndex = new Date().getDay(); // 0-6, changes each day of the week
+
+          const bonus = DAILY_BONUS_QUESTS[bonusDayIndex];
+
+          const bonusEl = document.getElementById('questBonusText');
+
+          if (bonusEl) {
+
+            bonusEl.innerHTML = `<span style="color:var(--dashboard-accent);font-size:9.5px;text-transform:uppercase;letter-spacing:0.15em;font-weight:700;">Bonus Quest</span><br>${bonus.icon} ${bonus.text}`;
+
+            bonusEl.style.display = 'block';
+
+          }
+
+        } else {
+
+          let courseNameText = "Python Data Analyst";
+          if (currentCourse === 'sql') courseNameText = "SQL Data Analyst";
+          if (currentCourse === 'excel') courseNameText = "Excel Data Specialist";
+
+          questTextEl.innerHTML = `🎓 <strong>Capstone Completed!</strong> You're a certified ${courseNameText}. Start your own project today!`;
+
+          if (questIconEl) questIconEl.textContent = "🏆";
+
+        }
+
+      }
+        }
+      };
+
+      const renderCurriculumGrid = () => {
+        const grid = document.getElementById('curriculumGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        // Render Curriculum Grid Cards matching landing page style
+
+      
+
+      let isUserEnrolled = false;
+      const isPaidUserGrid = (
+        session.user.user_metadata?.plan === 'pro' ||
+        localStorage.getItem('manodemy_enrolled') === 'true' ||
+        (typeof userProfile !== 'undefined' && userProfile && (
+          userProfile.plan === 'pro' ||
+          userProfile.plan_type === 'premium' ||
+          userProfile.plan_type === 'pro' ||
+          userProfile.role === 'admin'
+        ))
+      );
+
+      if (isPaidUserGrid) {
+        isUserEnrolled = true;
+      } else {
+        if (currentCourse === 'sql') {
+          isUserEnrolled = localStorage.getItem('manodemy_enrolled_sql') === 'true';
+        } else if (currentCourse === 'excel') {
+          isUserEnrolled = localStorage.getItem('manodemy_enrolled_excel') === 'true';
+        } else {
+          isUserEnrolled = false; // Lock python day03+ for non-purchased users
+        }
+      }
+
+      DAY_METADATA.forEach(item => {
+        const keyPrefix = currentCourse === 'sql' ? 'sql-' : (currentCourse === 'excel' ? 'excel-' : '');
+
+        const solvedCount = parseInt(localStorage.getItem(`manodemy_${keyPrefix}day${item.day}_solved_count`) || '0', 10);
+
+        const targetPercent = Math.min(Math.round((solvedCount / item.totalCells) * 100), 100);
+
+        const isLockedDay = !isUserEnrolled && item.day !== "01" && item.day !== "02";
+
+
+
+        let badgeHTML = '';
+
+        if (isLockedDay) {
+
+          badgeHTML = `<span class="day-badge lock-badge"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="position:relative; top:-0.5px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> LOCK</span>`;
+
+        } else if (targetPercent === 100) {
+
+          badgeHTML = `<span class="day-badge completed-badge">✓</span>`;
+
+        } else if (targetPercent > 0) {
+
+          badgeHTML = `<span class="day-badge in-progress-badge">${solvedCount}/${item.totalCells}</span>`;
+
+        } else if (item.day === "01" || item.day === "02") {
+
+          badgeHTML = `<span class="day-badge free-badge">FREE</span>`;
+
+        }
+
+
+
+        const maxDayXP = 1000 * (item.totalCells / TOTAL_CHALLENGES);
+
+        const bestScore = parseFloat(localStorage.getItem(`manodemy_${keyPrefix}day${item.day}_best_score`) || '0');
+
+
+
+        let xpBadgeHTML = '';
+
+        if (bestScore > 0) {
+
+          xpBadgeHTML = `<div class="day-xp-badge">${bestScore.toFixed(1)} / ${maxDayXP.toFixed(1)} Marks</div>`;
+
+        } else {
+
+          xpBadgeHTML = `<div class="day-xp-badge" style="color: rgba(255,255,255,0.25); background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); text-shadow: none; box-shadow: none;">0.0 / ${maxDayXP.toFixed(1)} Marks</div>`;
+
+        }
+
+
+
+        const isCurrentActive = resumeTarget === getDayUrl(currentCourse, item.day);
+
+
+
+        const card = document.createElement('a');
+
+        card.className = 'day-card' + (isCurrentActive ? ' active-day' : '') + (isLockedDay ? ' day-card--locked' : '');
+
+        card.href = isLockedDay ? 'landing_v2/index.html#pricing?locked=true' : getDayUrl(currentCourse, item.day) + `?v=2.1`;
+
+        card.setAttribute('data-day', item.day);
+
+        card.setAttribute('data-category', item.category);
+
+        card.setAttribute('tabindex', '0');
+
+
+
+        card.innerHTML = `
+
+          <span class="day-num">Day ${item.day}</span>
+
+          <span class="day-emoji">${item.emoji}</span>
+
+          <span class="day-title">${item.title}</span>
+
+          ${xpBadgeHTML}
+
+          ${badgeHTML}
+
+        `;
+
+        grid.appendChild(card);
+
+      });
+      };
+
       // Define refreshDashboardUI to bundle rendering updates
       const refreshDashboardUI = async () => {
         let activeDayNum = DAY_METADATA[0].day;
@@ -8789,8 +8944,40 @@
         buildHeatmap();
       };
 
-      // Initial dashboard render
+      // Declare switchActiveCourse for smooth dynamic transitions between tabs
+      const switchActiveCourse = async (newCourseId) => {
+        const dashboard = document.querySelector('.dashboard-container');
+        if (dashboard) {
+          dashboard.style.transition = 'opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
+          dashboard.style.opacity = '0';
+          dashboard.style.transform = 'translateY(15px)';
+        }
+        
+        await new Promise(r => setTimeout(r, 250));
+        
+        currentCourse = newCourseId;
+        localStorage.setItem('manodemy_active_course', newCourseId);
+        
+        applyDashboardCourseTheme(newCourseId);
+        DAY_METADATA = newCourseId === 'sql' ? SQL_METADATA : (newCourseId === 'excel' ? EXCEL_METADATA : PYTHON_METADATA);
+        TOTAL_CHALLENGES = DAY_METADATA.reduce((sum, item) => sum + item.totalCells, 0);
+        
+        await refreshDashboardUI();
+        
+        await new Promise(r => setTimeout(r, 50));
+        
+        if (dashboard) {
+          dashboard.style.opacity = '1';
+          dashboard.style.transform = 'translateY(0)';
+        }
+      };
+
+      // Initial dashboard render (safe from TDZ since all constants are declared above!)
       await refreshDashboardUI();
+
+      // Set active status on first summary item initially
+      const firstSummaryItem = document.querySelector('.roadmap-summary-item.excel');
+      if (firstSummaryItem) firstSummaryItem.classList.add('active');
     });
 
   </script>
