@@ -8517,7 +8517,7 @@
         if (currentDay && !window.hasAutoScrolledRoadmap) {
           window.hasAutoScrolledRoadmap = true;
           setTimeout(() => {
-            const targetY = 120 + (currentDay.globalDay - 1) * 96;
+            const targetY = 120 + (currentDay.globalDay - 1) * 108;
             const viewport = document.getElementById('roadmapViewport');
             if (viewport) {
               viewport.scrollTop = targetY - viewport.clientHeight / 2;
@@ -8828,17 +8828,17 @@
 
         // Text inside Archway
         ctx.fillStyle = '#ffffff';
-        ctx.font = '900 9.5px Outfit';
+        ctx.font = '900 9.5px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('🏁 START: SQL', startX, startY - 44);
 
         // 11. Plot and draw all 60 Day nodes
-        const cardW = 130;
-        const cardH = 64; // Increased from 48px to accommodate wrapped titles and status details
+        const cardW = 150;
+        const cardH = 88; // Taller card to give text more breathing room
 
         roadmapDays.forEach((day, index) => {
-          const cy = 120 + index * 96; // 96px vertical distance gives more room
+          const cy = 120 + index * 108; // 108px spacing for taller 88px cards
           const cx = centerX + A * Math.sin((2 * Math.PI * cy) / lambda);
 
           // Alternating placement rules
@@ -8917,7 +8917,7 @@
 
           // Signboard text labels
           ctx.fillStyle = '#ffffff';
-          ctx.font = '800 11px Outfit';
+          ctx.font = '800 11px Arial';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           let signLabel = day.globalDay;
@@ -8966,7 +8966,7 @@
           ctx.fill();
           
           ctx.fillStyle = '#ffffff';
-          ctx.font = '800 8.5px Outfit';
+          ctx.font = '800 8.5px Arial';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           let badgeText = day.courseDay;
@@ -8984,7 +8984,7 @@
 
           // Phase label (e.g. "PYTHON D16") — rounded coords for pixel-perfect rendering
           ctx.fillStyle = colors.dark;
-          ctx.font = '800 11.5px Outfit';
+          ctx.font = '800 11.5px Arial';
           ctx.textAlign = 'left';
           ctx.textBaseline = 'top';
           ctx.fillText(
@@ -8995,13 +8995,13 @@
 
           // Title text — larger, heavier weight, rounded coords
           ctx.fillStyle = isDark ? '#e2e8f0' : '#1e293b';
-          ctx.font = '700 11px Outfit';
+          ctx.font = '700 11px Arial';
           const maxTextW = cardW - 22;
           const startTitleY = Math.round(cardY + 24);
           const endTitleY = wrapText(ctx, `${day.emoji} ${day.title}`, Math.round(cardX + 10), startTitleY, maxTextW, 13);
 
           // Status row — dot + label
-          const statusY = Math.round(cardY + 50);
+          const statusY = Math.round(cardY + 66);
           const dotRadius = 3.5;
           const dotCx = Math.round(cardX + 10 + dotRadius);
           const dotCy = Math.round(statusY + 4);
@@ -9026,7 +9026,7 @@
 
           // Status label: saturated mid-tone, bold, crisp
           ctx.fillStyle = day.isLocked ? '#94a3b8' : colors.mid;
-          ctx.font = '700 10px Inter';
+          ctx.font = '700 10px Arial';
           ctx.textAlign = 'left';
           ctx.textBaseline = 'middle';
           ctx.fillText(progressLabel, Math.round(dotCx + dotRadius + 4), dotCy);
@@ -9117,49 +9117,66 @@
         ctx.fill();
         ctx.restore();
 
-        // ★ Gold Star at top of road spine (GOAL marker)
-        const goalStarY = 36;
-        const goalStarX = centerX + A * Math.sin((2 * Math.PI * goalStarY) / lambda);
-        // Glowing gold halo
+
+
+        // ==================================================
+        // FINISH Archway - mirrors the START archway at top
+        // ==================================================
+        const finishY = goalY - 80; // Sits 80px above the certificate pedestal
+        const finishX = centerX + A * Math.sin((2 * Math.PI * finishY) / lambda);
+
         ctx.save();
-        ctx.shadowColor = 'rgba(251,191,36,0.80)';
-        ctx.shadowBlur = 22;
-        // Draw 5-pointed star
-        const starCx = goalStarX, starCy = goalStarY - 8, starR1 = 13, starR2 = 5.5, starN = 5;
+        // Pillar base shadows
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
         ctx.beginPath();
-        for (let si = 0; si < starN * 2; si++) {
-          const r = si % 2 === 0 ? starR1 : starR2;
-          const angle = (si * Math.PI) / starN - Math.PI / 2;
-          si === 0 ? ctx.moveTo(starCx + r * Math.cos(angle), starCy + r * Math.sin(angle))
-                   : ctx.lineTo(starCx + r * Math.cos(angle), starCy + r * Math.sin(angle));
-        }
-        ctx.closePath();
-        const starGrad = ctx.createRadialGradient(starCx, starCy - 2, 0, starCx, starCy, starR1);
-        starGrad.addColorStop(0, '#fef08a');
-        starGrad.addColorStop(0.55, '#fbbf24');
-        starGrad.addColorStop(1, '#d97706');
-        ctx.fillStyle = starGrad;
+        ctx.ellipse(finishX - 38, finishY + 12, 6, 2.5, 0, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(finishX + 38, finishY + 12, 6, 2.5, 0, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Left & Right 3D Pillars (same metallic gradient as START)
+        const finColGrad = ctx.createLinearGradient(finishX - 42, finishY - 40, finishX - 34, finishY + 10);
+        finColGrad.addColorStop(0, '#cbd5e1');
+        finColGrad.addColorStop(0.3, '#f1f5f9');
+        finColGrad.addColorStop(0.8, '#475569');
+        finColGrad.addColorStop(1, '#1e293b');
+
+        ctx.fillStyle = finColGrad;
+        ctx.fillRect(finishX - 41, finishY - 45, 6, 56); // Left pillar
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(finishX - 43, finishY + 9, 10, 3);  // Left base cap
+        ctx.fillRect(finishX - 42, finishY - 48, 8, 3);  // Left top cap
+
+        ctx.fillStyle = finColGrad;
+        ctx.fillRect(finishX + 35, finishY - 45, 6, 56); // Right pillar
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(finishX + 33, finishY + 9, 10, 3);  // Right base cap
+        ctx.fillRect(finishX + 34, finishY - 48, 8, 3);  // Right top cap
+
+        // Checkered flag banner across the top (gold/amber theme)
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.22)';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 4;
+
+        const finBannerGrad = ctx.createLinearGradient(finishX, finishY - 50, finishX, finishY - 26);
+        finBannerGrad.addColorStop(0, '#fbbf24');
+        finBannerGrad.addColorStop(1, '#d97706');
+        ctx.fillStyle = finBannerGrad;
         ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.2;
+        ctx.lineWidth = 1.8;
+        drawRoundedRect(ctx, finishX - 52, finishY - 56, 104, 24, 3);
         ctx.fill();
         ctx.stroke();
         ctx.restore();
 
-        // GOAL label below the star in amber text
-        ctx.fillStyle = '#d97706';
-        ctx.font = '900 9px Outfit';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('GOAL', goalStarX, goalStarY + 6);
-
-        // START label at the very bottom of road in muted slate
-        const roadEndY = height - 55;
-        const roadEndX = centerX + A * Math.sin((2 * Math.PI * roadEndY) / lambda);
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '700 8.5px Outfit';
+        // FINISH text inside banner
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 9.5px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('START', roadEndX, roadEndY);
+        ctx.fillText('🏆 FINISH!', finishX, finishY - 44);
+        // ==================================================
 
         // b) Stunning Capsule Button (Expanded 160x32px for better readability)
         ctx.save();
@@ -9193,7 +9210,7 @@
 
         // Button Text
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 10px Outfit';
+        ctx.font = 'bold 10px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('🎓 Download Certificate', goalX, btnY + btnH / 2);
