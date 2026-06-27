@@ -271,6 +271,12 @@
       gap: 4px;
     }
     /* Course Selector Grid and Cards */
+    .dashboard-left-content {
+      will-change: opacity, transform;
+    }
+    .dashboard-right-col {
+      will-change: opacity, transform;
+    }
     .courses-selector-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -278,7 +284,13 @@
       margin-bottom: 2rem;
     }
     @media (max-width: 900px) {
-      .courses-selector-grid {
+      .dashboard-left-content {
+      will-change: opacity, transform;
+    }
+    .dashboard-right-col {
+      will-change: opacity, transform;
+    }
+    .courses-selector-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -5409,6 +5421,9 @@
         <!-- Course Selection Grid -->
         <div class="courses-selector-grid" id="coursesSelectorGrid"></div>
 
+        <!-- Dynamic Transition Wrapper for Content -->
+        <div class="dashboard-left-content">
+
 
 
         <!-- Premium Score Card and Segmented Milestone Timeline Dashboard -->
@@ -5620,6 +5635,8 @@
           <!-- Rendered dynamically by javascript -->
 
         </div>
+
+        </div> <!-- End .dashboard-left-content -->
 
       </div>
 
@@ -8987,11 +9004,17 @@
 
       // Declare switchActiveCourse for smooth dynamic transitions between tabs
       const switchActiveCourse = async (newCourseId) => {
-        const dashboard = document.querySelector('.dashboard-container');
-        if (dashboard) {
-          dashboard.style.transition = 'opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
-          dashboard.style.opacity = '0';
-          dashboard.style.transform = 'translateY(15px)';
+        const leftContent = document.querySelector('.dashboard-left-content');
+        const rightCol = document.querySelector('.dashboard-right-col');
+        
+        if (leftContent && rightCol) {
+          leftContent.style.transition = 'opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
+          rightCol.style.transition = 'opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
+          
+          leftContent.style.opacity = '0';
+          leftContent.style.transform = 'translateY(15px)';
+          rightCol.style.opacity = '0';
+          rightCol.style.transform = 'translateY(15px)';
         }
         
         await new Promise(r => setTimeout(r, 250));
@@ -9005,11 +9028,17 @@
         
         await refreshDashboardUI();
         
+        if (window.scrollToRoadmapPhase) {
+          window.scrollToRoadmapPhase(newCourseId);
+        }
+        
         await new Promise(r => setTimeout(r, 50));
         
-        if (dashboard) {
-          dashboard.style.opacity = '1';
-          dashboard.style.transform = 'translateY(0)';
+        if (leftContent && rightCol) {
+          leftContent.style.opacity = '1';
+          leftContent.style.transform = 'translateY(0)';
+          rightCol.style.opacity = '1';
+          rightCol.style.transform = 'translateY(0)';
         }
       };
 
