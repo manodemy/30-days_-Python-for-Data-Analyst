@@ -5160,7 +5160,7 @@
     }
 
     .roadmap-day-node {
-      display: flex;
+      display: grid;
       align-items: center;
       margin-bottom: 32px;
       min-height: 72px;
@@ -5168,18 +5168,34 @@
       width: 100%;
       box-sizing: border-box;
     }
-    
-    /* Spacing Rule 3: Card sits in the left/right half.
-       - left node: card is on the left, right edge of card at 50% - 8px
-       - right node: card is on the right, left edge of card at 50% + 8px
-    */
     .roadmap-day-node.left {
-      justify-content: flex-end;
-      padding-right: calc(50% + 4px);
+      grid-template-columns: 1.15fr 60px 0.85fr;
     }
     .roadmap-day-node.right {
+      grid-template-columns: 0.85fr 60px 1.15fr;
+    }
+    
+    .roadmap-day-card-wrapper {
+      display: flex;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .roadmap-day-card-wrapper.left-col {
+      justify-content: flex-end;
+    }
+    .roadmap-day-card-wrapper.right-col {
       justify-content: flex-start;
-      padding-left: calc(50% + 4px);
+    }
+    
+    .roadmap-day-center-wrapper {
+      position: relative;
+      width: 60px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      z-index: 10;
     }
     
     .roadmap-day-card {
@@ -5301,32 +5317,36 @@
     /* Mobile responsive roadmap formatting */
     @media (max-width: 768px) {
       .roadmap-day-node {
+        grid-template-columns: 50px 1fr !important;
+        padding-left: 10px !important;
+        padding-right: 16px !important;
         min-height: 80px !important;
         margin-bottom: 24px !important;
       }
-      .roadmap-day-node.left, .roadmap-day-node.right {
+      .roadmap-day-center-wrapper {
+        grid-column: 1 !important;
+        width: 50px !important;
+      }
+      .roadmap-day-node.left .roadmap-day-card-wrapper.left-col,
+      .roadmap-day-node.right .roadmap-day-card-wrapper.right-col {
+        grid-column: 2 !important;
         justify-content: flex-start !important;
-        padding-left: 70px !important;
-        padding-right: 16px !important;
+      }
+      .roadmap-day-node.left .roadmap-day-card-wrapper.right-col,
+      .roadmap-day-node.right .roadmap-day-card-wrapper.left-col {
+        display: none !important;
       }
       .roadmap-day-node.left .roadmap-day-card, .roadmap-day-node.right .roadmap-day-card {
-        margin-left: 0 !important;
+        margin-left: 10px !important;
         margin-right: 0 !important;
         text-align: left !important;
         max-width: 100% !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
       }
       .roadmap-day-node.left .card-status-row, .roadmap-day-node.right .card-status-row {
         justify-content: flex-start !important;
-      }
-      /* Align dots, post, and postshadow to the left road timeline lane */
-      .roadmap-day-node.left .roadmap-checkpoint-dot, .roadmap-day-node.right .roadmap-checkpoint-dot {
-        left: 35px !important;
-      }
-      .roadmap-day-node.left .post, .roadmap-day-node.right .post {
-        left: 35px !important;
-      }
-      .roadmap-day-node.left .postshadow, .roadmap-day-node.right .postshadow {
-        left: 35px !important;
       }
     }
 
@@ -5334,6 +5354,7 @@
     .postshadow {
       position: absolute;
       top: calc(50% + 12px);
+      left: 50%;
       width: 16px;
       height: 5px;
       background: rgba(0,0,0,0.12);
@@ -5342,17 +5363,12 @@
       transform: translateX(-50%) translateY(-50%);
       z-index: 1;
     }
-    .roadmap-day-node.left .postshadow {
-      left: calc(50% + 24px);
-    }
-    .roadmap-day-node.right .postshadow {
-      left: calc(50% - 24px);
-    }
 
     /* Node Anatomy: Tapered Post planted behind the dot */
     .post {
       position: absolute;
       top: calc(50% - 28px);
+      left: 50%;
       width: 5px;
       height: 40px;
       background: linear-gradient(90deg, #94a3b8, #64748b 60%, #475569);
@@ -5360,17 +5376,12 @@
       transform: translateX(-50%);
       z-index: 2;
     }
-    .roadmap-day-node.left .post {
-      left: calc(50% + 24px);
-    }
-    .roadmap-day-node.right .post {
-      left: calc(50% - 24px);
-    }
 
     /* Node Anatomy: Dot is 32px circle, raised 28px above center */
     .roadmap-checkpoint-dot {
       position: absolute;
       top: 50%;
+      left: 50%;
       width: 32px;
       height: 32px;
       border-radius: 50%;
@@ -5388,12 +5399,6 @@
         0 2px 8px rgba(0,0,0,.10),
         inset 0 1px 2px rgba(255,255,255,.9),
         inset 0 -1px 2px rgba(0,0,0,.06);
-    }
-    .roadmap-day-node.left .roadmap-checkpoint-dot {
-      left: calc(50% + 24px);
-    }
-    .roadmap-day-node.right .roadmap-checkpoint-dot {
-      left: calc(50% - 24px);
     }
 
     /* Dot Color State & Radial Gradient Grays, Greens, Blues */
@@ -8505,22 +8510,51 @@
             : (isLocked ? '🔒 Locked' : (isCurrent ? `⚡ Current (Progress: ${solvedCount}/${day.cells})` : `⏳ Progress: ${solvedCount}/${day.cells} Cells`));
 
           node.innerHTML = `
-            <div class="postshadow"></div>
-            <div class="post"></div>
-            <div class="roadmap-checkpoint-dot ${stateClass}" onclick="event.stopPropagation(); ${clickHandler}" style="cursor: pointer;" title="Day ${day.globalDay}: ${day.title}">
-              ${isCompleted ? '✓' : (isLocked ? '🔒' : day.globalDay)}
-            </div>
-            <div class="roadmap-day-card ${stateClass}" onclick="${clickHandler}">
-              <div class="card-day-label" style="color: ${day.phase === 'excel' ? '#F5A623' : (day.phase === 'sql' ? '#06B6D4' : '#10B981')};">
-                DAY ${day.globalDay.toString().padStart(2, '0')} • ${day.phase.toUpperCase()} D${parseInt(day.courseDay, 10).toString().padStart(2, '0')}
+            ${isRight ? `
+              <div class="roadmap-day-card-wrapper left-col"></div>
+              <div class="roadmap-day-center-wrapper">
+                <div class="postshadow"></div>
+                <div class="post"></div>
+                <div class="roadmap-checkpoint-dot ${stateClass}" onclick="event.stopPropagation(); ${clickHandler}" style="cursor: pointer;" title="Day ${day.globalDay}: ${day.title}">
+                  ${isCompleted ? '✓' : (isLocked ? '🔒' : day.globalDay)}
+                </div>
               </div>
-              <div class="card-title-text">
-                ${day.emoji} ${day.title}
+              <div class="roadmap-day-card-wrapper right-col">
+                <div class="roadmap-day-card ${stateClass}" onclick="${clickHandler}">
+                  <div class="card-day-label" style="color: ${day.phase === 'excel' ? '#F5A623' : (day.phase === 'sql' ? '#06B6D4' : '#10B981')};">
+                    DAY ${day.globalDay.toString().padStart(2, '0')} • ${day.phase.toUpperCase()} D${parseInt(day.courseDay, 10).toString().padStart(2, '0')}
+                  </div>
+                  <div class="card-title-text">
+                    ${day.emoji} ${day.title}
+                  </div>
+                  <div class="card-status-row">
+                    ${statusText}
+                  </div>
+                </div>
               </div>
-              <div class="card-status-row">
-                ${statusText}
+            ` : `
+              <div class="roadmap-day-card-wrapper left-col">
+                <div class="roadmap-day-card ${stateClass}" onclick="${clickHandler}">
+                  <div class="card-day-label" style="color: ${day.phase === 'excel' ? '#F5A623' : (day.phase === 'sql' ? '#06B6D4' : '#10B981')};">
+                    DAY ${day.globalDay.toString().padStart(2, '0')} • ${day.phase.toUpperCase()} D${parseInt(day.courseDay, 10).toString().padStart(2, '0')}
+                  </div>
+                  <div class="card-title-text">
+                    ${day.emoji} ${day.title}
+                  </div>
+                  <div class="card-status-row">
+                    ${statusText}
+                  </div>
+                </div>
               </div>
-            </div>
+              <div class="roadmap-day-center-wrapper">
+                <div class="postshadow"></div>
+                <div class="post"></div>
+                <div class="roadmap-checkpoint-dot ${stateClass}" onclick="event.stopPropagation(); ${clickHandler}" style="cursor: pointer;" title="Day ${day.globalDay}: ${day.title}">
+                  ${isCompleted ? '✓' : (isLocked ? '🔒' : day.globalDay)}
+                </div>
+              </div>
+              <div class="roadmap-day-card-wrapper right-col"></div>
+            `}
           `;
 
           container.appendChild(node);
@@ -8601,9 +8635,10 @@
         
         let points = [];
         dots.forEach(dot => {
-          const node = dot.parentElement;
-          const x = dot.offsetLeft + dot.offsetWidth / 2;
-          const y = node.offsetTop + dot.offsetTop + dot.offsetHeight / 2;
+          const wrapper = dot.parentElement;
+          const node = wrapper.parentElement;
+          const x = wrapper.offsetLeft + dot.offsetLeft + dot.offsetWidth / 2;
+          const y = node.offsetTop + wrapper.offsetTop + dot.offsetTop + dot.offsetHeight / 2;
           points.push({ x, y });
         });
         
