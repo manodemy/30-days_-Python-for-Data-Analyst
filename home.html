@@ -8557,6 +8557,21 @@
           canvas.style.height = height + 'px';
         }
 
+        // Ensure HTML DOM cards container exists and is cleared
+        let container = document.getElementById('roadmapNodesContainer');
+        if (!container) {
+          container = document.createElement('div');
+          container.id = 'roadmapNodesContainer';
+          container.style.position = 'absolute';
+          container.style.top = '0';
+          container.style.left = '0';
+          container.style.width = '100%';
+          container.style.height = '100%';
+          container.style.pointerEvents = 'none';
+          viewport.appendChild(container);
+        }
+        container.innerHTML = '';
+
         ctx.save();
         ctx.scale(dpr, dpr);
         ctx.clearRect(0, 0, width, height);
@@ -8834,8 +8849,8 @@
         ctx.fillText('🏁 START: SQL', startX, startY - 44);
 
         // 11. Plot and draw all 60 Day nodes
-        const cardW = 150;
-        const cardH = 88; // Taller card to give text more breathing room
+        const cardW = 210;
+        const cardH = 88; // Wide and tall native DOM cards
 
         roadmapDays.forEach((day, index) => {
           const cy = 120 + index * 108; // 108px spacing for taller 88px cards
@@ -8926,112 +8941,54 @@
           ctx.fillText(signLabel, cx, signY);
           ctx.restore();
 
-          // e) Rectangular Metadata Card
-          ctx.save();
-          // Hover: 1px visual lift with deeper phase-colored shadow (tactile feel)
-          ctx.shadowColor = isHovered ? `rgba(${hexToRgb(colors.mid)},0.30)` : 'rgba(0,0,0,0.06)';
-          ctx.shadowBlur = isHovered ? 18 : 6;
-          ctx.shadowOffsetY = isHovered ? 5 : 3;
-          
-          ctx.fillStyle = isDark ? '#1e293b' : '#ffffff';
-          ctx.strokeStyle = isHovered ? colors.mid : (isDark ? '#334155' : '#e2e8f0');
-          ctx.lineWidth = isHovered ? 2.0 : 1.0;
-          
-          drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 4);
-          ctx.fill();
-          ctx.stroke();
-          ctx.restore();
+          // Render card as dynamic HTML DOM element for 100% crisp anti-aliasing
+          const cardEl = document.createElement('div');
+          cardEl.className = `roadmap-day-node ${day.phase} ${day.isCompleted ? 'completed' : ''} ${day.isLocked ? 'locked' : ''} ${day.isCurrent ? 'current' : ''} ${isRight ? 'right' : 'left'}`;
+          cardEl.style.position = 'absolute';
+          cardEl.style.left = `${cardX}px`;
+          cardEl.style.top = `${cardY}px`;
+          cardEl.style.width = `${cardW}px`;
+          cardEl.style.height = `${cardH}px`;
+          cardEl.style.pointerEvents = 'auto';
 
-          // f) Side Accent indicator bar (symmetrical layout)
-          ctx.fillStyle = colors.mid;
-          const barWidth = 3.5;
-          const barHeight = 44;
-          const barOffsetY = (cardH - barHeight) / 2;
-          if (isRight) {
-            drawRoundedRect(ctx, cardX, cardY + barOffsetY, barWidth, barHeight, 1.5);
-          } else {
-            drawRoundedRect(ctx, cardX + cardW - barWidth, cardY + barOffsetY, barWidth, barHeight, 1.5);
-          }
-          ctx.fill();
-
-          // g) Floating Outer Badge
-          const badgeRadius = 9;
-          const badgeX = isRight ? cardX + cardW : cardX;
-          const badgeY = cardY + cardH / 2;
-          
-          ctx.save();
-          ctx.fillStyle = colors.mid;
-          ctx.beginPath();
-          ctx.arc(badgeX, badgeY, badgeRadius, 0, 2 * Math.PI);
-          ctx.fill();
-          
-          ctx.fillStyle = '#ffffff';
-          ctx.font = '800 8.5px Arial';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          let badgeText = day.courseDay;
-          if (day.isCompleted) badgeText = '✓';
-          if (day.isLocked) badgeText = '🔒';
-          ctx.fillText(badgeText, badgeX, badgeY);
-          ctx.restore();
-
-          // h) Card Details Text — ZERO shadow before text to prevent blur bleed
-          ctx.save();
-          ctx.shadowColor = 'transparent';
-          ctx.shadowBlur = 0;
-          ctx.shadowOffsetX = 0;
-          ctx.shadowOffsetY = 0;
-
-          // Phase label (e.g. "PYTHON D16") — rounded coords for pixel-perfect rendering
-          ctx.fillStyle = colors.dark;
-          ctx.font = '800 11.5px Arial';
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'top';
-          ctx.fillText(
-            `${day.phase.toUpperCase()} D${parseInt(day.courseDay, 10).toString().padStart(2, '0')}`,
-            Math.round(cardX + 10),
-            Math.round(cardY + 8)
-          );
-
-          // Title text — larger, heavier weight, rounded coords
-          ctx.fillStyle = isDark ? '#e2e8f0' : '#1e293b';
-          ctx.font = '700 11px Arial';
-          const maxTextW = cardW - 22;
-          const startTitleY = Math.round(cardY + 24);
-          const endTitleY = wrapText(ctx, `${day.emoji} ${day.title}`, Math.round(cardX + 10), startTitleY, maxTextW, 13);
-
-          // Status row — dot + label
-          const statusY = Math.round(cardY + 66);
-          const dotRadius = 3.5;
-          const dotCx = Math.round(cardX + 10 + dotRadius);
-          const dotCy = Math.round(statusY + 4);
-
-          let progressLabel = day.isCompleted
-            ? 'Solved'
+          const solvedCount = day.solvedCount;
+          const cells = day.cells;
+          let statusText = day.isCompleted 
+            ? 'Solved' 
             : (day.isLocked ? 'Locked' : (day.isCurrent ? 'In progress' : 'Unstarted'));
           if (!day.isLocked) {
-            progressLabel += ` • ${day.solvedCount}/${day.cells}`;
+            statusText += ` • ${solvedCount}/${cells}`;
           }
 
-          // Status dot: fill = light tint, stroke = mid-tone ring
-          ctx.fillStyle = day.isLocked ? '#cbd5e1' : colors.light;
-          ctx.beginPath();
-          ctx.arc(dotCx, dotCy, dotRadius, 0, 2 * Math.PI);
-          ctx.fill();
-          ctx.strokeStyle = day.isLocked ? '#94a3b8' : colors.mid;
-          ctx.lineWidth = 1.0;
-          ctx.beginPath();
-          ctx.arc(dotCx, dotCy, dotRadius, 0, 2 * Math.PI);
-          ctx.stroke();
+          const dotColor = day.isLocked ? '#cbd5e1' : colors.light;
+          const midColor = day.isLocked ? '#94a3b8' : colors.mid;
+          const darkColor = day.isLocked ? '#64748b' : colors.dark;
 
-          // Status label: saturated mid-tone, bold, crisp
-          ctx.fillStyle = day.isLocked ? '#94a3b8' : colors.mid;
-          ctx.font = '700 10px Arial';
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(progressLabel, Math.round(dotCx + dotRadius + 4), dotCy);
+          cardEl.innerHTML = `
+            <div class="roadmap-day-card ${day.isLocked ? 'locked' : ''} ${day.isCurrent ? 'current' : ''}" style="width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; text-align:${isRight ? 'left' : 'right'}; box-sizing:border-box;">
+              <div class="card-day-label" style="color: ${darkColor} !important; font-size:12.5px !important;">
+                DAY ${day.globalDay.toString().padStart(2, '0')} • ${day.phase.toUpperCase()} D${parseInt(day.courseDay, 10).toString().padStart(2, '0')}
+              </div>
+              <div class="card-title-text" style="color: ${day.isLocked ? '#94a3b8' : '#1e293b'} !important; font-size:14.5px !important; line-height:1.3;">
+                ${day.emoji} ${day.title}
+              </div>
+              <div class="card-status-row" style="display:flex; align-items:center; gap:6px; justify-content:${isRight ? 'flex-start' : 'flex-end'}; margin-top:2px;">
+                ${isRight ? `<span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:${dotColor}; border:1px solid ${midColor};"></span>` : ''}
+                <span style="color:${midColor} !important; font-size:11px !important; font-weight:700 !important;">${statusText}</span>
+                ${!isRight ? `<span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:${dotColor}; border:1px solid ${midColor};"></span>` : ''}
+              </div>
+            </div>
+          `;
 
-          ctx.restore();
+          cardEl.onclick = () => {
+            if (day.isLocked) {
+              window.location.href = 'landing_v2/index.html#pricing?locked=true';
+            } else {
+              window.location.href = day.targetUrl + '?v=2.1';
+            }
+          };
+
+          container.appendChild(cardEl);
         });
 
         // 12. Render Stunning 3D Display Pedestal and Download Button at GOAL
