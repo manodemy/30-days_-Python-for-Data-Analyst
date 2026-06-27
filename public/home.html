@@ -8491,7 +8491,7 @@
         if (currentDay && !window.hasAutoScrolledRoadmap) {
           window.hasAutoScrolledRoadmap = true;
           setTimeout(() => {
-            const targetY = 100 + (currentDay.globalDay - 1) * 88;
+            const targetY = 120 + (currentDay.globalDay - 1) * 96;
             const viewport = document.getElementById('roadmapViewport');
             if (viewport) {
               viewport.scrollTop = targetY - viewport.clientHeight / 2;
@@ -8510,9 +8510,9 @@
         const dpr = window.devicePixelRatio || 1;
         
         const width = viewport.clientWidth || 400;
-        const height = 5400; // 60 days * 88px + padding
+        const height = 5900; // 60 days * 96px + padding
 
-        // Set dimensions (High DPI support)
+        // Dynamic viewport sizing
         if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
           canvas.width = width * dpr;
           canvas.height = height * dpr;
@@ -8529,7 +8529,7 @@
                        (window.getComputedStyle(document.body).backgroundColor && 
                         isColorDark(window.getComputedStyle(document.body).backgroundColor));
 
-        // 1. Draw Background Gradient
+        // 1. Background Gradient
         const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
         if (isDark) {
           bgGrad.addColorStop(0, '#0d1117');
@@ -8543,7 +8543,7 @@
         ctx.fillStyle = bgGrad;
         ctx.fillRect(0, 0, width, height);
 
-        // 2. Draw Subtle Grid Texture (Map feeling)
+        // 2. Map Grid lines
         ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.03)' : 'rgba(68,102,170,0.05)';
         ctx.lineWidth = 0.5;
         for (let x = 0; x < width; x += 28) {
@@ -8559,7 +8559,7 @@
           ctx.stroke();
         }
 
-        // 3. Generate Winding Sine Wave Road Math Model
+        // 3. Winding Sine Road calculation model
         const points = [];
         const leftTop = [];
         const rightTop = [];
@@ -8568,9 +8568,9 @@
 
         const step = 6;
         const A = width * 0.16; // Curve amplitude
-        const lambda = 720;     // Full cycle wave length
+        const lambda = 720;     // Wave length (cycle)
         const ROAD_W = 32;      // Half road width
-        const WALL_H = 12;      // Road thickness/depth
+        const WALL_H = 12;      // Road sidewall height
         const centerX = width / 2;
 
         for (let y = 30; y <= height - 30; y += step) {
@@ -8581,14 +8581,14 @@
           const nx = -1 / len;
           const ny = dx_dy / len;
 
-          points.push({ x, y });
+          points.push({ x, y, nx, ny });
           leftTop.push({ x: x + nx * ROAD_W, y: y + ny * ROAD_W });
           rightTop.push({ x: x - nx * ROAD_W, y: y - ny * ROAD_W });
           leftBot.push({ x: x + nx * ROAD_W, y: y + ny * ROAD_W + WALL_H });
           rightBot.push({ x: x - nx * ROAD_W, y: y - ny * ROAD_W + WALL_H });
         }
 
-        // 4. Layer 1 — Road Cast Shadow
+        // 4. Draw Cast Shadow
         ctx.save();
         ctx.shadowColor = 'rgba(0, 0, 0, 0.22)';
         ctx.shadowBlur = 10;
@@ -8603,7 +8603,7 @@
         ctx.fill();
         ctx.restore();
 
-        // 5. Layer 2 — Right Sidewall
+        // 5. Right Sidewall
         for (let i = 0; i < points.length - 1; i++) {
           const sideGrad = ctx.createLinearGradient(rightTop[i].x, rightTop[i].y, rightBot[i].x, rightBot[i].y);
           if (isDark) {
@@ -8623,7 +8623,7 @@
           ctx.fill();
         }
 
-        // 6. Layer 3 — Left Sidewall (viewer-facing, lighter)
+        // 6. Left Sidewall (Lighter, simulating key light)
         for (let i = 0; i < points.length - 1; i++) {
           const sideGrad = ctx.createLinearGradient(leftTop[i].x, leftTop[i].y, leftBot[i].x, leftBot[i].y);
           if (isDark) {
@@ -8645,7 +8645,7 @@
           ctx.fill();
         }
 
-        // 7. Layer 4 — Road Surface
+        // 7. Road Surface
         ctx.beginPath();
         ctx.moveTo(leftTop[0].x, leftTop[0].y);
         for (let i = 1; i < leftTop.length; i++) ctx.lineTo(leftTop[i].x, leftTop[i].y);
@@ -8664,7 +8664,7 @@
         ctx.fillStyle = roadGrad;
         ctx.fill();
 
-        // 8. Layer 5 — Asphalt Texture & Edges (Inside Road Clip)
+        // 8. Clip Road Surface for inner lines / textures
         ctx.save();
         ctx.beginPath();
         ctx.moveTo(leftTop[0].x, leftTop[0].y);
@@ -8673,7 +8673,7 @@
         ctx.closePath();
         ctx.clip();
 
-        // Diagonal aggregate texture overlay
+        // Diagonal texture
         const texGrad = ctx.createLinearGradient(0, 0, width, height);
         texGrad.addColorStop(0, 'rgba(255,255,255,0.03)');
         texGrad.addColorStop(0.3, 'rgba(0,0,0,0.04)');
@@ -8682,7 +8682,7 @@
         ctx.fillStyle = texGrad;
         ctx.fillRect(0, 0, width, height);
 
-        // White Solid Edge Lines
+        // White edge lines
         ctx.strokeStyle = 'rgba(255,255,255,0.45)';
         ctx.lineWidth = 1.6;
         ctx.beginPath();
@@ -8695,7 +8695,7 @@
         for (let i = 1; i < rightTop.length; i++) ctx.lineTo(rightTop[i].x, rightTop[i].y);
         ctx.stroke();
 
-        // Center Dashed Line
+        // Center line dashed
         ctx.strokeStyle = 'rgba(255,255,255,0.4)';
         ctx.lineWidth = 1.5;
         ctx.setLineDash([12, 10]);
@@ -8704,9 +8704,16 @@
         for (let i = 1; i < points.length; i++) ctx.lineTo(points[i].x, points[i].y);
         ctx.stroke();
         ctx.setLineDash([]);
+
+        // START Checkered Line on Asphalt
+        drawCheckeredLine(ctx, points[15].x, points[15].y, points[15].nx, points[15].ny, ROAD_W);
+
+        // END Checkered Line on Asphalt
+        drawCheckeredLine(ctx, points[points.length - 16].x, points[points.length - 16].y, points[points.length - 16].nx, points[points.length - 16].ny, ROAD_W);
+
         ctx.restore();
 
-        // 9. Layer 6 — Outer Crisp Edge Highlights
+        // 9. Crisp edge lighting rims
         ctx.strokeStyle = 'rgba(255,255,255,0.22)';
         ctx.lineWidth = 0.8;
         ctx.beginPath();
@@ -8731,34 +8738,60 @@
         for (let i = 1; i < rightBot.length; i++) ctx.lineTo(rightBot[i].x, rightBot[i].y);
         ctx.stroke();
 
-        // 10. Render START Banner
-        const startY = 50;
+        // 10. Render 3D START Banner Billboard
+        const startY = 70;
         const startX = centerX + A * Math.sin((2 * Math.PI * startY) / lambda);
-        ctx.fillStyle = isDark ? '#94a3b8' : '#475569';
-        ctx.font = 'bold 11px Outfit';
+        
+        ctx.save();
+        // Stand poles for billboard
+        ctx.fillStyle = '#64748b';
+        ctx.fillRect(startX - 35, startY - 50, 3, 20);
+        ctx.fillRect(startX + 32, startY - 50, 3, 20);
+        
+        // Billboard shadow
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetY = 3;
+        
+        // Billboard board
+        const billGrad = ctx.createLinearGradient(startX, startY - 50, startX, startY - 30);
+        billGrad.addColorStop(0, '#10b981');
+        billGrad.addColorStop(1, '#059669');
+        ctx.fillStyle = billGrad;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        drawRoundedRect(ctx, startX - 50, startY - 55, 100, 24, 4);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 9.5px Outfit';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('🚩 START: EXCEL PHASE', startX, startY - 26);
-        ctx.strokeStyle = isDark ? 'rgba(148,163,184,0.3)' : 'rgba(71,85,105,0.3)';
-        ctx.lineWidth = 1;
+        ctx.fillText('🏁 STARTING POINT', startX, startY - 43);
+        
+        // Connection indicator
+        ctx.strokeStyle = 'rgba(16, 185, 129, 0.4)';
+        ctx.lineWidth = 1.2;
         ctx.setLineDash([3, 3]);
         ctx.beginPath();
-        ctx.moveTo(startX, startY - 16);
+        ctx.moveTo(startX, startY - 31);
         ctx.lineTo(startX, startY);
         ctx.stroke();
         ctx.setLineDash([]);
 
-        // 11. Plot and Draw all 60 Day Pins and Cards
+        // 11. Plot and draw all 60 Day nodes
         const cardW = 130;
-        const cardH = 48;
+        const cardH = 64; // Increased from 48px to accommodate wrapped titles and status details
 
         roadmapDays.forEach((day, index) => {
-          const cy = 100 + index * 88;
+          const cy = 120 + index * 96; // 96px vertical distance gives more room
           const cx = centerX + A * Math.sin((2 * Math.PI * cy) / lambda);
 
           // Alternating placement rules
           const isRight = cx < centerX;
-          const cardX = isRight ? cx + 24 : cx - 24 - cardW;
+          const cardX = isRight ? cx + 28 : cx - 28 - cardW;
           const cardY = cy - cardH / 2;
 
           day.cx = cx;
@@ -8777,7 +8810,6 @@
             colors = { light: isDark ? '#1e293b' : '#f1f5f9', mid: '#94a3b8', dark: '#64748b' };
           }
 
-          // State checking
           const isHovered = window.hoveredDayId === day.globalDay;
 
           // a) Connector Line
@@ -8796,39 +8828,44 @@
           ctx.setLineDash([]);
 
           // b) Post Ground Shadow
-          ctx.fillStyle = 'rgba(0,0,0,0.25)';
+          ctx.fillStyle = 'rgba(0,0,0,0.28)';
           ctx.beginPath();
-          ctx.ellipse(cx, cy + 14, 7, 2.5, 0, 0, 2 * Math.PI);
+          ctx.ellipse(cx, cy + 18, 10, 3.5, 0, 0, 2 * Math.PI);
           ctx.fill();
 
-          // c) 3D Cylindrical Post
-          const poleGrad = ctx.createLinearGradient(cx - 2, cy - 10, cx + 2, cy + 14);
+          // c) Chunky 3D Steel Cylinder Pole (Width: 6.5px instead of 4px)
+          const poleGrad = ctx.createLinearGradient(cx - 3.5, cy - 12, cx + 3.5, cy + 18);
           poleGrad.addColorStop(0, '#94a3b8');
-          poleGrad.addColorStop(0.3, '#f1f5f9');
-          poleGrad.addColorStop(0.8, '#475569');
-          poleGrad.addColorStop(1, '#334155');
+          poleGrad.addColorStop(0.3, '#f8fafc');
+          poleGrad.addColorStop(0.7, '#475569');
+          poleGrad.addColorStop(1, '#1e293b');
           ctx.fillStyle = poleGrad;
-          ctx.fillRect(cx - 2, cy - 10, 4, 24);
-
-          // d) Beveled Signboard
-          ctx.save();
-          ctx.shadowColor = 'rgba(0,0,0,0.2)';
-          ctx.shadowBlur = 4;
-          ctx.shadowOffsetY = 2;
           
-          const signY = cy - 20;
+          // Base flange collar details for 3D look
+          ctx.fillRect(cx - 3.5, cy - 12, 7, 30);
+          
+          // Flange ring
+          ctx.fillStyle = '#475569';
+          ctx.fillRect(cx - 5, cy + 15, 10, 3);
+
+          // d) Bigger Beveled Signboard (36x24px instead of 28x20px)
+          ctx.save();
+          ctx.shadowColor = 'rgba(0,0,0,0.22)';
+          ctx.shadowBlur = 5;
+          ctx.shadowOffsetY = 3;
+          
+          const signY = cy - 24;
           ctx.fillStyle = colors.mid;
           ctx.strokeStyle = '#ffffff';
-          ctx.lineWidth = 1.2;
+          ctx.lineWidth = 1.8;
           
-          // Draw rect signboard
-          drawRoundedRect(ctx, cx - 12, signY - 8, 24, 16, 2);
+          drawRoundedRect(ctx, cx - 18, signY - 12, 36, 24, 4);
           ctx.fill();
           ctx.stroke();
 
-          // Icon / Day Label inside Signboard
+          // Signboard text labels
           ctx.fillStyle = '#ffffff';
-          ctx.font = '800 8.5px Outfit';
+          ctx.font = '800 11px Outfit';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           let signLabel = day.globalDay;
@@ -8839,29 +8876,27 @@
 
           // e) Rectangular Metadata Card
           ctx.save();
-          ctx.shadowColor = isHovered ? 'rgba(59,130,246,0.2)' : 'rgba(0,0,0,0.06)';
-          ctx.shadowBlur = isHovered ? 12 : 6;
-          ctx.shadowOffsetY = isHovered ? 6 : 3;
+          ctx.shadowColor = isHovered ? 'rgba(59,130,246,0.25)' : 'rgba(0,0,0,0.06)';
+          ctx.shadowBlur = isHovered ? 14 : 6;
+          ctx.shadowOffsetY = isHovered ? 7 : 3;
           
           ctx.fillStyle = isDark ? '#1e293b' : '#ffffff';
           ctx.strokeStyle = isHovered ? '#3b82f6' : (isDark ? '#334155' : '#e2e8f0');
-          ctx.lineWidth = isHovered ? 1.8 : 1.0;
+          ctx.lineWidth = isHovered ? 2.0 : 1.0;
           
           drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 4);
           ctx.fill();
           ctx.stroke();
           ctx.restore();
 
-          // f) Side Accent indicator bar
+          // f) Side Accent indicator bar (symmetrical layout)
           ctx.fillStyle = colors.mid;
           const barWidth = 3.5;
-          const barHeight = 32;
+          const barHeight = 44;
           const barOffsetY = (cardH - barHeight) / 2;
           if (isRight) {
-            // Draw on left border of card (facing the road)
             drawRoundedRect(ctx, cardX, cardY + barOffsetY, barWidth, barHeight, 1.5);
           } else {
-            // Draw on right border of card (facing the road)
             drawRoundedRect(ctx, cardX + cardW - barWidth, cardY + barOffsetY, barWidth, barHeight, 1.5);
           }
           ctx.fill();
@@ -8887,44 +8922,140 @@
           ctx.fillText(badgeText, badgeX, badgeY);
           ctx.restore();
 
-          // h) Card Text
+          // h) Card Details Text (Text wrapping + full labels)
           ctx.fillStyle = colors.dark;
           ctx.font = 'bold 9.5px Outfit';
           ctx.textAlign = 'left';
           ctx.textBaseline = 'top';
-          ctx.fillText(`${day.phase.toUpperCase()} D${parseInt(day.courseDay, 10).toString().padStart(2, '0')}`, cardX + 12, cardY + 11);
+          ctx.fillText(`${day.phase.toUpperCase()} D${parseInt(day.courseDay, 10).toString().padStart(2, '0')}`, cardX + 12, cardY + 9);
 
-          ctx.fillStyle = isDark ? '#94a3b8' : '#475569';
-          ctx.font = '500 9px Inter';
-          let displayTitle = day.title;
-          if (displayTitle.length > 18) displayTitle = displayTitle.slice(0, 16) + '...';
-          ctx.fillText(`${day.emoji} ${displayTitle}`, cardX + 12, cardY + 26);
+          // Wrap title to multiple lines dynamically to show complete detail
+          ctx.fillStyle = isDark ? '#e2e8f0' : '#334155';
+          ctx.font = '600 9px Inter';
+          const maxTextW = cardW - 24;
+          const startTitleY = cardY + 22;
+          const endTitleY = wrapText(ctx, `${day.emoji} ${day.title}`, cardX + 12, startTitleY, maxTextW, 11);
+
+          // Progress Status Detail
+          ctx.fillStyle = isDark ? '#748094' : '#64748b';
+          ctx.font = '500 8px Inter';
+          let progressDetail = day.isCompleted 
+            ? '✓ Solved' 
+            : (day.isLocked ? '🔒 Locked' : (day.isCurrent ? `⚡ In progress` : `⏳ Unstarted`));
+          
+          // Append actual cell details to show complete details
+          if (!day.isLocked) {
+            progressDetail += ` • ${day.solvedCount}/${day.cells} Cells`;
+          }
+          ctx.fillText(progressDetail, cardX + 12, cardY + 48);
         });
 
-        // 12. Render GRADUATION GOAL Star
-        const goalY = 5380;
+        // 12. Render Beautiful 3D Graduation Trophy & Pedestal at GOAL
+        const goalY = height - 120;
         const goalX = centerX + A * Math.sin((2 * Math.PI * goalY) / lambda);
         
         ctx.save();
-        ctx.shadowColor = 'rgba(251, 191, 36, 0.6)';
-        ctx.shadowBlur = 18;
+        // Stand/Pedestal
+        ctx.fillStyle = '#64748b';
+        ctx.fillRect(goalX - 25, goalY + 30, 50, 10);
+        ctx.fillStyle = '#475569';
+        ctx.fillRect(goalX - 30, goalY + 40, 60, 6);
+
+        // Shadow under trophy
+        ctx.shadowColor = 'rgba(251, 191, 36, 0.45)';
+        ctx.shadowBlur = 24;
+        ctx.shadowOffsetY = -2;
+
+        // Draw 3D Golden Trophy
+        const goldGrad = ctx.createLinearGradient(goalX - 15, goalY - 20, goalX + 15, goalY + 30);
+        goldGrad.addColorStop(0, '#fbbf24');
+        goldGrad.addColorStop(0.3, '#fef08a');
+        goldGrad.addColorStop(0.8, '#d97706');
+        goldGrad.addColorStop(1, '#92400e');
         
-        // Draw 5-Point Star
-        ctx.fillStyle = '#fbbf24';
+        ctx.fillStyle = goldGrad;
         ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.5;
-        drawStar(ctx, goalX, goalY + 14, 18, 7.5);
-        
+        ctx.lineWidth = 1;
+
+        // Base stem
+        ctx.beginPath();
+        ctx.moveTo(goalX - 10, goalY + 30);
+        ctx.lineTo(goalX + 10, goalY + 30);
+        ctx.lineTo(goalX + 4, goalY + 16);
+        ctx.lineTo(goalX - 4, goalY + 16);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Cup bowl
+        ctx.beginPath();
+        ctx.arc(goalX, goalY + 2, 14, 0, Math.PI, false);
+        ctx.lineTo(goalX - 14, goalY - 14);
+        ctx.lineTo(goalX + 14, goalY - 14);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Handles
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(goalX - 15, goalY - 5, 6, Math.PI * 0.5, Math.PI * 1.5, false);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(goalX + 15, goalY - 5, 6, Math.PI * 1.5, Math.PI * 0.5, false);
+        ctx.stroke();
+
+        // Goal Text
         ctx.fillStyle = '#fbbf24';
-        ctx.font = 'bold 12px Outfit';
+        ctx.font = 'bold 13px Outfit';
         ctx.textAlign = 'center';
-        ctx.fillText('🎓 GRADUATION GOAL', goalX, goalY - 14);
+        ctx.fillText('🏆 GRADUATION GOAL', goalX, goalY - 28);
         ctx.restore();
 
         ctx.restore();
       }
 
-      // Draw helper function: Rounded Rectangle path
+      // Draw helper function: Checkered starting/ending lines
+      function drawCheckeredLine(ctx, x, y, nx, ny, roadWidth) {
+        ctx.save();
+        const sqSize = 4;
+        const totalSquares = Math.ceil((roadWidth * 2) / sqSize);
+        ctx.translate(x, y);
+        // Rotate matching road normal
+        ctx.rotate(Math.atan2(-nx, ny));
+        
+        for (let row = -1; row <= 1; row++) {
+          for (let col = -Math.floor(totalSquares/2); col <= Math.floor(totalSquares/2); col++) {
+            const isBlack = (row + col) % 2 === 0;
+            ctx.fillStyle = isBlack ? '#1e293b' : '#ffffff';
+            ctx.fillRect(col * sqSize, row * sqSize, sqSize, sqSize);
+          }
+        }
+        ctx.restore();
+      }
+
+      // Helper function: Dynamic canvas text wrapping
+      function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+        let currentY = y;
+        
+        for (let n = 0; n < words.length; n++) {
+          let testLine = line + words[n] + ' ';
+          let metrics = ctx.measureText(testLine);
+          let testWidth = metrics.width;
+          if (testWidth > maxWidth && n > 0) {
+            ctx.fillText(line, x, currentY);
+            line = words[n] + ' ';
+            currentY += lineHeight;
+          } else {
+            line = testLine;
+          }
+        }
+        ctx.fillText(line, x, currentY);
+        return currentY;
+      }      // Draw helper function: Rounded Rectangle path
       function drawRoundedRect(ctx, x, y, width, height, radius) {
         ctx.beginPath();
         ctx.moveTo(x + radius, y);
@@ -9062,7 +9193,7 @@
 
         const viewport = document.getElementById('roadmapViewport');
         if (viewport) {
-          const offsetTop = 100 + targetDayIndex * 88 - 30;
+          const offsetTop = 120 + targetDayIndex * 96 - 30;
           viewport.scrollTo({
             top: offsetTop,
             behavior: 'smooth'
