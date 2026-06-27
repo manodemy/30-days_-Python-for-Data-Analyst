@@ -5855,61 +5855,9 @@
           </div>
 
           <!-- Winding Road Scrollable Viewport -->
-          <div class="roadmap-viewport" id="roadmapViewport" style="position: relative; flex: 1; overflow-y: auto; padding: 20px 0px; background: linear-gradient(180deg, #e0f2fe 0%, #f0fdf4 100%); border-radius: 12px; scroll-behavior: smooth; box-sizing: border-box;">
-            <!-- Dynamic SVG Winding Road Track (positioned behind nodes) -->
-            <svg id="roadmapSvg" style="position: absolute; left: 0; top: 0; width: 100%; pointer-events: none; z-index: 3;">
-              <defs>
-                <!-- Radial vignette backdrop overlay -->
-                <radialGradient id="vignette" cx="50%" cy="20%" r="80%">
-                  <stop offset="0%" stop-color="#e8f4f8" stop-opacity="0"/>
-                  <stop offset="100%" stop-color="#cbd5e1" stop-opacity="0.25"/>
-                </radialGradient>
-                <!-- Tarmac fine noise filter -->
-                <filter id="asphaltNoise" x="-20%" y="-20%" width="140%" height="140%">
-                  <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise"/>
-                  <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.3 0.3 0.3 0 0"/>
-                  <feComposite operator="in" in2="SourceGraphic"/>
-                  <feBlend in="SourceGraphic" mode="multiply"/>
-                </filter>
-                <!-- Coarse shoulder gravel noise filter -->
-                <filter id="shoulderNoise" x="-20%" y="-20%" width="140%" height="140%">
-                  <feTurbulence type="fractalNoise" baseFrequency="0.35" numOctaves="2" seed="5" result="noise"/>
-                  <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.3 0.3 0.3 0 0"/>
-                  <feComposite operator="in" in2="SourceGraphic"/>
-                  <feBlend in="SourceGraphic" mode="multiply"/>
-                </filter>
-                <!-- Soft drop shadow for elevation height -->
-                <filter id="roadShadow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000000" flood-opacity="0.55"/>
-                </filter>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#vignette)" style="mix-blend-mode: normal; opacity: 0.1; pointer-events: none;" />
-              <!-- 1. Shoulder: 48px stroke + drop shadow -->
-              <path id="roadmapBorder" fill="none" stroke="#94a3b8" stroke-width="62" stroke-linecap="round" stroke-linejoin="round" filter="url(#roadShadow)" style="transform: translate(0, 4px);" />
-              <!-- 2. Shoulder texture: 48px stroke + shoulderNoise -->
-              <path id="roadmapBorderTexture" fill="none" stroke="#94a3b8" stroke-width="62" stroke-linecap="round" stroke-linejoin="round" filter="url(#shoulderNoise)" style="opacity: 0.4; transform: translate(0, 4px);" />
-              <!-- 3. Dirt transition: 40px stroke -->
-              <path id="roadmapDirt" fill="none" stroke="#475569" stroke-width="54" stroke-linecap="round" stroke-linejoin="round" style="transform: translate(0, 2px);" />
-              <!-- 4. Asphalt: 32px stroke -->
-              <path id="roadmapAsphalt" fill="none" stroke="#1c1c2e" stroke-width="44" stroke-linecap="round" stroke-linejoin="round" />
-              <!-- 5. Asphalt texture: 32px stroke + asphaltNoise -->
-              <path id="roadmapAsphaltTexture" fill="none" stroke="#1c1c2e" stroke-width="44" stroke-linecap="round" stroke-linejoin="round" filter="url(#asphaltNoise)" style="opacity: 0.5;" />
-              <!-- 6. Crack lines x2 -->
-              <path id="roadmapCracks1" fill="none" stroke="#64748b" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3;" />
-              <path id="roadmapCracks2" fill="none" stroke="#64748b" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.25;" />
-              <!-- 7. Edge paint lines x2 (drawn with translates) -->
-              <path id="roadmapEdgeLineLeft" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.75; transform: translate(-19px, 0);" />
-              <path id="roadmapEdgeLineRight" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.75; transform: translate(19px, 0);" />
-              <!-- 8. Center line: yellow dashed 8 12 -->
-              <path id="roadmapCenterLine" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-dasharray="12 10" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.9;" />
-              <!-- 9. Worn center overlay: irregular dash 2 6 1 30 -->
-              <path id="roadmapWornCenter" fill="none" stroke="#020617" stroke-width="2" stroke-dasharray="2 6 1 30" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3;" />
-            </svg>
-
-            <!-- Road nodes container (alternating left / right) -->
-            <div id="roadmapNodesContainer" style="position: relative; display: flex; flex-direction: column;">
-              <!-- Populated by JavaScript -->
-            </div>
+          <div class="roadmap-viewport" id="roadmapViewport" style="position: relative; flex: 1; overflow-y: auto; padding: 0; background: linear-gradient(180deg, #e0f2fe 0%, #f0fdf4 100%); border-radius: 12px; scroll-behavior: smooth; box-sizing: border-box;">
+            <canvas id="roadmapCanvas" style="display: block; width: 100%; cursor: default;"></canvas>
+          </div>
           </div>
         </div>
 
@@ -8415,11 +8363,12 @@
       ];
 
       // Build 60-day personalized roadmap
-      function renderWindingRoadmap() {
-        const container = document.getElementById('roadmapNodesContainer');
-        if (!container) return;
-        container.innerHTML = '';
+      // Store active state globally for mouse listener redraws
+      window.allRoadmapDays = [];
+      window.hoveredDayId = null;
+      window.hasAutoScrolledRoadmap = false;
 
+      function renderWindingRoadmap() {
         // Combine into unified 60 days roadmap array
         const roadmapDays = [];
         let globalDay = 1;
@@ -8498,81 +8447,17 @@
             if (day.phase === 'python' && !isPythonEnrolled && dayNumInt >= 3) isLocked = true;
           }
 
-          // Identify Today's Day (Current active incomplete day)
+          // Identify Today's Day
           let isCurrent = false;
           if (!isCompleted && !isLocked && !foundCurrent) {
             isCurrent = true;
             foundCurrent = true;
           }
 
-          // Create node element - Invert alternation logic: Day 1 (index 0) = right, Day 2 (index 1) = left...
-          const node = document.createElement('div');
-          const isRight = index % 2 === 0;
-          const stateClass = isCompleted ? 'completed' : (isCurrent ? 'current' : 'locked');
-          
-          node.className = `roadmap-day-node ${day.phase} ${isRight ? 'right' : 'left'}` + (isCompleted ? ' completed' : '');
-          node.id = `roadmap-day-${day.globalDay}`;
-
-          // Connect click action
-          const clickHandler = isLocked 
-            ? "window.location.href = 'landing_v2/index.html#pricing?locked=true';"
-            : `window.location.href = '${day.targetUrl}?v=2.1';`;
-
-          // Inject post shadow, tapered post, raised checkpoint dot, and aligned day card
-          const statusText = isCompleted 
-            ? '✓ Completed' 
-            : (isLocked ? '🔒 Locked' : (isCurrent ? `⚡ Current (Progress: ${solvedCount}/${day.cells})` : `⏳ Progress: ${solvedCount}/${day.cells} Cells`));
-
-          const pinLabel = isCompleted ? '\u2713' : (isLocked ? '\U0001F512' : day.globalDay);
-          node.innerHTML = `
-            <div class="postshadow"></div>
-            <div class="post"></div>
-            <div class="roadmap-checkpoint-dot ${stateClass}"
-                 onclick="event.stopPropagation(); ${clickHandler}"
-                 title="Day ${day.globalDay}: ${day.title}">
-              ${pinLabel}
-            </div>
-            <div class="roadmap-day-card ${stateClass}" onclick="${clickHandler}">
-              <div class="card-day-label" style="color: ${day.phase === 'excel' ? '#F5A623' : (day.phase === 'sql' ? '#06B6D4' : '#10B981')}">
-                DAY ${day.globalDay.toString().padStart(2, '0')} • ${day.phase.toUpperCase()} D${parseInt(day.courseDay, 10).toString().padStart(2, '0')}
-              </div>
-              <div class="card-title-text">
-                ${day.emoji} ${day.title}
-              </div>
-              <div class="card-status-row">
-                ${statusText}
-              </div>
-            </div>
-          `;
-
-          container.appendChild(node);
-
-          // Insert milestone banners at completion checkpoints (Opaque solid backgrounds)
-          if (day.globalDay === 12) {
-            const banner = document.createElement('div');
-            banner.className = 'roadmap-milestone-banner excel-complete';
-            banner.innerHTML = `
-              <div style="font-size: 16px; font-weight: 900; color: #F5A623;">🏆 Excel Specialist Phase Completed!</div>
-              <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px;">Milestone reached: You have mastered spreadsheet analysis, data cleaning & PivotTable modeling.</div>
-            `;
-            container.appendChild(banner);
-          } else if (day.globalDay === 30) {
-            const banner = document.createElement('div');
-            banner.className = 'roadmap-milestone-banner sql-complete';
-            banner.innerHTML = `
-              <div style="font-size: 16px; font-weight: 900; color: #06B6D4;">🏆 SQL Analyst Phase Completed!</div>
-              <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px;">Milestone reached: You have mastered database querying, multi-table relationships & analytics window functions.</div>
-            `;
-            container.appendChild(banner);
-          } else if (day.globalDay === 60) {
-            const banner = document.createElement('div');
-            banner.className = 'roadmap-milestone-banner full-complete';
-            banner.innerHTML = `
-              <div style="font-size: 18px; font-weight: 900; color: #10B981;">🎓 Data Analytics Masterclass Completed! 🏆</div>
-              <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px;">Final milestone: You have completed all 60 days of Excel, SQL, and Python. Download your graduation certificate now!</div>
-            `;
-            container.appendChild(banner);
-          }
+          day.isCompleted = isCompleted;
+          day.isLocked = isLocked;
+          day.isCurrent = isCurrent;
+          day.solvedCount = solvedCount;
         });
 
         // Update progress pills text and progress bar widths
@@ -8596,124 +8481,593 @@
           if (bar) bar.style.width = `${Math.min((pythonDoneCount / 30) * 100, 100)}%`;
         }
 
-        // Render SVG curvy road after DOM renders
-        setTimeout(drawRoad, 100);
+        window.allRoadmapDays = roadmapDays;
+        
+        // Initial Draw
+        drawRoadmapCanvas(roadmapDays);
+
+        // Auto scroll to current day on first page load
+        const currentDay = roadmapDays.find(d => d.isCurrent);
+        if (currentDay && !window.hasAutoScrolledRoadmap) {
+          window.hasAutoScrolledRoadmap = true;
+          setTimeout(() => {
+            const targetY = 100 + (currentDay.globalDay - 1) * 88;
+            const viewport = document.getElementById('roadmapViewport');
+            if (viewport) {
+              viewport.scrollTop = targetY - viewport.clientHeight / 2;
+            }
+          }, 300);
+        }
       }
 
-      // Dynamic curve drawer for winding road
-      function drawRoad() {
-        const container = document.getElementById('roadmapNodesContainer');
-        const svg = document.getElementById('roadmapSvg');
-        const pathBorder = document.getElementById('roadmapBorder');
-        const pathBorderTexture = document.getElementById('roadmapBorderTexture');
-        const pathDirt = document.getElementById('roadmapDirt');
-        const pathEdgePaint = document.getElementById('roadmapEdgePaint');
-        const pathAsphalt = document.getElementById('roadmapAsphalt');
-        const pathAsphaltTexture = document.getElementById('roadmapAsphaltTexture');
-        const pathCenterLine = document.getElementById('roadmapCenterLine');
-        
-        if (!container || !svg || !pathBorder || !pathAsphalt || !pathCenterLine) return;
-        
-        const dots = container.querySelectorAll('.roadmap-checkpoint-dot');
-        if (dots.length === 0) return;
-        
-        // Set SVG size to match the nodes container
-        svg.setAttribute('width', container.offsetWidth);
-        svg.setAttribute('height', container.offsetHeight);
-        
-        let points = [];
-        dots.forEach(dot => {
-          const node = dot.parentElement;
-          const x = dot.offsetLeft + dot.offsetWidth / 2;
-          // Steel post base aligns exactly with the vertical center of the node/row (no vertical offset)
-          const y = node.offsetTop + dot.offsetTop + dot.offsetHeight / 2;
-          points.push({ x, y });
-        });
-        
-        if (points.length < 2) return;
-        
-        // Build curvy path using Bezier curves with vertical tangency
-        let pathData = `M ${points[0].x} ${points[0].y}`;
-        for (let i = 1; i < points.length; i++) {
-          const p0 = points[i - 1];
-          const p1 = points[i];
-          const dy = p1.y - p0.y;
-          const cp1x = p0.x;
-          const cp1y = p0.y + dy / 2;
-          const cp2x = p1.x;
-          const cp2y = p1.y - dy / 2;
-          pathData += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
-        }
-        
-        pathBorder.setAttribute('d', pathData);
-        if (pathBorderTexture) pathBorderTexture.setAttribute('d', pathData);
-        if (pathDirt) pathDirt.setAttribute('d', pathData);
-        if (pathEdgePaint) pathEdgePaint.setAttribute('d', pathData);
-        pathAsphalt.setAttribute('d', pathData);
-        if (pathAsphaltTexture) pathAsphaltTexture.setAttribute('d', pathData);
-        pathCenterLine.setAttribute('d', pathData);
+      // Draw the complete 3D isometric roadmap on Canvas
+      function drawRoadmapCanvas(roadmapDays) {
+        const viewport = document.getElementById('roadmapViewport');
+        const canvas = document.getElementById('roadmapCanvas');
+        if (!viewport || !canvas) return;
 
-        // Render organic crack lines with deterministic math to prevent jumping
-        let crack1Data = '';
-        let crack2Data = '';
-        if (points.length >= 2) {
-          crack1Data = `M ${points[0].x} ${points[0].y}`;
-          crack2Data = `M ${points[0].x} ${points[0].y}`;
-          for (let i = 1; i < points.length; i++) {
-            const p0 = points[i - 1];
-            const p1 = points[i];
-            const dy = p1.y - p0.y;
-            
-            // Deterministic pseudo-random seed using sine of coordinates
-            const seed = (p0.x + p0.y) * 0.05 + i;
-            const jitterX1 = Math.sin(seed * 37.4) * 3;
-            const jitterY1 = Math.cos(seed * 19.8) * 2;
-            const jitterX2 = Math.sin(seed * 53.1) * 3;
-            const jitterY2 = Math.cos(seed * 27.4) * 2;
-            crack1Data += ` C ${p0.x + jitterX1} ${p0.y + dy/2 + jitterY1}, ${p1.x + jitterX2} ${p1.y - dy/2 + jitterY2}, ${p1.x} ${p1.y}`;
-            
-            const jitterX3 = Math.cos(seed * 41.2) * 4;
-            const jitterY3 = Math.sin(seed * 12.5) * 3;
-            const jitterX4 = Math.cos(seed * 62.7) * 4;
-            const jitterY4 = Math.sin(seed * 31.9) * 3;
-            crack2Data += ` C ${p0.x + jitterX3} ${p0.y + dy/2 + jitterY3}, ${p1.x + jitterX4} ${p1.y - dy/2 + jitterY4}, ${p1.x} ${p1.y}`;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        
+        const width = viewport.clientWidth || 400;
+        const height = 5400; // 60 days * 88px + padding
+
+        // Set dimensions (High DPI support)
+        if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
+          canvas.width = width * dpr;
+          canvas.height = height * dpr;
+          canvas.style.width = width + 'px';
+          canvas.style.height = height + 'px';
+        }
+
+        ctx.save();
+        ctx.scale(dpr, dpr);
+        ctx.clearRect(0, 0, width, height);
+
+        const isDark = document.body.classList.contains('dark-theme') || 
+                       document.body.classList.contains('dark') ||
+                       (window.getComputedStyle(document.body).backgroundColor && 
+                        isColorDark(window.getComputedStyle(document.body).backgroundColor));
+
+        // 1. Draw Background Gradient
+        const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+        if (isDark) {
+          bgGrad.addColorStop(0, '#0d1117');
+          bgGrad.addColorStop(0.5, '#111827');
+          bgGrad.addColorStop(1, '#0a0f1a');
+        } else {
+          bgGrad.addColorStop(0, '#dce8f5');
+          bgGrad.addColorStop(0.5, '#c8d8ec');
+          bgGrad.addColorStop(1, '#b8ccdf');
+        }
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        // 2. Draw Subtle Grid Texture (Map feeling)
+        ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.03)' : 'rgba(68,102,170,0.05)';
+        ctx.lineWidth = 0.5;
+        for (let x = 0; x < width; x += 28) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, height);
+          ctx.stroke();
+        }
+        for (let y = 0; y < height; y += 28) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+
+        // 3. Generate Winding Sine Wave Road Math Model
+        const points = [];
+        const leftTop = [];
+        const rightTop = [];
+        const leftBot = [];
+        const rightBot = [];
+
+        const step = 6;
+        const A = width * 0.16; // Curve amplitude
+        const lambda = 720;     // Full cycle wave length
+        const ROAD_W = 32;      // Half road width
+        const WALL_H = 12;      // Road thickness/depth
+        const centerX = width / 2;
+
+        for (let y = 30; y <= height - 30; y += step) {
+          const x = centerX + A * Math.sin((2 * Math.PI * y) / lambda);
+          const dx_dy = (A * 2 * Math.PI / lambda) * Math.cos((2 * Math.PI * y) / lambda);
+          const len = Math.sqrt(dx_dy * dx_dy + 1);
+          
+          const nx = -1 / len;
+          const ny = dx_dy / len;
+
+          points.push({ x, y });
+          leftTop.push({ x: x + nx * ROAD_W, y: y + ny * ROAD_W });
+          rightTop.push({ x: x - nx * ROAD_W, y: y - ny * ROAD_W });
+          leftBot.push({ x: x + nx * ROAD_W, y: y + ny * ROAD_W + WALL_H });
+          rightBot.push({ x: x - nx * ROAD_W, y: y - ny * ROAD_W + WALL_H });
+        }
+
+        // 4. Layer 1 — Road Cast Shadow
+        ctx.save();
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.22)';
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetX = 10;
+        ctx.shadowOffsetY = 12;
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+        ctx.beginPath();
+        ctx.moveTo(leftTop[0].x, leftTop[0].y);
+        for (let i = 1; i < leftTop.length; i++) ctx.lineTo(leftTop[i].x, leftTop[i].y);
+        for (let i = rightTop.length - 1; i >= 0; i--) ctx.lineTo(rightTop[i].x, rightTop[i].y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+
+        // 5. Layer 2 — Right Sidewall
+        for (let i = 0; i < points.length - 1; i++) {
+          const sideGrad = ctx.createLinearGradient(rightTop[i].x, rightTop[i].y, rightBot[i].x, rightBot[i].y);
+          if (isDark) {
+            sideGrad.addColorStop(0, '#334155');
+            sideGrad.addColorStop(1, '#1e293b');
+          } else {
+            sideGrad.addColorStop(0, '#cbd5e1');
+            sideGrad.addColorStop(1, '#94a3b8');
+          }
+          ctx.fillStyle = sideGrad;
+          ctx.beginPath();
+          ctx.moveTo(rightTop[i].x, rightTop[i].y);
+          ctx.lineTo(rightTop[i+1].x, rightTop[i+1].y);
+          ctx.lineTo(rightBot[i+1].x, rightBot[i+1].y);
+          ctx.lineTo(rightBot[i].x, rightBot[i].y);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        // 6. Layer 3 — Left Sidewall (viewer-facing, lighter)
+        for (let i = 0; i < points.length - 1; i++) {
+          const sideGrad = ctx.createLinearGradient(leftTop[i].x, leftTop[i].y, leftBot[i].x, leftBot[i].y);
+          if (isDark) {
+            sideGrad.addColorStop(0, '#cbd5e0');
+            sideGrad.addColorStop(0.5, '#94a3b8');
+            sideGrad.addColorStop(1, '#475569');
+          } else {
+            sideGrad.addColorStop(0, '#f1f5f9');
+            sideGrad.addColorStop(0.5, '#e2e8f0');
+            sideGrad.addColorStop(1, '#cbd5e1');
+          }
+          ctx.fillStyle = sideGrad;
+          ctx.beginPath();
+          ctx.moveTo(leftTop[i].x, leftTop[i].y);
+          ctx.lineTo(leftTop[i+1].x, leftTop[i+1].y);
+          ctx.lineTo(leftBot[i+1].x, leftBot[i+1].y);
+          ctx.lineTo(leftBot[i].x, leftBot[i].y);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        // 7. Layer 4 — Road Surface
+        ctx.beginPath();
+        ctx.moveTo(leftTop[0].x, leftTop[0].y);
+        for (let i = 1; i < leftTop.length; i++) ctx.lineTo(leftTop[i].x, leftTop[i].y);
+        for (let i = rightTop.length - 1; i >= 0; i--) ctx.lineTo(rightTop[i].x, rightTop[i].y);
+        ctx.closePath();
+        const roadGrad = ctx.createLinearGradient(centerX, 30, centerX, height - 30);
+        if (isDark) {
+          roadGrad.addColorStop(0, '#1e293b');
+          roadGrad.addColorStop(0.5, '#0f172a');
+          roadGrad.addColorStop(1, '#020617');
+        } else {
+          roadGrad.addColorStop(0, '#334155');
+          roadGrad.addColorStop(0.5, '#1e293b');
+          roadGrad.addColorStop(1, '#0f172a');
+        }
+        ctx.fillStyle = roadGrad;
+        ctx.fill();
+
+        // 8. Layer 5 — Asphalt Texture & Edges (Inside Road Clip)
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(leftTop[0].x, leftTop[0].y);
+        for (let i = 1; i < leftTop.length; i++) ctx.lineTo(leftTop[i].x, leftTop[i].y);
+        for (let i = rightTop.length - 1; i >= 0; i--) ctx.lineTo(rightTop[i].x, rightTop[i].y);
+        ctx.closePath();
+        ctx.clip();
+
+        // Diagonal aggregate texture overlay
+        const texGrad = ctx.createLinearGradient(0, 0, width, height);
+        texGrad.addColorStop(0, 'rgba(255,255,255,0.03)');
+        texGrad.addColorStop(0.3, 'rgba(0,0,0,0.04)');
+        texGrad.addColorStop(0.7, 'rgba(255,255,255,0.04)');
+        texGrad.addColorStop(1, 'rgba(0,0,0,0.03)');
+        ctx.fillStyle = texGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        // White Solid Edge Lines
+        ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(leftTop[0].x, leftTop[0].y);
+        for (let i = 1; i < leftTop.length; i++) ctx.lineTo(leftTop[i].x, leftTop[i].y);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(rightTop[0].x, rightTop[0].y);
+        for (let i = 1; i < rightTop.length; i++) ctx.lineTo(rightTop[i].x, rightTop[i].y);
+        ctx.stroke();
+
+        // Center Dashed Line
+        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([12, 10]);
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for (let i = 1; i < points.length; i++) ctx.lineTo(points[i].x, points[i].y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+
+        // 9. Layer 6 — Outer Crisp Edge Highlights
+        ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(leftTop[0].x, leftTop[0].y);
+        for (let i = 1; i < leftTop.length; i++) ctx.lineTo(leftTop[i].x, leftTop[i].y);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(rightTop[0].x, rightTop[0].y);
+        for (let i = 1; i < rightTop.length; i++) ctx.lineTo(rightTop[i].x, rightTop[i].y);
+        ctx.stroke();
+
+        // Sidewall bottom boundaries
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.12)';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(leftBot[0].x, leftBot[0].y);
+        for (let i = 1; i < leftBot.length; i++) ctx.lineTo(leftBot[i].x, leftBot[i].y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(rightBot[0].x, rightBot[0].y);
+        for (let i = 1; i < rightBot.length; i++) ctx.lineTo(rightBot[i].x, rightBot[i].y);
+        ctx.stroke();
+
+        // 10. Render START Banner
+        const startY = 50;
+        const startX = centerX + A * Math.sin((2 * Math.PI * startY) / lambda);
+        ctx.fillStyle = isDark ? '#94a3b8' : '#475569';
+        ctx.font = 'bold 11px Outfit';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🚩 START: EXCEL PHASE', startX, startY - 26);
+        ctx.strokeStyle = isDark ? 'rgba(148,163,184,0.3)' : 'rgba(71,85,105,0.3)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(startX, startY - 16);
+        ctx.lineTo(startX, startY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // 11. Plot and Draw all 60 Day Pins and Cards
+        const cardW = 130;
+        const cardH = 48;
+
+        roadmapDays.forEach((day, index) => {
+          const cy = 100 + index * 88;
+          const cx = centerX + A * Math.sin((2 * Math.PI * cy) / lambda);
+
+          // Alternating placement rules
+          const isRight = cx < centerX;
+          const cardX = isRight ? cx + 24 : cx - 24 - cardW;
+          const cardY = cy - cardH / 2;
+
+          day.cx = cx;
+          day.cy = cy;
+          day.cardX = cardX;
+          day.cardY = cardY;
+          day.cardW = cardW;
+          day.cardH = cardH;
+
+          // Theme color configurations
+          let colors = { light: '#fef3c7', mid: '#f59e0b', dark: '#b45309' }; // excel
+          if (day.phase === 'sql') colors = { light: '#ecfeff', mid: '#06b6d4', dark: '#0891b2' };
+          if (day.phase === 'python') colors = { light: '#ecfdf5', mid: '#10b981', dark: '#047857' };
+          
+          if (day.isLocked) {
+            colors = { light: isDark ? '#1e293b' : '#f1f5f9', mid: '#94a3b8', dark: '#64748b' };
+          }
+
+          // State checking
+          const isHovered = window.hoveredDayId === day.globalDay;
+
+          // a) Connector Line
+          ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.22)' : 'rgba(0,0,0,0.12)';
+          ctx.lineWidth = 1;
+          ctx.setLineDash([4, 3]);
+          ctx.beginPath();
+          if (isRight) {
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cardX, cy);
+          } else {
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cardX + cardW, cy);
+          }
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // b) Post Ground Shadow
+          ctx.fillStyle = 'rgba(0,0,0,0.25)';
+          ctx.beginPath();
+          ctx.ellipse(cx, cy + 14, 7, 2.5, 0, 0, 2 * Math.PI);
+          ctx.fill();
+
+          // c) 3D Cylindrical Post
+          const poleGrad = ctx.createLinearGradient(cx - 2, cy - 10, cx + 2, cy + 14);
+          poleGrad.addColorStop(0, '#94a3b8');
+          poleGrad.addColorStop(0.3, '#f1f5f9');
+          poleGrad.addColorStop(0.8, '#475569');
+          poleGrad.addColorStop(1, '#334155');
+          ctx.fillStyle = poleGrad;
+          ctx.fillRect(cx - 2, cy - 10, 4, 24);
+
+          // d) Beveled Signboard
+          ctx.save();
+          ctx.shadowColor = 'rgba(0,0,0,0.2)';
+          ctx.shadowBlur = 4;
+          ctx.shadowOffsetY = 2;
+          
+          const signY = cy - 20;
+          ctx.fillStyle = colors.mid;
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1.2;
+          
+          // Draw rect signboard
+          drawRoundedRect(ctx, cx - 12, signY - 8, 24, 16, 2);
+          ctx.fill();
+          ctx.stroke();
+
+          // Icon / Day Label inside Signboard
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '800 8.5px Outfit';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          let signLabel = day.globalDay;
+          if (day.isCompleted) signLabel = '✓';
+          if (day.isLocked) signLabel = '🔒';
+          ctx.fillText(signLabel, cx, signY);
+          ctx.restore();
+
+          // e) Rectangular Metadata Card
+          ctx.save();
+          ctx.shadowColor = isHovered ? 'rgba(59,130,246,0.2)' : 'rgba(0,0,0,0.06)';
+          ctx.shadowBlur = isHovered ? 12 : 6;
+          ctx.shadowOffsetY = isHovered ? 6 : 3;
+          
+          ctx.fillStyle = isDark ? '#1e293b' : '#ffffff';
+          ctx.strokeStyle = isHovered ? '#3b82f6' : (isDark ? '#334155' : '#e2e8f0');
+          ctx.lineWidth = isHovered ? 1.8 : 1.0;
+          
+          drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 4);
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
+
+          // f) Side Accent indicator bar
+          ctx.fillStyle = colors.mid;
+          const barWidth = 3.5;
+          const barHeight = 32;
+          const barOffsetY = (cardH - barHeight) / 2;
+          if (isRight) {
+            // Draw on left border of card (facing the road)
+            drawRoundedRect(ctx, cardX, cardY + barOffsetY, barWidth, barHeight, 1.5);
+          } else {
+            // Draw on right border of card (facing the road)
+            drawRoundedRect(ctx, cardX + cardW - barWidth, cardY + barOffsetY, barWidth, barHeight, 1.5);
+          }
+          ctx.fill();
+
+          // g) Floating Outer Badge
+          const badgeRadius = 9;
+          const badgeX = isRight ? cardX + cardW : cardX;
+          const badgeY = cardY + cardH / 2;
+          
+          ctx.save();
+          ctx.fillStyle = colors.mid;
+          ctx.beginPath();
+          ctx.arc(badgeX, badgeY, badgeRadius, 0, 2 * Math.PI);
+          ctx.fill();
+          
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '800 8.5px Outfit';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          let badgeText = day.courseDay;
+          if (day.isCompleted) badgeText = '✓';
+          if (day.isLocked) badgeText = '🔒';
+          ctx.fillText(badgeText, badgeX, badgeY);
+          ctx.restore();
+
+          // h) Card Text
+          ctx.fillStyle = colors.dark;
+          ctx.font = 'bold 9.5px Outfit';
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'top';
+          ctx.fillText(`${day.phase.toUpperCase()} D${parseInt(day.courseDay, 10).toString().padStart(2, '0')}`, cardX + 12, cardY + 11);
+
+          ctx.fillStyle = isDark ? '#94a3b8' : '#475569';
+          ctx.font = '500 9px Inter';
+          let displayTitle = day.title;
+          if (displayTitle.length > 18) displayTitle = displayTitle.slice(0, 16) + '...';
+          ctx.fillText(`${day.emoji} ${displayTitle}`, cardX + 12, cardY + 26);
+        });
+
+        // 12. Render GRADUATION GOAL Star
+        const goalY = 5380;
+        const goalX = centerX + A * Math.sin((2 * Math.PI * goalY) / lambda);
+        
+        ctx.save();
+        ctx.shadowColor = 'rgba(251, 191, 36, 0.6)';
+        ctx.shadowBlur = 18;
+        
+        // Draw 5-Point Star
+        ctx.fillStyle = '#fbbf24';
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        drawStar(ctx, goalX, goalY + 14, 18, 7.5);
+        
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = 'bold 12px Outfit';
+        ctx.textAlign = 'center';
+        ctx.fillText('🎓 GRADUATION GOAL', goalX, goalY - 14);
+        ctx.restore();
+
+        ctx.restore();
+      }
+
+      // Draw helper function: Rounded Rectangle path
+      function drawRoundedRect(ctx, x, y, width, height, radius) {
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + width - radius, y);
+        ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        ctx.lineTo(x + width, y + height - radius);
+        ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        ctx.lineTo(x + radius, y + height - radius);
+        ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+      }
+
+      // Draw helper function: 5-Point Star path
+      function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius) {
+        let rot = Math.PI / 2 * 3;
+        let x = cx;
+        let y = cy;
+        let step = Math.PI / spikes;
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - outerRadius);
+        for (let i = 0; i < spikes; i++) {
+          x = cx + Math.cos(rot) * outerRadius;
+          y = cy + Math.sin(rot) * outerRadius;
+          ctx.lineTo(x, y);
+          rot += step;
+
+          x = cx + Math.cos(rot) * innerRadius;
+          y = cy + Math.sin(rot) * innerRadius;
+          ctx.lineTo(x, y);
+          rot += step;
+        }
+        ctx.lineTo(cx, cy - outerRadius);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      // Color lightness analyzer for automatic theme detection
+      function isColorDark(colorString) {
+        let r = 255, g = 255, b = 255;
+        if (colorString.startsWith('rgb')) {
+          const m = colorString.match(/\d+/g);
+          if (m && m.length >= 3) {
+            r = parseInt(m[0]);
+            g = parseInt(m[1]);
+            b = parseInt(m[2]);
+          }
+        } else if (colorString.startsWith('#')) {
+          const hex = colorString.slice(1);
+          if (hex.length === 3) {
+            r = parseInt(hex[0]+hex[0], 16);
+            g = parseInt(hex[1]+hex[1], 16);
+            b = parseInt(hex[2]+hex[2], 16);
+          } else if (hex.length === 6) {
+            r = parseInt(hex.slice(0, 2), 16);
+            g = parseInt(hex.slice(2, 4), 16);
+            b = parseInt(hex.slice(4, 6), 16);
           }
         }
-
-        const pathCracks1 = document.getElementById('roadmapCracks1');
-        const pathCracks2 = document.getElementById('roadmapCracks2');
-        if (pathCracks1) pathCracks1.setAttribute('d', crack1Data);
-        if (pathCracks2) pathCracks2.setAttribute('d', crack2Data);
-
-        const pathEdgeLeft = document.getElementById('roadmapEdgeLineLeft');
-        const pathEdgeRight = document.getElementById('roadmapEdgeLineRight');
-        if (pathEdgeLeft) pathEdgeLeft.setAttribute('d', pathData);
-        if (pathEdgeRight) pathEdgeRight.setAttribute('d', pathData);
-
-        const pathWornCenter = document.getElementById('roadmapWornCenter');
-        if (pathWornCenter) pathWornCenter.setAttribute('d', pathData);
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        return luminance < 0.5;
       }
 
-      // Resize listener to redraw road when viewport size changes
-      window.addEventListener('resize', drawRoad);
+      // Mouse interactive listeners mapping coordinates on home load
+      document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById('roadmapCanvas');
+        if (canvas) {
+          canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
 
-      // Scroll helpers
+            let found = null;
+            window.allRoadmapDays.forEach(d => {
+              // Bounding check on card rect
+              if (mouseX >= d.cardX && mouseX <= d.cardX + d.cardW &&
+                  mouseY >= d.cardY && mouseY <= d.cardY + d.cardH) {
+                found = d.globalDay;
+              }
+              // Bounding check on signboard node
+              const dx = mouseX - d.cx;
+              const dy = mouseY - (d.cy - 20);
+              if (Math.sqrt(dx*dx + dy*dy) < 14) {
+                found = d.globalDay;
+              }
+            });
+
+            if (window.hoveredDayId !== found) {
+              window.hoveredDayId = found;
+              canvas.style.cursor = found ? 'pointer' : 'default';
+              drawRoadmapCanvas(window.allRoadmapDays);
+            }
+          });
+
+          canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            const clickedDay = window.allRoadmapDays.find(d => {
+              const dx = mouseX - d.cx;
+              const dy = mouseY - (d.cy - 20);
+              const hoverSign = Math.sqrt(dx*dx + dy*dy) < 14;
+              const hoverCard = mouseX >= d.cardX && mouseX <= d.cardX + d.cardW &&
+                                mouseY >= d.cardY && mouseY <= d.cardY + d.cardH;
+              return hoverCard || hoverSign;
+            });
+
+            if (clickedDay) {
+              if (clickedDay.isLocked) {
+                window.location.href = 'landing_v2/index.html#pricing?locked=true';
+              } else {
+                window.location.href = clickedDay.targetUrl + '?v=2.1';
+              }
+            }
+          });
+        }
+      });
+
+      // Canvas dynamic resize redraw handler
+      window.addEventListener('resize', () => {
+        if (window.allRoadmapDays && window.allRoadmapDays.length > 0) {
+          drawRoadmapCanvas(window.allRoadmapDays);
+        }
+      });
+
+      // Re-route scroll helpers to absolute vertical values
       window.scrollToRoadmapPhase = function(phase) {
-        let targetDay = 1;
-        if (phase === 'sql') targetDay = 13;
-        if (phase === 'python') targetDay = 31;
+        let targetDayIndex = 0;
+        if (phase === 'sql') targetDayIndex = 12;
+        if (phase === 'python') targetDayIndex = 30;
 
-        const targetNode = document.getElementById(`roadmap-day-${targetDay}`);
         const viewport = document.getElementById('roadmapViewport');
-
-        if (targetNode && viewport) {
-          const offsetTop = targetNode.offsetTop - 30;
+        if (viewport) {
+          const offsetTop = 100 + targetDayIndex * 88 - 30;
           viewport.scrollTo({
             top: offsetTop,
             behavior: 'smooth'
           });
 
-          // Toggle active class on summary tracker items
           const summaryItems = document.querySelectorAll('.roadmap-summary-item');
           summaryItems.forEach(item => {
             if (item.classList.contains(phase)) {
@@ -8722,13 +9076,8 @@
               item.classList.remove('active');
             }
           });
-          
-          // Redraw path just in case layout changed during scrolling
-          setTimeout(drawRoad, 100);
         }
-      }
-
-      // Define standalone UI update functions
+      }      // Define standalone UI update functions
       const renderMilestoneTimeline = () => {
         const activePrefix = currentCourse === 'sql' ? 'sql-' : (currentCourse === 'excel' ? 'excel-' : '');
         // Render Segmented Milestone Timeline
