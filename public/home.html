@@ -5240,13 +5240,13 @@
     .roadmap-day-node.python.completed.left .roadmap-day-card { border-right-color: #10B981 !important; }
     .roadmap-day-node.python.completed.right .roadmap-day-card { border-left-color: #10B981 !important; }
     
-    /* Glowing active indicators for current card */
-    .roadmap-day-node.excel.current.left .roadmap-day-card { border-right-color: #3b82f6 !important; border-right-width: 5px !important; box-shadow: 0 4px 14px rgba(59,130,246,0.15) !important; }
-    .roadmap-day-node.excel.current.right .roadmap-day-card { border-left-color: #3b82f6 !important; border-left-width: 5px !important; box-shadow: 0 4px 14px rgba(59,130,246,0.15) !important; }
-    .roadmap-day-node.sql.current.left .roadmap-day-card { border-right-color: #3b82f6 !important; border-right-width: 5px !important; box-shadow: 0 4px 14px rgba(59,130,246,0.15) !important; }
-    .roadmap-day-node.sql.current.right .roadmap-day-card { border-left-color: #3b82f6 !important; border-left-width: 5px !important; box-shadow: 0 4px 14px rgba(59,130,246,0.15) !important; }
-    .roadmap-day-node.python.current.left .roadmap-day-card { border-right-color: #3b82f6 !important; border-right-width: 5px !important; box-shadow: 0 4px 14px rgba(59,130,246,0.15) !important; }
-    .roadmap-day-node.python.current.right .roadmap-day-card { border-left-color: #3b82f6 !important; border-left-width: 5px !important; box-shadow: 0 4px 14px rgba(59,130,246,0.15) !important; }
+    /* Glowing active indicators — current card border + glow matches PHASE color */
+    .roadmap-day-node.excel.current.left .roadmap-day-card  { border-right-color: #f59e0b !important; border-right-width: 5px !important; box-shadow: 0 4px 18px rgba(245,158,11,0.28) !important; }
+    .roadmap-day-node.excel.current.right .roadmap-day-card { border-left-color:  #f59e0b !important; border-left-width:  5px !important; box-shadow: 0 4px 18px rgba(245,158,11,0.28) !important; }
+    .roadmap-day-node.sql.current.left .roadmap-day-card    { border-right-color: #06b6d4 !important; border-right-width: 5px !important; box-shadow: 0 4px 18px rgba(6,182,212,0.28)   !important; }
+    .roadmap-day-node.sql.current.right .roadmap-day-card   { border-left-color:  #06b6d4 !important; border-left-width:  5px !important; box-shadow: 0 4px 18px rgba(6,182,212,0.28)   !important; }
+    .roadmap-day-node.python.current.left .roadmap-day-card { border-right-color: #10b981 !important; border-right-width: 5px !important; box-shadow: 0 4px 18px rgba(16,185,129,0.28)  !important; }
+    .roadmap-day-node.python.current.right .roadmap-day-card{ border-left-color:  #10b981 !important; border-left-width:  5px !important; box-shadow: 0 4px 18px rgba(16,185,129,0.28)  !important; }
     
     /* Lift active/current card to look extremely prominent and premium */
     .roadmap-day-card.current {
@@ -5255,8 +5255,8 @@
     }
     
     .roadmap-day-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px -1px rgba(0, 0, 0, 0.08), 0 4px 6px -1px rgba(0, 0, 0, 0.04) !important;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px -2px rgba(0, 0, 0, 0.14), 0 4px 8px -2px rgba(0, 0, 0, 0.06) !important;
     }
     
     /* Card content alignment & right-align status row for left cards */
@@ -5315,10 +5315,7 @@
     }
     
     /* Hover effect for clean rectangular cards */
-    .roadmap-day-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px -1px rgba(0, 0, 0, 0.08), 0 4px 6px -1px rgba(0, 0, 0, 0.04) !important;
-    }
+    /* (hover rule defined above) */
     .roadmap-day-card.locked {
       opacity: 0.6;
       cursor: not-allowed;
@@ -8530,6 +8527,15 @@
       }
 
       // Draw the complete 3D isometric roadmap on Canvas
+      // Helper: convert 6-char hex color to "r,g,b" string for rgba()
+      function hexToRgb(hex) {
+        const h = hex.replace('#', '');
+        const r = parseInt(h.substring(0,2), 16);
+        const g = parseInt(h.substring(2,4), 16);
+        const b = parseInt(h.substring(4,6), 16);
+        return `${r},${g},${b}`;
+      }
+
       function drawRoadmapCanvas(roadmapDays) {
         const viewport = document.getElementById('roadmapViewport');
         const canvas = document.getElementById('roadmapCanvas');
@@ -8920,12 +8926,13 @@
 
           // e) Rectangular Metadata Card
           ctx.save();
-          ctx.shadowColor = isHovered ? 'rgba(59,130,246,0.25)' : 'rgba(0,0,0,0.06)';
-          ctx.shadowBlur = isHovered ? 14 : 6;
-          ctx.shadowOffsetY = isHovered ? 7 : 3;
+          // Hover: 1px visual lift with deeper phase-colored shadow (tactile feel)
+          ctx.shadowColor = isHovered ? `rgba(${hexToRgb(colors.mid)},0.30)` : 'rgba(0,0,0,0.06)';
+          ctx.shadowBlur = isHovered ? 18 : 6;
+          ctx.shadowOffsetY = isHovered ? 5 : 3;
           
           ctx.fillStyle = isDark ? '#1e293b' : '#ffffff';
-          ctx.strokeStyle = isHovered ? '#3b82f6' : (isDark ? '#334155' : '#e2e8f0');
+          ctx.strokeStyle = isHovered ? colors.mid : (isDark ? '#334155' : '#e2e8f0');
           ctx.lineWidth = isHovered ? 2.0 : 1.0;
           
           drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 4);
@@ -8980,18 +8987,37 @@
           const startTitleY = cardY + 22;
           const endTitleY = wrapText(ctx, `${day.emoji} ${day.title}`, cardX + 12, startTitleY, maxTextW, 11);
 
-          // Progress Status Detail
-          ctx.fillStyle = isDark ? '#748094' : '#64748b';
-          ctx.font = '500 8px Inter';
-          let progressDetail = day.isCompleted 
-            ? '✓ Solved' 
-            : (day.isLocked ? '🔒 Locked' : (day.isCurrent ? `⚡ In progress` : `⏳ Unstarted`));
-          
-          // Append actual cell details to show complete details
+          // Progress Status Detail — status text = saturated mid-tone, dot drawn in light tint
+          const statusY = cardY + 48;
+          const dotRadius = 3.5;
+          const dotX = isRight ? cardX + 12 + dotRadius : cardX + 12 + dotRadius;
+
+          let progressLabel = day.isCompleted
+            ? 'Solved'
+            : (day.isLocked ? 'Locked' : (day.isCurrent ? 'In progress' : 'Unstarted'));
           if (!day.isLocked) {
-            progressDetail += ` • ${day.solvedCount}/${day.cells} Cells`;
+            progressLabel += ` • ${day.solvedCount}/${day.cells}`;
           }
-          ctx.fillText(progressDetail, cardX + 12, cardY + 48);
+
+          // Draw the status dot in colors.light (light tint of the hue)
+          ctx.fillStyle = day.isLocked ? '#cbd5e1' : colors.light;
+          ctx.beginPath();
+          ctx.arc(dotX, statusY + 3.5, dotRadius, 0, 2 * Math.PI);
+          ctx.fill();
+
+          // Draw a thin outline ring in colors.mid on the dot
+          ctx.strokeStyle = day.isLocked ? '#94a3b8' : colors.mid;
+          ctx.lineWidth = 0.9;
+          ctx.beginPath();
+          ctx.arc(dotX, statusY + 3.5, dotRadius, 0, 2 * Math.PI);
+          ctx.stroke();
+
+          // Status text in saturated mid-tone
+          ctx.fillStyle = day.isLocked ? '#94a3b8' : colors.mid;
+          ctx.font = '600 8px Inter';
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'top';
+          ctx.fillText(progressLabel, dotX + dotRadius + 4, statusY);
         });
 
         // 12. Render Stunning 3D Display Pedestal and Download Button at GOAL
@@ -9076,6 +9102,50 @@
         ctx.arc(0, 0, 4.5, 0, 2 * Math.PI);
         ctx.fill();
         ctx.restore();
+
+        // ★ Gold Star at top of road spine (GOAL marker)
+        const goalStarY = 36;
+        const goalStarX = centerX + A * Math.sin((2 * Math.PI * goalStarY) / lambda);
+        // Glowing gold halo
+        ctx.save();
+        ctx.shadowColor = 'rgba(251,191,36,0.80)';
+        ctx.shadowBlur = 22;
+        // Draw 5-pointed star
+        const starCx = goalStarX, starCy = goalStarY - 8, starR1 = 13, starR2 = 5.5, starN = 5;
+        ctx.beginPath();
+        for (let si = 0; si < starN * 2; si++) {
+          const r = si % 2 === 0 ? starR1 : starR2;
+          const angle = (si * Math.PI) / starN - Math.PI / 2;
+          si === 0 ? ctx.moveTo(starCx + r * Math.cos(angle), starCy + r * Math.sin(angle))
+                   : ctx.lineTo(starCx + r * Math.cos(angle), starCy + r * Math.sin(angle));
+        }
+        ctx.closePath();
+        const starGrad = ctx.createRadialGradient(starCx, starCy - 2, 0, starCx, starCy, starR1);
+        starGrad.addColorStop(0, '#fef08a');
+        starGrad.addColorStop(0.55, '#fbbf24');
+        starGrad.addColorStop(1, '#d97706');
+        ctx.fillStyle = starGrad;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.2;
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+
+        // GOAL label below the star in amber text
+        ctx.fillStyle = '#d97706';
+        ctx.font = '900 9px Outfit';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('GOAL', goalStarX, goalStarY + 6);
+
+        // START label at the very bottom of road in muted slate
+        const roadEndY = height - 55;
+        const roadEndX = centerX + A * Math.sin((2 * Math.PI * roadEndY) / lambda);
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '700 8.5px Outfit';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('START', roadEndX, roadEndY);
 
         // b) Stunning Capsule Button (Expanded 160x32px for better readability)
         ctx.save();
