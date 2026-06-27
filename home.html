@@ -210,7 +210,7 @@
 
     /* ===== LIGHT THEME GLOBAL TEXT OVERRIDES ===== */
     /* Navigation */
-    .nav-link, .nav-logo-text, .nav-logo, .nav-link:hover { color: #1e293b !important; }
+    .nav-link, .nav-logo-text, .nav-logo, .nav-link:hover, .nav-brand-name { color: #1e293b !important; }
     .nav { box-shadow: 0 1px 20px rgba(99, 102, 241, 0.08) !important; }
 
     /* Course selector cards */
@@ -502,7 +502,7 @@
     }
     .course-select-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.9rem;
+      font-size: 1.15rem; /* Increased size for bold SQL, Excel, Python titles */
       font-weight: 800;
       color: #f1f5f9;
       margin: 0;
@@ -4469,7 +4469,7 @@
       padding: 0.65rem 1.5rem;
       border: none;
       border-radius: 50px;
-      font-size: 0.9rem;
+      font-size: 1.15rem; /* Increased size for bold SQL, Excel, Python titles */
       font-weight: 600;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
@@ -6814,7 +6814,7 @@
           const courses = [
             {
               id: 'sql',
-              title: 'SQL for Data Analyst',
+              title: 'SQL',
               icon: '🗄️',
               days: '18 Days',
               class: 'course--sql',
@@ -6822,7 +6822,7 @@
             },
             {
               id: 'excel',
-              title: 'Excel for Data Analyst',
+              title: 'Excel',
               icon: '📊',
               days: '12 Days',
               class: 'course--excel',
@@ -6830,7 +6830,7 @@
             },
             {
               id: 'python',
-              title: 'Python for Data Analyst',
+              title: 'Python',
               icon: '🐍',
               days: '30 Days',
               class: 'course--python',
