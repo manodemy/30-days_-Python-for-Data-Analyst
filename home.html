@@ -5196,6 +5196,15 @@
       justify-content: flex-start;
       padding-left: calc(50% + 60px); /* Guaranteed 5px gap from maximum road curve excursion */
     }
+
+    /* CSS Override for HTML cards overlaying canvas road */
+    #roadmapNodesContainer .roadmap-day-node {
+      position: absolute !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      display: block !important;
+      box-sizing: border-box !important;
+    }
     
     .roadmap-day-card {
       width: 100%;
