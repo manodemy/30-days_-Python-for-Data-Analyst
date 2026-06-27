@@ -8363,6 +8363,16 @@
       ];
 
       // Build 60-day personalized roadmap
+      // Trigger certificate download name form modal
+      window.triggerCertificateDownload = function() {
+        const totalXP = typeof getTotalXP === 'function' ? getTotalXP() : 800;
+        if (totalXP < 700) {
+          if (typeof showIneligibleModal === 'function') showIneligibleModal(totalXP);
+        } else {
+          if (typeof showNameInputModal === 'function') showNameInputModal(totalXP);
+        }
+      };
+
       // Store active state globally for mouse listener redraws
       window.allRoadmapDays = [];
       window.hoveredDayId = null;
@@ -8482,6 +8492,7 @@
         }
 
         window.allRoadmapDays = roadmapDays;
+        window.hoveredCert = false;
         
         // Initial Draw
         drawRoadmapCanvas(roadmapDays);
@@ -8510,7 +8521,7 @@
         const dpr = window.devicePixelRatio || 1;
         
         const width = viewport.clientWidth || 400;
-        const height = 5900; // 60 days * 96px + padding
+        const height = 6100; // 60 days * 96px + generous certificate area
 
         // Dynamic viewport sizing
         if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
@@ -8950,70 +8961,117 @@
           ctx.fillText(progressDetail, cardX + 12, cardY + 48);
         });
 
-        // 12. Render Beautiful 3D Graduation Trophy & Pedestal at GOAL
-        const goalY = height - 120;
+        // 12. Render Stunning 3D Rolled Diploma and Interactive Certificate Download Button at GOAL
+        const goalY = height - 160; // Placed at 5940px, well below Day 60 (5784px) to completely avoid overlaps
         const goalX = centerX + A * Math.sin((2 * Math.PI * goalY) / lambda);
-        
-        ctx.save();
-        // Stand/Pedestal
+
+        // Stand / Pedestal base plate
         ctx.fillStyle = '#64748b';
-        ctx.fillRect(goalX - 25, goalY + 30, 50, 10);
-        ctx.fillStyle = '#475569';
-        ctx.fillRect(goalX - 30, goalY + 40, 60, 6);
+        ctx.fillRect(goalX - 20, goalY + 8, 40, 6);
 
-        // Shadow under trophy
-        ctx.shadowColor = 'rgba(251, 191, 36, 0.45)';
-        ctx.shadowBlur = 24;
-        ctx.shadowOffsetY = -2;
+        // a) 3D Rolled Diploma
+        ctx.save();
+        // Glowing backing halo
+        ctx.shadowColor = 'rgba(251, 191, 36, 0.6)';
+        ctx.shadowBlur = 20;
+        ctx.fillStyle = 'rgba(251, 191, 36, 0.12)';
+        ctx.beginPath();
+        ctx.arc(goalX, goalY - 10, 24, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.restore();
 
-        // Draw 3D Golden Trophy
-        const goldGrad = ctx.createLinearGradient(goalX - 15, goalY - 20, goalX + 15, goalY + 30);
-        goldGrad.addColorStop(0, '#fbbf24');
-        goldGrad.addColorStop(0.3, '#fef08a');
-        goldGrad.addColorStop(0.8, '#d97706');
-        goldGrad.addColorStop(1, '#92400e');
-        
-        ctx.fillStyle = goldGrad;
-        ctx.strokeStyle = '#ffffff';
+        ctx.save();
+        ctx.translate(goalX, goalY - 10);
+        ctx.rotate(-Math.PI / 6); // 30 deg rotation
+
+        // Paper cylinder
+        const paperGrad = ctx.createLinearGradient(-25, -6, 25, 6);
+        paperGrad.addColorStop(0, '#f8fafc');
+        paperGrad.addColorStop(0.5, '#ffffff');
+        paperGrad.addColorStop(1, '#cbd5e1');
+        ctx.fillStyle = paperGrad;
+        ctx.strokeStyle = '#94a3b8';
         ctx.lineWidth = 1;
-
-        // Base stem
-        ctx.beginPath();
-        ctx.moveTo(goalX - 10, goalY + 30);
-        ctx.lineTo(goalX + 10, goalY + 30);
-        ctx.lineTo(goalX + 4, goalY + 16);
-        ctx.lineTo(goalX - 4, goalY + 16);
-        ctx.closePath();
+        drawRoundedRect(ctx, -24, -7, 48, 14, 2);
         ctx.fill();
         ctx.stroke();
 
-        // Cup bowl
+        // Rolled end loop highlights
+        ctx.strokeStyle = '#cbd5e1';
         ctx.beginPath();
-        ctx.arc(goalX, goalY + 2, 14, 0, Math.PI, false);
-        ctx.lineTo(goalX - 14, goalY - 14);
-        ctx.lineTo(goalX + 14, goalY - 14);
+        ctx.arc(-24, 0, 6.5, Math.PI * 0.5, Math.PI * 1.5, false);
+        ctx.stroke();
+
+        // Red ribbon
+        ctx.fillStyle = '#ef4444';
+        ctx.strokeStyle = '#b91c1c';
+        ctx.lineWidth = 0.5;
+        ctx.fillRect(-4, -8, 8, 16);
+        ctx.strokeRect(-4, -8, 8, 16);
+
+        // Ribbon tails
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.moveTo(-2, 8);
+        ctx.lineTo(-6, 20);
+        ctx.lineTo(-2, 22);
+        ctx.lineTo(2, 8);
         ctx.closePath();
         ctx.fill();
-        ctx.stroke();
 
-        // Handles
-        ctx.strokeStyle = '#fbbf24';
-        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(goalX - 15, goalY - 5, 6, Math.PI * 0.5, Math.PI * 1.5, false);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(goalX + 15, goalY - 5, 6, Math.PI * 1.5, Math.PI * 0.5, false);
-        ctx.stroke();
+        ctx.moveTo(2, 8);
+        ctx.lineTo(6, 21);
+        ctx.lineTo(1, 23);
+        ctx.lineTo(-1, 8);
+        ctx.closePath();
+        ctx.fill();
 
-        // Goal Text
-        ctx.fillStyle = '#fbbf24';
-        ctx.font = 'bold 13px Outfit';
+        // Gold seal
+        const sealGrad = ctx.createRadialGradient(0, 0, 1, 0, 0, 5);
+        sealGrad.addColorStop(0, '#fef08a');
+        sealGrad.addColorStop(1, '#eab308');
+        ctx.fillStyle = sealGrad;
+        ctx.beginPath();
+        ctx.arc(0, 0, 4.5, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.restore();
+
+        // b) Stunning Capsule Button
+        ctx.save();
+        const btnW = 144;
+        const btnH = 26;
+        const btnX = goalX - btnW / 2;
+        const btnY = goalY + 24;
+
+        ctx.shadowColor = window.hoveredCert ? 'rgba(217, 119, 6, 0.35)' : 'rgba(0, 0, 0, 0.12)';
+        ctx.shadowBlur = window.hoveredCert ? 14 : 6;
+        ctx.shadowOffsetY = window.hoveredCert ? 4 : 2;
+
+        // Gold/Amber gradient
+        const btnGrad = ctx.createLinearGradient(btnX, btnY, btnX, btnY + btnH);
+        if (window.hoveredCert) {
+          btnGrad.addColorStop(0, '#fbbf24');
+          btnGrad.addColorStop(1, '#d97706');
+        } else {
+          btnGrad.addColorStop(0, '#f59e0b');
+          btnGrad.addColorStop(1, '#b45309');
+        }
+        ctx.fillStyle = btnGrad;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = window.hoveredCert ? 2.0 : 1.5;
+
+        drawRoundedRect(ctx, btnX, btnY, btnW, btnH, 13);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+
+        // Button Text
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 9.5px Outfit';
         ctx.textAlign = 'center';
-        ctx.fillText('🏆 GRADUATION GOAL', goalX, goalY - 28);
-        ctx.restore();
-
-        ctx.restore();
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🎓 Download Certificate', goalX, btnY + btnH / 2);
       }
 
       // Draw helper function: Checkered starting/ending lines
@@ -9133,12 +9191,10 @@
 
             let found = null;
             window.allRoadmapDays.forEach(d => {
-              // Bounding check on card rect
               if (mouseX >= d.cardX && mouseX <= d.cardX + d.cardW &&
                   mouseY >= d.cardY && mouseY <= d.cardY + d.cardH) {
                 found = d.globalDay;
               }
-              // Bounding check on signboard node
               const dx = mouseX - d.cx;
               const dy = mouseY - (d.cy - 20);
               if (Math.sqrt(dx*dx + dy*dy) < 14) {
@@ -9146,9 +9202,25 @@
               }
             });
 
+            // Check hovered certificate landmark
+            const goalY = 6100 - 160;
+            const goalX = (canvas.width / dpr) / 2 + (viewport.clientWidth * 0.16) * Math.sin((2 * Math.PI * goalY) / 720);
+            const inCert = mouseX >= goalX - 72 && mouseX <= goalX + 72 &&
+                           mouseY >= goalY + 24 && mouseY <= goalY + 50;
+
+            let changed = false;
+            if (window.hoveredCert !== inCert) {
+              window.hoveredCert = inCert;
+              changed = true;
+            }
+
             if (window.hoveredDayId !== found) {
               window.hoveredDayId = found;
-              canvas.style.cursor = found ? 'pointer' : 'default';
+              changed = true;
+            }
+
+            if (changed) {
+              canvas.style.cursor = (found || inCert) ? 'pointer' : 'default';
               drawRoadmapCanvas(window.allRoadmapDays);
             }
           });
@@ -9173,6 +9245,15 @@
               } else {
                 window.location.href = clickedDay.targetUrl + '?v=2.1';
               }
+              return;
+            }
+
+            // Check if clicking certificate button
+            const goalY = 6100 - 160;
+            const goalX = (canvas.width / dpr) / 2 + (viewport.clientWidth * 0.16) * Math.sin((2 * Math.PI * goalY) / 720);
+            if (mouseX >= goalX - 72 && mouseX <= goalX + 72 &&
+                mouseY >= goalY + 24 && mouseY <= goalY + 50) {
+              window.triggerCertificateDownload();
             }
           });
         }
