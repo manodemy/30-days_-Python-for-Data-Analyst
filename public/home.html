@@ -5207,24 +5207,33 @@
     }
     
     .roadmap-day-card {
-      width: 100%;
-      max-width: 210px; /* Further increased card width to 210px for clean layout */
-      border-radius: 8px; /* Slightly smoother corners */
-      padding: 14px 16px; /* Slightly larger padding for premium feel */
+      width: auto !important;
+      min-width: 190px !important;
+      max-width: 250px !important;
+      border-radius: 10px !important; /* Premium sleek rounded corners */
+      padding: 8px 12px !important; /* Decreased padding to reduce height */
       cursor: pointer;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      transition: all 0.25s ease-out;
+      gap: 4px; /* Tighter gap */
+      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
       background: #ffffff !important;
-      border: 1px solid #cbd5e1 !important; /* Defined borders */
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), inset 0 1px 0 #ffffff;
+      border: 1px solid #cbd5e1 !important; /* Sleek outline */
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04), inset 0 1px 0 #ffffff !important;
       position: relative;
       z-index: 2;
       -webkit-font-smoothing: antialiased !important;
       -moz-osx-font-smoothing: grayscale !important;
       text-rendering: optimizeLegibility !important;
+    }
+
+    /* Dark theme overrides for roadmap cards */
+    body.dark-theme .roadmap-day-card,
+    body.dark .roadmap-day-card {
+      background: #1e293b !important; /* Dark slate-800 background */
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
     }
     
     /* Elegant side-border indicators depending on left/right alignment */
@@ -5292,35 +5301,40 @@
     
     /* Card Sublabel Day Tag */
     .roadmap-day-card .card-day-label {
-      font-family: 'Outfit', sans-serif;
-      font-size: 13.5px; /* Increased font size for clarity */
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      line-height: 1;
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 10px !important; /* Crisp, readable small subheader */
+      font-weight: 750 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.07em !important;
+      line-height: 1.1 !important;
     }
     
-    /* Card Title line clamping & Outfit font */
+    /* Card Title & Outfit font - fits text on 1-2 lines nicely */
     .roadmap-day-card .card-title-text {
-      font-family: 'Outfit', sans-serif;
-      font-size: 15.5px; /* Increased font size for readability */
-      font-weight: 800; /* Extra bold for high-contrast legibility */
-      line-height: 1.35;
-      color: #1e293b;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 12.5px !important; /* Crisp, readable title size suitable for the map */
+      font-weight: 700 !important; /* Heavy geometric boldness */
+      line-height: 1.3 !important;
+      color: #0f172a !important; /* Premium Slate-900 */
+      white-space: normal !important;
+      word-wrap: break-word !important;
+      display: -webkit-box !important;
+      -webkit-line-clamp: 2 !important;
+      -webkit-box-orient: vertical !important;
+      overflow: visible !important;
+      text-align: inherit !important;
     }
     
     /* Card Status Pill Row */
     .roadmap-day-card .card-status-row {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px; /* Increased status font size */
-      font-weight: 600; /* Bolder */
-      color: #475569; /* Solid high-contrast slate grey */
-      margin-top: 3px;
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 10px !important; /* Sleek status row */
+      font-weight: 600 !important;
+      color: #64748b !important;
+      margin-top: 2px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 5px !important;
     }
     
     /* Hover effect for clean rectangular cards */
@@ -5338,31 +5352,20 @@
     
     /* Mobile responsive roadmap formatting */
     @media (max-width: 768px) {
-      .roadmap-day-node {
-        min-height: 80px !important;
-        margin-bottom: 24px !important;
+      #roadmapNodesContainer .roadmap-day-node {
+        left: 76px !important;
+        transform: translateY(-50%) !important;
+        width: calc(100% - 92px) !important;
+        max-width: none !important;
       }
-      .roadmap-day-node.left, .roadmap-day-node.right {
-        justify-content: flex-start !important;
-        padding-left: 70px !important;
-        padding-right: 16px !important;
-      }
-      .roadmap-day-node.left .roadmap-day-card, .roadmap-day-node.right .roadmap-day-card {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
+      .roadmap-day-card {
+        width: 100% !important;
+        max-width: none !important;
         text-align: left !important;
-        max-width: 100% !important;
       }
-      .roadmap-day-node.left .card-status-row, .roadmap-day-node.right .card-status-row {
+      .roadmap-day-node .card-status-row {
         justify-content: flex-start !important;
       }
-      /* Align map-pins to left road spine on mobile */
-      .roadmap-day-node.left  .roadmap-checkpoint-dot,
-      .roadmap-day-node.right .roadmap-checkpoint-dot { left: 35px !important; }
-      .roadmap-day-node.left  .postshadow,
-      .roadmap-day-node.right .postshadow             { left: 35px !important; }
-      .roadmap-day-node.left  .post,
-      .roadmap-day-node.right .post                   { left: 35px !important; }
     }
 
     /* ═══════════════════════════════════════════
@@ -8628,11 +8631,12 @@
         const rightBot = [];
 
         const step = 6;
-        const A = width * 0.16; // Curve amplitude
+        const isMobile = window.innerWidth <= 768;
+        const A = isMobile ? 8 : width * 0.16; // Curve amplitude
         const lambda = 720;     // Wave length (cycle)
-        const ROAD_W = 32;      // Half road width
-        const WALL_H = 12;      // Road sidewall height
-        const centerX = width / 2;
+        const ROAD_W = isMobile ? 18 : 32;      // Half road width
+        const WALL_H = isMobile ? 8 : 12;      // Road sidewall height
+        const centerX = isMobile ? 55 : width / 2;
 
         for (let y = 30; y <= height - 30; y += step) {
           const x = centerX + A * Math.sin((2 * Math.PI * y) / lambda);
@@ -8804,15 +8808,18 @@
         const startX = centerX + A * Math.sin((2 * Math.PI * startY) / lambda);
 
         ctx.save();
+        const columnOffset = isMobile ? 22 : 38;
+        const archWidth = isMobile ? 60 : 104;
+
         // Left Column (base shadow)
         ctx.fillStyle = 'rgba(0,0,0,0.3)';
         ctx.beginPath();
-        ctx.ellipse(startX - 38, startY + 12, 6, 2.5, 0, 0, 2 * Math.PI);
-        ctx.ellipse(startX + 38, startY + 12, 6, 2.5, 0, 0, 2 * Math.PI);
+        ctx.ellipse(startX - columnOffset, startY + 12, isMobile ? 4 : 6, isMobile ? 1.8 : 2.5, 0, 0, 2 * Math.PI);
+        ctx.ellipse(startX + columnOffset, startY + 12, isMobile ? 4 : 6, isMobile ? 1.8 : 2.5, 0, 0, 2 * Math.PI);
         ctx.fill();
 
         // 3D Pillar columns flanking the road
-        const columnGrad = ctx.createLinearGradient(startX - 42, startY - 40, startX - 34, startY + 10);
+        const columnGrad = ctx.createLinearGradient(startX - columnOffset - 4, startY - 40, startX - columnOffset + 4, startY + 10);
         columnGrad.addColorStop(0, '#cbd5e1');
         columnGrad.addColorStop(0.3, '#f1f5f9');
         columnGrad.addColorStop(0.8, '#475569');
@@ -8820,17 +8827,17 @@
 
         // Left Pillar
         ctx.fillStyle = columnGrad;
-        ctx.fillRect(startX - 41, startY - 45, 6, 56);
+        ctx.fillRect(startX - columnOffset - 3, startY - 45, isMobile ? 4 : 6, 56);
         ctx.fillStyle = '#334155';
-        ctx.fillRect(startX - 43, startY + 9, 10, 3); // base cap
-        ctx.fillRect(startX - 42, startY - 48, 8, 3);  // top cap
+        ctx.fillRect(startX - columnOffset - 5, startY + 9, isMobile ? 8 : 10, 3); // base cap
+        ctx.fillRect(startX - columnOffset - 4, startY - 48, isMobile ? 6 : 8, 3);  // top cap
 
         // Right Pillar
         ctx.fillStyle = columnGrad;
-        ctx.fillRect(startX + 35, startY - 45, 6, 56);
+        ctx.fillRect(startX + columnOffset - 3, startY - 45, isMobile ? 4 : 6, 56);
         ctx.fillStyle = '#334155';
-        ctx.fillRect(startX + 33, startY + 9, 10, 3); // base cap
-        ctx.fillRect(startX + 34, startY - 48, 8, 3);  // top cap
+        ctx.fillRect(startX + columnOffset - 5, startY + 9, isMobile ? 8 : 10, 3); // base cap
+        ctx.fillRect(startX + columnOffset - 4, startY - 48, isMobile ? 6 : 8, 3);  // top cap
 
         // 3D Cross Archway Signboard
         ctx.shadowColor = 'rgba(0, 0, 0, 0.22)';
@@ -8842,20 +8849,20 @@
         archGrad.addColorStop(1, '#047857');
         ctx.fillStyle = archGrad;
         ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.8;
+        ctx.lineWidth = isMobile ? 1.2 : 1.8;
         
         // Curved banner path for archway
-        drawRoundedRect(ctx, startX - 52, startY - 56, 104, 24, 3);
+        drawRoundedRect(ctx, startX - (archWidth / 2) - 4, startY - 56, archWidth + 8, 24, 3);
         ctx.fill();
         ctx.stroke();
         ctx.restore();
 
         // Text inside Archway
         ctx.fillStyle = '#ffffff';
-        ctx.font = '900 9.5px Arial';
+        ctx.font = `900 ${isMobile ? '8px' : '9.5px'} Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('🏁 START: SQL', startX, startY - 44);
+        ctx.fillText(isMobile ? '🏁 START' : '🏁 START: SQL', startX, startY - 44);
 
         // 11. Plot and draw all 60 Day nodes
         const cardW = 210;
@@ -8866,8 +8873,9 @@
           const cx = centerX + A * Math.sin((2 * Math.PI * cy) / lambda);
 
           // Alternating placement rules
-          const isRight = cx < centerX;
-          const cardX = isRight ? cx + 28 : cx - 28 - cardW;
+          const isRight = isMobile ? true : cx < centerX;
+          const gap = isMobile ? 18 : 28;
+          const cardX = isRight ? cx + gap : cx - gap - cardW;
           const cardY = cy - cardH / 2;
 
           day.cx = cx;
@@ -8954,10 +8962,11 @@
           const cardEl = document.createElement('div');
           cardEl.className = `roadmap-day-node ${day.phase} ${day.isCompleted ? 'completed' : ''} ${day.isLocked ? 'locked' : ''} ${day.isCurrent ? 'current' : ''} ${isRight ? 'right' : 'left'}`;
           cardEl.style.position = 'absolute';
-          cardEl.style.left = `${cardX}px`;
-          cardEl.style.top = `${cardY}px`;
-          cardEl.style.width = `${cardW}px`;
-          cardEl.style.height = `${cardH}px`;
+          cardEl.style.left = `${isRight ? cx + 28 : cx - 28}px`;
+          cardEl.style.top = `${cy}px`;
+          cardEl.style.width = 'auto';
+          cardEl.style.height = 'auto';
+          cardEl.style.transform = isRight ? 'translateY(-50%)' : 'translate(-100%, -50%)';
           cardEl.style.pointerEvents = 'auto';
 
           const solvedCount = day.solvedCount;
@@ -8974,17 +8983,17 @@
           const darkColor = day.isLocked ? '#64748b' : colors.dark;
 
           cardEl.innerHTML = `
-            <div class="roadmap-day-card ${day.isLocked ? 'locked' : ''} ${day.isCurrent ? 'current' : ''}" style="width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; text-align:${isRight ? 'left' : 'right'}; box-sizing:border-box;">
-              <div class="card-day-label" style="color: ${darkColor} !important; font-size:12.5px !important;">
+            <div class="roadmap-day-card ${day.isLocked ? 'locked' : ''} ${day.isCurrent ? 'current' : ''}">
+              <div class="card-day-label" style="color: ${darkColor} !important;">
                 DAY ${day.globalDay.toString().padStart(2, '0')} • ${day.phase.toUpperCase()} D${parseInt(day.courseDay, 10).toString().padStart(2, '0')}
               </div>
-              <div class="card-title-text" style="color: ${day.isLocked ? '#94a3b8' : '#1e293b'} !important; font-size:14.5px !important; line-height:1.3;">
+              <div class="card-title-text" style="color: ${day.isLocked ? '#94a3b8' : '#0f172a'} !important;">
                 ${day.emoji} ${day.title}
               </div>
-              <div class="card-status-row" style="display:flex; align-items:center; gap:6px; justify-content:${isRight ? 'flex-start' : 'flex-end'}; margin-top:2px;">
-                ${isRight ? `<span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:${dotColor}; border:1px solid ${midColor};"></span>` : ''}
-                <span style="color:${midColor} !important; font-size:11px !important; font-weight:700 !important;">${statusText}</span>
-                ${!isRight ? `<span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:${dotColor}; border:1px solid ${midColor};"></span>` : ''}
+              <div class="card-status-row">
+                ${isRight ? `<span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:${dotColor}; border:1px solid ${midColor}; flex-shrink:0;"></span>` : ''}
+                <span class="status-label" style="color:${midColor} !important;">${statusText}</span>
+                ${!isRight ? `<span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:${dotColor}; border:1px solid ${midColor}; flex-shrink:0;"></span>` : ''}
               </div>
             </div>
           `;
@@ -9092,33 +9101,36 @@
         const finishX = centerX + A * Math.sin((2 * Math.PI * finishY) / lambda);
 
         ctx.save();
+        const finColumnOffset = isMobile ? 22 : 38;
+        const finArchWidth = isMobile ? 60 : 104;
+
         // Pillar base shadows
         ctx.fillStyle = 'rgba(0,0,0,0.3)';
         ctx.beginPath();
-        ctx.ellipse(finishX - 38, finishY + 12, 6, 2.5, 0, 0, 2 * Math.PI);
+        ctx.ellipse(finishX - finColumnOffset, finishY + 12, isMobile ? 4 : 6, isMobile ? 1.8 : 2.5, 0, 0, 2 * Math.PI);
         ctx.fill();
         ctx.beginPath();
-        ctx.ellipse(finishX + 38, finishY + 12, 6, 2.5, 0, 0, 2 * Math.PI);
+        ctx.ellipse(finishX + finColumnOffset, finishY + 12, isMobile ? 4 : 6, isMobile ? 1.8 : 2.5, 0, 0, 2 * Math.PI);
         ctx.fill();
 
         // Left & Right 3D Pillars (same metallic gradient as START)
-        const finColGrad = ctx.createLinearGradient(finishX - 42, finishY - 40, finishX - 34, finishY + 10);
+        const finColGrad = ctx.createLinearGradient(finishX - finColumnOffset - 4, finishY - 40, finishX - finColumnOffset + 4, finishY + 10);
         finColGrad.addColorStop(0, '#cbd5e1');
         finColGrad.addColorStop(0.3, '#f1f5f9');
         finColGrad.addColorStop(0.8, '#475569');
         finColGrad.addColorStop(1, '#1e293b');
 
         ctx.fillStyle = finColGrad;
-        ctx.fillRect(finishX - 41, finishY - 45, 6, 56); // Left pillar
+        ctx.fillRect(finishX - finColumnOffset - 3, finishY - 45, isMobile ? 4 : 6, 56); // Left pillar
         ctx.fillStyle = '#334155';
-        ctx.fillRect(finishX - 43, finishY + 9, 10, 3);  // Left base cap
-        ctx.fillRect(finishX - 42, finishY - 48, 8, 3);  // Left top cap
+        ctx.fillRect(finishX - finColumnOffset - 5, finishY + 9, isMobile ? 8 : 10, 3);  // Left base cap
+        ctx.fillRect(finishX - finColumnOffset - 4, finishY - 48, isMobile ? 6 : 8, 3);  // Left top cap
 
         ctx.fillStyle = finColGrad;
-        ctx.fillRect(finishX + 35, finishY - 45, 6, 56); // Right pillar
+        ctx.fillRect(finishX + finColumnOffset - 3, finishY - 45, isMobile ? 4 : 6, 56); // Right pillar
         ctx.fillStyle = '#334155';
-        ctx.fillRect(finishX + 33, finishY + 9, 10, 3);  // Right base cap
-        ctx.fillRect(finishX + 34, finishY - 48, 8, 3);  // Right top cap
+        ctx.fillRect(finishX + finColumnOffset - 5, finishY + 9, isMobile ? 8 : 10, 3);  // Right base cap
+        ctx.fillRect(finishX + finColumnOffset - 4, finishY - 48, isMobile ? 6 : 8, 3);  // Right top cap
 
         // Checkered flag banner across the top (gold/amber theme)
         ctx.shadowColor = 'rgba(0, 0, 0, 0.22)';
@@ -9130,15 +9142,15 @@
         finBannerGrad.addColorStop(1, '#d97706');
         ctx.fillStyle = finBannerGrad;
         ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.8;
-        drawRoundedRect(ctx, finishX - 52, finishY - 56, 104, 24, 3);
+        ctx.lineWidth = isMobile ? 1.2 : 1.8;
+        drawRoundedRect(ctx, finishX - (finArchWidth / 2) - 4, finishY - 56, finArchWidth + 8, 24, 3);
         ctx.fill();
         ctx.stroke();
         ctx.restore();
 
         // FINISH text inside banner
         ctx.fillStyle = '#ffffff';
-        ctx.font = '900 9.5px Arial';
+        ctx.font = `900 ${isMobile ? '8px' : '9.5px'} Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('🏆 FINISH!', finishX, finishY - 44);
