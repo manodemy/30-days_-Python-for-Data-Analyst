@@ -201,50 +201,98 @@
       --dashboard-accent: #3B82F6;
       --dashboard-accent-glow: rgba(59, 130, 246, 0.15);
       --dashboard-gradient: linear-gradient(135deg, #3B82F6, #6366F1);
+      /* Override global dark-theme ink variables for light theme */
+      --ink: #1e293b;
+      --ink-dim: #64748b;
+      --ink-faint: #94a3b8;
+      --elevated: rgba(255, 255, 255, 0.92);
     }
 
     /* ===== LIGHT THEME GLOBAL TEXT OVERRIDES ===== */
-    .nav-link, .nav-logo-text, .nav-logo { color: #1e293b !important; }
+    /* Navigation */
+    .nav-link, .nav-logo-text, .nav-logo, .nav-link:hover { color: #1e293b !important; }
+    .nav { box-shadow: 0 1px 20px rgba(99, 102, 241, 0.08) !important; }
+
+    /* Course selector cards */
     .course-select-title { color: #1e293b !important; }
     .course-select-days { color: #64748b !important; }
     .course-select-progress-text { color: #475569 !important; }
     .course-select-progress-val { color: #1e293b !important; }
-    .header-score-card, .glass-card { color: #1e293b; }
+
+    /* All glass cards — dark text on white */
+    .glass-card, .header-score-card { color: #1e293b !important; }
+
+    /* Score card typography */
     .score-label, .score-sublabel, .section-card-label { color: #64748b !important; }
     .score-main-value, .score-denom { color: #1e293b !important; }
+    .score-fraction-top, .score-fraction-total { color: #1e293b !important; }
+    .score-hero-total-label { color: #64748b !important; }
+
+    /* Milestone timeline */
     .milestone-label { color: #64748b !important; }
     .milestone-pct-label { color: #374151 !important; }
-    .quest-title, .quest-card h3 { color: #1e293b !important; }
-    .quest-text { color: #374151 !important; }
-    .quest-tip { color: #64748b !important; }
-    .curriculum-day-title { color: #1e293b !important; }
-    .curriculum-day-meta { color: #64748b !important; }
-    .filter-tab { color: #475569 !important; }
+    .milestone-title { color: #1e293b !important; }
+
+    /* Daily quest card */
+    .quest-title, .quest-card h3, h3 { color: #1e293b !important; }
+    .quest-text, .quest-tip { color: #374151 !important; }
+
+    /* Curriculum day cards */
+    .curriculum-day-title, .day-card-title { color: #1e293b !important; }
+    .curriculum-day-meta, .day-card-meta { color: #64748b !important; }
+    .day-card-progress-text { color: #475569 !important; }
+    .day-badge-label { color: #374151 !important; }
+
+    /* Filter tabs */
+    .filter-tab { color: #475569 !important; background: transparent; }
     .filter-tab.active { color: #3B82F6 !important; }
-    .roadmap-card .roadmap-title { color: #1e293b !important; }
-    .summary-label { color: #475569 !important; }
-    .heatmap-label { color: #64748b !important; }
-    .header-custom-message { background: rgba(59,130,246,0.08) !important; border-color: rgba(59,130,246,0.2) !important; color: #1e293b !important; }
+    .filter-tabs-container { background: rgba(99, 102, 241, 0.06) !important; border-color: rgba(99, 102, 241, 0.1) !important; }
+
+    /* Heatmap */
+    .heatmap-label, .heatmap-month-label { color: #64748b !important; }
+
+    /* Header greeting pill */
+    .header-custom-message { 
+      background: rgba(59, 130, 246, 0.08) !important; 
+      border-color: rgba(59, 130, 246, 0.2) !important; 
+      color: #1e293b !important; 
+    }
+    .header-custom-message span { color: #1e293b !important; }
+
     /* Dropdown items */
+    .dropdown-menu { color: #1e293b !important; }
     .dropdown-item { color: #1e293b !important; }
-    .dropdown-item:hover { background: rgba(99,102,241,0.08) !important; }
-    /* Roadmap card background */
-    .roadmap-card { background: rgba(255,255,255,0.82) !important; }
-    /* Roadmap card day number badge */
-    .roadmap-day-card .card-day-label { color: #3B82F6 !important; opacity: 1 !important; }
-    /* Locked day card text */
-    .roadmap-day-card.locked .card-title-text { color: #94a3b8 !important; }
-    /* Progress bars track */
-    .progress-track { background: rgba(0,0,0,0.06) !important; }
-    /* Glass card light border */
-    .glass-card { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-    /* roadmap gradient header text */
-    .roadmap-title-text { 
+    .dropdown-item:hover { background: rgba(99, 102, 241, 0.07) !important; color: #3B82F6 !important; }
+    .dropdown-divider { border-color: rgba(99, 102, 241, 0.1) !important; }
+
+    /* Roadmap card text */
+    .roadmap-card { background: rgba(255, 255, 255, 0.85) !important; }
+    .roadmap-title-text, .roadmap-card .dashboard-greeting { 
       background: linear-gradient(135deg, #1e293b 0%, #3B82F6 80%) !important;
       -webkit-background-clip: text !important;
       background-clip: text !important;
       -webkit-text-fill-color: transparent !important;
     }
+    .summary-label { color: #475569 !important; }
+    .roadmap-day-card .card-day-label { color: #3B82F6 !important; opacity: 1 !important; }
+    .roadmap-day-card .card-title-text { color: #1e293b !important; }
+    .roadmap-day-card.locked .card-title-text { color: #94a3b8 !important; }
+    .roadmap-day-card .card-status-row { color: rgba(30, 41, 59, 0.55) !important; }
+
+    /* Checkpoint dot locked text */
+    .roadmap-checkpoint-dot { color: #475569 !important; }
+
+    /* Section breakdown cards */
+    .section-card { color: #1e293b !important; }
+    .box-basics, .box-structures, .box-analysis, .box-advanced { color: #1e293b !important; }
+
+    /* Pomodoro / Focus timer */
+    .focus-timer-label, .focus-timer-display { color: #1e293b !important; }
+
+    /* Generic fallback - ensure nothing is white on white */
+    .glass-card * { color: inherit; }
+
+
 
 
     /* Referral Nav Button style */
