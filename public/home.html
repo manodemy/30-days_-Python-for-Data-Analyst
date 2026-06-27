@@ -3549,36 +3549,40 @@
 
     .marks-number-row-fraction {
       display: flex !important;
-      flex-direction: row !important;
-      align-items: baseline !important;
-      justify-content: flex-start !important;
-      line-height: 1 !important;
-      gap: 4px;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      line-height: 1.1 !important;
+      gap: 2px !important;
     }
 
     .hero-marks-val {
       font-family: 'JetBrains Mono', monospace !important;
-      font-size: 38px !important;
+      font-size: 32px !important;
       font-weight: 800 !important;
       color: #fff !important;
       text-shadow: 0 0 20px rgba(0, 230, 246, 0.2);
-      text-align: left !important;
+      text-align: center !important;
     }
 
     .fraction-line {
-      display: none !important; /* Hide old divider line */
+      display: block !important;
+      width: 48px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.35);
+      margin: 2px 0;
     }
 
     .hero-marks-denom {
       font-family: 'JetBrains Mono', monospace !important;
-      font-size: 14px !important;
+      font-size: 13px !important;
       font-weight: 700 !important;
-      color: rgba(30, 41, 59, 0.4) !important;
+      color: rgba(255, 255, 255, 0.6) !important;
       letter-spacing: 0.02em !important;
-      text-align: left !important;
+      text-align: center !important;
     }
     .hero-marks-denom::before {
-      content: '/ ';
+      content: '' !important;
     }
 
     .hero-score-subtitle {
@@ -3645,8 +3649,8 @@
     .section-score-box {
       cursor: pointer;
       position: relative;
-      background: rgba(255, 255, 255, 0.02) !important;
-      border: 1px solid rgba(255, 255, 255, 0.05) !important;
+      background: #111827 !important; /* Solid dark background, no opacity */
+      border: 1px solid #334155 !important; /* Solid border */
       border-radius: 14px !important;
       padding: 0.8rem 0.9rem !important;
       display: flex;
@@ -3668,7 +3672,7 @@
     }
 
     .section-score-box:hover {
-      background: rgba(255, 255, 255, 0.04) !important;
+      background: #1f2937 !important;
       transform: translateY(-3px);
     }
 
@@ -3704,11 +3708,37 @@
 
     .section-card-score-row {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
-      font-weight: 700;
       display: flex;
-      align-items: baseline;
+      flex-direction: column;
+      align-items: center;
       gap: 2px;
+      margin: 4px 0;
+    }
+    .section-card-score-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f1f5f9;
+      line-height: 1.1;
+      order: 0;
+    }
+    .section-card-score-max {
+      font-size: 9.5px;
+      font-weight: 500;
+      color: #94a3b8;
+      line-height: 1.1;
+      order: 2;
+    }
+    .section-card-score-divider {
+      display: none !important;
+    }
+    .section-card-score-row::after {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1.2px;
+      background: rgba(255, 255, 255, 0.25);
+      margin: 1px 0;
+      order: 1;
     }
 
     .section-card-score-val {
@@ -3971,10 +4001,10 @@
 
     .day-card {
       position: relative !important;
-      background: rgba(255, 255, 255, 0.75) !important;
+      background: #ffffff !important; /* Uniform solid white day cards */
       backdrop-filter: blur(16px) !important;
       -webkit-backdrop-filter: blur(16px) !important;
-      border: 1px solid rgba(99, 102, 241, 0.12) !important;
+      border: 1px solid #e2e8f0 !important; /* Clean gray borders */
       border-radius: 16px !important;
       padding: 22px 16px 18px 16px !important;
       text-align: left !important;
@@ -4058,7 +4088,7 @@
       font-family: 'Outfit', sans-serif !important;
       font-weight: 700 !important;
       font-size: 13.5px !important;
-      color: #e2e8f0 !important;
+      color: #1e293b !important; /* Rich dark grey/black for high contrast readability */
       line-height: 1.35 !important;
       margin-bottom: 12px !important;
       display: block !important;
@@ -4066,6 +4096,12 @@
       text-align: left !important;
     }
     .day-card:hover .day-title {
+      color: #0f172a !important; /* Rich solid black on hover */
+    }
+    .day-card.active-day .day-title {
+      color: #ffffff !important; /* White text remains on dark active day card */
+    }
+    .day-card.active-day:hover .day-title {
       color: #ffffff !important;
     }
 
@@ -5822,16 +5858,6 @@
             
             <!-- Overall Milestone Completion Tracker (Linked as phase selection buttons) -->
             <div class="roadmap-summary">
-              <div class="roadmap-summary-item excel" onclick="scrollToRoadmapPhase('excel')">
-                <div class="summary-pill-info">
-                  <span class="summary-dot"></span>
-                  <span class="summary-label" id="excelRoadmapProgress">Excel: 0/12 Days</span>
-                </div>
-                <div class="summary-bar-track">
-                  <div class="summary-bar-fill" id="excelRoadmapBar" style="width: 0%;"></div>
-                </div>
-              </div>
-              
               <div class="roadmap-summary-item sql" onclick="scrollToRoadmapPhase('sql')">
                 <div class="summary-pill-info">
                   <span class="summary-dot"></span>
@@ -5839,6 +5865,16 @@
                 </div>
                 <div class="summary-bar-track">
                   <div class="summary-bar-fill" id="sqlRoadmapBar" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <div class="roadmap-summary-item excel" onclick="scrollToRoadmapPhase('excel')">
+                <div class="summary-pill-info">
+                  <span class="summary-dot"></span>
+                  <span class="summary-label" id="excelRoadmapProgress">Excel: 0/12 Days</span>
+                </div>
+                <div class="summary-bar-track">
+                  <div class="summary-bar-fill" id="excelRoadmapBar" style="width: 0%;"></div>
                 </div>
               </div>
               
@@ -6360,8 +6396,8 @@
       { day: "12", title: "Data Validation, What-If & Capstone", emoji: "🏆", totalCells: 4, category: "advanced" }
     ];
 
-    let currentCourse = localStorage.getItem('manodemy_active_course') || 'python';
-    let DAY_METADATA = PYTHON_METADATA;
+    let currentCourse = localStorage.getItem('manodemy_active_course') || 'sql';
+    let DAY_METADATA = SQL_METADATA;
     if (currentCourse === 'sql') DAY_METADATA = SQL_METADATA;
     if (currentCourse === 'excel') DAY_METADATA = EXCEL_METADATA;
 
@@ -8383,21 +8419,7 @@
         const roadmapDays = [];
         let globalDay = 1;
 
-        // Excel: Days 1-12
-        EXCEL_TOPICS.forEach((t, idx) => {
-          roadmapDays.push({
-            globalDay: globalDay++,
-            phase: 'excel',
-            courseDay: t.courseDay,
-            title: t.title,
-            emoji: t.emoji,
-            cells: t.cells,
-            targetUrl: `/notebook/excel-day${t.courseDay}`,
-            key: `excel-day${t.courseDay}`
-          });
-        });
-
-        // SQL: Days 13-30
+        // SQL: Days 1-18
         SQL_TOPICS.forEach((t, idx) => {
           roadmapDays.push({
             globalDay: globalDay++,
@@ -8408,6 +8430,20 @@
             cells: t.cells,
             targetUrl: `/notebook/sql-day${t.courseDay}`,
             key: `sql-day${t.courseDay}`
+          });
+        });
+
+        // Excel: Days 19-30
+        EXCEL_TOPICS.forEach((t, idx) => {
+          roadmapDays.push({
+            globalDay: globalDay++,
+            phase: 'excel',
+            courseDay: t.courseDay,
+            title: t.title,
+            emoji: t.emoji,
+            cells: t.cells,
+            targetUrl: `/notebook/excel-day${t.courseDay}`,
+            key: `excel-day${t.courseDay}`
           });
         });
 
@@ -8805,7 +8841,7 @@
         ctx.font = '900 9.5px Outfit';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('🏁 START: EXCEL', startX, startY - 44);
+        ctx.fillText('🏁 START: SQL', startX, startY - 44);
 
         // 11. Plot and draw all 60 Day nodes
         const cardW = 130;
@@ -9291,9 +9327,9 @@
 
       // Re-route scroll helpers to absolute vertical values
       window.scrollToRoadmapPhase = function(phase) {
-        let targetDayIndex = 0;
-        if (phase === 'sql') targetDayIndex = 12;
-        if (phase === 'python') targetDayIndex = 30;
+        let targetDayIndex = 0; // default SQL at index 0
+        if (phase === 'excel') targetDayIndex = 18; // Excel starts at Day 19 (index 18)
+        if (phase === 'python') targetDayIndex = 30; // Python starts at Day 31 (index 30)
 
         const viewport = document.getElementById('roadmapViewport');
         if (viewport) {
@@ -9800,7 +9836,7 @@
       await refreshDashboardUI();
 
       // Set active status on first summary item initially
-      const firstSummaryItem = document.querySelector('.roadmap-summary-item.excel');
+      const firstSummaryItem = document.querySelector('.roadmap-summary-item.sql');
       if (firstSummaryItem) firstSummaryItem.classList.add('active');
     });
 
