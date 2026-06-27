@@ -869,43 +869,27 @@
     /* Main Dashboard Layout */
 
     .dashboard-container {
-
       max-width: 1400px;
-
       width: 100%;
-
-      margin: 100px auto 4rem;
-
+      margin: 85px auto 4rem;
       padding: 0 1.5rem;
-
     }
-
-
 
     .dashboard-grid {
-
       display: grid;
-
       grid-template-columns: 1fr 360px;
-
       gap: 2.5rem;
-
       margin-bottom: 2.5rem;
-
       align-items: start;
-
     }
 
-
-
     .dashboard-right-col {
-
       display: flex;
-
       flex-direction: column;
-
       gap: 1.5rem;
-
+      position: sticky;
+      top: 85px;
+      height: fit-content;
     }
 
 
@@ -5138,6 +5122,32 @@
       padding: 6px 8px;
       border-radius: 8px;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .roadmap-summary-item:hover {
+      background: rgba(255, 255, 255, 0.04) !important;
+      border-color: rgba(255, 255, 255, 0.08) !important;
+      transform: translateY(-1px);
+    }
+
+    .roadmap-summary-item.excel.active {
+      border-color: rgba(245, 166, 35, 0.4) !important;
+      background: rgba(245, 166, 35, 0.08) !important;
+      box-shadow: 0 0 10px rgba(245, 166, 35, 0.08);
+    }
+    
+    .roadmap-summary-item.sql.active {
+      border-color: rgba(6, 182, 212, 0.4) !important;
+      background: rgba(6, 182, 212, 0.08) !important;
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.08);
+    }
+    
+    .roadmap-summary-item.python.active {
+      border-color: rgba(16, 185, 129, 0.4) !important;
+      background: rgba(16, 185, 129, 0.08) !important;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.08);
     }
     
     .summary-pill-info {
@@ -5180,44 +5190,6 @@
     .excel .summary-bar-fill { background: #F5A623; }
     .sql .summary-bar-fill { background: #06B6D4; }
     .python .summary-bar-fill { background: #10B981; }
-    
-    /* Phase Selection Tabs Segmented Control */
-    .roadmap-tabs {
-      display: flex;
-      background: rgba(8, 12, 22, 0.5);
-      border: 1px solid rgba(255,255,255,0.05);
-      padding: 3px;
-      border-radius: 10px;
-      margin-bottom: 0.5rem;
-    }
-    
-    .roadmap-tab-btn {
-      flex: 1;
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.4);
-      padding: 6px;
-      border-radius: 7px;
-      font-size: 10px;
-      font-weight: 800;
-      font-family: 'Outfit', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .roadmap-tab-btn:hover {
-      color: rgba(255,255,255,0.8) !important;
-      background: rgba(255,255,255,0.03) !important;
-    }
-    
-    .roadmap-tab-btn.active {
-      color: #fff !important;
-      background: linear-gradient(135deg, rgba(0, 230, 246, 0.12) 0%, rgba(99, 102, 241, 0.12) 100%) !important;
-      border: 1px solid rgba(0, 230, 246, 0.25) !important;
-      box-shadow: 0 2px 10px rgba(0, 230, 246, 0.1) !important;
-    }
     
     /* Viewport scrollbar hiding style */
     #roadmapViewport {
@@ -5377,9 +5349,9 @@
     /* Node Anatomy: Tapered Post planted behind the dot */
     .post {
       position: absolute;
-      top: calc(50% - 12px);
+      top: calc(50% - 28px);
       width: 5px;
-      height: 24px;
+      height: 40px;
       background: linear-gradient(90deg, #9c948a, #6e6860 60%, #4a453f);
       border-radius: 1px;
       transform: translateX(-50%);
@@ -5392,7 +5364,7 @@
       left: calc(50% - 24px);
     }
 
-    /* Node Anatomy: Dot is 32px circle, raised 12px above center */
+    /* Node Anatomy: Dot is 32px circle, raised 28px above center */
     .roadmap-checkpoint-dot {
       position: absolute;
       top: 50%;
@@ -5401,7 +5373,7 @@
       border-radius: 50%;
       background: radial-gradient(circle at 35% 30%, #475a66, #2e3a42);
       border: 3px solid #6b7c87;
-      transform: translate(-50%, -50%) translateY(-12px);
+      transform: translate(-50%, -50%) translateY(-28px);
       z-index: 3;
       transition: all 0.3s ease;
       display: flex;
@@ -5844,7 +5816,7 @@
 
 
         <!-- 60-Day Winding Road Roadmap Card -->
-        <div class="glass-card roadmap-card" style="padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: 1rem; height: 680px; max-height: 680px; box-sizing: border-box; overflow: hidden;">
+        <div class="glass-card roadmap-card" style="padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: 1rem; height: 820px; max-height: 820px; box-sizing: border-box; overflow: hidden;">
           <div class="roadmap-header-wrapper" style="flex-shrink: 0;">
             <div class="roadmap-greeting-row">
               <div class="roadmap-avatar-dot" id="roadmapAvatarDot">👋</div>
@@ -5854,9 +5826,9 @@
               </div>
             </div>
             
-            <!-- Overall Milestone Completion Tracker -->
+            <!-- Overall Milestone Completion Tracker (Linked as phase selection buttons) -->
             <div class="roadmap-summary">
-              <div class="roadmap-summary-item excel">
+              <div class="roadmap-summary-item excel" onclick="scrollToRoadmapPhase('excel')">
                 <div class="summary-pill-info">
                   <span class="summary-dot"></span>
                   <span class="summary-label" id="excelRoadmapProgress">Excel: 0/12 Days</span>
@@ -5866,7 +5838,7 @@
                 </div>
               </div>
               
-              <div class="roadmap-summary-item sql">
+              <div class="roadmap-summary-item sql" onclick="scrollToRoadmapPhase('sql')">
                 <div class="summary-pill-info">
                   <span class="summary-dot"></span>
                   <span class="summary-label" id="sqlRoadmapProgress">SQL: 0/18 Days</span>
@@ -5876,7 +5848,7 @@
                 </div>
               </div>
               
-              <div class="roadmap-summary-item python">
+              <div class="roadmap-summary-item python" onclick="scrollToRoadmapPhase('python')">
                 <div class="summary-pill-info">
                   <span class="summary-dot"></span>
                   <span class="summary-label" id="pythonRoadmapProgress">Python: 0/30 Days</span>
@@ -5885,13 +5857,6 @@
                   <div class="summary-bar-fill" id="pythonRoadmapBar" style="width: 0%;"></div>
                 </div>
               </div>
-            </div>
-
-            <!-- Phase Selection Tabs -->
-            <div class="roadmap-tabs">
-              <button class="roadmap-tab-btn" onclick="scrollToRoadmapPhase('excel')">Excel (D1-12)</button>
-              <button class="roadmap-tab-btn" onclick="scrollToRoadmapPhase('sql')">SQL (D13-30)</button>
-              <button class="roadmap-tab-btn" onclick="scrollToRoadmapPhase('python')">Python (D31-60)</button>
             </div>
           </div>
 
@@ -9148,13 +9113,13 @@
             behavior: 'smooth'
           });
 
-          // Toggle active class on tab buttons
-          const tabBtns = document.querySelectorAll('.roadmap-tab-btn');
-          tabBtns.forEach(btn => {
-            if (btn.getAttribute('onclick').includes(phase)) {
-              btn.classList.add('active');
+          // Toggle active class on summary tracker items
+          const summaryItems = document.querySelectorAll('.roadmap-summary-item');
+          summaryItems.forEach(item => {
+            if (item.classList.contains(phase)) {
+              item.classList.add('active');
             } else {
-              btn.classList.remove('active');
+              item.classList.remove('active');
             }
           });
           
@@ -9165,9 +9130,9 @@
 
       // Initialize Winding Roadmap
       renderWindingRoadmap();
-      // Set active status on first tab initially
-      const firstTab = document.querySelector('.roadmap-tab-btn');
-      if (firstTab) firstTab.classList.add('active');
+      // Set active status on first summary item initially
+      const firstSummaryItem = document.querySelector('.roadmap-summary-item.excel');
+      if (firstSummaryItem) firstSummaryItem.classList.add('active');
 
       buildHeatmap();
     });
