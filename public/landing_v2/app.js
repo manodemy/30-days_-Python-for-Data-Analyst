@@ -119,17 +119,43 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ═══ STICKY BOTTOM MOBILE CTA ═══ */
   const stickyCta = document.getElementById('stickyMobileCta');
   let stickyVisible = false;
+  
   const checkStickyCta = () => {
     if (!stickyCta) return;
     // Show sticky bottom bar only after scrolling past 600px on mobile
     const shouldBeVisible = (window.innerWidth <= 768 && window.scrollY > 600);
     if (shouldBeVisible !== stickyVisible) {
       stickyVisible = shouldBeVisible;
-      stickyCta.style.display = shouldBeVisible ? 'block' : 'none';
+      stickyCta.style.display = shouldBeVisible ? 'flex' : 'none';
     }
   };
   window.addEventListener('scroll', checkStickyCta, { passive: true });
   window.addEventListener('resize', checkStickyCta, { passive: true });
+
+  // Tab switching logic inside sticky bottom mobile CTA
+  const stickyTabs = document.querySelectorAll('#stickyMobileCta .cta-tab-btn');
+  const stickyEnrollBtn = document.getElementById('stickyEnrollBtn');
+
+  if (stickyTabs.length > 0) {
+    stickyTabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        e.preventDefault();
+        stickyTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const tier = tab.dataset.tabTier || 'selfpaced';
+        if (stickyEnrollBtn) {
+          stickyEnrollBtn.dataset.tier = tier;
+        }
+
+        const cfg = pricingConfigs[tier];
+        const mPrice = document.querySelector('.m-price');
+        const mPriceOld = document.querySelector('.m-price-old');
+        if (mPrice && cfg) mPrice.textContent = cfg.display;
+        if (mPriceOld && cfg) mPriceOld.textContent = cfg.original;
+      });
+    });
+  }
 
   /* ═══ FAQ ACCORDION ═══ */
   const faqItems = document.querySelectorAll('.faq-item');
@@ -623,11 +649,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update live price in final CTA
     document.querySelectorAll('.dynamic-price-live').forEach(el => el.textContent = lv.display);
 
-    // Update sticky mobile CTA (shows self-paced price)
+    // Update sticky mobile CTA based on active tab
     const mPrice    = document.querySelector('.m-price');
     const mPriceOld = document.querySelector('.m-price-old');
-    if (mPrice)    mPrice.textContent    = sp.display;
-    if (mPriceOld) mPriceOld.textContent = sp.original;
+    const activeTab = document.querySelector('#stickyMobileCta .cta-tab-btn.active');
+    const activeTier = activeTab ? activeTab.dataset.tabTier : 'selfpaced';
+    const activeCfg = pricingConfigs[activeTier];
+    if (mPrice && activeCfg)    mPrice.textContent    = activeCfg.display;
+    if (mPriceOld && activeCfg) mPriceOld.textContent = activeCfg.original;
 
     // Update comparison table cost row
     const compareCostMano = document.getElementById('compare-cost-mano');
