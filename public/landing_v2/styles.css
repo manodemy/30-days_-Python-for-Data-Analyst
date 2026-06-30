@@ -1461,7 +1461,7 @@ th.col-mano {
   font-family: var(--font-display);
   font-weight: 900;
   font-size: 56px;
-  color: #fff;
+  color: #000000;
   line-height: 1;
   letter-spacing: -0.04em;
 }
@@ -4680,10 +4680,15 @@ html, body {
     background: #0b0f19 !important; /* solid opaque background matching --base */
     border-right: 1.5px solid var(--border-strong) !important;
     box-shadow: 4px 0 10px rgba(0, 0, 0, 0.4);
+    color: #ffffff !important;
+  }
+  .compare-wrap td:first-child strong {
+    color: #ffffff !important;
   }
   .compare-wrap th:first-child {
     z-index: 11;
     background: #121826 !important; /* solid opaque background matching --surface */
+    color: #ffffff !important;
   }
 
   /* Reviews */
