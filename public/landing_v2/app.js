@@ -487,7 +487,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let userCountry = 'US';
   let pricingConfigs = {
     selfpaced: { amount: 4900,  currency: 'USD', display: '$49',   original: '$149',    discount: '67% OFF', planName: '60-Day Self-Paced Masterclass' },
-    live:      { amount: 14900, currency: 'USD', display: '$149',  original: '$499',    discount: '70% OFF', planName: '60-Day Daily Live Masterclass' }
+    live:      { amount: 14900, currency: 'USD', display: '$149',  original: '$499',    discount: '70% OFF', planName: '60-Day Live Class Masterclass' }
   };
   let activeTier = 'selfpaced';
   
@@ -618,10 +618,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (userCountry === 'IN') {
       pricingConfigs.selfpaced = { amount: 299900, currency: 'INR', display: '₹2,999',  original: '₹9,999',   discount: '70% OFF', planName: '60-Day Self-Paced Masterclass' };
-      pricingConfigs.live      = { amount: 999900, currency: 'INR', display: '₹9,999',  original: '₹39,999',  discount: '75% OFF', planName: '60-Day Daily Live Masterclass' };
+      pricingConfigs.live      = { amount: 999900, currency: 'INR', display: '₹9,999',  original: '₹39,999',  discount: '75% OFF', planName: '60-Day Live Class Masterclass' };
     } else {
       pricingConfigs.selfpaced = { amount: 4900,   currency: 'USD', display: '$49',     original: '$149',     discount: '67% OFF', planName: '60-Day Self-Paced Masterclass' };
-      pricingConfigs.live      = { amount: 14900,  currency: 'USD', display: '$149',    original: '$499',     discount: '70% OFF', planName: '60-Day Daily Live Masterclass' };
+      pricingConfigs.live      = { amount: 14900,  currency: 'USD', display: '$149',    original: '$499',     discount: '70% OFF', planName: '60-Day Live Class Masterclass' };
     }
 
     const sp = pricingConfigs.selfpaced;
