@@ -1720,16 +1720,23 @@
 
   <!-- Sticky Mobile CTA Bar -->
   <div class="sticky-mobile-cta" id="stickyMobileCta">
-    <div class="mobile-cta-tabs">
-      <button type="button" class="cta-tab-btn active" data-tab-tier="selfpaced">⚡ Self-Paced</button>
-      <button type="button" class="cta-tab-btn" data-tab-tier="live">🎥 Daily Live Class</button>
-    </div>
     <div class="mobile-cta-inner">
-      <div class="cta-price-group">
-        <span class="m-price">$49</span>
-        <span class="m-price-old">$149</span>
+      <!-- Left: Vertically stacked switches -->
+      <div class="mobile-cta-left">
+        <button type="button" class="cta-tab-btn active" data-tab-tier="selfpaced">⚡ Self-Paced</button>
+        <button type="button" class="cta-tab-btn" data-tab-tier="live">🎥 Daily Live</button>
       </div>
-      <a href="#pricing" class="btn-primary btn-mobile-cta" id="stickyEnrollBtn" data-cta="buy" data-tier="selfpaced">Enroll Now</a>
+      <!-- Center: Pricing displays -->
+      <div class="mobile-cta-center">
+        <div class="cta-price-group">
+          <span class="m-price">$49</span>
+          <span class="m-price-old">$149</span>
+        </div>
+      </div>
+      <!-- Right: Main action button -->
+      <div class="mobile-cta-right">
+        <a href="#pricing" class="btn-primary btn-mobile-cta" id="stickyEnrollBtn" data-cta="buy" data-tier="selfpaced">Enroll Now</a>
+      </div>
     </div>
   </div>
 
