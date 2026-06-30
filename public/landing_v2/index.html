@@ -1567,6 +1567,113 @@
     </div>
   </div>
 
+  <!-- ── Review Submission Modal ─────────────────────────── -->
+  <div class="rev-modal-overlay" id="revModalOverlay">
+    <div class="rev-modal-card">
+      <div class="rev-modal-header">
+        <h3>
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:20px;height:20px;vertical-align:middle;margin-right:8px;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.83 17.017a4.5 4.5 0 01-1.897 1.13L3 19l.85-2.933a4.5 4.5 0 011.13-1.897l8.932-8.932zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"></path>
+          </svg>
+          <span>Share Your Coding Journey</span>
+        </h3>
+        <button type="button" class="btn-close-modal" id="btnCloseRevModal" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="rev-modal-body">
+        <form id="rev-submit-form" onsubmit="return false;">
+          <div class="rev-modal-columns">
+            <!-- LEFT COLUMN -->
+            <div class="rev-modal-col-left">
+              <!-- Rating Selector -->
+              <div class="rev-rating-selector">
+                <span class="rev-selector-label">Your Rating</span>
+                <div class="rev-selector-stars">
+                  <svg data-star="1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                  <svg data-star="2" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                  <svg data-star="3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                  <svg data-star="4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                  <svg data-star="5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                </div>
+                <div class="rev-selector-desc">Click a star to rate</div>
+                <input type="hidden" id="rev-input-rating" required>
+              </div>
+              <!-- Identity Fields -->
+              <div class="rev-form-row">
+                <div class="rev-form-group">
+                  <label for="rev-input-name">Your Full Name *</label>
+                  <input type="text" id="rev-input-name" placeholder="e.g. Aarav Sharma" required>
+                </div>
+                <div class="rev-form-group">
+                  <label for="rev-input-email">Your Email Address *</label>
+                  <input type="email" id="rev-input-email" placeholder="e.g. aarav@gmail.com" required>
+                </div>
+              </div>
+              <div class="rev-form-row">
+                <div class="rev-form-group full-width">
+                  <label for="rev-input-role">Your Role / Profession *</label>
+                  <input type="text" id="rev-input-role" placeholder="e.g. Software Engineer, Data Analyst, Student" required>
+                </div>
+              </div>
+              <!-- Detailed Feedback -->
+              <div class="rev-form-group full-width">
+                <label for="rev-input-comment">Detailed Feedback *</label>
+                <textarea id="rev-input-comment" placeholder="What did you love? How did it help your skills?" maxlength="1000" required></textarea>
+                <span class="rev-char-counter">0/1000</span>
+              </div>
+            </div>
+            <!-- RIGHT COLUMN -->
+            <div class="rev-modal-col-right">
+              <!-- Pros and Cons -->
+              <div class="rev-form-row">
+                <div class="rev-form-group">
+                  <label for="rev-input-pro">Pros (What went well?)</label>
+                  <input type="text" id="rev-input-pro" placeholder="Type a pro and press Enter">
+                  <div class="rev-tags-container" id="pros-tags-list"></div>
+                </div>
+                <div class="rev-form-group">
+                  <label for="rev-input-con">Cons (Areas of improvement)</label>
+                  <input type="text" id="rev-input-con" placeholder="Type a con and press Enter">
+                  <div class="rev-tags-container" id="cons-tags-list"></div>
+                </div>
+              </div>
+              <!-- Photo Upload Dropzone -->
+              <div class="rev-form-group full-width">
+                <label>Upload a Photo (optional)</label>
+                <div class="rev-media-dropzone" id="mediaDropzone">
+                  <input type="file" id="rev-file-input" accept="image/*" style="display:none;">
+                  <div class="dropzone-content">
+                    <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" class="dropzone-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 21h18a2.25 2.25 0 002.25-2.25V5.25A2.25 2.25 0 0021 3H3a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 003 21zM3 10.5h.008v.008H3V10.5z" /></svg>
+                    <span class="dropzone-text">Drag &amp; drop or <strong>click to upload</strong></span>
+                    <span class="dropzone-hint">PNG, JPG, WEBP — Max 2 MB</span>
+                  </div>
+                  <div class="media-previews-container" id="media-previews"></div>
+                </div>
+              </div>
+              <!-- Recommend Switch -->
+              <div class="rev-form-group full-width">
+                <div class="rev-rec-switch-group">
+                  <div class="rev-switch-label">
+                    <strong>Would you recommend this course?</strong>
+                    <span>Recommend to other python learners</span>
+                  </div>
+                  <label class="rev-switch-control" for="rev-input-recommend">
+                    <input type="checkbox" id="rev-input-recommend" checked>
+                    <span class="rev-switch-slider"></span>
+                  </label>
+                </div>
+              </div>
+              <!-- Modal actions -->
+              <div class="rev-modal-footer-inline">
+                <button type="button" class="btn-modal-cancel" id="btnCancelRevModal">Cancel</button>
+                <button type="submit" class="btn-modal-submit">Submit Review</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Sign In / Sign Up Modal -->
   <div class="checkout-overlay" id="authModal">
     <div class="checkout-modal auth-modal-box">
@@ -1653,7 +1760,7 @@
 
   <script src="../supabase.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="reviews.js?v=6.1" defer></script>
+  <script src="reviews.js?v=7.0" defer></script>
   <script src="app.js?v=6.7" defer></script>
   <script src="roadmap.js?v=11.0" defer></script>
 

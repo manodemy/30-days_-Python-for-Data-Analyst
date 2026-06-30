@@ -1793,10 +1793,13 @@ document.addEventListener('DOMContentLoaded', () => {
             window.pendingCheckout = null;
             openCheckout(currentPending.tier);
             initiatePayment(currentPending.gateway);
+          } else if (window.pendingWriteReview) {
+            // User clicked "Write Review" → stay on page; reviews.js will open the form
+            window.justSignedIn = false;
           } else if (window.justSignedIn || oauthInProgress) {
             window.justSignedIn = false;
             setTimeout(() => {
-              if (!window.pendingCheckout) {
+              if (!window.pendingCheckout && !window.pendingWriteReview) {
                 window.location.href = '/home.html';
               }
             }, 300);
