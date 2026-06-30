@@ -4807,7 +4807,7 @@ html, body {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.05);
     color: rgba(255, 255, 255, 0.45);
-    padding: 4px 6px;
+    padding: 4px 10px;
     font-size: 9px;
     font-weight: 800;
     font-family: var(--font-display, Outfit, sans-serif);
@@ -4816,8 +4816,8 @@ html, body {
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 3px;
+    justify-content: flex-start;
+    gap: 5px;
     box-sizing: border-box;
     white-space: nowrap;
   }
@@ -4838,18 +4838,19 @@ html, body {
   .mobile-cta-center {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     flex: 0 0 27%;
     height: 100%;
     box-sizing: border-box;
+    padding-right: 6px;
   }
   .cta-price-group {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    text-align: center;
+    text-align: right;
     gap: 1px;
   }
   .m-price {
