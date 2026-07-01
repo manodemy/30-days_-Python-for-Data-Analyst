@@ -1743,6 +1743,10 @@ document.addEventListener('DOMContentLoaded', () => {
       coursesDropdown.style.display = user ? 'block' : 'none';
     }
     
+    // Clean up any existing dynamic extra button to prevent duplication
+    const existingExtra = document.getElementById('navInstructorExtra');
+    if (existingExtra) existingExtra.remove();
+    
     if (!signInBtn) return;
     if (!user) {
       signInBtn.textContent = 'Sign In';
@@ -1760,9 +1764,20 @@ document.addEventListener('DOMContentLoaded', () => {
           .eq('id', user.id)
           .single();
 
-        if (profile && profile.role === 'admin') {
+        const isAdmin = (profile && profile.role === 'admin') || user.email === 'manodamy25@gmail.com';
+
+        if (isAdmin) {
           signInBtn.textContent = '⚙️ Admin Panel';
           signInBtn.href = '/admin.html';
+
+          // Dynamically insert the Instructor Panel button next to it!
+          const instBtn = document.createElement('a');
+          instBtn.id = 'navInstructorExtra';
+          instBtn.className = 'btn-ghost';
+          instBtn.style.marginRight = '12px';
+          instBtn.textContent = '👨‍🏫 Instructor Panel';
+          instBtn.href = '/instructor-dashboard.html';
+          signInBtn.parentNode.insertBefore(instBtn, signInBtn);
           return;
         }
 
@@ -1773,7 +1788,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     } catch (e) {
-      console.warn('[Admin] Failed to check admin role:', e);
+      console.warn('[Admin] Failed to check roles:', e);
     }
 
     if (user.email === 'manodamy25@gmail.com') {
