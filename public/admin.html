@@ -2542,6 +2542,7 @@
                     <th>Date &amp; Time</th>
                     <th>Amount</th>
                     <th>Ccy</th>
+                    <th>Type</th>
                     <th>Coupon</th>
                     <th>Discount</th>
                     <th>Phone</th>
@@ -4552,6 +4553,9 @@
         const action = t.status === 'completed'
           ? `<button class="btn-refund" onclick="openRefundModal('${t.id}')">Refund</button>`
           : '—';
+        const typeDisplay = t.product_type === 'live'
+          ? `<span class="badge badge-info" style="font-weight:500;">Live (${t.batch_name || '—'})</span>`
+          : `<span class="badge badge-neutral">Self-Paced</span>`;
         return `<tr>
         <td class="cell-mono" style="color:var(--ink-muted);">${start + i + 1}</td>
         <td style="color:var(--ink);">${t.user_name || '—'}</td>
@@ -4560,6 +4564,7 @@
         <td class="cell-mono">${new Date(t.created_at).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</td>
         <td class="cell-mono" style="color:var(--gold);">${formatINR(t.amount_inr)}</td>
         <td><span class="badge badge-neutral">${t.currency}</span></td>
+        <td>${typeDisplay}</td>
         <td class="cell-mono" style="color:var(--ink-muted);">${t.coupon_used ? `<span class="coupon-code">${t.coupon_used}</span>` : '—'}</td>
         <td class="cell-mono" style="color:${t.coupon_discount_inr > 0 ? 'var(--emerald, #10b981)' : 'var(--ink-muted)'}">${t.coupon_discount_inr > 0 ? '−' + formatINR(t.coupon_discount_inr) : '—'}</td>
         <td class="cell-mono" style="color:var(--ink-muted);">${t.phone || '—'}</td>
@@ -5273,7 +5278,7 @@
       // Use the last loaded transactions stored in the closure
       const txRows = window._lastTxData || [];
       if (!txRows.length) { showToast('No transactions to export', 'info'); return; }
-      const headers = ['#', 'Name', 'Email', 'Country', 'Date', 'Amount (INR)', 'Currency', 'Coupon', 'Discount (INR)', 'Phone', 'Gateway', 'Status'];
+      const headers = ['#', 'Name', 'Email', 'Country', 'Date', 'Amount (INR)', 'Currency', 'Type', 'Coupon', 'Discount (INR)', 'Phone', 'Gateway', 'Status'];
       const csv = [headers.join(','), ...txRows.map((t, i) => [
         i + 1,
         `"${(t.user_name || '').replace(/"/g, '""')}"`,
@@ -5282,6 +5287,7 @@
         t.created_at ? new Date(t.created_at).toISOString().slice(0, 16) : '',
         t.amount_inr || 0,
         t.currency || '',
+        t.product_type === 'live' ? `Live (${t.batch_name || '—'})` : 'Self-Paced',
         t.coupon_used || '',
         t.coupon_discount_inr || 0,
         `"${(t.phone || '').replace(/"/g, '""')}"`,
