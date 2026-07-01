@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manodemy — Instructor Dashboard</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#060913">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════════
+       DESIGN TOKENS — Dark theme matching admin.html
+       ═══════════════════════════════════════════════════ */
+    :root {
+      --void: #080810;
+      --base: #0C0C16;
+      --surface: #111120;
+      --elevated: #16162A;
+      --overlay: #1C1C34;
+      --rim: rgba(255,255,255,0.06);
+      --rim-strong: rgba(255,255,255,0.10);
+
+      --cyan: #00E6F6;
+      --cyan-dim: #00B8C4;
+      --cyan-glow: rgba(0,230,246,0.15);
+      --cyan-subtle: rgba(0,230,246,0.06);
+      --emerald: #2DD4BF;
+      --rose: #F87171;
+      --amber: #FBBF24;
+      --sapphire: #60A5FA;
+      --gold: #D97706;
+
+      --ink: #EEE8D9;
+      --ink-dim: #A8A090;
+      --ink-muted: #60584E;
+
+      --font-display: 'Outfit', system-ui, sans-serif;
+      --font-data: 'JetBrains Mono', monospace;
+      --font-body: 'Inter', system-ui, sans-serif;
+
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 14px;
+      --radius-xl: 20px;
+
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.5), 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+      --shadow-glow: 0 0 40px rgba(0,230,246,0.12), 0 0 80px rgba(0,230,246,0.06);
+      --transition: 200ms cubic-bezier(0.4,0,0.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { max-width: 100%; overflow-x: hidden; }
+    html { font-size: 15px; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--font-body);
+      background: var(--void);
+      color: var(--ink);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
+
+    /* ═══ LAYOUT ═══ */
+    .dash-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ═══ HEADER ═══ */
+    .dash-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(12,12,22,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--rim);
+      padding: 16px 0;
+    }
+    .dash-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dash-brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+    .dash-brand span { color: var(--cyan); }
+    .dash-brand-sub {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-muted);
+      display: block;
+      margin-top: -4px;
+    }
+    .dash-header-actions { display: flex; gap: 12px; align-items: center; }
+    .dash-user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--surface);
+      border: 1px solid var(--rim);
+      border-radius: 100px;
+      font-size: 13px;
+      color: var(--ink-dim);
+    }
+    .dash-user-pill img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--surface);
+      border: 1px solid var(--rim);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-dim);
+      transition: var(--transition);
+    }
+    .btn-back:hover { border-color: var(--cyan); color: var(--cyan); }
+    .btn-logout {
+      padding: 8px 16px;
+      background: var(--surface);
+      border: 1px solid var(--rim);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--rose);
+      transition: var(--transition);
+    }
+    .btn-logout:hover { border-color: var(--rose); background: rgba(248,113,113,0.08); }
+
+    /* ═══ AUTH GATE ═══ */
+    .auth-gate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+    .auth-gate-card {
+      background: var(--surface);
+      border: 1px solid var(--rim);
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      max-width: 440px;
+      box-shadow: var(--shadow-card);
+    }
+    .auth-gate h2 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .auth-gate p {
+      color: var(--ink-dim);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    .auth-gate .btn-primary {
+      display: inline-block;
+      padding: 12px 28px;
+    }
+
+    /* ═══ PAGE TITLE ═══ */
+    .page-title-section {
+      padding: 48px 0 32px;
+    }
+    .page-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .page-title span { color: var(--cyan); }
+    .page-subtitle {
+      color: var(--ink-dim);
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    /* ═══ TABS ═══ */
+    .dash-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--surface);
+      border: 1px solid var(--rim);
+      border-radius: var(--radius-lg);
+      padding: 4px;
+      margin-bottom: 40px;
+      width: fit-content;
+    }
+    .dash-tab {
+      padding: 10px 22px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 10px;
+      color: var(--ink-dim);
+      transition: var(--transition);
+    }
+    .dash-tab:hover { color: var(--ink); }
+    .dash-tab.active {
+      background: var(--elevated);
+      color: var(--cyan);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    /* ═══ SECTION CARD ═══ */
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--rim);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+    }
+    .section-card-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-card-title .emoji { font-size: 20px; }
+
+    /* ═══ PROFILE SECTION ═══ */
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .avatar-upload-zone {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 3px dashed var(--rim-strong);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+      background: var(--elevated);
+    }
+    .avatar-upload-zone:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 30px rgba(0,230,246,0.1);
+    }
+    .avatar-upload-zone img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+    .avatar-upload-zone .avatar-placeholder {
+      text-align: center;
+      color: var(--ink-muted);
+      font-size: 12px;
+      z-index: 1;
+    }
+    .avatar-upload-zone .avatar-placeholder svg {
+      display: block;
+      margin: 0 auto 8px;
+      opacity: 0.5;
+    }
+    .avatar-upload-zone.has-image .avatar-placeholder { display: none; }
+    .avatar-upload-zone .avatar-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: var(--transition);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .avatar-upload-zone:hover .avatar-overlay { opacity: 1; }
+
+    .profile-form { display: flex; flex-direction: column; gap: 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-dim);
+    }
+    .form-input {
+      padding: 10px 14px;
+      background: var(--elevated);
+      border: 1px solid var(--rim);
+      border-radius: var(--radius-md);
+      color: var(--ink);
+      font-size: 14px;
+      font-family: var(--font-body);
+      transition: var(--transition);
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0,230,246,0.1);
+    }
+    .form-input::placeholder { color: var(--ink-muted); }
+    textarea.form-input { resize: vertical; min-height: 80px; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ═══ BUTTONS ═══ */
+    .btn-primary {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--cyan) 0%, #0077cc 100%);
+      color: #000;
+      font-weight: 700;
+      font-size: 14px;
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(0,230,246,0.25);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,230,246,0.35);
+    }
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-secondary {
+      padding: 10px 20px;
+      background: var(--elevated);
+      border: 1px solid var(--rim);
+      color: var(--ink);
+      font-weight: 600;
+      font-size: 13px;
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+    }
+    .btn-secondary:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+    .btn-danger {
+      padding: 10px 20px;
+      background: transparent;
+      border: 1px solid rgba(248,113,113,0.3);
+      color: var(--rose);
+      font-weight: 600;
+      font-size: 13px;
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+    }
+    .btn-danger:hover {
+      background: rgba(248,113,113,0.1);
+      border-color: var(--rose);
+    }
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      padding-top: 8px;
+    }
+
+    /* ═══ PROFILE PREVIEW ═══ */
+    .profile-preview {
+      margin-top: 12px;
+      padding: 24px;
+      background: var(--elevated);
+      border: 1px solid var(--rim);
+      border-radius: var(--radius-lg);
+    }
+    .profile-preview-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      margin-bottom: 16px;
+    }
+    .preview-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .preview-card img {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--rim-strong);
+    }
+    .preview-card-info h4 {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .preview-card-info p {
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    /* ═══ BATCH MANAGEMENT ═══ */
+    .batch-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .batch-header-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .batch-count {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--cyan);
+      background: rgba(0,230,246,0.1);
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    .batch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .batch-card {
+      background: var(--elevated);
+      border: 1px solid var(--rim);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .batch-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--sapphire));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .batch-card:hover::before { opacity: 1; }
+    .batch-card:hover {
+      border-color: var(--rim-strong);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .batch-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .batch-status-pill {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+    .batch-status-pill--active {
+      background: rgba(45,212,191,0.12);
+      color: var(--emerald);
+    }
+    .batch-status-pill--upcoming {
+      background: rgba(96,165,250,0.12);
+      color: var(--sapphire);
+    }
+    .batch-status-pill--archived {
+      background: rgba(168,160,144,0.12);
+      color: var(--ink-dim);
+    }
+    .batch-card-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .batch-card-type {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .batch-card-schedule {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 16px 0;
+      padding: 12px;
+      background: rgba(0,0,0,0.2);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+    }
+    .batch-card-schedule span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink-dim);
+    }
+    .batch-card-schedule .schedule-emoji { font-size: 14px; width: 20px; text-align: center; }
+    .batch-card-stats {
+      display: flex;
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .batch-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .batch-stat-value {
+      font-family: var(--font-data);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+    .batch-stat-label {
+      font-size: 11px;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .batch-card-actions {
+      display: flex;
+      gap: 8px;
+      padding-top: 16px;
+      border-top: 1px solid var(--rim);
+    }
+    .batch-card-actions button {
+      flex: 1;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    .batch-edit-btn {
+      background: rgba(0,230,246,0.08);
+      color: var(--cyan);
+      border: 1px solid rgba(0,230,246,0.2);
+    }
+    .batch-edit-btn:hover { background: rgba(0,230,246,0.15); }
+    .batch-archive-btn {
+      background: rgba(248,113,113,0.08);
+      color: var(--rose);
+      border: 1px solid rgba(248,113,113,0.2);
+    }
+    .batch-archive-btn:hover { background: rgba(248,113,113,0.15); }
+    .batch-activate-btn {
+      background: rgba(45,212,191,0.08);
+      color: var(--emerald);
+      border: 1px solid rgba(45,212,191,0.2);
+    }
+    .batch-activate-btn:hover { background: rgba(45,212,191,0.15); }
+
+    /* ═══ CREATE BATCH CARD (Special) ═══ */
+    .batch-card--create {
+      border-style: dashed;
+      border-color: var(--rim-strong);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      cursor: pointer;
+      text-align: center;
+      gap: 12px;
+    }
+    .batch-card--create:hover {
+      border-color: var(--cyan);
+      background: rgba(0,230,246,0.03);
+    }
+    .batch-card--create .create-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(0,230,246,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--cyan);
+    }
+    .batch-card--create .create-text {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink-dim);
+    }
+    .batch-card--create .create-sub {
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+
+    /* ═══ MODAL ═══ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-card {
+      background: var(--surface);
+      border: 1px solid var(--rim);
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+      padding: 36px;
+    }
+    .modal-card::-webkit-scrollbar { width: 6px; }
+    .modal-card::-webkit-scrollbar-track { background: transparent; }
+    .modal-card::-webkit-scrollbar-thumb { background: var(--rim-strong); border-radius: 3px; }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--elevated);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--ink-dim);
+      transition: var(--transition);
+    }
+    .modal-close:hover { background: var(--overlay); color: var(--rose); }
+
+    .modal-form { display: flex; flex-direction: column; gap: 20px; }
+
+    /* Schedule type selector */
+    .schedule-options {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .schedule-option {
+      padding: 10px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--rim);
+      border-radius: var(--radius-md);
+      background: var(--elevated);
+      color: var(--ink-dim);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .schedule-option:hover { border-color: var(--rim-strong); color: var(--ink); }
+    .schedule-option.active {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0,230,246,0.06);
+    }
+
+    .time-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* Custom days checkboxes */
+    .custom-days {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .custom-day-btn {
+      width: 40px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--rim);
+      background: var(--elevated);
+      color: var(--ink-dim);
+      transition: var(--transition);
+    }
+    .custom-day-btn:hover { border-color: var(--rim-strong); }
+    .custom-day-btn.active {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0,230,246,0.08);
+    }
+
+    /* ═══ TOAST ═══ */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 14px 24px;
+      background: var(--surface);
+      border: 1px solid var(--rim);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      z-index: 99999;
+      transform: translateY(120%);
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast.visible { transform: translateY(0); }
+    .toast--success { border-color: rgba(45,212,191,0.3); color: var(--emerald); }
+    .toast--error { border-color: rgba(248,113,113,0.3); color: var(--rose); }
+
+    /* ═══ EMPTY STATE ═══ */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--ink-muted);
+    }
+    .empty-state .emoji { font-size: 40px; margin-bottom: 12px; }
+    .empty-state h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink-dim);
+      margin-bottom: 8px;
+    }
+    .empty-state p { font-size: 13px; }
+
+    /* ═══ LOADING ═══ */
+    .loading-spinner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+    }
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--rim);
+      border-top-color: var(--cyan);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ═══ HIDDEN ═══ */
+    .hidden { display: none !important; }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 768px) {
+      .profile-layout {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+      .batch-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .schedule-options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .dash-tabs {
+        width: 100%;
+        overflow-x: auto;
+      }
+      .section-card {
+        padding: 24px;
+      }
+      .modal-card {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="dash-header">
+    <div class="dash-container dash-header-inner">
+      <div>
+        <div class="dash-brand">Mano<span>demy</span></div>
+        <span class="dash-brand-sub">Instructor Dashboard</span>
+      </div>
+      <div class="dash-header-actions">
+        <a href="/landing_v2/index.html" class="btn-back">← Landing Page</a>
+        <div class="dash-user-pill" id="userPill">
+          <span id="userEmail">Loading...</span>
+        </div>
+        <button class="btn-logout" id="btnLogout">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ AUTH GATE (shown when not instructor) ═══ -->
+  <main class="auth-gate hidden" id="authGate">
+    <div class="auth-gate-card">
+      <h2>🔒 Instructor Access Required</h2>
+      <p>This dashboard is only available to instructors. If you believe you should have access, please contact the admin team.</p>
+      <a href="/landing_v2/index.html" class="btn-primary">← Back to Home</a>
+    </div>
+  </main>
+
+  <!-- ═══ DASHBOARD CONTENT (shown when instructor) ═══ -->
+  <main class="hidden" id="dashContent">
+    <div class="dash-container">
+
+      <!-- Page Title -->
+      <div class="page-title-section">
+        <h1 class="page-title">Instructor <span>Dashboard</span></h1>
+        <p class="page-subtitle">Manage your profile and live class batches. Changes reflect on the landing page in real-time.</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="dash-tabs" id="dashTabs">
+        <button class="dash-tab active" data-tab="profile">👤 My Profile</button>
+        <button class="dash-tab" data-tab="batches">📅 My Batches</button>
+      </div>
+
+      <!-- ═══ PROFILE TAB ═══ -->
+      <div class="tab-panel" id="panel-profile">
+        <div class="section-card">
+          <div class="section-card-title"><span class="emoji">👤</span> Instructor Profile</div>
+          <div class="profile-layout">
+            <!-- Avatar -->
+            <div>
+              <div class="avatar-upload-zone" id="avatarZone" title="Click to upload photo">
+                <div class="avatar-placeholder">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Upload Photo
+                </div>
+                <div class="avatar-overlay">📷 Change Photo</div>
+              </div>
+              <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+
+              <!-- Live preview -->
+              <div class="profile-preview">
+                <div class="profile-preview-title">Landing Page Preview</div>
+                <div class="preview-card">
+                  <img id="previewAvatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Crect width='56' height='56' fill='%2316162A'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' fill='%2360584E' font-size='20'%3E?%3C/text%3E%3C/svg%3E" alt="Preview">
+                  <div class="preview-card-info">
+                    <h4 id="previewName">Your Name</h4>
+                    <p id="previewSpec">Specialization</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Fields -->
+            <div class="profile-form" id="profileForm">
+              <div class="form-group">
+                <label for="displayName">Display Name *</label>
+                <input type="text" class="form-input" id="displayName" placeholder="e.g. Manoj Kumar" required>
+              </div>
+              <div class="form-group">
+                <label for="specialization">Specialization</label>
+                <input type="text" class="form-input" id="specialization" placeholder="e.g. Python & Data Analytics">
+              </div>
+              <div class="form-group">
+                <label for="bio">About / Bio</label>
+                <textarea class="form-input" id="bio" rows="3" placeholder="Tell students about yourself, your experience, and teaching style..."></textarea>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="socialLinkedin">LinkedIn URL</label>
+                  <input type="url" class="form-input" id="socialLinkedin" placeholder="https://linkedin.com/in/...">
+                </div>
+                <div class="form-group">
+                  <label for="socialTwitter">Twitter / X URL</label>
+                  <input type="url" class="form-input" id="socialTwitter" placeholder="https://x.com/...">
+                </div>
+                <div class="form-group">
+                  <label for="socialGithub">GitHub URL</label>
+                  <input type="url" class="form-input" id="socialGithub" placeholder="https://github.com/...">
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-primary" id="btnSaveProfile">💾 Save Profile</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ BATCHES TAB ═══ -->
+      <div class="tab-panel hidden" id="panel-batches">
+        <div class="section-card">
+          <div class="batch-header">
+            <div class="batch-header-title">
+              <span class="emoji">📅</span> My Batches
+              <span class="batch-count" id="batchCount">0</span>
+            </div>
+            <button class="btn-primary" id="btnCreateBatch">+ Create Batch</button>
+          </div>
+
+          <div class="loading-spinner" id="batchesLoading"><div class="spinner"></div></div>
+          <div class="batch-grid hidden" id="batchGrid">
+            <!-- Dynamically populated -->
+          </div>
+          <div class="empty-state hidden" id="batchesEmpty">
+            <div class="emoji">📭</div>
+            <h3>No batches yet</h3>
+            <p>Create your first live class batch to start teaching!</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ═══ CREATE / EDIT BATCH MODAL ═══ -->
+  <div class="modal-overlay" id="batchModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="batchModalTitle">Create New Batch</h3>
+        <button class="modal-close" id="batchModalClose">×</button>
+      </div>
+      <form class="modal-form" id="batchForm">
+        <input type="hidden" id="editBatchId" value="">
+
+        <div class="form-group">
+          <label for="batchName">Batch Name *</label>
+          <input type="text" class="form-input" id="batchName" placeholder="e.g. Evening Cohort — Batch 3" required>
+        </div>
+
+        <div class="form-group">
+          <label for="batchDescription">Description</label>
+          <textarea class="form-input" id="batchDescription" rows="2" placeholder="Short description for this batch..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Batch Type *</label>
+          <div class="schedule-options">
+            <div class="schedule-option active" data-batch-type="paid">💎 Paid</div>
+            <div class="schedule-option" data-batch-type="free_demo">✨ Free Demo</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Schedule Type *</label>
+          <div class="schedule-options" id="scheduleTypeSelector">
+            <div class="schedule-option active" data-schedule="daily">Daily</div>
+            <div class="schedule-option" data-schedule="weekdays">Weekdays</div>
+            <div class="schedule-option" data-schedule="weekends">Weekends</div>
+            <div class="schedule-option" data-schedule="custom">Custom</div>
+          </div>
+        </div>
+
+        <!-- Custom days (shown only for 'custom') -->
+        <div class="form-group hidden" id="customDaysGroup">
+          <label>Select Days</label>
+          <div class="custom-days" id="customDays">
+            <button type="button" class="custom-day-btn" data-day="0">Sun</button>
+            <button type="button" class="custom-day-btn" data-day="1">Mon</button>
+            <button type="button" class="custom-day-btn" data-day="2">Tue</button>
+            <button type="button" class="custom-day-btn" data-day="3">Wed</button>
+            <button type="button" class="custom-day-btn" data-day="4">Thu</button>
+            <button type="button" class="custom-day-btn" data-day="5">Fri</button>
+            <button type="button" class="custom-day-btn" data-day="6">Sat</button>
+          </div>
+        </div>
+
+        <div class="time-row">
+          <div class="form-group">
+            <label for="startTime">Start Time (IST) *</label>
+            <input type="time" class="form-input" id="startTime" value="19:30" required>
+          </div>
+          <div class="form-group">
+            <label for="endTime">End Time (IST) *</label>
+            <input type="time" class="form-input" id="endTime" value="20:30" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="meetLink">Google Meet / Zoom Link</label>
+          <input type="url" class="form-input" id="meetLink" placeholder="https://meet.google.com/...">
+        </div>
+
+        <div class="time-row">
+          <div class="form-group">
+            <label for="maxStudents">Max Students (optional)</label>
+            <input type="number" class="form-input" id="maxStudents" placeholder="e.g. 50" min="1">
+          </div>
+          <div class="form-group">
+            <label for="startDate">Batch Start Date</label>
+            <input type="date" class="form-input" id="startDate">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <div class="schedule-options">
+            <div class="schedule-option active" data-status="active">🟢 Active</div>
+            <div class="schedule-option" data-status="upcoming">🔵 Upcoming</div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="batchModalCancel">Cancel</button>
+          <button type="submit" class="btn-primary" id="btnSubmitBatch">🚀 Create Batch</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══ TOAST ═══ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ═══ SCRIPTS ═══ -->
+  <script>
+    const SUPABASE_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
+  </script>
+  <script src="/supabase.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    /* ═══════════════════════════════════════════
+       SUPABASE CLIENT
+       ═══════════════════════════════════════════ */
+    const sb = window.supabase?.createClient?.(SUPABASE_URL, SUPABASE_ANON_KEY)
+      || globalThis.supabase?.createClient?.(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    if (!sb) {
+      document.getElementById('authGate').classList.remove('hidden');
+      return;
+    }
+
+    /* ═══ AUTH CHECK ═══ */
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) {
+      window.location.href = '/landing_v2/index.html';
+      return;
+    }
+
+    const user = session.user;
+    document.getElementById('userEmail').textContent = user.email;
+
+    // Check role
+    const { data: profile } = await sb.from('profiles').select('role, full_name').eq('id', user.id).single();
+    if (!profile || !['instructor', 'admin'].includes(profile.role)) {
+      document.getElementById('authGate').classList.remove('hidden');
+      return;
+    }
+
+    // Show dashboard
+    document.getElementById('dashContent').classList.remove('hidden');
+
+    /* ═══ LOGOUT ═══ */
+    document.getElementById('btnLogout').addEventListener('click', async () => {
+      await sb.auth.signOut();
+      window.location.href = '/landing_v2/index.html';
+    });
+
+    /* ═══ TOAST ═══ */
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.textContent = type === 'success' ? `✅ ${message}` : `❌ ${message}`;
+      toast.className = `toast toast--${type} visible`;
+      setTimeout(() => toast.classList.remove('visible'), 3500);
+    }
+
+    /* ═══ TABS ═══ */
+    const tabs = document.querySelectorAll('.dash-tab');
+    const panels = document.querySelectorAll('.tab-panel');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const target = tab.dataset.tab;
+        panels.forEach(p => {
+          p.classList.toggle('hidden', p.id !== `panel-${target}`);
+        });
+      });
+    });
+
+    /* ═══════════════════════════════════════════
+       PROFILE MANAGEMENT
+       ═══════════════════════════════════════════ */
+    let instructorProfile = null;
+
+    async function loadProfile() {
+      const { data } = await sb.from('instructor_profiles').select('*').eq('id', user.id).single();
+      if (data) {
+        instructorProfile = data;
+        document.getElementById('displayName').value = data.display_name || '';
+        document.getElementById('specialization').value = data.specialization || '';
+        document.getElementById('bio').value = data.bio || '';
+        document.getElementById('socialLinkedin').value = data.social_links?.linkedin || '';
+        document.getElementById('socialTwitter').value = data.social_links?.twitter || '';
+        document.getElementById('socialGithub').value = data.social_links?.github || '';
+
+        if (data.avatar_url) {
+          const avatarZone = document.getElementById('avatarZone');
+          const img = avatarZone.querySelector('img') || document.createElement('img');
+          img.src = data.avatar_url;
+          img.alt = data.display_name;
+          if (!avatarZone.querySelector('img')) avatarZone.prepend(img);
+          avatarZone.classList.add('has-image');
+        }
+        updatePreview();
+      } else {
+        // No profile yet — pre-fill name from auth profile
+        document.getElementById('displayName').value = profile.full_name || '';
+      }
+    }
+
+    function updatePreview() {
+      const name = document.getElementById('displayName').value || 'Your Name';
+      const spec = document.getElementById('specialization').value || 'Specialization';
+      document.getElementById('previewName').textContent = name;
+      document.getElementById('previewSpec').textContent = spec;
+
+      const avatarZone = document.getElementById('avatarZone');
+      const currentImg = avatarZone.querySelector('img');
+      if (currentImg) {
+        document.getElementById('previewAvatar').src = currentImg.src;
+      }
+    }
+
+    // Live preview on input
+    document.getElementById('displayName').addEventListener('input', updatePreview);
+    document.getElementById('specialization').addEventListener('input', updatePreview);
+
+    // Avatar upload
+    const avatarZone = document.getElementById('avatarZone');
+    const avatarInput = document.getElementById('avatarInput');
+    avatarZone.addEventListener('click', () => avatarInput.click());
+
+    avatarInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (file.size > 2 * 1024 * 1024) {
+        showToast('Image must be under 2MB', 'error');
+        return;
+      }
+
+      // Show preview immediately
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        let img = avatarZone.querySelector('img');
+        if (!img) {
+          img = document.createElement('img');
+          avatarZone.prepend(img);
+        }
+        img.src = ev.target.result;
+        img.alt = 'Avatar preview';
+        avatarZone.classList.add('has-image');
+        updatePreview();
+      };
+      reader.readAsDataURL(file);
+
+      // Upload to Supabase Storage
+      const ext = file.name.split('.').pop();
+      const path = `${user.id}/avatar.${ext}`;
+
+      const { error: uploadError } = await sb.storage
+        .from('instructor-avatars')
+        .upload(path, file, { upsert: true, contentType: file.type });
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        showToast('Failed to upload image. Make sure the instructor-avatars bucket exists.', 'error');
+        return;
+      }
+
+      const { data: urlData } = sb.storage.from('instructor-avatars').getPublicUrl(path);
+      if (urlData?.publicUrl) {
+        // Add cache-buster
+        const freshUrl = urlData.publicUrl + '?t=' + Date.now();
+        // Save to instructor_profiles
+        await sb.from('instructor_profiles').upsert({
+          id: user.id,
+          avatar_url: freshUrl,
+          display_name: document.getElementById('displayName').value || profile.full_name || 'Instructor',
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'id' });
+
+        showToast('Photo uploaded!');
+      }
+    });
+
+    // Save profile
+    document.getElementById('btnSaveProfile').addEventListener('click', async () => {
+      const displayName = document.getElementById('displayName').value.trim();
+      if (!displayName) {
+        showToast('Display name is required', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btnSaveProfile');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      const profileData = {
+        id: user.id,
+        display_name: displayName,
+        specialization: document.getElementById('specialization').value.trim() || 'Data Analytics',
+        bio: document.getElementById('bio').value.trim(),
+        social_links: {
+          linkedin: document.getElementById('socialLinkedin').value.trim() || null,
+          twitter: document.getElementById('socialTwitter').value.trim() || null,
+          github: document.getElementById('socialGithub').value.trim() || null
+        },
+        updated_at: new Date().toISOString()
+      };
+
+      // Keep existing avatar_url if present
+      if (instructorProfile?.avatar_url) {
+        profileData.avatar_url = instructorProfile.avatar_url;
+      }
+
+      const { error } = await sb.from('instructor_profiles').upsert(profileData, { onConflict: 'id' });
+
+      btn.disabled = false;
+      btn.textContent = '💾 Save Profile';
+
+      if (error) {
+        console.error('Profile save error:', error);
+        showToast('Failed to save profile: ' + error.message, 'error');
+      } else {
+        showToast('Profile saved successfully!');
+        await loadProfile();
+      }
+    });
+
+    /* ═══════════════════════════════════════════
+       BATCH MANAGEMENT
+       ═══════════════════════════════════════════ */
+    let batches = [];
+    let editingBatchId = null;
+
+    function slugify(text) {
+      return text.toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim()
+        .substring(0, 50);
+    }
+
+    function getScheduleDays(type) {
+      switch (type) {
+        case 'daily': return [0,1,2,3,4,5,6];
+        case 'weekdays': return [1,2,3,4,5];
+        case 'weekends': return [0,6];
+        case 'custom': return getSelectedCustomDays();
+        default: return [0,1,2,3,4,5,6];
+      }
+    }
+
+    function getSelectedCustomDays() {
+      const days = [];
+      document.querySelectorAll('#customDays .custom-day-btn.active').forEach(btn => {
+        days.push(parseInt(btn.dataset.day));
+      });
+      return days.sort();
+    }
+
+    function formatScheduleDays(days) {
+      const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      if (!days || days.length === 7) return 'Daily (Mon – Sun)';
+      if (JSON.stringify(days) === JSON.stringify([1,2,3,4,5])) return 'Weekdays (Mon – Fri)';
+      if (JSON.stringify(days) === JSON.stringify([0,6])) return 'Weekends (Sat & Sun)';
+      return days.map(d => names[d]).join(', ');
+    }
+
+    function formatTime(timeStr) {
+      if (!timeStr) return '';
+      const [h, m] = timeStr.split(':').map(Number);
+      const period = h >= 12 ? 'PM' : 'AM';
+      const displayH = h > 12 ? h - 12 : h === 0 ? 12 : h;
+      return `${displayH}:${String(m).padStart(2, '0')} ${period}`;
+    }
+
+    async function loadBatches() {
+      const loading = document.getElementById('batchesLoading');
+      const grid = document.getElementById('batchGrid');
+      const empty = document.getElementById('batchesEmpty');
+
+      loading.classList.remove('hidden');
+      grid.classList.add('hidden');
+      empty.classList.add('hidden');
+
+      const { data, error } = await sb.rpc('get_instructor_batches');
+
+      loading.classList.add('hidden');
+
+      if (error) {
+        console.error('Batch load error:', error);
+        showToast('Failed to load batches', 'error');
+        return;
+      }
+
+      batches = data || [];
+      document.getElementById('batchCount').textContent = batches.length;
+
+      if (batches.length === 0) {
+        empty.classList.remove('hidden');
+        grid.classList.add('hidden');
+      } else {
+        empty.classList.add('hidden');
+        grid.classList.remove('hidden');
+        renderBatchCards();
+      }
+    }
+
+    function renderBatchCards() {
+      const grid = document.getElementById('batchGrid');
+      grid.innerHTML = '';
+
+      batches.forEach(batch => {
+        const card = document.createElement('div');
+        card.className = 'batch-card';
+        card.innerHTML = `
+          <div class="batch-card-header">
+            <div>
+              <div class="batch-card-name">${escapeHtml(batch.batch_name)}</div>
+              <div class="batch-card-type">${batch.batch_type === 'free_demo' ? '✨ Free Demo' : '💎 Paid Batch'}</div>
+            </div>
+            <span class="batch-status-pill batch-status-pill--${batch.status}">${batch.status}</span>
+          </div>
+          <div class="batch-card-schedule">
+            <span><span class="schedule-emoji">🗓️</span> ${formatScheduleDays(batch.schedule_days)}</span>
+            <span><span class="schedule-emoji">🕒</span> ${formatTime(batch.start_time)} – ${formatTime(batch.end_time)} IST</span>
+            ${batch.meet_link ? `<span><span class="schedule-emoji">🔗</span> Meet link configured</span>` : `<span><span class="schedule-emoji">⚠️</span> No meet link</span>`}
+          </div>
+          <div class="batch-card-stats">
+            <div class="batch-stat">
+              <span class="batch-stat-value">${batch.current_students || 0}</span>
+              <span class="batch-stat-label">Students</span>
+            </div>
+            ${batch.max_students ? `<div class="batch-stat"><span class="batch-stat-value">${batch.max_students}</span><span class="batch-stat-label">Max Cap</span></div>` : ''}
+          </div>
+          <div class="batch-card-actions">
+            <button class="batch-edit-btn" data-id="${batch.batch_id}">✏️ Edit</button>
+            ${batch.status === 'archived'
+              ? `<button class="batch-activate-btn" data-id="${batch.batch_id}">🟢 Activate</button>`
+              : `<button class="batch-archive-btn" data-id="${batch.batch_id}">📦 Archive</button>`
+            }
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // Add the "Create New" card
+      const createCard = document.createElement('div');
+      createCard.className = 'batch-card batch-card--create';
+      createCard.innerHTML = `
+        <div class="create-icon">+</div>
+        <div class="create-text">Create New Batch</div>
+        <div class="create-sub">Set up a new live class cohort</div>
+      `;
+      createCard.addEventListener('click', () => openBatchModal());
+      grid.appendChild(createCard);
+
+      // Bind edit/archive buttons
+      grid.querySelectorAll('.batch-edit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const batch = batches.find(b => b.batch_id === btn.dataset.id);
+          if (batch) openBatchModal(batch);
+        });
+      });
+
+      grid.querySelectorAll('.batch-archive-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('Archive this batch? It will no longer appear on the landing page.')) return;
+          await updateBatchStatus(btn.dataset.id, 'archived');
+        });
+      });
+
+      grid.querySelectorAll('.batch-activate-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          await updateBatchStatus(btn.dataset.id, 'active');
+        });
+      });
+    }
+
+    async function updateBatchStatus(batchId, newStatus) {
+      const { error } = await sb.from('batches').update({
+        status: newStatus,
+        updated_at: new Date().toISOString()
+      }).eq('id', batchId);
+
+      if (error) {
+        showToast('Failed to update batch', 'error');
+      } else {
+        showToast(`Batch ${newStatus === 'archived' ? 'archived' : 'activated'}!`);
+        await loadBatches();
+      }
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    /* ═══ BATCH MODAL ═══ */
+    const batchModal = document.getElementById('batchModal');
+    const batchForm = document.getElementById('batchForm');
+
+    function openBatchModal(batch = null) {
+      editingBatchId = batch?.batch_id || null;
+      document.getElementById('batchModalTitle').textContent = batch ? 'Edit Batch' : 'Create New Batch';
+      document.getElementById('btnSubmitBatch').textContent = batch ? '💾 Save Changes' : '🚀 Create Batch';
+      document.getElementById('editBatchId').value = editingBatchId || '';
+
+      // Reset form
+      if (batch) {
+        document.getElementById('batchName').value = batch.batch_name;
+        document.getElementById('batchDescription').value = batch.description || '';
+        document.getElementById('startTime').value = batch.start_time?.substring(0, 5) || '19:30';
+        document.getElementById('endTime').value = batch.end_time?.substring(0, 5) || '20:30';
+        document.getElementById('meetLink').value = batch.meet_link || '';
+        document.getElementById('maxStudents').value = batch.max_students || '';
+        document.getElementById('startDate').value = batch.start_date || '';
+
+        // Set batch type
+        document.querySelectorAll('[data-batch-type]').forEach(opt => {
+          opt.classList.toggle('active', opt.dataset.batchType === batch.batch_type);
+        });
+
+        // Set schedule type
+        document.querySelectorAll('#scheduleTypeSelector .schedule-option').forEach(opt => {
+          opt.classList.toggle('active', opt.dataset.schedule === batch.schedule_type);
+        });
+
+        // Set status
+        document.querySelectorAll('[data-status]').forEach(opt => {
+          opt.classList.toggle('active', opt.dataset.status === batch.status);
+        });
+
+        // Set custom days
+        if (batch.schedule_type === 'custom') {
+          document.getElementById('customDaysGroup').classList.remove('hidden');
+          document.querySelectorAll('#customDays .custom-day-btn').forEach(btn => {
+            btn.classList.toggle('active', (batch.schedule_days || []).includes(parseInt(btn.dataset.day)));
+          });
+        } else {
+          document.getElementById('customDaysGroup').classList.add('hidden');
+        }
+      } else {
+        batchForm.reset();
+        document.getElementById('startTime').value = '19:30';
+        document.getElementById('endTime').value = '20:30';
+        // Reset selector states
+        document.querySelectorAll('[data-batch-type]').forEach((opt, i) => opt.classList.toggle('active', i === 0));
+        document.querySelectorAll('#scheduleTypeSelector .schedule-option').forEach((opt, i) => opt.classList.toggle('active', i === 0));
+        document.querySelectorAll('[data-status]').forEach((opt, i) => opt.classList.toggle('active', i === 0));
+        document.getElementById('customDaysGroup').classList.add('hidden');
+        document.querySelectorAll('#customDays .custom-day-btn').forEach(btn => btn.classList.remove('active'));
+      }
+
+      batchModal.classList.add('active');
+    }
+
+    function closeBatchModal() {
+      batchModal.classList.remove('active');
+      editingBatchId = null;
+    }
+
+    document.getElementById('btnCreateBatch').addEventListener('click', () => openBatchModal());
+    document.getElementById('batchModalClose').addEventListener('click', closeBatchModal);
+    document.getElementById('batchModalCancel').addEventListener('click', closeBatchModal);
+    batchModal.addEventListener('click', (e) => { if (e.target === batchModal) closeBatchModal(); });
+
+    // Schedule type switching
+    document.querySelectorAll('#scheduleTypeSelector .schedule-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('#scheduleTypeSelector .schedule-option').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        document.getElementById('customDaysGroup').classList.toggle('hidden', opt.dataset.schedule !== 'custom');
+      });
+    });
+
+    // Batch type switching
+    document.querySelectorAll('[data-batch-type]').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('[data-batch-type]').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+      });
+    });
+
+    // Status switching
+    document.querySelectorAll('[data-status]').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('[data-status]').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+      });
+    });
+
+    // Custom day buttons
+    document.querySelectorAll('#customDays .custom-day-btn').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('active'));
+    });
+
+    // Submit batch
+    batchForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const batchName = document.getElementById('batchName').value.trim();
+      if (!batchName) {
+        showToast('Batch name is required', 'error');
+        return;
+      }
+
+      const scheduleType = document.querySelector('#scheduleTypeSelector .schedule-option.active')?.dataset.schedule || 'daily';
+      const batchType = document.querySelector('[data-batch-type].active')?.dataset.batchType || 'paid';
+      const status = document.querySelector('[data-status].active')?.dataset.status || 'active';
+      const scheduleDays = getScheduleDays(scheduleType);
+
+      if (scheduleType === 'custom' && scheduleDays.length === 0) {
+        showToast('Please select at least one day', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btnSubmitBatch');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      const batchData = {
+        instructor_id: user.id,
+        batch_name: batchName,
+        batch_slug: editingBatchId ? undefined : slugify(batchName) + '-' + Date.now().toString(36),
+        description: document.getElementById('batchDescription').value.trim() || null,
+        schedule_type: scheduleType,
+        schedule_days: scheduleDays,
+        start_time: document.getElementById('startTime').value + ':00',
+        end_time: document.getElementById('endTime').value + ':00',
+        timezone: 'Asia/Kolkata',
+        meet_link: document.getElementById('meetLink').value.trim() || null,
+        max_students: document.getElementById('maxStudents').value ? parseInt(document.getElementById('maxStudents').value) : null,
+        batch_type: batchType,
+        status: status,
+        start_date: document.getElementById('startDate').value || null,
+        updated_at: new Date().toISOString()
+      };
+
+      // Remove undefined keys
+      Object.keys(batchData).forEach(k => batchData[k] === undefined && delete batchData[k]);
+
+      let error;
+      if (editingBatchId) {
+        ({ error } = await sb.from('batches').update(batchData).eq('id', editingBatchId));
+      } else {
+        ({ error } = await sb.from('batches').insert(batchData));
+      }
+
+      btn.disabled = false;
+      btn.textContent = editingBatchId ? '💾 Save Changes' : '🚀 Create Batch';
+
+      if (error) {
+        console.error('Batch save error:', error);
+        showToast('Failed to save batch: ' + error.message, 'error');
+      } else {
+        showToast(editingBatchId ? 'Batch updated!' : 'Batch created!');
+        closeBatchModal();
+        await loadBatches();
+      }
+    });
+
+    /* ═══ INIT ═══ */
+    await loadProfile();
+    await loadBatches();
+  });
+  </script>
+</body>
+</html>

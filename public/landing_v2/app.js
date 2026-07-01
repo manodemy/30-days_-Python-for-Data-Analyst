@@ -723,29 +723,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Set active batch if live class plan selected
     if (tier === 'live') {
-      const selectedBatch = preferredBatchId || window.selectedBatchId || 'batch-1';
-      window.selectedBatchId = selectedBatch;
-      
-      const cards = document.querySelectorAll('.checkout-batch-card');
-      cards.forEach(card => {
-        const isCurrent = card.dataset.batchId === selectedBatch;
-        card.classList.toggle('active', isCurrent);
-        card.style.borderColor = isCurrent ? 'var(--cyan)' : 'var(--border)';
-        card.style.background = isCurrent ? 'rgba(0, 180, 216, 0.04)' : 'var(--base)';
-        
-        const radio = card.querySelector('.checkout-batch-radio');
-        if (radio) {
-          if (isCurrent) {
-            radio.style.borderColor = 'var(--cyan)';
-            radio.style.backgroundColor = 'var(--cyan)';
-            radio.style.boxShadow = 'inset 0 0 0 3px var(--base)';
-          } else {
-            radio.style.borderColor = 'var(--text-muted)';
-            radio.style.backgroundColor = 'transparent';
-            radio.style.boxShadow = 'none';
-          }
-        }
-      });
+      // Populate checkout batch options from loaded batches
+      populateCheckoutBatches(preferredBatchId);
     } else {
       window.selectedBatchId = null;
     }
@@ -817,35 +796,63 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Bind batch selection events in checkout modal
-  const batchCards = document.querySelectorAll('.checkout-batch-card');
-  batchCards.forEach(card => {
-    card.addEventListener('click', () => {
-      const batchId = card.dataset.batchId;
-      window.selectedBatchId = batchId;
-      
-      // Update active states
-      batchCards.forEach(c => {
-        const isCurrent = c.dataset.batchId === batchId;
-        c.classList.toggle('active', isCurrent);
-        c.style.borderColor = isCurrent ? 'var(--cyan)' : 'var(--border)';
-        c.style.background = isCurrent ? 'rgba(0, 180, 216, 0.04)' : 'var(--base)';
-        
-        const radio = c.querySelector('.checkout-batch-radio');
-        if (radio) {
-          if (isCurrent) {
-            radio.style.borderColor = 'var(--cyan)';
-            radio.style.backgroundColor = 'var(--cyan)';
-            radio.style.boxShadow = 'inset 0 0 0 3px var(--base)';
-          } else {
-            radio.style.borderColor = 'var(--text-muted)';
-            radio.style.backgroundColor = 'transparent';
-            radio.style.boxShadow = 'none';
+  // Dynamic checkout batch selection — bound after batches are loaded
+  function populateCheckoutBatches(preferredBatchId = null) {
+    const container = document.getElementById('checkoutBatchOptions');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const paidBatches = (window._liveBatches || []).filter(b => b.batch_type === 'paid');
+    if (paidBatches.length === 0) return;
+
+    const selectedBatch = preferredBatchId || window.selectedBatchId || paidBatches[0]?.batch_id;
+    window.selectedBatchId = selectedBatch;
+
+    paidBatches.forEach((batch, idx) => {
+      const isCurrent = batch.batch_id === selectedBatch;
+      const card = document.createElement('div');
+      card.className = 'checkout-batch-card' + (isCurrent ? ' active' : '');
+      card.dataset.batchId = batch.batch_id;
+      card.style.cssText = `border: ${isCurrent ? '2px solid var(--cyan)' : '1px solid var(--border)'}; border-radius: 8px; padding: 10px 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: ${isCurrent ? 'rgba(0, 180, 216, 0.04)' : 'var(--base)'}; transition: var(--transition);`;
+
+      const startH = parseInt(batch.start_time?.split(':')[0] || '19');
+      const startM = parseInt(batch.start_time?.split(':')[1] || '30');
+      const endH = parseInt(batch.end_time?.split(':')[0] || '20');
+      const endM = parseInt(batch.end_time?.split(':')[1] || '30');
+      const fmtTime = (h, m) => { const p = h >= 12 ? 'PM' : 'AM'; return `${h > 12 ? h-12 : h||12}:${String(m).padStart(2,'0')} ${p}`; };
+      const days = !batch.schedule_days || batch.schedule_days.length === 7 ? 'Daily' : batch.schedule_days.length === 5 ? 'Weekdays' : batch.schedule_days.length === 2 ? 'Weekends' : 'Custom';
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+          ${batch.instructor_avatar ? `<img src="${batch.instructor_avatar}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;" alt="">` : ''}
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">${batch.batch_name}</span>
+            <span style="font-size: 11px; color: var(--text-secondary);">🕒 ${fmtTime(startH, startM)} – ${fmtTime(endH, endM)} IST (${days})</span>
+          </div>
+        </div>
+        <span class="checkout-batch-radio" style="width: 16px; height: 16px; border-radius: 50%; border: ${isCurrent ? '2px solid var(--cyan)' : '1.5px solid var(--text-muted)'}; display: flex; align-items: center; justify-content: center; background: ${isCurrent ? 'var(--cyan)' : 'transparent'}; box-shadow: ${isCurrent ? 'inset 0 0 0 3px var(--base)' : 'none'}; transition: all 0.2s ease;"></span>
+      `;
+
+      card.addEventListener('click', () => {
+        window.selectedBatchId = batch.batch_id;
+        container.querySelectorAll('.checkout-batch-card').forEach(c => {
+          const isC = c.dataset.batchId === batch.batch_id;
+          c.classList.toggle('active', isC);
+          c.style.borderColor = isC ? 'var(--cyan)' : 'var(--border)';
+          c.style.border = isC ? '2px solid var(--cyan)' : '1px solid var(--border)';
+          c.style.background = isC ? 'rgba(0, 180, 216, 0.04)' : 'var(--base)';
+          const radio = c.querySelector('.checkout-batch-radio');
+          if (radio) {
+            radio.style.borderColor = isC ? 'var(--cyan)' : 'var(--text-muted)';
+            radio.style.backgroundColor = isC ? 'var(--cyan)' : 'transparent';
+            radio.style.boxShadow = isC ? 'inset 0 0 0 3px var(--base)' : 'none';
           }
-        }
+        });
       });
+
+      container.appendChild(card);
     });
-  });
+  }
 
   // Render gate selection: Razorpay for INR, PayPal for USD
   function renderPaymentGateways() {
@@ -1117,121 +1124,189 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ═══ LIVE CLASS SCHEDULER & COUNTDOWNS (IST) ═══ */
+  /* ═══ DYNAMIC LIVE CLASS SCHEDULER & COUNTDOWNS (IST) ═══ */
+  /* Fetches batch data from Supabase and renders cards dynamically */
+
+  window._liveBatches = []; // Global store for batch data
+
   function getISTDate() {
     const now = new Date();
     const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
     return new Date(utc + (3600000 * 5.5)); // IST is UTC + 5:30
   }
 
-  function getSessionStatus(type) {
+  function getBatchSessionStatus(batch) {
     const istNow = getISTDate();
-    const currentDay = istNow.getDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
+    const currentDay = istNow.getDay();
     const currentHours = istNow.getHours();
     const currentMinutes = istNow.getMinutes();
     const currentSeconds = istNow.getSeconds();
-
     const currentWeekMinutes = (currentDay * 24 * 60) + (currentHours * 60) + currentMinutes;
 
-    let sessions = [];
-    if (type === 'demo') {
-      // Saturday & Sunday, 6:00 PM – 7:00 PM IST (Day 6 and 0)
-      sessions = [
-        { day: 6, startH: 18, startM: 0, endH: 19, endM: 0 },
-        { day: 0, startH: 18, startM: 0, endH: 19, endM: 0 }
-      ];
-    } else if (type === 'batch1') {
-      // Daily, 7:30 PM – 8:30 PM IST (Days 0 to 6)
-      for (let d = 0; d < 7; d++) {
-        sessions.push({ day: d, startH: 19, startM: 30, endH: 20, endM: 30 });
-      }
-    } else if (type === 'batch2') {
-      // Daily, 8:30 PM – 9:30 PM IST (Days 0 to 6)
-      for (let d = 0; d < 7; d++) {
-        sessions.push({ day: d, startH: 20, startM: 30, endH: 21, endM: 30 });
-      }
-    }
+    const startH = parseInt(batch.start_time?.split(':')[0] || '19');
+    const startM = parseInt(batch.start_time?.split(':')[1] || '30');
+    const endH = parseInt(batch.end_time?.split(':')[0] || '20');
+    const endM = parseInt(batch.end_time?.split(':')[1] || '30');
+    const days = batch.schedule_days || [0,1,2,3,4,5,6];
+
+    // Build sessions from DB data
+    const sessions = days.map(d => ({ day: d, startH, startM, endH, endM }));
 
     // 1. Check if active right now
     for (let s of sessions) {
       if (currentDay === s.day) {
         const nowMin = (currentHours * 60) + currentMinutes;
-        const startMin = (s.startH * 60) + s.startM;
-        const endMin = (s.endH * 60) + s.endM;
-        if (nowMin >= startMin && nowMin < endMin) {
-          const minRemaining = endMin - nowMin - 1;
+        const sMin = (s.startH * 60) + s.startM;
+        const eMin = (s.endH * 60) + s.endM;
+        if (nowMin >= sMin && nowMin < eMin) {
+          const minRemaining = eMin - nowMin - 1;
           const secRemaining = 60 - currentSeconds;
-          return {
-            isActive: true,
-            statusText: '🟢 LIVE NOW',
-            countdownText: `Ends in ${minRemaining}m ${secRemaining}s`
-          };
+          return { isActive: true, statusText: '🟢 LIVE NOW', countdownText: `Ends in ${minRemaining}m ${secRemaining}s` };
         }
       }
     }
 
-    // 2. Calculate time to next session start
+    // 2. Calculate time to next session
     let minDiff = Infinity;
     for (let s of sessions) {
       const sessionWeekMinutes = (s.day * 24 * 60) + (s.startH * 60) + s.startM;
       let diff = sessionWeekMinutes - currentWeekMinutes;
-      if (diff <= 0) {
-        diff += 7 * 24 * 60; // Next week's slot
-      }
-      if (diff < minDiff) {
-        minDiff = diff;
-      }
+      if (diff <= 0) diff += 7 * 24 * 60;
+      if (diff < minDiff) minDiff = diff;
     }
 
-    minDiff = minDiff - 1; // Adjust for second boundary
-    const days = Math.floor(minDiff / (24 * 60));
-    const hours = Math.floor((minDiff % (24 * 60)) / 60);
-    const minutes = minDiff % 60;
-    const seconds = 60 - currentSeconds;
+    minDiff = Math.max(0, minDiff - 1);
+    const d = Math.floor(minDiff / (24 * 60));
+    const h = Math.floor((minDiff % (24 * 60)) / 60);
+    const m = minDiff % 60;
+    const sec = 60 - currentSeconds;
 
     let countdownText = 'Starts in ';
-    if (days > 0) {
-      countdownText += `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    } else if (hours > 0) {
-      countdownText += `${hours}h ${minutes}m ${seconds}s`;
-    } else {
-      countdownText += `${minutes}m ${seconds}s`;
-    }
+    if (d > 0) countdownText += `${d}d ${h}h ${m}m ${sec}s`;
+    else if (h > 0) countdownText += `${h}h ${m}m ${sec}s`;
+    else countdownText += `${m}m ${sec}s`;
 
-    return {
-      isActive: false,
-      statusText: '🔴 Scheduled',
-      countdownText: countdownText
-    };
+    return { isActive: false, statusText: '🔴 Scheduled', countdownText };
   }
 
-  function updateLiveScheduler() {
-    const types = ['demo', 'batch1', 'batch2'];
-    
-    types.forEach(type => {
-      const status = getSessionStatus(type);
-      const statusPill = document.getElementById(`status-${type}`);
-      const countdownBox = document.getElementById(`countdown-${type}`);
-      const joinBtn = document.getElementById(`btn-${type}`);
-      
+  function formatTimeDisplay(timeStr) {
+    if (!timeStr) return '';
+    const [h, m] = timeStr.split(':').map(Number);
+    const period = h >= 12 ? 'PM' : 'AM';
+    const displayH = h > 12 ? h - 12 : h === 0 ? 12 : h;
+    return `${displayH}:${String(m).padStart(2, '0')} ${period}`;
+  }
+
+  function formatScheduleDaysLanding(days) {
+    if (!days || days.length === 7) return 'Daily (Mon – Sun)';
+    if (JSON.stringify(days.sort()) === JSON.stringify([1,2,3,4,5])) return 'Weekdays (Mon – Fri)';
+    if (JSON.stringify(days.sort()) === JSON.stringify([0,6])) return 'Saturday & Sunday';
+    const names = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    return days.map(d => names[d]).join(', ');
+  }
+
+  function renderLiveHubCards(batches) {
+    const skeleton = document.getElementById('liveHubSkeleton');
+    const grid = document.getElementById('liveHubGrid');
+    const empty = document.getElementById('liveHubEmpty');
+
+    if (skeleton) skeleton.style.display = 'none';
+
+    if (!batches || batches.length === 0) {
+      if (grid) grid.style.display = 'none';
+      if (empty) empty.style.display = 'block';
+      return;
+    }
+
+    if (empty) empty.style.display = 'none';
+    if (grid) {
+      grid.style.display = '';
+      grid.innerHTML = '';
+
+      // Adjust grid columns based on batch count
+      if (batches.length <= 2) {
+        grid.style.gridTemplateColumns = `repeat(${batches.length}, 1fr)`;
+      } else {
+        grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+      }
+
+      batches.forEach(batch => {
+        const isDemo = batch.batch_type === 'free_demo';
+        const card = document.createElement('div');
+        card.className = 'live-hub-card';
+        card.id = `card-${batch.batch_slug}`;
+        card.dataset.batchId = batch.batch_id;
+
+        const avatarHtml = batch.instructor_avatar
+          ? `<img src="${batch.instructor_avatar}" alt="${batch.instructor_name || 'Instructor'}" class="live-hub-instructor-avatar">`
+          : `<div class="live-hub-instructor-avatar live-hub-instructor-avatar--placeholder">${(batch.instructor_name || '?')[0].toUpperCase()}</div>`;
+
+        card.innerHTML = `
+          <div class="live-hub-badge-row">
+            <span class="live-type-badge live-type-badge--${isDemo ? 'demo' : 'live'}">${isDemo ? '✨ Free Demo' : '🎥 Live Class'}</span>
+            <span class="live-status-pill" id="status-${batch.batch_slug}">🔴 Scheduled</span>
+          </div>
+          <h3>${batch.batch_name}</h3>
+          <div class="live-hub-instructor-row">
+            ${avatarHtml}
+            <div class="live-hub-instructor-info">
+              <span class="live-hub-instructor-name">${batch.instructor_name || 'Instructor'}</span>
+              <span class="live-hub-instructor-spec">${batch.instructor_specialization || ''}</span>
+            </div>
+          </div>
+          <p class="live-hub-time">🗓️ ${formatScheduleDaysLanding(batch.schedule_days)}<br>🕒 ${formatTimeDisplay(batch.start_time)} – ${formatTimeDisplay(batch.end_time)} IST</p>
+          ${batch.max_students ? `<div class="live-hub-seats">👥 ${batch.current_students || 0} / ${batch.max_students} seats filled</div>` : ''}
+          <div class="live-hub-countdown" id="countdown-${batch.batch_slug}">Starts in --h --m --s</div>
+          <button class="live-join-btn" id="btn-${batch.batch_slug}" data-batch-id="${batch.batch_id}" data-batch-type="${batch.batch_type}" data-meet-link="${batch.meet_link || ''}">
+            ${isDemo ? '🎥 Join Free Demo Class' : '🔑 Join Class'}
+          </button>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      // Bind join button handlers
+      grid.querySelectorAll('.live-join-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (!btn.classList.contains('active')) return;
+
+          const batchType = btn.dataset.batchType;
+          const meetLink = btn.dataset.meetLink;
+          const batchId = btn.dataset.batchId;
+
+          if (batchType === 'free_demo' && meetLink) {
+            window.open(meetLink, '_blank', 'noopener,noreferrer');
+          } else {
+            const enrolled = localStorage.getItem('manodemy_enrolled') === 'true';
+            if (enrolled && meetLink) {
+              window.open(meetLink, '_blank', 'noopener,noreferrer');
+            } else {
+              alert('🔒 This batch is for enrolled students only. Please enroll in the Live Class Plan to access cohort links!');
+              openCheckout('live', batchId);
+            }
+          }
+        });
+      });
+    }
+  }
+
+  function updateDynamicLiveScheduler() {
+    const batches = window._liveBatches || [];
+    batches.forEach(batch => {
+      const status = getBatchSessionStatus(batch);
+      const statusPill = document.getElementById(`status-${batch.batch_slug}`);
+      const countdownBox = document.getElementById(`countdown-${batch.batch_slug}`);
+      const joinBtn = document.getElementById(`btn-${batch.batch_slug}`);
+
       if (statusPill) {
         statusPill.textContent = status.statusText;
-        if (status.isActive) {
-          statusPill.classList.add('live-now');
-        } else {
-          statusPill.classList.remove('live-now');
-        }
+        statusPill.classList.toggle('live-now', status.isActive);
       }
-      
       if (countdownBox) {
         countdownBox.textContent = status.countdownText;
-        if (status.isActive) {
-          countdownBox.classList.add('active');
-        } else {
-          countdownBox.classList.remove('active');
-        }
+        countdownBox.classList.toggle('active', status.isActive);
       }
-      
       if (joinBtn) {
         if (status.isActive) {
           joinBtn.removeAttribute('disabled');
@@ -1246,47 +1321,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Bind batch join event handlers
-  const btnBatch1 = document.getElementById('btn-batch1');
-  const btnBatch2 = document.getElementById('btn-batch2');
-  const btnDemo = document.getElementById('btn-demo');
+  // Fetch batches from Supabase and render
+  async function initLiveHub() {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_public_batches`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        },
+        body: '{}'
+      });
 
-  const checkAndJoinBatch = (meetUrl, preferredBatchId = null) => {
-    const enrolled = localStorage.getItem('manodemy_enrolled') === 'true';
-    if (enrolled) {
-      window.open(meetUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      alert("🔒 This batch is for enrolled students only. Please enroll in the Live Class Plan to access cohort links!");
-      openCheckout('live', preferredBatchId);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const batches = await res.json();
+      window._liveBatches = batches || [];
+      renderLiveHubCards(batches);
+      updateDynamicLiveScheduler();
+      setInterval(updateDynamicLiveScheduler, 1000);
+    } catch (err) {
+      console.warn('[LiveHub] Failed to fetch batches from DB, hiding section:', err.message);
+      const skeleton = document.getElementById('liveHubSkeleton');
+      const empty = document.getElementById('liveHubEmpty');
+      if (skeleton) skeleton.style.display = 'none';
+      if (empty) empty.style.display = 'block';
     }
-  };
-
-  if (btnBatch1) {
-    btnBatch1.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (!btnBatch1.classList.contains('active')) return;
-      checkAndJoinBatch('https://meet.google.com/ndy-jymp-azz', 'batch-1');
-    });
   }
 
-  if (btnBatch2) {
-    btnBatch2.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (!btnBatch2.classList.contains('active')) return;
-      checkAndJoinBatch('https://meet.google.com/gjy-jsxd-txa', 'batch-2');
-    });
-  }
-
-  if (btnDemo) {
-    btnDemo.addEventListener('click', (e) => {
-      if (!btnDemo.classList.contains('active')) {
-        e.preventDefault();
-      }
-    });
-  }
-
-  updateLiveScheduler();
-  setInterval(updateLiveScheduler, 1000);
+  initLiveHub();
 
   /* ═══ NAVBAR ENROLL DROPDOWNS ═══ */
   const navEnrollBtn = document.getElementById('navEnrollBtn');

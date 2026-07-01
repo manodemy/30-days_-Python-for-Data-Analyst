@@ -35,6 +35,42 @@ serve(async (req) => {
 
     const { gateway, currency, coupon_code, final_amount, referral_code, batch_id } = await req.json()
 
+    // ── Batch Validation ──
+    if (batch_id) {
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(batch_id)
+      if (isUuid) {
+        const { data: batch, error: batchError } = await supabase
+          .from('batches')
+          .select('id, max_students, current_students, status')
+          .eq('id', batch_id)
+          .single()
+
+        if (batchError || !batch) {
+          return new Response(
+            JSON.stringify({ error: 'Invalid batch selected' }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+          )
+        }
+        if (batch.status === 'archived') {
+          return new Response(
+            JSON.stringify({ error: 'Selected batch is archived' }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+          )
+        }
+        if (batch.max_students && (batch.current_students || 0) >= batch.max_students) {
+          return new Response(
+            JSON.stringify({ error: 'Selected batch is already full' }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+          )
+        }
+      } else if (batch_id !== 'batch-1' && batch_id !== 'batch-2') {
+        return new Response(
+          JSON.stringify({ error: 'Invalid batch format' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+        )
+      }
+    }
+
     // ── Dynamic Pricing from settings table ──
     const { data: pricingSetting } = await supabase.from('settings').select('value').eq('key', 'pricing').single()
     const prices = pricingSetting?.value || { inr: 149900, usd: 1900 }

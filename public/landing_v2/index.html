@@ -1333,56 +1333,47 @@
     </div>
 
 
-    <!-- Live Hub Section -->
+    <!-- Live Hub Section (Dynamically populated from database) -->
     <section class="live-hub-section" id="live-hub">
       <div class="container reveal">
         <div class="section-head">
           <h2>Manodemy <span>Live Session Hub</span></h2>
-          <p>Attend daily live sessions or the weekend free demo. Class rooms unlock in real-time according to the schedules below (IST).</p>
+          <p>Attend daily live sessions with expert instructors. Class rooms unlock in real-time according to the schedules below (IST).</p>
         </div>
 
-        <div class="live-hub-grid">
-          <!-- Card 1: Free Demo -->
-          <div class="live-hub-card" id="card-demo">
-            <div class="live-hub-badge-row">
-              <span class="live-type-badge live-type-badge--demo">✨ Free Demo</span>
-              <span class="live-status-pill" id="status-demo">🔴 Scheduled</span>
-            </div>
-            <h3>Weekend Free Demo</h3>
-            <p class="live-hub-time">🗓️ Saturday &amp; Sunday<br>🕒 6:00 PM – 7:00 PM IST</p>
-            <div class="live-hub-countdown" id="countdown-demo">Starts in --h --m --s</div>
-            <a href="https://meet.google.com/qwd-ybjg-dge" target="_blank" rel="noopener noreferrer" class="live-join-btn" id="btn-demo">
-              🎥 Join Free Demo Class
-            </a>
+        <!-- Skeleton loader (shown while fetching) -->
+        <div class="live-hub-grid" id="liveHubSkeleton">
+          <div class="live-hub-card live-hub-skeleton">
+            <div class="skeleton-line skeleton-badge"></div>
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-text"></div>
+            <div class="skeleton-line skeleton-countdown"></div>
+            <div class="skeleton-line skeleton-btn"></div>
           </div>
+          <div class="live-hub-card live-hub-skeleton">
+            <div class="skeleton-line skeleton-badge"></div>
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-text"></div>
+            <div class="skeleton-line skeleton-countdown"></div>
+            <div class="skeleton-line skeleton-btn"></div>
+          </div>
+          <div class="live-hub-card live-hub-skeleton">
+            <div class="skeleton-line skeleton-badge"></div>
+            <div class="skeleton-line skeleton-title"></div>
+            <div class="skeleton-line skeleton-text"></div>
+            <div class="skeleton-line skeleton-countdown"></div>
+            <div class="skeleton-line skeleton-btn"></div>
+          </div>
+        </div>
 
-          <!-- Card 2: Batch 1 -->
-          <div class="live-hub-card" id="card-batch1">
-            <div class="live-hub-badge-row">
-              <span class="live-type-badge live-type-badge--live">🎥 Live Class</span>
-              <span class="live-status-pill" id="status-batch1">🔴 Scheduled</span>
-            </div>
-            <h3>Daily Cohort — Batch 1</h3>
-            <p class="live-hub-time">🗓️ Daily (Mon – Sun)<br>🕒 7:30 PM – 8:30 PM IST</p>
-            <div class="live-hub-countdown" id="countdown-batch1">Starts in --h --m --s</div>
-            <button class="live-join-btn" id="btn-batch1">
-              🔑 Join Batch 1 Class
-            </button>
-          </div>
+        <!-- Dynamic cards rendered here by app.js -->
+        <div class="live-hub-grid" id="liveHubGrid" style="display:none;"></div>
 
-          <!-- Card 3: Batch 2 -->
-          <div class="live-hub-card" id="card-batch2">
-            <div class="live-hub-badge-row">
-              <span class="live-type-badge live-type-badge--live">🎥 Live Class</span>
-              <span class="live-status-pill" id="status-batch2">🔴 Scheduled</span>
-            </div>
-            <h3>Daily Cohort — Batch 2</h3>
-            <p class="live-hub-time">🗓️ Daily (Mon – Sun)<br>🕒 8:30 PM – 9:30 PM IST</p>
-            <div class="live-hub-countdown" id="countdown-batch2">Starts in --h --m --s</div>
-            <button class="live-join-btn" id="btn-batch2">
-              🔑 Join Batch 2 Class
-            </button>
-          </div>
+        <!-- Empty state if no batches -->
+        <div class="live-hub-empty" id="liveHubEmpty" style="display:none;">
+          <div class="live-hub-empty-icon">📭</div>
+          <h3>No Live Classes Scheduled</h3>
+          <p>Check back soon — our instructors are setting up new live class cohorts!</p>
         </div>
       </div>
     </section>
@@ -1549,26 +1540,13 @@
           <button class="coupon-apply" id="couponApply">Apply</button>
         </div>
 
-        <!-- Batch Selection Section (Only displayed for Live Class tier) -->
+        <!-- Batch Selection Section (Dynamically populated for Live Class tier) -->
         <div class="checkout-batch-section" id="checkoutBatchSection" style="display: none; margin: 15px 0; text-align: left;">
           <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">
             🗓️ Select Your Daily Cohort Batch:
           </label>
-          <div class="checkout-batch-options" style="display: flex; flex-direction: column; gap: 8px;">
-            <div class="checkout-batch-card active" data-batch-id="batch-1" style="border: 2px solid var(--cyan); border-radius: 8px; padding: 10px 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: rgba(0, 180, 216, 0.04); transition: var(--transition);">
-              <div style="display: flex; flex-direction: column; gap: 2px;">
-                <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">🌅 Batch 1: Daily Cohort</span>
-                <span style="font-size: 11px; color: var(--text-secondary);">🕒 7:30 PM – 8:30 PM IST (Mon - Sun)</span>
-              </div>
-              <span class="checkout-batch-radio" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--cyan); display: flex; align-items: center; justify-content: center; background: var(--cyan); box-shadow: inset 0 0 0 3px var(--base); transition: all 0.2s ease;"></span>
-            </div>
-            <div class="checkout-batch-card" data-batch-id="batch-2" style="border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: var(--base); transition: var(--transition);">
-              <div style="display: flex; flex-direction: column; gap: 2px;">
-                <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">🌃 Batch 2: Daily Cohort</span>
-                <span style="font-size: 11px; color: var(--text-secondary);">🕒 8:30 PM – 9:30 PM IST (Mon - Sun)</span>
-              </div>
-              <span class="checkout-batch-radio" style="width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--text-muted); display: flex; align-items: center; justify-content: center; background: transparent; transition: all 0.2s ease;"></span>
-            </div>
+          <div class="checkout-batch-options" id="checkoutBatchOptions" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Dynamically populated by app.js from database batches -->
           </div>
         </div>
 

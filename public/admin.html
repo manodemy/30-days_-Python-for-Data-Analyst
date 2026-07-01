@@ -2359,6 +2359,9 @@
         <div class="nav-item" data-tab="tab-reviews">
           <span class="nav-icon">★</span> Reviews Moderation
         </div>
+        <div class="nav-item" data-tab="tab-batches">
+          <span class="nav-icon" style="color:var(--amber);">⚡</span> Cohorts &amp; Batches
+        </div>
         <div class="nav-item" data-tab="tab-settings">
           <span class="nav-icon">◎</span> Settings
         </div>
@@ -3744,6 +3747,58 @@
             </div>
           </div>
         </div>
+        <!-- ══ TAB 9: COHORTS & BATCHES ══ -->
+        <div class="tab-pane" id="tab-batches">
+          <div class="table-panel mb-3">
+            <div class="table-panel-header">
+              <div class="table-panel-title">👥 Instructor Promotion</div>
+            </div>
+            <div style="padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-end;">
+              <div class="field" style="flex: 1; max-width: 400px; margin-bottom: 0;">
+                <label>User Email Address</label>
+                <input id="promoteEmailInput" type="email" placeholder="e.g. instructor@manodemy.com" style="margin-bottom:0;" />
+              </div>
+              <div class="field" style="width: 200px; margin-bottom: 0;">
+                <label>Assign Role</label>
+                <select id="promoteRoleSelect" style="background:var(--elevated);color:var(--ink);border:1px solid var(--rim);padding:10px;border-radius:6px;width:100%;">
+                  <option value="instructor">Instructor</option>
+                  <option value="admin">Admin</option>
+                  <option value="student">Student</option>
+                </select>
+              </div>
+              <button class="btn-gold" id="btnPromoteUser" style="padding: 11px 24px; border-radius: 6px;">Update Role</button>
+            </div>
+          </div>
+
+          <div class="table-panel">
+            <div class="table-panel-header">
+              <div class="table-panel-title">⚡ Live Cohorts &amp; Batches Overview</div>
+            </div>
+            <div class="table-wrap">
+              <table style="width:100%; border-collapse:collapse;">
+                <thead>
+                  <tr>
+                    <th style="width:200px;">Batch Name</th>
+                    <th style="width:150px;">Instructor</th>
+                    <th style="width:100px; text-align:center;">Type</th>
+                    <th style="width:120px;">Schedule</th>
+                    <th style="width:120px;">Timing</th>
+                    <th style="width:100px; text-align:center;">Students</th>
+                    <th style="width:100px; text-align:center;">Status</th>
+                    <th style="width:120px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="batchesAdminBody">
+                  <tr>
+                    <td colspan="8" style="text-align:center; padding:3rem; color:var(--ink-muted); font-family:var(--font-mono); font-size:0.8rem;">
+                      Loading cohort batches...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div><!-- /page-content -->
     </main>
   </div>
@@ -5025,14 +5080,18 @@
         
         document.getElementById(tabId).classList.add('active');
         
-        // Hide global filter bar on Engagement and Reviews pages since they handle self-filtered / all-time data
+        // Hide global filter bar on Engagement, Reviews, and Batches pages since they handle self-filtered / all-time data
         const filterBar = document.querySelector('.top-filter-bar');
         if (filterBar) {
-          filterBar.style.display = (tabId === 'tab-engagement' || tabId === 'tab-reviews') ? 'none' : 'block';
+          filterBar.style.display = (tabId === 'tab-engagement' || tabId === 'tab-reviews' || tabId === 'tab-batches') ? 'none' : 'block';
         }
 
         if (tabId === 'tab-reviews') {
           fetchAdminReviews();
+        }
+
+        if (tabId === 'tab-batches') {
+          fetchAdminBatches();
         }
 
         if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
@@ -5913,6 +5972,168 @@
         if (!(await guardAdmin())) return;
         setPresetDates('all_time');
         applyFilters();
+        // ── COHORTS & BATCHES OPERATIONS ─────────────────
+        async function fetchAdminBatches() {
+          const tbody = document.getElementById('batchesAdminBody');
+          if (!tbody) return;
+
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:3rem; color:var(--ink-muted); font-family:var(--font-mono); font-size:0.8rem;">Loading cohorts and batches...</td></tr>`;
+
+          try {
+            const { data: batchesList, error } = await sb
+              .from('batches')
+              .select('*, instructor:instructor_profiles(display_name)')
+              .order('status', { ascending: true })
+              .order('start_time', { ascending: true });
+
+            if (error) {
+              tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:3rem; color:var(--rose); font-family:var(--font-mono); font-size:0.85rem;">Error loading batches: ${error.message}</td></tr>`;
+              return;
+            }
+
+            if (!batchesList || batchesList.length === 0) {
+              tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:3rem; color:var(--ink-muted); font-family:var(--font-mono); font-size:0.8rem;">No batches found.</td></tr>`;
+              return;
+            }
+
+            const formatScheduleDays = days => {
+              const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+              if (!days || days.length === 7) return 'Daily';
+              if (JSON.stringify(days.sort()) === JSON.stringify([1,2,3,4,5])) return 'Weekdays';
+              if (JSON.stringify(days.sort()) === JSON.stringify([0,6])) return 'Weekends';
+              return days.map(d => names[d]).join(', ');
+            };
+
+            const formatTime = timeStr => {
+              if (!timeStr) return '';
+              const [h, m] = timeStr.split(':').map(Number);
+              const period = h >= 12 ? 'PM' : 'AM';
+              return `${h > 12 ? h - 12 : h === 0 ? 12 : h}:${String(m).padStart(2, '0')} ${period}`;
+            };
+
+            tbody.innerHTML = batchesList.map(batch => {
+              const isDemo = batch.batch_type === 'free_demo';
+              const statusClass = batch.status === 'active' ? 'badge-ok' : batch.status === 'upcoming' ? 'badge-neutral' : 'badge-warn';
+              return `<tr>
+                <td style="color:var(--ink); font-weight:500;">${batch.batch_name}</td>
+                <td style="color:var(--ink-dim);">${batch.instructor?.display_name || 'Unknown'}</td>
+                <td style="text-align:center;"><span class="badge ${isDemo ? 'badge-neutral' : 'badge-ok'}">${isDemo ? 'Free Demo' : 'Paid'}</span></td>
+                <td style="color:var(--ink-muted);">${formatScheduleDays(batch.schedule_days)}</td>
+                <td style="color:var(--ink-muted); font-family:var(--font-mono);">${formatTime(batch.start_time)} - ${formatTime(batch.end_time)} IST</td>
+                <td style="text-align:center; font-family:var(--font-mono); color:var(--cyan);">${batch.current_students || 0}${batch.max_students ? '/' + batch.max_students : ''}</td>
+                <td style="text-align:center;"><span class="badge ${statusClass}">${batch.status}</span></td>
+                <td>
+                  ${batch.status !== 'archived' ? `
+                    <button class="btn-rev-admin reject" style="padding:0.25rem 0.5rem; font-size:0.68rem;" onclick="adminArchiveBatch('${batch.id}')">
+                      📦 Archive
+                    </button>
+                  ` : `
+                    <button class="btn-rev-admin approve" style="padding:0.25rem 0.5rem; font-size:0.68rem;" onclick="adminActivateBatch('${batch.id}')">
+                      🟢 Activate
+                    </button>
+                  `}
+                </td>
+              </tr>`;
+            }).join('');
+
+          } catch (err) {
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:3rem; color:var(--rose); font-family:var(--font-mono); font-size:0.85rem;">Error loading batches: ${err.message}</td></tr>`;
+          }
+        }
+
+        window.adminArchiveBatch = async function(batchId) {
+          if (!confirm('Archive this batch? Instructors will still see it but it will not appear on the landing page.')) return;
+          const { error } = await sb.from('batches').update({ status: 'archived', updated_at: new Date().toISOString() }).eq('id', batchId);
+          if (error) {
+            showToast('Failed to archive batch: ' + error.message, 'error');
+          } else {
+            showToast('Batch archived successfully!', 'success');
+            fetchAdminBatches();
+          }
+        };
+
+        window.adminActivateBatch = async function(batchId) {
+          const { error } = await sb.from('batches').update({ status: 'active', updated_at: new Date().toISOString() }).eq('id', batchId);
+          if (error) {
+            showToast('Failed to activate batch: ' + error.message, 'error');
+          } else {
+            showToast('Batch activated successfully!', 'success');
+            fetchAdminBatches();
+          }
+        };
+
+        async function updateRoleForUser() {
+          const email = document.getElementById('promoteEmailInput').value.trim();
+          const role = document.getElementById('promoteRoleSelect').value;
+
+          if (!email) {
+            showToast('Please enter a user email address', 'error');
+            return;
+          }
+
+          const btn = document.getElementById('btnPromoteUser');
+          btn.disabled = true;
+          btn.textContent = 'Updating...';
+
+          try {
+            // Find user profile by email
+            const { data: profileRow, error: findError } = await sb
+              .from('profiles')
+              .select('id, full_name')
+              .eq('email', email)
+              .single();
+
+            if (findError || !profileRow) {
+              showToast('No user profile found with that email address', 'error');
+              btn.disabled = false;
+              btn.textContent = 'Update Role';
+              return;
+            }
+
+            // Update role
+            const { error: updateError } = await sb
+              .from('profiles')
+              .update({ role, updated_at: new Date().toISOString() })
+              .eq('id', profileRow.id);
+
+            if (updateError) {
+              showToast('Failed to update role: ' + updateError.message, 'error');
+              btn.disabled = false;
+              btn.textContent = 'Update Role';
+              return;
+            }
+
+            // If promoting to instructor, ensure record exists in instructor_profiles
+            if (role === 'instructor') {
+              const { error: instError } = await sb
+                .from('instructor_profiles')
+                .upsert({
+                  id: profileRow.id,
+                  display_name: profileRow.full_name || email.split('@')[0],
+                  specialization: 'Data Analytics',
+                  is_public: true,
+                  updated_at: new Date().toISOString()
+                }, { onConflict: 'id' });
+
+              if (instError) {
+                console.error('Failed to create instructor profile:', instError);
+              }
+            }
+
+            showToast(`Successfully updated ${email} to ${role}!`, 'success');
+            document.getElementById('promoteEmailInput').value = '';
+            if (typeof fetchRoster === 'function') fetchRoster(); // Refresh user roster if it exists
+
+          } catch (err) {
+            showToast('An unexpected error occurred: ' + err.message, 'error');
+          } finally {
+            btn.disabled = false;
+            btn.textContent = 'Update Role';
+          }
+        }
+
+        document.getElementById('btnPromoteUser')?.addEventListener('click', updateRoleForUser);
+
         loadPricingData();
       })();
     });
