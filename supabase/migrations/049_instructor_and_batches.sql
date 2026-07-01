@@ -298,7 +298,7 @@ RETURNS TRIGGER AS $$
 BEGIN
   -- Handle old batch decrement
   IF (TG_OP = 'UPDATE' OR TG_OP = 'DELETE') THEN
-    IF OLD.batch_id IS NOT NULL AND OLD.batch_id ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' THEN
+    IF OLD.batch_id IS NOT NULL AND (OLD.batch_id::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' THEN
       UPDATE public.batches
       SET current_students = COALESCE((
         SELECT COUNT(*)::INTEGER 
@@ -311,7 +311,7 @@ BEGIN
 
   -- Handle new batch increment
   IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
-    IF NEW.batch_id IS NOT NULL AND NEW.batch_id ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' THEN
+    IF NEW.batch_id IS NOT NULL AND (NEW.batch_id::text) ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' THEN
       UPDATE public.batches
       SET current_students = COALESCE((
         SELECT COUNT(*)::INTEGER 
