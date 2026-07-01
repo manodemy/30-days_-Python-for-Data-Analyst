@@ -25,7 +25,23 @@ CREATE POLICY "Anyone can read public instructors"
   ON public.instructor_profiles FOR SELECT
   USING (is_public = true);
 
--- Instructors can read/update their own profile
+-- Instructors can read their own profile (even if private)
+CREATE POLICY "Instructors can read own profile"
+  ON public.instructor_profiles FOR SELECT
+  USING (auth.uid() = id);
+
+-- Instructors can insert their own profile
+CREATE POLICY "Instructors can insert own profile"
+  ON public.instructor_profiles FOR INSERT
+  WITH CHECK (
+    auth.uid() = id
+    AND EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE profiles.id = auth.uid() AND profiles.role IN ('instructor', 'admin')
+    )
+  );
+
+-- Instructors can update their own profile
 CREATE POLICY "Instructors can update own profile"
   ON public.instructor_profiles FOR UPDATE
   USING (auth.uid() = id)
