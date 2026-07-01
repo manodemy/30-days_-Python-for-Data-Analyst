@@ -2305,17 +2305,25 @@
   <div class="app-container" id="adminPanel">
     <!-- MOBILE BOTTOM TABS -->
     <div class="admin-bottom-tabs">
-      <div class="nav-item active" data-tab="tab-pricing">
-        <span class="admin-tab-icon">⬡</span>
-        <span>Coupons</span>
+      <div class="nav-item active" data-tab="tab-revenue">
+        <span class="admin-tab-icon">◈</span>
+        <span>Revenue</span>
       </div>
-      <div class="nav-item" data-tab="tab-batches">
-        <span class="admin-tab-icon">⚡</span>
-        <span>Batches</span>
+      <div class="nav-item" data-tab="tab-growth">
+        <span class="admin-tab-icon">↗</span>
+        <span>Growth</span>
       </div>
-      <div class="nav-item" data-tab="tab-settings">
-        <span class="admin-tab-icon">◎</span>
-        <span>Settings</span>
+      <div class="nav-item" data-tab="tab-funnel">
+        <span class="admin-tab-icon">⧩</span>
+        <span>Funnel</span>
+      </div>
+      <div class="nav-item" data-tab="tab-engagement">
+        <span class="admin-tab-icon">◴</span>
+        <span>Engage</span>
+      </div>
+      <div class="nav-item" data-tab="tab-reviews">
+        <span class="admin-tab-icon">★</span>
+        <span>Reviews</span>
       </div>
     </div>
     <!-- SIDEBAR -->
@@ -2325,12 +2333,31 @@
         <div class="brand-sub">Intelligence Suite</div>
       </div>
       <nav class="nav-menu">
+        <div class="nav-section-label">Analytics</div>
+        <div class="nav-item active" data-tab="tab-revenue">
+          <span class="nav-icon">◈</span> Revenue
+        </div>
+        <div class="nav-item" data-tab="tab-growth">
+          <span class="nav-icon">↗</span> Growth
+        </div>
+        <div class="nav-item" data-tab="tab-funnel">
+          <span class="nav-icon" style="color:var(--sapphire);">⧩</span> Funnel
+        </div>
+        <div class="nav-item" data-tab="tab-retention">
+          <span class="nav-icon">⟳</span> Retention
+        </div>
+        <div class="nav-item" data-tab="tab-engagement">
+          <span class="nav-icon">◴</span> Engagement
+        </div>
         <div class="nav-section-label">Operations</div>
-        <div class="nav-item active" data-tab="tab-pricing">
+        <div class="nav-item" data-tab="tab-pricing">
           <span class="nav-icon">⬡</span> Coupons &amp; Pricing
         </div>
         <div class="nav-item" data-tab="tab-referral">
           <span class="nav-icon" style="color:var(--emerald);">⇄</span> Referral Program
+        </div>
+        <div class="nav-item" data-tab="tab-reviews">
+          <span class="nav-icon">★</span> Reviews Moderation
         </div>
         <div class="nav-item" data-tab="tab-batches">
           <span class="nav-icon" style="color:var(--amber);">⚡</span> Cohorts &amp; Batches
@@ -2384,7 +2411,7 @@
       <!-- PAGE CONTENT -->
       <div class="page-content">
         <!-- ══ TAB 1: REVENUE ══ -->
-        <div class="tab-pane" id="tab-revenue">
+        <div class="tab-pane active" id="tab-revenue">
           <div class="tab-header">
             <h2 class="tab-title">Reve<em>nue</em></h2>
             <span class="tab-period-label" id="rev-period-label">Loading period…</span>
@@ -3133,7 +3160,7 @@
           </div>
         </div>
         <!-- ══ TAB 4: COUPONS & PRICING ══ -->
-        <div class="tab-pane active" id="tab-pricing">
+        <div class="tab-pane" id="tab-pricing">
           <div class="tab-header">
             <h2 class="tab-title">Coupons &amp; <em>Pricing</em></h2>
             <span class="tab-period-label">Marketing Operations</span>
@@ -3953,9 +3980,7 @@
 
     function createChart(id, type, data, extraOptions = {}) {
       destroyChart(id);
-      const canvas = document.getElementById(id);
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
+      const ctx = document.getElementById(id).getContext('2d');
       const options = JSON.parse(JSON.stringify(CHART_DEFAULTS));
       // Deep merge extraOptions
       const merged = deepMerge(options, extraOptions);
