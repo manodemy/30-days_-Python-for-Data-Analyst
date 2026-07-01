@@ -49,7 +49,7 @@ BEGIN
     pr.full_name,
     pr.country,
     pr.phone,
-    COALESCE(e.product_type, 'selfpaced') AS product_type,
+    CASE WHEN e.product_type = 'live' THEN 'live' ELSE 'selfpaced' END AS product_type,
     COALESCE(b.batch_name, '—') AS batch_name
   FROM purchases p
   LEFT JOIN profiles pr ON p.user_id = pr.id
