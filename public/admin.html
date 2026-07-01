@@ -6107,8 +6107,8 @@
               return;
             }
 
-            // If promoting to instructor, ensure record exists in instructor_profiles
-            if (role === 'instructor') {
+            // If promoting to instructor or admin, ensure record exists in instructor_profiles
+            if (['instructor', 'admin'].includes(role)) {
               const { error: instError } = await sb
                 .from('instructor_profiles')
                 .upsert({
