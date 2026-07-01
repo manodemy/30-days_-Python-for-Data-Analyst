@@ -1094,6 +1094,20 @@
       return;
     }
 
+    // If admin, show Admin Panel button in header
+    if (profile.role === 'admin') {
+      const adminLink = document.createElement('a');
+      adminLink.href = '/admin.html';
+      adminLink.className = 'btn-back';
+      adminLink.textContent = '⚙️ Admin Panel';
+      adminLink.style.borderColor = 'var(--cyan)';
+      adminLink.style.color = 'var(--cyan)';
+      const actions = document.querySelector('.dash-header-actions');
+      if (actions) {
+        actions.insertBefore(adminLink, actions.firstChild);
+      }
+    }
+
     // Show dashboard
     document.getElementById('dashContent').classList.remove('hidden');
 
