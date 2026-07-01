@@ -1729,7 +1729,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return;
       }
-      if (localStorage.getItem('manodemy_auth') === 'true' || text.includes('Dashboard') || text.includes('Score Card') || text.includes('Admin')) return;
+      if (localStorage.getItem('manodemy_auth') === 'true' || text.includes('Dashboard') || text.includes('Score Card') || text.includes('Admin') || text.includes('Instructor') || text.includes('Panel')) return;
       e.preventDefault();
       openAuthModal('login');
     });
@@ -1763,6 +1763,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (profile && profile.role === 'admin') {
           signInBtn.textContent = '⚙️ Admin Panel';
           signInBtn.href = '/admin.html';
+          return;
+        }
+
+        if (profile && profile.role === 'instructor') {
+          signInBtn.textContent = '👨‍🏫 Instructor Panel';
+          signInBtn.href = '/instructor-dashboard.html';
           return;
         }
       }
