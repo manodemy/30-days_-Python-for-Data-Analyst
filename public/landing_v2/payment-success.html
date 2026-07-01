@@ -288,15 +288,50 @@
       });
 
       sb.rpc('check_enrollment', { p_course_id: 'python-30day' }).then(({ data }) => {
-
         if (data === true) {
-
           localStorage.setItem('manodemy_auth', 'true');
-
           localStorage.setItem('manodemy_enrolled', 'true');
-
+          
+          // Fetch cohort batch preference from enrollments
+          sb.auth.getSession().then(({ data: { session } }) => {
+            if (session && session.user) {
+              sb.from('enrollments')
+                .select('batch_id')
+                .eq('user_id', session.user.id)
+                .eq('course_id', 'python-30day')
+                .maybeSingle()
+                .then(({ data: enroll }) => {
+                  if (enroll && enroll.batch_id) {
+                    localStorage.setItem('manodemy_selected_batch', enroll.batch_id);
+                    
+                    const infoBlock = document.createElement('div');
+                    infoBlock.style.margin = '20px auto';
+                    infoBlock.style.padding = '12px 16px';
+                    infoBlock.style.background = 'rgba(0, 180, 216, 0.08)';
+                    infoBlock.style.border = '1.5px solid #00B4D8';
+                    infoBlock.style.borderRadius = '8px';
+                    infoBlock.style.textAlign = 'center';
+                    infoBlock.style.maxWidth = '380px';
+                    
+                    const batchText = enroll.batch_id === 'batch-1'
+                      ? '🌅 Batch 1: Daily Cohort (7:30 PM - 8:30 PM IST)'
+                      : '🌃 Batch 2: Daily Cohort (8:30 PM - 9:30 PM IST)';
+                      
+                    infoBlock.innerHTML = `
+                      <span style="font-size: 13px; font-weight: 600; color: #0F172A; display: block; margin-bottom: 4px;">🎯 Enrolled Cohort Batch:</span>
+                      <span style="font-size: 14px; font-weight: 700; color: #00B4D8;">${batchText}</span>
+                    `;
+                    
+                    const card = document.querySelector('.status-card');
+                    const cta = document.querySelector('.btn-action');
+                    if (card && cta) {
+                      card.insertBefore(infoBlock, cta);
+                    }
+                  }
+                });
+            }
+          });
         }
-
       }).catch(e => console.error(e));
 
     } catch(err) {

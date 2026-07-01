@@ -33,7 +33,7 @@ serve(async (req) => {
     )
     if (authError || !user) throw new Error('Unauthorized')
 
-    const { gateway, currency, coupon_code, final_amount, referral_code } = await req.json()
+    const { gateway, currency, coupon_code, final_amount, referral_code, batch_id } = await req.json()
 
     // ── Dynamic Pricing from settings table ──
     const { data: pricingSetting } = await supabase.from('settings').select('value').eq('key', 'pricing').single()
@@ -153,7 +153,8 @@ serve(async (req) => {
         status: 'pending',
         coupon_code: coupon_code ? coupon_code.toUpperCase() : null,  // ← save applied coupon code
         coupon_discount_inr,                                            // ← save discount amount in INR
-        referral_code: validatedReferralCode                            // ← save referral code for commission
+        referral_code: validatedReferralCode,                            // ← save referral code for commission
+        batch_id: batch_id || null                                      // ← save selected batch ID
       })
       .select()
       .single()

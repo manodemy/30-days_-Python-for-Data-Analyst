@@ -685,6 +685,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkoutTierPill = document.getElementById('checkoutTierPill');
     const checkoutPlanName = document.getElementById('checkoutPlanName');
     const switchBtn        = document.getElementById('checkoutSwitchTier');
+    const batchSection     = document.getElementById('checkoutBatchSection');
 
     if (checkoutAmount)   checkoutAmount.textContent   = cfg.display;
     if (checkoutOriginal) checkoutOriginal.textContent = cfg.original;
@@ -693,6 +694,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (checkoutTierPill) {
       checkoutTierPill.textContent  = isLive ? '🎥 Live Class Plan' : '⚡ Self-Paced Plan';
       checkoutTierPill.className    = `checkout-tier-pill checkout-tier-pill--${tier}`;
+    }
+
+    if (batchSection) {
+      batchSection.style.display = isLive ? 'block' : 'none';
     }
 
     const other    = isLive ? 'selfpaced' : 'live';
@@ -709,12 +714,41 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkoutClose = document.getElementById('checkoutClose');
   const buyButtons = document.querySelectorAll('[data-cta="buy"]');
 
-  const openCheckout = (tier = 'selfpaced') => {
+  const openCheckout = (tier = 'selfpaced', preferredBatchId = null) => {
     if (localStorage.getItem('manodemy_enrolled') === 'true') {
       window.location.href = '/home.html';
       return;
     }
     updateCheckoutForTier(tier);
+    
+    // Set active batch if live class plan selected
+    if (tier === 'live') {
+      const selectedBatch = preferredBatchId || window.selectedBatchId || 'batch-1';
+      window.selectedBatchId = selectedBatch;
+      
+      const cards = document.querySelectorAll('.checkout-batch-card');
+      cards.forEach(card => {
+        const isCurrent = card.dataset.batchId === selectedBatch;
+        card.classList.toggle('active', isCurrent);
+        card.style.borderColor = isCurrent ? 'var(--cyan)' : 'var(--border)';
+        card.style.background = isCurrent ? 'rgba(0, 180, 216, 0.04)' : 'var(--base)';
+        
+        const radio = card.querySelector('.checkout-batch-radio');
+        if (radio) {
+          if (isCurrent) {
+            radio.style.borderColor = 'var(--cyan)';
+            radio.style.backgroundColor = 'var(--cyan)';
+            radio.style.boxShadow = 'inset 0 0 0 3px var(--base)';
+          } else {
+            radio.style.borderColor = 'var(--text-muted)';
+            radio.style.backgroundColor = 'transparent';
+            radio.style.boxShadow = 'none';
+          }
+        }
+      });
+    } else {
+      window.selectedBatchId = null;
+    }
     
     // Clone pricing card to show inside checkout
     const container = document.getElementById('checkoutCardContainer');
@@ -782,6 +816,36 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target === checkoutOverlay) closeCheckout();
     });
   }
+
+  // Bind batch selection events in checkout modal
+  const batchCards = document.querySelectorAll('.checkout-batch-card');
+  batchCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const batchId = card.dataset.batchId;
+      window.selectedBatchId = batchId;
+      
+      // Update active states
+      batchCards.forEach(c => {
+        const isCurrent = c.dataset.batchId === batchId;
+        c.classList.toggle('active', isCurrent);
+        c.style.borderColor = isCurrent ? 'var(--cyan)' : 'var(--border)';
+        c.style.background = isCurrent ? 'rgba(0, 180, 216, 0.04)' : 'var(--base)';
+        
+        const radio = c.querySelector('.checkout-batch-radio');
+        if (radio) {
+          if (isCurrent) {
+            radio.style.borderColor = 'var(--cyan)';
+            radio.style.backgroundColor = 'var(--cyan)';
+            radio.style.boxShadow = 'inset 0 0 0 3px var(--base)';
+          } else {
+            radio.style.borderColor = 'var(--text-muted)';
+            radio.style.backgroundColor = 'transparent';
+            radio.style.boxShadow = 'none';
+          }
+        }
+      });
+    });
+  });
 
   // Render gate selection: Razorpay for INR, PayPal for USD
   function renderPaymentGateways() {
@@ -861,7 +925,8 @@ document.addEventListener('DOMContentLoaded', () => {
           currency: currentPricing.currency,
           coupon_code: appliedCouponCode || coupon || undefined,
           final_amount: appliedCouponAmount || undefined,
-          referral_code: localStorage.getItem('manodemy_ref') || undefined
+          referral_code: localStorage.getItem('manodemy_ref') || undefined,
+          batch_id: activeTier === 'live' ? (window.selectedBatchId || 'batch-1') : undefined
         })
       });
 
@@ -1186,13 +1251,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnBatch2 = document.getElementById('btn-batch2');
   const btnDemo = document.getElementById('btn-demo');
 
-  const checkAndJoinBatch = (meetUrl) => {
+  const checkAndJoinBatch = (meetUrl, preferredBatchId = null) => {
     const enrolled = localStorage.getItem('manodemy_enrolled') === 'true';
     if (enrolled) {
       window.open(meetUrl, '_blank', 'noopener,noreferrer');
     } else {
       alert("🔒 This batch is for enrolled students only. Please enroll in the Live Class Plan to access cohort links!");
-      openCheckout('live');
+      openCheckout('live', preferredBatchId);
     }
   };
 
@@ -1200,7 +1265,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnBatch1.addEventListener('click', (e) => {
       e.preventDefault();
       if (!btnBatch1.classList.contains('active')) return;
-      checkAndJoinBatch('https://meet.google.com/ndy-jymp-azz');
+      checkAndJoinBatch('https://meet.google.com/ndy-jymp-azz', 'batch-1');
     });
   }
 
@@ -1208,7 +1273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnBatch2.addEventListener('click', (e) => {
       e.preventDefault();
       if (!btnBatch2.classList.contains('active')) return;
-      checkAndJoinBatch('https://meet.google.com/gjy-jsxd-txa');
+      checkAndJoinBatch('https://meet.google.com/gjy-jsxd-txa', 'batch-2');
     });
   }
 

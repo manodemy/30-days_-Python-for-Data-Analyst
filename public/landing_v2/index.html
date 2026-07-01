@@ -1549,6 +1549,29 @@
           <button class="coupon-apply" id="couponApply">Apply</button>
         </div>
 
+        <!-- Batch Selection Section (Only displayed for Live Class tier) -->
+        <div class="checkout-batch-section" id="checkoutBatchSection" style="display: none; margin: 15px 0; text-align: left;">
+          <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">
+            🗓️ Select Your Daily Cohort Batch:
+          </label>
+          <div class="checkout-batch-options" style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="checkout-batch-card active" data-batch-id="batch-1" style="border: 2px solid var(--cyan); border-radius: 8px; padding: 10px 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: rgba(0, 180, 216, 0.04); transition: var(--transition);">
+              <div style="display: flex; flex-direction: column; gap: 2px;">
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">🌅 Batch 1: Daily Cohort</span>
+                <span style="font-size: 11px; color: var(--text-secondary);">🕒 7:30 PM – 8:30 PM IST (Mon - Sun)</span>
+              </div>
+              <span class="checkout-batch-radio" style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--cyan); display: flex; align-items: center; justify-content: center; background: var(--cyan); box-shadow: inset 0 0 0 3px var(--base); transition: all 0.2s ease;"></span>
+            </div>
+            <div class="checkout-batch-card" data-batch-id="batch-2" style="border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: var(--base); transition: var(--transition);">
+              <div style="display: flex; flex-direction: column; gap: 2px;">
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">🌃 Batch 2: Daily Cohort</span>
+                <span style="font-size: 11px; color: var(--text-secondary);">🕒 8:30 PM – 9:30 PM IST (Mon - Sun)</span>
+              </div>
+              <span class="checkout-batch-radio" style="width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--text-muted); display: flex; align-items: center; justify-content: center; background: transparent; transition: all 0.2s ease;"></span>
+            </div>
+          </div>
+        </div>
+
         <div style="text-align:center; margin-bottom:8px;">
           <button class="checkout-switch-link" id="checkoutSwitchTier">Switch to Live Class Plan ($149)</button>
         </div>

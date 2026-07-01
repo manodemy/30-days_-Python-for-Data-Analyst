@@ -357,7 +357,8 @@ serve(async (req) => {
         user_id: user.id,
         course_id: order.course_id,
         payment_id: payment.id,
-        enrolled_at: new Date().toISOString()
+        enrolled_at: new Date().toISOString(),
+        batch_id: order.batch_id || null
       }, { onConflict: 'user_id,course_id' })
 
       // ── Referral Commission (idempotent — UNIQUE on order_id prevents double) ──
@@ -425,7 +426,8 @@ serve(async (req) => {
         user_id: user.id,
         course_id: order.course_id,
         payment_id: payment.id,
-        enrolled_at: new Date().toISOString()
+        enrolled_at: new Date().toISOString(),
+        batch_id: order.batch_id || null
       }, { onConflict: 'user_id,course_id' })
 
       // ── Referral Commission ──

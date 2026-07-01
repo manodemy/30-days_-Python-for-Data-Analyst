@@ -302,7 +302,8 @@ serve(async (req) => {
             user_id: order.user_id,
             course_id: order.course_id,
             payment_id: paymentRecord?.id,
-            enrolled_at: new Date().toISOString()
+            enrolled_at: new Date().toISOString(),
+            batch_id: order.batch_id || null
           }, { onConflict: 'user_id,course_id' })
 
           // Trigger Referral Commission (idempotent)
@@ -390,7 +391,8 @@ serve(async (req) => {
             user_id: order.user_id,
             course_id: courseId,
             payment_id: paymentRecord?.id,
-            enrolled_at: new Date().toISOString()
+            enrolled_at: new Date().toISOString(),
+            batch_id: order.batch_id || null
           }, { onConflict: 'user_id,course_id' })
 
           // Trigger Referral Commission (idempotent)
