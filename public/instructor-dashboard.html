@@ -1165,8 +1165,27 @@
         }
         updatePreview();
       } else {
-        // No profile yet — pre-fill name from auth profile
-        document.getElementById('displayName').value = profile.full_name || '';
+        // No profile yet — auto-create a default shell record to prevent FK violation on batch creation
+        const defaultName = profile?.full_name || user.email.split('@')[0];
+        const defaultProfile = {
+          id: user.id,
+          display_name: defaultName,
+          specialization: 'Data Analytics',
+          bio: '',
+          social_links: { linkedin: null, twitter: null, github: null },
+          is_public: true,
+          updated_at: new Date().toISOString()
+        };
+
+        const { error: createError } = await sb.from('instructor_profiles').insert(defaultProfile);
+        if (!createError) {
+          instructorProfile = defaultProfile;
+          document.getElementById('displayName').value = defaultName;
+          document.getElementById('specialization').value = 'Data Analytics';
+          updatePreview();
+        } else {
+          console.error('Failed to auto-create instructor profile:', createError);
+        }
       }
     }
 
