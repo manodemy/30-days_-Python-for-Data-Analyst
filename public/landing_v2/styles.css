@@ -6719,4 +6719,8 @@ td.col-mano {
   }
 }
 
+.hidden {
+  display: none !important;
+}
+
 

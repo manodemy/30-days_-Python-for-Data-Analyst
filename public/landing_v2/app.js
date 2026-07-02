@@ -1215,17 +1215,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('liveHubGrid');
     const empty = document.getElementById('liveHubEmpty');
 
-    if (skeleton) skeleton.style.display = 'none';
+    if (skeleton) skeleton.classList.add('hidden');
 
     if (!batches || batches.length === 0) {
-      if (grid) grid.style.display = 'none';
-      if (empty) empty.style.display = 'block';
+      if (grid) grid.classList.add('hidden');
+      if (empty) empty.classList.remove('hidden');
       return;
     }
 
-    if (empty) empty.style.display = 'none';
+    if (empty) empty.classList.add('hidden');
     if (grid) {
-      grid.style.display = '';
+      grid.classList.remove('hidden');
       grid.innerHTML = '';
 
       batches.forEach(batch => {
@@ -1372,8 +1372,8 @@ document.addEventListener('DOMContentLoaded', () => {
       console.warn('[LiveHub] Failed to fetch batches from DB, hiding section:', err.message);
       const skeleton = document.getElementById('liveHubSkeleton');
       const empty = document.getElementById('liveHubEmpty');
-      if (skeleton) skeleton.style.display = 'none';
-      if (empty) empty.style.display = 'block';
+      if (skeleton) skeleton.classList.add('hidden');
+      if (empty) empty.classList.remove('hidden');
     }
   }
 
