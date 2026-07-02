@@ -1186,12 +1186,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const m = minDiff % 60;
     const sec = 60 - currentSeconds;
 
-    let countdownText = 'Starts in ';
-    if (d > 0) countdownText += `${d}d ${h}h ${m}m ${sec}s`;
-    else if (h > 0) countdownText += `${h}h ${m}m ${sec}s`;
-    else countdownText += `${m}m ${sec}s`;
-
-    return { isActive: false, statusText: '🔴 Scheduled', countdownText };
+    return { isActive: false, statusText: '🔴 Scheduled', d, h, m, sec };
   }
 
   function formatTimeDisplay(timeStr) {
@@ -1332,8 +1327,35 @@ document.addEventListener('DOMContentLoaded', () => {
         statusPill.classList.toggle('live-now', status.isActive);
       }
       if (countdownBox) {
-        countdownBox.textContent = status.countdownText;
         countdownBox.classList.toggle('active', status.isActive);
+        if (status.isActive) {
+          countdownBox.innerHTML = `<span class="live-pulse-dot"></span> ${status.countdownText}`;
+        } else {
+          countdownBox.innerHTML = `
+            <div class="countdown-label">Starts in</div>
+            <div class="countdown-digits">
+              <div class="digit-block">
+                <span class="digit">${String(status.d).padStart(2, '0')}</span>
+                <span class="label">Days</span>
+              </div>
+              <div class="digit-sep">:</div>
+              <div class="digit-block">
+                <span class="digit">${String(status.h).padStart(2, '0')}</span>
+                <span class="label">Hrs</span>
+              </div>
+              <div class="digit-sep">:</div>
+              <div class="digit-block">
+                <span class="digit">${String(status.m).padStart(2, '0')}</span>
+                <span class="label">Min</span>
+              </div>
+              <div class="digit-sep">:</div>
+              <div class="digit-block">
+                <span class="digit">${String(status.sec).padStart(2, '0')}</span>
+                <span class="label">Sec</span>
+              </div>
+            </div>
+          `;
+        }
       }
       if (joinBtn) {
         if (status.isActive) {
