@@ -1228,13 +1228,6 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.style.display = '';
       grid.innerHTML = '';
 
-      // Adjust grid columns based on batch count
-      if (batches.length <= 2) {
-        grid.style.gridTemplateColumns = `repeat(${batches.length}, 1fr)`;
-      } else {
-        grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
-      }
-
       batches.forEach(batch => {
         const isDemo = batch.batch_type === 'free_demo';
         const card = document.createElement('div');
@@ -1293,6 +1286,36 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       });
+
+      // Bind carousel arrow clicks dynamically
+      const prevBtn = document.getElementById('liveHubPrev');
+      const nextBtn = document.getElementById('liveHubNext');
+      
+      if (prevBtn && nextBtn) {
+        const checkArrows = () => {
+          if (grid.scrollWidth > grid.clientWidth) {
+            prevBtn.style.display = grid.scrollLeft > 10 ? 'flex' : 'none';
+            nextBtn.style.display = (grid.scrollLeft + grid.clientWidth < grid.scrollWidth - 10) ? 'flex' : 'none';
+          } else {
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+          }
+        };
+
+        grid.addEventListener('scroll', checkArrows);
+        window.addEventListener('resize', checkArrows);
+        
+        prevBtn.addEventListener('click', () => {
+          grid.scrollBy({ left: -360, behavior: 'smooth' });
+        });
+        
+        nextBtn.addEventListener('click', () => {
+          grid.scrollBy({ left: 360, behavior: 'smooth' });
+        });
+
+        // Trigger check after rendering finishes and styles apply
+        setTimeout(checkArrows, 400);
+      }
     }
   }
 

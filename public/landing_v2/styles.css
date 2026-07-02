@@ -6636,3 +6636,87 @@ td.col-mano {
   }
 }
 
+/* ══════════════ LIVE HUB CAROUSEL & CARDS OVERRIDES ══════════════ */
+.live-hub-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.live-hub-track-container {
+  overflow: hidden;
+  width: 100%;
+  padding: 10px 4px;
+}
+
+.live-hub-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 24px !important;
+  margin-top: 24px !important;
+  overflow-x: auto !important;
+  scroll-snap-type: x mandatory !important;
+  padding: 12px 4px 24px !important;
+  scrollbar-width: none !important;
+  scroll-behavior: smooth !important;
+  -webkit-overflow-scrolling: touch !important;
+  width: 100% !important;
+  grid-template-columns: none !important;
+}
+
+.live-hub-grid::-webkit-scrollbar {
+  display: none !important;
+}
+
+.live-hub-card {
+  flex: 0 0 calc(33.333% - 16px) !important;
+  min-width: 340px !important;
+  scroll-snap-align: start !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  background: #ffffff !important;
+}
+
+.live-hub-instructor-avatar {
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 2.5px solid #ffffff !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), 0 0 0 1.5px rgba(15, 23, 42, 0.12) !important;
+  flex-shrink: 0 !important;
+  transition: transform 0.3s ease !important;
+}
+
+.live-hub-instructor-avatar--placeholder {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(0, 180, 216, 0.08) !important;
+  color: var(--cyan) !important;
+  font-family: var(--font-display) !important;
+  font-weight: 800 !important;
+  font-size: 20px !important;
+}
+
+@media (max-width: 1024px) {
+  .live-hub-card {
+    flex: 0 0 calc(50% - 12px) !important;
+    min-width: 300px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .live-hub-card {
+    flex: 0 0 85vw !important;
+    min-width: 280px !important;
+  }
+  .live-hub-grid {
+    gap: 16px !important;
+  }
+}
+
+

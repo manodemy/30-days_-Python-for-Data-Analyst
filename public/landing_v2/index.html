@@ -1370,7 +1370,13 @@
         </div>
 
         <!-- Dynamic cards rendered here by app.js -->
-        <div class="live-hub-grid" id="liveHubGrid" style="display:none;"></div>
+        <div class="live-hub-carousel-wrapper">
+          <button class="rev-carousel-btn prev-btn" id="liveHubPrev" aria-label="Previous Batches" style="display: none; position: absolute; left: -24px; top: 50%; transform: translateY(-50%); z-index: 10;">&#x2190;</button>
+          <div class="live-hub-track-container">
+            <div class="live-hub-grid" id="liveHubGrid" style="display:none;"></div>
+          </div>
+          <button class="rev-carousel-btn next-btn" id="liveHubNext" aria-label="Next Batches" style="display: none; position: absolute; right: -24px; top: 50%; transform: translateY(-50%); z-index: 10;">&#x2192;</button>
+        </div>
 
         <!-- Empty state if no batches -->
         <div class="live-hub-empty" id="liveHubEmpty" style="display:none;">
