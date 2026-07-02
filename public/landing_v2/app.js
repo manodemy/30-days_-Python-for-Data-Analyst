@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.5 });
 
-  // document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
+  document.querySelectorAll('[data-count]:not(#social-proof-learners)').forEach(el => counterObs.observe(el));
 
   /* ═══ 3D STACK INTERACTIVE PARALLAX & FLOATING ANIMATIONS ═══ */
   const heroStack = document.getElementById('heroStack');
@@ -589,10 +589,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const socialProofEl = document.getElementById('social-proof-learners');
       if (socialProofEl) {
         socialProofEl.dataset.count = num;
-        socialProofEl.textContent = num.toLocaleString('en-US') + '+';
+        counterObs.observe(socialProofEl);
       }
     } catch (err) {
       console.warn("Learner count RPC failed, fallback active:", err);
+      const socialProofEl = document.getElementById('social-proof-learners');
+      if (socialProofEl) {
+        socialProofEl.dataset.count = 28;
+        counterObs.observe(socialProofEl);
+      }
     }
   }
 

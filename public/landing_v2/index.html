@@ -59,9 +59,14 @@
         </a>
 
         <div class="nav-links">
-          <a href="/sql/day01.html" class="nav-pill nav-pill--sql">Try SQL Free</a>
-          <a href="/excel/day01.html" class="nav-pill nav-pill--excel">Try Excel Free</a>
-          <a href="/day01.html" class="nav-pill nav-pill--python">Try Python Free</a>
+          <div class="nav-pill dropdown" style="position:relative;">
+            <span style="display:inline-flex; align-items:center; gap:4px; font-weight:600;">Try Free ▾</span>
+            <div class="dropdown-menu" style="left:0; right:auto;">
+              <a href="/sql/day01.html" style="color: var(--emerald); font-weight:600;">⚡ Try SQL Free</a>
+              <a href="/excel/day01.html" style="color: var(--gold); font-weight:600;">📈 Try Excel Free</a>
+              <a href="/day01.html" style="color: var(--cyan); font-weight:600;">🐍 Try Python Free</a>
+            </div>
+          </div>
           <a href="#curriculum" class="nav-pill">Curriculum</a>
           <a href="#testimonials" class="nav-pill">Reviews</a>
           <a href="#faq" class="nav-pill">FAQ</a>
@@ -150,10 +155,8 @@
           </p>
 
           <div class="hero-ctas">
-            <a href="/sql/day01.html" class="btn-primary btn-sm"><span class="tech-logo logo-sql" title="SQL"><svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"></path><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"></path></svg></span> Try SQL Free</a>
-            <a href="/excel/day01.html" class="btn-primary btn-sm"><span class="tech-logo logo-excel" title="Excel"><svg viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.625 0H8.625L1.5 2.625V20.375L8.625 23H14.625V0Z" fill="#107C41"/><path d="M21.5 2.625H14.625V6.375H21.5V2.625Z" fill="#1F9A55"/><path d="M21.5 6.375H14.625V10.125H21.5V6.375Z" fill="#33C481"/><path d="M21.5 10.125H14.625V13.875H21.5V10.125Z" fill="#107C41"/><path d="M21.5 13.875H14.625V17.625H21.5V13.875Z" fill="#1B9A59"/><path d="M21.5 17.625H14.625V20.375H21.5V17.625Z" fill="#107C41"/><path d="M10.125 6.375H3.375V16.625H10.125V6.375Z" fill="#107C41"/><path d="M11.813 7.875L9.938 11.25L11.813 14.625H9.563L8.438 12.75L7.313 14.625H5.063L6.938 11.25L5.063 7.875H7.313L8.438 9.75L9.563 7.875H11.813Z" fill="white"/></svg></span> Try Excel Free</a>
-            <a href="/day01.html" class="btn-primary btn-sm"><span class="tech-logo logo-python" title="Python"><svg viewBox="45.9 0 367.2 459" fill="none"><path fill="#306998" d="M229.5 0C161.4 0 122.4 15.6 122.4 53.6v34.4h107.1v15.3H122.4c-47.8 0-76.5 30.6-76.5 76.5v61.2c0 45.9 28.7 76.5 76.5 76.5h30.6v-45.9c0-51 41.3-91.8 91.8-91.8h107.1V107.1c0-53.6-47.8-107.1-122.4-107.1zM175.9 30.6c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3 6.9-15.3 15.3-15.3z" /><path fill="#FFE873" d="M229.5 459c68.1 0 107.1-15.6 107.1-53.6v-34.4H229.5v-15.3h107.1c47.8 0 76.5-30.6 76.5-76.5v-61.2c0-45.9-28.7-76.5-76.5-76.5h-30.6v45.9c0 51-41.3 91.8-91.8 91.8H122.4V351.9c0 53.6 47.8 107.1 122.4 107.1zm53.6-30.6c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3 15.3 6.9 15.3 15.3-6.9 15.3-15.3 15.3z" /></svg></span> Try Python Free</a>
-            <a href="#curriculum" class="btn-secondary btn-sm">📋 View Curriculum</a>
+            <a href="#curriculum" class="btn-primary">Start Coding Free &rarr;</a>
+            <a href="#curriculum" class="btn-secondary">View Curriculum</a>
           </div>
 
           <!-- Trust Row -->
@@ -1743,26 +1746,59 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-col brand-col">
-        <span class="nav-brand-name">Mano<span>demy</span></span>
-        <p>Master Data Analytics through practice-first browser notebooks. Escape tutorial hell today.</p>
-        <span class="copyright">Copyright &copy; 2026 Manodemy. All rights reserved.</span>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-col brand-col">
+          <span class="nav-brand-name">Mano<span>demy</span></span>
+          <p>Master SQL, Excel, and Python through practice-first browser notebooks. Escape tutorial hell and build real data skills.</p>
+          <div class="footer-socials">
+            <a href="https://www.linkedin.com/company/manodemy" target="_blank" rel="noopener" class="footer-social-icon" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://www.instagram.com/manodemy" target="_blank" rel="noopener" class="footer-social-icon" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="https://youtube.com/@manodemy" target="_blank" rel="noopener" class="footer-social-icon" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon fill="#0F172A" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+            </a>
+            <a href="https://twitter.com/manodemy" target="_blank" rel="noopener" class="footer-social-icon" aria-label="Twitter / X">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+          </div>
+          <span class="copyright">Copyright &copy; 2026 Manodemy. All rights reserved.</span>
+        </div>
+        <div class="footer-col">
+          <h4>Curriculum</h4>
+          <a href="/sql/day01.html">SQL Track</a>
+          <a href="/excel/day01.html">Excel Track</a>
+          <a href="/day01.html">Python Track</a>
+          <a href="/landing_v2/#curriculum">View Full Curriculum</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="terms.html">Terms &amp; Conditions</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="mailto:support@manodemy.com">support@manodemy.com</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="/landing_v2/#faq">FAQ</a>
+          <a href="/landing_v2/#testimonials">Reviews</a>
+          <a href="/landing_v2/#pricing">Pricing</a>
+        </div>
       </div>
-      <div class="footer-col">
-        <h4>Curriculum</h4>
-        <a href="/sql/day01.html">SQL Track</a>
-        <a href="/excel/day01.html">Excel Track</a>
-        <a href="/day01.html">Python Track</a>
-      </div>
-      <div class="footer-col">
-        <h4>Support &amp; Legal</h4>
-        <a href="terms.html">Terms &amp; Conditions</a>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="mailto:support@manodemy.com">support@manodemy.com</a>
+      <div class="footer-bottom">
+        <span>Made with ❤️ for data learners</span>
+        <span class="dot-sep">·</span>
+        <a href="terms.html">Terms</a>
+        <span class="dot-sep">·</span>
+        <a href="privacy.html">Privacy</a>
+        <span class="dot-sep">·</span>
+        <a href="mailto:support@manodemy.com">Contact</a>
       </div>
     </div>
   </footer>
+
 
   <!-- Context Injection scripts -->
   <script>
