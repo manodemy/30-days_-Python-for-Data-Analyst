@@ -2975,6 +2975,12 @@ function initializeMobileFeatures() {
     focusOverlayEl = document.createElement('div');
     focusOverlayEl.className = 'focus-overlay';
     focusOverlayEl.id = 'focusOverlay';
+    // Detect SQL kernel to conditionally add Tables button
+    const isSqlKernelFocus = (document.body.getAttribute('data-kernel') || 'python') === 'sql';
+    const tablesButtonHtml = isSqlKernelFocus
+      ? '<button class="focus-tables-btn" id="focusTablesBtn" title="View Table Schema">📋 Tables</button>'
+      : '';
+
     focusOverlayEl.innerHTML = `
       <div class="focus-header">
         <div class="focus-header-left">
@@ -2982,6 +2988,7 @@ function initializeMobileFeatures() {
           <button class="focus-hint-btn" id="focusHintBtn"><svg style="width:14px;height:14px;display:inline-block;vertical-align:-2px;margin-right:6px;" viewBox="0 0 24 24"><defs><linearGradient id="geminiSparkGradFocus" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00E6F6" /><stop offset="100%" stop-color="#8B5CF6" /></linearGradient></defs><path fill="url(#geminiSparkGradFocus)" d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/></svg><span class="gemini-btn-text">Ask Gemini</span></button>
           <button class="focus-run-btn" id="focusRunBtn">▶ Run</button>
           <button class="focus-clear-btn" id="focusClearBtn">✕ Clear</button>
+          ${tablesButtonHtml}
         </div>
         <div class="focus-header-right">
           <div class="focus-counter" id="focusCounter">Question 0 of 0</div>
@@ -3028,6 +3035,16 @@ function initializeMobileFeatures() {
         }
       }
     });
+
+    // Tables button in focus header (SQL only)
+    const focusTablesBtn = document.getElementById('focusTablesBtn');
+    if (focusTablesBtn) {
+      focusTablesBtn.addEventListener('click', () => {
+        if (typeof openSchemaModal === 'function') {
+          openSchemaModal();
+        }
+      });
+    }
   }
 
   function openFocusMode(index) {
@@ -3223,5 +3240,113 @@ function initializeMobileFeatures() {
       setTimeout(updateViewportSizing, 100);
     }
   });
+
+
+  // ══════════════════════════════════════════════════════════════════
+  // ⭐ COMPONENT 8: SCHEMA TABLES MODAL (SQL SECTIONS)
+  // ══════════════════════════════════════════════════════════════════
+
+  const isSqlKernel = (document.body.getAttribute('data-kernel') || 'python') === 'sql';
+
+  if (isSqlKernel) {
+    let schemaModalEl = null;
+
+    // Build and cache the modal overlay
+    function ensureSchemaModal() {
+      if (schemaModalEl) return;
+
+      const schemaRefCard = document.getElementById('schema-ref-card');
+      if (!schemaRefCard) return;
+
+      // Extract the title (e.g. "Database Schema Reference (retail.db)")
+      const headerSpan = schemaRefCard.querySelector('.schema-ref-header span');
+      const title = headerSpan ? headerSpan.textContent.trim() : '📋 Database Schema';
+
+      // Clone the content
+      const contentEl = schemaRefCard.querySelector('.schema-ref-content');
+      const clonedContent = contentEl ? contentEl.cloneNode(true) : null;
+
+      // Build modal
+      schemaModalEl = document.createElement('div');
+      schemaModalEl.className = 'schema-modal-overlay';
+      schemaModalEl.id = 'schemaModalOverlay';
+      schemaModalEl.innerHTML = `
+        <div class="schema-modal-card">
+          <div class="schema-modal-header">
+            <div class="schema-modal-title">${title}</div>
+            <button class="schema-modal-close" id="schemaModalClose" title="Close">✕</button>
+          </div>
+          <div class="schema-modal-body" id="schemaModalBody"></div>
+        </div>
+      `;
+
+      // Insert cloned content
+      if (clonedContent) {
+        schemaModalEl.querySelector('#schemaModalBody').appendChild(clonedContent);
+      }
+
+      document.body.appendChild(schemaModalEl);
+
+      // Close button
+      schemaModalEl.querySelector('#schemaModalClose').addEventListener('click', closeSchemaModal);
+
+      // Click backdrop to close
+      schemaModalEl.addEventListener('click', (e) => {
+        if (e.target === schemaModalEl) closeSchemaModal();
+      });
+
+      // Escape key to close
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && schemaModalEl && schemaModalEl.classList.contains('active')) {
+          closeSchemaModal();
+        }
+      });
+    }
+
+    window.openSchemaModal = function openSchemaModal() {
+      ensureSchemaModal();
+      if (schemaModalEl) {
+        schemaModalEl.classList.add('active');
+      }
+    };
+
+    window.closeSchemaModal = function closeSchemaModal() {
+      if (schemaModalEl) {
+        schemaModalEl.classList.remove('active');
+      }
+    };
+
+    // Inject "Tables" button into each code cell's cell-actions (desktop view)
+    function injectTablesButtons() {
+      const cells = document.querySelectorAll('.code-cell');
+      cells.forEach(cell => {
+        const actions = cell.querySelector('.cell-actions');
+        if (!actions) return;
+        if (actions.querySelector('.tables-schema-btn')) return; // already injected
+
+        const btn = document.createElement('button');
+        btn.className = 'tables-schema-btn';
+        btn.type = 'button';
+        btn.title = 'View Table Schema';
+        btn.innerHTML = '📋 Tables';
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openSchemaModal();
+        });
+
+        // Insert at the beginning of actions
+        actions.insertBefore(btn, actions.firstChild);
+      });
+    }
+
+    // Run injection after a short delay to let other scripts (hints.js) inject first
+    setTimeout(injectTablesButtons, 500);
+
+    // Also re-inject if DOM changes (defensive)
+    const tablesObserver = new MutationObserver(() => {
+      injectTablesButtons();
+    });
+    tablesObserver.observe(document.querySelector('#notebook') || document.body, { childList: true, subtree: true });
+  }
 }
 

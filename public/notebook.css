@@ -3101,6 +3101,179 @@ a[href*="referral-earnings"] {
   display: none !important;
 }
 
+/* ─── Tables Button — Cell Bar (Desktop) ─── */
+.tables-schema-btn {
+  padding: 3px 10px;
+  background: linear-gradient(135deg, #4F46E5, #7C3AED) !important;
+  color: #fff !important;
+  font: 600 .72rem var(--font-h);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.tables-schema-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, .35);
+}
+.tables-schema-btn:active {
+  transform: scale(0.96);
+}
+
+/* ─── Tables Button — Focus Mode Header ─── */
+.focus-tables-btn {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #4338CA 0%, #7C3AED 100%) !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.3) !important;
+  padding: 0 10px !important;
+  color: #fff !important;
+  font: 700 0.74rem var(--font-h, 'Outfit', sans-serif);
+  white-space: nowrap;
+}
+.focus-tables-btn:hover {
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.5) !important;
+}
+.focus-tables-btn:active {
+  transform: scale(0.96);
+}
+
+/* ─── Focus Mode: Hide inner cell-bar actions (redundant) ─── */
+.focus-content .cell-bar .cell-actions {
+  display: none !important;
+}
+
+/* ─── Schema Modal Overlay ─── */
+.schema-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(6, 9, 19, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.schema-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.schema-modal-card {
+  background: #F8FAFC;
+  border: 1.5px solid rgba(99, 102, 241, 0.25);
+  border-radius: 12px;
+  width: 92%;
+  max-width: 720px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(99, 102, 241, 0.1);
+  transform: translateY(20px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+.schema-modal-overlay.active .schema-modal-card {
+  transform: translateY(0);
+}
+
+.schema-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #EEF2FF, #F5F3FF);
+  border-bottom: 1px solid rgba(99, 102, 241, 0.15);
+  flex-shrink: 0;
+}
+.schema-modal-title {
+  font: 700 1rem var(--font-h, 'Outfit', sans-serif);
+  color: #4338CA;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.schema-modal-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  color: #6366F1;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+.schema-modal-close:hover {
+  background: rgba(244, 63, 94, 0.12);
+  color: #F43F5E;
+  border-color: rgba(244, 63, 94, 0.25);
+}
+
+.schema-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px 18px;
+}
+.schema-modal-body .schema-ref-content {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 0 !important;
+}
+
+/* Mobile adjustments for schema modal */
+@media (max-width: 480px) {
+  .schema-modal-card {
+    width: 96%;
+    max-height: 88vh;
+    border-radius: 10px;
+  }
+  .schema-modal-header {
+    padding: 12px 14px;
+  }
+  .schema-modal-title {
+    font-size: 0.9rem;
+  }
+  .schema-modal-body {
+    padding: 12px 14px;
+  }
+  .schema-modal-body .schema-ref-content {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+  }
+
+  /* Focus mode Tables button smaller */
+  .focus-tables-btn {
+    height: 28px !important;
+    padding: 0 6px !important;
+    font-size: 0.65rem !important;
+    border-radius: 5px !important;
+  }
+}
+
 /* ─── Premium Schema Reference Card — light theme ─── */
 .schema-ref {
   background: #F8FAFC;
