@@ -1,0 +1,142 @@
+{
+  "day01_New_Day1Part1audio01": {
+    "audioPath": "New_Day1Part1audio01.mp3",
+    "eventsPath": "New_Day1Part1audio01.events.json",
+    "durationMs": 15600
+  },
+  "day01_New_Day1Part1audio02": {
+    "audioPath": "New_Day1Part1audio02.mp3",
+    "eventsPath": "New_Day1Part1audio02.events.json",
+    "durationMs": 8800
+  },
+  "day01_New_Day1Part1audio03": {
+    "audioPath": "New_Day1Part1audio03.mp3",
+    "eventsPath": "New_Day1Part1audio03.events.json",
+    "durationMs": 20300
+  },
+  "day01_New_Day1Part1audio04": {
+    "audioPath": "New_Day1Part1audio04.mp3",
+    "eventsPath": "New_Day1Part1audio04.events.json",
+    "durationMs": 22000
+  },
+  "day01_New_Day1Part1audio05": {
+    "audioPath": "New_Day1Part1audio05.mp3",
+    "eventsPath": "New_Day1Part1audio05.events.json",
+    "durationMs": 12000
+  },
+  "day01_New_Day1Part1audio06": {
+    "audioPath": "New_Day1Part1audio06.mp3",
+    "eventsPath": "New_Day1Part1audio06.events.json",
+    "durationMs": 12000
+  },
+  "day01_New_Day1Part1audio07": {
+    "audioPath": "New_Day1Part1audio07.mp3",
+    "eventsPath": "New_Day1Part1audio07.events.json",
+    "durationMs": 12000
+  },
+  "day01_New_Day1Part1audio08": {
+    "audioPath": "New_Day1Part1audio08.mp3",
+    "eventsPath": "New_Day1Part1audio08.events.json",
+    "durationMs": 12000
+  },
+  "day01_New_Day1Part1audio09": {
+    "audioPath": "New_Day1Part1audio09.mp3",
+    "eventsPath": "New_Day1Part1audio09.events.json",
+    "durationMs": 18000
+  },
+  "day01_New_Day1Part1audio10": {
+    "audioPath": "New_Day1Part1audio10.mp3",
+    "eventsPath": "New_Day1Part1audio10.events.json",
+    "durationMs": 22000
+  },
+  "day01_New_Day1Part1audio11": {
+    "audioPath": "New_Day1Part1audio11.mp3",
+    "eventsPath": "New_Day1Part1audio11.events.json",
+    "durationMs": 18000
+  },
+  "day01_New_Day1Part1audio12": {
+    "audioPath": "New_Day1Part1audio12.mp3",
+    "eventsPath": "New_Day1Part1audio12.events.json",
+    "durationMs": 18000
+  },
+  "day01_New_Day1Part1audio13": {
+    "audioPath": "New_Day1Part1audio13.mp3",
+    "eventsPath": "New_Day1Part1audio13.events.json",
+    "durationMs": 18000
+  },
+  "day01_New_Day1Part1audio14": {
+    "audioPath": "New_Day1Part1audio14.mp3",
+    "eventsPath": "New_Day1Part1audio14.events.json",
+    "durationMs": 10000
+  },
+  "day01_New_Day1Part1audio15": {
+    "audioPath": "New_Day1Part1audio15.mp3",
+    "eventsPath": "New_Day1Part1audio15.events.json",
+    "durationMs": 12000
+  },
+  "day01_New_Day1Part1audio16": {
+    "audioPath": "New_Day1Part1audio16.mp3",
+    "eventsPath": "New_Day1Part1audio16.events.json",
+    "durationMs": 18000
+  },
+  "day01_New_Day1Part1audio17": {
+    "audioPath": "New_Day1Part1audio17.mp3",
+    "eventsPath": "New_Day1Part1audio17.events.json",
+    "durationMs": 10000
+  },
+  "day01_New_Day1Part1audio18": {
+    "audioPath": "New_Day1Part1audio18.mp3",
+    "eventsPath": "New_Day1Part1audio18.events.json",
+    "durationMs": 10000
+  },
+  "day01_New_Day1Part1audio19": {
+    "audioPath": "New_Day1Part1audio19.mp3",
+    "eventsPath": "New_Day1Part1audio19.events.json",
+    "durationMs": 10000
+  },
+  "day01_New_Day1Part1audio20": {
+    "audioPath": "New_Day1Part1audio20.mp3",
+    "eventsPath": "New_Day1Part1audio20.events.json",
+    "durationMs": 10000
+  },
+  "day01_New_Day1Part1audio21": {
+    "audioPath": "New_Day1Part1audio21.mp3",
+    "eventsPath": "New_Day1Part1audio21.events.json",
+    "durationMs": 10000
+  },
+  "day01_New_Day1Part1audio22": {
+    "audioPath": "New_Day1Part1audio22.mp3",
+    "eventsPath": "New_Day1Part1audio22.events.json",
+    "durationMs": 28000
+  },
+  "day01_New_Day1Part1audio23": {
+    "audioPath": "New_Day1Part1audio23.mp3",
+    "eventsPath": "New_Day1Part1audio23.events.json",
+    "durationMs": 30000
+  },
+  "day01_New_Day1Part1audio24": {
+    "audioPath": "New_Day1Part1audio24.mp3",
+    "eventsPath": "New_Day1Part1audio24.events.json",
+    "durationMs": 35000
+  },
+  "day01_New_Day1Part1audio25": {
+    "audioPath": "New_Day1Part1audio25.mp3",
+    "eventsPath": "New_Day1Part1audio25.events.json",
+    "durationMs": 25000
+  },
+  "day01_New_Day1Part1Question01": {
+    "audioPath": "New_Day1Part1Question01.mp3",
+    "eventsPath": "New_Day1Part1Question01.events.json",
+    "durationMs": 184000
+  },
+  "day01_New_Day1Part1Question02": {
+    "audioPath": "New_Day1Part1Question02.mp3",
+    "eventsPath": "New_Day1Part1Question02.events.json",
+    "durationMs": 300000
+  },
+  "day01_New_Day1Part1Question03": {
+    "audioPath": "New_Day1Part1Question03.mp3",
+    "eventsPath": "New_Day1Part1Question03.events.json",
+    "durationMs": 384000
+  }
+}
