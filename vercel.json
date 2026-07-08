@@ -141,5 +141,11 @@
       "destination": "/landing_v2/excel-course.html",
       "permanent": false
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/notebook/sql-day01",
+      "destination": "/Version-3/index.html"
+    }
   ]
 }

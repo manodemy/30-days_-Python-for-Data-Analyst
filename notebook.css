@@ -3372,7 +3372,6 @@ a[href*="referral-earnings"] {
     -webkit-overflow-scrolling: touch !important;
   }
 }
-
 @media (max-width: 400px) {
   .cell-actions {
     flex-direction: column !important;
@@ -3383,3 +3382,39 @@ a[href*="referral-earnings"] {
   }
 }
 
+/* --- Narrow Mobile Top Bar and Profile Dropdown Fixes --- */
+
+/* Prevent top-bar button text from overflowing on narrow phones */
+@media (max-width: 380px) {
+  .scorecard-btn {
+    font-size: 0 !important;
+    padding: 0 !important;
+    width: 32px !important;
+    height: 32px !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    border-radius: 50% !important;
+  }
+  .start-coding-btn, #navStartCodingBtn {
+    font-size: 0 !important;
+    padding: 0 !important;
+    width: 32px !important;
+    height: 32px !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    border-radius: 50% !important;
+  }
+  .scorecard-btn svg, .start-coding-btn svg, #navStartCodingBtn svg {
+    margin-right: 0 !important;
+  }
+}
+
+/* Center and bound-limit user profile card dropdown on mobile viewports */
+@media (max-width: 480px) {
+  .profile-card {
+    left: 16px !important;
+    right: 16px !important;
+    width: auto !important;
+    max-width: calc(100vw - 32px) !important;
+  }
+}

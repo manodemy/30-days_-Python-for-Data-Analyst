@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manodemy — Day 01: Introduction to SQL & Databases</title>
+  <meta name="description" content="Interactive SQL learning sandbox with Scrimba-style recording, presentation slides, and a timed test portal.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- CodeMirror 5 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="/Version-3/styles.css?v=11.7">
+
+  <!-- CodeMirror JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/sql-hint.min.js"></script>
+
+  <!-- SQL.js WASM -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+</head>
+<body>
+
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <header class="header">
+    <div class="header-left">
+      <!-- User Profile Avatar with active green dot -->
+      <div class="user-profile">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="User Profile" class="avatar-img" />
+        <span class="active-dot"></span>
+      </div>
+      
+      <!-- Graded Stats Card with Progress Indicator -->
+      <div class="stats-card">
+        <div class="stats-row">
+          <div class="stats-item">
+            <span class="stats-label">SOLVED</span>
+            <span class="stats-value"><span id="solvedCount">0</span><span class="stats-total"> / <span id="totalQuestions">2</span></span></span>
+          </div>
+          <div class="stats-divider"></div>
+          <div class="stats-item">
+            <span class="stats-label">MARKS</span>
+            <span class="stats-value"><span id="marksCount">0.0</span><span class="stats-total"> / <span id="totalMarks">2.0</span></span></span>
+          </div>
+        </div>
+        <div class="stats-progress-bar">
+          <div class="stats-progress-fill" id="statsProgressFill" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <!-- Day Selector Dropdown & Topic Selector Dropdown -->
+      <div class="day-navigation">
+        <div class="day-picker-pill">
+          <span class="day-picker-dot day-picker-dot--day"></span>
+          <select id="daySelect">
+            <option value="day01" selected>Day 01</option>
+            <option value="day02">Day 02</option>
+            <option value="day03">Day 03</option>
+            <option value="day04">Day 04</option>
+          </select>
+          <span class="day-picker-chevron">
+            <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <div class="day-picker-pill topic-picker-pill">
+          <span class="day-picker-dot day-picker-dot--topic"></span>
+          <select id="topicSelect" onchange="onTopicSelectChange(this.value)">
+            <!-- Populated dynamically -->
+          </select>
+          <span class="day-picker-chevron">
+            <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <button class="hdr-btn hdr-btn--autoplay" id="navPlayBtn" onclick="toggleCombinedPlayback()" title="Play lecture narration" style="display: none;">
+          <span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button class="hdr-btn hdr-btn--test" id="takeTestBtn" onclick="openTestPortal()" title="Take the day test">🧪 Take Test</button>
+      <button class="hdr-btn hdr-btn--score" id="scoreBtn" onclick="openScoreCard()" title="View Score Card">
+        <svg class="score-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right: 4px;"><path d="M1.5 1.5H5.5V5.5H1.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 1.5H12.5V5.5H8.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 8.5H5.5V12.5H1.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8.5H12.5V12.5H8.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Score Card
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════ SPLIT WORKSPACE ═══════════════ -->
+  <div class="workspace">
+
+
+    <!-- ─── LEFT PANEL ─── -->
+    <div class="panel-left" id="panelLeft">
+
+      <!-- Question Prompt -->
+      <div class="question-bar" id="questionBar">
+        <div class="q-marker"></div>
+        <div class="question-prompt" id="questionPrompt">
+          Q1. Write a query to retrieve all columns and all rows from the <code>employees</code> table.
+        </div>
+        <button class="audio-play-btn" id="questionAudioBtn" onclick="playQuestionAudio(this)" title="Play question narration" style="flex-shrink: 0; margin-top: 2px;">
+          <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="q-nav">
+          <button onclick="prevQuestion()" title="Previous question">◀</button>
+          <button onclick="nextQuestion()" title="Next question">▶</button>
+        </div>
+      </div>
+
+      <!-- Editor Area -->
+      <div class="editor-area">
+        <!-- Toolbar -->
+        <div class="editor-toolbar">
+          <span class="q-counter" id="qCounter">Question-01</span>
+          <button class="audio-play-btn" id="solutionAudioBtn" onclick="playSolutionAudioFromBtn(this)" title="Play solution narration" style="margin-left: 6px;">
+            <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="tb-btn tb-btn--tables" id="peekTrigger" onclick="togglePeekPopover(event)">📊 Tables</button>
+          <div class="spacer"></div>
+          <button class="tb-btn tb-btn--run" id="runBtn" onclick="runCurrentQuery()">▶ Run</button>
+          <button class="tb-btn tb-btn--clear" onclick="clearEditor()">✕ Clear</button>
+        </div>
+
+        <!-- CodeMirror Mount -->
+        <div class="editor-wrap" id="mainEditorWrap"></div>
+
+        <!-- Output Terminal -->
+        <div class="output-section" id="mainOutput">
+          <div class="output-label">Terminal Output</div>
+          <span class="output-success">System: SQLite database ready. Table 'employees' loaded.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── DIVIDER ─── -->
+    <div class="divider" id="divider">
+      <div class="divider-toggles">
+        <button class="div-toggle-btn div-toggle-btn--left" onclick="toggleLeftPanel(event)" title="Toggle code cell">◀</button>
+        <button class="div-toggle-btn div-toggle-btn--split" onclick="resetSplitScreen(event)" title="Reset split screen">◫</button>
+        <button class="div-toggle-btn div-toggle-btn--right" onclick="toggleRightPanel(event)" title="Toggle notes panel">▶</button>
+      </div>
+    </div>
+
+    <!-- ─── RIGHT PANEL ─── -->
+    <div class="panel-right" id="panelRight">
+
+      <div class="right-content" id="rightContent">
+
+        <!-- Slide Viewer -->
+        <div class="slide-viewer" id="slideViewer">
+          <div class="slide-card" style="position: relative;">
+            <div class="slide-header" id="slideHeader"></div>
+            <div class="slide-content" id="slideContent" style="position: relative; overflow-y: auto; min-height: 0;">
+              <!-- Canvas Overlay inside scrollable container -->
+              <canvas class="draw-canvas" id="workspaceDrawCanvas" style="position: absolute; top: 0; left: 0; z-index: 10;"></canvas>
+              <!-- Content container populated by JS -->
+              <div id="slideBodyText">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+            <!-- Subtitle/Narration Caption bubble inside workspace slide card -->
+            <div class="vp-caption" id="workspaceVpCaption" style="display: none; margin: 0; padding: 10px 16px; background: rgba(124, 58, 237, 0.08); border-top: 1px solid rgba(124, 58, 237, 0.2); font-size: 0.78rem; font-weight: 500; color: #a78bfa; text-align: center; font-family: sans-serif; flex-shrink: 0;">
+              📢 Narrating slide events...
+            </div>
+          </div>
+          <!-- Workspace Drawing Toolbar -->
+          <div class="ws-draw-toolbar" id="wsDrawToolbar" style="display: none;">
+            <button class="tool-btn" id="wsRectBtn" onclick="setWsDrawMode('rect')" title="Highlight with Rectangle Box">⬜ Highlight</button>
+            <button class="tool-btn" id="wsUndoBtn" onclick="undoLastHighlight()" title="Undo Last Highlight">↶ Undo</button>
+            <button class="tool-btn" id="wsClearBtn" onclick="clearWsDrawings()" title="Clear All Drawings">✕ Clear</button>
+          </div>
+        </div>
+
+        <!-- Playback Controls -->
+        <div class="playback-bar" id="playbackBar">
+          <div class="playback-row">
+            <button class="play-btn" id="playPauseBtn" onclick="toggleCombinedPlayback()">▶</button>
+            <div class="speed-btns">
+              <button class="speed-btn active" data-speed="1" onclick="setPlaybackSpeed(1, this)">1×</button>
+              <button class="speed-btn" data-speed="1.5" onclick="setPlaybackSpeed(1.5, this)">1.5×</button>
+              <button class="speed-btn" data-speed="2" onclick="setPlaybackSpeed(2, this)">2×</button>
+            </div>
+            <input type="range" class="seek-bar" id="seekBar" min="0" max="100" value="0" step="0.1" oninput="seekCombinedPlayback(this.value)">
+            <span class="playback-time" id="playbackTime">0:00 / 0:00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- ═══════════════ PEEK DATA POPOVER ═══════════════ -->
+  <div class="peek-popover" id="peekPopover">
+    <div class="peek-title">
+      <span>👀 Peek Data — </span><span id="peekTableName">employees</span>
+      <button class="peek-close" onclick="closePeekPopover()">✕</button>
+    </div>
+    <div id="peekContent">
+      <!-- Populated by JS with live query results -->
+    </div>
+  </div>
+
+  <!-- ═══════════════ PRESENT MODE OVERLAY ═══════════════ -->
+  <div class="present-overlay" id="presentOverlay">
+    <div class="present-toolbar">
+      <div class="present-tools">
+        <button class="tool-btn" id="laserBtn" onclick="toggleLaser()">🔴 Laser</button>
+        <button class="tool-btn" id="penBtn" onclick="togglePen()">✏️ Draw</button>
+      </div>
+      <button class="tool-btn tool-btn--close" onclick="closePresentMode()">✕ Close</button>
+    </div>
+
+    <div class="present-body">
+      <canvas class="draw-canvas" id="drawCanvas"></canvas>
+      <div class="present-slide slide-content" id="presentSlideContent">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <div class="present-footer">
+      <button onclick="prevSlide()" title="Previous">◀</button>
+      <span class="present-counter" id="presentCounter">1 / 3</span>
+      <button onclick="nextSlide()" title="Next">▶</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TEST PORTAL MODAL ═══════════════ -->
+  <div class="test-overlay" id="testOverlay">
+    <div class="test-header">
+      <div class="test-header-left">
+        <!-- User Profile Avatar with active green dot -->
+        <div class="user-profile">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="User Profile" class="avatar-img" />
+          <span class="active-dot"></span>
+        </div>
+        
+        <!-- Test Progress Stats Card -->
+        <div class="stats-card">
+          <div class="stats-row">
+            <div class="stats-item">
+              <span class="stats-label">ATTEMPTED</span>
+              <span class="stats-value"><span id="testAttemptedCount">0</span><span class="stats-total"> / 25</span></span>
+            </div>
+            <div class="stats-divider"></div>
+            <div class="stats-item">
+              <span class="stats-label">BEST SCORE</span>
+              <span class="stats-value"><span id="testBestScoreCount">0</span><span class="stats-total"> / 25</span></span>
+            </div>
+          </div>
+          <div class="stats-progress-bar">
+            <div class="stats-progress-fill" id="testProgressFill" style="width: 0%; background: var(--cyan);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-header-center">
+        <div class="test-title">📝 Day 01 — SQL Interview Test</div>
+      </div>
+
+      <div class="test-header-right">
+        <!-- Score Card Button -->
+        <button class="hdr-btn hdr-btn--score" id="testScoreBtn" onclick="openTestScoreCard()" title="View Score Card">
+          <svg class="score-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right: 4px;"><path d="M1.5 1.5H5.5V5.5H1.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 1.5H12.5V5.5H8.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 8.5H5.5V12.5H1.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8.5H12.5V12.5H8.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Score Card
+        </button>
+        
+        <div class="test-timer-wrapper">
+          <span class="timer-icon">⏳</span>
+          <span class="test-timer" id="testTimer">120:00</span>
+        </div>
+        
+        <button class="test-close-btn" onclick="closeTestPortal()">✕ Exit Test</button>
+      </div>
+    </div>
+
+    <div class="test-body">
+      <!-- Sidebar -->
+      <div class="test-sidebar" id="testSidebar">
+        <!-- 25 buttons populated by JS -->
+      </div>
+
+      <!-- Main Test Area -->
+      <div class="test-main">
+        <div class="test-question-prompt" id="testQuestionPrompt">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="test-toolbar">
+          <span class="q-counter" id="testQCounter">Q1 / 25</span>
+          <div class="spacer" style="flex:1"></div>
+          <button class="tb-btn tb-btn--run" onclick="runTestQuery()">▶ Run</button>
+          <button class="tb-btn tb-btn--clear" onclick="clearTestEditor()">✕ Clear</button>
+        </div>
+
+        <div class="test-editor-wrap" id="testEditorWrap"></div>
+
+        <div class="test-output" id="testOutput">
+          <div class="output-label">Terminal Output</div>
+          <span class="output-success">Ready...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-submit-bar">
+      <span class="test-progress" id="testProgress">Attempted: 0 / 25</span>
+      <button class="test-submit-btn" id="submitTestBtn" onclick="submitTest()">Submit Test</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SCORECARD OVERLAY ═══════════════ -->
+  <div class="scorecard-overlay" id="scorecardOverlay">
+    <div class="scorecard">
+      <div class="scorecard-header">
+        <h2>📊 Test Results</h2>
+        <div class="score-big" id="scoreBig">0 / 25</div>
+        <div class="score-meta" id="scoreMeta">Time spent: 00:00</div>
+      </div>
+      <div class="scorecard-body">
+        <table class="scorecard-table" id="scorecardTable">
+          <thead>
+            <tr><th>#</th><th>Status</th><th>Your Query</th></tr>
+          </thead>
+          <tbody id="scorecardBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+      <div class="scorecard-footer">
+        <button class="scorecard-close-btn" onclick="closeScorecard()">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- App JS -->
+  <script src="/Version-3/scrimba-engine.js?v=11.7"></script>
+</body>
+</html>

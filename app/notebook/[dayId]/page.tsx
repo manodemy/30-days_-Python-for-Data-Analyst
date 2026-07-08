@@ -49,6 +49,10 @@ export async function generateMetadata({ params }: { params: { dayId: string } }
 export default async function NotebookPage({ params }: { params: { dayId: string } }) {
   const cleanDayId = params.dayId.endsWith('.html') ? params.dayId.replace('.html', '') : params.dayId;
 
+  if (cleanDayId === 'sql-day01') {
+    redirect('/Version-3/index.html');
+  }
+
   // ── Input Validation: block path traversal & invalid dayId formats ──────────
   const dayIdPattern = /^(day(0[1-9]|[12][0-9]|30)|sql-day(0[1-9]|1[0-8])|excel-day(0[1-9]|1[0-2]))$/;
   if (!dayIdPattern.test(cleanDayId)) {
