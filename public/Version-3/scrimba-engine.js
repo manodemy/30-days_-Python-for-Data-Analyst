@@ -4035,7 +4035,24 @@ function showTapToPlayFallback(index) {
     overlay.remove();
     loadAndPlayTrack(index);
   };
+function updateProgressUI() {
+  const seekBar = document.getElementById('seekBar');
+  const playbackTime = document.getElementById('playbackTime');
+  if (seekBar) {
+    seekBar.max = totalCombinedDuration || 100;
+    seekBar.value = currentCombinedTime;
+  }
+  if (playbackTime) {
+    playbackTime.textContent = `${formatTime(currentCombinedTime)} / ${formatTime(totalCombinedDuration)}`;
+  }
 }
+
+function formatTime(secs) {
+  const m = Math.floor(secs / 60);
+  const s = Math.floor(secs % 60);
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
 function onNarrationSegmentEnded(index, events) {
   if (index !== combinedTrackIndex) return;
 
