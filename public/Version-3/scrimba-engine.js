@@ -4035,6 +4035,16 @@ function showTapToPlayFallback(index) {
     overlay.remove();
     loadAndPlayTrack(index);
   };
+}
+
+function toggleCombinedPlayback() {
+  if (isCombinedPlaying) {
+    pauseCombinedPlayback();
+  } else {
+    playCombinedPlayback();
+  }
+}
+
 function updateProgressUI() {
   const seekBar = document.getElementById('seekBar');
   const playbackTime = document.getElementById('playbackTime');
