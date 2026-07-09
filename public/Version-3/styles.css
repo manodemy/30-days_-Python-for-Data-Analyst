@@ -1974,6 +1974,11 @@ a { color: var(--cyan); text-decoration: none; }
   border: 0;
 }
 
+/* Mobile Tab Navigation Bar */
+.mobile-tabs-nav {
+  display: none;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    RESPONSIVE DESIGN (MOBILE VIEW)
    ═══════════════════════════════════════════════════════════════ */
@@ -2057,43 +2062,91 @@ a { color: var(--cyan); text-decoration: none; }
     overflow: hidden !important;
   }
 
-  /* Notes section at the top (order: 1) */
+  /* Mobile Tab Navigation Bar */
+  .mobile-tabs-nav {
+    display: flex !important;
+    background: #0b0f1a;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    height: 42px;
+    align-items: center;
+    width: 100%;
+    justify-content: stretch;
+    flex-shrink: 0;
+    z-index: 90;
+  }
+  
+  .mobile-tab-btn {
+    flex: 1;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-bottom: 2px solid transparent;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  
+  .mobile-tab-btn:hover {
+    color: #f1f5f9;
+  }
+  
+  .mobile-tab-btn.active {
+    color: #00e6f6;
+    border-bottom-color: #00e6f6;
+    background: rgba(0, 230, 246, 0.03);
+  }
+
+  /* Full screen view rules for tabs on mobile */
+  .workspace {
+    position: relative;
+    height: calc(100vh - 52px - 42px) !important;
+    flex-direction: column !important;
+  }
+
+  /* Default state on mobile is to show theory panel (Lesson) */
   .panel-right {
-    order: 1 !important;
+    display: flex !important;
     width: 100% !important;
-    height: auto !important;
-    flex-basis: 45%;
-    min-height: 180px;
-    border-bottom: 1px solid var(--border) !important;
+    height: 100% !important;
+    flex-basis: 100% !important;
     border-left: none !important;
+    border-bottom: none !important;
   }
 
-  /* Divider sits in the middle horizontally (order: 2) */
+  .panel-left,
   .divider {
-    order: 2 !important;
-    width: 100% !important;
-    height: 8px !important;
-    cursor: row-resize !important;
-    border-left: none !important;
-    border-right: none !important;
-    border-top: 1px solid var(--border) !important;
-    border-bottom: 1px solid var(--border) !important;
+    display: none !important;
   }
 
-  /* Stack buttons horizontally on the horizontal divider */
-  .divider-toggles {
-    flex-direction: row !important;
-    padding: 4px 8px !important;
-    gap: 8px !important;
+  /* Show practice panel rules */
+  .workspace.mobile-show-practice .panel-left {
+    display: flex !important;
+    width: 100% !important;
+    height: 100% !important;
+    flex-basis: 100% !important;
+    border-right: none !important;
+  }
+  .workspace.mobile-show-practice .panel-right {
+    display: none !important;
   }
 
-  /* Code section at the bottom (order: 3) */
-  .panel-left {
-    order: 3 !important;
+  /* Show theory panel rules explicitly */
+  .workspace.mobile-show-theory .panel-right {
+    display: flex !important;
     width: 100% !important;
-    flex-basis: 55%;
-    border-right: none !important;
-    min-height: 180px;
+    height: 100% !important;
+    flex-basis: 100% !important;
+  }
+  .workspace.mobile-show-theory .panel-left {
+    display: none !important;
   }
 
   /* Slide Notes responsiveness inside mobile view */

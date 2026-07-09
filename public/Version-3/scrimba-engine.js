@@ -3849,6 +3849,9 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     if (bar) bar.classList.add('question-playing');
     const slideContent = document.getElementById('slideContent');
     if (slideContent) slideContent.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Auto switch to SQL Sandbox tab on mobile
+    setMobileTab('practice');
 
   } else if (track.type === 'solution') {
     const targetQIdx = COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === track.qId);
@@ -3901,10 +3904,17 @@ async function loadAndPlayTrack(index, targetTime = 0) {
       // Clean up table scroll when active track ends
       audio.addEventListener('ended', () => { if (tableScrollInterval) clearInterval(tableScrollInterval); }, { once: true });
     }
+
+    // Auto switch to SQL Sandbox tab on mobile
+    setMobileTab('practice');
+    
   } else {
     const bar = document.getElementById('questionBar');
     if (bar) bar.classList.remove('question-playing');
     scrollToTarget(track.target);
+
+    // Auto switch to Lesson Theory tab on mobile
+    setMobileTab('theory');
   }
 
   // Setup Media Session API
@@ -4144,141 +4154,32 @@ async function syncCombinedToTrack(srcFilename) {
   if (idx === -1) return null;
   await loadAndPlayTrack(idx);
   return activeAudioInstance;
-}rval);
-    cancelTypewriter();
-    // Remove question bar highlight
-    const bar = document.getElementById('questionBar');
-    if (bar) bar.classList.remove('question-playing');
-  }
 }
 
-function startProgressLoop() {
-  if (playProgressInterval) clearInterval(playProgressInterval);
-  playProgressInterval = setInterval(() => {
-    if (!isCombinedPlaying) return;
+// Dynamic mobile tab toggle
+function setMobileTab(tab) {
+  const container = document.getElementById('workspaceContainer');
+  const btnTheory = document.getElementById('tabBtnTheory');
+  const btnPractice = document.getElementById('tabBtnPractice');
+  
+  if (!container) return;
+  
+  if (tab === 'theory') {
+    container.classList.remove('mobile-show-practice');
+    container.classList.add('mobile-show-theory');
+    if (btnTheory) btnTheory.classList.add('active');
+    if (btnPractice) btnPractice.classList.remove('active');
+  } else if (tab === 'practice') {
+    container.classList.remove('mobile-show-theory');
+    container.classList.add('mobile-show-practice');
+    if (btnPractice) btnPractice.classList.add('active');
+    if (btnTheory) btnTheory.classList.remove('active');
     
-    // Calculate cumulative current time
-    let elapsed = 0;
-    for (let i = 0; i < combinedTrackIndex; i++) {
-      elapsed += combinedTrackDurations[i] || 0;
-    }
-    elapsed += combinedAudios[combinedTrackIndex].currentTime;
-    
-    currentCombinedTime = elapsed;
-    updateProgressUI();
-  }, 100);
-}
-
-function seekCombinedPlayback(val) {
-  initSlideNarration();
-  const targetTime = parseFloat(val);
-  
-  // Find which track this targetTime belongs to
-  let elapsed = 0;
-  let trackIdx = 0;
-  let localOffset = targetTime;
-  
-  for (let i = 0; i < combinedTrackDurations.length; i++) {
-    const dur = combinedTrackDurations[i];
-    if (targetTime < elapsed + dur) {
-      trackIdx = i;
-      localOffset = targetTime - elapsed;
-      break;
-    }
-    elapsed += dur;
-    if (i === combinedTrackDurations.length - 1) {
-      // Caps at the very end
-      trackIdx = i;
-      localOffset = dur - 0.1;
-    }
-  }
-  
-  // Pause currently active audio if it is different
-  if (combinedTrackIndex !== trackIdx) {
-    combinedAudios[combinedTrackIndex].pause();
-    combinedAudios[combinedTrackIndex].currentTime = 0;
-  }
-  
-  combinedTrackIndex = trackIdx;
-  combinedAudios[combinedTrackIndex].currentTime = localOffset;
-  currentCombinedTime = targetTime;
-  
-  if (isCombinedPlaying) {
-    combinedAudios[combinedTrackIndex].play();
-    scrollToTarget(combinedTracks[combinedTrackIndex].target);
-    updatePlayButtonStates(true);
-  } else {
-    updateProgressUI();
-  }
-}
-
-function scrollToTarget(selector) {
-  const container = document.getElementById('slideContent');
-  const targetEl = container ? container.querySelector(selector) : null;
-  if (targetEl && container) {
-    const containerRect = container.getBoundingClientRect();
-    const targetRect = targetEl.getBoundingClientRect();
-    const relativeTop = targetRect.top - containerRect.top + container.scrollTop;
-    container.scrollTo({
-      top: relativeTop - 15, // scroll with a nice padding
-      behavior: 'smooth'
-    });
-  }
-}
-
-function playAudio(src, btn) {
-  initSlideNarration();
-  
-  // Find track index
-  const idx = combinedTracks.findIndex(t => t.src === src);
-  if (idx === -1) {
-    // Fallback if audio file is not part of autoplay narration
-    const audioSrc = src.startsWith('http') || src.startsWith('/') ? src : `/Version-3/${src}`;
-    if (currentPlayingAudio && currentPlayingAudio.src.endsWith(src)) {
-      if (currentPlayingAudio.paused) {
-        currentPlayingAudio.play();
-        btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
-        btn.classList.add('playing');
-      } else {
-        currentPlayingAudio.pause();
-        btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
-        btn.classList.remove('playing');
+    // Refresh CodeMirror when visual display toggles
+    setTimeout(() => {
+      if (typeof mainEditor !== 'undefined' && mainEditor) {
+        mainEditor.refresh();
       }
-    } else {
-      if (currentPlayingAudio) {
-        currentPlayingAudio.pause();
-        if (currentPlayingBtn) {
-          currentPlayingBtn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
-          currentPlayingBtn.classList.remove('playing');
-        }
-      }
-      currentPlayingAudio = new Audio(audioSrc);
-      currentPlayingBtn = btn;
-      currentPlayingAudio.play();
-      btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
-      btn.classList.add('playing');
-      currentPlayingAudio.onended = () => {
-        btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
-        btn.classList.remove('playing');
-        currentPlayingAudio = null;
-        currentPlayingBtn = null;
-      };
-    }
-    return;
-  }
-  
-  // It is part of autoplay narration!
-  if (combinedTrackIndex === idx) {
-    toggleCombinedPlayback();
-  } else {
-    // Stop current track
-    if (isCombinedPlaying) {
-      combinedAudios[combinedTrackIndex].pause();
-    }
-    combinedAudios[combinedTrackIndex].currentTime = 0;
-    
-    combinedTrackIndex = idx;
-    combinedAudios[combinedTrackIndex].currentTime = 0;
-    playCombinedPlayback();
+    }, 50);
   }
 }

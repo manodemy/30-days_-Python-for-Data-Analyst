@@ -101,8 +101,18 @@
     </div>
   </header>
 
+  <!-- ═══════════════ MOBILE TAB NAVIGATION ═══════════════ -->
+  <div class="mobile-tabs-nav" id="mobileTabsNav">
+    <button class="mobile-tab-btn active" id="tabBtnTheory" onclick="setMobileTab('theory')">
+      📖 Lesson
+    </button>
+    <button class="mobile-tab-btn" id="tabBtnPractice" onclick="setMobileTab('practice')">
+      💻 Practice
+    </button>
+  </div>
+
   <!-- ═══════════════ SPLIT WORKSPACE ═══════════════ -->
-  <div class="workspace">
+  <div class="workspace mobile-show-theory" id="workspaceContainer">
 
 
     <!-- ─── LEFT PANEL ─── -->
