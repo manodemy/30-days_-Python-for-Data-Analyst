@@ -2510,8 +2510,10 @@ function seekPlayback(value) {
 }
 
 function setPlaybackSpeed(speed, btn) {
-  if (!playbackAudio) return;
-  playbackAudio.playbackRate = speed;
+  // Apply speed to whichever audio system is currently active.
+  // activeAudioInstance = lesson narration; playbackAudio = recording playback.
+  if (activeAudioInstance) activeAudioInstance.playbackRate = speed;
+  if (playbackAudio) playbackAudio.playbackRate = speed;
   document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
@@ -3411,6 +3413,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   try {
     await initDatabase();
     initMainEditor();
+    // Eagerly load the manifest so accurate durations are available immediately
+    // and updateProgressUI() can show the correct total time on first render.
+    loadManifest().catch(() => {}); // Non-blocking — fallback durations already set
     renderSideSlide();
     initSlideContentObserver();
     resizeWsCanvas();
@@ -3689,10 +3694,11 @@ let currentPlayingBtn = null;
 
 let isCombinedPlaying = false;
 let currentCombinedTime = 0;
-let totalCombinedDuration = 0;
+let totalCombinedDuration = 0; // Will be set immediately after combinedTrackDurations is defined
 let combinedTrackIndex = 0;
 let combinedAudios = [];
-let combinedTrackDurations = [15.6, 8.8, 20.3, 22.0, 12.0, 12.0, 12.0, 12.0, 18.0, 22.0, 18.0, 18.0, 18.0, 10.0, 12.0, 18.0, 10.0, 10.0, 10.0, 10.0, 10.0, 28.0, 30.0, 35.0, 25.0]; // Hardcoded default fallback
+let playProgressInterval = null;
+let combinedTrackDurations = [23.4, 14.1, 20.4, 11.1, 8.4, 9.5, 12.1, 9.2, 17.9, 22.2, 21.8, 24.7, 13.2, 3.8, 9.5, 5.4, 7.8, 11.4, 12.3, 13.3, 11.3, 25.7, 26.1, 31.8, 20.5, 9.3, 16.6, 21.8]; // Hardcoded default fallback (28 entries matching 28 combinedTracks)
 let combinedTracks = [
   { src: 'New_Day1Part1audio01.mp3', target: '#rdbmsIntro', title: 'What is RDBMS?' },
   { src: 'New_Day1Part1audio02.mp3', target: '#whyRdbms', title: 'Why Relational Databases?' },
@@ -3727,6 +3733,10 @@ let combinedTracks = [
 
 const AUDIO_CDN_BASE = "/Version-3";
 let manifest = {};
+
+// Compute totalCombinedDuration immediately from hardcoded fallbacks so the
+// progress bar shows a real duration even before the manifest has loaded.
+totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
 let activeAudioInstance = null;
 let currentGeneration = 0;
 let nextTrackPrefetch = null;
@@ -3951,6 +3961,7 @@ async function loadAndPlayTrack(index, targetTime = 0) {
   audio.play()
     .then(() => {
       hasCompletedFirstGestureBoundPlay = true;
+      isCombinedPlaying = true;
       updatePlayButtonStates(true);
     })
     .catch((err) => {
@@ -4210,3 +4221,112 @@ function setMobileTab(tab) {
     }, 50);
   }
 }
+
+// Missing audio orchestration functions
+function initSlideNarration() {
+  // Kick off a manifest load so loadAndPlayTrack() gets accurate paths/durations.
+  loadManifest().catch(() => {});
+
+  // Populate combinedAudios[] — required by syncCombinedToTrack(), playQuestionAudio()
+  // and playSolutionAudio() which address individual tracks by index.
+  if (combinedAudios && combinedAudios.length > 0) return;
+  combinedAudios = combinedTracks.map(track => {
+    const trackId = `day01_${track.src.replace('.mp3', '')}`;
+    const entry = manifest[trackId] || { audioPath: track.src };
+    const url = getAudioUrl(entry);
+    const audio = new Audio(url);
+    audio.preload = "none"; // lazy — don't pre-download all 28 files on page load
+    return audio;
+  });
+}
+
+function startProgressLoop() {
+  if (playProgressInterval) clearInterval(playProgressInterval);
+  playProgressInterval = setInterval(() => {
+    updateProgressUI();
+  }, 250);
+}
+
+function updatePlayButtonStates(isPlaying) {
+  const navBtn = document.getElementById('navPlayBtn');
+  if (navBtn) {
+    if (isPlaying) {
+      navBtn.innerHTML = `<span class="btn-icon">⏸</span> <span class="btn-text">Pause Lesson</span>`;
+      navBtn.classList.add('playing');
+    } else {
+      navBtn.innerHTML = `<span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>`;
+      navBtn.classList.remove('playing');
+    }
+  }
+
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  if (playPauseBtn) {
+    playPauseBtn.textContent = isPlaying ? '⏸' : '▶';
+  }
+
+  const activeTrack = combinedTracks[combinedTrackIndex];
+  const activeSrc = activeTrack ? activeTrack.src : '';
+
+  document.querySelectorAll('.audio-play-btn').forEach(btn => {
+    const onclickStr = btn.getAttribute('onclick') || '';
+    
+    // For playAudio('filename.mp3', this)
+    if (onclickStr.includes('playAudio')) {
+      const match = onclickStr.match(/playAudio\(['"]([^'"]+)['"]/);
+      if (match) {
+        const btnSrc = match[1];
+        if (activeSrc && activeSrc === btnSrc && isPlaying) {
+          btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+          btn.classList.add('playing');
+        } else {
+          btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+          btn.classList.remove('playing');
+        }
+      }
+    }
+    
+    // For playQuestionAudio(this)
+    if (onclickStr.includes('playQuestionAudio')) {
+      if (activeTrack && activeTrack.type === 'question' && isPlaying) {
+        btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+        btn.classList.add('playing');
+      } else {
+        btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+        btn.classList.remove('playing');
+      }
+    }
+
+    // For playSolutionAudioFromBtn(this)
+    if (onclickStr.includes('playSolutionAudioFromBtn')) {
+      if (activeTrack && activeTrack.type === 'solution' && isPlaying) {
+        btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+        btn.classList.add('playing');
+      } else {
+        btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+        btn.classList.remove('playing');
+      }
+    }
+  });
+}
+
+function playCombinedPlayback() {
+  isCombinedPlaying = true;
+  if (activeAudioInstance) {
+    activeAudioInstance.play()
+      .then(() => {
+        updatePlayButtonStates(true);
+      })
+      .catch(err => console.log('Combined play error:', err));
+  } else {
+    loadAndPlayTrack(combinedTrackIndex);
+  }
+}
+
+function pauseCombinedPlayback() {
+  isCombinedPlaying = false;
+  if (activeAudioInstance) {
+    activeAudioInstance.pause();
+  }
+  updatePlayButtonStates(false);
+}
+
