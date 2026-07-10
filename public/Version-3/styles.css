@@ -1988,7 +1988,7 @@ a { color: var(--cyan); text-decoration: none; }
     flex-direction: column !important;
   }
 
-  /* Header layout updates on mobile view */
+  /* Header layout updates on mobile view to support 2 ultra-slim rows */
   .header {
     height: auto !important;
     display: grid !important;
@@ -1996,133 +1996,219 @@ a { color: var(--cyan); text-decoration: none; }
       "center center"
       "left right" !important;
     grid-template-columns: 1fr auto !important;
-    gap: 8px 12px !important;
-    padding: 8px 12px !important;
+    gap: 4px 8px !important;
+    padding: 4px 8px !important;
+    background: var(--surface) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
   }
   .header-left {
     grid-area: left !important;
     width: auto !important;
     justify-content: flex-start !important;
-    gap: 8px !important;
+    align-items: center !important;
+    gap: 6px !important;
   }
   .header-center {
     grid-area: center !important;
     width: 100% !important;
     display: flex !important;
-    justify-content: flex-start !important;
+    justify-content: space-between !important;
     align-items: center !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+    padding-bottom: 4px !important;
+    margin-bottom: 2px !important;
   }
   .day-navigation {
     display: flex !important;
     width: 100% !important;
-    justify-content: flex-start !important;
+    justify-content: space-between !important;
     align-items: center !important;
-    gap: 6px !important;
+    gap: 4px !important;
   }
   .header-right {
     grid-area: right !important;
     width: auto !important;
     display: flex !important;
     justify-content: flex-end !important;
-    gap: 6px !important;
+    align-items: center !important;
+    gap: 4px !important;
   }
+  
+  /* Buttons in Row 2 header */
   .header-right .hdr-btn {
     flex: 0 1 auto !important;
     white-space: nowrap !important;
-    padding: 5px 8px !important;
-    font-size: 0.72rem !important;
-    gap: 4px !important;
-  }
-  .stats-card {
-    padding: 4px 8px !important;
-    gap: 2px !important;
-  }
-  .stats-row {
-    gap: 8px !important;
-  }
-  .stats-label {
-    font-size: 0.52rem !important;
-  }
-  .stats-value {
-    font-size: 0.78rem !important;
-  }
-  .stats-total {
+    padding: 3px 6px !important;
     font-size: 0.68rem !important;
+    gap: 2px !important;
+    height: 20px !important;
+    border-radius: 4px !important;
+    line-height: 1 !important;
   }
-  .stats-divider {
-    height: 14px !important;
-  }
-  .day-nav-btn {
-    width: 28px !important;
-    height: 28px !important;
-  }
-  .day-picker-pill {
-    padding: 4px 8px 4px 6px !important;
-    gap: 6px !important;
-  }
-  .day-pill-badge {
-    padding: 2px 6px !important;
-    font-size: 0.65rem !important;
-  }
-  #daySelect {
-    max-width: 80px !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-  }
-  #topicSelect {
-    max-width: 150px !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
+  .hdr-btn--score svg {
+    width: 10px !important;
+    height: 10px !important;
+    margin-right: 2px !important;
   }
 
-  /* Mobile Tab Navigation Bar */
+  /* Compact flat stats row instead of card on mobile */
+  .stats-card {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    gap: 4px !important;
+    box-shadow: none !important;
+  }
+  .stats-row {
+    gap: 6px !important;
+  }
+  .stats-item {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 2px !important;
+  }
+  .stats-label {
+    font-size: 0.55rem !important;
+    color: var(--text-muted) !important;
+  }
+  .stats-value {
+    font-size: 0.72rem !important;
+  }
+  .stats-total {
+    font-size: 0.65rem !important;
+  }
+  .stats-divider {
+    height: 10px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+  .stats-progress-bar {
+    display: none !important; /* Hide to gain vertical space */
+  }
+
+  /* Compact selectors in Row 1 header */
+  .day-picker-pill {
+    padding: 2px 14px 2px 6px !important;
+    gap: 4px !important;
+    height: 22px !important;
+    border-radius: 12px !important;
+    font-size: 0.72rem !important;
+  }
+  .day-picker-dot {
+    width: 5px !important;
+    height: 5px !important;
+  }
+  .day-picker-chevron {
+    right: 5px !important;
+  }
+  .day-picker-chevron svg {
+    width: 6px !important;
+    height: 4px !important;
+  }
+  .day-pill-badge {
+    padding: 1px 4px !important;
+    font-size: 0.62rem !important;
+  }
+  #daySelect {
+    max-width: 60px !important;
+    font-size: 0.72rem !important;
+  }
+  #topicSelect {
+    max-width: 130px !important;
+    font-size: 0.72rem !important;
+  }
+
+  /* Row 1 Autoplay Play Lesson Button */
+  .hdr-btn--autoplay {
+    padding: 2px 8px !important;
+    font-size: 0.7rem !important;
+    height: 22px !important;
+    border-radius: 11px !important;
+    gap: 2px !important;
+  }
+  .hdr-btn--autoplay .btn-icon {
+    font-size: 0.65rem !important;
+  }
+
+  /* Compact User Profile Avatar */
+  .user-profile {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .active-dot {
+    width: 6px !important;
+    height: 6px !important;
+    border-width: 1px !important;
+  }
+
+  /* Mobile Tab Navigation — Floating icon-only overlay vertically centered on screen edges */
   .mobile-tabs-nav {
     display: flex !important;
-    background: #0b0f1a;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    height: 42px;
-    align-items: center;
-    width: 100%;
-    justify-content: stretch;
-    flex-shrink: 0;
-    z-index: 90;
+    position: fixed !important;
+    top: 50% !important; /* Vertically centered */
+    transform: translateY(-50%) !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: auto !important;
+    background: transparent !important;
+    border-bottom: none !important;
+    z-index: 200 !important;
+    pointer-events: none;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 !important;
   }
   
   .mobile-tab-btn {
-    flex: 1;
-    height: 100%;
-    background: transparent;
-    border: none;
+    pointer-events: auto;
+    flex: 0 0 auto !important;
+    width: 32px !important;
+    height: 48px !important; /* Elegant vertical tab shape */
+    background: rgba(8, 12, 21, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
     color: #64748b;
-    font-size: 0.82rem;
-    font-weight: 700;
+    font-size: 0 !important; /* Hide text labels */
     cursor: pointer;
     transition: all 0.2s ease;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    border-bottom: 2px solid transparent;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
+    padding: 0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  #tabBtnTheory {
+    border-left: none !important; /* Align flush to left edge */
+    border-radius: 0 8px 8px 0 !important; /* Curve on inner side only */
+  }
+
+  #tabBtnPractice {
+    border-right: none !important; /* Align flush to right edge */
+    border-radius: 8px 0 0 8px !important; /* Curve on inner side only */
   }
   
   .mobile-tab-btn:hover {
-    color: #f1f5f9;
+    background: rgba(8, 12, 21, 0.95) !important;
   }
   
   .mobile-tab-btn.active {
-    color: #00e6f6;
-    border-bottom-color: #00e6f6;
-    background: rgba(0, 230, 246, 0.03);
+    color: #00e6f6 !important;
+    border-color: rgba(0, 230, 246, 0.3) !important;
+    background: rgba(0, 230, 246, 0.15) !important;
+    box-shadow: 0 4px 14px rgba(0, 230, 246, 0.2) !important;
+  }
+
+  .tab-emoji {
+    display: inline !important;
+    font-size: 0.95rem !important; /* Slightly larger emoji for clean view */
+    line-height: 1 !important;
   }
 
   /* Full screen view rules for tabs on mobile */
   .workspace {
     position: relative;
-    height: calc(100vh - 52px - 42px) !important;
+    height: calc(100vh - 54px) !important; /* tabs no longer occupy a row */
     flex-direction: column !important;
   }
 
@@ -2164,9 +2250,32 @@ a { color: var(--cyan); text-decoration: none; }
     display: none !important;
   }
 
-  /* Slide Notes responsiveness inside mobile view */
+  /* Slide Content Area adjustments */
+  .slide-header {
+    padding: 12px 16px 0 16px !important;
+  }
+  .slide-header h2 {
+    font-size: 1rem !important;
+  }
   .slide-content {
-    padding: 16px !important;
+    padding: 12px 16px 50px 16px !important; /* padding-bottom offsets fixed playback bar */
+  }
+  .slide-content h3 {
+    font-size: 0.88rem !important;
+    margin: 12px 0 6px !important;
+  }
+  .slide-content p, 
+  .slide-content li {
+    font-size: 0.8rem !important;
+    line-height: 1.5 !important;
+    color: #334155 !important;
+  }
+  .slide-content code {
+    font-size: 0.75rem !important;
+  }
+  .slide-content pre {
+    font-size: 0.72rem !important;
+    padding: 8px 10px !important;
   }
   .slide-content .vs-block {
     grid-template-columns: 1fr !important;
@@ -2186,6 +2295,64 @@ a { color: var(--cyan); text-decoration: none; }
   .slide-content .flow-arrow .arrow-symbol {
     transform: rotate(90deg);
     display: inline-block;
+  }
+
+  /* Practice View elements height & spacing overrides */
+  .editor-area {
+    padding-bottom: 50px !important; /* padding-bottom offsets fixed playback bar */
+  }
+
+  /* Fixed slim bottom playback bar layout */
+  .playback-bar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    z-index: 9999 !important;
+    padding: 4px 10px !important;
+    background: rgba(8, 12, 21, 0.96) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    height: 34px !important;
+    box-sizing: border-box !important;
+    display: none;
+    flex-direction: row !important;
+    align-items: center !important;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4) !important;
+  }
+  .playback-bar.visible {
+    display: flex !important;
+  }
+  .playback-row {
+    gap: 8px !important;
+    height: 100% !important;
+    align-items: center !important;
+  }
+  .playback-row .play-btn {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.65rem !important;
+  }
+  .seek-bar {
+    height: 3px !important;
+  }
+  .seek-bar::-webkit-slider-thumb {
+    width: 10px !important;
+    height: 10px !important;
+  }
+  .playback-time {
+    font-size: 0.62rem !important;
+    min-width: auto !important;
+  }
+  .speed-btns {
+    gap: 2px !important;
+  }
+  .speed-btn {
+    padding: 1px 4px !important;
+    font-size: 0.6rem !important;
+    border-radius: 3px !important;
   }
 }
 
