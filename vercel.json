@@ -144,12 +144,8 @@
   ],
   "rewrites": [
     {
-      "source": "/notebook/sql-day01",
-      "destination": "/sql/day01.html"
-    },
-    {
-      "source": "/notebook/sql-day02",
-      "destination": "/sql/day02.html"
+      "source": "/notebook/sql-day:day(0[1-9]|1[0-8])",
+      "destination": "/sql/day:day.html"
     }
   ]
 }

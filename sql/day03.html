@@ -1,490 +1,461 @@
 <!DOCTYPE html>
-<html lang="en" data-course="sql">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 03: Pattern Matching & NULL Handling — SQL for Data Analyst — Manodemy</title>
-<meta name="description" content="Day 03: Pattern Matching & NULL Handling — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
-<meta name="robots" content="noindex, nofollow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 03: Pattern Matching & NULL Handling — SQL for Data Analyst — Manodemy</title>
+  <meta name="description" content="Day 03: Pattern Matching & NULL Handling — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
+  <meta name="robots" content="noindex, nofollow">
+<!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
-<!-- Performance: Preconnect to critical origins -->
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="dns-prefetch" href="https://erqoyvbuhmkyvcqgwcbz.supabase.co">
-<!-- Supabase SDK (deferred) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<!-- Authentication + Enrollment Route Guard -->
-<script>
-  document.addEventListener('DOMContentLoaded', async function PaywallGuard() {
-    const currentPath = window.location.pathname;
-    const isProtectedDay = currentPath.match(/day(0[3-9]|1[0-8])\.html/);
-    const removePreload = () => {
-      const p = document.getElementById('paywall-preload-screen');
-      if (p) p.remove();
-    };
-    if (!isProtectedDay) { removePreload(); return; }
-    try {
-      if (typeof window.supabase === 'undefined') {
-        window.location.href = '../index.html?reason=sdk_blocked'; return;
-      }
-      const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
-      const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
-      const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-      const { data: { session }, error } = await sb.auth.getSession();
-      if (error || !session) {
-        window.location.href = `../index.html?redirect=${encodeURIComponent(currentPath)}`; return;
-      }
-      const plan = session.user.user_metadata?.plan;
-      const isEnrolledLocal = localStorage.getItem('manodemy_enrolled') === 'true';
-      if (plan === 'pro' || isEnrolledLocal) { removePreload(); return; }
+  <!-- CodeMirror 5 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="/Version-3/styles.css?v=14.2">
+
+  <!-- CodeMirror JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/sql-hint.min.js"></script>
+
+  <!-- SQL.js WASM -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+
+
+  <!-- Supabase SDK (deferred) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <!-- Authentication + Enrollment Route Guard -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async function PaywallGuard() {
+      const currentPath = window.location.pathname;
+      const isProtectedDay = currentPath.match(/day(0[3-9]|1[0-8])\.html/);
+      const removePreload = () => {
+        const p = document.getElementById('paywall-preload-screen');
+        if (p) p.remove();
+      };
+      if (!isProtectedDay) { removePreload(); return; }
       try {
-        const { data: enrolled } = await sb.rpc('check_enrollment', { p_course_id: 'sql-20day' });
-        if (enrolled) {
-          localStorage.setItem('manodemy_enrolled', 'true');
-          removePreload(); return;
+        if (typeof window.supabase === 'undefined') {
+          window.location.href = '../index.html?reason=sdk_blocked'; return;
         }
-      } catch (rpcErr) { /* RPC failed */ }
-      window.location.href = `../index.html#pricing?locked=true`;
-    } catch (err) { window.location.href = `../index.html`; }
-  });
-</script>
-<!-- Non-render-blocking fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
-<link rel="stylesheet" href="../notebook.css">
-<!-- PWA -->
-<link rel="manifest" href="/manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#060913">
-</head>
-<body data-kernel="sql">
-<!-- Paywall Preload Screen -->
-<div id="paywall-preload-screen" class="paywall-preload" aria-hidden="true">
-  <div class="paywall-preload__spinner"></div>
-</div>
-
-<nav class="top-bar nav-container" id="topBar">
-  <div class="nav-zone--left">
-    <div class="avatar-wrapper" id="profileAvatar" role="button" tabindex="0" aria-label="Open profile card" aria-expanded="false" aria-haspopup="true">
-      <div class="avatar-circle" id="avatarCircle"></div>
-      <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-    <div class="nav-score-card">
-      <div class="score-info">
-        <span class="score-label">Solved</span>
-        <span class="score-values"><span id="scoreSolved" class="score-highlight">0</span> / <span id="scoreTotal">0</span></span>
-      </div>
-      <div class="score-track"><div class="score-fill" id="scoreProgress" style="width:0%"></div></div>
-    </div>
-  </div>
-
-  <div class="nav-center has-dropdown">
-    <div class="nav-center-flex">
-      <a href="day02.html" class="nav-icon-btn prev-btn" aria-label="Previous Day" title="Previous Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
-      <button class="nav-dropdown-btn" id="dayDropdownBtn">
-        <span class="day-badge">Day 03</span>
-        <span class="day-title">Pattern Matching & NULL Handling</span>
-        <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
-      <a href="day04.html" class="nav-icon-btn next-btn" aria-label="Next Day" title="Next Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
-    </div>
-    <div class="nav-dropdown-menu" id="dayDropdownMenu">
-      <div class="dropdown-header">Jump to another day</div>
-      <div class="dropdown-scroll">
-        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🗄️</span> Introduction to SQL & Databases</a>
-<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🔍</span> Filtering Data with WHERE</a>
-<a href="day03.html" class="dropdown-item active"><span class="day-num">Day 03</span> <span class="day-em">📝</span> Pattern Matching & NULL Handling</a>
-<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📈</span> Sorting & Limiting Results</a>
-<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">📊</span> Aggregate Functions</a>
-<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🗃️</span> GROUP BY & HAVING</a>
-<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">➕</span> Data Types, Casting & Expressions</a>
-<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔀</span> CASE WHEN (Conditional Logic)</a>
-<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">🔗</span> Understanding Relationships & INNER JOIN</a>
-<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">🔄</span> LEFT, RIGHT & FULL OUTER JOIN</a>
-<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">👥</span> SELF JOIN & Multi-Table Queries</a>
-<a href="day12.html" class="dropdown-item "><span class="day-num">Day 12</span> <span class="day-em">🧠</span> Subqueries</a>
-<a href="day13.html" class="dropdown-item "><span class="day-num">Day 13</span> <span class="day-em">🏗️</span> CTEs (Common Table Expressions)</a>
-<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">🔢</span> Window Functions Part 1 (Ranking)</a>
-<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">📈</span> Window Functions Part 2 (Analytic)</a>
-<a href="day16.html" class="dropdown-item "><span class="day-num">Day 16</span> <span class="day-em">🧹</span> String Functions</a>
-<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">📅</span> Date & Time Functions</a>
-<a href="day18.html" class="dropdown-item "><span class="day-num">Day 18</span> <span class="day-em">🥞</span> UNION, INTERSECT & EXCEPT (SET Operations)</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="nav-zone--right">
-    <div class="nav-controls">
-      <a href="../home.html" class="nav-icon-btn scorecard-btn" title="Back to Dashboard" aria-label="Score Card">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
-        Score Card
-      </a>
-    </div>
-  </div>
-</nav>
-
-<div class="profile-card" id="profileCard" role="dialog" aria-label="User profile summary" aria-modal="false">
-  <div class="profile-card__header">
-    <div class="profile-card__info">
-      <h2 class="profile-card__name" id="profileName">Loading...</h2>
-      <p class="profile-card__email" id="profileEmail">loading@... </p>
-    </div>
-    <span class="profile-card__badge" id="profileBadge">Free</span>
-  </div>
-  <div class="profile-card__progress-section">
-    <div class="profile-card__progress-labels">
-      <span class="profile-card__progress-text">Overall Progress</span>
-      <span class="profile-card__progress-pct" id="profileProgressPct">0%</span>
-    </div>
-  </div>
-  <button class="profile-card__signout" id="signOutBtn">Sign Out</button>
-</div>
-
-<div class="pyodide-status" id="pyStatus">🔌 Connected to SQL Server Database</div>
-<div class="layout">
-  <main class="notebook" id="notebook">
-    <div class="nb-title"><h1>📝 Day 03 : Pattern Matching & NULL Handling</h1></div>
-<div class="nb-section" id="sec-0">
-<div class="schema-ref" id="schema-ref-card">
-  <div class="schema-ref-header" onclick="document.getElementById('schema-ref-card').classList.toggle('collapsed')">
-    <span>📋 Database Schema Reference (retail.db)</span>
-    <span class="schema-ref-toggle-icon">▼</span>
-  </div>
-  <div class="schema-ref-content">
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 employees</div>
-      <ul class="schema-cols-list">
-        <li>employee_id (PK)</li><li>first_name</li><li>last_name</li><li>salary</li><li>hire_date</li><li>department_id (FK)</li><li>job_title</li><li>email</li><li>is_active</li><li>manager_id</li><li>commission</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 departments</div>
-      <ul class="schema-cols-list">
-        <li>department_id (PK)</li><li>department_name</li><li>budget</li><li>manager_id</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 customers</div>
-      <ul class="schema-cols-list">
-        <li>customer_id (PK)</li><li>first_name</li><li>last_name</li><li>email</li><li>signup_date</li><li>region</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 orders</div>
-      <ul class="schema-cols-list">
-        <li>order_id (PK)</li><li>customer_id (FK)</li><li>order_date</li><li>total_amount</li><li>status</li><li>shipped_date</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 products</div>
-      <ul class="schema-cols-list">
-        <li>product_id (PK)</li><li>name</li><li>unit_price</li><li>stock_qty</li><li>category_id (FK)</li><li>cost_price</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 order_items</div>
-      <ul class="schema-cols-list">
-        <li>id (PK)</li><li>order_id (FK)</li><li>product_id (FK)</li><li>qty</li><li>unit_price</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 categories</div>
-      <ul class="schema-cols-list">
-        <li>id (PK)</li><li>name</li><li>parent_id</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 sales</div>
-      <ul class="schema-cols-list">
-        <li>id (PK)</li><li>product_id (FK)</li><li>revenue</li><li>units_sold</li><li>amount</li><li>sale_date</li><li>customer_id (FK)</li><li>customer_signup_month</li><li>order_id (FK)</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 returns</div>
-      <ul class="schema-cols-list">
-        <li>order_id (PK/FK)</li><li>return_date</li><li>reason</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 sales_reps</div>
-      <ul class="schema-cols-list">
-        <li>id (PK)</li><li>name</li><li>region_id (FK)</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 regions</div>
-      <ul class="schema-cols-list">
-        <li>id (PK)</li><li>name</li><li>zone</li><li>manager</li>
-      </ul>
-    </div>
-  </div>
-</div>
-</div>
-<div class="nb-section" id="sec-1">
-<div class="nb-rich"><h2 class="nb-topic-header">
-    <b>1. Pattern Matching & NULL Handling : <span style="font-size: 0.85em; font-weight: normal; opacity: 0.85;">Concept Review</span></b>
-</h2>
-<div class="concept-review-block">
-    <b>🔍 Concept</b><br>
-    <h3 style="color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;">LIKE Operator — Pattern Matching</h3>
-<p style="color:#cbd5e1;line-height:1.75;margin:10px 0;"><code style="background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;">LIKE</code> performs <strong style="color:#f1f5f9;">partial text matching</strong> using two wildcard characters:</p>
-<div style="overflow-x:auto;margin:16px 0;"><table style="border-collapse:collapse;width:100%;font-size:0.9em;color:#e2e8f0;background:#0b1120;">
-<tr><th style="border:1px solid #1e293b;padding:8px 12px;background:#162032;color:#93c5fd;font-weight:bold;">Wildcard</th><th style="border:1px solid #1e293b;padding:8px 12px;background:#162032;color:#93c5fd;font-weight:bold;">Meaning</th><th style="border:1px solid #1e293b;padding:8px 12px;background:#162032;color:#93c5fd;font-weight:bold;">Example</th></tr>
-<tr><td style="border:1px solid #1e293b;padding:8px 12px;background:#0b1120;color:#e2e8f0;"><code style="background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;">%</code></td><td style="border:1px solid #1e293b;padding:8px 12px;background:#0b1120;color:#e2e8f0;">Zero or more characters</td><td style="border:1px solid #1e293b;padding:8px 12px;background:#0b1120;color:#e2e8f0;"><code style="background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;">'%analyst'</code> matches "data analyst", "business analyst", "analyst"</td></tr>
-<tr><td style="border:1px solid #1e293b;padding:8px 12px;background:#0b1120;color:#e2e8f0;"><code style="background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;">_</code></td><td style="border:1px solid #1e293b;padding:8px 12px;background:#0b1120;color:#e2e8f0;">Exactly one character</td><td style="border:1px solid #1e293b;padding:8px 12px;background:#0b1120;color:#e2e8f0;"><code style="background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;">'An_a'</code> matches "Anna", "Anya"</td></tr>
-</table></div>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- Starts with 'Sales'
-SELECT * FROM employees WHERE job_title LIKE 'Sales%';
-
--- Ends with 'Manager'
-SELECT * FROM employees WHERE job_title LIKE '%Manager';
-
--- Contains 'data' anywhere (case-insensitive with ILIKE in PostgreSQL)
-SELECT * FROM employees WHERE job_title ILIKE '%data%';
-
--- Exactly 5 characters starting with 'A'
-SELECT * FROM employees WHERE first_name LIKE 'A____';
-
--- Escape a literal % or _ character using ESCAPE
-SELECT * FROM products WHERE discount_code LIKE '20\%' ESCAPE '\';</code></pre>
-<h3 style="color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;">ILIKE (PostgreSQL) vs LOWER() + LIKE</h3>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- PostgreSQL-specific case-insensitive LIKE
-WHERE email ILIKE '%@gmail.com'
-
--- Standard SQL approach (works in all databases)
-WHERE LOWER(email) LIKE '%@gmail.com'</code></pre>
-<blockquote style="border-left:4px solid #f59e0b;background:#1c1a0e;padding:10px 16px;margin:12px 0;color:#fcd34d;border-radius:4px;"><strong style="color:#f1f5f9;">Performance Warning:</strong> <code style="background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;">LIKE '%text%'</code> (leading wildcard) cannot use indexes and will trigger a full table scan. Avoid leading wildcards on large tables.</blockquote>
-<hr style="border:none;border-top:1px solid #1e293b;margin:24px 0;">
-<h3 style="color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;">NULL Handling — The Most Misunderstood Topic in SQL</h3>
-<h4 style="color:#7dd3fc;margin:20px 0 8px;font-size:1em;font-weight:600;">What is NULL?</h4>
-<p style="color:#cbd5e1;line-height:1.75;margin:10px 0;"><code style="background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;">NULL</code> represents the <strong style="color:#f1f5f9;">absence of a value</strong> — it is not zero, not empty string, not false. It is <em style="color:#e2e8f0;">unknown</em>.</p>
-<h4 style="color:#7dd3fc;margin:20px 0 8px;font-size:1em;font-weight:600;">NULL in Comparisons</h4>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- These ALWAYS return NULL (neither TRUE nor FALSE):
-SELECT NULL = NULL;     -- NULL
-SELECT NULL = 5;        -- NULL
-SELECT NULL &lt;&gt; 5;       -- NULL
-SELECT NULL &gt; 5;        -- NULL
-
--- This is why NULL rows are excluded from WHERE conditions:
--- WHERE salary = NULL  → evaluates to NULL → row is excluded</code></pre>
-<h4 style="color:#7dd3fc;margin:20px 0 8px;font-size:1em;font-weight:600;">IS NULL and IS NOT NULL</h4>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- Correct way to filter NULL values:
-SELECT * FROM employees WHERE manager_id IS NULL;      -- Find top-level employees
-SELECT * FROM employees WHERE phone_number IS NOT NULL; -- Find employees with phone
-
--- WRONG (always returns 0 rows):
-SELECT * FROM employees WHERE manager_id = NULL;  -- ❌</code></pre>
-<h4 style="color:#7dd3fc;margin:20px 0 8px;font-size:1em;font-weight:600;">COALESCE — Replace NULL with a default value</h4>
-<p style="color:#cbd5e1;line-height:1.75;margin:10px 0;"><code style="background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;">COALESCE(value1, value2, ..., valueN)</code> — returns the first non-NULL value in the list.</p>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- Replace NULL commission with 0 for calculations
-SELECT
-    employee_id,
-    salary,
-    COALESCE(commission, 0) AS commission,
-    salary + COALESCE(commission, 0) AS total_compensation
-FROM employees;
-
--- Multiple fallbacks
-SELECT COALESCE(preferred_name, first_name, 'Unknown') AS display_name
-FROM employees;</code></pre>
-<h4 style="color:#7dd3fc;margin:20px 0 8px;font-size:1em;font-weight:600;">NULLIF — Returns NULL if two values are equal</h4>
-<p style="color:#cbd5e1;line-height:1.75;margin:10px 0;"><code style="background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;">NULLIF(value1, value2)</code> — returns NULL if value1 = value2, otherwise returns value1.</p>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- Common use: prevent division by zero
-SELECT revenue / NULLIF(units_sold, 0) AS revenue_per_unit
-FROM sales;
--- When units_sold = 0, NULLIF returns NULL, making the division NULL (not an error)</code></pre>
-<h4 style="color:#7dd3fc;margin:20px 0 8px;font-size:1em;font-weight:600;">NULL in Aggregate Functions</h4>
-<p style="color:#cbd5e1;line-height:1.75;margin:10px 0;">Aggregate functions like <code style="background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;">SUM</code>, <code style="background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;">AVG</code>, <code style="background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;">COUNT</code> <strong style="color:#f1f5f9;">ignore NULL values</strong> by default.</p>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- If 3 out of 10 employees have NULL commission, AVG ignores the 3 NULLs
-SELECT AVG(commission) FROM employees;  -- averages only 7 non-NULL values
-
--- COUNT(*) counts all rows; COUNT(column) ignores NULLs
-SELECT
-    COUNT(*)           AS total_rows,
-    COUNT(commission)  AS rows_with_commission
-FROM employees;</code></pre>
-<h4 style="color:#7dd3fc;margin:20px 0 8px;font-size:1em;font-weight:600;">NULL in ORDER BY</h4>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- NULL sorts LAST by default in ascending order (PostgreSQL/MySQL)
-SELECT * FROM employees ORDER BY commission ASC;
-
--- Control NULL sort position:
-SELECT * FROM employees ORDER BY commission ASC NULLS FIRST;
-SELECT * FROM employees ORDER BY commission ASC NULLS LAST;</code></pre>
-<hr style="border:none;border-top:1px solid #1e293b;margin:24px 0;">
-</div></div>
-<div class="code-cell" id="cell-1">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-1">SELECT * FROM sales LIMIT 5;</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="try-it-1">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #818CF8; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🔬 Try It Yourself: Interactive Practice</b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Find all customers whose first_name starts with 'A'.</p></div>
-<div class="code-cell" id="cell-2">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-2">SELECT * FROM customers WHERE first_name LIKE 'A%';</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Find all products whose name contains the word 'Phone' (case-insensitive).</p></div>
-<div class="code-cell" id="cell-3">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-3">SELECT * FROM products WHERE name LIKE '%Phone%';</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Find all employees who do not receive a commission (commission is NULL).</p></div>
-<div class="code-cell" id="cell-4">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-4">SELECT * FROM employees WHERE commission IS NULL;</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Concept Checks-3">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Concept Checks</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Find all employees whose <code>email</code> ends with <code>@manodemy.com</code>. Use the <code>LIKE</code> operator.</p></div>
-<div class="code-cell" id="cell-5">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-5">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Find all employees whose <code>job_title</code> contains the word 'analyst' (case-insensitive) but does NOT start with 'Senior'. Use <code>ILIKE</code> (or <code>LOWER</code> + <code>LIKE</code>) and <code>NOT LIKE</code>.</p></div>
-<div class="code-cell" id="cell-6">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-6">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Find all employees who have no manager assigned (<code>manager_id</code> is NULL). These are the top-level employees. Display their <code>first_name</code>, <code>last_name</code>, and <code>job_title</code>.</p></div>
-<div class="code-cell" id="cell-7">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-7">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Write a query that displays each employee's <code>first_name</code>, <code>salary</code>, and <code>total_compensation</code>. <code>total_compensation</code> = salary + commission. Employees with a NULL commission should have it treated as 0. Use <code>COALESCE</code>.</p></div>
-<div class="code-cell" id="cell-8">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-8">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Write a query that calculates <code>revenue_per_unit</code> for products in a <code>sales</code> table (columns: <code>product_id</code>, <code>revenue</code>, <code>units_sold</code>). Ensure the query does not crash when <code>units_sold</code> is 0. Use <code>NULLIF</code>. Display <code>product_id</code>, <code>revenue</code>, <code>units_sold</code>, and <code>revenue_per_unit</code>.
-
----</p></div>
-<div class="code-cell" id="cell-9">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-9">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="practice">
-<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
-<div class="question task"><p><strong>Task 1 (Domain Lookup):</strong> Find customers using a Gmail address. Retrieve customer_id, first_name, and email for customers whose email ends with '@gmail.com'.</p></div>
-<div class="code-cell" id="cell-10">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-10">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question task"><p><strong>Task 2 (Commission Backup):</strong> Clean up reports by replacing NULL commissions with 0. Retrieve first_name, last_name, commission, and a new column clean_commission using COALESCE.</p></div>
-<div class="code-cell" id="cell-11">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-11">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question task"><p><strong>Task 3 (Short Name Search):</strong> Find products whose names are exactly 5 characters long. Use the underscore (_) wildcard.</p></div>
-<div class="code-cell" id="cell-12">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-12">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="interview">
-<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
-<div class="question interview"><p><strong>Q1.</strong> Write a query to retrieve all customers whose email contains an underscore character. (Hint: use escape characters). In a comment, explain the difference between % and _.</p></div>
-<div class="code-cell" id="cell-13">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-13">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q2.</strong> Write a query to retrieve employee names and their commission. Use COALESCE to display 0 if commission is NULL. Explain what COALESCE does.</p></div>
-<div class="code-cell" id="cell-14">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-14">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q3.</strong> Write a query to find employees whose manager_id is NULL. Explain why we must use IS NULL instead of = NULL.</p></div>
-<div class="code-cell" id="cell-15">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-15">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q4.</strong> Write a query to retrieve customers whose region starts with 'N' or 'S'. Explain in a comment how LIKE is case-sensitive or case-insensitive in different SQL engines.</p></div>
-<div class="code-cell" id="cell-16">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-16">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q5.</strong> Write a query to retrieve employees whose last_name does NOT start with 'S'. Explain in a comment how NOT LIKE works.</p></div>
-<div class="code-cell" id="cell-17">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-17">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q6.</strong> Write a query to find products whose name matches a pattern like 'P_o%'. In a comment, explain how multiple wildcards can be combined.</p></div>
-<div class="code-cell" id="cell-18">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-18">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q7.</strong> Write a query to retrieve orders that have a status. In a comment, explain how SQL treats NULL values in comparison operations.</p></div>
-<div class="code-cell" id="cell-19">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-19">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q8.</strong> Write a query to retrieve employee_id and email, replacing NULL emails with 'no-email@company.com'. Explain the performance impact of using COALESCE in filtering.</p></div>
-<div class="code-cell" id="cell-20">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-20">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q9.</strong> Write a query to select customers where first_name has 'a' as the second character. (Use wildcard).</p></div>
-<div class="code-cell" id="cell-21">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-21">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q10.</strong> Write a query to retrieve orders with shipped_date IS NOT NULL. In a comment, explain how NULL differs from empty string in WHERE filters.</p></div>
-<div class="code-cell" id="cell-22">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-22">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="summary">
-<div class="section-header cyan"><h2>📊 Day 03 Executive Summary</h2></div>
-<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">Mastering partial matching and missing values is essential. Today you learned to perform search queries using LIKE/ILIKE wildcards (% and _), check for NULLs using IS NULL/IS NOT NULL, fallback to defaults using COALESCE, and prevent division-by-zero errors using NULLIF.</div></div>
-</div>
-  </main>
-  <nav class="sidebar" id="sidebar">
-    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
-    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
-<li><a href="#sec-1" class="toc-link">1. Pattern Matching & NULL Handling</a></li>
-<li><a href="#try-it-1" class="toc-link">🔬 Try It Yourself</a></li>
-<li><a href="#checks-Concept Checks-3" class="toc-link">🧪 Checks: Concept Checks</a></li>
-<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
-<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
-<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
-    <div class="sidebar-resize" id="sidebarResize"></div>
-  </nav>
-</div>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
-
-<script defer src="../notebook.js?v=2.1"></script>
-<script src="../voice.js" defer></script>
-<script src="../hints.js" defer></script>
-<!-- PWA Service Worker Registration -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('[Service Worker] Registered scope:', reg.scope))
-        .catch(err => console.error('[Service Worker] Registration failed:', err));
+        const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
+        const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
+        const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+        const { data: { session }, error } = await sb.auth.getSession();
+        if (error || !session) {
+          window.location.href = `../index.html?redirect=${encodeURIComponent(currentPath)}`; return;
+        }
+        const plan = session.user.user_metadata?.plan;
+        const isEnrolledLocal = localStorage.getItem('manodemy_enrolled') === 'true';
+        if (plan === 'pro' || isEnrolledLocal) { removePreload(); return; }
+        try {
+          const { data: enrolled } = await sb.rpc('check_enrollment', { p_course_id: 'sql-20day' });
+          if (enrolled) {
+            localStorage.setItem('manodemy_enrolled', 'true');
+            removePreload(); return;
+          }
+        } catch (rpcErr) { /* RPC failed */ }
+        window.location.href = `../index.html#pricing?locked=true`;
+      } catch (err) { window.location.href = `../index.html`; }
     });
-  }
-</script>
+  </script>
+
+</head>
+<body>
+
+  <!-- Paywall Preload Screen -->
+  <div id="paywall-preload-screen" class="paywall-preload" aria-hidden="true">
+    <div class="paywall-preload__spinner"></div>
+  </div>
+
+
+
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <header class="header">
+    <div class="header-left">
+      <!-- Back Arrow Link -->
+      <a href="/" class="back-to-home-btn" title="Back to Home Dashboard" style="color: #64748b; margin-right: 12px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      </a>
+      <!-- User Profile Avatar with active green dot -->
+      <div class="user-profile">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIjZkNzQ4YiI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==" alt="User Profile" class="avatar-img" style="background-color: rgba(255,255,255,0.08);" />
+        <span class="active-dot"></span>
+      </div>
+      
+      <!-- Graded Stats Card with Progress Indicator -->
+      <div class="stats-card">
+        <div class="stats-row">
+          <div class="stats-item">
+            <span class="stats-label">SOLVED</span>
+            <span class="stats-value stats-value--fraction">
+              <span class="stats-num" id="solvedCount">0</span>
+              <span class="stats-den" id="totalQuestions">2</span>
+            </span>
+          </div>
+          <div class="stats-divider"></div>
+          <div class="stats-item">
+            <span class="stats-label">MARKS</span>
+            <span class="stats-value stats-value--fraction">
+              <span class="stats-num" id="marksCount">0.0</span>
+              <span class="stats-den" id="totalMarks">2.0</span>
+            </span>
+          </div>
+        </div>
+        <div class="stats-progress-bar">
+          <div class="stats-progress-fill" id="statsProgressFill" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <!-- Day Selector Dropdown & Topic Selector Dropdown -->
+      <div class="day-navigation">
+        <div class="day-picker-pill">
+          <span class="day-picker-dot day-picker-dot--day"></span>
+          <select id="daySelect">
+            <!-- Populated dynamically -->
+          </select>
+          <span class="day-picker-chevron">
+            <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <div class="day-picker-pill topic-picker-pill">
+          <span class="day-picker-dot day-picker-dot--topic"></span>
+          <select id="topicSelect" onchange="onTopicSelectChange(this.value)">
+            <!-- Populated dynamically -->
+          </select>
+          <span class="day-picker-chevron">
+            <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <button class="hdr-btn hdr-btn--autoplay" id="navPlayBtn" onclick="toggleCombinedPlayback()" title="Play lecture narration" style="display: none;">
+          <span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button class="hdr-btn hdr-btn--test" id="takeTestBtn" onclick="openTestPortal()" title="Take the day test">🧪 Take Test</button>
+      <button class="hdr-btn hdr-btn--score" id="scoreBtn" onclick="openScoreCard()" title="View Score Card">
+        <svg class="score-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right: 4px;"><path d="M1.5 1.5H5.5V5.5H1.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 1.5H12.5V5.5H8.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 8.5H5.5V12.5H1.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8.5H12.5V12.5H8.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Score Card
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-tabs-nav" id="mobileTabsNav">
+    <button class="mobile-tab-btn active" id="tabBtnTheory" onclick="setMobileTab('theory')">
+      <span class="tab-emoji">📖</span> Lesson
+    </button>
+    <button class="mobile-tab-btn" id="tabBtnPractice" onclick="setMobileTab('practice')">
+      <span class="tab-emoji">💻</span> Practice
+    </button>
+  </div>
+
+  <!-- ═══════════════ SPLIT WORKSPACE ═══════════════ -->
+  <div class="workspace mobile-show-theory" id="workspaceContainer">
+
+
+    <!-- ─── LEFT PANEL ─── -->
+    <div class="panel-left" id="panelLeft">
+
+      <!-- Question Prompt -->
+      <div class="question-bar" id="questionBar">
+        <div class="q-marker"></div>
+        <div class="question-prompt" id="questionPrompt">
+          Loading Question...
+        </div>
+        <button class="audio-play-btn" id="questionAudioBtn" onclick="playQuestionAudio(this)" title="Play question narration" style="flex-shrink: 0; margin-top: 2px;">
+          <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="q-nav">
+          <button onclick="prevQuestion()" title="Previous question">◀</button>
+          <button onclick="nextQuestion()" title="Next question">▶</button>
+        </div>
+      </div>
+
+      <!-- Editor Area -->
+      <div class="editor-area">
+        <!-- Toolbar -->
+        <div class="editor-toolbar">
+          <span class="q-counter" id="qCounter">Question-01</span>
+          <button class="audio-play-btn" id="solutionAudioBtn" onclick="playSolutionAudioFromBtn(this)" title="Play solution narration" style="margin-left: 6px;">
+            <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="tb-btn tb-btn--tables" id="peekTrigger" onclick="togglePeekPopover(event)">📊 Tables</button>
+          <button class="tb-btn tb-btn--reset" onclick="confirmResetDatabase()" style="margin-left: 6px;" title="Reset Database to original state">🔄 Reset DB</button>
+          <div class="spacer"></div>
+          <button class="tb-btn tb-btn--run" id="runBtn" onclick="runCurrentQuery()">▶ Run</button>
+          <button class="tb-btn tb-btn--clear" onclick="clearEditor()">✕ Clear</button>
+        </div>
+
+        <!-- CodeMirror Mount -->
+        <div class="editor-wrap" id="mainEditorWrap"></div>
+
+        <!-- Output Terminal -->
+        <div class="output-section" id="mainOutput">
+          <div class="output-label">Terminal Output</div>
+          <span class="output-success">Ready...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── DIVIDER ─── -->
+    <div class="divider" id="divider">
+      <div class="divider-toggles">
+        <button class="div-toggle-btn div-toggle-btn--left" onclick="toggleLeftPanel(event)" title="Toggle code cell">◀</button>
+        <button class="div-toggle-btn div-toggle-btn--split" onclick="resetSplitScreen(event)" title="Reset split screen">◫</button>
+        <button class="div-toggle-btn div-toggle-btn--right" onclick="toggleRightPanel(event)" title="Toggle notes panel">▶</button>
+      </div>
+    </div>
+
+    <!-- ─── RIGHT PANEL ─── -->
+    <div class="panel-right" id="panelRight">
+
+      <div class="right-content" id="rightContent">
+
+        <!-- Slide Viewer -->
+        <div class="slide-viewer" id="slideViewer">
+          <div class="slide-card" style="position: relative;">
+            <div class="slide-header" id="slideHeader"></div>
+            <div class="slide-content" id="slideContent" style="position: relative; overflow-y: auto; min-height: 0;">
+              <!-- Canvas Overlay inside scrollable container -->
+              <canvas class="draw-canvas" id="workspaceDrawCanvas" style="position: absolute; top: 0; left: 0; z-index: 10;"></canvas>
+              <!-- Content container populated by JS -->
+              <div id="slideBodyText">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+            <!-- Subtitle/Narration Caption bubble inside workspace slide card -->
+            <div class="vp-caption" id="workspaceVpCaption" style="display: none; margin: 0; padding: 10px 16px; background: rgba(124, 58, 237, 0.08); border-top: 1px solid rgba(124, 58, 237, 0.2); font-size: 0.78rem; font-weight: 500; color: #a78bfa; text-align: center; font-family: sans-serif; flex-shrink: 0;">
+              📢 Narrating slide events...
+            </div>
+          </div>
+          <!-- Workspace Drawing Toolbar -->
+          <div class="ws-draw-toolbar" id="wsDrawToolbar" style="display: none;">
+            <button class="tool-btn" id="wsRectBtn" onclick="setWsDrawMode('rect')" title="Highlight with Rectangle Box">⬜ Highlight</button>
+            <button class="tool-btn" id="wsUndoBtn" onclick="undoLastHighlight()" title="Undo Last Highlight">↶ Undo</button>
+            <button class="tool-btn" id="wsClearBtn" onclick="clearWsDrawings()" title="Clear All Drawings">✕ Clear</button>
+          </div>
+        </div>
+
+        <!-- Playback Controls -->
+        <div class="playback-bar" id="playbackBar">
+          <div class="playback-row">
+            <div class="playback-controls-row">
+              <div class="playback-left-controls">
+                <button class="play-btn" id="playPauseBtn" onclick="toggleCombinedPlayback()">▶</button>
+                <div class="playback-bar-controls">
+                  <!-- Volume Control Wrapper -->
+                  <div class="volume-control-wrapper">
+                    <button class="volume-btn" id="volumeBtn" onclick="toggleVolumePopover(event)" title="Adjust Volume">
+                      <svg class="volume-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                      </svg>
+                    </button>
+                    <div class="volume-popover" id="volumePopover">
+                      <input type="range" id="volumeSlider" min="0" max="100" value="100" step="1" oninput="setPlaybackVolume(this.value)">
+                      <span class="volume-value" id="volumeValue">100%</span>
+                    </div>
+                  </div>
+
+                  <!-- Speed Control Wrapper -->
+                  <div class="speed-control-wrapper">
+                    <button class="speed-control-btn" id="speedControlBtn" onclick="toggleSpeedPopover(event)" title="Playback Speed">
+                      <svg class="speed-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 15.2a10 10 0 0 0 17.3 3.58 10 10 0 0 0-.27-10.21zM10.85 15.75a1.2 1.2 0 1 0 1.2-1.2 1.2 1.2 0 0 0-1.2 1.2zM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1z"/>
+                      </svg>
+                      <span id="speedValueLabel">1.0x</span>
+                    </button>
+                    <div class="speed-popover" id="speedPopover">
+                      <div class="speed-option active" onclick="selectSpeedOption(1, '1.0x')">1.0x</div>
+                      <div class="speed-option" onclick="selectSpeedOption(1.25, '1.25x')">1.25x</div>
+                      <div class="speed-option" onclick="selectSpeedOption(1.5, '1.5x')">1.5x</div>
+                      <div class="speed-option" onclick="selectSpeedOption(1.75, '1.75x')">1.75x</div>
+                      <div class="speed-option" onclick="selectSpeedOption(2, '2.0x')">2.0x</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="playback-right-controls">
+                <span class="playback-time" id="playbackTime">0:00 / 0:00</span>
+              </div>
+            </div>
+            <div class="playback-timeline-row">
+              <input type="range" class="seek-bar" id="seekBar" min="0" max="100" value="0" step="0.1" oninput="seekCombinedPlayback(this.value)">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ PEEK DATA POPOVER ═══════════════ -->
+  <div class="peek-popover" id="peekPopover">
+    <div class="peek-title">
+      <span>👀 Peek Data — </span><span id="peekTableName">employees</span>
+      <button class="peek-close" onclick="closePeekPopover()">✕</button>
+    </div>
+    <div id="peekContent">
+      <!-- Populated by JS with live query results -->
+    </div>
+  </div>
+
+  <!-- ═══════════════ PRESENT MODE OVERLAY ═══════════════ -->
+  <div class="present-overlay" id="presentOverlay">
+    <div class="present-toolbar">
+      <div class="present-tools">
+        <button class="tool-btn" id="laserBtn" onclick="toggleLaser()">🔴 Laser</button>
+        <button class="tool-btn" id="penBtn" onclick="togglePen()">✏️ Draw</button>
+      </div>
+      <button class="tool-btn tool-btn--close" onclick="closePresentMode()">✕ Close</button>
+    </div>
+
+    <div class="present-body">
+      <canvas class="draw-canvas" id="drawCanvas"></canvas>
+      <div class="present-slide slide-content" id="presentSlideContent">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <div class="present-footer">
+      <button onclick="prevSlide()" title="Previous">◀</button>
+      <span class="present-counter" id="presentCounter">1 / 3</span>
+      <button onclick="nextSlide()" title="Next">▶</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TEST PORTAL MODAL ═══════════════ -->
+  <div class="test-overlay" id="testOverlay">
+    <div class="test-header">
+      <div class="test-header-left">
+        <!-- User Profile Avatar with active green dot -->
+        <div class="user-profile">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIjZkNzQ4YiI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==" alt="User Profile" class="avatar-img" style="background-color: rgba(255,255,255,0.08);" />
+          <span class="active-dot"></span>
+        </div>
+        
+        <!-- Test Progress Stats Card -->
+        <div class="stats-card">
+          <div class="stats-row">
+            <div class="stats-item">
+              <span class="stats-label">ATTEMPTED</span>
+              <span class="stats-value"><span id="testAttemptedCount">0</span><span class="stats-total"> / 25</span></span>
+            </div>
+            <div class="stats-divider"></div>
+            <div class="stats-item">
+              <span class="stats-label">BEST SCORE</span>
+              <span class="stats-value"><span id="testBestScoreCount">0</span><span class="stats-total"> / 25</span></span>
+            </div>
+          </div>
+          <div class="stats-progress-bar">
+            <div class="stats-progress-fill" id="testProgressFill" style="width: 0%; background: var(--cyan);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-header-center">
+        <div class="test-title">📝 Day 02 — SQL Interview Test</div>
+      </div>
+
+      <div class="test-header-right">
+        <!-- Score Card Button -->
+        <button class="hdr-btn hdr-btn--score" id="testScoreBtn" onclick="openTestScoreCard()" title="View Score Card">
+          <svg class="score-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right: 4px;"><path d="M1.5 1.5H5.5V5.5H1.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 1.5H12.5V5.5H8.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 8.5H5.5V12.5H1.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8.5H12.5V12.5H8.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Score Card
+        </button>
+        
+        <div class="test-timer-wrapper">
+          <span class="timer-icon">⏳</span>
+          <span class="test-timer" id="testTimer">120:00</span>
+        </div>
+        
+        <button class="test-close-btn" onclick="closeTestPortal()">✕ Exit Test</button>
+      </div>
+    </div>
+
+    <div class="test-body">
+      <!-- Sidebar -->
+      <div class="test-sidebar" id="testSidebar">
+        <!-- 25 buttons populated by JS -->
+      </div>
+
+      <!-- Main Test Area -->
+      <div class="test-main">
+        <div class="test-question-prompt" id="testQuestionPrompt">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="test-toolbar">
+          <span class="q-counter" id="testQCounter">Q1 / 25</span>
+          <div class="spacer" style="flex:1"></div>
+          <button class="tb-btn tb-btn--run" onclick="runTestQuery()">▶ Run</button>
+          <button class="tb-btn tb-btn--clear" onclick="clearTestEditor()">✕ Clear</button>
+        </div>
+
+        <div class="test-editor-wrap" id="testEditorWrap"></div>
+
+        <div class="test-output" id="testOutput">
+          <div class="output-label">Terminal Output</div>
+          <span class="output-success">Ready...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-submit-bar">
+      <span class="test-progress" id="testProgress">Attempted: 0 / 25</span>
+      <button class="test-submit-btn" id="submitTestBtn" onclick="submitTest()">Submit Test</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SCORECARD OVERLAY ═══════════════ -->
+  <div class="scorecard-overlay" id="scorecardOverlay">
+    <div class="scorecard">
+      <div class="scorecard-header">
+        <h2>📊 Test Results</h2>
+        <div class="score-big" id="scoreBig">0 / 25</div>
+        <div class="score-meta" id="scoreMeta">Time spent: 00:00</div>
+      </div>
+      <div class="scorecard-body">
+        <table class="scorecard-table" id="scorecardTable">
+          <thead>
+            <tr><th>#</th><th>Status</th><th>Your Query</th></tr>
+          </thead>
+          <tbody id="scorecardBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+      <div class="scorecard-footer">
+        <button class="scorecard-close-btn" onclick="closeScorecard()">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  
+  <!-- Supabase SDK -->
+  <script src="/supabase.js" defer></script>
+  <!-- Content & Grading modules -->
+  <script src="/Version-3/content/manifest.js?v=14.2"></script>
+  <script src="/Version-3/content/day-03.js?v=14.2"></script>
+  <script src="/Version-3/db-seeds/retail-seed.js?v=14.2"></script>
+  <script src="/Version-3/grading-engine.js?v=14.2"></script>
+  <script src="/Version-3/persistence.js?v=14.2"></script>
+  <!-- App JS -->
+  <script src="/Version-3/scrimba-engine.js?v=14.2"></script>
 </body>
 </html>

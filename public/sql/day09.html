@@ -1,440 +1,461 @@
 <!DOCTYPE html>
-<html lang="en" data-course="sql">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 09: Understanding Relationships & INNER JOIN — SQL for Data Analyst — Manodemy</title>
-<meta name="description" content="Day 09: Understanding Relationships & INNER JOIN — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
-<meta name="robots" content="noindex, nofollow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 09: Understanding Relationships & INNER JOIN — SQL for Data Analyst — Manodemy</title>
+  <meta name="description" content="Day 09: Understanding Relationships & INNER JOIN — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
+  <meta name="robots" content="noindex, nofollow">
+<!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
-<!-- Performance: Preconnect to critical origins -->
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="dns-prefetch" href="https://erqoyvbuhmkyvcqgwcbz.supabase.co">
-<!-- Supabase SDK (deferred) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<!-- Authentication + Enrollment Route Guard -->
-<script>
-  document.addEventListener('DOMContentLoaded', async function PaywallGuard() {
-    const currentPath = window.location.pathname;
-    const isProtectedDay = currentPath.match(/day(0[3-9]|1[0-8])\.html/);
-    const removePreload = () => {
-      const p = document.getElementById('paywall-preload-screen');
-      if (p) p.remove();
-    };
-    if (!isProtectedDay) { removePreload(); return; }
-    try {
-      if (typeof window.supabase === 'undefined') {
-        window.location.href = '../index.html?reason=sdk_blocked'; return;
-      }
-      const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
-      const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
-      const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-      const { data: { session }, error } = await sb.auth.getSession();
-      if (error || !session) {
-        window.location.href = `../index.html?redirect=${encodeURIComponent(currentPath)}`; return;
-      }
-      const plan = session.user.user_metadata?.plan;
-      const isEnrolledLocal = localStorage.getItem('manodemy_enrolled') === 'true';
-      if (plan === 'pro' || isEnrolledLocal) { removePreload(); return; }
+  <!-- CodeMirror 5 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="/Version-3/styles.css?v=14.2">
+
+  <!-- CodeMirror JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/sql-hint.min.js"></script>
+
+  <!-- SQL.js WASM -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+
+
+  <!-- Supabase SDK (deferred) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <!-- Authentication + Enrollment Route Guard -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async function PaywallGuard() {
+      const currentPath = window.location.pathname;
+      const isProtectedDay = currentPath.match(/day(0[3-9]|1[0-8])\.html/);
+      const removePreload = () => {
+        const p = document.getElementById('paywall-preload-screen');
+        if (p) p.remove();
+      };
+      if (!isProtectedDay) { removePreload(); return; }
       try {
-        const { data: enrolled } = await sb.rpc('check_enrollment', { p_course_id: 'sql-20day' });
-        if (enrolled) {
-          localStorage.setItem('manodemy_enrolled', 'true');
-          removePreload(); return;
+        if (typeof window.supabase === 'undefined') {
+          window.location.href = '../index.html?reason=sdk_blocked'; return;
         }
-      } catch (rpcErr) { /* RPC failed */ }
-      window.location.href = `../index.html#pricing?locked=true`;
-    } catch (err) { window.location.href = `../index.html`; }
-  });
-</script>
-<!-- Non-render-blocking fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
-<link rel="stylesheet" href="../notebook.css">
-<!-- PWA -->
-<link rel="manifest" href="/manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#060913">
-</head>
-<body data-kernel="sql">
-<!-- Paywall Preload Screen -->
-<div id="paywall-preload-screen" class="paywall-preload" aria-hidden="true">
-  <div class="paywall-preload__spinner"></div>
-</div>
-
-<nav class="top-bar nav-container" id="topBar">
-  <div class="nav-zone--left">
-    <div class="avatar-wrapper" id="profileAvatar" role="button" tabindex="0" aria-label="Open profile card" aria-expanded="false" aria-haspopup="true">
-      <div class="avatar-circle" id="avatarCircle"></div>
-      <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-    <div class="nav-score-card">
-      <div class="score-info">
-        <span class="score-label">Solved</span>
-        <span class="score-values"><span id="scoreSolved" class="score-highlight">0</span> / <span id="scoreTotal">0</span></span>
-      </div>
-      <div class="score-track"><div class="score-fill" id="scoreProgress" style="width:0%"></div></div>
-    </div>
-  </div>
-
-  <div class="nav-center has-dropdown">
-    <div class="nav-center-flex">
-      <a href="day08.html" class="nav-icon-btn prev-btn" aria-label="Previous Day" title="Previous Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
-      <button class="nav-dropdown-btn" id="dayDropdownBtn">
-        <span class="day-badge">Day 09</span>
-        <span class="day-title">Understanding Relationships & INNER JOIN</span>
-        <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
-      <a href="day10.html" class="nav-icon-btn next-btn" aria-label="Next Day" title="Next Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
-    </div>
-    <div class="nav-dropdown-menu" id="dayDropdownMenu">
-      <div class="dropdown-header">Jump to another day</div>
-      <div class="dropdown-scroll">
-        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🗄️</span> Introduction to SQL & Databases</a>
-<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🔍</span> Filtering Data with WHERE</a>
-<a href="day03.html" class="dropdown-item "><span class="day-num">Day 03</span> <span class="day-em">📝</span> Pattern Matching & NULL Handling</a>
-<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📈</span> Sorting & Limiting Results</a>
-<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">📊</span> Aggregate Functions</a>
-<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🗃️</span> GROUP BY & HAVING</a>
-<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">➕</span> Data Types, Casting & Expressions</a>
-<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔀</span> CASE WHEN (Conditional Logic)</a>
-<a href="day09.html" class="dropdown-item active"><span class="day-num">Day 09</span> <span class="day-em">🔗</span> Understanding Relationships & INNER JOIN</a>
-<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">🔄</span> LEFT, RIGHT & FULL OUTER JOIN</a>
-<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">👥</span> SELF JOIN & Multi-Table Queries</a>
-<a href="day12.html" class="dropdown-item "><span class="day-num">Day 12</span> <span class="day-em">🧠</span> Subqueries</a>
-<a href="day13.html" class="dropdown-item "><span class="day-num">Day 13</span> <span class="day-em">🏗️</span> CTEs (Common Table Expressions)</a>
-<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">🔢</span> Window Functions Part 1 (Ranking)</a>
-<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">📈</span> Window Functions Part 2 (Analytic)</a>
-<a href="day16.html" class="dropdown-item "><span class="day-num">Day 16</span> <span class="day-em">🧹</span> String Functions</a>
-<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">📅</span> Date & Time Functions</a>
-<a href="day18.html" class="dropdown-item "><span class="day-num">Day 18</span> <span class="day-em">🥞</span> UNION, INTERSECT & EXCEPT (SET Operations)</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="nav-zone--right">
-    <div class="nav-controls">
-      <a href="../home.html" class="nav-icon-btn scorecard-btn" title="Back to Dashboard" aria-label="Score Card">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
-        Score Card
-      </a>
-    </div>
-  </div>
-</nav>
-
-<div class="profile-card" id="profileCard" role="dialog" aria-label="User profile summary" aria-modal="false">
-  <div class="profile-card__header">
-    <div class="profile-card__info">
-      <h2 class="profile-card__name" id="profileName">Loading...</h2>
-      <p class="profile-card__email" id="profileEmail">loading@... </p>
-    </div>
-    <span class="profile-card__badge" id="profileBadge">Free</span>
-  </div>
-  <div class="profile-card__progress-section">
-    <div class="profile-card__progress-labels">
-      <span class="profile-card__progress-text">Overall Progress</span>
-      <span class="profile-card__progress-pct" id="profileProgressPct">0%</span>
-    </div>
-  </div>
-  <button class="profile-card__signout" id="signOutBtn">Sign Out</button>
-</div>
-
-<div class="pyodide-status" id="pyStatus">🔌 Connected to SQL Server Database</div>
-<div class="layout">
-  <main class="notebook" id="notebook">
-    <div class="nb-title"><h1>🔗 Day 09 : Understanding Relationships & INNER JOIN</h1></div>
-<div class="nb-section" id="sec-0">
-<div class="schema-ref" id="schema-ref-card">
-  <div class="schema-ref-header" onclick="document.getElementById('schema-ref-card').classList.toggle('collapsed')">
-    <span>📋 Database Schema Reference (company.db)</span>
-    <span class="schema-ref-toggle-icon">▼</span>
-  </div>
-  <div class="schema-ref-content">
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 employees</div>
-      <ul class="schema-cols-list">
-        <li>employee_id (PK)</li><li>first_name</li><li>last_name</li><li>salary</li><li>hire_date</li><li>department_id (FK)</li><li>job_title</li><li>email</li><li>is_active</li><li>manager_id</li><li>commission</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 departments</div>
-      <ul class="schema-cols-list">
-        <li>department_id (PK)</li><li>department_name</li><li>budget</li><li>manager_id</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 salaries</div>
-      <ul class="schema-cols-list">
-        <li>emp_id (PK/FK)</li><li>amount</li><li>effective_date (PK)</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 projects</div>
-      <ul class="schema-cols-list">
-        <li>id (PK)</li><li>name</li><li>status</li><li>deadline</li>
-      </ul>
-    </div>
-    <div class="schema-table-card">
-      <div class="schema-table-name">📁 emp_projects</div>
-      <ul class="schema-cols-list">
-        <li>emp_id (PK/FK)</li><li>project_id (PK/FK)</li><li>role</li>
-      </ul>
-    </div>
-  </div>
-</div>
-</div>
-<div class="nb-section" id="sec-1">
-<div class="nb-rich"><h2 class="nb-topic-header">
-    <b>1. Understanding Relationships & INNER JOIN : <span style="font-size: 0.85em; font-weight: normal; opacity: 0.85;">Concept Review</span></b>
-</h2>
-<div class="concept-review-block">
-    <b>🔍 Concept</b><br>
-    <h3 style="color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;">Why JOINs Exist</h3>
-<p style="color:#cbd5e1;line-height:1.75;margin:10px 0;">In a normalized relational database, data is split across multiple tables to avoid redundancy. JOINs <strong style="color:#f1f5f9;">reassemble</strong> this data when needed for querying. The cost of JOIN operations is why query optimization matters — JOIN runs at <strong style="color:#f1f5f9;">Step 2</strong> of the SQL Order of Execution.</p>
-<h3 style="color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;">Types of JOINs (Overview)</h3>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">INNER JOIN      — Only matching rows from BOTH tables
-LEFT JOIN       — All rows from left + matching rows from right
-RIGHT JOIN      — All rows from right + matching rows from left
-FULL OUTER JOIN — All rows from both tables
-CROSS JOIN      — Every row from left combined with every row from right (Cartesian product)
-SELF JOIN       — A table joined to itself</code></pre>
-<h3 style="color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;">INNER JOIN — The Most Common JOIN</h3>
-<p style="color:#cbd5e1;line-height:1.75;margin:10px 0;">Returns only rows where the join condition is <strong style="color:#f1f5f9;">TRUE in both tables</strong>.</p>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- Basic INNER JOIN syntax
-SELECT
-    e.employee_id,
-    e.first_name,
-    e.last_name,
-    d.department_name,
-    e.salary
-FROM employees e
-INNER JOIN departments d
-    ON e.department_id = d.department_id;
--- Only employees WITH a matching department appear in results
--- Employees with NULL department_id are EXCLUDED</code></pre>
-<h3 style="color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;">Table Aliases — Best Practice</h3>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- Always use short aliases for readability
-FROM employees e
-FROM departments d
-FROM orders o
-FROM customers c
-FROM products p
-
--- Multi-table join with aliases
-SELECT
-    e.first_name,
-    e.last_name,
-    d.department_name,
-    j.job_title_description
-FROM employees e
-INNER JOIN departments d ON e.department_id = d.department_id
-INNER JOIN job_levels j ON e.job_level_id = j.job_level_id;</code></pre>
-<h3 style="color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;">JOIN on Multiple Conditions (Composite Join)</h3>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- Join on more than one column
-SELECT *
-FROM orders o
-INNER JOIN order_items oi
-    ON o.order_id = oi.order_id
-   AND o.tenant_id = oi.tenant_id;  -- Multi-tenant safety check</code></pre>
-<h3 style="color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;">JOIN with WHERE (Filtering After JOIN)</h3>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- Filter after joining
-SELECT e.first_name, d.department_name, e.salary
-FROM employees e
-INNER JOIN departments d ON e.department_id = d.department_id
-WHERE e.salary &gt; 60000
-  AND d.department_name = 'Engineering';</code></pre>
-<h3 style="color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;">Equi-Join vs. Non-Equi Join</h3>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- Equi-Join (equality condition — most common)
-ON e.department_id = d.department_id
-
--- Non-Equi Join (range or inequality condition)
-SELECT e.first_name, e.salary, sg.grade
-FROM employees e
-INNER JOIN salary_grades sg
-    ON e.salary BETWEEN sg.min_salary AND sg.max_salary;</code></pre>
-<h3 style="color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;">Understanding the Result Set</h3>
-<pre style="background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;"><code class="language-sql" style="color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;">-- employees: 100 rows
--- departments: 10 rows
--- After INNER JOIN: could be 0 to many rows
--- If every employee has a valid department_id → 100 rows
--- If 5 employees have NULL department_id → 95 rows
--- If all department_ids are invalid → 0 rows</code></pre>
-<hr style="border:none;border-top:1px solid #1e293b;margin:24px 0;">
-</div></div>
-<div class="code-cell" id="cell-1">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-1">SELECT * FROM sales LIMIT 5;</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="try-it-1">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #818CF8; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🔬 Try It Yourself: Interactive Practice</b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Write an INNER JOIN query to show employees first_name and their department_name.</p></div>
-<div class="code-cell" id="cell-2">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-2">SELECT e.first_name, d.department_name FROM employees e INNER JOIN departments d ON e.department_id = d.department_id;</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Write a query to list all projects that employees are assigned to, showing employee name and project name.</p></div>
-<div class="code-cell" id="cell-3">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-3">SELECT e.first_name, p.name FROM employees e INNER JOIN emp_projects ep ON e.employee_id = ep.emp_id INNER JOIN projects p ON ep.project_id = p.id;</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Find the total budget of departments that have active employees.</p></div>
-<div class="code-cell" id="cell-4">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-4">SELECT DISTINCT d.department_name, d.budget FROM departments d INNER JOIN employees e ON d.department_id = e.department_id WHERE e.is_active = 1;</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Concept Checks-3">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Concept Checks</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Write a query that shows each employee's <code>first_name</code>, <code>last_name</code>, <code>salary</code>, and their <code>department_name</code>. Use INNER JOIN to link employees to departments.</p></div>
-<div class="code-cell" id="cell-5">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-5">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Extend Challenge 1 to include a third table: <code>job_titles</code>. Join the employees table to <code>job_titles</code> on <code>job_title_id</code>. Display <code>first_name</code>, <code>department_name</code>, and <code>title_name</code>.</p></div>
-<div class="code-cell" id="cell-6">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-6">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Write a query to find all employees in the 'Sales' department with a salary above ₹60,000. Use INNER JOIN and filter with WHERE.</p></div>
-<div class="code-cell" id="cell-7">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-7">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Using a non-equi JOIN, write a query that maps each employee's salary to a salary grade from the <code>salary_grades</code> table (columns: grade, min_salary, max_salary). Display <code>first_name</code>, <code>salary</code>, and <code>grade</code>.</p></div>
-<div class="code-cell" id="cell-8">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-8">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Count how many employees are in each department. Display <code>department_name</code> and <code>employee_count</code>. Sort by <code>employee_count</code> descending. (Use INNER JOIN + GROUP BY.)
-
----</p></div>
-<div class="code-cell" id="cell-9">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-9">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="practice">
-<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
-<div class="question task"><p><strong>Task 1 (Employee Managers):</strong> Join employees table with departments to display department name and manager id.</p></div>
-<div class="code-cell" id="cell-10">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-10">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question task"><p><strong>Task 2 (Project Assignment Roles):</strong> List employee first_name, project name, and role for all assigned projects.</p></div>
-<div class="code-cell" id="cell-11">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-11">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question task"><p><strong>Task 3 (Active DS Staff):</strong> Retrieve active employees working in 'Data Science' department using INNER JOIN.</p></div>
-<div class="code-cell" id="cell-12">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-12">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="interview">
-<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
-<div class="question interview"><p><strong>Q1.</strong> Write a query to list employees and their departments. In a comment, explain what happens to rows in either table that have no matching records during an INNER JOIN.</p></div>
-<div class="code-cell" id="cell-13">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-13">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q2.</strong> Write a query to show employee assignments on projects. Explain the difference between primary keys and foreign keys in database relationships.</p></div>
-<div class="code-cell" id="cell-14">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-14">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q3.</strong> Write a query to join employees, emp_projects, and projects. Explain how join order impacts performance of relational databases.</p></div>
-<div class="code-cell" id="cell-15">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-15">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q4.</strong> Write a query to join employees with departments on department_id. In a comment, explain the difference between explicit JOIN and implicit comma-based JOIN.</p></div>
-<div class="code-cell" id="cell-16">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-16">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q5.</strong> Write a query to find departments with budgets > 1000000 joined with employees. In a comment, explain Cartesian product and how joins avoid it.</p></div>
-<div class="code-cell" id="cell-17">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-17">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q6.</strong> Write a query to join active_employees with archived_employees on employee_id. Explain if you can join on columns of different data types.</p></div>
-<div class="code-cell" id="cell-18">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-18">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q7.</strong> Write a query to join projects and emp_projects. In a comment, explain what a junction (or bridge) table is.</p></div>
-<div class="code-cell" id="cell-19">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-19">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q8.</strong> Write a query to display employee details joined with departments. In a comment, explain how database indexes help optimize join operations.</p></div>
-<div class="code-cell" id="cell-20">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-20">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q9.</strong> Write a query to join employees and salaries tables to show historical salary amounts.</p></div>
-<div class="code-cell" id="cell-21">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-21">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question interview"><p><strong>Q10.</strong> Write a query to list projects with status 'In Progress' and their assigned roles. Explain why we use alias prefixes for columns in multi-table queries.</p></div>
-<div class="code-cell" id="cell-22">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-22">-- Write your SQL query here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="summary">
-<div class="section-header cyan"><h2>📊 Day 09 Executive Summary</h2></div>
-<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">Relational databases derive their power from connections. Today you mastered database relationships (PK-FK constraints) and combined multiple tables horizontally using INNER JOIN.</div></div>
-</div>
-  </main>
-  <nav class="sidebar" id="sidebar">
-    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
-    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
-<li><a href="#sec-1" class="toc-link">1. Understanding Relationships & INNER JOIN</a></li>
-<li><a href="#try-it-1" class="toc-link">🔬 Try It Yourself</a></li>
-<li><a href="#checks-Concept Checks-3" class="toc-link">🧪 Checks: Concept Checks</a></li>
-<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
-<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
-<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
-    <div class="sidebar-resize" id="sidebarResize"></div>
-  </nav>
-</div>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
-
-<script defer src="../notebook.js?v=2.1"></script>
-<script src="../voice.js" defer></script>
-<script src="../hints.js" defer></script>
-<!-- PWA Service Worker Registration -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('[Service Worker] Registered scope:', reg.scope))
-        .catch(err => console.error('[Service Worker] Registration failed:', err));
+        const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
+        const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
+        const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+        const { data: { session }, error } = await sb.auth.getSession();
+        if (error || !session) {
+          window.location.href = `../index.html?redirect=${encodeURIComponent(currentPath)}`; return;
+        }
+        const plan = session.user.user_metadata?.plan;
+        const isEnrolledLocal = localStorage.getItem('manodemy_enrolled') === 'true';
+        if (plan === 'pro' || isEnrolledLocal) { removePreload(); return; }
+        try {
+          const { data: enrolled } = await sb.rpc('check_enrollment', { p_course_id: 'sql-20day' });
+          if (enrolled) {
+            localStorage.setItem('manodemy_enrolled', 'true');
+            removePreload(); return;
+          }
+        } catch (rpcErr) { /* RPC failed */ }
+        window.location.href = `../index.html#pricing?locked=true`;
+      } catch (err) { window.location.href = `../index.html`; }
     });
-  }
-</script>
+  </script>
+
+</head>
+<body>
+
+  <!-- Paywall Preload Screen -->
+  <div id="paywall-preload-screen" class="paywall-preload" aria-hidden="true">
+    <div class="paywall-preload__spinner"></div>
+  </div>
+
+
+
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <header class="header">
+    <div class="header-left">
+      <!-- Back Arrow Link -->
+      <a href="/" class="back-to-home-btn" title="Back to Home Dashboard" style="color: #64748b; margin-right: 12px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      </a>
+      <!-- User Profile Avatar with active green dot -->
+      <div class="user-profile">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIjZkNzQ4YiI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==" alt="User Profile" class="avatar-img" style="background-color: rgba(255,255,255,0.08);" />
+        <span class="active-dot"></span>
+      </div>
+      
+      <!-- Graded Stats Card with Progress Indicator -->
+      <div class="stats-card">
+        <div class="stats-row">
+          <div class="stats-item">
+            <span class="stats-label">SOLVED</span>
+            <span class="stats-value stats-value--fraction">
+              <span class="stats-num" id="solvedCount">0</span>
+              <span class="stats-den" id="totalQuestions">2</span>
+            </span>
+          </div>
+          <div class="stats-divider"></div>
+          <div class="stats-item">
+            <span class="stats-label">MARKS</span>
+            <span class="stats-value stats-value--fraction">
+              <span class="stats-num" id="marksCount">0.0</span>
+              <span class="stats-den" id="totalMarks">2.0</span>
+            </span>
+          </div>
+        </div>
+        <div class="stats-progress-bar">
+          <div class="stats-progress-fill" id="statsProgressFill" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <!-- Day Selector Dropdown & Topic Selector Dropdown -->
+      <div class="day-navigation">
+        <div class="day-picker-pill">
+          <span class="day-picker-dot day-picker-dot--day"></span>
+          <select id="daySelect">
+            <!-- Populated dynamically -->
+          </select>
+          <span class="day-picker-chevron">
+            <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <div class="day-picker-pill topic-picker-pill">
+          <span class="day-picker-dot day-picker-dot--topic"></span>
+          <select id="topicSelect" onchange="onTopicSelectChange(this.value)">
+            <!-- Populated dynamically -->
+          </select>
+          <span class="day-picker-chevron">
+            <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <button class="hdr-btn hdr-btn--autoplay" id="navPlayBtn" onclick="toggleCombinedPlayback()" title="Play lecture narration" style="display: none;">
+          <span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button class="hdr-btn hdr-btn--test" id="takeTestBtn" onclick="openTestPortal()" title="Take the day test">🧪 Take Test</button>
+      <button class="hdr-btn hdr-btn--score" id="scoreBtn" onclick="openScoreCard()" title="View Score Card">
+        <svg class="score-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right: 4px;"><path d="M1.5 1.5H5.5V5.5H1.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 1.5H12.5V5.5H8.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 8.5H5.5V12.5H1.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8.5H12.5V12.5H8.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Score Card
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-tabs-nav" id="mobileTabsNav">
+    <button class="mobile-tab-btn active" id="tabBtnTheory" onclick="setMobileTab('theory')">
+      <span class="tab-emoji">📖</span> Lesson
+    </button>
+    <button class="mobile-tab-btn" id="tabBtnPractice" onclick="setMobileTab('practice')">
+      <span class="tab-emoji">💻</span> Practice
+    </button>
+  </div>
+
+  <!-- ═══════════════ SPLIT WORKSPACE ═══════════════ -->
+  <div class="workspace mobile-show-theory" id="workspaceContainer">
+
+
+    <!-- ─── LEFT PANEL ─── -->
+    <div class="panel-left" id="panelLeft">
+
+      <!-- Question Prompt -->
+      <div class="question-bar" id="questionBar">
+        <div class="q-marker"></div>
+        <div class="question-prompt" id="questionPrompt">
+          Loading Question...
+        </div>
+        <button class="audio-play-btn" id="questionAudioBtn" onclick="playQuestionAudio(this)" title="Play question narration" style="flex-shrink: 0; margin-top: 2px;">
+          <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="q-nav">
+          <button onclick="prevQuestion()" title="Previous question">◀</button>
+          <button onclick="nextQuestion()" title="Next question">▶</button>
+        </div>
+      </div>
+
+      <!-- Editor Area -->
+      <div class="editor-area">
+        <!-- Toolbar -->
+        <div class="editor-toolbar">
+          <span class="q-counter" id="qCounter">Question-01</span>
+          <button class="audio-play-btn" id="solutionAudioBtn" onclick="playSolutionAudioFromBtn(this)" title="Play solution narration" style="margin-left: 6px;">
+            <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="tb-btn tb-btn--tables" id="peekTrigger" onclick="togglePeekPopover(event)">📊 Tables</button>
+          <button class="tb-btn tb-btn--reset" onclick="confirmResetDatabase()" style="margin-left: 6px;" title="Reset Database to original state">🔄 Reset DB</button>
+          <div class="spacer"></div>
+          <button class="tb-btn tb-btn--run" id="runBtn" onclick="runCurrentQuery()">▶ Run</button>
+          <button class="tb-btn tb-btn--clear" onclick="clearEditor()">✕ Clear</button>
+        </div>
+
+        <!-- CodeMirror Mount -->
+        <div class="editor-wrap" id="mainEditorWrap"></div>
+
+        <!-- Output Terminal -->
+        <div class="output-section" id="mainOutput">
+          <div class="output-label">Terminal Output</div>
+          <span class="output-success">Ready...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── DIVIDER ─── -->
+    <div class="divider" id="divider">
+      <div class="divider-toggles">
+        <button class="div-toggle-btn div-toggle-btn--left" onclick="toggleLeftPanel(event)" title="Toggle code cell">◀</button>
+        <button class="div-toggle-btn div-toggle-btn--split" onclick="resetSplitScreen(event)" title="Reset split screen">◫</button>
+        <button class="div-toggle-btn div-toggle-btn--right" onclick="toggleRightPanel(event)" title="Toggle notes panel">▶</button>
+      </div>
+    </div>
+
+    <!-- ─── RIGHT PANEL ─── -->
+    <div class="panel-right" id="panelRight">
+
+      <div class="right-content" id="rightContent">
+
+        <!-- Slide Viewer -->
+        <div class="slide-viewer" id="slideViewer">
+          <div class="slide-card" style="position: relative;">
+            <div class="slide-header" id="slideHeader"></div>
+            <div class="slide-content" id="slideContent" style="position: relative; overflow-y: auto; min-height: 0;">
+              <!-- Canvas Overlay inside scrollable container -->
+              <canvas class="draw-canvas" id="workspaceDrawCanvas" style="position: absolute; top: 0; left: 0; z-index: 10;"></canvas>
+              <!-- Content container populated by JS -->
+              <div id="slideBodyText">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+            <!-- Subtitle/Narration Caption bubble inside workspace slide card -->
+            <div class="vp-caption" id="workspaceVpCaption" style="display: none; margin: 0; padding: 10px 16px; background: rgba(124, 58, 237, 0.08); border-top: 1px solid rgba(124, 58, 237, 0.2); font-size: 0.78rem; font-weight: 500; color: #a78bfa; text-align: center; font-family: sans-serif; flex-shrink: 0;">
+              📢 Narrating slide events...
+            </div>
+          </div>
+          <!-- Workspace Drawing Toolbar -->
+          <div class="ws-draw-toolbar" id="wsDrawToolbar" style="display: none;">
+            <button class="tool-btn" id="wsRectBtn" onclick="setWsDrawMode('rect')" title="Highlight with Rectangle Box">⬜ Highlight</button>
+            <button class="tool-btn" id="wsUndoBtn" onclick="undoLastHighlight()" title="Undo Last Highlight">↶ Undo</button>
+            <button class="tool-btn" id="wsClearBtn" onclick="clearWsDrawings()" title="Clear All Drawings">✕ Clear</button>
+          </div>
+        </div>
+
+        <!-- Playback Controls -->
+        <div class="playback-bar" id="playbackBar">
+          <div class="playback-row">
+            <div class="playback-controls-row">
+              <div class="playback-left-controls">
+                <button class="play-btn" id="playPauseBtn" onclick="toggleCombinedPlayback()">▶</button>
+                <div class="playback-bar-controls">
+                  <!-- Volume Control Wrapper -->
+                  <div class="volume-control-wrapper">
+                    <button class="volume-btn" id="volumeBtn" onclick="toggleVolumePopover(event)" title="Adjust Volume">
+                      <svg class="volume-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                      </svg>
+                    </button>
+                    <div class="volume-popover" id="volumePopover">
+                      <input type="range" id="volumeSlider" min="0" max="100" value="100" step="1" oninput="setPlaybackVolume(this.value)">
+                      <span class="volume-value" id="volumeValue">100%</span>
+                    </div>
+                  </div>
+
+                  <!-- Speed Control Wrapper -->
+                  <div class="speed-control-wrapper">
+                    <button class="speed-control-btn" id="speedControlBtn" onclick="toggleSpeedPopover(event)" title="Playback Speed">
+                      <svg class="speed-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 15.2a10 10 0 0 0 17.3 3.58 10 10 0 0 0-.27-10.21zM10.85 15.75a1.2 1.2 0 1 0 1.2-1.2 1.2 1.2 0 0 0-1.2 1.2zM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1z"/>
+                      </svg>
+                      <span id="speedValueLabel">1.0x</span>
+                    </button>
+                    <div class="speed-popover" id="speedPopover">
+                      <div class="speed-option active" onclick="selectSpeedOption(1, '1.0x')">1.0x</div>
+                      <div class="speed-option" onclick="selectSpeedOption(1.25, '1.25x')">1.25x</div>
+                      <div class="speed-option" onclick="selectSpeedOption(1.5, '1.5x')">1.5x</div>
+                      <div class="speed-option" onclick="selectSpeedOption(1.75, '1.75x')">1.75x</div>
+                      <div class="speed-option" onclick="selectSpeedOption(2, '2.0x')">2.0x</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="playback-right-controls">
+                <span class="playback-time" id="playbackTime">0:00 / 0:00</span>
+              </div>
+            </div>
+            <div class="playback-timeline-row">
+              <input type="range" class="seek-bar" id="seekBar" min="0" max="100" value="0" step="0.1" oninput="seekCombinedPlayback(this.value)">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ PEEK DATA POPOVER ═══════════════ -->
+  <div class="peek-popover" id="peekPopover">
+    <div class="peek-title">
+      <span>👀 Peek Data — </span><span id="peekTableName">employees</span>
+      <button class="peek-close" onclick="closePeekPopover()">✕</button>
+    </div>
+    <div id="peekContent">
+      <!-- Populated by JS with live query results -->
+    </div>
+  </div>
+
+  <!-- ═══════════════ PRESENT MODE OVERLAY ═══════════════ -->
+  <div class="present-overlay" id="presentOverlay">
+    <div class="present-toolbar">
+      <div class="present-tools">
+        <button class="tool-btn" id="laserBtn" onclick="toggleLaser()">🔴 Laser</button>
+        <button class="tool-btn" id="penBtn" onclick="togglePen()">✏️ Draw</button>
+      </div>
+      <button class="tool-btn tool-btn--close" onclick="closePresentMode()">✕ Close</button>
+    </div>
+
+    <div class="present-body">
+      <canvas class="draw-canvas" id="drawCanvas"></canvas>
+      <div class="present-slide slide-content" id="presentSlideContent">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <div class="present-footer">
+      <button onclick="prevSlide()" title="Previous">◀</button>
+      <span class="present-counter" id="presentCounter">1 / 3</span>
+      <button onclick="nextSlide()" title="Next">▶</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TEST PORTAL MODAL ═══════════════ -->
+  <div class="test-overlay" id="testOverlay">
+    <div class="test-header">
+      <div class="test-header-left">
+        <!-- User Profile Avatar with active green dot -->
+        <div class="user-profile">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIjZkNzQ4YiI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==" alt="User Profile" class="avatar-img" style="background-color: rgba(255,255,255,0.08);" />
+          <span class="active-dot"></span>
+        </div>
+        
+        <!-- Test Progress Stats Card -->
+        <div class="stats-card">
+          <div class="stats-row">
+            <div class="stats-item">
+              <span class="stats-label">ATTEMPTED</span>
+              <span class="stats-value"><span id="testAttemptedCount">0</span><span class="stats-total"> / 25</span></span>
+            </div>
+            <div class="stats-divider"></div>
+            <div class="stats-item">
+              <span class="stats-label">BEST SCORE</span>
+              <span class="stats-value"><span id="testBestScoreCount">0</span><span class="stats-total"> / 25</span></span>
+            </div>
+          </div>
+          <div class="stats-progress-bar">
+            <div class="stats-progress-fill" id="testProgressFill" style="width: 0%; background: var(--cyan);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-header-center">
+        <div class="test-title">📝 Day 02 — SQL Interview Test</div>
+      </div>
+
+      <div class="test-header-right">
+        <!-- Score Card Button -->
+        <button class="hdr-btn hdr-btn--score" id="testScoreBtn" onclick="openTestScoreCard()" title="View Score Card">
+          <svg class="score-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right: 4px;"><path d="M1.5 1.5H5.5V5.5H1.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 1.5H12.5V5.5H8.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 8.5H5.5V12.5H1.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8.5H12.5V12.5H8.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Score Card
+        </button>
+        
+        <div class="test-timer-wrapper">
+          <span class="timer-icon">⏳</span>
+          <span class="test-timer" id="testTimer">120:00</span>
+        </div>
+        
+        <button class="test-close-btn" onclick="closeTestPortal()">✕ Exit Test</button>
+      </div>
+    </div>
+
+    <div class="test-body">
+      <!-- Sidebar -->
+      <div class="test-sidebar" id="testSidebar">
+        <!-- 25 buttons populated by JS -->
+      </div>
+
+      <!-- Main Test Area -->
+      <div class="test-main">
+        <div class="test-question-prompt" id="testQuestionPrompt">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="test-toolbar">
+          <span class="q-counter" id="testQCounter">Q1 / 25</span>
+          <div class="spacer" style="flex:1"></div>
+          <button class="tb-btn tb-btn--run" onclick="runTestQuery()">▶ Run</button>
+          <button class="tb-btn tb-btn--clear" onclick="clearTestEditor()">✕ Clear</button>
+        </div>
+
+        <div class="test-editor-wrap" id="testEditorWrap"></div>
+
+        <div class="test-output" id="testOutput">
+          <div class="output-label">Terminal Output</div>
+          <span class="output-success">Ready...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-submit-bar">
+      <span class="test-progress" id="testProgress">Attempted: 0 / 25</span>
+      <button class="test-submit-btn" id="submitTestBtn" onclick="submitTest()">Submit Test</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SCORECARD OVERLAY ═══════════════ -->
+  <div class="scorecard-overlay" id="scorecardOverlay">
+    <div class="scorecard">
+      <div class="scorecard-header">
+        <h2>📊 Test Results</h2>
+        <div class="score-big" id="scoreBig">0 / 25</div>
+        <div class="score-meta" id="scoreMeta">Time spent: 00:00</div>
+      </div>
+      <div class="scorecard-body">
+        <table class="scorecard-table" id="scorecardTable">
+          <thead>
+            <tr><th>#</th><th>Status</th><th>Your Query</th></tr>
+          </thead>
+          <tbody id="scorecardBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+      <div class="scorecard-footer">
+        <button class="scorecard-close-btn" onclick="closeScorecard()">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  
+  <!-- Supabase SDK -->
+  <script src="/supabase.js" defer></script>
+  <!-- Content & Grading modules -->
+  <script src="/Version-3/content/manifest.js?v=14.2"></script>
+  <script src="/Version-3/content/day-09.js?v=14.2"></script>
+  <script src="/Version-3/db-seeds/retail-seed.js?v=14.2"></script>
+  <script src="/Version-3/grading-engine.js?v=14.2"></script>
+  <script src="/Version-3/persistence.js?v=14.2"></script>
+  <!-- App JS -->
+  <script src="/Version-3/scrimba-engine.js?v=14.2"></script>
 </body>
 </html>
