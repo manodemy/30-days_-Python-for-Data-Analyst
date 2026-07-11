@@ -600,44 +600,34 @@ WHERE department = 'Engineering';</pre>
         <div class="slide-section" id="performanceCosts">
           <h3 class="heading-with-audio">
             The Four Performance Costs of SELECT *
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio08.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
+            
           </h3>
           <div class="vs-block">
             <div class="vs-card vs-card--bad" id="costExcessDiskIO">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">💾 1. Excess Disk I/O</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio09.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
+                
               </div>
               <p>More columns → more pages loaded from disk → higher latency, especially on large tables with millions of rows.</p>
             </div>
             <div class="vs-card vs-card--bad" id="costBufferPool">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">🧠 2. Buffer Pool Pollution</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio10.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
+                
               </div>
               <p>Unused columns occupy RAM in the database buffer cache, evicting frequently-needed pages and causing cache misses.</p>
             </div>
             <div class="vs-card vs-card--bad" id="costNetworkOverhead">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">🌐 3. Network Overhead</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio11.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
+                
               </div>
               <p>Every byte travels over the network from the DB server to your app. Wide rows with BLOB columns cause noticeable latency under heavy traffic.</p>
             </div>
             <div class="vs-card vs-card--bad" id="costDefeatedIndex">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">🚫 4. Defeated Index-Only Scans</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio12.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
+                
               </div>
               <p>Even when a covering index exists, <code>SELECT *</code> forces a heap lookup — visiting actual table pages — because not all columns are in the index.</p>
             </div>
@@ -680,9 +670,7 @@ WHERE department = 'Engineering';</pre>
         <div class="slide-section" id="indexOnlyScans">
           <h3 class="heading-with-audio">
             Index-Only Scans — The Ultimate Optimization
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio13.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
+            
           </h3>
           <p>When you project only columns that are part of a database index, the query optimizer can execute an <strong>Index-Only Scan</strong> (also called a <em>Covering Index Scan</em>): it reads data directly from the index B-tree without ever touching the physical table pages (heap).</p>
 
@@ -690,9 +678,7 @@ WHERE department = 'Engineering';</pre>
             <div class="vs-card vs-card--bad" id="heapLookupRequired">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">❌ SELECT * — Heap Lookup Required</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio14.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
+                
               </div>
               <pre style="margin: 0; font-size: 0.75rem;">SELECT * FROM employees
 WHERE department = 'Engineering';
@@ -704,9 +690,7 @@ WHERE department = 'Engineering';
             <div class="vs-card vs-card--good" id="indexOnlyScanGood">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">✅ Specific Projection — Index-Only Scan</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio15.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
+                
               </div>
               <pre style="margin: 0; font-size: 0.75rem;">SELECT name, department FROM employees
 WHERE department = 'Engineering';
@@ -721,9 +705,7 @@ WHERE department = 'Engineering';
         <div class="slide-section" id="columnOrientedDbs">
           <h3 class="heading-with-audio">
             Column-Oriented Databases — A Step Further
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio16.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
+            
           </h3>
           <p>Analytical databases like <strong>Google BigQuery</strong>, <strong>Snowflake</strong>, and <strong>Amazon Redshift</strong> store data by column on disk rather than by row. This means:</p>
           <div class="rdbms-infographic">
@@ -731,9 +713,7 @@ WHERE department = 'Engineering';
               <div class="info-card info-card--green" id="cardZeroOverhead">
                 <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
                   <div class="info-card-header" style="margin: 0; flex: 1;">ZERO OVERHEAD</div>
-                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio17.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                  </button>
+                  
                 </div>
                 <ul class="info-card-bullets">
                   <li><span class="bullet-dot"></span>READS ONLY THE REQUESTED COLUMNS FROM DISK</li>
@@ -744,9 +724,7 @@ WHERE department = 'Engineering';
               <div class="info-card info-card--amber" id="cardBilledPerByte">
                 <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
                   <div class="info-card-header" style="margin: 0; flex: 1;">BILLED PER BYTE</div>
-                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                  </button>
+                  
                 </div>
                 <ul class="info-card-bullets">
                   <li><span class="bullet-dot"></span>CLOUD ENGINES BILL PER QUANTITY OF SCANNED DATA</li>
@@ -757,9 +735,7 @@ WHERE department = 'Engineering';
               <div class="info-card info-card--cyan" id="cardCompression">
                 <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
                   <div class="info-card-header" style="margin: 0; flex: 1;">COMPRESSION</div>
-                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio19.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                  </button>
+                  
                 </div>
                 <ul class="info-card-bullets">
                   <li><span class="bullet-dot"></span>SIMILAR DATA TYPES CLUSTERED ON DISK</li>
@@ -776,9 +752,7 @@ WHERE department = 'Engineering';
             <div style="flex: 1;">
               <strong>⚠️ Real-World Outage Scenario:</strong> A backend team deployed <code>SELECT *</code> on a users table. Six months later, a feature team added a <code>profile_picture BYTEA</code> column (storing binary image data up to 2 MB per user). Overnight, every query that previously returned 200 bytes per row now returned 2 MB per row — causing database memory exhaustion and a P0 outage. The fix: explicit column projection in every query. <strong>Lesson: never use SELECT * in application code, unless you are just manually exploring the table columns in your database console.</strong>
             </div>
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio20.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
+            
           </div>
         </div>
 
@@ -788,9 +762,7 @@ WHERE department = 'Engineering';
             <div id="iqIndexOnlyScan">
               <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
                 <p style="margin: 0; flex: 1;"><strong>Q: What is an index-only scan and when does the optimizer use it?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio21.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
+                
               </div>
               <p><em>A: An index-only scan (covering index scan) occurs when every column requested in the SELECT list and WHERE clause is present within a single index. The optimizer can resolve the entire query from the index B-tree without reading the physical table (heap) pages, drastically reducing disk I/O. To enable this, design covering indexes that include all frequently projected columns alongside filter columns.</em></p>
             </div>
@@ -800,9 +772,7 @@ WHERE department = 'Engineering';
             <div id="iqSelectStarCosts">
               <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
                 <p style="margin: 0; flex: 1;"><strong>Q: Why does SELECT * hurt performance even when all columns are small?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio22.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
+                
               </div>
               <p><em>A: Even with small columns, SELECT * prevents the optimizer from using index-only scans, increases network payload per row, fills more buffer pool pages (reducing cache hit ratio for other queries), and makes your code fragile — if new columns are added to the table, all queries silently start fetching extra data. Explicit projection makes performance deterministic and code future-proof.</em></p>
             </div>
