@@ -3868,34 +3868,29 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     // Handle daySelect change and load day-specific slide & questions
     document.getElementById('daySelect')?.addEventListener('change', function() {
-      if (this.value === 'day04') {
-        alert('Day 04 is currently under development.');
+      if (this.value === 'day02' || this.value === 'day03' || this.value === 'day04') {
+        alert(`${this.value.replace('day', 'Day ')} is currently under development.`);
         this.value = 'day01';
       }
       
       // Sync indicator badge text
       const badge = document.querySelector('.day-pill-badge');
       if (badge) {
-        const dayNum = this.value.replace('day', '');
-        badge.textContent = `DAY ${dayNum}`;
+        badge.textContent = `DAY 01`;
       }
 
       // Sync active slide and topicSelect to match the day
-      let targetIdx = 0;
-      if (this.value === 'day02') targetIdx = 1;
-      if (this.value === 'day03') targetIdx = 2;
-      
-      currentSlide = targetIdx;
+      currentSlide = 0;
       renderCurrentSlide();
       clearDrawCanvas();
       
       const topicSelect = document.getElementById('topicSelect');
       if (topicSelect) {
-        topicSelect.value = targetIdx;
+        topicSelect.value = 0;
       }
       
       // Load day-specific practice questions
-      loadQuestionsForDay(this.value);
+      loadQuestionsForDay('day01');
     });
 
     // Populate topicSelect dropdown
@@ -3944,17 +3939,23 @@ function onTopicSelectChange(val) {
   renderCurrentSlide();
   clearDrawCanvas();
   
-  // Sync daySelect dropdown value
+  // Sync daySelect dropdown value (always keep at day01)
   const daySelect = document.getElementById('daySelect');
   if (daySelect) {
-    let dayVal = 'day01';
-    if (currentSlide === 1) dayVal = 'day02';
-    if (currentSlide === 2) dayVal = 'day03';
-    if (daySelect.value !== dayVal) {
-      daySelect.value = dayVal;
-      daySelect.dispatchEvent(new Event('change'));
+    if (daySelect.value !== 'day01') {
+      daySelect.value = 'day01';
+      const badge = document.querySelector('.day-pill-badge');
+      if (badge) {
+        badge.textContent = `DAY 01`;
+      }
     }
   }
+
+  // Load topic-specific questions (slide index 0 -> day01, 1 -> day02, 2 -> day03)
+  let qDay = 'day01';
+  if (currentSlide === 1) qDay = 'day02';
+  if (currentSlide === 2) qDay = 'day03';
+  loadQuestionsForDay(qDay);
 }
 
 function openScoreCard() {
