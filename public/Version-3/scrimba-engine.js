@@ -57,632 +57,772 @@ const COURSE_CONFIG = {
   slides: [
     {
       title: '01. Relational Databases & SQL',
+      duration: '7:14',
       html: `
         <h2>📊 01. Relational Databases &amp; SQL</h2>
 
-        <div class="rdbms-intro-section" id="rdbmsIntro">
-          <h3 class="heading-with-audio">
-            What is RDBMS?
-            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio01.mp3', this)" title="Play narration">
+        <div class="slide-section">
+          <div class="rdbms-intro-section" id="rdbmsIntro">
+            <h3 class="heading-with-audio">
+              What is RDBMS?
+              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio01.mp3', this)" title="Play narration">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </h3>
+            <p>A <strong>Relational Database Management System (RDBMS)</strong> is the software used to store, manage, query, and retrieve data stored in a relational database. It formats data into structured <strong>tables</strong> (also called <strong>relations</strong>) which are connected to one another through defined relationships.</p>
+            
+            <div class="rdbms-diagram-container">
+              <div class="rdbms-table-title">📁 Table: Employees</div>
+              <table class="db-table-mock rdbms-interactive-mock">
+                <thead>
+                  <tr>
+                    <th>🔑 ID (PK) <span class="type-tag">INT</span></th>
+                    <th>Name <span class="type-tag">VARCHAR</span></th>
+                    <th>Role <span class="type-tag">VARCHAR</span></th>
+                    <th>Salary <span class="type-tag">DECIMAL</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Alice Johnson</td>
+                    <td>Data Analyst</td>
+                    <td>$85,000</td>
+                  </tr>
+                  <tr class="highlighted-row">
+                    <td>2</td>
+                    <td>Bob Smith</td>
+                    <td>SQL Developer</td>
+                    <td>$92,000</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Charlie Brown</td>
+                    <td>DBA</td>
+                    <td>$105,000</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="rdbms-legend">
+                <span class="legend-item"><span class="legend-color legend-color--column"></span> Column (Field / Attribute)</span>
+                <span class="legend-item"><span class="legend-color legend-color--row"></span> Row (Record / Tuple)</span>
+                <span class="legend-item">🔑 Primary Key (PK)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-section">
+          <h3 class="heading-with-audio" id="whyRdbms">
+            Why Relational Databases?
+            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio02.mp3', this)" title="Play narration">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
-          <p>A <strong>Relational Database Management System (RDBMS)</strong> is the software used to store, manage, query, and retrieve data stored in a relational database. It formats data into structured <strong>tables</strong> (also called <strong>relations</strong>) which are connected to one another through defined relationships.</p>
-          
-          <div class="rdbms-diagram-container">
-            <div class="rdbms-table-title">📁 Table: Employees</div>
-            <table class="db-table-mock rdbms-interactive-mock">
+          <p>Before relational databases, data was stored in flat files or hierarchical systems — duplicated across many places with no mechanism to enforce consistency. <strong>Relational Database Management Systems (RDBMS)</strong> were invented to solve three fundamental problems:</p>
+
+          <div class="rdbms-infographic" id="rdbmsProblems">
+            <div class="info-title heading-with-audio">
+              <svg class="db-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 4.02 2 6.5v11c0 2.48 4.48 4.5 10 4.5s10-2.02 10-4.5v-11C22 4.02 17.52 2 12 2zm0 18c-4.41 0-8-1.57-8-3.5v-2.28c1.9.89 4.77 1.48 8 1.48s6.1-.59 8-1.48v2.28c0 1.93-3.59 3.5-8 3.5zm0-5c-4.41 0-8-1.57-8-3.5V9.72c1.9.89 4.77 1.48 8 1.48s6.1-.59 8-1.48V11.5c0 1.93-3.59 3.5-8 3.5zm0-5c-4.41 0-8-1.57-8-3.5s3.59-3.5 8-3.5 8 1.57 8 3.5-3.59 3.5-8 3.5z"/></svg>
+              <span>THE THREE PROBLEMS RDBMS SOLVES</span>
+              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio03.mp3', this)" title="Play narration">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <div class="info-columns">
+              <div class="info-card info-card--green">
+                <div class="info-card-header">DATA REDUNDANCY</div>
+                <div class="info-card-illustration">
+                  <img src="/Version-3/data_redundancy_icon.png" alt="Data Redundancy" />
+                </div>
+                <ul class="info-card-bullets">
+                  <li><span class="bullet-dot"></span>BREAKS DATA INTO RELATED TABLES</li>
+                  <li><span class="bullet-dot"></span>STORES EACH FACT EXACTLY ONCE</li>
+                  <li><span class="bullet-dot"></span>UPDATES OCCUR IN ONE ROW, NOT HUNDREDS</li>
+                </ul>
+              </div>
+              <div class="info-card info-card--blue">
+                <div class="info-card-header">DATA INTEGRITY</div>
+                <div class="info-card-illustration">
+                  <img src="/Version-3/data_integrity_icon.png" alt="Data Integrity" />
+                </div>
+                <ul class="info-card-bullets">
+                  <li><span class="bullet-dot"></span>CONSTRAINTS (NOT NULL, UNIQUE, CHECK, FK)</li>
+                  <li><span class="bullet-dot"></span>GUARANTEES VALID DATA ENTRY</li>
+                  <li><span class="bullet-dot"></span>PREVENTS ORPHANED RECORDS &amp; INVALID STATES</li>
+                </ul>
+              </div>
+              <div class="info-card info-card--orange">
+                <div class="info-card-header">CONCURRENT ACCESS</div>
+                <div class="info-card-illustration">
+                  <img src="/Version-3/concurrent_access_icon.png" alt="Concurrent Access" />
+                </div>
+                <ul class="info-card-bullets">
+                  <li><span class="bullet-dot"></span>MULTIPLE USERS READ/WRITE SIMULTANEOUSLY</li>
+                  <li><span class="bullet-dot"></span>HANDLES LOCKING &amp; ISOLATION</li>
+                  <li><span class="bullet-dot"></span>TRANSACTIONS NEVER CORRUPT EACH OTHER</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-section">
+          <h3 class="heading-with-audio" id="coreEntities">
+            Core Structural Entities
+            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio04.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
+          <p>An RDBMS organizes all data into a strict hierarchy of concepts — every piece of data has a clearly defined place:</p>
+
+          <div class="db-mock-table-wrap">
+            <table class="db-table-mock">
               <thead>
                 <tr>
-                  <th>🔑 ID (PK) <span class="type-tag">INT</span></th>
-                  <th>Name <span class="type-tag">VARCHAR</span></th>
-                  <th>Role <span class="type-tag">VARCHAR</span></th>
-                  <th>Salary <span class="type-tag">DECIMAL</span></th>
+                  <th>Term</th>
+                  <th>Also Called</th>
+                  <th>Description</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>1</td>
-                  <td>Alice Johnson</td>
-                  <td>Data Analyst</td>
-                  <td>$85,000</td>
-                </tr>
-                <tr class="highlighted-row">
-                  <td>2</td>
-                  <td>Bob Smith</td>
-                  <td>SQL Developer</td>
-                  <td>$92,000</td>
+                  <td>
+                    <div class="heading-with-audio" id="entityDatabase">
+                      <strong>Database</strong>
+                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio07.mp3', this)" title="Play narration">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                  <td>Schema / Catalog</td>
+                  <td>A named container holding related tables, indexes, and views.</td>
                 </tr>
                 <tr>
-                  <td>3</td>
-                  <td>Charlie Brown</td>
-                  <td>DBA</td>
-                  <td>$105,000</td>
+                  <td>
+                    <div class="heading-with-audio" id="entityTable">
+                      <strong>Table</strong>
+                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio06.mp3', this)" title="Play narration">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                  <td>Relation / Entity</td>
+                  <td>A 2D grid of rows and columns representing one entity type (e.g., <code>employees</code>).</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="heading-with-audio" id="entityColumn">
+                      <strong>Column</strong>
+                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio05.mp3', this)" title="Play narration">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                  <td>Attribute / Field</td>
+                  <td>A named, typed property of the entity. Each column enforces a data type (e.g., <code>salary INTEGER</code>).</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="heading-with-audio" id="entityRow">
+                      <strong>Row</strong>
+                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio08.mp3', this)" title="Play narration">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                  <td>Record / Tuple</td>
+                  <td>A single instance of the entity — one complete set of values across all columns.</td>
                 </tr>
               </tbody>
             </table>
-            <div class="rdbms-legend">
-              <span class="legend-item"><span class="legend-color legend-color--column"></span> Column (Field / Attribute)</span>
-              <span class="legend-item"><span class="legend-color legend-color--row"></span> Row (Record / Tuple)</span>
-              <span class="legend-item">🔑 Primary Key (PK)</span>
-            </div>
           </div>
         </div>
 
-        <h3 class="heading-with-audio" id="whyRdbms">
-          Why Relational Databases?
-          <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio02.mp3', this)" title="Play narration">
-            <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-        </h3>
-        <p>Before relational databases, data was stored in flat files or hierarchical systems — duplicated across many places with no mechanism to enforce consistency. <strong>Relational Database Management Systems (RDBMS)</strong> were invented to solve three fundamental problems:</p>
-
-        <div class="rdbms-infographic" id="rdbmsProblems">
-          <div class="info-title heading-with-audio">
-            <svg class="db-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 4.02 2 6.5v11c0 2.48 4.48 4.5 10 4.5s10-2.02 10-4.5v-11C22 4.02 17.52 2 12 2zm0 18c-4.41 0-8-1.57-8-3.5v-2.28c1.9.89 4.77 1.48 8 1.48s6.1-.59 8-1.48v2.28c0 1.93-3.59 3.5-8 3.5zm0-5c-4.41 0-8-1.57-8-3.5V9.72c1.9.89 4.77 1.48 8 1.48s6.1-.59 8-1.48V11.5c0 1.93-3.59 3.5-8 3.5zm0-5c-4.41 0-8-1.57-8-3.5s3.59-3.5 8-3.5 8 1.57 8 3.5-3.59 3.5-8 3.5z"/></svg>
-            <span>THE THREE PROBLEMS RDBMS SOLVES</span>
-            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio03.mp3', this)" title="Play narration">
+        <div class="slide-section">
+          <h3 class="heading-with-audio" id="pkFkKeys">
+            Primary Key vs. Foreign Key — Referential Integrity
+            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio09.mp3', this)" title="Play narration">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
-          </div>
-          <div class="info-columns">
-            <div class="info-card info-card--blue">
-              <div class="info-card-header">DATA INTEGRITY</div>
-              <div class="info-card-illustration">
-                <img src="/Version-3/data_integrity_icon.png" alt="Data Integrity" />
-              </div>
-              <ul class="info-card-bullets">
-                <li><span class="bullet-dot"></span>CONSTRAINTS (NOT NULL, UNIQUE, CHECK, FK)</li>
-                <li><span class="bullet-dot"></span>GUARANTEES VALID DATA ENTRY</li>
-                <li><span class="bullet-dot"></span>PREVENTS ORPHANED RECORDS &amp; INVALID STATES</li>
+          </h3>
+          <p>The word <em>"Relational"</em> in RDBMS refers to the mathematical concept of a <strong>relation</strong> (a table), but the power comes from linking tables together using keys:</p>
+
+          <div class="vs-block">
+            <div class="vs-card vs-card--pk">
+              <h4 class="heading-with-audio" id="pkDetail">
+                🔑 Primary Key (PK)
+                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio10.mp3', this)" title="Play narration">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </h4>
+              <ul style="margin: 4px 0; padding-left: 16px; font-size: 0.78rem;">
+                <li>Uniquely identifies each row in a table</li>
+                <li>Cannot be NULL — always has a value</li>
+                <li>Cannot contain duplicates</li>
+                <li>Usually a single column, but can be composite</li>
               </ul>
-            </div>
-            <div class="info-card info-card--green">
-              <div class="info-card-header">DATA REDUNDANCY</div>
-              <div class="info-card-illustration">
-                <img src="/Version-3/data_redundancy_icon.png" alt="Data Redundancy" />
-              </div>
-              <ul class="info-card-bullets">
-                <li><span class="bullet-dot"></span>BREAKS DATA INTO RELATED TABLES</li>
-                <li><span class="bullet-dot"></span>STORES EACH FACT EXACTLY ONCE</li>
-                <li><span class="bullet-dot"></span>UPDATES OCCUR IN ONE ROW, NOT HUNDREDS</li>
-              </ul>
-            </div>
-            <div class="info-card info-card--orange">
-              <div class="info-card-header">CONCURRENT ACCESS</div>
-              <div class="info-card-illustration">
-                <img src="/Version-3/concurrent_access_icon.png" alt="Concurrent Access" />
-              </div>
-              <ul class="info-card-bullets">
-                <li><span class="bullet-dot"></span>MULTIPLE USERS READ/WRITE SIMULTANEOUSLY</li>
-                <li><span class="bullet-dot"></span>HANDLES LOCKING &amp; ISOLATION</li>
-                <li><span class="bullet-dot"></span>TRANSACTIONS NEVER CORRUPT EACH OTHER</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <h3 class="heading-with-audio" id="coreEntities">
-          Core Structural Entities
-          <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio04.mp3', this)" title="Play narration">
-            <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-        </h3>
-        <p>An RDBMS organizes all data into a strict hierarchy of concepts — every piece of data has a clearly defined place:</p>
-
-        <div class="db-mock-table-wrap">
-          <table class="db-table-mock">
-            <thead>
-              <tr>
-                <th>Term</th>
-                <th>Also Called</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div class="heading-with-audio" id="entityDatabase">
-                    <strong>Database</strong>
-                    <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio07.mp3', this)" title="Play narration">
-                      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                  </div>
-                </td>
-                <td>Schema / Catalog</td>
-                <td>A named container holding related tables, indexes, and views.</td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="heading-with-audio" id="entityTable">
-                    <strong>Table</strong>
-                    <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio06.mp3', this)" title="Play narration">
-                      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                  </div>
-                </td>
-                <td>Relation / Entity</td>
-                <td>A 2D grid of rows and columns representing one entity type (e.g., <code>employees</code>).</td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="heading-with-audio" id="entityColumn">
-                    <strong>Column</strong>
-                    <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio05.mp3', this)" title="Play narration">
-                      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                  </div>
-                </td>
-                <td>Attribute / Field</td>
-                <td>A named, typed property of the entity. Each column enforces a data type (e.g., <code>salary INTEGER</code>).</td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="heading-with-audio" id="entityRow">
-                    <strong>Row</strong>
-                    <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio08.mp3', this)" title="Play narration">
-                      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                  </div>
-                </td>
-                <td>Record / Tuple</td>
-                <td>A single instance of the entity — one complete set of values across all columns.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 class="heading-with-audio" id="pkFkKeys">
-          Primary Key vs. Foreign Key — Referential Integrity
-          <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio09.mp3', this)" title="Play narration">
-            <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-        </h3>
-        <p>The word <em>"Relational"</em> in RDBMS refers to the mathematical concept of a <strong>relation</strong> (a table), but the power comes from linking tables together using keys:</p>
-
-        <div class="vs-block">
-          <div class="vs-card vs-card--pk">
-            <h4 class="heading-with-audio" id="pkDetail">
-              🔑 Primary Key (PK)
-              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio10.mp3', this)" title="Play narration">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </h4>
-            <ul style="margin: 4px 0; padding-left: 16px; font-size: 0.78rem;">
-              <li>Uniquely identifies each row in a table</li>
-              <li>Cannot be NULL — always has a value</li>
-              <li>Cannot contain duplicates</li>
-              <li>Usually a single column, but can be composite</li>
-            </ul>
-            <pre style="margin: 6px 0 0 0;">-- Defining a PK
+              <pre style="margin: 6px 0 0 0;">-- Defining a PK
 CREATE TABLE employees (
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL
 );</pre>
-          </div>
-          <div class="vs-card vs-card--fk">
-            <h4 class="heading-with-audio" id="fkDetail">
-              🔗 Foreign Key (FK)
-              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio11.mp3', this)" title="Play narration">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </h4>
-            <ul style="margin: 4px 0; padding-left: 16px; font-size: 0.78rem;">
-              <li>References the PK of another (parent) table</li>
-              <li>Enforces Referential Integrity</li>
-              <li>Can be NULL (optional relationship)</li>
-              <li>A child row cannot reference a non-existent parent</li>
-            </ul>
-            <pre style="margin: 6px 0 0 0;">-- Defining a FK
+            </div>
+            <div class="vs-card vs-card--fk">
+              <h4 class="heading-with-audio" id="fkDetail">
+                🔗 Foreign Key (FK)
+                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio11.mp3', this)" title="Play narration">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </h4>
+              <ul style="margin: 4px 0; padding-left: 16px; font-size: 0.78rem;">
+                <li>References the PK of another (parent) table</li>
+                <li>Enforces Referential Integrity</li>
+                <li>Can be NULL (optional relationship)</li>
+                <li>A child row cannot reference a non-existent parent</li>
+              </ul>
+              <pre style="margin: 6px 0 0 0;">-- Defining a FK
 CREATE TABLE employees (
   id    INTEGER PRIMARY KEY,
   dept_id INTEGER
     REFERENCES departments(id)
     ON DELETE RESTRICT
 );</pre>
+            </div>
+          </div>
+
+          <div id="parentTableDept">
+            <div class="heading-with-audio" style="margin: 12px 0 4px; font-weight: 600; font-size: 0.8rem; color: #1e293b; display: flex; align-items: center; gap: 8px;">
+              Parent Table: departments
+              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio12.mp3', this)" title="Play narration">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <div class="db-mock-table-wrap">
+              <table class="db-table-mock">
+                <thead>
+                  <tr>
+                    <th>🔑 id <span class="type-tag">INTEGER (PK)</span></th>
+                    <th>dept_name <span class="type-tag">TEXT</span></th>
+                    <th>budget <span class="type-tag">INTEGER</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>10</td><td>Engineering</td><td>5000000</td></tr>
+                  <tr><td>20</td><td>Marketing</td><td>2500000</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div style="margin: 12px 0 4px; font-weight: 600; font-size: 0.8rem; color: #1e293b;">Child Table: employees</div>
+            <div class="db-mock-table-wrap">
+              <table class="db-table-mock">
+                <thead>
+                  <tr>
+                    <th>🔑 id <span class="type-tag">INTEGER (PK)</span></th>
+                    <th>name <span class="type-tag">TEXT</span></th>
+                    <th>🔗 dept_id <span class="type-tag">INTEGER (FK)</span></th>
+                    <th>salary <span class="type-tag">INTEGER</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>Aarav Sharma</td><td>10 <span style="opacity:0.5; font-size:0.7rem;">→ Engineering</span></td><td>87500</td></tr>
+                  <tr><td>2</td><td>Priya Desai</td><td>20 <span style="opacity:0.5; font-size:0.7rem;">→ Marketing</span></td><td>63200</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
-        <div class="heading-with-audio" id="parentTableDept" style="margin: 12px 0 4px; font-weight: 600; font-size: 0.8rem; color: #1e293b; display: flex; align-items: center; gap: 8px;">
-          Parent Table: departments
-          <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio12.mp3', this)" title="Play narration">
-            <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-        </div>
-        <div class="db-mock-table-wrap">
-          <table class="db-table-mock">
-            <thead>
-              <tr>
-                <th>🔑 id <span class="type-tag">INTEGER (PK)</span></th>
-                <th>dept_name <span class="type-tag">TEXT</span></th>
-                <th>budget <span class="type-tag">INTEGER</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>10</td><td>Engineering</td><td>5000000</td></tr>
-              <tr><td>20</td><td>Marketing</td><td>2500000</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <div class="slide-section">
+          <h3 class="heading-with-audio" id="sqlDeclarative">
+            SQL is Declarative — Not Imperative
+            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio13.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
+          <p>This is one of the most important concepts in SQL: you describe <em>what you want</em>, not <em>how to get it</em>. The query optimizer figures out the execution plan.</p>
 
-        <div style="margin: 12px 0 4px; font-weight: 600; font-size: 0.8rem; color: #1e293b;">Child Table: employees</div>
-        <div class="db-mock-table-wrap">
-          <table class="db-table-mock">
-            <thead>
-              <tr>
-                <th>🔑 id <span class="type-tag">INTEGER (PK)</span></th>
-                <th>name <span class="type-tag">TEXT</span></th>
-                <th>🔗 dept_id <span class="type-tag">INTEGER (FK)</span></th>
-                <th>salary <span class="type-tag">INTEGER</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>1</td><td>Aarav Sharma</td><td>10 <span style="opacity:0.5; font-size:0.7rem;">→ Engineering</span></td><td>87500</td></tr>
-              <tr><td>2</td><td>Priya Desai</td><td>20 <span style="opacity:0.5; font-size:0.7rem;">→ Marketing</span></td><td>63200</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-
-        <h3 class="heading-with-audio" id="sqlDeclarative">
-          SQL is Declarative — Not Imperative
-          <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio13.mp3', this)" title="Play narration">
-            <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-        </h3>
-        <p>This is one of the most important concepts in SQL: you describe <em>what you want</em>, not <em>how to get it</em>. The query optimizer figures out the execution plan.</p>
-
-        <div class="vs-block">
-          <div class="vs-card vs-card--bad">
-            <h4 class="heading-with-audio" id="sqlImperativeVs" style="display: flex; align-items: center; gap: 8px;">
-              ❌ Imperative (Python loop)
-              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio14.mp3', this)" title="Play narration">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </h4>
-            <pre style="margin: 0; font-size: 0.72rem;">results = []
+          <div class="vs-block">
+            <div class="vs-card vs-card--bad">
+              <h4 class="heading-with-audio" id="sqlImperativeVs" style="display: flex; align-items: center; gap: 8px;">
+                ❌ Imperative (Python loop)
+                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio14.mp3', this)" title="Play narration">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </h4>
+              <pre style="margin: 0; font-size: 0.72rem;">results = []
 for row in employees:
   if row['dept'] == 'Engineering':
     results.append(row['name'])</pre>
-            <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">You write the algorithm — loop, check, collect.</small>
-          </div>
-          <div class="vs-card vs-card--good">
-            <h4 class="heading-with-audio" id="sqlDeclarativeVs" style="display: flex; align-items: center; gap: 8px;">
-              ✅ Declarative (SQL)
-              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio15.mp3', this)" title="Play narration">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </h4>
-            <pre style="margin: 0; font-size: 0.72rem;">SELECT name
+              <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">You write the algorithm — loop, check, collect.</small>
+            </div>
+            <div class="vs-card vs-card--good">
+              <h4 class="heading-with-audio" id="sqlDeclarativeVs" style="display: flex; align-items: center; gap: 8px;">
+                ✅ Declarative (SQL)
+                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio15.mp3', this)" title="Play narration">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </h4>
+              <pre style="margin: 0; font-size: 0.72rem;">SELECT name
 FROM employees
 WHERE department = 'Engineering';</pre>
-            <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">You describe the goal — the engine decides how to retrieve it optimally.</small>
+              <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">You describe the goal — the engine decides how to retrieve it optimally.</small>
+            </div>
           </div>
         </div>
 
-        <h3 class="heading-with-audio" id="sqlSubLanguages">
-          The Five SQL Sub-Languages
-          <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio16.mp3', this)" title="Play narration">
-            <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-        </h3>
-        <div class="db-mock-table-wrap" style="margin-top: 10px;">
-          <table class="db-table-mock sub-languages-table" id="sqlSubLanguagesTable">
-            <thead>
-              <tr>
-                <th style="width: 25%">Category</th>
-                <th style="width: 35%">Purpose</th>
-                <th style="width: 40%">Example</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr id="subLangDql">
-                <td>
-                  <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                    <span>DQL</span>
-                    <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio17.mp3', this)" title="Play narration">
-                      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                  </div>
-                  <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Data Query Language</div>
-                </td>
-                <td>Retrieve data from the database.</td>
-                <td><code>SELECT name, salary FROM employees;</code></td>
-              </tr>
-              <tr id="subLangDml">
-                <td>
-                  <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                    <span>DML</span>
-                    <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio18.mp3', this)" title="Play narration">
-                      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                  </div>
-                  <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Data Manipulation Language</div>
-                </td>
-                <td>Insert, update, or delete records.</td>
-                <td><code>INSERT INTO employees VALUES (11, 'Neha', 'Finance', 68000);</code></td>
-              </tr>
-              <tr id="subLangDdl">
-                <td>
-                  <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                    <span>DDL</span>
-                    <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio19.mp3', this)" title="Play narration">
-                      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                  </div>
-                  <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Data Definition Language</div>
-                </td>
-                <td>Create or modify tables/schema.</td>
-                <td><code>ALTER TABLE employees ADD COLUMN phone TEXT;</code></td>
-              </tr>
-              <tr id="subLangTcl">
-                <td>
-                  <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                    <span>TCL</span>
-                    <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio20.mp3', this)" title="Play narration">
-                      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                  </div>
-                  <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Transaction Control Language</div>
-                </td>
-                <td>Manage transaction blocks.</td>
-                <td><code>BEGIN; ... COMMIT;</code></td>
-              </tr>
-              <tr id="subLangDcl">
-                <td>
-                  <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                    <span>DCL</span>
-                    <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio21.mp3', this)" title="Play narration">
-                      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                  </div>
-                  <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Data Control Language</div>
-                </td>
-                <td>Manage database access control.</td>
-                <td><code>GRANT SELECT ON employees TO analyst_role;</code></td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="slide-section">
+          <h3 class="heading-with-audio" id="sqlSubLanguages">
+            The Five SQL Sub-Languages
+            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio16.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
+          <div class="db-mock-table-wrap" style="margin-top: 10px;">
+            <table class="db-table-mock sub-languages-table" id="sqlSubLanguagesTable">
+              <thead>
+                <tr>
+                  <th style="width: 25%">Category</th>
+                  <th style="width: 35%">Purpose</th>
+                  <th style="width: 40%">Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="subLangDql">
+                  <td>
+                    <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                      <span>DQL</span>
+                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio17.mp3', this)" title="Play narration">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                      </button>
+                    </div>
+                    <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Data Query Language</div>
+                  </td>
+                  <td>Retrieve data from the database.</td>
+                  <td><code>SELECT name, salary FROM employees;</code></td>
+                </tr>
+                <tr id="subLangDml">
+                  <td>
+                    <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                      <span>DML</span>
+                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio18.mp3', this)" title="Play narration">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                      </button>
+                    </div>
+                    <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Data Manipulation Language</div>
+                  </td>
+                  <td>Insert, update, or delete records.</td>
+                  <td><code>INSERT INTO employees VALUES (11, 'Neha', 'Finance', 68000);</code></td>
+                </tr>
+                <tr id="subLangDdl">
+                  <td>
+                    <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                      <span>DDL</span>
+                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio19.mp3', this)" title="Play narration">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                      </button>
+                    </div>
+                    <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Data Definition Language</div>
+                  </td>
+                  <td>Create or modify tables/schema.</td>
+                  <td><code>ALTER TABLE employees ADD COLUMN phone TEXT;</code></td>
+                </tr>
+                <tr id="subLangTcl">
+                  <td>
+                    <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                      <span>TCL</span>
+                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio20.mp3', this)" title="Play narration">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                      </button>
+                    </div>
+                    <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Transaction Control Language</div>
+                  </td>
+                  <td>Manage transaction blocks.</td>
+                  <td><code>BEGIN; ... COMMIT;</code></td>
+                </tr>
+                <tr id="subLangDcl">
+                  <td>
+                    <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                      <span>DCL</span>
+                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio21.mp3', this)" title="Play narration">
+                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                      </button>
+                    </div>
+                    <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Data Control Language</div>
+                  </td>
+                  <td>Manage database access control.</td>
+                  <td><code>GRANT SELECT ON employees TO analyst_role;</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-
-        <div class="pro-tip-box" id="proTipRdbms" style="display: flex; align-items: flex-start; gap: 10px;">
-          <div style="flex: 1;">
-            <strong>💡 Pro Tip — Which RDBMS to Choose?</strong> SQLite (used here) is a lightweight, file-based database embedded directly inside the application — perfect for learning, mobile apps, and local tools. PostgreSQL is the modern production standard for most systems. MySQL and MariaDB are widely used in web stacks, while SQL Server dominates corporate Windows environments.
+        <div class="slide-section">
+          <div class="pro-tip-box" id="proTipRdbms" style="display: flex; align-items: flex-start; gap: 10px;">
+            <div style="flex: 1;">
+              <strong>💡 Pro Tip — Which RDBMS to Choose?</strong> SQLite (used here) is a lightweight, file-based database embedded directly inside the application — perfect for learning, mobile apps, and local tools. PostgreSQL is the modern production standard for most systems. MySQL and MariaDB are widely used in web stacks, while SQL Server dominates corporate Windows environments.
+            </div>
+            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio22.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
           </div>
-          <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio22.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-            <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </button>
         </div>
 
-        <div class="interview-box">
-          <h4>🎓 Interview Q&amp;A</h4>
-          <div id="iqReferentialIntegrity">
-            <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
-              <p style="margin: 0; flex: 1;"><strong>Q: What is Referential Integrity and how does a Foreign Key enforce it?</strong></p>
-              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio23.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
+        <div class="slide-section">
+          <div class="interview-box">
+            <h4>🎓 Interview Q&amp;A</h4>
+            <div id="iqReferentialIntegrity">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q: What is Referential Integrity and how does a Foreign Key enforce it?</strong></p>
+                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio23.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <p><em>A: Referential Integrity means every FK value in a child table must match an existing PK value in the parent table. A FK constraint prevents inserting a child row with a non-existent parent reference, and prevents deleting a parent row that still has child references (with ON DELETE RESTRICT), maintaining consistent relationships.</em></p>
             </div>
-            <p><em>A: Referential Integrity means every FK value in a child table must match an existing PK value in the parent table. A FK constraint prevents inserting a child row with a non-existent parent reference, and prevents deleting a parent row that still has child references (with ON DELETE RESTRICT), maintaining consistent relationships.</em></p>
-          </div>
 
-          <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
+            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
 
-          <div id="iqSqlVsNosql">
-            <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
-              <p style="margin: 0; flex: 1;"><strong>Q: What is the difference between SQL and NoSQL databases? When would you choose each?</strong></p>
-              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio24.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
+            <div id="iqSqlVsNosql">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q: What is the difference between SQL and NoSQL databases? When would you choose each?</strong></p>
+                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio24.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <p><em>A: SQL databases use a fixed schema, tables with relationships, and ACID transactions — ideal for financial systems, ERP, and anything requiring strong consistency. NoSQL databases (MongoDB, DynamoDB, Cassandra) use flexible schemas, are optimized for horizontal scaling and high write throughput, and follow the BASE model (Basically Available, Soft state, Eventually consistent) — ideal for real-time analytics, content platforms, and IoT data ingestion.</em></p>
             </div>
-            <p><em>A: SQL databases use a fixed schema, tables with relationships, and ACID transactions — ideal for financial systems, ERP, and anything requiring strong consistency. NoSQL databases (MongoDB, DynamoDB, Cassandra) use flexible schemas, are optimized for horizontal scaling and high write throughput, and follow the BASE model (Basically Available, Soft state, Eventually consistent) — ideal for real-time analytics, content platforms, and IoT data ingestion.</em></p>
-          </div>
 
-          <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
+            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
 
-          <div id="iqCompositePk">
-            <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
-              <p style="margin: 0; flex: 1;"><strong>Q: Can a table have more than one Primary Key?</strong></p>
-              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio25.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
+            <div id="iqCompositePk">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q: Can a table have more than one Primary Key?</strong></p>
+                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio25.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <p><em>A: No. A table can have only one Primary Key constraint. However, that PK can be a Composite Key — spanning two or more columns together (e.g., PRIMARY KEY (student_id, course_id) in an enrollment table). Each column in the composite key is called a Prime Attribute.</em></p>
             </div>
-            <p><em>A: No. A table can have only one Primary Key constraint. However, that PK can be a Composite Key — spanning two or more columns together (e.g., PRIMARY KEY (student_id, course_id) in an enrollment table). Each column in the composite key is called a Prime Attribute.</em></p>
           </div>
         </div>
       `
     },
     {
       title: '02. Column Projection & Performance',
+      duration: '8:11',
       html: `
         <h2>⚡ 02. Column Projection &amp; Performance</h2>
 
-        <h3>What is Column Projection?</h3>
-        <p><strong>Column Projection</strong> is the act of selecting only the specific columns you need from a query result. In the relational algebra that underpins SQL, a <em>projection</em> operation reduces a relation's attributes from N columns to a smaller subset. It is the fundamental mechanism behind the column list in your <code>SELECT</code> clause.</p>
+        <div class="slide-section" id="columnProjectionIntro">
+          <h3 class="heading-with-audio">
+            What is Column Projection?
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio01.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
+          <p><strong>Column Projection</strong> is the act of selecting only the specific columns you need from a query result. In the relational algebra that underpins SQL, a <em>projection</em> operation reduces a relation's attributes from N columns to a smaller subset. It is the fundamental mechanism behind the column list in your <code>SELECT</code> clause.</p>
 
-        <div class="rdbms-infographic">
-          <div class="info-columns">
-            <div class="info-card info-card--blue">
-              <div class="info-card-header">PAGES / BLOCKS</div>
-              <ul class="info-card-bullets">
-                <li><span class="bullet-dot"></span>FIXED-SIZE PAGES (8 KB POSTGRESQL, 16 KB MYSQL)</li>
-                <li><span class="bullet-dot"></span>EVERY DISK READ FETCHES AN ENTIRE PAGE</li>
-                <li><span class="bullet-dot"></span>I/O OPERATIONS ARE DONE AT PAGE LEVEL</li>
-              </ul>
+          <div class="rdbms-infographic" id="cardPagesBlocks">
+            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+              <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Under the hood: how relational databases physically store and read data.</small>
+              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio02.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
             </div>
-            <div class="info-card info-card--purple">
-              <div class="info-card-header">ROW-ORIENTED</div>
-              <ul class="info-card-bullets">
-                <li><span class="bullet-dot"></span>ALL COLUMNS OF A ROW STORED TOGETHER</li>
-                <li><span class="bullet-dot"></span>READING ONE COLUMN LOADS THE WHOLE ROW</li>
-                <li><span class="bullet-dot"></span>IDEAL FOR TRANSACTIONAL (OLTP) WORKLOADS</li>
-              </ul>
+            <div class="info-columns">
+              <div class="info-card info-card--blue">
+                <div class="info-card-header">PAGES / BLOCKS</div>
+                <ul class="info-card-bullets">
+                  <li><span class="bullet-dot"></span>FIXED-SIZE PAGES (8 KB POSTGRESQL, 16 KB MYSQL)</li>
+                  <li><span class="bullet-dot"></span>EVERY DISK READ FETCHES AN ENTIRE PAGE</li>
+                  <li><span class="bullet-dot"></span>I/O OPERATIONS ARE DONE AT PAGE LEVEL</li>
+                </ul>
+              </div>
+              <div class="info-card info-card--purple">
+                <div class="info-card-header">ROW-ORIENTED</div>
+                <ul class="info-card-bullets">
+                  <li><span class="bullet-dot"></span>ALL COLUMNS OF A ROW STORED TOGETHER</li>
+                  <li><span class="bullet-dot"></span>READING ONE COLUMN LOADS THE WHOLE ROW</li>
+                  <li><span class="bullet-dot"></span>IDEAL FOR TRANSACTIONAL (OLTP) WORKLOADS</li>
+                </ul>
+              </div>
+              <div class="info-card info-card--red">
+                <div class="info-card-header">FULL PAGE LOAD</div>
+                <ul class="info-card-bullets">
+                  <li><span class="bullet-dot"></span>SELECT * LOADS EVERY UNUSED COLUMN</li>
+                  <li><span class="bullet-dot"></span>POLLUTES AND CLOGS BUFFER POOL CACHE</li>
+                  <li><span class="bullet-dot"></span>WASTES MASSIVE DISK &amp; NETWORK BANDWIDTH</li>
+                </ul>
+              </div>
             </div>
-            <div class="info-card info-card--red">
-              <div class="info-card-header">FULL PAGE LOAD</div>
-              <ul class="info-card-bullets">
-                <li><span class="bullet-dot"></span>SELECT * LOADS EVERY UNUSED COLUMN</li>
-                <li><span class="bullet-dot"></span>POLLUTES AND CLOGS BUFFER POOL CACHE</li>
-                <li><span class="bullet-dot"></span>WASTES MASSIVE DISK &amp; NETWORK BANDWIDTH</li>
-              </ul>
+          </div>
+
+          <div class="relation-infographic" style="padding: 16px 20px;" id="projectionDiagram">
+            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+              <div class="explanation-title" style="margin: 0; flex: 1;">How Column Projection Works</div>
+              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio03.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <div class="relation-visual" style="justify-content: center; gap: 6px;">
+              <div class="relation-node" style="border-left: 4px solid #64748b; flex: none;">
+                <span class="node-icon">💽</span>
+                <div class="node-title">Disk Page</div>
+                <div class="node-subtitle">id · name · dept · salary</div>
+              </div>
+              <div class="relation-link">
+                <div class="link-label">Loads</div>
+                <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+              </div>
+              <div class="relation-node" style="border-left: 4px solid #3b82f6; flex: none;">
+                <span class="node-icon">🔍</span>
+                <div class="node-title">SELECT name, salary</div>
+                <div class="node-subtitle">Projection Filter</div>
+              </div>
+              <div class="relation-link">
+                <div class="link-label">Returns</div>
+                <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+              </div>
+              <div class="relation-node relation-node--child" style="flex: none;">
+                <span class="node-icon">✅</span>
+                <div class="node-title">Result Set</div>
+                <div class="node-subtitle">name · salary only</div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="relation-infographic" style="padding: 16px 20px;">
-          <div class="explanation-title">How Column Projection Works</div>
-          <div class="relation-visual" style="justify-content: center; gap: 6px;">
-            <div class="relation-node" style="border-left: 4px solid #64748b; flex: none;">
-              <span class="node-icon">💽</span>
-              <div class="node-title">Disk Page</div>
-              <div class="node-subtitle">id · name · dept · salary</div>
+        <div class="slide-section" id="performanceCosts">
+          <h3 class="heading-with-audio">
+            The Four Performance Costs of SELECT *
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio04.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
+          <div class="vs-block">
+            <div class="vs-card vs-card--bad" id="costExcessDiskIO">
+              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <h4 style="margin: 0; flex: 1;">💾 1. Excess Disk I/O</h4>
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio05.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <p>More columns → more pages loaded from disk → higher latency, especially on large tables with millions of rows.</p>
             </div>
-            <div class="relation-link">
-              <div class="link-label">Loads</div>
-              <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+            <div class="vs-card vs-card--bad" id="costBufferPool">
+              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <h4 style="margin: 0; flex: 1;">🧠 2. Buffer Pool Pollution</h4>
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio06.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <p>Unused columns occupy RAM in the database buffer cache, evicting frequently-needed pages and causing cache misses.</p>
             </div>
-            <div class="relation-node" style="border-left: 4px solid #3b82f6; flex: none;">
-              <span class="node-icon">🔍</span>
-              <div class="node-title">SELECT name, salary</div>
-              <div class="node-subtitle">Projection Filter</div>
+            <div class="vs-card vs-card--bad" id="costNetworkOverhead">
+              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <h4 style="margin: 0; flex: 1;">🌐 3. Network Overhead</h4>
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio07.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <p>Every byte travels over the network from the DB server to your app. Wide rows with BLOB columns cause noticeable latency under heavy traffic.</p>
             </div>
-            <div class="relation-link">
-              <div class="link-label">Returns</div>
-              <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+            <div class="vs-card vs-card--bad" id="costDefeatedIndex">
+              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <h4 style="margin: 0; flex: 1;">🚫 4. Defeated Index-Only Scans</h4>
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio08.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <p>Even when a covering index exists, <code>SELECT *</code> forces a heap lookup — visiting actual table pages — because not all columns are in the index.</p>
             </div>
-            <div class="relation-node relation-node--child" style="flex: none;">
-              <span class="node-icon">✅</span>
-              <div class="node-title">Result Set</div>
-              <div class="node-subtitle">name · salary only</div>
+          </div>
+
+          <div class="db-mock-table-wrap" id="performanceMockTable">
+            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Only projected columns are loaded and returned — unused columns are discarded at query time.</small>
+              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio09.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
             </div>
+            <table class="db-table-mock">
+              <thead>
+                <tr>
+                  <th style="opacity: 0.3; text-decoration: line-through;">id</th>
+                  <th style="border-left: 2px solid #2563eb; border-right: 2px solid #2563eb; background: #eff6ff; color: #1d4ed8 !important;">name ✓</th>
+                  <th style="opacity: 0.3; text-decoration: line-through;">department</th>
+                  <th style="border-left: 2px solid #2563eb; border-right: 2px solid #2563eb; background: #eff6ff; color: #1d4ed8 !important;">salary ✓</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="opacity: 0.3;">1</td>
+                  <td style="font-weight: 600;">Aarav Sharma</td>
+                  <td style="opacity: 0.3;">Engineering</td>
+                  <td style="font-weight: 600;">87,500</td>
+                </tr>
+                <tr>
+                  <td style="opacity: 0.3;">2</td>
+                  <td style="font-weight: 600;">Priya Desai</td>
+                  <td style="opacity: 0.3;">Marketing</td>
+                  <td style="font-weight: 600;">63,200</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <h3>The Four Performance Costs of SELECT *</h3>
-        <div class="vs-block">
-          <div class="vs-card vs-card--bad">
-            <h4>💾 1. Excess Disk I/O</h4>
-            <p>More columns → more pages loaded from disk → higher latency, especially on large tables with millions of rows.</p>
-          </div>
-          <div class="vs-card vs-card--bad">
-            <h4>🧠 2. Buffer Pool Pollution</h4>
-            <p>Unused columns occupy RAM in the database buffer cache, evicting frequently-needed pages and causing cache misses.</p>
-          </div>
-          <div class="vs-card vs-card--bad">
-            <h4>🌐 3. Network Overhead</h4>
-            <p>Every byte travels over the network from the DB server to your app. Wide rows with BLOB columns cause noticeable latency under heavy traffic.</p>
-          </div>
-          <div class="vs-card vs-card--bad">
-            <h4>🚫 4. Defeated Index-Only Scans</h4>
-            <p>Even when a covering index exists, <code>SELECT *</code> forces a heap lookup — visiting actual table pages — because not all columns are in the index.</p>
-          </div>
-        </div>
+        <div class="slide-section" id="indexOnlyScans">
+          <h3 class="heading-with-audio">
+            Index-Only Scans — The Ultimate Optimization
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio10.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
+          <p>When you project only columns that are part of a database index, the query optimizer can execute an <strong>Index-Only Scan</strong> (also called a <em>Covering Index Scan</em>): it reads data directly from the index B-tree without ever touching the physical table pages (heap).</p>
 
-        <div class="db-mock-table-wrap">
-          <table class="db-table-mock">
-            <thead>
-              <tr>
-                <th style="opacity: 0.3; text-decoration: line-through;">id</th>
-                <th style="border-left: 2px solid #2563eb; border-right: 2px solid #2563eb; background: #eff6ff; color: #1d4ed8 !important;">name ✓</th>
-                <th style="opacity: 0.3; text-decoration: line-through;">department</th>
-                <th style="border-left: 2px solid #2563eb; border-right: 2px solid #2563eb; background: #eff6ff; color: #1d4ed8 !important;">salary ✓</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="opacity: 0.3;">1</td>
-                <td style="font-weight: 600;">Aarav Sharma</td>
-                <td style="opacity: 0.3;">Engineering</td>
-                <td style="font-weight: 600;">87,500</td>
-              </tr>
-              <tr>
-                <td style="opacity: 0.3;">2</td>
-                <td style="font-weight: 600;">Priya Desai</td>
-                <td style="opacity: 0.3;">Marketing</td>
-                <td style="font-weight: 600;">63,200</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3>Index-Only Scans — The Ultimate Optimization</h3>
-        <p>When you project only columns that are part of a database index, the query optimizer can execute an <strong>Index-Only Scan</strong> (also called a <em>Covering Index Scan</em>): it reads data directly from the index B-tree without ever touching the physical table pages (heap).</p>
-
-        <div class="vs-block">
-          <div class="vs-card vs-card--bad">
-            <h4>❌ SELECT * — Heap Lookup Required</h4>
-            <pre style="margin: 0; font-size: 0.75rem;">SELECT * FROM employees
+          <div class="vs-block">
+            <div class="vs-card vs-card--bad" id="heapLookupRequired">
+              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <h4 style="margin: 0; flex: 1;">❌ SELECT * — Heap Lookup Required</h4>
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio11.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <pre style="margin: 0; font-size: 0.75rem;">SELECT * FROM employees
 WHERE department = 'Engineering';
 -- Even with an index on 'department',
 -- the engine must visit heap pages
 -- to fetch id, name, salary columns.</pre>
-            <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">Index → Heap lookup → High I/O cost on large tables.</small>
-          </div>
-          <div class="vs-card vs-card--good">
-            <h4>✅ Specific Projection — Index-Only Scan</h4>
-            <pre style="margin: 0; font-size: 0.75rem;">SELECT name, department FROM employees
+              <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">Index → Heap lookup → High I/O cost on large tables.</small>
+            </div>
+            <div class="vs-card vs-card--good" id="indexOnlyScanGood">
+              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <h4 style="margin: 0; flex: 1;">✅ Specific Projection — Index-Only Scan</h4>
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio12.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <pre style="margin: 0; font-size: 0.75rem;">SELECT name, department FROM employees
 WHERE department = 'Engineering';
 -- With index on (department, name),
 -- engine reads ONLY the index tree.
 -- Zero heap page access needed.</pre>
-            <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">All data served from the index → dramatically lower I/O.</small>
-          </div>
-        </div>
-
-        <h3>Column-Oriented Databases — A Step Further</h3>
-        <p>Analytical databases like <strong>Google BigQuery</strong>, <strong>Snowflake</strong>, and <strong>Amazon Redshift</strong> store data by column on disk rather than by row. This means:</p>
-        <div class="rdbms-infographic">
-          <div class="info-columns">
-            <div class="info-card info-card--green">
-              <div class="info-card-header">ZERO OVERHEAD</div>
-              <ul class="info-card-bullets">
-                <li><span class="bullet-dot"></span>READS ONLY THE REQUESTED COLUMNS FROM DISK</li>
-                <li><span class="bullet-dot"></span>ZERO I/O WASTED ON UNUSED ATTRIBUTES</li>
-                <li><span class="bullet-dot"></span>IDEAL FOR ANALYTICAL (OLAP) WORKLOADS</li>
-              </ul>
-            </div>
-            <div class="info-card info-card--amber">
-              <div class="info-card-header">BILLED PER BYTE</div>
-              <ul class="info-card-bullets">
-                <li><span class="bullet-dot"></span>CLOUD ENGINES BILL PER QUANTITY OF SCANNED DATA</li>
-                <li><span class="bullet-dot"></span>PROJECTING 2 COLS INSTEAD OF 10 CUTS COST BY 80%</li>
-                <li><span class="bullet-dot"></span>EFFICIENT QUERY DESIGN DIRECTLY SAVES BUDGET</li>
-              </ul>
-            </div>
-            <div class="info-card info-card--cyan">
-              <div class="info-card-header">COMPRESSION</div>
-              <ul class="info-card-bullets">
-                <li><span class="bullet-dot"></span>SIMILAR DATA TYPES CLUSTERED ON DISK</li>
-                <li><span class="bullet-dot"></span>COMPRESSES SIGNIFICANTLY BETTER THAN ROWS</li>
-                <li><span class="bullet-dot"></span>INDEX-ONLY SCAN BENEFITS AT STORAGE LAYER</li>
-              </ul>
+              <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">All data served from the index → dramatically lower I/O.</small>
             </div>
           </div>
         </div>
-        <div class="pro-tip-box">
-          <strong>⚠️ Real-World Outage Scenario:</strong> A backend team deployed <code>SELECT *</code> on a users table. Six months later, a feature team added a <code>profile_picture BYTEA</code> column (storing binary image data up to 2 MB per user). Overnight, every query that previously returned 200 bytes per row now returned 2 MB per row — causing database memory exhaustion and a P0 outage. The fix: explicit column projection in every query. <strong>Lesson: never use SELECT * in application code.</strong>
+
+        <div class="slide-section" id="columnOrientedDbs">
+          <h3 class="heading-with-audio">
+            Column-Oriented Databases — A Step Further
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio13.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
+          <p>Analytical databases like <strong>Google BigQuery</strong>, <strong>Snowflake</strong>, and <strong>Amazon Redshift</strong> store data by column on disk rather than by row. This means:</p>
+          <div class="rdbms-infographic">
+            <div class="info-columns">
+              <div class="info-card info-card--green" id="cardZeroOverhead">
+                <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                  <div class="info-card-header" style="margin: 0; flex: 1;">ZERO OVERHEAD</div>
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio14.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
+                <ul class="info-card-bullets">
+                  <li><span class="bullet-dot"></span>READS ONLY THE REQUESTED COLUMNS FROM DISK</li>
+                  <li><span class="bullet-dot"></span>ZERO I/O WASTED ON UNUSED ATTRIBUTES</li>
+                  <li><span class="bullet-dot"></span>IDEAL FOR ANALYTICAL (OLAP) WORKLOADS</li>
+                </ul>
+              </div>
+              <div class="info-card info-card--amber" id="cardBilledPerByte">
+                <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                  <div class="info-card-header" style="margin: 0; flex: 1;">BILLED PER BYTE</div>
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio15.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
+                <ul class="info-card-bullets">
+                  <li><span class="bullet-dot"></span>CLOUD ENGINES BILL PER QUANTITY OF SCANNED DATA</li>
+                  <li><span class="bullet-dot"></span>PROJECTING 2 COLS INSTEAD OF 10 CUTS COST BY 80%</li>
+                  <li><span class="bullet-dot"></span>EFFICIENT QUERY DESIGN DIRECTLY SAVES BUDGET</li>
+                </ul>
+              </div>
+              <div class="info-card info-card--cyan" id="cardCompression">
+                <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                  <div class="info-card-header" style="margin: 0; flex: 1;">COMPRESSION</div>
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio16.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
+                <ul class="info-card-bullets">
+                  <li><span class="bullet-dot"></span>SIMILAR DATA TYPES CLUSTERED ON DISK</li>
+                  <li><span class="bullet-dot"></span>COMPRESSES SIGNIFICANTLY BETTER THAN ROWS</li>
+                  <li><span class="bullet-dot"></span>INDEX-ONLY SCAN BENEFITS AT STORAGE LAYER</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="interview-box">
-          <h4>🎓 Interview Q&amp;A</h4>
-          <p><strong>Q: What is an index-only scan and when does the optimizer use it?</strong></p>
-          <p><em>A: An index-only scan (covering index scan) occurs when every column requested in the SELECT list and WHERE clause is present within a single index. The optimizer can resolve the entire query from the index B-tree without reading the physical table (heap) pages, drastically reducing disk I/O. To enable this, design covering indexes that include all frequently projected columns alongside filter columns.</em></p>
+        <div class="slide-section" id="projectionProTip">
+          <div class="pro-tip-box" style="display: flex; align-items: flex-start; gap: 10px;">
+            <div style="flex: 1;">
+              <strong>⚠️ Real-World Outage Scenario:</strong> A backend team deployed <code>SELECT *</code> on a users table. Six months later, a feature team added a <code>profile_picture BYTEA</code> column (storing binary image data up to 2 MB per user). Overnight, every query that previously returned 200 bytes per row now returned 2 MB per row — causing database memory exhaustion and a P0 outage. The fix: explicit column projection in every query. <strong>Lesson: never use SELECT * in application code, unless you are just manually exploring the table columns in your database console.</strong>
+            </div>
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio17.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+        </div>
 
-          <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
+        <div class="slide-section">
+          <div class="interview-box">
+            <h4>🎓 Interview Q&amp;A</h4>
+            <div id="iqIndexOnlyScan">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q: What is an index-only scan and when does the optimizer use it?</strong></p>
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <p><em>A: An index-only scan (covering index scan) occurs when every column requested in the SELECT list and WHERE clause is present within a single index. The optimizer can resolve the entire query from the index B-tree without reading the physical table (heap) pages, drastically reducing disk I/O. To enable this, design covering indexes that include all frequently projected columns alongside filter columns.</em></p>
+            </div>
 
-          <p><strong>Q: Why does SELECT * hurt performance even when all columns are small?</strong></p>
-          <p><em>A: Even with small columns, SELECT * prevents the optimizer from using index-only scans, increases network payload per row, fills more buffer pool pages (reducing cache hit ratio for other queries), and makes your code fragile — if new columns are added to the table, all queries silently start fetching extra data. Explicit projection makes performance deterministic and code future-proof.</em></p>
+            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
 
-          <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
+            <div id="iqSelectStarCosts">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q: Why does SELECT * hurt performance even when all columns are small?</strong></p>
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio19.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <p><em>A: Even with small columns, SELECT * prevents the optimizer from using index-only scans, increases network payload per row, fills more buffer pool pages (reducing cache hit ratio for other queries), and makes your code fragile — if new columns are added to the table, all queries silently start fetching extra data. Explicit projection makes performance deterministic and code future-proof.</em></p>
+            </div>
 
-          <p><strong>Q: What is the difference between a heap scan and an index scan?</strong></p>
-          <p><em>A: A heap scan (sequential/full table scan) reads every page of the physical table in order — O(n) cost regardless of filters. An index scan traverses the B-tree index structure to locate matching row pointers (O(log n)), then optionally fetches the actual row from the heap (heap lookup). An index-only scan skips the heap lookup entirely when all needed data is in the index itself.</em></p>
+            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
+
+            <div id="iqHeapScanVsIndexScan">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q: What is the difference between a heap scan and an index scan?</strong></p>
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio20.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <p><em>A: A heap scan (sequential/full table scan) reads every page of the physical table in order — O(n) cost regardless of filters. An index scan traverses the B-tree index structure to locate matching row pointers (O(log n)), then optionally fetches the actual row from the heap (heap lookup). An index-only scan skips the heap lookup entirely when all needed data is in the index itself.</em></p>
+            </div>
+          </div>
         </div>
       `
     },
     {
       title: '03. Column Aliasing (AS Keyword)',
+      duration: '0:00',
       html: `
         <h2>🏷️ 03. Column Aliasing &amp; the AS Keyword</h2>
 
@@ -1385,6 +1525,15 @@ function renderPresentSlide() {
   document.getElementById('presentCounter').textContent = `Topic 0${currentSlide + 1} — ${cleanedTitle}`;
   const topicSelect = document.getElementById('topicSelect');
   if (topicSelect) topicSelect.value = currentSlide;
+
+  if (typeof isCombinedPlaying !== 'undefined' && isCombinedPlaying) {
+    const activeTrack = combinedTracks[combinedTrackIndex];
+    if (activeTrack && activeTrack.target) {
+      updateSlidePlaybackVisibility(activeTrack.target);
+    }
+  } else if (typeof clearSlidePlaybackVisibility === 'function') {
+    clearSlidePlaybackVisibility();
+  }
 }
 
 function renderSideSlide() {
@@ -1418,6 +1567,15 @@ function renderSideSlide() {
   const topicSelect = document.getElementById('topicSelect');
   if (topicSelect) topicSelect.value = currentSlide;
 
+  if (typeof isCombinedPlaying !== 'undefined' && isCombinedPlaying) {
+    const activeTrack = combinedTracks[combinedTrackIndex];
+    if (activeTrack && activeTrack.target) {
+      updateSlidePlaybackVisibility(activeTrack.target);
+    }
+  } else if (typeof clearSlidePlaybackVisibility === 'function') {
+    clearSlidePlaybackVisibility();
+  }
+
   // Log slide change if recording
   if (recState !== 'idle') {
     const target = isStudioStrokeRecording ? studioStrokeActions : recActions;
@@ -1429,13 +1587,37 @@ function renderSideSlide() {
     updateTimelineView();
   }
 
-  // Show narration autoplay widget only on the first slide
+  // Show narration autoplay widget if the slide has tracks defined
   setTimeout(() => {
-    if (currentSlide === 0) {
+    const config = typeof slideTrackMap !== 'undefined' ? slideTrackMap[currentSlide] : null;
+    if (config) {
+      // Swapping track list dynamically
+      combinedTracks = config.tracks;
+      combinedTrackDurations = config.durations;
+      
+      // Stop currently playing combined narration cleanly if active
+      if (activeAudioInstance) {
+        activeAudioInstance.pause();
+        activeAudioInstance.src = "";
+        activeAudioInstance.load();
+        activeAudioInstance = null;
+      }
+      isCombinedPlaying = false;
+      currentCombinedTime = 0;
+      combinedTrackIndex = 0;
+      combinedAudios = [];
+      
+      // Update UI button states
+      updatePlayButtonStates(false);
+      
+      // Re-calculate total duration
+      totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
+
       const navBtn = document.getElementById('navPlayBtn');
       if (navBtn) navBtn.style.display = 'inline-flex';
       document.getElementById('playbackBar')?.classList.add('visible');
       initSlideNarration();
+      updateProgressUI();
     } else {
       const navBtn = document.getElementById('navPlayBtn');
       if (navBtn) navBtn.style.display = 'none';
@@ -2342,6 +2524,12 @@ async function loadPlayback(recId) {
   playbackAudioBlob = rec.audioBlob;
   const audioUrl = URL.createObjectURL(rec.audioBlob);
   playbackAudio = new Audio(audioUrl);
+  if (typeof currentPlaybackSpeed !== 'undefined') {
+    playbackAudio.playbackRate = currentPlaybackSpeed;
+  }
+  if (typeof currentPlaybackVolume !== 'undefined') {
+    playbackAudio.volume = currentPlaybackVolume;
+  }
   playbackActions = rec.actions;
   playbackCurrentIdx = 0;
   playbackPlaying = false;
@@ -2509,14 +2697,119 @@ function seekPlayback(value) {
   updatePlaybackTime();
 }
 
+let currentPlaybackSpeed = 1.0;
+let currentPlaybackVolume = 1.0;
+
 function setPlaybackSpeed(speed, btn) {
-  // Apply speed to whichever audio system is currently active.
-  // activeAudioInstance = lesson narration; playbackAudio = recording playback.
-  if (activeAudioInstance) activeAudioInstance.playbackRate = speed;
-  if (playbackAudio) playbackAudio.playbackRate = speed;
-  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  currentPlaybackSpeed = parseFloat(speed);
+  if (activeAudioInstance) activeAudioInstance.playbackRate = currentPlaybackSpeed;
+  if (playbackAudio) playbackAudio.playbackRate = currentPlaybackSpeed;
+  if (currentPlayingAudio) currentPlayingAudio.playbackRate = currentPlaybackSpeed;
 }
+
+function toggleVolumePopover(event) {
+  event.stopPropagation();
+  const volBtn = document.getElementById('volumeBtn');
+  const popover = document.getElementById('volumePopover');
+  const speedPopover = document.getElementById('speedPopover');
+  const speedBtn = document.getElementById('speedControlBtn');
+  
+  if (speedPopover) {
+    speedPopover.classList.remove('open');
+    speedBtn?.classList.remove('active');
+  }
+  
+  popover.classList.toggle('open');
+  volBtn.classList.toggle('active');
+}
+
+function toggleSpeedPopover(event) {
+  event.stopPropagation();
+  const speedBtn = document.getElementById('speedControlBtn');
+  const popover = document.getElementById('speedPopover');
+  const volPopover = document.getElementById('volumePopover');
+  const volBtn = document.getElementById('volumeBtn');
+  
+  if (volPopover) {
+    volPopover.classList.remove('open');
+    volBtn?.classList.remove('active');
+  }
+  
+  popover.classList.toggle('open');
+  speedBtn.classList.toggle('active');
+}
+
+function setPlaybackVolume(value) {
+  const vol = parseFloat(value) / 100;
+  currentPlaybackVolume = vol;
+  
+  if (activeAudioInstance) activeAudioInstance.volume = vol;
+  if (playbackAudio) playbackAudio.volume = vol;
+  if (currentPlayingAudio) currentPlayingAudio.volume = vol;
+  
+  const valLabel = document.getElementById('volumeValue');
+  if (valLabel) valLabel.textContent = `${value}%`;
+  
+  const volBtn = document.getElementById('volumeBtn');
+  if (volBtn) {
+    if (value == 0) {
+      volBtn.innerHTML = `
+        <svg class="volume-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+        </svg>
+      `;
+    } else if (value < 50) {
+      volBtn.innerHTML = `
+        <svg class="volume-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>
+        </svg>
+      `;
+    } else {
+      volBtn.innerHTML = `
+        <svg class="volume-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+      `;
+    }
+  }
+}
+
+function selectSpeedOption(speed, labelText) {
+  const btn = document.getElementById('speedControlBtn');
+  setPlaybackSpeed(speed, btn);
+  
+  const valLabel = document.getElementById('speedValueLabel');
+  if (valLabel) valLabel.textContent = labelText;
+  
+  document.querySelectorAll('.speed-option').forEach(opt => {
+    const optSpeed = parseFloat(opt.textContent);
+    if (optSpeed === speed) {
+      opt.classList.add('active');
+    } else {
+      opt.classList.remove('active');
+    }
+  });
+  
+  document.getElementById('speedPopover')?.classList.remove('open');
+  btn?.classList.remove('active');
+}
+
+// Global click handler to close popovers when clicking outside
+document.addEventListener('click', (e) => {
+  const volPopover = document.getElementById('volumePopover');
+  const volBtn = document.getElementById('volumeBtn');
+  const speedPopover = document.getElementById('speedPopover');
+  const speedBtn = document.getElementById('speedControlBtn');
+  
+  if (volPopover && !volPopover.contains(e.target) && !volBtn.contains(e.target)) {
+    volPopover.classList.remove('open');
+    volBtn?.classList.remove('active');
+  }
+  if (speedPopover && !speedPopover.contains(e.target) && !speedBtn.contains(e.target)) {
+    speedPopover.classList.remove('open');
+    speedBtn?.classList.remove('active');
+  }
+});
 
 function updatePlaybackTime() {
   if (!playbackAudio) return;
@@ -2569,6 +2862,26 @@ function openTestPortal() {
 
   document.getElementById('testOverlay').classList.add('open');
   
+  // Pause lesson narration if playing
+  if (typeof pauseCombinedPlayback === 'function') {
+    pauseCombinedPlayback();
+  }
+  // Pause any individual speaker audio
+  if (typeof currentPlayingAudio !== 'undefined' && currentPlayingAudio) {
+    try {
+      currentPlayingAudio.pause();
+      if (typeof currentPlayingBtn !== 'undefined' && currentPlayingBtn) {
+        currentPlayingBtn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+      }
+    } catch (e) {}
+  }
+
+  // Hide the timeline playback bar
+  const playbackBar = document.getElementById('playbackBar');
+  if (playbackBar) {
+    playbackBar.classList.add('hidden-in-test');
+  }
+
   // Load and display personal best test score
   const best = localStorage.getItem('test_best_score') || '0';
   const bestEl = document.getElementById('testBestScoreCount');
@@ -2578,11 +2891,11 @@ function openTestPortal() {
   const submitBtn = document.getElementById('submitTestBtn');
   if (submitBtn) submitBtn.disabled = false;
 
-  // Render sidebar buttons
+  // Render sidebar buttons with Q prefix wrapped in span
   const sidebar = document.getElementById('testSidebar');
   let html = '';
   for (let i = 0; i < 25; i++) {
-    html += `<button class="test-q-btn ${i === 0 ? 'current' : ''}" id="tqBtn${i}" onclick="switchTestQuestion(${i})">Q${i+1}</button>`;
+    html += `<button class="test-q-btn ${i === 0 ? 'current' : ''}" id="tqBtn${i}" onclick="switchTestQuestion(${i})"><span class="q-prefix">Q</span>${i+1}</button>`;
   }
   sidebar.innerHTML = html;
 
@@ -2598,6 +2911,12 @@ function closeTestPortal() {
   testOpen = false;
   clearInterval(testTimerInterval);
   document.getElementById('testOverlay').classList.remove('open');
+
+  // Show the timeline playback bar again
+  const playbackBar = document.getElementById('playbackBar');
+  if (playbackBar) {
+    playbackBar.classList.remove('hidden-in-test');
+  }
 }
 
 function startTestTimer() {
@@ -2819,6 +3138,10 @@ const questionAudioMap = {
   'day01': {
     1: 'New_Day1Part1Question01.mp3',
     2: 'New_Day1Part1Question03.mp3'
+  },
+  'day02': {
+    1: 'Day01topic2/New_Day1Part2audio21.mp3',
+    2: 'Day01topic2/New_Day1Part2audio22.mp3'
   }
 };
 
@@ -2826,6 +3149,10 @@ const questionAudioMap = {
 const questionSolutionMap = {
   'day01': {
     1: { src: 'New_Day1Part1Question02.mp3', code: 'SELECT * FROM employees;', startAt: 1.5, charInterval: 110 }
+  },
+  'day02': {
+    1: { src: 'Day01topic2/New_Day1Part2Question01.mp3', code: 'SELECT name, department FROM employees;', startAt: 1.5, charInterval: 110 },
+    2: { src: 'Day01topic2/New_Day1Part2Question02.mp3', code: '', startAt: 0, charInterval: 0 }
   }
 };
 
@@ -2945,6 +3272,12 @@ function playQuestionAudio(btn, audioSrc) {
 
   // Jump combined system to this track
   const audio = combinedAudio ? syncCombinedToTrack(src) : new Audio(`/Version-3/${src}`);
+  if (typeof currentPlaybackSpeed !== 'undefined') {
+    audio.playbackRate = currentPlaybackSpeed;
+  }
+  if (typeof currentPlaybackVolume !== 'undefined') {
+    audio.volume = currentPlaybackVolume;
+  }
 
   currentPlayingAudio = audio;
   currentPlayingBtn = btn;
@@ -3002,6 +3335,12 @@ function playSolutionAudio(solutionEntry, triggerBtn) {
 
   // Use combined audio system if this track is registered there
   const audio = syncCombinedToTrack(src) || new Audio(fullSrc);
+  if (typeof currentPlaybackSpeed !== 'undefined') {
+    audio.playbackRate = currentPlaybackSpeed;
+  }
+  if (typeof currentPlaybackVolume !== 'undefined') {
+    audio.volume = currentPlaybackVolume;
+  }
   currentPlayingAudio = audio;
   currentPlayingBtn = btn;
 
@@ -3471,7 +3810,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (topicSelect) {
       topicSelect.innerHTML = COURSE_CONFIG.slides.map((slide, idx) => {
         const cleanedTitle = slide.title.replace(/^\d+\.\s*/, '');
-        return `<option value="${idx}">Topic 0${idx + 1}: ${cleanedTitle}</option>`;
+        const duration = slide.duration || '0:00';
+        return `<option value="${idx}">Topic 0${idx + 1}: ${cleanedTitle} (${duration})</option>`;
       }).join('');
       topicSelect.value = currentSlide;
     }
@@ -3592,7 +3932,21 @@ function initCustomDropdowns() {
     function updateTriggerText() {
       const textSpan = trigger.querySelector('.selected-text');
       if (textSpan) {
-        textSpan.textContent = select.options[select.selectedIndex]?.text || '';
+        const option = select.options[select.selectedIndex];
+        if (select.id === 'topicSelect' && option) {
+          const slideIdx = parseInt(option.value);
+          const slide = COURSE_CONFIG.slides[slideIdx];
+          const duration = slide?.duration || '0:00';
+          const cleanedTitle = slide ? slide.title.replace(/^\d+\.\s*/, '') : option.text;
+          textSpan.innerHTML = `
+            <span class="trigger-title">Topic 0${slideIdx + 1}: ${cleanedTitle}</span>
+            <span class="trigger-duration-badge">${duration}</span>
+          `;
+        } else if (option) {
+          textSpan.textContent = option.text;
+        } else {
+          textSpan.textContent = '';
+        }
       }
     }
 
@@ -3601,13 +3955,27 @@ function initCustomDropdowns() {
       Array.from(select.options).forEach((opt) => {
         const optionItem = document.createElement('div');
         optionItem.className = `custom-select-option${opt.selected ? ' selected' : ''}`;
-        optionItem.textContent = opt.text;
+        
+        if (select.id === 'topicSelect') {
+          const slideIdx = parseInt(opt.value);
+          const slide = COURSE_CONFIG.slides[slideIdx];
+          const duration = slide?.duration || '0:00';
+          const cleanedTitle = slide ? slide.title.replace(/^\d+\.\s*/, '') : opt.text;
+          optionItem.innerHTML = `
+            <span class="option-title">Topic 0${slideIdx + 1}: ${cleanedTitle}</span>
+            <span class="option-duration">${duration}</span>
+          `;
+        } else {
+          optionItem.textContent = opt.text;
+        }
+        
         optionItem.dataset.value = opt.value;
         optionItem.addEventListener('click', (e) => {
           e.stopPropagation();
           select.value = opt.value;
           select.dispatchEvent(new Event('change'));
           optionsMenu.classList.remove('open');
+          wrapper.classList.remove('open');
           trigger.classList.remove('open');
         });
         optionsMenu.appendChild(optionItem);
@@ -3618,22 +3986,24 @@ function initCustomDropdowns() {
     trigger.innerHTML = `
       <span class="selected-text"></span>
       <span class="day-picker-chevron">
-        <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1.5L5 5L9 1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </span>
     `;
     
     populateOptions();
     
-    // Click toggle open
-    trigger.onclick = (e) => {
+    // Click toggle open on the entire pill wrapper (including padding/chevron)
+    wrapper.onclick = (e) => {
       e.stopPropagation();
       const isOpen = optionsMenu.classList.contains('open');
       document.querySelectorAll('.custom-select-options').forEach(menu => {
         menu.classList.remove('open');
+        menu.parentElement.classList.remove('open');
         menu.previousElementSibling.classList.remove('open');
       });
       if (!isOpen) {
         optionsMenu.classList.add('open');
+        wrapper.classList.add('open');
         trigger.classList.add('open');
       }
     };
@@ -3680,6 +4050,7 @@ function initCustomDropdowns() {
   document.addEventListener('click', () => {
     document.querySelectorAll('.custom-select-options').forEach(menu => {
       menu.classList.remove('open');
+      menu.parentElement.classList.remove('open');
       menu.previousElementSibling.classList.remove('open');
     });
   });
@@ -3693,13 +4064,15 @@ let currentPlayingAudio = null;
 let currentPlayingBtn = null;
 
 let isCombinedPlaying = false;
+let isNarrationActive = false;
 let currentCombinedTime = 0;
 let totalCombinedDuration = 0; // Will be set immediately after combinedTrackDurations is defined
 let combinedTrackIndex = 0;
 let combinedAudios = [];
 let playProgressInterval = null;
-let combinedTrackDurations = [23.4, 14.1, 20.4, 11.1, 8.4, 9.5, 12.1, 9.2, 17.9, 22.2, 21.8, 24.7, 13.2, 3.8, 9.5, 5.4, 7.8, 11.4, 12.3, 13.3, 11.3, 25.7, 26.1, 31.8, 20.5, 9.3, 16.6, 21.8]; // Hardcoded default fallback (28 entries matching 28 combinedTracks)
-let combinedTracks = [
+
+const topic01Durations = [23.4, 14.1, 20.4, 11.1, 8.4, 9.5, 12.1, 9.2, 17.9, 22.2, 21.8, 24.7, 13.2, 3.8, 9.5, 5.4, 7.8, 11.4, 12.3, 13.3, 11.3, 25.7, 26.1, 31.8, 20.5, 9.3, 16.6, 21.8];
+const topic01Tracks = [
   { src: 'New_Day1Part1audio01.mp3', target: '#rdbmsIntro', title: 'What is RDBMS?' },
   { src: 'New_Day1Part1audio02.mp3', target: '#whyRdbms', title: 'Why Relational Databases?' },
   { src: 'New_Day1Part1audio03.mp3', target: '#rdbmsProblems', title: 'Three Problems RDBMS Solves' },
@@ -3716,11 +4089,11 @@ let combinedTracks = [
   { src: 'New_Day1Part1audio14.mp3', target: '#sqlImperativeVs', title: 'Imperative Code' },
   { src: 'New_Day1Part1audio15.mp3', target: '#sqlDeclarativeVs', title: 'Declarative Code' },
   { src: 'New_Day1Part1audio16.mp3', target: '#sqlSubLanguages', title: 'The Five SQL Sub-Languages' },
-  { src: 'New_Day1Part1audio17.mp3', target: '#sqlSubLanguages', title: 'DQL — Data Query Language' },
-  { src: 'New_Day1Part1audio18.mp3', target: '#sqlSubLanguages', title: 'DML — Data Manipulation Language' },
-  { src: 'New_Day1Part1audio19.mp3', target: '#sqlSubLanguages', title: 'DDL — Data Definition Language' },
-  { src: 'New_Day1Part1audio20.mp3', target: '#sqlSubLanguages', title: 'TCL — Transaction Control Language' },
-  { src: 'New_Day1Part1audio21.mp3', target: '#sqlSubLanguages', title: 'DCL — Data Control Language' },
+  { src: 'New_Day1Part1audio17.mp3', target: '#subLangDql', title: 'DQL — Data Query Language' },
+  { src: 'New_Day1Part1audio18.mp3', target: '#subLangDml', title: 'DML — Data Manipulation Language' },
+  { src: 'New_Day1Part1audio19.mp3', target: '#subLangDdl', title: 'DDL — Data Definition Language' },
+  { src: 'New_Day1Part1audio20.mp3', target: '#subLangTcl', title: 'TCL — Transaction Control Language' },
+  { src: 'New_Day1Part1audio21.mp3', target: '#subLangDcl', title: 'DCL — Data Control Language' },
   { src: 'New_Day1Part1audio22.mp3', target: '#proTipRdbms', title: 'Pro Tip: Which RDBMS?' },
   { src: 'New_Day1Part1audio23.mp3', target: '#iqReferentialIntegrity', title: 'Interview Q1: Referential Integrity' },
   { src: 'New_Day1Part1audio24.mp3', target: '#iqSqlVsNosql', title: 'Interview Q2: SQL vs NoSQL' },
@@ -3730,6 +4103,42 @@ let combinedTracks = [
   { src: 'New_Day1Part1Question02.mp3', target: '#questionBar', title: 'Q1 Solution: SELECT *', type: 'solution', qId: 1 },
   { src: 'New_Day1Part1Question03.mp3', target: '#questionBar', title: 'Q2: Inspect sqlite_master', type: 'question', qId: 2 }
 ];
+
+const topic02Durations = [27.5, 27.4, 20.7, 14.5, 9.9, 10.4, 10.9, 10.3, 8.9, 11.7, 14.9, 14.4, 22.1, 17.6, 19.9, 16.3, 16.3, 17.1, 37.9, 33.3, 30.8, 37.8, 27.0, 26.4];
+const topic02Tracks = [
+  { src: 'Day01topic2/New_Day1Part2audio01.mp3', target: '#columnProjectionIntro', title: 'What is Column Projection?' },
+  { src: 'Day01topic2/New_Day1Part2audio02.mp3', target: '#cardPagesBlocks', title: 'Pages / Blocks — Under the Hood' },
+  { src: 'Day01topic2/New_Day1Part2audio03.mp3', target: '#projectionDiagram', title: 'How Column Projection Works (Diagram)' },
+  { src: 'Day01topic2/New_Day1Part2audio04.mp3', target: '#performanceCosts', title: 'The Four Performance Costs of SELECT *' },
+  { src: 'Day01topic2/New_Day1Part2audio05.mp3', target: '#costExcessDiskIO', title: '1. Excess Disk I/O' },
+  { src: 'Day01topic2/New_Day1Part2audio06.mp3', target: '#costBufferPool', title: '2. Buffer Pool Pollution' },
+  { src: 'Day01topic2/New_Day1Part2audio07.mp3', target: '#costNetworkOverhead', title: '3. Network Overhead' },
+  { src: 'Day01topic2/New_Day1Part2audio08.mp3', target: '#costDefeatedIndex', title: '4. Defeated Index-Only Scans' },
+  { src: 'Day01topic2/New_Day1Part2audio09.mp3', target: '#performanceMockTable', title: 'Mock Table — Projected Columns Only' },
+  { src: 'Day01topic2/New_Day1Part2audio10.mp3', target: '#indexOnlyScans', title: 'Index-Only Scans — The Ultimate Optimization' },
+  { src: 'Day01topic2/New_Day1Part2audio11.mp3', target: '#heapLookupRequired', title: 'SELECT * — Heap Lookup Required' },
+  { src: 'Day01topic2/New_Day1Part2audio12.mp3', target: '#indexOnlyScanGood', title: 'Specific Projection — Index-Only Scan' },
+  { src: 'Day01topic2/New_Day1Part2audio13.mp3', target: '#columnOrientedDbs', title: 'Column-Oriented Databases — A Step Further' },
+  { src: 'Day01topic2/New_Day1Part2audio14.mp3', target: '#cardZeroOverhead', title: 'Zero Overhead Card' },
+  { src: 'Day01topic2/New_Day1Part2audio15.mp3', target: '#cardBilledPerByte', title: 'Billed Per Byte Card' },
+  { src: 'Day01topic2/New_Day1Part2audio16.mp3', target: '#cardCompression', title: 'Compression Card' },
+  { src: 'Day01topic2/New_Day1Part2audio17.mp3', target: '#projectionProTip', title: 'Real-World Outage Scenario' },
+  { src: 'Day01topic2/New_Day1Part2audio18.mp3', target: '#iqIndexOnlyScan', title: 'Interview Q1: Index-Only Scan' },
+  { src: 'Day01topic2/New_Day1Part2audio19.mp3', target: '#iqSelectStarCosts', title: 'Interview Q2: SELECT * Performance Costs' },
+  { src: 'Day01topic2/New_Day1Part2audio20.mp3', target: '#iqHeapScanVsIndexScan', title: 'Interview Q3: Heap Scan vs Index Scan' },
+  { src: 'Day01topic2/New_Day1Part2audio21.mp3', target: '#questionBar', title: 'Q1: Retrieve name & department', type: 'question', qId: 1 },
+  { src: 'Day01topic2/New_Day1Part2audio22.mp3', target: '#questionBar', title: 'Q2: Project id, name, salary', type: 'question', qId: 2 },
+  { src: 'Day01topic2/New_Day1Part2Question01.mp3', target: '#questionBar', title: 'Q1 Solution: SELECT name, department', type: 'solution', qId: 1 },
+  { src: 'Day01topic2/New_Day1Part2Question02.mp3', target: '#questionBar', title: 'Q2 Solution: SELECT id, name, salary', type: 'solution', qId: 2 }
+];
+
+const slideTrackMap = {
+  0: { tracks: topic01Tracks, durations: topic01Durations },
+  1: { tracks: topic02Tracks, durations: topic02Durations }
+};
+
+let combinedTrackDurations = slideTrackMap[0].durations;
+let combinedTracks = slideTrackMap[0].tracks;
 
 const AUDIO_CDN_BASE = "/Version-3";
 let manifest = {};
@@ -3749,13 +4158,17 @@ async function loadManifest() {
   try {
     const res = await fetch('/Version-3/manifest.json');
     manifest = await res.json();
-    // Re-calculate durations from manifest metadata
-    combinedTracks.forEach((t, index) => {
-      const trackId = `day01_${t.src.replace('.mp3', '')}`;
-      const entry = manifest[trackId];
-      if (entry && entry.durationMs) {
-        combinedTrackDurations[index] = entry.durationMs / 1000;
-      }
+    // Re-calculate durations from manifest metadata for all slides
+    Object.keys(slideTrackMap).forEach(key => {
+      const config = slideTrackMap[key];
+      config.tracks.forEach((t, index) => {
+        const filename = t.src.split('/').pop().replace('.mp3', '');
+        const trackId = `day01_${filename}`;
+        const entry = manifest[trackId];
+        if (entry && entry.durationMs) {
+          config.durations[index] = entry.durationMs / 1000;
+        }
+      });
     });
     totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
     updateProgressUI();
@@ -3799,7 +4212,8 @@ async function loadAndPlayTrack(index, targetTime = 0) {
 
   combinedTrackIndex = index;
   const track = combinedTracks[index];
-  const trackId = `day01_${track.src.replace('.mp3', '')}`;
+  const filename = track.src.split('/').pop().replace('.mp3', '');
+  const trackId = `day01_${filename}`;
   const entry = manifest[trackId] || { audioPath: track.src };
   const url = getAudioUrl(entry);
 
@@ -3814,6 +4228,12 @@ async function loadAndPlayTrack(index, targetTime = 0) {
   prefetchedForIndex = null;
   prefetchFailed = false;
   activeAudioInstance = audio;
+  if (typeof currentPlaybackSpeed !== 'undefined') {
+    activeAudioInstance.playbackRate = currentPlaybackSpeed;
+  }
+  if (typeof currentPlaybackVolume !== 'undefined') {
+    activeAudioInstance.volume = currentPlaybackVolume;
+  }
 
   if (targetTime > 0) {
     audio.currentTime = targetTime;
@@ -3849,6 +4269,8 @@ async function loadAndPlayTrack(index, targetTime = 0) {
 
   // Slide navigation, typewriter, and output table scrolls trigger JIT at playback start
   if (track.type === 'question') {
+    isNarrationActive = false;
+    if (typeof clearSlidePlaybackVisibility === 'function') clearSlidePlaybackVisibility();
     const targetQIdx = COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === track.qId);
     if (targetQIdx !== -1 && targetQIdx !== currentPracticeQ) {
       clearOutputSection();
@@ -3864,6 +4286,8 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     setMobileTab('practice');
 
   } else if (track.type === 'solution') {
+    isNarrationActive = false;
+    if (typeof clearSlidePlaybackVisibility === 'function') clearSlidePlaybackVisibility();
     const targetQIdx = COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === track.qId);
     if (targetQIdx !== -1) {
       currentPracticeQ = targetQIdx;
@@ -3919,6 +4343,7 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     setMobileTab('practice');
     
   } else {
+    isNarrationActive = true;
     const bar = document.getElementById('questionBar');
     if (bar) bar.classList.remove('question-playing');
     scrollToTarget(track.target);
@@ -4083,11 +4508,13 @@ function onNarrationSegmentEnded(index, events) {
   } else {
     // All tracks complete — reset
     isCombinedPlaying = false;
+    isNarrationActive = false;
     combinedTrackIndex = 0;
     currentCombinedTime = 0;
     updatePlayButtonStates(false);
     updateProgressUI();
     cancelTypewriter();
+    if (typeof clearSlidePlaybackVisibility === 'function') clearSlidePlaybackVisibility();
     // Remove question bar highlight
     const bar = document.getElementById('questionBar');
     if (bar) bar.classList.remove('question-playing');
@@ -4129,11 +4556,18 @@ async function seekCombinedPlayback(val) {
 }
 
 function scrollToTarget(selector) {
+  if (typeof isCombinedPlaying !== 'undefined' && isCombinedPlaying) {
+    if (typeof updateSlidePlaybackVisibility === 'function') updateSlidePlaybackVisibility(selector);
+  } else {
+    if (typeof clearSlidePlaybackVisibility === 'function') clearSlidePlaybackVisibility();
+  }
+
   const container = document.getElementById('slideContent');
   const targetEl = container ? container.querySelector(selector) : null;
   if (targetEl && container) {
+    const blockToScroll = typeof getVisibilityBlock === 'function' ? getVisibilityBlock(targetEl, container) : targetEl;
     const containerRect = container.getBoundingClientRect();
-    const targetRect = targetEl.getBoundingClientRect();
+    const targetRect = blockToScroll.getBoundingClientRect();
     const relativeTop = targetRect.top - containerRect.top + container.scrollTop;
     container.scrollTo({
       top: relativeTop - 15,
@@ -4166,6 +4600,12 @@ function playAudio(src, btn) {
         }
       }
       currentPlayingAudio = new Audio(audioSrc);
+      if (typeof currentPlaybackSpeed !== 'undefined') {
+        currentPlayingAudio.playbackRate = currentPlaybackSpeed;
+      }
+      if (typeof currentPlaybackVolume !== 'undefined') {
+        currentPlayingAudio.volume = currentPlaybackVolume;
+      }
       currentPlayingBtn = btn;
       currentPlayingAudio.play();
       btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
@@ -4229,13 +4669,16 @@ function initSlideNarration() {
 
   // Populate combinedAudios[] — required by syncCombinedToTrack(), playQuestionAudio()
   // and playSolutionAudio() which address individual tracks by index.
-  if (combinedAudios && combinedAudios.length > 0) return;
+  // We check if combinedAudios matches current combinedTracks length to see if we need to rebuild
+  if (combinedAudios && combinedAudios.length === combinedTracks.length) return;
+
   combinedAudios = combinedTracks.map(track => {
-    const trackId = `day01_${track.src.replace('.mp3', '')}`;
+    const filename = track.src.split('/').pop().replace('.mp3', '');
+    const trackId = `day01_${filename}`;
     const entry = manifest[trackId] || { audioPath: track.src };
     const url = getAudioUrl(entry);
     const audio = new Audio(url);
-    audio.preload = "none"; // lazy — don't pre-download all 28 files on page load
+    audio.preload = "none"; // lazy — don't pre-download all files on page load
     return audio;
   });
 }
@@ -4315,6 +4758,13 @@ function playCombinedPlayback() {
     activeAudioInstance.play()
       .then(() => {
         updatePlayButtonStates(true);
+        // Re-apply focus filter AND scroll back on resume
+        if (isNarrationActive) {
+          const activeTrack = combinedTracks[combinedTrackIndex];
+          if (activeTrack && activeTrack.target) {
+            scrollToTarget(activeTrack.target);
+          }
+        }
       })
       .catch(err => console.log('Combined play error:', err));
   } else {
@@ -4328,5 +4778,146 @@ function pauseCombinedPlayback() {
     activeAudioInstance.pause();
   }
   updatePlayButtonStates(false);
+  // Show all content when paused so user can read freely
+  if (typeof clearSlidePlaybackVisibility === 'function') clearSlidePlaybackVisibility();
+
+  // Scroll back to the active block instantly so the viewport doesn't jump to the top of the slide
+  if (typeof combinedTrackIndex !== 'undefined' && typeof combinedTracks !== 'undefined' && combinedTracks[combinedTrackIndex]) {
+    const activeTrack = combinedTracks[combinedTrackIndex];
+    if (activeTrack && activeTrack.target) {
+      const container = document.getElementById('slideContent');
+      const targetEl = container ? container.querySelector(activeTrack.target) : null;
+      if (targetEl && container) {
+        const blockToScroll = typeof getVisibilityBlock === 'function' ? getVisibilityBlock(targetEl, container) : targetEl;
+        const containerRect = container.getBoundingClientRect();
+        const targetRect = blockToScroll.getBoundingClientRect();
+        const relativeTop = targetRect.top - containerRect.top + container.scrollTop;
+        container.scrollTo({
+          top: relativeTop - 15,
+          behavior: 'auto'
+        });
+      }
+    }
+  }
+}
+
+function clearSlidePlaybackVisibility() {
+  const containers = [
+    document.getElementById('slideBodyText'),
+    document.getElementById('presentSlideContent')
+  ].filter(Boolean);
+
+  containers.forEach(container => {
+    container.classList.remove('playback-active');
+    const allElements = container.querySelectorAll('*');
+    allElements.forEach(el => {
+      el.style.display = '';
+      el.style.opacity = '';
+    });
+  });
+}
+
+/**
+ * Given a target element (the element with the track's ID), walk UP the DOM
+ * to find the logical visual block that should be shown/hidden as a unit.
+ * e.g. a <div id="entityDatabase"> inside a <td> should hide the entire <tr>.
+ */
+function getVisibilityBlock(targetElement, sectionBoundary) {
+  // If the target is inside a table row, hide the whole row
+  const tr = targetElement.closest('tr');
+  if (tr && sectionBoundary.contains(tr)) return tr;
+
+  // If the target is inside a comparison card (.vs-card), hide the whole card
+  const vsCard = targetElement.closest('.vs-card');
+  if (vsCard && sectionBoundary.contains(vsCard)) return vsCard;
+
+  // For standalone blocks, return the element itself
+  return targetElement;
+}
+
+function updateSlidePlaybackVisibility(targetSelector) {
+  const containers = [
+    document.getElementById('slideBodyText'),
+    document.getElementById('presentSlideContent')
+  ].filter(Boolean);
+
+  containers.forEach(container => {
+    if (typeof isCombinedPlaying === 'undefined' || !isCombinedPlaying) {
+      container.classList.remove('playback-active');
+      container.querySelectorAll('*').forEach(el => {
+        el.style.display = '';
+        el.style.opacity = '';
+      });
+      return;
+    }
+
+    container.classList.add('playback-active');
+
+    // Find the target element inside this container
+    const targetEl = container.querySelector(targetSelector);
+    if (!targetEl) return;
+
+    // Reset all elements in this container first
+    container.querySelectorAll('*').forEach(el => {
+      el.style.display = '';
+      el.style.opacity = '';
+    });
+
+    // Find the active section wrapper (.slide-section) that contains targetEl
+    const activeSection = targetEl.closest('.slide-section');
+    if (!activeSection) {
+      container.querySelectorAll('.slide-section').forEach(s => s.style.display = '');
+      return;
+    }
+
+    // Hide all other .slide-section wrappers, show only the active one
+    container.querySelectorAll('.slide-section').forEach(section => {
+      section.style.display = (section === activeSection) ? '' : 'none';
+    });
+
+    // Keep the main heading (H2) at the top of the slide always visible
+    const h2 = container.querySelector('h2');
+    if (h2) h2.style.display = '';
+
+    // ── Chronological sub-target filtering ──
+    // For each unique track target inside this section, if its first
+    // track index is AFTER the current track, hide its visual block.
+    const processedTargets = new Set();
+    combinedTracks.forEach((track, idx) => {
+      if (!track.target || !track.target.startsWith('#')) return;
+      if (processedTargets.has(track.target)) return;
+      processedTargets.add(track.target);
+
+      const el = activeSection.querySelector(track.target);
+      if (!el) return;
+
+      if (idx > combinedTrackIndex) {
+        // Walk up to find the logical block (tr, .vs-card, or element itself)
+        const blockToHide = getVisibilityBlock(el, activeSection);
+        blockToHide.style.display = 'none';
+
+        // Also hide preceding <hr> dividers
+        const prev = blockToHide.previousElementSibling;
+        if (prev && prev.tagName === 'HR') {
+          prev.style.display = 'none';
+        }
+      }
+    });
+
+    // ── Clean up empty parent containers ──
+    // If all children of a .vs-block are hidden, hide the .vs-block itself
+    activeSection.querySelectorAll('.vs-block').forEach(block => {
+      const hasVisible = Array.from(block.children).some(c => c.style.display !== 'none');
+      if (!hasVisible) block.style.display = 'none';
+    });
+
+    // If all <tbody> rows of a table are hidden, hide the table wrapper
+    activeSection.querySelectorAll('.db-mock-table-wrap').forEach(wrap => {
+      const tbody = wrap.querySelector('tbody');
+      if (!tbody) return;
+      const hasVisibleRow = Array.from(tbody.querySelectorAll('tr')).some(r => r.style.display !== 'none');
+      if (!hasVisibleRow) wrap.style.display = 'none';
+    });
+  });
 }
 

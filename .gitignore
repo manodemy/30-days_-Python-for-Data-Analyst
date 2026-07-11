@@ -32,7 +32,8 @@ demo.txt
 # Large Video / Demo Assets
 *.mp4
 *.mp3
-!public/Version-3/*.mp3
+!public/Version-3/**/
+!public/Version-3/**/*.mp3
 *.wfp
 video_pipeline/
 scratch/

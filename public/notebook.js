@@ -34,15 +34,19 @@ const CustomAuthStorage = {
             if (!val) {
               let chunks = [];
               for (let i = 0; ; i++) {
-                const chunkMatch = document.cookie.match(new RegExp('(^| )' + key + '\.' + i + '=([^;]+)'));
+                const chunkMatch = document.cookie.match(new RegExp('(^| )' + key + '\\.' + i + '=([^;]+)'));
                 if (chunkMatch) {
-                  try { chunks.push(decodeURIComponent(chunkMatch[2])); } catch (e) { break; }
+                  chunks.push(chunkMatch[2]);
                 } else {
                   break;
                 }
               }
               if (chunks.length > 0) {
-                val = chunks.join('');
+                try {
+                  val = decodeURIComponent(chunks.join(''));
+                } catch (e) {
+                  console.error("Failed to decode joined cookie chunks:", e);
+                }
               }
             }
             if (!val) {
