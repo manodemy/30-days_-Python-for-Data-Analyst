@@ -526,31 +526,43 @@ WHERE department = 'Engineering';</pre>
           <p><strong>Column Projection</strong> is the act of selecting only the specific columns you need from a query result. In the relational algebra that underpins SQL, a <em>projection</em> operation reduces a relation's attributes from N columns to a smaller subset. It is the fundamental mechanism behind the column list in your <code>SELECT</code> clause.</p>
 
           <div class="rdbms-infographic" id="cardPagesBlocks">
-            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-              <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Under the hood: how relational databases physically store and read data.</small>
-              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio02.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
+            <div style="color: #64748b; font-size: 0.75rem; margin-bottom: 10px;">
+              Under the hood: how relational databases physically store and read data.
             </div>
             <div class="info-columns">
               <div class="info-card info-card--blue">
-                <div class="info-card-header">PAGES / BLOCKS</div>
+                <div class="info-card-header" style="display: flex; align-items: center; justify-content: space-between;">
+                  <span>PAGES / BLOCKS</span>
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio02.mp3', this)" title="Play narration" style="background: transparent; border: none; color: inherit; padding: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px;">
+                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
                 <ul class="info-card-bullets">
                   <li><span class="bullet-dot"></span>FIXED-SIZE PAGES (8 KB POSTGRESQL, 16 KB MYSQL)</li>
                   <li><span class="bullet-dot"></span>EVERY DISK READ FETCHES AN ENTIRE PAGE</li>
                   <li><span class="bullet-dot"></span>I/O OPERATIONS ARE DONE AT PAGE LEVEL</li>
                 </ul>
               </div>
-              <div class="info-card info-card--purple">
-                <div class="info-card-header">ROW-ORIENTED</div>
+              <div class="info-card info-card--purple" id="cardRowOriented">
+                <div class="info-card-header" style="display: flex; align-items: center; justify-content: space-between;">
+                  <span>ROW-ORIENTED</span>
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio03.mp3', this)" title="Play narration" style="background: transparent; border: none; color: inherit; padding: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px;">
+                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
                 <ul class="info-card-bullets">
                   <li><span class="bullet-dot"></span>ALL COLUMNS OF A ROW STORED TOGETHER</li>
                   <li><span class="bullet-dot"></span>READING ONE COLUMN LOADS THE WHOLE ROW</li>
                   <li><span class="bullet-dot"></span>IDEAL FOR TRANSACTIONAL (OLTP) WORKLOADS</li>
                 </ul>
               </div>
-              <div class="info-card info-card--red">
-                <div class="info-card-header">FULL PAGE LOAD</div>
+              <div class="info-card info-card--red" id="cardFullPageLoad">
+                <div class="info-card-header" style="display: flex; align-items: center; justify-content: space-between;">
+                  <span>FULL PAGE LOAD</span>
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio04.mp3', this)" title="Play narration" style="background: transparent; border: none; color: inherit; padding: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px;">
+                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
                 <ul class="info-card-bullets">
                   <li><span class="bullet-dot"></span>SELECT * LOADS EVERY UNUSED COLUMN</li>
                   <li><span class="bullet-dot"></span>POLLUTES AND CLOGS BUFFER POOL CACHE</li>
@@ -561,93 +573,63 @@ WHERE department = 'Engineering';</pre>
           </div>
 
           <div class="relation-infographic" style="padding: 16px 20px;" id="projectionDiagram">
-            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-              <div class="explanation-title" style="margin: 0; flex: 1;">How Column Projection Works</div>
-              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio03.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
+            <div class="explanation-title" style="margin: 0 0 10px 0;">How Column Projection Works</div>
             <div class="relation-visual" style="justify-content: center; gap: 6px;">
-              <div class="relation-node" style="border-left: 4px solid #64748b; flex: none;">
+              <div class="relation-node" style="border-left: 4px solid #64748b; flex: none;" id="projectionDiskPage">
                 <span class="node-icon">💽</span>
-                <div class="node-title">Disk Page</div>
+                <div class="node-title" style="display: flex; align-items: center; gap: 4px;">
+                  Disk Page
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio05.mp3', this)" title="Play narration" style="background: transparent; border: none; color: inherit; padding: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px;">
+                    <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
                 <div class="node-subtitle">id · name · dept · salary</div>
               </div>
-              <div class="relation-link">
-                <div class="link-label">Loads</div>
-                <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+              <div class="relation-link" id="projectionLoads" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div class="link-label" style="display: flex; align-items: center; gap: 2px; margin-bottom: 2px;">
+                  Loads
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio06.mp3', this)" title="Play narration" style="background: transparent; border: none; color: inherit; padding: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 12px; height: 12px;">
+                    <svg class="play-icon" width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
+                <div class="link-arrow" style="margin-top: 0;"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
               </div>
-              <div class="relation-node" style="border-left: 4px solid #3b82f6; flex: none;">
+              <div class="relation-node" style="border-left: 4px solid #3b82f6; flex: none;" id="projectionFilter">
                 <span class="node-icon">🔍</span>
-                <div class="node-title">SELECT name, salary</div>
+                <div class="node-title" style="display: flex; align-items: center; gap: 4px;">
+                  SELECT name...
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio07.mp3', this)" title="Play narration" style="background: transparent; border: none; color: inherit; padding: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px;">
+                    <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
                 <div class="node-subtitle">Projection Filter</div>
               </div>
-              <div class="relation-link">
-                <div class="link-label">Returns</div>
-                <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+              <div class="relation-link" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div class="link-label" style="margin-bottom: 2px;">Returns</div>
+                <div class="link-arrow" style="margin-top: 0;"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
               </div>
-              <div class="relation-node relation-node--child" style="flex: none;">
+              <div class="relation-node relation-node--child" style="flex: none;" id="projectionResultSet">
                 <span class="node-icon">✅</span>
-                <div class="node-title">Result Set</div>
+                <div class="node-title" style="display: flex; align-items: center; gap: 4px;">
+                  Result Set
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio08.mp3', this)" title="Play narration" style="background: transparent; border: none; color: inherit; padding: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px;">
+                    <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
                 <div class="node-subtitle">name · salary only</div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="slide-section" id="performanceCosts">
-          <h3 class="heading-with-audio">
-            The Four Performance Costs of SELECT *
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio04.mp3', this)" title="Play narration">
+        <div class="slide-section" id="projectionMockTable">
+          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+            <div class="explanation-title" style="margin: 0; flex: 1;">Projected Columns Representation</div>
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio09.mp3', this)" title="Play narration" style="flex-shrink: 0;">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
-          </h3>
-          <div class="vs-block">
-            <div class="vs-card vs-card--bad" id="costExcessDiskIO">
-              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <h4 style="margin: 0; flex: 1;">💾 1. Excess Disk I/O</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio05.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p>More columns → more pages loaded from disk → higher latency, especially on large tables with millions of rows.</p>
-            </div>
-            <div class="vs-card vs-card--bad" id="costBufferPool">
-              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <h4 style="margin: 0; flex: 1;">🧠 2. Buffer Pool Pollution</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio06.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p>Unused columns occupy RAM in the database buffer cache, evicting frequently-needed pages and causing cache misses.</p>
-            </div>
-            <div class="vs-card vs-card--bad" id="costNetworkOverhead">
-              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <h4 style="margin: 0; flex: 1;">🌐 3. Network Overhead</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio07.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p>Every byte travels over the network from the DB server to your app. Wide rows with BLOB columns cause noticeable latency under heavy traffic.</p>
-            </div>
-            <div class="vs-card vs-card--bad" id="costDefeatedIndex">
-              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <h4 style="margin: 0; flex: 1;">🚫 4. Defeated Index-Only Scans</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio08.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p>Even when a covering index exists, <code>SELECT *</code> forces a heap lookup — visiting actual table pages — because not all columns are in the index.</p>
-            </div>
           </div>
-
-          <div class="db-mock-table-wrap" id="performanceMockTable">
-            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-              <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Only projected columns are loaded and returned — unused columns are discarded at query time.</small>
-              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio09.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
+          <div class="db-mock-table-wrap">
             <table class="db-table-mock">
               <thead>
                 <tr>
@@ -675,10 +657,47 @@ WHERE department = 'Engineering';</pre>
           </div>
         </div>
 
+        <div class="slide-section" id="performanceCosts">
+          <h3 class="heading-with-audio">
+            The Four Performance Costs of SELECT *
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio10.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
+          <div class="vs-block" id="performanceCostCards">
+            <div class="vs-card vs-card--bad" id="costExcessDiskIO">
+              <h4>💾 1. Excess Disk I/O</h4>
+              <p>More columns → more pages loaded from disk → higher latency, especially on large tables with millions of rows.</p>
+            </div>
+            <div class="vs-card vs-card--bad" id="costBufferPool">
+              <h4>🧠 2. Buffer Pool Pollution</h4>
+              <p>Unused columns occupy RAM in the database buffer cache, evicting frequently-needed pages and causing cache misses.</p>
+            </div>
+            <div class="vs-card vs-card--bad" id="costNetworkOverhead">
+              <h4>🌐 3. Network Overhead</h4>
+              <p>Every byte travels over the network from the DB server to your app. Wide rows with BLOB columns cause noticeable latency under heavy traffic.</p>
+            </div>
+            <div class="vs-card vs-card--bad" id="costDefeatedIndex">
+              <h4>🚫 4. Defeated Index-Only Scans</h4>
+              <p>Even when a covering index exists, <code>SELECT *</code> forces a heap lookup — visiting actual table pages — because not all columns are in the index.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-section" id="performanceMockTable">
+          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+            <div class="explanation-title" style="margin: 0; flex: 1;">Performance Impact on Data Retrieval</div>
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio11.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <p style="font-size: 0.8rem; margin: 0 0 10px 0; color: #475569;">Failing to project columns increases data volume, reducing cache hit rates and slowing overall database execution.</p>
+        </div>
+
         <div class="slide-section" id="indexOnlyScans">
           <h3 class="heading-with-audio">
             Index-Only Scans — The Ultimate Optimization
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio10.mp3', this)" title="Play narration">
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio12.mp3', this)" title="Play narration">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
@@ -688,7 +707,7 @@ WHERE department = 'Engineering';</pre>
             <div class="vs-card vs-card--bad" id="heapLookupRequired">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">❌ SELECT * — Heap Lookup Required</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio11.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio13.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                   <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
               </div>
@@ -702,7 +721,7 @@ WHERE department = 'Engineering';
             <div class="vs-card vs-card--good" id="indexOnlyScanGood">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">✅ Specific Projection — Index-Only Scan</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio12.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio14.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                   <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
               </div>
@@ -719,7 +738,7 @@ WHERE department = 'Engineering';
         <div class="slide-section" id="columnOrientedDbs">
           <h3 class="heading-with-audio">
             Column-Oriented Databases — A Step Further
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio13.mp3', this)" title="Play narration">
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio15.mp3', this)" title="Play narration">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
@@ -729,7 +748,7 @@ WHERE department = 'Engineering';
               <div class="info-card info-card--green" id="cardZeroOverhead">
                 <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
                   <div class="info-card-header" style="margin: 0; flex: 1;">ZERO OVERHEAD</div>
-                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio14.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio16.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                     <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                   </button>
                 </div>
@@ -742,7 +761,7 @@ WHERE department = 'Engineering';
               <div class="info-card info-card--amber" id="cardBilledPerByte">
                 <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
                   <div class="info-card-header" style="margin: 0; flex: 1;">BILLED PER BYTE</div>
-                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio15.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio17.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                     <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                   </button>
                 </div>
@@ -755,7 +774,7 @@ WHERE department = 'Engineering';
               <div class="info-card info-card--cyan" id="cardCompression">
                 <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
                   <div class="info-card-header" style="margin: 0; flex: 1;">COMPRESSION</div>
-                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio16.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                     <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                   </button>
                 </div>
@@ -774,7 +793,7 @@ WHERE department = 'Engineering';
             <div style="flex: 1;">
               <strong>⚠️ Real-World Outage Scenario:</strong> A backend team deployed <code>SELECT *</code> on a users table. Six months later, a feature team added a <code>profile_picture BYTEA</code> column (storing binary image data up to 2 MB per user). Overnight, every query that previously returned 200 bytes per row now returned 2 MB per row — causing database memory exhaustion and a P0 outage. The fix: explicit column projection in every query. <strong>Lesson: never use SELECT * in application code, unless you are just manually exploring the table columns in your database console.</strong>
             </div>
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio17.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio19.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </div>
@@ -786,7 +805,7 @@ WHERE department = 'Engineering';
             <div id="iqIndexOnlyScan">
               <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
                 <p style="margin: 0; flex: 1;"><strong>Q: What is an index-only scan and when does the optimizer use it?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio20.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
                   <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
               </div>
@@ -798,7 +817,7 @@ WHERE department = 'Engineering';
             <div id="iqSelectStarCosts">
               <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
                 <p style="margin: 0; flex: 1;"><strong>Q: Why does SELECT * hurt performance even when all columns are small?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio19.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio21.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
                   <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
               </div>
@@ -810,7 +829,7 @@ WHERE department = 'Engineering';
             <div id="iqHeapScanVsIndexScan">
               <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
                 <p style="margin: 0; flex: 1;"><strong>Q: What is the difference between a heap scan and an index scan?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio20.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio22.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
                   <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
               </div>
@@ -4107,29 +4126,29 @@ const topic01Tracks = [
 const topic02Durations = [27.5, 27.4, 20.7, 14.5, 9.9, 10.4, 10.9, 10.3, 8.9, 11.7, 14.9, 14.4, 22.1, 17.6, 19.9, 16.3, 16.3, 17.1, 37.9, 33.3, 30.8, 37.8, 27.0, 26.4];
 const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2audio01.mp3', target: '#columnProjectionIntro', title: 'What is Column Projection?' },
-  { src: 'Day01topic2/New_Day1Part2audio02.mp3', target: '#cardPagesBlocks', title: 'Pages / Blocks — Under the Hood' },
-  { src: 'Day01topic2/New_Day1Part2audio03.mp3', target: '#projectionDiagram', title: 'How Column Projection Works (Diagram)' },
-  { src: 'Day01topic2/New_Day1Part2audio04.mp3', target: '#performanceCosts', title: 'The Four Performance Costs of SELECT *' },
-  { src: 'Day01topic2/New_Day1Part2audio05.mp3', target: '#costExcessDiskIO', title: '1. Excess Disk I/O' },
-  { src: 'Day01topic2/New_Day1Part2audio06.mp3', target: '#costBufferPool', title: '2. Buffer Pool Pollution' },
-  { src: 'Day01topic2/New_Day1Part2audio07.mp3', target: '#costNetworkOverhead', title: '3. Network Overhead' },
-  { src: 'Day01topic2/New_Day1Part2audio08.mp3', target: '#costDefeatedIndex', title: '4. Defeated Index-Only Scans' },
-  { src: 'Day01topic2/New_Day1Part2audio09.mp3', target: '#performanceMockTable', title: 'Mock Table — Projected Columns Only' },
-  { src: 'Day01topic2/New_Day1Part2audio10.mp3', target: '#indexOnlyScans', title: 'Index-Only Scans — The Ultimate Optimization' },
-  { src: 'Day01topic2/New_Day1Part2audio11.mp3', target: '#heapLookupRequired', title: 'SELECT * — Heap Lookup Required' },
-  { src: 'Day01topic2/New_Day1Part2audio12.mp3', target: '#indexOnlyScanGood', title: 'Specific Projection — Index-Only Scan' },
-  { src: 'Day01topic2/New_Day1Part2audio13.mp3', target: '#columnOrientedDbs', title: 'Column-Oriented Databases — A Step Further' },
-  { src: 'Day01topic2/New_Day1Part2audio14.mp3', target: '#cardZeroOverhead', title: 'Zero Overhead Card' },
-  { src: 'Day01topic2/New_Day1Part2audio15.mp3', target: '#cardBilledPerByte', title: 'Billed Per Byte Card' },
-  { src: 'Day01topic2/New_Day1Part2audio16.mp3', target: '#cardCompression', title: 'Compression Card' },
-  { src: 'Day01topic2/New_Day1Part2audio17.mp3', target: '#projectionProTip', title: 'Real-World Outage Scenario' },
-  { src: 'Day01topic2/New_Day1Part2audio18.mp3', target: '#iqIndexOnlyScan', title: 'Interview Q1: Index-Only Scan' },
-  { src: 'Day01topic2/New_Day1Part2audio19.mp3', target: '#iqSelectStarCosts', title: 'Interview Q2: SELECT * Performance Costs' },
-  { src: 'Day01topic2/New_Day1Part2audio20.mp3', target: '#iqHeapScanVsIndexScan', title: 'Interview Q3: Heap Scan vs Index Scan' },
-  { src: 'Day01topic2/New_Day1Part2audio21.mp3', target: '#questionBar', title: 'Q1: Retrieve name & department', type: 'question', qId: 1 },
-  { src: 'Day01topic2/New_Day1Part2audio22.mp3', target: '#questionBar', title: 'Q2: Project id, name, salary', type: 'question', qId: 2 },
-  { src: 'Day01topic2/New_Day1Part2Question01.mp3', target: '#questionBar', title: 'Q1 Solution: SELECT name, department', type: 'solution', qId: 1 },
-  { src: 'Day01topic2/New_Day1Part2Question02.mp3', target: '#questionBar', title: 'Q2 Solution: SELECT id, name, salary', type: 'solution', qId: 2 }
+  { src: 'Day01topic2/New_Day1Part2audio02.mp3', target: '#cardPagesBlocks', title: 'PAGES / BLOCKS Card' },
+  { src: 'Day01topic2/New_Day1Part2audio03.mp3', target: '#cardRowOriented', title: 'ROW-ORIENTED Card' },
+  { src: 'Day01topic2/New_Day1Part2audio04.mp3', target: '#cardFullPageLoad', title: 'FULL PAGE LOAD Card' },
+  { src: 'Day01topic2/New_Day1Part2audio05.mp3', target: '#projectionDiskPage', title: 'Disk Page Node' },
+  { src: 'Day01topic2/New_Day1Part2audio06.mp3', target: '#projectionLoads', title: 'Loads Link' },
+  { src: 'Day01topic2/New_Day1Part2audio07.mp3', target: '#projectionFilter', title: 'SELECT name, salary Node' },
+  { src: 'Day01topic2/New_Day1Part2audio08.mp3', target: '#projectionResultSet', title: 'Result Set Node' },
+  { src: 'Day01topic2/New_Day1Part2audio09.mp3', target: '#projectionMockTable', title: 'Mock Table (Projection)' },
+  { src: 'Day01topic2/New_Day1Part2audio10.mp3', target: '#performanceCosts', title: 'The Four Performance Costs of SELECT *' },
+  { src: 'Day01topic2/New_Day1Part2audio11.mp3', target: '#performanceMockTable', title: 'Mock Table (Performance)' },
+  { src: 'Day01topic2/New_Day1Part2audio12.mp3', target: '#indexOnlyScans', title: 'Index-Only Scans — The Ultimate Optimization' },
+  { src: 'Day01topic2/New_Day1Part2audio13.mp3', target: '#heapLookupRequired', title: 'SELECT * — Heap Lookup Required' },
+  { src: 'Day01topic2/New_Day1Part2audio14.mp3', target: '#indexOnlyScanGood', title: 'Specific Projection — Index-Only Scan' },
+  { src: 'Day01topic2/New_Day1Part2audio15.mp3', target: '#columnOrientedDbs', title: 'Column-Oriented Databases — A Step Further' },
+  { src: 'Day01topic2/New_Day1Part2audio16.mp3', target: '#cardZeroOverhead', title: 'Zero Overhead Card' },
+  { src: 'Day01topic2/New_Day1Part2audio17.mp3', target: '#cardBilledPerByte', title: 'Billed Per Byte Card' },
+  { src: 'Day01topic2/New_Day1Part2audio18.mp3', target: '#cardCompression', title: 'Compression Card' },
+  { src: 'Day01topic2/New_Day1Part2audio19.mp3', target: '#projectionProTip', title: 'Real-World Outage Scenario' },
+  { src: 'Day01topic2/New_Day1Part2audio20.mp3', target: '#iqIndexOnlyScan', title: 'Interview Q1: Index-Only Scan' },
+  { src: 'Day01topic2/New_Day1Part2audio21.mp3', target: '#iqSelectStarCosts', title: 'Interview Q2: SELECT * Performance Costs' },
+  { src: 'Day01topic2/New_Day1Part2audio22.mp3', target: '#iqHeapScanVsIndexScan', title: 'Interview Q3: Heap Scan vs Index Scan' },
+  { src: 'Day01topic2/New_Day1Part2Question01.mp3', target: '#questionBar', title: 'Q1 Challenge & Solution', type: 'question', qId: 1 },
+  { src: 'Day01topic2/New_Day1Part2Question02.mp3', target: '#questionBar', title: 'Q2 Challenge & Wrap-up', type: 'question', qId: 2 }
 ];
 
 const slideTrackMap = {
