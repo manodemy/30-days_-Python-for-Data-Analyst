@@ -600,7 +600,9 @@ WHERE department = 'Engineering';</pre>
         <div class="slide-section" id="performanceCosts">
           <h3 class="heading-with-audio">
             The Four Performance Costs of SELECT *
-            
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio08.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
           </h3>
           <div class="vs-block">
             <div class="vs-card vs-card--bad" id="costExcessDiskIO">
@@ -4074,7 +4076,7 @@ const topic01Tracks = [
   { src: 'New_Day1Part1Question03.mp3', target: '#questionBar', title: 'Q2: Inspect sqlite_master', type: 'question', qId: 2 }
 ];
 
-const topic02Durations = [27.5, 27.4, 20.7, 16.6, 12.3, 9.9, 10.4, 10.9, 10.3, 8.9, 11.7, 14.9, 14.4, 22.1, 17.6, 19.9, 16.3, 16.3, 17.1, 37.9, 33.3, 30.8, 37.8, 27.0, 26.4];
+const topic02Durations = [27.5, 27.4, 20.7, 16.6, 12.3, 9.9, 10.4, 10.9, 10.3, 27.0, 26.4];
 const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2audio01.mp3', target: '#columnProjectionIntro', title: 'What is Column Projection?' },
   { src: 'Day01topic2/New_Day1Part2audio02.mp3', target: '#cardPagesBlocks', title: 'PAGES / BLOCKS Card' },
@@ -4084,21 +4086,7 @@ const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2audio05.mp3', target: '#projectionLoads', title: 'Loads Link' },
   { src: 'Day01topic2/New_Day1Part2audio06.mp3', target: '#projectionFilter', title: 'SELECT name, salary Node' },
   { src: 'Day01topic2/New_Day1Part2audio07.mp3', target: '#projectionResultSet', title: 'Result Set Node' },
-  { src: 'Day01topic2/New_Day1Part2audio08.mp3', target: '#projectionMockTable', title: 'Mock Table (Projection)' },
-  { src: 'Day01topic2/New_Day1Part2audio09.mp3', target: '#performanceCosts', title: 'The Four Performance Costs of SELECT *' },
-  { src: 'Day01topic2/New_Day1Part2audio10.mp3', target: '#costExcessDiskIO', title: '1. Excess Disk I/O' },
-  { src: 'Day01topic2/New_Day1Part2audio11.mp3', target: '#costBufferPool', title: '2. Buffer Pool Pollution' },
-  { src: 'Day01topic2/New_Day1Part2audio12.mp3', target: '#costNetworkOverhead', title: '3. Network Overhead' },
-  { src: 'Day01topic2/New_Day1Part2audio13.mp3', target: '#costDefeatedIndex', title: '4. Defeated Index-Only Scans' },
-  { src: 'Day01topic2/New_Day1Part2audio14.mp3', target: '#indexOnlyScans', title: 'Index-Only Scans — The Ultimate Optimization' },
-  { src: 'Day01topic2/New_Day1Part2audio15.mp3', target: '#heapLookupRequired', title: 'SELECT * — Heap Lookup Required' },
-  { src: 'Day01topic2/New_Day1Part2audio16.mp3', target: '#indexOnlyScanGood', title: 'Specific Projection — Index-Only Scan' },
-  { src: 'Day01topic2/New_Day1Part2audio17.mp3', target: '#columnOrientedDbs', title: 'Column-Oriented Databases — A Step Further' },
-  { src: 'Day01topic2/New_Day1Part2audio18.mp3', target: '#cardZeroOverhead', title: 'Zero Overhead Card' },
-  { src: 'Day01topic2/New_Day1Part2audio19.mp3', target: '#cardBilledPerByte', title: 'Billed Per Byte Card' },
-  { src: 'Day01topic2/New_Day1Part2audio20.mp3', target: '#cardCompression', title: 'Compression Card' },
-  { src: 'Day01topic2/New_Day1Part2audio21.mp3', target: '#projectionProTip', title: 'Real-World Outage Scenario' },
-  { src: 'Day01topic2/New_Day1Part2audio22.mp3', target: '#iqIndexOnlyScan', title: 'Interview Q1: Index-Only Scan' },
+  { src: 'Day01topic2/New_Day1Part2audio08.mp3', target: '#performanceCosts', title: 'The Four Performance Costs of SELECT *' },
   { src: 'Day01topic2/New_Day1Part2Question01.mp3', target: '#questionBar', title: 'Q1: Retrieve name & department', type: 'question', qId: 1 },
   { src: 'Day01topic2/New_Day1Part2Question02.mp3', target: '#questionBar', title: 'Q2: Project id, name, salary', type: 'question', qId: 2 }
 ];
