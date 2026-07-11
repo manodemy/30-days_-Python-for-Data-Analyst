@@ -4106,12 +4106,13 @@ const topic01Tracks = [
   { src: 'New_Day1Part1Question03.mp3', target: '#questionBar', title: 'Q2: Inspect sqlite_master', type: 'question', qId: 2 }
 ];
 
-const topic02Durations = [27.5, 27.4, 20.7, 16.6, 9.9, 10.4, 10.9, 10.3, 8.9, 11.7, 14.9, 14.4, 22.1, 17.6, 19.9, 16.3, 16.3, 17.1, 37.9, 33.3, 30.8, 37.8, 27.0, 26.4];
+const topic02Durations = [27.5, 27.4, 20.7, 16.6, 12.3, 9.9, 10.4, 10.9, 10.3, 8.9, 11.7, 14.9, 14.4, 22.1, 17.6, 19.9, 16.3, 16.3, 17.1, 37.9, 33.3, 30.8, 37.8, 27.0, 26.4];
 const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2audio01.mp3', target: '#columnProjectionIntro', title: 'What is Column Projection?' },
   { src: 'Day01topic2/New_Day1Part2audio02.mp3', target: '#cardPagesBlocks', title: 'PAGES / BLOCKS Card' },
   { src: 'Day01topic2/New_Day1Part2audio03.mp3', target: '#cardRowOriented', title: 'ROW-ORIENTED Card' },
   { src: 'Day01topic2/New_Day1Part2audio03(new).mp3', target: '#cardFullPageLoad', title: 'FULL PAGE LOAD Card' },
+  { src: 'Day01topic2/New_Day1Part2audio04.mp3', target: '#cardFullPageLoad', title: 'FULL PAGE LOAD Card (Continuation)' },
   { src: 'Day01topic2/New_Day1Part2audio05.mp3', target: '#projectionDiagram', title: 'How Column Projection Works (Diagram)' },
   { src: 'Day01topic2/New_Day1Part2audio06.mp3', target: '#projectionLoads', title: 'Loads Link' },
   { src: 'Day01topic2/New_Day1Part2audio07.mp3', target: '#projectionFilter', title: 'SELECT name, salary Node' },
