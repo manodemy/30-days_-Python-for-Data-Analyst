@@ -3922,10 +3922,6 @@ function initCustomDropdowns() {
     select.style.display = 'none';
     const wrapper = select.parentElement;
     
-    // Remove old chevron
-    wrapper.querySelector('.day-picker-chevron')?.remove();
-    
-    // Create custom elements if they don't already exist
     let trigger = wrapper.querySelector('.custom-select-trigger');
     let optionsMenu = wrapper.querySelector('.custom-select-options');
     
@@ -3987,6 +3983,9 @@ function initCustomDropdowns() {
       populateOptions();
       return;
     }
+    
+    // Remove old native chevron (only during first-time initialization)
+    wrapper.querySelector('.day-picker-chevron')?.remove();
     
     if (!trigger) {
       trigger = document.createElement('div');
