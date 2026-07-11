@@ -600,7 +600,7 @@ WHERE department = 'Engineering';</pre>
         <div class="slide-section" id="performanceCosts">
           <h3 class="heading-with-audio">
             The Four Performance Costs of SELECT *
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio08.mp3', this)" title="Play narration">
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio09.mp3', this)" title="Play narration">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
