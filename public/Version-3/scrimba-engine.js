@@ -471,13 +471,8 @@ WHERE department = 'Engineering';</pre>
         </div>
 
         <div class="slide-section">
-          <div class="interview-box" id="projectionInterviewQs">
-            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-              <h4 style="margin: 0; flex: 1;">🎓 Interview Q&amp;A</h4>
-              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio19.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
+          <div class="interview-box">
+            <h4 style="margin: 0; margin-bottom: 12px;">🎓 Interview Q&amp;A</h4>
             <div id="iqReferentialIntegrity">
               <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
                 <p style="margin: 0; flex: 1;"><strong>Q: What is Referential Integrity and how does a Foreign Key enforce it?</strong></p>
@@ -517,7 +512,7 @@ WHERE department = 'Engineering';</pre>
     },
     {
       title: '02. Column Projection & Performance',
-      duration: '8:11',
+      duration: '8:09',
       html: `
         <h2>⚡ 02. Column Projection &amp; Performance</h2>
 
@@ -781,7 +776,7 @@ WHERE department = 'Engineering';
             <div style="flex: 1;">
               <strong>⚠️ Real-World Outage Scenario:</strong> A backend team deployed <code>SELECT *</code> on a users table. Six months later, a feature team added a <code>profile_picture BYTEA</code> column (storing binary image data up to 2 MB per user). Overnight, every query that previously returned 200 bytes per row now returned 2 MB per row — causing database memory exhaustion and a P0 outage. The fix: explicit column projection in every query. <strong>Lesson: never use SELECT * in application code, unless you are just manually exploring the table columns in your database console.</strong>
             </div>
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio19.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </div>
@@ -3817,7 +3812,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (topicSelect) {
       topicSelect.innerHTML = COURSE_CONFIG.slides.map((slide, idx) => {
         const cleanedTitle = slide.title.replace(/^\d+\.\s*/, '');
-        const duration = slide.duration || '0:00';
+        const duration = getSlideDurationString(idx);
         return `<option value="${idx}">Topic 0${idx + 1}: ${cleanedTitle} (${duration})</option>`;
       }).join('');
       topicSelect.value = currentSlide;
@@ -3911,6 +3906,15 @@ function updateTimelinePlayhead() {
   // Stub: visual timeline features removed
 }
 
+function getSlideDurationString(idx) {
+  const mapEntry = slideTrackMap[idx];
+  if (!mapEntry || !mapEntry.durations) {
+    return COURSE_CONFIG.slides[idx]?.duration || '0:00';
+  }
+  const totalSeconds = mapEntry.durations.reduce((sum, d) => sum + d, 0);
+  return formatTime(totalSeconds);
+}
+
 // Custom dropdown initializer to replace native select inputs with a premium dropdown menu
 function initCustomDropdowns() {
   const selects = document.querySelectorAll('.day-picker-pill select');
@@ -3923,18 +3927,7 @@ function initCustomDropdowns() {
     
     // Create custom elements if they don't already exist
     let trigger = wrapper.querySelector('.custom-select-trigger');
-    if (!trigger) {
-      trigger = document.createElement('div');
-      trigger.className = 'custom-select-trigger';
-      wrapper.appendChild(trigger);
-    }
-    
     let optionsMenu = wrapper.querySelector('.custom-select-options');
-    if (!optionsMenu) {
-      optionsMenu = document.createElement('div');
-      optionsMenu.className = 'custom-select-options';
-      wrapper.appendChild(optionsMenu);
-    }
     
     function updateTriggerText() {
       const textSpan = trigger.querySelector('.selected-text');
@@ -3942,8 +3935,8 @@ function initCustomDropdowns() {
         const option = select.options[select.selectedIndex];
         if (select.id === 'topicSelect' && option) {
           const slideIdx = parseInt(option.value);
+          const duration = getSlideDurationString(slideIdx);
           const slide = COURSE_CONFIG.slides[slideIdx];
-          const duration = slide?.duration || '0:00';
           const cleanedTitle = slide ? slide.title.replace(/^\d+\.\s*/, '') : option.text;
           textSpan.innerHTML = `
             <span class="trigger-title">Topic 0${slideIdx + 1}: ${cleanedTitle}</span>
@@ -3965,8 +3958,8 @@ function initCustomDropdowns() {
         
         if (select.id === 'topicSelect') {
           const slideIdx = parseInt(opt.value);
+          const duration = getSlideDurationString(slideIdx);
           const slide = COURSE_CONFIG.slides[slideIdx];
-          const duration = slide?.duration || '0:00';
           const cleanedTitle = slide ? slide.title.replace(/^\d+\.\s*/, '') : opt.text;
           optionItem.innerHTML = `
             <span class="option-title">Topic 0${slideIdx + 1}: ${cleanedTitle}</span>
@@ -3988,6 +3981,23 @@ function initCustomDropdowns() {
         optionsMenu.appendChild(optionItem);
       });
       updateTriggerText();
+    }
+    
+    if (trigger && optionsMenu) {
+      populateOptions();
+      return;
+    }
+    
+    if (!trigger) {
+      trigger = document.createElement('div');
+      trigger.className = 'custom-select-trigger';
+      wrapper.appendChild(trigger);
+    }
+    
+    if (!optionsMenu) {
+      optionsMenu = document.createElement('div');
+      optionsMenu.className = 'custom-select-options';
+      wrapper.appendChild(optionsMenu);
     }
     
     trigger.innerHTML = `
@@ -4111,7 +4121,7 @@ const topic01Tracks = [
   { src: 'New_Day1Part1Question03.mp3', target: '#questionBar', title: 'Q2: Inspect sqlite_master', type: 'question', qId: 2 }
 ];
 
-const topic02Durations = [27.5, 27.4, 20.7, 16.6, 12.3, 9.9, 10.4, 10.9, 10.3, 6.7, 9.5, 9.8, 12.7, 12.2, 19.9, 15.4, 17.6, 14.1, 14.0, 16.2, 14.9, 14.9, 35.7, 31.1, 28.6, 35.6, 27.0, 26.4];
+const topic02Durations = [27.5, 27.4, 20.7, 16.6, 12.3, 9.9, 10.4, 10.9, 10.3, 6.7, 9.5, 9.8, 12.7, 12.2, 19.9, 15.4, 17.6, 14.1, 14.0, 16.2, 14.9, 35.7, 31.1, 28.6, 35.6, 27.0, 26.4];
 const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2audio01.mp3', target: '#columnProjectionIntro', title: 'What is Column Projection?' },
   { src: 'Day01topic2/New_Day1Part2audio02.mp3', target: '#cardPagesBlocks', title: 'PAGES / BLOCKS Card' },
@@ -4134,8 +4144,7 @@ const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2audio17.mp3', target: '#cardZeroOverhead', title: 'ZERO OVERHEAD Card' },
   { src: 'Day01topic2/New_Day1Part2audio18(new).mp3', target: '#cardBilledPerByte', title: 'BILLED PER BYTE Card' },
   { src: 'Day01topic2/New_Day1Part2audio18.mp3', target: '#cardCompression', title: 'COMPRESSION Card' },
-  { src: 'Day01topic2/New_Day1Part2audio18.mp3', target: '#projectionProTip', title: '💡 Pro Tip: Real-World Outage Scenario' },
-  { src: 'Day01topic2/New_Day1Part2audio19.mp3', target: '#projectionInterviewQs', title: 'Interview Questions & Exercises' },
+  { src: 'Day01topic2/New_Day1Part2audio19.mp3', target: '#projectionProTip', title: '💡 Pro Tip: Real-World Outage Scenario' },
   { src: 'Day01topic2/New_Day1Part2audio20.mp3', target: '#iqIndexOnlyScan', title: 'Q1. What is an Index-Only Scan?' },
   { src: 'Day01topic2/New_Day1Part2audio21.mp3', target: '#iqSelectStarCosts', title: 'Q2. Why can SELECT * lead to buffer pool pollution?' },
   { src: 'Day01topic2/New_Day1Part2audio22.mp3', target: '#iqHeapScanVsIndexScan', title: 'Q3. Compare Column-Oriented vs Row-Oriented databases' },
@@ -4183,10 +4192,12 @@ async function loadManifest() {
     });
     totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
     updateProgressUI();
+    initCustomDropdowns();
   } catch (err) {
     console.log('Using default durations fallback:', err);
     totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
     updateProgressUI();
+    initCustomDropdowns();
   }
 }
 
