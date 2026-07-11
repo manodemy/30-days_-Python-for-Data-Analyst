@@ -17,1319 +17,13 @@
 // MODULE 1: COURSE_CONFIG
 // ═══════════════════════════════════════════════════════════════
 
-const COURSE_CONFIG = {
+let COURSE_CONFIG = {
   dayId: 'day01',
   title: 'Introduction to SQL & Databases',
-
-  // ─── Database Schema & Seed Data ───
-  schema: {
-    tables: [
-      {
-        name: 'employees',
-        createSQL: `CREATE TABLE employees (
-          id INTEGER PRIMARY KEY,
-          name TEXT NOT NULL,
-          department TEXT NOT NULL,
-          salary INTEGER NOT NULL
-        );`,
-        seedSQL: `INSERT INTO employees VALUES
-          (1, 'Aarav Sharma', 'Engineering', 87500),
-          (2, 'Priya Desai', 'Marketing', 63200),
-          (3, 'Rohit Mehta', 'Data Science', 112800),
-          (4, 'Sneha Iyer', 'Finance', 74900),
-          (5, 'Vikram Nair', 'Engineering', 96300),
-          (6, 'Anjali Gupta', 'Design', 58700),
-          (7, 'Karthik Reddy', 'Marketing', 67400),
-          (8, 'Divya Patel', 'Data Science', 105600),
-          (9, 'Arjun Joshi', 'Finance', 71200),
-          (10, 'Meera Krishnan', 'Design', 62800);`,
-        columns: [
-          { name: 'id', type: 'INTEGER', pk: true },
-          { name: 'name', type: 'TEXT', pk: false },
-          { name: 'department', type: 'TEXT', pk: false },
-          { name: 'salary', type: 'INTEGER', pk: false }
-        ]
-      }
-    ]
-  },
-
-  // ─── Presentation Slides (3 slides) ───
-  slides: [
-    {
-      title: '01. Relational Databases & SQL',
-      duration: '7:14',
-      html: `
-        <h2>📊 01. Relational Databases &amp; SQL</h2>
-
-        <div class="slide-section">
-          <div class="rdbms-intro-section" id="rdbmsIntro">
-            <h3 class="heading-with-audio">
-              What is RDBMS?
-              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio01.mp3', this)" title="Play narration">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </h3>
-            <p>A <strong>Relational Database Management System (RDBMS)</strong> is the software used to store, manage, query, and retrieve data stored in a relational database. It formats data into structured <strong>tables</strong> (also called <strong>relations</strong>) which are connected to one another through defined relationships.</p>
-            
-            <div class="rdbms-diagram-container">
-              <div class="rdbms-table-title">📁 Table: Employees</div>
-              <table class="db-table-mock rdbms-interactive-mock">
-                <thead>
-                  <tr>
-                    <th>🔑 ID (PK) <span class="type-tag">INT</span></th>
-                    <th>Name <span class="type-tag">VARCHAR</span></th>
-                    <th>Role <span class="type-tag">VARCHAR</span></th>
-                    <th>Salary <span class="type-tag">DECIMAL</span></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Alice Johnson</td>
-                    <td>Data Analyst</td>
-                    <td>$85,000</td>
-                  </tr>
-                  <tr class="highlighted-row">
-                    <td>2</td>
-                    <td>Bob Smith</td>
-                    <td>SQL Developer</td>
-                    <td>$92,000</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Charlie Brown</td>
-                    <td>DBA</td>
-                    <td>$105,000</td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="rdbms-legend">
-                <span class="legend-item"><span class="legend-color legend-color--column"></span> Column (Field / Attribute)</span>
-                <span class="legend-item"><span class="legend-color legend-color--row"></span> Row (Record / Tuple)</span>
-                <span class="legend-item">🔑 Primary Key (PK)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide-section">
-          <h3 class="heading-with-audio" id="whyRdbms">
-            Why Relational Databases?
-            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio02.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </h3>
-          <p>Before relational databases, data was stored in flat files or hierarchical systems — duplicated across many places with no mechanism to enforce consistency. <strong>Relational Database Management Systems (RDBMS)</strong> were invented to solve three fundamental problems:</p>
-
-          <div class="rdbms-infographic" id="rdbmsProblems">
-            <div class="info-title heading-with-audio">
-              <svg class="db-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 4.02 2 6.5v11c0 2.48 4.48 4.5 10 4.5s10-2.02 10-4.5v-11C22 4.02 17.52 2 12 2zm0 18c-4.41 0-8-1.57-8-3.5v-2.28c1.9.89 4.77 1.48 8 1.48s6.1-.59 8-1.48v2.28c0 1.93-3.59 3.5-8 3.5zm0-5c-4.41 0-8-1.57-8-3.5V9.72c1.9.89 4.77 1.48 8 1.48s6.1-.59 8-1.48V11.5c0 1.93-3.59 3.5-8 3.5zm0-5c-4.41 0-8-1.57-8-3.5s3.59-3.5 8-3.5 8 1.57 8 3.5-3.59 3.5-8 3.5z"/></svg>
-              <span>THE THREE PROBLEMS RDBMS SOLVES</span>
-              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio03.mp3', this)" title="Play narration">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
-            <div class="info-columns">
-              <div class="info-card info-card--green">
-                <div class="info-card-header">DATA REDUNDANCY</div>
-                <div class="info-card-illustration">
-                  <img src="/Version-3/data_redundancy_icon.png" alt="Data Redundancy" />
-                </div>
-                <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>BREAKS DATA INTO RELATED TABLES</li>
-                  <li><span class="bullet-dot"></span>STORES EACH FACT EXACTLY ONCE</li>
-                  <li><span class="bullet-dot"></span>UPDATES OCCUR IN ONE ROW, NOT HUNDREDS</li>
-                </ul>
-              </div>
-              <div class="info-card info-card--blue">
-                <div class="info-card-header">DATA INTEGRITY</div>
-                <div class="info-card-illustration">
-                  <img src="/Version-3/data_integrity_icon.png" alt="Data Integrity" />
-                </div>
-                <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>CONSTRAINTS (NOT NULL, UNIQUE, CHECK, FK)</li>
-                  <li><span class="bullet-dot"></span>GUARANTEES VALID DATA ENTRY</li>
-                  <li><span class="bullet-dot"></span>PREVENTS ORPHANED RECORDS &amp; INVALID STATES</li>
-                </ul>
-              </div>
-              <div class="info-card info-card--orange">
-                <div class="info-card-header">CONCURRENT ACCESS</div>
-                <div class="info-card-illustration">
-                  <img src="/Version-3/concurrent_access_icon.png" alt="Concurrent Access" />
-                </div>
-                <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>MULTIPLE USERS READ/WRITE SIMULTANEOUSLY</li>
-                  <li><span class="bullet-dot"></span>HANDLES LOCKING &amp; ISOLATION</li>
-                  <li><span class="bullet-dot"></span>TRANSACTIONS NEVER CORRUPT EACH OTHER</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide-section">
-          <h3 class="heading-with-audio" id="coreEntities">
-            Core Structural Entities
-            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio04.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </h3>
-          <p>An RDBMS organizes all data into a strict hierarchy of concepts — every piece of data has a clearly defined place:</p>
-
-          <div class="db-mock-table-wrap">
-            <table class="db-table-mock">
-              <thead>
-                <tr>
-                  <th>Term</th>
-                  <th>Also Called</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="heading-with-audio" id="entityDatabase">
-                      <strong>Database</strong>
-                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio07.mp3', this)" title="Play narration">
-                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                      </button>
-                    </div>
-                  </td>
-                  <td>Schema / Catalog</td>
-                  <td>A named container holding related tables, indexes, and views.</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="heading-with-audio" id="entityTable">
-                      <strong>Table</strong>
-                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio06.mp3', this)" title="Play narration">
-                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                      </button>
-                    </div>
-                  </td>
-                  <td>Relation / Entity</td>
-                  <td>A 2D grid of rows and columns representing one entity type (e.g., <code>employees</code>).</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="heading-with-audio" id="entityColumn">
-                      <strong>Column</strong>
-                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio05.mp3', this)" title="Play narration">
-                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                      </button>
-                    </div>
-                  </td>
-                  <td>Attribute / Field</td>
-                  <td>A named, typed property of the entity. Each column enforces a data type (e.g., <code>salary INTEGER</code>).</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="heading-with-audio" id="entityRow">
-                      <strong>Row</strong>
-                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio08.mp3', this)" title="Play narration">
-                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                      </button>
-                    </div>
-                  </td>
-                  <td>Record / Tuple</td>
-                  <td>A single instance of the entity — one complete set of values across all columns.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="slide-section">
-          <h3 class="heading-with-audio" id="pkFkKeys">
-            Primary Key vs. Foreign Key — Referential Integrity
-            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio09.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </h3>
-          <p>The word <em>"Relational"</em> in RDBMS refers to the mathematical concept of a <strong>relation</strong> (a table), but the power comes from linking tables together using keys:</p>
-
-          <div class="vs-block">
-            <div class="vs-card vs-card--pk">
-              <h4 class="heading-with-audio" id="pkDetail">
-                🔑 Primary Key (PK)
-                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio10.mp3', this)" title="Play narration">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </h4>
-              <ul style="margin: 4px 0; padding-left: 16px; font-size: 0.78rem;">
-                <li>Uniquely identifies each row in a table</li>
-                <li>Cannot be NULL — always has a value</li>
-                <li>Cannot contain duplicates</li>
-                <li>Usually a single column, but can be composite</li>
-              </ul>
-              <pre style="margin: 6px 0 0 0;">-- Defining a PK
-CREATE TABLE employees (
-  id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL
-);</pre>
-            </div>
-            <div class="vs-card vs-card--fk">
-              <h4 class="heading-with-audio" id="fkDetail">
-                🔗 Foreign Key (FK)
-                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio11.mp3', this)" title="Play narration">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </h4>
-              <ul style="margin: 4px 0; padding-left: 16px; font-size: 0.78rem;">
-                <li>References the PK of another (parent) table</li>
-                <li>Enforces Referential Integrity</li>
-                <li>Can be NULL (optional relationship)</li>
-                <li>A child row cannot reference a non-existent parent</li>
-              </ul>
-              <pre style="margin: 6px 0 0 0;">-- Defining a FK
-CREATE TABLE employees (
-  id    INTEGER PRIMARY KEY,
-  dept_id INTEGER
-    REFERENCES departments(id)
-    ON DELETE RESTRICT
-);</pre>
-            </div>
-          </div>
-
-          <div id="parentTableDept">
-            <div class="heading-with-audio" style="margin: 12px 0 4px; font-weight: 600; font-size: 0.8rem; color: #1e293b; display: flex; align-items: center; gap: 8px;">
-              Parent Table: departments
-              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio12.mp3', this)" title="Play narration">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
-            <div class="db-mock-table-wrap">
-              <table class="db-table-mock">
-                <thead>
-                  <tr>
-                    <th>🔑 id <span class="type-tag">INTEGER (PK)</span></th>
-                    <th>dept_name <span class="type-tag">TEXT</span></th>
-                    <th>budget <span class="type-tag">INTEGER</span></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td>10</td><td>Engineering</td><td>5000000</td></tr>
-                  <tr><td>20</td><td>Marketing</td><td>2500000</td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div style="margin: 12px 0 4px; font-weight: 600; font-size: 0.8rem; color: #1e293b;">Child Table: employees</div>
-            <div class="db-mock-table-wrap">
-              <table class="db-table-mock">
-                <thead>
-                  <tr>
-                    <th>🔑 id <span class="type-tag">INTEGER (PK)</span></th>
-                    <th>name <span class="type-tag">TEXT</span></th>
-                    <th>🔗 dept_id <span class="type-tag">INTEGER (FK)</span></th>
-                    <th>salary <span class="type-tag">INTEGER</span></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td>1</td><td>Aarav Sharma</td><td>10 <span style="opacity:0.5; font-size:0.7rem;">→ Engineering</span></td><td>87500</td></tr>
-                  <tr><td>2</td><td>Priya Desai</td><td>20 <span style="opacity:0.5; font-size:0.7rem;">→ Marketing</span></td><td>63200</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide-section">
-          <h3 class="heading-with-audio" id="sqlDeclarative">
-            SQL is Declarative — Not Imperative
-            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio13.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </h3>
-          <p>This is one of the most important concepts in SQL: you describe <em>what you want</em>, not <em>how to get it</em>. The query optimizer figures out the execution plan.</p>
-
-          <div class="vs-block">
-            <div class="vs-card vs-card--bad">
-              <h4 class="heading-with-audio" id="sqlImperativeVs" style="display: flex; align-items: center; gap: 8px;">
-                ❌ Imperative (Python loop)
-                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio14.mp3', this)" title="Play narration">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </h4>
-              <pre style="margin: 0; font-size: 0.72rem;">results = []
-for row in employees:
-  if row['dept'] == 'Engineering':
-    results.append(row['name'])</pre>
-              <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">You write the algorithm — loop, check, collect.</small>
-            </div>
-            <div class="vs-card vs-card--good">
-              <h4 class="heading-with-audio" id="sqlDeclarativeVs" style="display: flex; align-items: center; gap: 8px;">
-                ✅ Declarative (SQL)
-                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio15.mp3', this)" title="Play narration">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </h4>
-              <pre style="margin: 0; font-size: 0.72rem;">SELECT name
-FROM employees
-WHERE department = 'Engineering';</pre>
-              <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">You describe the goal — the engine decides how to retrieve it optimally.</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide-section">
-          <h3 class="heading-with-audio" id="sqlSubLanguages">
-            The Five SQL Sub-Languages
-            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio16.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </h3>
-          <div class="db-mock-table-wrap" style="margin-top: 10px;">
-            <table class="db-table-mock sub-languages-table" id="sqlSubLanguagesTable">
-              <thead>
-                <tr>
-                  <th style="width: 25%">Category</th>
-                  <th style="width: 35%">Purpose</th>
-                  <th style="width: 40%">Example</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr id="subLangDql">
-                  <td>
-                    <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                      <span>DQL</span>
-                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio17.mp3', this)" title="Play narration">
-                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                      </button>
-                    </div>
-                    <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Data Query Language</div>
-                  </td>
-                  <td>Retrieve data from the database.</td>
-                  <td><code>SELECT name, salary FROM employees;</code></td>
-                </tr>
-                <tr id="subLangDml">
-                  <td>
-                    <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                      <span>DML</span>
-                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio18.mp3', this)" title="Play narration">
-                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                      </button>
-                    </div>
-                    <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Data Manipulation Language</div>
-                  </td>
-                  <td>Insert, update, or delete records.</td>
-                  <td><code>INSERT INTO employees VALUES (11, 'Neha', 'Finance', 68000);</code></td>
-                </tr>
-                <tr id="subLangDdl">
-                  <td>
-                    <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                      <span>DDL</span>
-                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio19.mp3', this)" title="Play narration">
-                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                      </button>
-                    </div>
-                    <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Data Definition Language</div>
-                  </td>
-                  <td>Create or modify tables/schema.</td>
-                  <td><code>ALTER TABLE employees ADD COLUMN phone TEXT;</code></td>
-                </tr>
-                <tr id="subLangTcl">
-                  <td>
-                    <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                      <span>TCL</span>
-                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio20.mp3', this)" title="Play narration">
-                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                      </button>
-                    </div>
-                    <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Transaction Control Language</div>
-                  </td>
-                  <td>Manage transaction blocks.</td>
-                  <td><code>BEGIN; ... COMMIT;</code></td>
-                </tr>
-                <tr id="subLangDcl">
-                  <td>
-                    <div class="heading-with-audio" style="font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                      <span>DCL</span>
-                      <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio21.mp3', this)" title="Play narration">
-                        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                      </button>
-                    </div>
-                    <div style="font-size: 0.65rem; color: #64748b; margin-top: 2px;">Data Control Language</div>
-                  </td>
-                  <td>Manage database access control.</td>
-                  <td><code>GRANT SELECT ON employees TO analyst_role;</code></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="slide-section">
-          <div class="pro-tip-box" id="proTipRdbms" style="display: flex; align-items: flex-start; gap: 10px;">
-            <div style="flex: 1;">
-              <strong>💡 Pro Tip — Which RDBMS to Choose?</strong> SQLite (used here) is a lightweight, file-based database embedded directly inside the application — perfect for learning, mobile apps, and local tools. PostgreSQL is the modern production standard for most systems. MySQL and MariaDB are widely used in web stacks, while SQL Server dominates corporate Windows environments.
-            </div>
-            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio22.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="slide-section">
-          <div class="interview-box">
-            <h4 style="margin: 0; margin-bottom: 12px;">🎓 Interview Q&amp;A</h4>
-            <div id="iqReferentialIntegrity">
-              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
-                <p style="margin: 0; flex: 1;"><strong>Q: What is Referential Integrity and how does a Foreign Key enforce it?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio23.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p><em>A: Referential Integrity means every FK value in a child table must match an existing PK value in the parent table. A FK constraint prevents inserting a child row with a non-existent parent reference, and prevents deleting a parent row that still has child references (with ON DELETE RESTRICT), maintaining consistent relationships.</em></p>
-            </div>
-
-            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
-
-            <div id="iqSqlVsNosql">
-              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
-                <p style="margin: 0; flex: 1;"><strong>Q: What is the difference between SQL and NoSQL databases? When would you choose each?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio24.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p><em>A: SQL databases use a fixed schema, tables with relationships, and ACID transactions — ideal for financial systems, ERP, and anything requiring strong consistency. NoSQL databases (MongoDB, DynamoDB, Cassandra) use flexible schemas, are optimized for horizontal scaling and high write throughput, and follow the BASE model (Basically Available, Soft state, Eventually consistent) — ideal for real-time analytics, content platforms, and IoT data ingestion.</em></p>
-            </div>
-
-            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
-
-            <div id="iqCompositePk">
-              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
-                <p style="margin: 0; flex: 1;"><strong>Q: Can a table have more than one Primary Key?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio25.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p><em>A: No. A table can have only one Primary Key constraint. However, that PK can be a Composite Key — spanning two or more columns together (e.g., PRIMARY KEY (student_id, course_id) in an enrollment table). Each column in the composite key is called a Prime Attribute.</em></p>
-            </div>
-          </div>
-        </div>
-      `
-    },
-    {
-      title: '02. Column Projection & Performance',
-      duration: '8:09',
-      html: `
-        <h2>⚡ 02. Column Projection &amp; Performance</h2>
-
-        <div class="slide-section" id="columnProjectionIntro">
-          <h3 class="heading-with-audio">
-            What is Column Projection?
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio01.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </h3>
-          <p><strong>Column Projection</strong> is the act of selecting only the specific columns you need from a query result. In the relational algebra that underpins SQL, a <em>projection</em> operation reduces a relation's attributes from N columns to a smaller subset. It is the fundamental mechanism behind the column list in your <code>SELECT</code> clause.</p>
-
-          <div class="rdbms-infographic" id="cardPagesBlocks">
-            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-              <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Under the hood: how relational databases physically store and read data.</small>
-              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio02.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
-            <div class="info-columns">
-              <div class="info-card info-card--blue">
-                <div class="info-card-header">PAGES / BLOCKS</div>
-                <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>FIXED-SIZE PAGES (8 KB POSTGRESQL, 16 KB MYSQL)</li>
-                  <li><span class="bullet-dot"></span>EVERY DISK READ FETCHES AN ENTIRE PAGE</li>
-                  <li><span class="bullet-dot"></span>I/O OPERATIONS ARE DONE AT PAGE LEVEL</li>
-                </ul>
-              </div>
-              <div class="info-card info-card--purple" id="cardRowOriented">
-                <div class="info-card-header">ROW-ORIENTED</div>
-                <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>ALL COLUMNS OF A ROW STORED TOGETHER</li>
-                  <li><span class="bullet-dot"></span>READING ONE COLUMN LOADS THE WHOLE ROW</li>
-                  <li><span class="bullet-dot"></span>IDEAL FOR TRANSACTIONAL (OLTP) WORKLOADS</li>
-                </ul>
-              </div>
-              <div class="info-card info-card--red" id="cardFullPageLoad">
-                <div class="info-card-header">FULL PAGE LOAD</div>
-                <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>SELECT * LOADS EVERY UNUSED COLUMN</li>
-                  <li><span class="bullet-dot"></span>POLLUTES AND CLOGS BUFFER POOL CACHE</li>
-                  <li><span class="bullet-dot"></span>WASTES MASSIVE DISK &amp; NETWORK BANDWIDTH</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="relation-infographic" style="padding: 16px 20px;" id="projectionDiagram">
-            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-              <div class="explanation-title" style="margin: 0; flex: 1;">How Column Projection Works</div>
-              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio04.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
-            <div class="relation-visual" style="justify-content: center; gap: 6px;">
-              <div class="relation-node" id="projectionDiskPage" style="border-left: 4px solid #64748b; flex: none;">
-                <span class="node-icon">💽</span>
-                <div class="node-title">Disk Page</div>
-                <div class="node-subtitle">id · name · dept · salary</div>
-              </div>
-              <div class="relation-link" id="projectionLoads">
-                <div class="link-label">Loads</div>
-                <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
-              </div>
-              <div class="relation-node" id="projectionFilter" style="border-left: 4px solid #3b82f6; flex: none;">
-                <span class="node-icon">🔍</span>
-                <div class="node-title">SELECT name, salary</div>
-                <div class="node-subtitle">Projection Filter</div>
-              </div>
-              <div id="projectionResultSet" style="display: contents;">
-                <div class="relation-link">
-                  <div class="link-label">Returns</div>
-                  <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
-                </div>
-                <div class="relation-node relation-node--child" style="flex: none;">
-                  <span class="node-icon">✅</span>
-                  <div class="node-title">Result Set</div>
-                  <div class="node-subtitle">name · salary only</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide-section" id="performanceCosts">
-          <h3 class="heading-with-audio">
-            The Four Performance Costs of SELECT *
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio08.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </h3>
-          <div class="vs-block">
-            <div class="vs-card vs-card--bad" id="costExcessDiskIO">
-              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <h4 style="margin: 0; flex: 1;">💾 1. Excess Disk I/O</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio09.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p>More columns → more pages loaded from disk → higher latency, especially on large tables with millions of rows.</p>
-            </div>
-            <div class="vs-card vs-card--bad" id="costBufferPool">
-              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <h4 style="margin: 0; flex: 1;">🧠 2. Buffer Pool Pollution</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio10.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p>Unused columns occupy RAM in the database buffer cache, evicting frequently-needed pages and causing cache misses.</p>
-            </div>
-            <div class="vs-card vs-card--bad" id="costNetworkOverhead">
-              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <h4 style="margin: 0; flex: 1;">🌐 3. Network Overhead</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio11(new).mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p>Every byte travels over the network from the DB server to your app. Wide rows with BLOB columns cause noticeable latency under heavy traffic.</p>
-            </div>
-            <div class="vs-card vs-card--bad" id="costDefeatedIndex">
-              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <h4 style="margin: 0; flex: 1;">🚫 4. Defeated Index-Only Scans</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio11.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p>Even when a covering index exists, <code>SELECT *</code> forces a heap lookup — visiting actual table pages — because not all columns are in the index.</p>
-            </div>
-          </div>
-
-          <div class="db-mock-table-wrap" id="projectionMockTable">
-            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-              <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Only projected columns are loaded and returned — unused columns are discarded at query time.</small>
-              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio12.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
-            <table class="db-table-mock">
-              <thead>
-                <tr>
-                  <th style="opacity: 0.3; text-decoration: line-through;">id</th>
-                  <th style="border-left: 2px solid #2563eb; border-right: 2px solid #2563eb; background: #eff6ff; color: #1d4ed8 !important;">name ✓</th>
-                  <th style="opacity: 0.3; text-decoration: line-through;">department</th>
-                  <th style="border-left: 2px solid #2563eb; border-right: 2px solid #2563eb; background: #eff6ff; color: #1d4ed8 !important;">salary ✓</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style="opacity: 0.3;">1</td>
-                  <td style="font-weight: 600;">Aarav Sharma</td>
-                  <td style="opacity: 0.3;">Engineering</td>
-                  <td style="font-weight: 600;">87,500</td>
-                </tr>
-                <tr>
-                  <td style="opacity: 0.3;">2</td>
-                  <td style="font-weight: 600;">Priya Desai</td>
-                  <td style="opacity: 0.3;">Marketing</td>
-                  <td style="font-weight: 600;">63,200</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="slide-section" id="indexOnlyScans">
-          <h3 class="heading-with-audio">
-            Index-Only Scans — The Ultimate Optimization
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio13.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </h3>
-          <p>When you project only columns that are part of a database index, the query optimizer can execute an <strong>Index-Only Scan</strong> (also called a <em>Covering Index Scan</em>): it reads data directly from the index B-tree without ever touching the physical table pages (heap).</p>
-
-          <div class="vs-block">
-            <div class="vs-card vs-card--bad" id="heapLookupRequired">
-              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <h4 style="margin: 0; flex: 1;">❌ SELECT * — Heap Lookup Required</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio14.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <pre style="margin: 0; font-size: 0.75rem;">SELECT * FROM employees
-WHERE department = 'Engineering';
--- Even with an index on 'department',
--- the engine must visit heap pages
--- to fetch id, name, salary columns.</pre>
-              <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">Index → Heap lookup → High I/O cost on large tables.</small>
-            </div>
-            <div class="vs-card vs-card--good" id="indexOnlyScanGood">
-              <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                <h4 style="margin: 0; flex: 1;">✅ Specific Projection — Index-Only Scan</h4>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio15.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <pre style="margin: 0; font-size: 0.75rem;">SELECT name, department FROM employees
-WHERE department = 'Engineering';
--- With index on (department, name),
--- engine reads ONLY the index tree.
--- Zero heap page access needed.</pre>
-              <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">All data served from the index → dramatically lower I/O.</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide-section" id="columnOrientedDbs">
-          <h3 class="heading-with-audio">
-            Column-Oriented Databases — A Step Further
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio16.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </h3>
-          <p>Analytical databases like <strong>Google BigQuery</strong>, <strong>Snowflake</strong>, and <strong>Amazon Redshift</strong> store data by column on disk rather than by row. This means:</p>
-          <div class="rdbms-infographic">
-            <div class="info-columns">
-              <div class="info-card info-card--green" id="cardZeroOverhead">
-                <div class="info-card-header" style="position: relative; display: flex; align-items: center; justify-content: center; width: 100%;">
-                  <span style="flex: 1; text-align: center; padding-left: 24px;">ZERO OVERHEAD</span>
-                  <button class="audio-play-btn info-card-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio17.mp3', this)" title="Play narration">
-                    <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                  </button>
-                </div>
-                <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>READS ONLY THE REQUESTED COLUMNS FROM DISK</li>
-                  <li><span class="bullet-dot"></span>ZERO I/O WASTED ON UNUSED ATTRIBUTES</li>
-                  <li><span class="bullet-dot"></span>IDEAL FOR ANALYTICAL (OLAP) WORKLOADS</li>
-                </ul>
-              </div>
-              <div class="info-card info-card--amber" id="cardBilledPerByte">
-                <div class="info-card-header" style="position: relative; display: flex; align-items: center; justify-content: center; width: 100%;">
-                  <span style="flex: 1; text-align: center; padding-left: 24px;">BILLED PER BYTE</span>
-                  <button class="audio-play-btn info-card-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18(new).mp3', this)" title="Play narration">
-                    <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                  </button>
-                </div>
-                <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>CLOUD ENGINES BILL PER QUANTITY OF SCANNED DATA</li>
-                  <li><span class="bullet-dot"></span>PROJECTING 2 COLS INSTEAD OF 10 CUTS COST BY 80%</li>
-                  <li><span class="bullet-dot"></span>EFFICIENT QUERY DESIGN DIRECTLY SAVES BUDGET</li>
-                </ul>
-              </div>
-              <div class="info-card info-card--cyan" id="cardCompression">
-                <div class="info-card-header" style="position: relative; display: flex; align-items: center; justify-content: center; width: 100%;">
-                  <span style="flex: 1; text-align: center; padding-left: 24px;">COMPRESSION</span>
-                  <button class="audio-play-btn info-card-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18.mp3', this)" title="Play narration">
-                    <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                  </button>
-                </div>
-                <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>SIMILAR DATA TYPES CLUSTERED ON DISK</li>
-                  <li><span class="bullet-dot"></span>COMPRESSES SIGNIFICANTELY BETTER THAN ROWS</li>
-                  <li><span class="bullet-dot"></span>INDEX-ONLY SCAN BENEFITS AT STORAGE LAYER</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide-section" id="projectionProTip">
-          <div class="pro-tip-box" style="display: flex; align-items: flex-start; gap: 10px;">
-            <div style="flex: 1;">
-              <strong>⚠️ Real-World Outage Scenario:</strong> A backend team deployed <code>SELECT *</code> on a users table. Six months later, a feature team added a <code>profile_picture BYTEA</code> column (storing binary image data up to 2 MB per user). Overnight, every query that previously returned 200 bytes per row now returned 2 MB per row — causing database memory exhaustion and a P0 outage. The fix: explicit column projection in every query. <strong>Lesson: never use SELECT * in application code, unless you are just manually exploring the table columns in your database console.</strong>
-            </div>
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio19.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="slide-section">
-          <div class="interview-box">
-            <h4>🎓 Interview Q&amp;A</h4>
-            <div id="iqIndexOnlyScan">
-              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
-                <p style="margin: 0; flex: 1;"><strong>Q: What is an index-only scan and when does the optimizer use it?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio20.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p><em>A: An index-only scan (covering index scan) occurs when every column requested in the SELECT list and WHERE clause is present within a single index. The optimizer can resolve the entire query from the index B-tree without reading the physical table (heap) pages, drastically reducing disk I/O. To enable this, design covering indexes that include all frequently projected columns alongside filter columns.</em></p>
-            </div>
-
-            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
-
-            <div id="iqSelectStarCosts">
-              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
-                <p style="margin: 0; flex: 1;"><strong>Q: Why does SELECT * hurt performance even when all columns are small?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio21.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p><em>A: Even with small columns, SELECT * prevents the optimizer from using index-only scans, increases network payload per row, fills more buffer pool pages (reducing cache hit ratio for other queries), and makes your code fragile — if new columns are added to the table, all queries silently start fetching extra data. Explicit projection makes performance deterministic and code future-proof.</em></p>
-            </div>
-
-            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
-
-            <div id="iqHeapScanVsIndexScan">
-              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
-                <p style="margin: 0; flex: 1;"><strong>Q: What is the difference between a heap scan and an index scan?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio22.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p><em>A: A heap scan (sequential/full table scan) reads every page of the physical table in order — O(n) cost regardless of filters. An index scan traverses the B-tree index structure to locate matching row pointers (O(log n)), then optionally fetches the actual row from the heap (heap lookup). An index-only scan skips the heap lookup entirely when all needed data is in the index itself.</em></p>
-            </div>
-          </div>
-        </div>
-      `
-    },
-    {
-      title: '03. Column Aliasing (AS Keyword)',
-      duration: '0:00',
-      html: `
-        <h2>🏷️ 03. Column Aliasing &amp; the AS Keyword</h2>
-
-        <div class="slide-section" id="columnAliasingIntro">
-          <h3 class="heading-with-audio">
-            What is Column Aliasing?
-            <button class="audio-play-btn" onclick="playAudio('Day01topic3/New_Day1Part3audio01.mp3', this)" title="Play narration">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </h3>
-          <p><strong>Column Aliasing</strong> temporarily renames a column or expression in the query's output result set using the <code>AS</code> keyword. The alias exists <em>only for the duration of that query</em> — it never modifies the underlying table schema. It is one of the most frequently used SQL features in data analysis, reporting, and API development.</p>
-
-          <div class="rdbms-infographic" id="aliasingBenefits">
-            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-              <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Three core use cases for column aliases:</small>
-              <button class="audio-play-btn" onclick="playAudio('Day01topic3/New_Day1Part3audio02.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
-            <div class="info-columns">
-              <div class="info-card info-card--blue">
-                <div class="info-card-header">READABLE HEADERS</div>
-                <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>RENAMES RAW DB NAMES TO USER-FRIENDLY LABELS</li>
-                  <li><span class="bullet-dot"></span>CRITICAL FOR DASHBOARDS AND REPORT EXPORTS</li>
-                  <li><span class="bullet-dot"></span>HIDES COMPLEXITY FROM END APPLICATION</li>
-                </ul>
-              </div>
-              <div class="info-card info-card--purple">
-                <div class="info-card-header">COMPUTED COLUMNS</div>
-                <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>GIVES NAMES TO RAW MATH EXPRESSIONS</li>
-                  <li><span class="bullet-dot"></span>PREVENTS UNTITLED OR SYSTEM-NAMED FIELDS</li>
-                  <li><span class="bullet-dot"></span>MAKES QUERY RESULTS IMMEDIATELY USABLE</li>
-                </ul>
-              </div>
-              <div class="info-card info-card--orange">
-                <div class="info-card-header">JOIN DISAMBIGUATION</div>
-                <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>DISTINGUISHES IDENTICALLY NAMED FIELDS</li>
-                  <li><span class="bullet-dot"></span>RESOLVES CONFLICTS ON SHARED NAMES LIKE ID</li>
-                  <li><span class="bullet-dot"></span>KEEPS OUTPUT CLEAR AND SCHEMA DETERMINISTIC</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide-section" id="aliasingSyntax">
-          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-            <h3 style="margin: 0; flex: 1;">✍️ Syntax — Three Valid Forms</h3>
-            <button class="audio-play-btn" onclick="playAudio('Day01topic3/New_Day1Part3audio03.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-          <pre>-- Form 1: Explicit AS keyword (recommended, ANSI standard)
-SELECT
-  name            AS employee_name,
-  salary          AS annual_pay,
-  salary / 12.0   AS monthly_rate,
-  salary * 0.10   AS bonus
-FROM employees;
-
--- Form 2: Omit AS keyword (still valid, less readable)
-SELECT name employee_name, salary annual_pay
-FROM employees;
-
--- Form 3: Multi-word alias with double quotes (ANSI standard)
-SELECT
-  name          AS "Employee Full Name",
-  department    AS "Department Name"
-FROM employees;</pre>
-        </div>
-
-        <div class="slide-section" id="aliasingWorksDiagram">
-          <div class="relation-infographic" style="padding: 16px 20px;">
-            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-              <div class="explanation-title" style="margin: 0; flex: 1;">How Aliasing Works internally</div>
-              <button class="audio-play-btn" onclick="playAudio('Day01topic3/New_Day1Part3audio04.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
-            <div class="relation-visual" style="justify-content: center; gap: 6px;">
-              <div class="relation-node" style="border-left: 4px solid #64748b; flex: none;">
-                <span class="node-icon">⚙️</span>
-                <div class="node-title">salary / 12.0</div>
-                <div class="node-subtitle">Raw Expression</div>
-              </div>
-              <div class="relation-link">
-                <div class="link-label">AS</div>
-                <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
-              </div>
-              <div class="relation-node relation-node--child" style="flex: none;">
-                <span class="node-icon">🏷️</span>
-                <div class="node-title">monthly_rate</div>
-                <div class="node-subtitle">Named Output Column</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide-section" id="aliasingMockTable">
-          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Query Result Set with Renamed Headers:</small>
-            <button class="audio-play-btn" onclick="playAudio('Day01topic3/New_Day1Part3audio05.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-          <div class="db-mock-table-wrap">
-            <table class="db-table-mock">
-              <thead>
-                <tr>
-                  <th style="color: #0284c7;">employee_name <span style="display:block; font-size:0.62rem; opacity:0.6; font-weight:400;">→ alias of name</span></th>
-                  <th style="color: #0284c7;">annual_pay <span style="display:block; font-size:0.62rem; opacity:0.6; font-weight:400;">→ alias of salary</span></th>
-                  <th style="color: #0284c7;">monthly_rate <span style="display:block; font-size:0.62rem; opacity:0.6; font-weight:400;">→ salary / 12.0</span></th>
-                  <th style="color: #0284c7;">bonus <span style="display:block; font-size:0.62rem; opacity:0.6; font-weight:400;">→ salary * 0.10</span></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>Aarav Sharma</td><td>87,500</td><td>7,291.67</td><td>8,750.00</td></tr>
-                <tr><td>Priya Desai</td><td>63,200</td><td>5,266.67</td><td>6,320.00</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="slide-section" id="aliasingQuoting">
-          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-            <h3 style="margin: 0; flex: 1;">⚠️ Quoting Rules — Single vs. Double Quotes</h3>
-            <button class="audio-play-btn" onclick="playAudio('Day01topic3/New_Day1Part3audio06.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-          <div class="vs-block">
-            <div class="vs-card" style="border-left: 4px solid #10b981;">
-              <h4 style="color: #047857;">🟢 Single Quotes <code style="font-size: 0.75rem;">' '</code></h4>
-              <p>For <strong>string literals</strong> (text values).</p>
-              <pre style="margin: 8px 0 0 0; font-size: 0.74rem;">WHERE department = 'Engineering'</pre>
-            </div>
-            <div class="vs-card" style="border-left: 4px solid #3b82f6;">
-              <h4 style="color: #1d4ed8;">🔵 Double Quotes <code style="font-size: 0.75rem;">" "</code></h4>
-              <p>For <strong>identifiers</strong> (column names, alias names, table names).</p>
-              <pre style="margin: 8px 0 0 0; font-size: 0.74rem;">SELECT name AS "Employee Name"</pre>
-            </div>
-          </div>
-          <p style="font-size: 0.8rem; color: #7c2d12; background: #fff7ed; border: 1px solid #fed7aa; border-left: 4px solid #f97316; border-radius: 6px; padding: 10px 14px; margin: 12px 0;">⚠️ Using single quotes for an alias (<code>SELECT name AS 'Employee Name'</code>) is an error in standard SQL. Some databases accept it but it has undefined behavior — avoid it entirely.</p>
-        </div>
-
-        <div class="slide-section" id="aliasingLogicalOrder">
-          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-            <h3 style="margin: 0; flex: 1;">🔄 The Logical SQL Execution Order</h3>
-            <button class="audio-play-btn" onclick="playAudio('Day01topic3/New_Day1Part3audio07.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-          <p>Understanding <em>why</em> aliases work in some clauses but not others requires understanding the order in which SQL engines logically process a query. This is one of the most-tested SQL interview topics:</p>
-
-          <div class="rdbms-infographic" style="padding: 16px 20px;">
-            <div class="info-title" style="font-size: 0.9rem; margin-bottom: 16px;">
-              📝 SQL WRITING VS. LOGICAL EXECUTION ORDER
-            </div>
-            
-            <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
-              <div class="info-card info-card--blue" style="flex: 1 1 200px; max-width: 280px;">
-                <div class="info-card-header" style="min-height: 52px; font-size: 0.74rem; line-height: 1.25;">📝 WRITING ORDER<br/>(SYNTAX)</div>
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 12px 10px;">
-                  <div class="exec-pill" style="border-style: dashed; background: #f8fafc; border-color: #94a3b8; color: #475569; width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">SELECT</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill" style="width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">FROM</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill" style="width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">WHERE</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill" style="width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">GROUP BY</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill" style="width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">HAVING</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill" style="width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">ORDER BY</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill" style="width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">LIMIT</div>
-                </div>
-              </div>
-
-              <div class="info-card info-card--green" style="flex: 1 1 200px; max-width: 280px;">
-                <div class="info-card-header" style="min-height: 52px; font-size: 0.74rem; line-height: 1.25;">⚙️ EXECUTION ORDER<br/>(LOGICAL)</div>
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 12px 10px;">
-                  <div class="exec-pill" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">1. FROM / JOIN</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">2. WHERE</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">3. GROUP BY</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">4. HAVING</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill exec-pill--select" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px; font-weight: 800;">5. SELECT (alias defined)</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">6. DISTINCT</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill exec-pill--order" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px; font-weight: 800;">7. ORDER BY (alias ok)</div>
-                  <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                  <div class="exec-pill" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">8. LIMIT</div>
-                </div>
-              </div>
-            </div>
-            
-            <p style="font-size: 0.78rem; color: #475569; margin: 16px 0 0 0; line-height: 1.5; text-align: left;">
-              💡 Notice that <strong>SELECT</strong> is written 1st but executed 5th! This explains why aliases defined in SELECT are <em>not visible</em> during filtering steps like <code>WHERE</code> (executed 2nd).
-            </p>
-          </div>
-        </div>
-
-        <div class="slide-section" id="aliasingWhereVS">
-          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-            <h3 style="margin: 0; flex: 1;">❌ Alias in WHERE Restrictions</h3>
-            <button class="audio-play-btn" onclick="playAudio('Day01topic3/New_Day1Part3audio08.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-          <div class="vs-block">
-            <div class="vs-card vs-card--bad">
-              <h4>❌ Cannot Use Alias in WHERE</h4>
-              <pre style="margin: 0; font-size: 0.75rem;">SELECT salary / 12.0 AS monthly_rate
-FROM employees
-WHERE monthly_rate > 6000;
--- ERROR: column "monthly_rate"
--- does not exist at this step</pre>
-              <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">WHERE runs before SELECT — alias is not yet defined.</small>
-            </div>
-            <div class="vs-card vs-card--good">
-              <h4>✅ Workarounds: CTE or Repeating</h4>
-              <pre style="margin: 0; font-size: 0.75rem;">-- Option 1: Subquery
-SELECT * FROM (
-  SELECT name, salary / 12.0 AS monthly_rate
-  FROM employees
-) sub
-WHERE monthly_rate > 6000;
-
--- Option 2: Repeat the expression
-SELECT name, salary / 12.0 AS monthly_rate
-FROM employees
-WHERE salary / 12.0 > 6000;</pre>
-              <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">Both patterns are production-standard approaches.</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="slide-section" id="aliasingOrderByTip">
-          <div class="pro-tip-box" style="display: flex; align-items: flex-start; gap: 10px;">
-            <div style="flex: 1;">
-              <strong>💡 Pro Tip — Aliases in ORDER BY:</strong> Most databases (SQLite, PostgreSQL, MySQL) allow aliases in the <code>ORDER BY</code> clause as a convenience extension — even though logically ORDER BY executes before SELECT. This is an intentional database-engine exception, not standard SQL.
-              <pre style="margin: 6px 0 0 0; font-size: 0.75rem;">SELECT name, salary * 12 AS yearly_salary
-FROM employees
-ORDER BY yearly_salary DESC; -- ✅ Works in most databases</pre>
-            </div>
-            <button class="audio-play-btn" onclick="playAudio('Day01topic3/New_Day1Part3audio09.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="slide-section">
-          <div class="interview-box">
-            <h4 style="margin: 0; margin-bottom: 12px;">🎓 Interview Q&amp;A</h4>
-            <div id="iqReferenceAlias">
-              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
-                <p style="margin: 0; flex: 1;"><strong>Q: Can you reference an alias in the WHERE clause? What about ORDER BY?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic3/New_Day1Part3audio10.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p><em>A: No to WHERE — the logical query execution order processes WHERE (step 2) before SELECT (step 5), so aliases defined in SELECT do not exist yet when WHERE runs. However, most databases allow aliases in ORDER BY as a practical extension since ORDER BY runs after SELECT. For WHERE filtering on computed values, use a subquery or CTE that wraps the original query, or repeat the expression directly in the WHERE clause.</em></p>
-            </div>
-
-            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
-
-            <div id="iqColumnVsTable">
-              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
-                <p style="margin: 0; flex: 1;"><strong>Q: What is the difference between a column alias and a table alias?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic3/New_Day1Part3audio11.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p><em>A: A column alias (e.g., <code>salary AS monthly_pay</code>) renames a column in the output result set. A table alias (e.g., <code>FROM employees AS e</code>) renames a table within the query, letting you use shorthand references like <code>e.name</code> instead of <code>employees.name</code>. Table aliases are essential in self-joins where the same table is referenced twice and must be distinguished.</em></p>
-            </div>
-
-            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
-
-            <div id="iqLogicalOrderExplanation">
-              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
-                <p style="margin: 0; flex: 1;"><strong>Q: What is the logical SQL execution order and why does it matter?</strong></p>
-                <button class="audio-play-btn" onclick="playAudio('Day01topic3/New_Day1Part3audio12.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <p><em>A: The logical order is: FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → DISTINCT → ORDER BY → LIMIT/OFFSET. Understanding this order explains many "gotchas": why you can't filter on a SELECT alias in WHERE, why aggregate functions aren't allowed in WHERE (use HAVING instead), and why window functions compute after GROUP BY. Interviewers test this to assess whether candidates understand SQL deeply or are just copying queries.</em></p>
-            </div>
-          </div>
-        </div>
-      `
-    }
-  ],
-
-  // ─── Workspace Questions (Practice questions mapped per day) ───
-  practiceQuestions: [
-    {
-      id: 1,
-      prompt: 'Write a query to retrieve all columns and all rows from the <code>employees</code> table.',
-      referenceSql: 'SELECT * FROM employees;'
-    },
-    {
-      id: 2,
-      prompt: 'Write a query to retrieve all columns and rows from the system table <code>sqlite_master</code> to inspect the database structure.',
-      referenceSql: 'SELECT * FROM sqlite_master;'
-    }
-  ],
-  allPracticeQuestions: {
-    day01: [
-      {
-        id: 1,
-        prompt: 'Write a query to retrieve all columns and all rows from the <code>employees</code> table.',
-        referenceSql: 'SELECT * FROM employees;'
-      },
-      {
-        id: 2,
-        prompt: 'Write a query to retrieve all columns and rows from the system table <code>sqlite_master</code> to inspect the database structure.',
-        referenceSql: 'SELECT * FROM sqlite_master;'
-      }
-    ],
-    day02: [
-      {
-        id: 1,
-        prompt: 'Write a query to retrieve only the <code>name</code> and <code>department</code> columns from the <code>employees</code> table.',
-        referenceSql: 'SELECT name, department FROM employees;'
-      },
-      {
-        id: 2,
-        prompt: 'Write a query to project the columns <code>id</code>, <code>name</code>, and <code>salary</code> (in that specific order) from the <code>employees</code> table.',
-        referenceSql: 'SELECT id, name, salary FROM employees;'
-      }
-    ],
-    day03: [
-      {
-        id: 1,
-        prompt: 'Write a query to retrieve the <code>name</code> (aliased as <code>Employee_Name</code>) and <code>salary</code> (aliased as <code>Monthly_Salary</code>) from the <code>employees</code> table.',
-        referenceSql: 'SELECT name AS Employee_Name, salary AS Monthly_Salary FROM employees;'
-      },
-      {
-        id: 2,
-        prompt: 'Write a query to retrieve the column <code>name</code> and a calculated raise of 15% (<code>salary * 1.15</code>) aliased as <code>new_salary</code> from the <code>employees</code> table.',
-        referenceSql: 'SELECT name, salary * 1.15 AS new_salary FROM employees;'
-      }
-    ]
-  },
-
-
-  // ─── 25 Test Questions with Reference Solutions ───
-  testQuestions: [
-    { id:1,  prompt:'Retrieve all columns and rows from <code>employees</code>.', ref:'SELECT * FROM employees;' },
-    { id:2,  prompt:'Retrieve only <code>name</code> and <code>salary</code> from <code>employees</code>.', ref:'SELECT name, salary FROM employees;' },
-    { id:3,  prompt:'Retrieve <code>name</code> and <code>department</code>, aliasing <code>name</code> as <code>employee_name</code>.', ref:'SELECT name AS employee_name, department FROM employees;' },
-    { id:4,  prompt:'Retrieve <code>id</code> and <code>salary</code>, displaying <code>salary</code> under alias <code>annual_pay</code>.', ref:'SELECT id, salary AS annual_pay FROM employees;' },
-    { id:5,  prompt:'Project <code>department</code> and <code>name</code> in that order (reversed from schema order).', ref:'SELECT department, name FROM employees;' },
-    { id:6,  prompt:'Calculate a 10% bonus (<code>salary * 0.10</code>) for all employees, aliased as <code>bonus</code>.', ref:'SELECT name, salary * 0.10 AS bonus FROM employees;' },
-    { id:7,  prompt:'Display names and yearly salary (<code>salary * 12</code>) as <code>yearly_salary</code>.', ref:'SELECT name, salary * 12 AS yearly_salary FROM employees;' },
-    { id:8,  prompt:'Retrieve name and salary after a flat tax deduction of 5000, aliased as <code>net_salary</code>.', ref:'SELECT name, salary - 5000 AS net_salary FROM employees;' },
-    { id:9,  prompt:'Retrieve the SQLite engine version using <code>sqlite_version()</code>.', ref:'SELECT sqlite_version();' },
-    { id:10, prompt:'Concatenate <code>name || \' - \' || department</code> as <code>employee_details</code>.', ref:"SELECT name || ' - ' || department AS employee_details FROM employees;" },
-    { id:11, prompt:'Compute <code>salary / 12.0</code> as <code>monthly_pay</code>.', ref:'SELECT name, salary / 12.0 AS monthly_pay FROM employees;' },
-    { id:12, prompt:'Alias <code>salary</code> as <code>monthly_pay</code> <strong>without</strong> using the <code>AS</code> keyword.', ref:'SELECT name, salary monthly_pay FROM employees;' },
-    { id:13, prompt:'Return a static text column <code>\'Consultant\'</code> as <code>role</code> alongside <code>name</code>.', ref:"SELECT name, 'Consultant' AS role FROM employees;" },
-    { id:14, prompt:'Query <code>sqlite_master</code> to retrieve table schema details.', ref:'SELECT * FROM sqlite_master;' },
-    { id:15, prompt:'Compute <code>(salary * 12) + 3000</code> as <code>total_yearly_compensation</code>.', ref:'SELECT name, (salary * 12) + 3000 AS total_yearly_compensation FROM employees;' },
-    { id:16, prompt:'Alias a column using bracket notation: <code>AS [Employee Salary]</code>.', ref:'SELECT name, salary AS [Employee Salary] FROM employees;' },
-    { id:17, prompt:'Alias a column using double quotes: <code>AS "Employee Department"</code>.', ref:'SELECT name, department AS "Employee Department" FROM employees;' },
-    { id:18, prompt:'Use table-prefixed column syntax: <code>employees.name</code>.', ref:'SELECT employees.name FROM employees;' },
-    { id:19, prompt:'Evaluate <code>SELECT 100 * 5</code> aliased as <code>math_test</code>.', ref:'SELECT 100 * 5 AS math_test;' },
-    { id:20, prompt:'Compute <code>salary * 1.15</code> as <code>new_salary</code>.', ref:'SELECT name, salary * 1.15 AS new_salary FROM employees;' },
-    { id:21, prompt:'Compute <code>salary / 52.0</code> as <code>weekly_rate</code>.', ref:'SELECT name, salary / 52.0 AS weekly_rate FROM employees;' },
-    { id:22, prompt:'Alias <code>id</code> as the reserved word <code>"SELECT"</code> (use double quotes).', ref:'SELECT id AS "SELECT" FROM employees;' },
-    { id:23, prompt:'Compute <code>salary * 2</code> as <code>double_salary</code>.', ref:'SELECT name, salary * 2 AS double_salary FROM employees;' },
-    { id:24, prompt:'Retrieve <code>name</code>, <code>department</code>, <code>salary</code> in that column order.', ref:'SELECT name, department, salary FROM employees;' },
-    { id:25, prompt:'Compute <code>(salary * 12 * 1.12) - 2000</code> as <code>complex_evaluation</code>.', ref:'SELECT name, (salary * 12 * 1.12) - 2000 AS complex_evaluation FROM employees;' }
-  ],
-
-  // ─── Topic Bookmarks (linked to recordings) ───
-  topics: [
-    { id: 'topic-1', label: 'Topic 1: Relational Databases', recordingKey: null },
-    { id: 'topic-2', label: 'Topic 2: Column Projection', recordingKey: null },
-    { id: 'topic-3', label: 'Topic 3: Column Aliasing', recordingKey: null }
-  ],
-
-  // ─── Pre-authored Lesson Tracks (Scrimba-style) ───
-  lessonTracks: {
-    day01: {
-      id: 'day01-track',
-      title: 'Day 01: Introduction to SQL & Databases',
-      audioUrl: 'day01_topic01.mp3',
-      duration: 95000,
-      chapters: [
-        { t: 0,     label: '📊 Why RDBMS?',              slideIdx: 0 },
-        { t: 28000, label: '🔑 Keys & Relationships',    slideIdx: 0 },
-        { t: 52000, label: '💡 Declarative Thinking',    slideIdx: 1 },
-        { t: 72000, label: '💻 Live Coding Demo',        slideIdx: 2 },
-      ],
-      actions: [
-        // ── ACT 1: Intro & RDBMS foundations (0-27s) ──
-        { t: 0,     type: 'slide',    slideIdx: 0 },
-        { t: 0,     type: 'snapshot', content: '-- Write your SQL query here\n' },
-        { t: 0,     type: 'caption',  text: '👋 Welcome to Day 01 — let\'s understand WHY relational databases were invented.' },
-        { t: 7000,  type: 'caption',  text: '📁 Before RDBMS, data lived in flat files — duplicated, inconsistent, and impossible to scale.' },
-        { t: 15000, type: 'scroll',   selector: '.rdbms-infographic' },
-        { t: 15000, type: 'caption',  text: '✅ RDBMS solves 3 core problems: Data Integrity, Data Redundancy, and Concurrent Access.' },
-        { t: 15200, type: 'pulse',    selector: '.info-card--blue', duration: 2200 },
-        { t: 17500, type: 'pulse',    selector: '.info-card--green', duration: 2200 },
-        { t: 20000, type: 'pulse',    selector: '.info-card--orange', duration: 2200 },
-        { t: 22000, type: 'caption',  text: '🛡️ Constraints like NOT NULL, UNIQUE, and FOREIGN KEY enforce data integrity automatically.' },
-
-        // ── ACT 2: Primary Key / Foreign Key (28-51s) ──
-        { t: 28000, type: 'scroll',   selector: '.vs-block' },
-        { t: 28000, type: 'caption',  text: '🔑 A PRIMARY KEY uniquely identifies every row — it can never be NULL or duplicate.' },
-        { t: 28200, type: 'pulse',    selector: '.vs-card--pk', duration: 3000 },
-        { t: 36000, type: 'caption',  text: '🔗 A FOREIGN KEY in one table points to the Primary Key of another — this creates the "relation".' },
-        { t: 36200, type: 'pulse',    selector: '.vs-card--fk', duration: 3000 },
-        { t: 44000, type: 'scroll',   selector: '.relation-infographic' },
-        { t: 44000, type: 'caption',  text: '📋 Vocabulary check: Table = Relation | Row = Tuple | Column = Attribute.' },
-        { t: 44200, type: 'pulse',    selector: '.relation-infographic', duration: 3000 },
-
-        // ── ACT 3: Declarative vs. Imperative (52-71s) ──
-        { t: 52000, type: 'slide',    slideIdx: 1 },
-        { t: 52000, type: 'caption',  text: '🧠 SQL is DECLARATIVE — you describe WHAT you want, not HOW to get it.' },
-        { t: 52200, type: 'pulse',    selector: '.vs-card--good', duration: 3000 },
-        { t: 58000, type: 'snapshot', content: '-- Python (Imperative): loop through every row manually\n-- SQL (Declarative): just describe the result\n' },
-        { t: 58200, type: 'pulse',    selector: '.vs-card--bad', duration: 3000 },
-        { t: 63000, type: 'scroll',   selector: '.info-box' },
-        { t: 63000, type: 'caption',  text: '⚙️ The SQL Query Optimizer figures out the fastest execution plan for you — behind the scenes.' },
-        { t: 63200, type: 'pulse',    selector: '.info-box', duration: 3000 },
-        { t: 68000, type: 'scroll',   selector: '.pro-tip-box' },
-        { t: 68000, type: 'caption',  text: '📌 The logical order: FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT' },
-        { t: 68200, type: 'pulse',    selector: '.pro-tip-box', duration: 3000 },
-
-        // ── ACT 4: Live Coding Demo (72-95s) ──
-        { t: 72000, type: 'slide',    slideIdx: 2 },
-        { t: 72000, type: 'snapshot', content: '' },
-        { t: 74000, type: 'caption',  text: '💻 Let\'s write our first query! SELECT * retrieves ALL columns from a table.' },
-        { t: 74500, type: 'type',     content: 'SELECT * FROM employees;', speed: 65 },
-        { t: 86000, type: 'run',      query: 'SELECT * FROM employees;' },
-        { t: 86000, type: 'caption',  text: '✅ 10 rows returned — all employees with id, name, department, and salary!' },
-        { t: 90000, type: 'snapshot', content: 'SELECT * FROM sqlite_master;' },
-        { t: 91000, type: 'run',      query: 'SELECT * FROM sqlite_master;' },
-        { t: 91000, type: 'caption',  text: '🔍 sqlite_master shows us the database schema — very useful when exploring a new database!' },
-      ]
-    },
-    day02: {
-      id: 'day02-track',
-      title: 'Day 02: Column Projection',
-      duration: 75000,
-      chapters: [
-        { t: 0,     label: '📌 Column Projection',    slideIdx: 0 },
-        { t: 30000, label: '💻 SELECT Specific Cols', slideIdx: 0 },
-        { t: 55000, label: '⚡ Performance Impact',   slideIdx: 1 },
-      ],
-      actions: [
-        { t: 0,     type: 'slide',    slideIdx: 0 },
-        { t: 0,     type: 'snapshot', content: '-- Write your SQL query here\n' },
-        { t: 0,     type: 'caption',  text: '📌 Day 02: Column Projection — select only the columns you need, nothing more.' },
-        { t: 8000,  type: 'caption',  text: '❌ SELECT * fetches every column — wasteful when you only need 1 or 2!' },
-        { t: 18000, type: 'caption',  text: '✅ By naming specific columns, you reduce network load and memory usage.' },
-        { t: 30000, type: 'snapshot', content: '' },
-        { t: 30000, type: 'caption',  text: '💻 Let\'s project just name and department from employees.' },
-        { t: 31000, type: 'type',     content: 'SELECT name, department FROM employees;', speed: 65 },
-        { t: 46000, type: 'run',      query: 'SELECT name, department FROM employees;' },
-        { t: 46000, type: 'caption',  text: '✅ Only 2 columns returned — clean and efficient!' },
-        { t: 55000, type: 'slide',    slideIdx: 1 },
-        { t: 55000, type: 'caption',  text: '⚡ In cloud databases (BigQuery, Redshift), you pay per byte scanned — always project!' },
-        { t: 65000, type: 'snapshot', content: 'SELECT id, name, salary FROM employees;' },
-        { t: 66000, type: 'run',      query: 'SELECT id, name, salary FROM employees;' },
-        { t: 66000, type: 'caption',  text: '✅ id, name, salary projected in the exact order we specified — column order matters!' },
-      ]
-    },
-    day03: {
-      id: 'day03-track',
-      title: 'Day 03: Column Aliasing (AS)',
-      duration: 80000,
-      chapters: [
-        { t: 0,     label: '🏷️ Why Alias?',          slideIdx: 2 },
-        { t: 28000, label: '💻 AS Keyword Demo',      slideIdx: 2 },
-        { t: 58000, label: '🔢 Computed Columns',     slideIdx: 2 },
-      ],
-      actions: [
-        { t: 0,     type: 'slide',    slideIdx: 2 },
-        { t: 0,     type: 'snapshot', content: '-- Write your SQL query here\n' },
-        { t: 0,     type: 'caption',  text: '🏷️ Day 03: Aliasing — rename columns in your output without touching the table!' },
-        { t: 9000,  type: 'caption',  text: '📋 Column aliases make reports readable: "salary" becomes "Monthly_Salary".' },
-        { t: 18000, type: 'caption',  text: '✨ Use the AS keyword: SELECT name AS employee_name FROM employees;' },
-        { t: 28000, type: 'snapshot', content: '' },
-        { t: 28000, type: 'caption',  text: '💻 Let\'s alias both name and salary for a clean output.' },
-        { t: 29000, type: 'type',     content: 'SELECT name AS Employee_Name,\n       salary AS Monthly_Salary\nFROM employees;', speed: 55 },
-        { t: 50000, type: 'run',      query: 'SELECT name AS Employee_Name, salary AS Monthly_Salary FROM employees;' },
-        { t: 50000, type: 'caption',  text: '✅ Column headers now show Employee_Name and Monthly_Salary — alias only changes output!' },
-        { t: 58000, type: 'caption',  text: '🔢 Aliases also work on computed columns — calculate a 15% raise:' },
-        { t: 60000, type: 'snapshot', content: 'SELECT name, salary * 1.15 AS new_salary FROM employees;' },
-        { t: 61000, type: 'run',      query: 'SELECT name, salary * 1.15 AS new_salary FROM employees;' },
-        { t: 61000, type: 'caption',  text: '🎉 new_salary shows the calculated raise for each employee. Arithmetic + alias = power!' }
-      ]
-    }
-  }
+  schema: { tables: [] },
+  practiceQuestions: [],
+  testQuestions: [],
+  topics: []
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -1337,19 +31,92 @@ ORDER BY yearly_salary DESC; -- ✅ Works in most databases</pre>
 // ═══════════════════════════════════════════════════════════════
 
 let db = null;
+let SQL_INSTANCE = null;  // Cached SQL.js constructor
+const dbCache = new Map(); // Cache<seedKey, SQL.Database>
+let activeSeedKey = null;
 
 function initDatabase() {
   return initSqlJs({
     locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
   }).then(SQL => {
-    db = new SQL.Database();
-    COURSE_CONFIG.schema.tables.forEach(t => {
-      db.run(t.createSQL);
-      db.run(t.seedSQL);
-    });
-    console.log('SQL.js initialized, tables seeded.');
+    SQL_INSTANCE = SQL;
+    // Seed Day 01's simple employees DB by default
+    const seedKey = 'day01_db';
+    if (!dbCache.has(seedKey)) {
+      const newDb = new SQL.Database();
+      COURSE_CONFIG.schema.tables.forEach(t => {
+        if (t.createSQL) newDb.run(t.createSQL);
+        if (t.seedSQL)   newDb.run(t.seedSQL);
+      });
+      dbCache.set(seedKey, newDb);
+    }
+    db = dbCache.get(seedKey);
+    activeSeedKey = seedKey;
+    console.log('SQL.js initialized with Day 01 database.');
     return db;
   });
+}
+
+// Load or switch to a different DB seed
+function loadDatabaseSeed(seedKey) {
+  if (!SQL_INSTANCE) return;
+  if (activeSeedKey === seedKey && dbCache.has(seedKey)) {
+    db = dbCache.get(seedKey);
+    return;
+  }
+  if (dbCache.has(seedKey)) {
+    db = dbCache.get(seedKey);
+    activeSeedKey = seedKey;
+    return;
+  }
+  // Build from window.DB_SEEDS
+  const seedDef = window.DB_SEEDS && window.DB_SEEDS[seedKey];
+  const newDb = new SQL_INSTANCE.Database();
+  if (seedDef && seedDef.tables) {
+    seedDef.tables.forEach(t => {
+      if (t.createSQL) { try { newDb.run(t.createSQL); } catch(e) {} }
+      if (t.seedSQL)   { try { newDb.run(t.seedSQL); } catch(e) {} }
+    });
+  }
+  dbCache.set(seedKey, newDb);
+  db = newDb;
+  activeSeedKey = seedKey;
+}
+
+// Reset the active database to original seeded state
+function confirmResetDatabase() {
+  if (!confirm('Reset the database to its original state? Any data changes you made in this session will be lost.')) return;
+  if (!SQL_INSTANCE || !activeSeedKey) return;
+  const seedDef = activeSeedKey === 'day01_db'
+    ? { tables: COURSE_CONFIG.schema.tables }
+    : (window.DB_SEEDS && window.DB_SEEDS[activeSeedKey]);
+  if (!seedDef) return;
+  const newDb = new SQL_INSTANCE.Database();
+  seedDef.tables.forEach(t => {
+    if (t.createSQL) { try { newDb.run(t.createSQL); } catch(e) {} }
+    if (t.seedSQL)   { try { newDb.run(t.seedSQL); } catch(e) {} }
+  });
+  dbCache.set(activeSeedKey, newDb);
+  db = newDb;
+  // Clear output
+  const outputEl = document.getElementById('mainOutput');
+  if (outputEl) {
+    outputEl.innerHTML = '<div class="output-label">Terminal Output</div><span class="output-success">✅ Database reset to original state.</span>';
+  }
+  showToast('✅ Database reset to original state');
+}
+
+function showToast(msg, duration = 3000) {
+  let toast = document.getElementById('globalToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'globalToast';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;border:1px solid #2a2e45;color:#e2e8f0;padding:10px 18px;border-radius:8px;font-family:Inter,sans-serif;font-size:0.82rem;font-weight:600;z-index:9999;opacity:0;transition:opacity 0.25s ease;pointer-events:none;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  setTimeout(() => { toast.style.opacity = '0'; }, duration);
 }
 
 function runSQL(query) {
@@ -2931,6 +1698,7 @@ function setupStudentTakeover() {
 
 let testOpen = false;
 let testTimerInterval = null;
+let testAutosaveIntervalId = null; // 15-second autosave
 let testSecondsRemaining = 7200; // 120 minutes
 let testStartTime = null;
 let testCurrentQ = 0;
@@ -2967,11 +1735,22 @@ function openTestPortal() {
     playbackBar.classList.add('hidden-in-test');
   }
 
-  // Load and display personal best test score
-  const best = localStorage.getItem('test_best_score') || '0';
+  // Load and display personal best test score from ProgressManager
+  const bestScore = window.ProgressManager ? (ProgressManager.getDayProgress(currentDay).bestScore || 0) : 0;
   const bestEl = document.getElementById('testBestScoreCount');
-  if (bestEl) bestEl.textContent = best;
+  if (bestEl) bestEl.textContent = bestScore;
   updateTestProgress();
+  
+  // Save initial attempt state
+  if (window.ProgressManager) {
+    ProgressManager.saveTestAttempt(currentDay, {
+      startedAt: testStartTime,
+      timeRemaining: testSecondsRemaining,
+      answers: testAnswers,
+      submitted: false,
+      score: 0
+    });
+  }
 
   const submitBtn = document.getElementById('submitTestBtn');
   if (submitBtn) submitBtn.disabled = false;
@@ -2995,6 +1774,8 @@ function openTestPortal() {
 function closeTestPortal() {
   testOpen = false;
   clearInterval(testTimerInterval);
+  clearInterval(testAutosaveIntervalId);
+  testAutosaveIntervalId = null;
   document.getElementById('testOverlay').classList.remove('open');
 
   // Show the timeline playback bar again
@@ -3006,6 +1787,7 @@ function closeTestPortal() {
 
 function startTestTimer() {
   clearInterval(testTimerInterval);
+  clearInterval(testAutosaveIntervalId);
   updateTestTimerDisplay();
 
   testTimerInterval = setInterval(() => {
@@ -3013,9 +1795,15 @@ function startTestTimer() {
     updateTestTimerDisplay();
     if (testSecondsRemaining <= 0) {
       clearInterval(testTimerInterval);
+      clearInterval(testAutosaveIntervalId);
       submitTest();
     }
   }, 1000);
+
+  // Autosave every 15 seconds
+  testAutosaveIntervalId = setInterval(() => {
+    autosaveTestProgress();
+  }, 15000);
 }
 
 function updateTestTimerDisplay() {
@@ -3100,6 +1888,8 @@ function updateTestProgress() {
 function submitTest() {
   saveCurrentTestAnswer();
   clearInterval(testTimerInterval);
+  clearInterval(testAutosaveIntervalId);
+  testAutosaveIntervalId = null;
   testSubmitted = true;
 
   // Disable further editing
@@ -3112,28 +1902,34 @@ function submitTest() {
   COURSE_CONFIG.testQuestions.forEach((q, i) => {
     const studentQuery = testAnswers[i].answer;
     let correct = false;
-    let studentResult = null;
-    let refResult = null;
+    let gradingResult = null;
 
-    try { refResult = runSQL(q.ref); } catch(e) { /* reference should never fail */ }
-
-    if (studentQuery && studentQuery !== '-- Write your answer here') {
+    if (studentQuery && studentQuery.trim() !== '' && studentQuery !== '-- Write your answer here') {
       try {
-        studentResult = runSQL(studentQuery);
-        // Compare value sets (order-insensitive)
-        correct = compareResults(refResult, studentResult);
+        gradingResult = window.gradeSubmission(studentQuery, q, db);
+        correct = gradingResult.passed;
       } catch (e) {
         correct = false;
       }
     }
 
     if (correct) totalCorrect++;
-    results.push({ qId: q.id, correct, studentQuery, attempted: testAnswers[i].attempted });
+    results.push({
+      qId: q.id,
+      correct,
+      studentQuery,
+      attempted: testAnswers[i].attempted,
+      referenceSql: q.ref || q.referenceSql,
+      prompt: q.prompt,
+      angle: getInterviewersAngle(currentDay, q.id, q.prompt)
+    });
 
     // Update sidebar button
     const btn = document.getElementById(`tqBtn${i}`);
-    btn.classList.remove('current', 'attempted');
-    btn.classList.add(correct ? 'correct' : (testAnswers[i].attempted ? 'incorrect' : ''));
+    if (btn) {
+      btn.classList.remove('current', 'attempted');
+      btn.classList.add(correct ? 'correct' : (testAnswers[i].attempted ? 'incorrect' : ''));
+    }
   });
 
   // Render scorecard
@@ -3144,23 +1940,73 @@ function submitTest() {
   document.getElementById('scoreBig').className = `score-big ${totalCorrect >= 13 ? 'pass' : 'fail'}`;
   document.getElementById('scoreMeta').textContent = `Time spent: ${elapsedStr} • ${totalCorrect >= 13 ? '✅ PASSED' : '❌ NEEDS REVIEW'}`;
 
-  let bodyHtml = '';
+  // Build review cards HTML
+  let reviewCardsHtml = '';
   results.forEach(r => {
-    bodyHtml += `<tr>
-      <td>Q${r.qId}</td>
-      <td>${r.correct ? '✅' : (r.attempted ? '❌' : '⬜')}</td>
-      <td><code style="font-size:0.72rem; word-break:break-all;">${r.studentQuery ? escHtml(r.studentQuery.substring(0, 80)) : '—'}</code></td>
-    </tr>`;
+    const statusText = r.correct ? 'Correct' : (r.attempted ? 'Incorrect' : 'Skipped');
+    const badgeColor = r.correct ? 'var(--green)' : (r.attempted ? 'var(--red)' : 'var(--text-muted)');
+    const cardClass = r.correct ? 'review-card--correct' : 'review-card--incorrect';
+    
+    reviewCardsHtml += `
+      <div class="review-card ${cardClass}">
+        <div class="review-header">
+          <span style="font-weight: 800; color: #a5b4fc;">Question ${String(r.qId).padStart(2, '0')}</span>
+          <span class="status-badge" style="color: ${badgeColor}; font-weight: 800; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; background: rgba(255,255,255,0.03); padding: 2px 8px; border-radius: 4px;">${statusText}</span>
+        </div>
+        <div class="review-prompt" style="margin-top: 6px; color: #e2e8f0; font-size: 0.8rem; line-height: 1.45;">${r.prompt}</div>
+        <div class="review-queries" style="margin-top: 10px; display: grid; grid-template-columns: 1fr; gap: 8px;">
+          <div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;">YOUR ANSWER:</div>
+            <pre style="margin: 4px 0 0 0; padding: 10px; background: #04060c; border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; font-family: var(--mono); font-size: 0.72rem; color: #cbd5e1; white-space: pre-wrap; word-break: break-all;"><code>${escHtml(r.studentQuery || '—')}</code></pre>
+          </div>
+          <div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 6px;">REFERENCE SOLUTION:</div>
+            <pre style="margin: 4px 0 0 0; padding: 10px; background: #04060c; border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; font-family: var(--mono); font-size: 0.72rem; color: var(--green); white-space: pre-wrap; word-break: break-all;"><code>${escHtml(r.referenceSql || '—')}</code></pre>
+          </div>
+        </div>
+        <div class="review-angle" style="margin-top: 10px; padding: 8px 12px; background: rgba(124, 58, 237, 0.06); border: 1px solid rgba(124, 58, 237, 0.15); border-radius: 6px; font-size: 0.76rem; line-height: 1.45; color: #c084fc;">
+          💡 <strong>Interviewer's Angle:</strong> ${r.angle}
+        </div>
+      </div>
+    `;
   });
-  document.getElementById('scorecardBody').innerHTML = bodyHtml;
-
-  // Update best score in localStorage and UI
-  const previousBest = parseInt(localStorage.getItem('test_best_score') || '0', 10);
-  const newBest = Math.max(previousBest, totalCorrect);
-  localStorage.setItem('test_best_score', newBest);
   
+  // Replaces the table inside scorecard-body with our review cards container
+  const scorecardBody = document.getElementById('scorecardBody');
+  if (scorecardBody) {
+    const table = document.getElementById('scorecardTable');
+    if (table) {
+      table.style.display = 'none'; // Hide the raw table
+    }
+    
+    let cardContainer = document.getElementById('scorecardCards');
+    if (!cardContainer) {
+      cardContainer = document.createElement('div');
+      cardContainer.id = 'scorecardCards';
+      cardContainer.style.maxHeight = '420px';
+      cardContainer.style.overflowY = 'auto';
+      cardContainer.style.paddingRight = '4px';
+      scorecardBody.parentElement.appendChild(cardContainer);
+    }
+    cardContainer.innerHTML = reviewCardsHtml;
+  }
+
+  // Save the result to ProgressManager
+  const attempt = {
+    startedAt: testStartTime,
+    timeRemaining: 0,
+    answers: testAnswers,
+    submitted: true,
+    score: totalCorrect
+  };
+  if (window.ProgressManager) {
+    ProgressManager.saveTestAttempt(currentDay, attempt);
+  }
+
+  // Update best score bestEl
+  const best = ProgressManager.getDayProgress(currentDay).bestScore || totalCorrect;
   const bestEl = document.getElementById('testBestScoreCount');
-  if (bestEl) bestEl.textContent = newBest;
+  if (bestEl) bestEl.textContent = best;
   
   // Make progress bar show 100% completed green
   const fillEl = document.getElementById('testProgressFill');
@@ -3172,34 +2018,275 @@ function submitTest() {
   document.getElementById('scorecardOverlay').classList.add('open');
 }
 
-function compareResults(expected, actual) {
-  if (!expected || !actual) return false;
-  if (expected.values.length !== actual.values.length) return false;
-  if (expected.columns.length !== actual.columns.length) return false;
-
-  // Sort both value arrays for order-insensitive comparison
-  const sortRows = (rows) => rows.map(r => r.map(v => String(v))).sort((a, b) => a.join('|').localeCompare(b.join('|')));
-  const expSorted = sortRows(expected.values);
-  const actSorted = sortRows(actual.values);
-
-  for (let i = 0; i < expSorted.length; i++) {
-    for (let j = 0; j < expSorted[i].length; j++) {
-      // Compare as strings, handle floating point precision
-      const ev = expSorted[i][j];
-      const av = actSorted[i][j];
-      if (ev !== av) {
-        // Try numeric comparison with tolerance
-        const en = parseFloat(ev);
-        const an = parseFloat(av);
-        if (isNaN(en) || isNaN(an) || Math.abs(en - an) > 0.01) return false;
-      }
-    }
-  }
-  return true;
-}
-
 function closeScorecard() {
   document.getElementById('scorecardOverlay').classList.remove('open');
+}
+
+function autosaveTestProgress() {
+  if (testSubmitted) return;
+  saveCurrentTestAnswer();
+  const attempt = {
+    startedAt: testStartTime,
+    timeRemaining: testSecondsRemaining,
+    answers: testAnswers,
+    submitted: false,
+    score: 0
+  };
+  if (window.ProgressManager) {
+    ProgressManager.saveTestAttempt(currentDay, attempt);
+  }
+  console.log('Autosaved test progress.');
+}
+
+function checkAndResumeTest(dayId) {
+  if (!window.ProgressManager) return;
+  const dp = ProgressManager.getDayProgress(dayId);
+  if (dp && dp.testAttempt && !dp.testAttempt.submitted) {
+    const attempt = dp.testAttempt;
+    const timeSpent = Math.floor((Date.now() - attempt.startedAt) / 1000);
+    const timeRemaining = attempt.timeRemaining - timeSpent;
+    
+    if (timeRemaining > 0) {
+      const resume = confirm(`Resume your in-progress test for ${dayId.replace('day', 'Day ')}? You have ${Math.floor(timeRemaining / 60)} minutes remaining.`);
+      if (resume) {
+        resumeTestAttempt(dayId, attempt, timeRemaining);
+        return;
+      }
+    }
+    // If expired or user cancelled, clear the attempt
+    dp.testAttempt = null;
+    ProgressManager.save();
+  }
+}
+
+function resumeTestAttempt(dayId, attempt, timeRemaining) {
+  testOpen = true;
+  testSubmitted = false;
+  testSecondsRemaining = timeRemaining;
+  testStartTime = attempt.startedAt; // Keep original start time
+  testCurrentQ = 0;
+  testAnswers = attempt.answers;
+
+  document.getElementById('testOverlay').classList.add('open');
+  
+  if (typeof pauseCombinedPlayback === 'function') {
+    pauseCombinedPlayback();
+  }
+
+  // Hide playback bar
+  const playbackBar = document.getElementById('playbackBar');
+  if (playbackBar) playbackBar.classList.add('hidden-in-test');
+
+  // Load stats
+  const best = ProgressManager.getDayProgress(dayId).bestScore || '0';
+  const bestEl = document.getElementById('testBestScoreCount');
+  if (bestEl) bestEl.textContent = best;
+  updateTestProgress();
+
+  const submitBtn = document.getElementById('submitTestBtn');
+  if (submitBtn) submitBtn.disabled = false;
+
+  // Render sidebar buttons
+  const sidebar = document.getElementById('testSidebar');
+  let html = '';
+  for (let i = 0; i < 25; i++) {
+    const isAttempted = testAnswers[i] && testAnswers[i].attempted;
+    html += `<button class="test-q-btn ${i === 0 ? 'current' : ''} ${isAttempted ? 'attempted' : ''}" id="tqBtn${i}" onclick="switchTestQuestion(${i})"><span class="q-prefix">Q</span>${i+1}</button>`;
+  }
+  sidebar.innerHTML = html;
+
+  if (!testEditor) initTestEditor();
+  renderTestQuestion(0);
+  startTestTimer();
+}
+
+function renderScorecardFromAttempt(attempt) {
+  if (!attempt) return;
+  
+  document.getElementById('scoreBig').textContent = `${attempt.score} / 25`;
+  document.getElementById('scoreBig').className = `score-big ${attempt.score >= 13 ? 'pass' : 'fail'}`;
+  document.getElementById('scoreMeta').textContent = `${attempt.score >= 13 ? '✅ PASSED' : '❌ NEEDS REVIEW'}`;
+
+  // Build review cards HTML
+  let reviewCardsHtml = '';
+  COURSE_CONFIG.testQuestions.forEach((q, i) => {
+    const ansObj = attempt.answers[i] || { answer: '', attempted: false };
+    
+    // Evaluate correctness dynamically
+    let correct = false;
+    if (ansObj.answer && ansObj.answer.trim() !== '' && ansObj.answer !== '-- Write your answer here') {
+      try {
+        const gradingResult = window.gradeSubmission(ansObj.answer, q, db);
+        correct = gradingResult.passed;
+      } catch (e) {
+        correct = false;
+      }
+    }
+    
+    const statusText = correct ? 'Correct' : (ansObj.attempted ? 'Incorrect' : 'Skipped');
+    const badgeColor = correct ? 'var(--green)' : (ansObj.attempted ? 'var(--red)' : 'var(--text-muted)');
+    const cardClass = correct ? 'review-card--correct' : 'review-card--incorrect';
+    
+    reviewCardsHtml += `
+      <div class="review-card ${cardClass}">
+        <div class="review-header">
+          <span style="font-weight: 800; color: #a5b4fc;">Question ${String(q.id).padStart(2, '0')}</span>
+          <span class="status-badge" style="color: ${badgeColor}; font-weight: 800; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; background: rgba(255,255,255,0.03); padding: 2px 8px; border-radius: 4px;">${statusText}</span>
+        </div>
+        <div class="review-prompt" style="margin-top: 6px; color: #e2e8f0; font-size: 0.8rem; line-height: 1.45;">${q.prompt}</div>
+        <div class="review-queries" style="margin-top: 10px; display: grid; grid-template-columns: 1fr; gap: 8px;">
+          <div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;">YOUR ANSWER:</div>
+            <pre style="margin: 4px 0 0 0; padding: 10px; background: #04060c; border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; font-family: var(--mono); font-size: 0.72rem; color: #cbd5e1; white-space: pre-wrap; word-break: break-all;"><code>${escHtml(ansObj.answer || '—')}</code></pre>
+          </div>
+          <div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 6px;">REFERENCE SOLUTION:</div>
+            <pre style="margin: 4px 0 0 0; padding: 10px; background: #04060c; border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; font-family: var(--mono); font-size: 0.72rem; color: var(--green); white-space: pre-wrap; word-break: break-all;"><code>${escHtml(q.ref || q.referenceSql || '—')}</code></pre>
+          </div>
+        </div>
+        <div class="review-angle" style="margin-top: 10px; padding: 8px 12px; background: rgba(124, 58, 237, 0.06); border: 1px solid rgba(124, 58, 237, 0.15); border-radius: 6px; font-size: 0.76rem; line-height: 1.45; color: #c084fc;">
+          💡 <strong>Interviewer's Angle:</strong> ${getInterviewersAngle(currentDay, q.id, q.prompt)}
+        </div>
+      </div>
+    `;
+  });
+  
+  const scorecardBody = document.getElementById('scorecardBody');
+  if (scorecardBody) {
+    const table = document.getElementById('scorecardTable');
+    if (table) {
+      table.style.display = 'none'; // Hide raw table
+    }
+    
+    let cardContainer = document.getElementById('scorecardCards');
+    if (!cardContainer) {
+      cardContainer = document.createElement('div');
+      cardContainer.id = 'scorecardCards';
+      cardContainer.style.maxHeight = '420px';
+      cardContainer.style.overflowY = 'auto';
+      cardContainer.style.paddingRight = '4px';
+      scorecardBody.parentElement.appendChild(cardContainer);
+    }
+    cardContainer.innerHTML = reviewCardsHtml;
+  }
+}
+
+function getInterviewersAngle(dayId, qId, prompt) {
+  const dayNum = parseInt(dayId.replace('day', ''), 10);
+  
+  const angles = {
+    1: [
+      "Tests basic column selection. Strong candidates project specific columns instead of using SELECT * to avoid memory overhead.",
+      "Checks understanding of selective projection. Senior analysts know SELECT * forces full-table scans which degrade query performance.",
+      "Evaluates column aliasing. Using clean, snake_case aliases is standard practice for downstream BI tool ingestion.",
+      "Tests calculated expressions and aliasing. Essential for demonstrating basic data transformations at the database level.",
+      "Tests column order variation. Demonstrates understanding that physical table storage order does not dictate analytical presentation.",
+      "Tests simple arithmetic and aliases. Shows ability to compute calculated metrics dynamically without modifying raw tables.",
+      "Tests scaling computations. Interviewers look for proper mathematical formulas and clean column labeling in reports.",
+      "Tests flat deductions on columns. Verifies candidate is comfortable performing arithmetic operations directly in SELECT projections.",
+      "Tests system meta-functions. Demonstrates familiarization with the target engine's built-in utility functions.",
+      "Tests string concatenation syntax. Essential for formatting reporting columns like full name or address parts directly in SQL."
+    ],
+    2: [
+      "Tests basic numeric filtering. Candidates must show they can correctly isolate rows based on mathematical boundaries.",
+      "Tests double conditional filters. Focuses on combining multiple constraints accurately using the logical AND operator.",
+      "Tests range boundary conditions. Candidates should know BETWEEN is inclusive of both the start and end values.",
+      "Tests NULL safety in filters. Excludes NULLs correctly; weak candidates forget that NULL comparison requires IS NULL instead of = 0.",
+      "Tests list-based matching. Using IN is cleaner and performs better than chaining multiple OR operators.",
+      "Tests mixing string filters and numeric boundaries. Demonstrates ability to translate business criteria into SQL syntax.",
+      "Tests multi-condition category matches. Separates candidates who understand set-membership filtering from those using long OR chains.",
+      "Tests date filtering format. Standard YYYY-MM-DD text comparisons must be formatted exactly for index usage.",
+      "Tests department filter precision. Separates candidates on their ability to strictly match specific integer identifiers.",
+      "Tests date bounds comparisons. Hitting index-only scans requires exact comparison bounds in the WHERE clause.",
+      "Tests list filter matching on IDs. Essential for demonstrating set operations and target matching.",
+      "Tests composite logical constraints. Evaluates logical grouping fluency under specific constraints.",
+      "Tests discrete ID range filters. Shows capability to fetch a precise subset of data using numeric boundaries.",
+      "Tests composite OR filters. Evaluates if candidate can combine different table fields in a logical branch.",
+      "Tests simple boolean checks. Verifies candidate is comfortable filtering on active flag columns.",
+      "Tests precise price list filtering. Tests combining category limits with numeric thresholds.",
+      "Tests date and salary combinations. Verifies candidate can constrain queries on historical and numeric columns simultaneously.",
+      "Tests string flag combined with numeric threshold. Checks candidate's ability to filter on state and values.",
+      "Tests date year range bounds. Using BETWEEN on dates is standard for isolating specific years.",
+      "Tests bounded salary ranges. Candidates must verify their ranges correctly handle the inclusive endpoints.",
+      "Tests inventory alerts. Verifies capability to identify stock status via conditional logic.",
+      "Tests dual foreign key conditions. Verifies candidate can filter hierarchical structures correctly.",
+      "Tests large numeric range filters. Shows fluency with large numeric limits.",
+      "Tests exact string matching on active indicators. Tests basic catalog selection logic.",
+      "Tests numeric filters combined with active indicator check. Checks precision on active commissions."
+    ]
+  };
+
+  if (angles[dayNum] && angles[dayNum][qId - 1]) {
+    return angles[dayNum][qId - 1];
+  }
+
+  const p = prompt.toLowerCase();
+  if (p.includes("join")) {
+    return "Tests join syntax. Top candidates always use explicit JOIN syntax rather than comma joins, and specify index columns.";
+  }
+  if (p.includes("group by")) {
+    return "Evaluates aggregation logic. Crucial to show that any non-aggregate columns in SELECT are also in GROUP BY.";
+  }
+  if (p.includes("having")) {
+    return "Checks HAVING vs WHERE understanding. HAVING filters aggregated data post-grouping; WHERE filters raw rows pre-grouping.";
+  }
+  if (p.includes("subquery") || p.includes("select from (")) {
+    return "Tests subquery resolution. Strong candidates know when to write a subquery vs when a JOIN is more performant.";
+  }
+  if (p.includes("cte") || p.includes("with ")) {
+    return "Evaluates query readability. Senior analysts use CTEs to organize complex queries instead of writing deep nested subqueries.";
+  }
+  if (p.includes("window") || p.includes("over (") || p.includes("row_number") || p.includes("lag") || p.includes("lead")) {
+    return "Checks window function mastery. Essential for advanced analytical roles to compute running totals, ranks, or offsets.";
+  }
+  if (p.includes("case when") || p.includes("then")) {
+    return "Tests conditional labeling. Evaluates ability to bucket rows or execute complex conditional logic inside the engine.";
+  }
+  if (p.includes("union") || p.includes("intersect") || p.includes("except")) {
+    return "Tests set operators. Candidates must ensure identical column signatures and data types across unified tables.";
+  }
+  if (p.includes("like") || p.includes("%") || p.includes("_")) {
+    return "Tests pattern matching. Candidates should know LIKE is case-insensitive in SQLite/MySQL, but case-sensitive in PostgreSQL (use ILIKE).";
+  }
+  if (p.includes("null") || p.includes("coalesce")) {
+    return "Tests NULL handling. Top analysts always handle NULLs gracefully (e.g. COALESCE) to prevent breaking calculations.";
+  }
+  if (p.includes("count") || p.includes("avg") || p.includes("sum")) {
+    return "Tests aggregate functions. Interviewers check if candidates understand that aggregates ignore NULL values by default.";
+  }
+  if (p.includes("date") || p.includes("strftime") || p.includes("year")) {
+    return "Tests date manipulation. Crucial for cohort analyses and time-series reports.";
+  }
+  if (p.includes("cast") || p.includes("type")) {
+    return "Tests type casting. Critical for clean data join paths and avoiding data truncation errors.";
+  }
+  if (p.includes("sort") || p.includes("order by")) {
+    return "Tests sorting logic. Evaluates efficiency since sorting can trigger heavy disk writing for large datasets.";
+  }
+  if (p.includes("limit")) {
+    return "Tests result truncation. LIMIT is key in debugging to minimize impact on server resources.";
+  }
+
+  const fallbacks = {
+    3: "Tests wildcards and NULL checks. Demonstrates capability to process incomplete or semi-structured data fields.",
+    4: "Tests ordering and paging. Separates analysts who query all data from those who limit queries for production safety.",
+    5: "Tests aggregate functions. Crucial for basic summary calculations in reporting.",
+    6: "Tests multi-level aggregations. Evaluates grouping accuracy and filtering logic using HAVING.",
+    7: "Tests data validation. Essential for cleaning up columns with mixed data types before running joins.",
+    8: "Tests segment analysis. Crucial for converting numeric columns into descriptive business tiers.",
+    9: "Tests relational schema linkage. Standard relational join logic to combine entity tables.",
+    10: "Tests optional relationship handling. LEFT JOIN preserves unmatched records; vital for identifying missing records.",
+    11: "Tests hierarchical reporting. Critical for manager-employee or parent-category relationship analysis.",
+    12: "Tests nested queries. Demonstrates advanced query flow control and data routing.",
+    13: "Tests CTE modularity. Vital for clean, self-documenting code in enterprise database projects.",
+    14: "Tests rank calculations. Window functions are highly optimized and prevent slow self-joins.",
+    15: "Tests time-series analysis. Essential for calculating period-over-period differences directly in SQL.",
+    16: "Tests text cleaning. Crucial for standardizing string inputs before joining or presenting records.",
+    17: "Tests temporal segmentation. Critical for date partition matching and historical data joins.",
+    18: "Tests horizontal table concatenation. Shows understanding of mathematical sets."
+  };
+
+  return fallbacks[dayNum] || "Tests analytical precision, syntax execution, and logical layout.";
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -3552,23 +2639,79 @@ function clearOutputSection() {
   if (mainEditor) mainEditor.setValue('');
 }
 
+function saveCurrentPracticeAnswer() {
+  if (!mainEditor || !COURSE_CONFIG.practiceQuestions) return;
+  const q = COURSE_CONFIG.practiceQuestions[currentPracticeQ];
+  if (!q) return;
+  const val = mainEditor.getValue().trim();
+  const solvedKey = `${currentDay}-${q.id}`;
+  const isSolved = solvedQuestions.has(solvedKey);
+  
+  if (window.ProgressManager) {
+    ProgressManager.savePracticeAnswer(currentDay, q.id, val, isSolved);
+  }
+}
+
+function loadSavedPracticeAnswer() {
+  if (!mainEditor || !COURSE_CONFIG.practiceQuestions) return;
+  const q = COURSE_CONFIG.practiceQuestions[currentPracticeQ];
+  if (!q) return;
+  
+  if (window.ProgressManager) {
+    const dp = ProgressManager.getDayProgress(currentDay);
+    const saved = dp.practiceAnswers[q.id];
+    if (saved) {
+      mainEditor.setValue(saved);
+      return;
+    }
+  }
+  mainEditor.setValue('-- Write your SQL query here\n');
+}
+
+function formatGradingDiff(diff) {
+  if (!diff) return '';
+  let html = `<div class="grading-diff-alert" style="margin-top: 10px; padding: 12px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 6px; font-size: 0.78rem; line-height: 1.45;">`;
+  html += `<div style="font-weight: 700; color: var(--red); margin-bottom: 6px; display: flex; align-items: center; gap: 4px;">❌ Grading Check Failed</div>`;
+  
+  if (diff.type === 'column_count_mismatch') {
+    html += `<div><strong>Column Count Mismatch:</strong> Expected <strong>${diff.expected}</strong> columns, but your query returned <strong>${diff.actual}</strong> columns.</div>`;
+  } else if (diff.type === 'column_name_mismatch') {
+    html += `<div><strong>Column Name Mismatch:</strong> The column at index <strong>${diff.index + 1}</strong> is expected to be named <code>${escHtml(diff.expected)}</code>, but got <code>${escHtml(diff.actual)}</code>. (Column names are strict for alias grading)</div>`;
+  } else if (diff.type === 'row_count_mismatch') {
+    html += `<div><strong>Row Count Mismatch:</strong> Expected <strong>${diff.expected}</strong> rows in the result set, but your query returned <strong>${diff.actual}</strong> rows.</div>`;
+  } else if (diff.type === 'value_mismatch') {
+    html += `<div><strong>Result Value Mismatch:</strong> The values returned by your query do not match the expected solution. Check your filters (WHERE clauses), calculations, or JOIN conditions.</div>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
 function nextQuestion() {
   if (currentPracticeQ < COURSE_CONFIG.practiceQuestions.length - 1) {
+    saveCurrentPracticeAnswer();
     clearOutputSection();
     currentPracticeQ++;
     renderPracticeQuestion();
+    loadSavedPracticeAnswer();
   }
 }
 
 function prevQuestion() {
   if (currentPracticeQ > 0) {
+    saveCurrentPracticeAnswer();
     clearOutputSection();
     currentPracticeQ--;
     renderPracticeQuestion();
+    loadSavedPracticeAnswer();
   }
 }
 
-let solvedQuestions = new Set();
+// Persist solved questions across page refreshes
+let solvedQuestions = new Set(JSON.parse(localStorage.getItem('manodemy_solved_v3') || '[]'));
+
+function persistSolvedQuestions() {
+  localStorage.setItem('manodemy_solved_v3', JSON.stringify([...solvedQuestions]));
+}
 
 function updatePracticeStats() {
   let solved = 0;
@@ -3605,17 +2748,17 @@ function runCurrentQuery() {
     const q = COURSE_CONFIG.practiceQuestions[currentPracticeQ];
     let correct = false;
     if (q) {
-      try {
-        const refResult = runSQL(q.referenceSql);
-        correct = compareResults(refResult, result);
-      } catch (e) {
-        correct = false;
-      }
+      const gradingResult = window.gradeSubmission(query, q, db);
+      correct = gradingResult.passed;
 
       if (correct) {
         const solvedKey = `${currentDay}-${q.id}`;
         if (!solvedQuestions.has(solvedKey)) {
           solvedQuestions.add(solvedKey);
+          persistSolvedQuestions();
+          if (window.ProgressManager) {
+            ProgressManager.savePracticeAnswer(currentDay, q.id, query, true);
+          }
           updatePracticeStats();
         }
         // Update label to show correct indicator badge with encouraging compliments
@@ -3638,6 +2781,21 @@ function runCurrentQuery() {
         successBanner.style.marginTop = '8px';
         successBanner.innerHTML = '🎉 Correct Answer! Good job.';
         document.getElementById('mainOutput').appendChild(successBanner);
+      } else {
+        // Show grading differences
+        const label = document.querySelector('#mainOutput .output-label');
+        if (label) {
+          label.innerHTML = `Query Result <span class="incorrect-badge" style="background: var(--red-glow); color: var(--red); padding: 2px 8px; border-radius: var(--radius-sm); font-size: 0.7rem; margin-left: 8px; font-weight: 700; border: 1px solid rgba(239, 68, 68, 0.3); display: inline-flex; align-items: center; gap: 4px;">❌ Incorrect</span>`;
+        }
+        const diffHtml = formatGradingDiff(gradingResult.diff);
+        const diffDiv = document.createElement('div');
+        diffDiv.innerHTML = diffHtml;
+        document.getElementById('mainOutput').appendChild(diffDiv);
+        
+        // Save practice answer even if incorrect
+        if (window.ProgressManager) {
+          ProgressManager.savePracticeAnswer(currentDay, q.id, query, false);
+        }
       }
     }
   } catch (err) {
@@ -3841,42 +2999,265 @@ function initSlideContentObserver() {
 // INITIALIZATION
 // ═══════════════════════════════════════════════════════════════
 
+// ─── Day Content Loading System ─────────────────────────────────────────────
+
+function populateDaySelector() {
+  const sel = document.getElementById('daySelect');
+  if (!sel) return;
+  const manifest = window.COURSE_MANIFEST || [];
+  if (manifest.length === 0) {
+    // Fallback: just Day 01
+    sel.innerHTML = '<option value="day01" selected>Day 01: Introduction to SQL &amp; Databases</option>';
+    return;
+  }
+  sel.innerHTML = manifest.map((d, i) => {
+    const dayStr = String(d.day).padStart(2, '0');
+    const emoji = d.emoji || '';
+    const selected = i === 0 ? ' selected' : '';
+    return `<option value="${d.id}"${selected}>${emoji} Day ${dayStr}: ${d.title}</option>`;
+  }).join('');
+}
+
+function loadDayContent(dayId) {
+  const manifest = window.COURSE_MANIFEST || [];
+  const dayMeta = manifest.find(d => d.id === dayId);
+  const dayContent = window.COURSE_CONTENT && window.COURSE_CONTENT[dayId];
+
+  if (!dayContent) {
+    // Show loading placeholder
+    const slideContent = document.getElementById('slideBodyText');
+    if (slideContent) {
+      const dayNum = dayId.replace('day', 'Day ');
+      slideContent.innerHTML = `
+        <div style="padding:32px;text-align:center;color:#8c92ac;">
+          <div style="font-size:48px;margin-bottom:16px;">🚧</div>
+          <h3 style="color:#e2e8f0;margin:0 0 8px 0;">${dayNum} Loading…</h3>
+          <p style="margin:0;font-size:0.85rem;">Loading day content module. Please wait or refresh.</p>
+        </div>`;
+    }
+    // Lazy-load the content script
+    const dayNum = parseInt(dayId.replace('day', ''), 10);
+    const script = document.createElement('script');
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=13.8`;
+    script.onload = () => {
+      // Re-run now that module is loaded
+      loadDayContent(dayId);
+    };
+    script.onerror = () => {
+      const slideContent = document.getElementById('slideBodyText');
+      if (slideContent) {
+        slideContent.innerHTML = `<div style="padding:32px;text-align:center;color:#ef4444;"><p>Failed to load Day ${dayNum} content.</p></div>`;
+      }
+    };
+    document.head.appendChild(script);
+    return;
+  }
+
+  // ── Apply content to COURSE_CONFIG ──
+  COURSE_CONFIG.dayId = dayId;
+  COURSE_CONFIG.title = dayContent.title || COURSE_CONFIG.title;
+
+  if (dayContent.slides && dayContent.slides.length > 0) {
+    COURSE_CONFIG.slides = dayContent.slides;
+  }
+  if (dayContent.practiceQuestions) {
+    COURSE_CONFIG.practiceQuestions = dayContent.practiceQuestions;
+    // Also update allPracticeQuestions map
+    if (!COURSE_CONFIG.allPracticeQuestions) COURSE_CONFIG.allPracticeQuestions = {};
+    COURSE_CONFIG.allPracticeQuestions[dayId] = dayContent.practiceQuestions;
+  }
+  if (dayContent.testQuestions) {
+    COURSE_CONFIG.testQuestions = dayContent.testQuestions;
+  }
+  if (dayContent.topics) {
+    COURSE_CONFIG.topics = dayContent.topics;
+  }
+  if (dayContent.schema) {
+    COURSE_CONFIG.schema = dayContent.schema;
+  }
+
+  // ── Switch database ──
+  const dbKey = dayContent.db || 'retail';
+  if (dbKey === 'day01_db') {
+    // Day 01 uses simple employees db already in COURSE_CONFIG.schema
+    loadDatabaseSeed('day01_db');
+  } else {
+    loadDatabaseSeed(dbKey);
+    // Update schema cards based on retail DB
+    if (window.DB_SEEDS && window.DB_SEEDS[dbKey]) {
+      COURSE_CONFIG.schema = window.DB_SEEDS[dbKey];
+    }
+  }
+
+  // ── Re-render UI ──
+  currentSlide = 0;
+  currentDay = dayId;
+  currentPracticeQ = 0;
+  renderSideSlide();
+  clearDrawCanvas();
+  renderPracticeQuestion();
+  renderSchemaCards();
+  updatePracticeStats();
+
+  // Rebuild topicSelect
+  const topicSel = document.getElementById('topicSelect');
+  if (topicSel && COURSE_CONFIG.slides) {
+    topicSel.innerHTML = COURSE_CONFIG.slides.map((s, i) => {
+      const cleaned = s.title.replace(/^\d+\.\s*/, '');
+      return `<option value="${i}">Topic ${String(i+1).padStart(2,'0')}: ${cleaned}</option>`;
+    }).join('');
+    topicSel.value = 0;
+    initCustomDropdowns();
+  }
+
+  // Update test title dynamically
+  const testTitleEl = document.querySelector('.test-title');
+  if (testTitleEl) {
+    const dayStr = String(parseInt(dayId.replace('day', ''), 10)).padStart(2, '0');
+    testTitleEl.textContent = `📝 Day ${dayStr} — SQL Interview Test`;
+  }
+
+  // Clear editor and terminal
+  clearOutputSection();
+  loadSavedPracticeAnswer();
+
+  // Re-init autocomplete with new schema columns
+  if (mainEditor) {
+    const schema = getSchemaInfo();
+    const hintTables = {};
+    Object.keys(schema).forEach(t => { hintTables[t] = schema[t]; });
+    mainEditor.setOption('hintOptions', { tables: hintTables });
+  }
+
+  // Transition animation
+  const ws = document.getElementById('workspaceContainer');
+  if (ws) {
+    ws.classList.add('day-transition');
+    ws.style.opacity = '1';
+    ws.style.filter = 'none';
+    ws.style.transform = 'none';
+  }
+
+  console.log(`Day ${dayId} loaded successfully.`);
+  setTimeout(() => {
+    checkAndResumeTest(dayId);
+  }, 350);
+}
+
+// ─── Keyboard Shortcuts ───────────────────────────────────────────────────────
+function initKeyboardShortcuts() {
+  document.addEventListener('keydown', (e) => {
+    // Ctrl+Enter → Run query
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      if (document.getElementById('testOverlay')?.classList.contains('open')) {
+        runTestQuery();
+      } else {
+        runCurrentQuery();
+      }
+    }
+    // Ctrl+L → Clear editor
+    if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+      e.preventDefault();
+      if (document.getElementById('testOverlay')?.classList.contains('open')) {
+        clearTestEditor();
+      } else {
+        clearEditor();
+      }
+    }
+    // Ctrl+→ → Next question
+    if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowRight') {
+      e.preventDefault();
+      nextQuestion();
+    }
+    // Ctrl+← → Previous question
+    if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowLeft') {
+      e.preventDefault();
+      prevQuestion();
+    }
+    // Esc → Close any open overlay
+    if (e.key === 'Escape') {
+      const testOverlay = document.getElementById('testOverlay');
+      const scorecardOverlay = document.getElementById('scorecardOverlay');
+      const peekPopover = document.getElementById('peekPopover');
+      if (scorecardOverlay?.classList.contains('open')) { closeScorecard(); return; }
+      if (peekPopover?.classList.contains('open')) { closePeekPopover(); return; }
+      if (testOverlay?.classList.contains('open')) { closeTestPortal(); return; }
+    }
+  });
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
   try {
+    // Initialize progress manager
+    if (window.ProgressManager) {
+      window.ProgressManager.load();
+    }
+
     await initDatabase();
     initMainEditor();
+
     // Eagerly load the manifest so accurate durations are available immediately
-    // and updateProgressUI() can show the correct total time on first render.
     loadManifest().catch(() => {}); // Non-blocking — fallback durations already set
-    renderSideSlide();
+
+    // Populate Day Selector from COURSE_MANIFEST
+    populateDaySelector();
+
+    // Detect default day dynamically from page pathname (e.g. day02.html -> day02)
+    let defaultDay = 'day01';
+    const pathMatch = window.location.pathname.match(/day(\d+)\.html/i);
+    if (pathMatch) {
+      defaultDay = `day${pathMatch[1]}`;
+    }
+
+    // Load initial day content (lazy-loads matching module script if needed)
+    loadDayContent(defaultDay);
+
+    // Sync selector UI to show the default day active
+    const daySelectEl = document.getElementById('daySelect');
+    if (daySelectEl) {
+      daySelectEl.value = defaultDay;
+      const textSpan = document.querySelector('.day-picker-pill .selected-text');
+      if (textSpan) {
+        textSpan.textContent = `Day ${defaultDay.replace('day', '')}`;
+      }
+    }
+
     initSlideContentObserver();
     resizeWsCanvas();
-    renderPracticeQuestion();
-    renderSchemaCards();
     setupStudentTakeover();
     setupTimelineDragging();
-
-    // Update stats
-    updatePracticeStats();
 
     // Init IndexedDB and load bookmarks
     await openIDB();
     await loadBookmarks();
-    
+
     // Set initial arrows based on layout size
     updateDividerArrows();
 
-    // Handle daySelect change and load day-specific slide & questions
+    // Keyboard shortcuts
+    initKeyboardShortcuts();
+
+    // Handle daySelect change
     document.getElementById('daySelect')?.addEventListener('change', function() {
-      if (this.value === 'day02' || this.value === 'day03' || this.value === 'day04') {
-        alert(`${this.value.replace('day', 'Day ')} is currently under development.`);
-        this.value = 'day01';
+      const selectedDay = this.value;
+      // Animate transition
+      const ws = document.getElementById('workspaceContainer');
+      if (ws) {
+        ws.classList.add('day-transition');
+        ws.style.opacity = '0.3';
+        ws.style.filter = 'blur(4px)';
+        ws.style.transform = 'translateY(8px)';
       }
+      setTimeout(() => {
+        loadDayContent(selectedDay);
+      }, 250);
       
       // Sync indicator badge text
       const badge = document.querySelector('.day-pill-badge');
       if (badge) {
-        badge.textContent = `DAY 01`;
+        const dayNum = selectedDay.replace('day', '').toUpperCase();
+        badge.textContent = `DAY ${dayNum}`;
       }
 
       // Sync active slide and topicSelect to match the day
@@ -3890,7 +3271,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       }
       
       // Load day-specific practice questions
-      loadQuestionsForDay('day01');
+      loadQuestionsForDay(selectedDay);
     });
 
     // Populate topicSelect dropdown
@@ -3915,6 +3296,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
+
 // Handle window resize for canvas
 window.addEventListener('resize', () => {
   if (presentOpen) resizeDrawCanvas();
@@ -3927,55 +3309,71 @@ window.addEventListener('resize', () => {
 // ═══════════════════════════════════════════════════════════════
 
 function prevDay() {
-  alert('You are at Day 01, which is the start of the course.');
+  const sel = document.getElementById('daySelect');
+  if (!sel) return;
+  const idx = sel.selectedIndex;
+  if (idx > 0) {
+    sel.selectedIndex = idx - 1;
+    sel.dispatchEvent(new Event('change'));
+  } else {
+    showToast('You are at the start of the course (Day 01)');
+  }
 }
 
 function nextDay() {
-  alert('Day 02 and subsequent days are under development. Only Day 01 is active in this version.');
+  const sel = document.getElementById('daySelect');
+  if (!sel) return;
+  const idx = sel.selectedIndex;
+  if (idx < sel.options.length - 1) {
+    sel.selectedIndex = idx + 1;
+    sel.dispatchEvent(new Event('change'));
+  } else {
+    showToast('You have completed all 18 days! 🎉');
+  }
 }
 
 function onTopicSelectChange(val) {
   currentSlide = parseInt(val, 10);
   renderCurrentSlide();
   clearDrawCanvas();
-  
-  // Sync daySelect dropdown value (always keep at day01)
-  const daySelect = document.getElementById('daySelect');
-  if (daySelect) {
-    if (daySelect.value !== 'day01') {
-      daySelect.value = 'day01';
-      const badge = document.querySelector('.day-pill-badge');
-      if (badge) {
-        badge.textContent = `DAY 01`;
-      }
-    }
-  }
-
-  // Load topic-specific questions (slide index 0 -> day01, 1 -> day02, 2 -> day03)
-  let qDay = 'day01';
-  if (currentSlide === 1) qDay = 'day02';
-  if (currentSlide === 2) qDay = 'day03';
-  loadQuestionsForDay(qDay);
+  // Load topic-specific questions
+  loadQuestionsForDay(currentDay || 'day01');
 }
 
 function openScoreCard() {
-  // If the test has already been completed, open the student takeover review portal
-  const hasSub = localStorage.getItem('test_submitted') || testSubmitted;
-  if (hasSub) {
-    setupStudentTakeover();
-    const modal = document.getElementById('testPortalModal');
-    if (modal) modal.classList.add('open');
-  } else {
-    alert(`Practice Score Card:\n\nQuestions Solved: ${solvedQuestions.size} / ${COURSE_CONFIG.practiceQuestions.length}\nMarks Gained: ${solvedQuestions.size}.0 / ${COURSE_CONFIG.practiceQuestions.length}.0\n\nSubmit the test using "Take Test" to grade your formal score.`);
+  if (window.ProgressManager) {
+    const dp = ProgressManager.getDayProgress(currentDay);
+    if (dp && dp.testAttempt && dp.testAttempt.submitted) {
+      renderScorecardFromAttempt(dp.testAttempt);
+      document.getElementById('scorecardOverlay').classList.add('open');
+      return;
+    }
   }
+  const solved = getDaySolvedCount();
+  const total = COURSE_CONFIG.practiceQuestions ? COURSE_CONFIG.practiceQuestions.length : 0;
+  alert(`Practice Score Card:\n\nQuestions Solved: ${solved} / ${total}\nMarks Gained: ${solved}.0 / ${total}.0\n\nSubmit the test using "Take Test" to grade your formal score.`);
 }
 
 function openTestScoreCard() {
-  if (testSubmitted) {
-    document.getElementById('scorecardOverlay').classList.add('open');
-  } else {
-    alert('Please submit your test using the "Submit Test" button in the sidebar first to view your graded scorecard.');
+  if (window.ProgressManager) {
+    const dp = ProgressManager.getDayProgress(currentDay);
+    if (dp && dp.testAttempt && dp.testAttempt.submitted) {
+      renderScorecardFromAttempt(dp.testAttempt);
+      document.getElementById('scorecardOverlay').classList.add('open');
+      return;
+    }
   }
+  alert('Please submit your test using the "Submit Test" button in the sidebar first to view your graded scorecard.');
+}
+
+function getDaySolvedCount() {
+  let solved = 0;
+  solvedQuestions.forEach(key => {
+    if (key.startsWith(currentDay + '-')) {
+      solved++;
+    }
+  });
+  return solved;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -4031,7 +3429,12 @@ function initCustomDropdowns() {
             <span class="trigger-duration-badge">${duration}</span>
           `;
         } else if (option) {
-          textSpan.textContent = option.text;
+          if (select.id === 'daySelect') {
+            const dayNum = option.value.replace('day', '');
+            textSpan.textContent = `Day ${dayNum}`;
+          } else {
+            textSpan.textContent = option.text;
+          }
         } else {
           textSpan.textContent = '';
         }

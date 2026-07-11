@@ -1,1308 +1,413 @@
 <!DOCTYPE html>
-<html lang="en" data-course="python">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 02: Operators and Expressions — Manodemy</title>
-<meta name="description" content="Day 02: Operators and Expressions — Interactive Python coding workbook with hands-on challenges. Part of Manodemy's 30-Day Python for Data Analyst course.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manodemy — Day 02: Filtering Data with WHERE</title>
+  <meta name="description" content="Interactive SQL learning sandbox with Scrimba-style recording, presentation slides, and a timed test portal.">
 
-<!-- Performance: Preconnect to critical origins -->
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="dns-prefetch" href="https://erqoyvbuhmkyvcqgwcbz.supabase.co">
-<!-- Supabase SDK (deferred — no longer render-blocking) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<!-- Authentication + Enrollment Route Guard (runs after deferred SDK loads) -->
-<script>
-  document.addEventListener('DOMContentLoaded', async function PaywallGuard() {
-    const currentPath = window.location.pathname;
-    const isProtectedDay = currentPath.match(/day(0[3-9]|[1-2][0-9]|30)\.html/);
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
-    const removePreload = () => {
-      const p = document.getElementById('paywall-preload-screen');
-      if (p) p.remove();
-    };
+  <!-- CodeMirror 5 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
 
-    if (!isProtectedDay) {
-      removePreload();
-      return;
-    }
+  <!-- App CSS -->
+  <link rel="stylesheet" href="/Version-3/styles.css?v=14.2">
 
-    try {
-      if (typeof window.supabase === 'undefined') {
-        window.location.href = 'index.html?reason=sdk_blocked';
-        return;
-      }
-      const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
-      const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
-      const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-      
-      const { data: { session }, error } = await sb.auth.getSession();
-      
-      if (error || !session) {
-        window.location.href = `index.html?redirect=${encodeURIComponent(currentPath)}`;
-        return;
-      }
-      
-      const plan = session.user.user_metadata?.plan;
-      const isEnrolledLocal = localStorage.getItem('manodemy_enrolled') === 'true';
-      
-      if (plan === 'pro' || isEnrolledLocal) {
-        removePreload();
-        return;
-      }
-      
-      // Fallback: verify enrollment server-side via Supabase RPC
-      try {
-        const { data: enrolled } = await sb.rpc('check_enrollment', { p_course_id: 'python-30day' });
-        if (enrolled) {
-          localStorage.setItem('manodemy_enrolled', 'true');
-          removePreload();
-          return;
-        }
-      } catch (rpcErr) {
-        // RPC failed — don't grant access
-      }
-      
-      window.location.href = `index.html#pricing?locked=true`;
-      
-    } catch (err) {
-      window.location.href = `index.html`;
-    }
-  });
-</script>
-<!-- Non-render-blocking fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
-<link rel="stylesheet" href="notebook.css">
-<!-- PWA Web App Manifest and Mobile Capabilities -->
-<link rel="manifest" href="/manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#060913">
+  <!-- CodeMirror JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/sql-hint.min.js"></script>
+
+  <!-- SQL.js WASM -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
 </head>
 <body>
-<!-- Paywall Preload Screen -->
-<div id="paywall-preload-screen" class="paywall-preload" aria-hidden="true">
-  <div class="paywall-preload__spinner"></div>
-</div>
 
-<nav class="top-bar nav-container" id="topBar">
-  <div class="nav-zone--left">
-    <!-- Profile Avatar -->
-    <div class="avatar-wrapper" id="profileAvatar" 
-         role="button" 
-         tabindex="0" 
-         aria-label="Open profile card"
-         aria-expanded="false"
-         aria-haspopup="true">
-      <div class="avatar-circle" id="avatarCircle"></div>
-      <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-
-    <!-- Score Card -->
-    <div class="nav-score-card">
-      <div class="score-info">
-        <span class="score-label">Solved</span>
-        <span class="score-values"><span id="scoreSolved" class="score-highlight">0</span> / <span id="scoreTotal">0</span></span>
-      </div>
-      <div class="score-track"><div class="score-fill" id="scoreProgress" style="width:0%"></div></div>
-    </div>
-  </div>
-
-  <div class="nav-center has-dropdown">
-    <div class="nav-center-flex">
-      <a href="day01.html" class="nav-icon-btn prev-btn" aria-label="Previous Day" title="Previous Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
-      <button class="nav-dropdown-btn" id="dayDropdownBtn">
-        <span class="day-badge">Day 02</span>
-        <span class="day-title">Operators and Expressions</span>
-        <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
-      <a href="day03.html" id="topNextBtn" class="nav-icon-btn next-btn" aria-label="Next Day" title="Next Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
-    </div>
-    <div class="nav-dropdown-menu" id="dayDropdownMenu">
-      <div class="dropdown-header">Jump to another day</div>
-      <div class="dropdown-scroll">
-        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">🔢</span> Data Types and Memory</a>
-<a href="day02.html" class="dropdown-item active"><span class="day-num">Day 02</span> <span class="day-em">➕</span> Operators and Expressions</a>
-<a href="day03.html" class="dropdown-item "><span class="day-num">Day 03</span> <span class="day-em">📝</span> Strings</a>
-<a href="day04.html" class="dropdown-item "><span class="day-num">Day 04</span> <span class="day-em">📋</span> Lists</a>
-<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">📦</span> Tuples</a>
-<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">⭕</span> Sets</a>
-<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">🗂️</span> Dictionaries</a>
-<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">🔀</span> Conditionals</a>
-<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">🔄</span> Loops</a>
-<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">⚙️</span> Functions</a>
-<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">📦</span> Modules</a>
-<a href="day12.html" class="dropdown-item "><span class="day-num">Day 12</span> <span class="day-em">🧮</span> Comprehensions</a>
-<a href="day13.html" class="dropdown-item "><span class="day-num">Day 13</span> <span class="day-em">λ</span> Lambda Functions</a>
-<a href="day14.html" class="dropdown-item "><span class="day-num">Day 14</span> <span class="day-em">⚠️</span> Exceptions</a>
-<a href="day15.html" class="dropdown-item "><span class="day-num">Day 15</span> <span class="day-em">📂</span> File Handling</a>
-<a href="day16.html" class="dropdown-item "><span class="day-num">Day 16</span> <span class="day-em">🧩</span> OOP Basics</a>
-<a href="day17.html" class="dropdown-item "><span class="day-num">Day 17</span> <span class="day-em">🏗️</span> OOP Advanced</a>
-<a href="day18.html" class="dropdown-item "><span class="day-num">Day 18</span> <span class="day-em">🔍</span> Regex</a>
-<a href="day19.html" class="dropdown-item "><span class="day-num">Day 19</span> <span class="day-em">⚡</span> Generators and Iterators</a>
-<a href="day20.html" class="dropdown-item "><span class="day-num">Day 20</span> <span class="day-em">🏆</span> Capstone Project</a>
-<a href="day21.html" class="dropdown-item "><span class="day-num">Day 21</span> <span class="day-em">📊</span> NumPy Fundamentals</a>
-<a href="day22.html" class="dropdown-item "><span class="day-num">Day 22</span> <span class="day-em">📈</span> NumPy Advanced</a>
-<a href="day23.html" class="dropdown-item "><span class="day-num">Day 23</span> <span class="day-em">🐼</span> Pandas Introduction</a>
-<a href="day24.html" class="dropdown-item "><span class="day-num">Day 24</span> <span class="day-em">🎯</span> Pandas Selection</a>
-<a href="day25.html" class="dropdown-item "><span class="day-num">Day 25</span> <span class="day-em">🧹</span> Pandas Cleaning</a>
-<a href="day26.html" class="dropdown-item "><span class="day-num">Day 26</span> <span class="day-em">🗃️</span> Pandas GroupBy</a>
-<a href="day27.html" class="dropdown-item "><span class="day-num">Day 27</span> <span class="day-em">🔗</span> Pandas Merging</a>
-<a href="day28.html" class="dropdown-item "><span class="day-num">Day 28</span> <span class="day-em">📉</span> Pandas Time Series</a>
-<a href="day29.html" class="dropdown-item "><span class="day-num">Day 29</span> <span class="day-em">🎨</span> Data Visualization</a>
-<a href="day30.html" class="dropdown-item "><span class="day-num">Day 30</span> <span class="day-em">🔬</span> Phase Analysis & Review</a>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="nav-zone--right">
-    <!-- App Navigation -->
-    <div class="nav-controls">
-      <a href="home.html" class="nav-icon-btn scorecard-btn" title="Back to Dashboard" aria-label="Score Card">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
-        Score Card
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <header class="header">
+    <div class="header-left">
+      <!-- Back Arrow Link -->
+      <a href="/" class="back-to-home-btn" title="Back to Home Dashboard" style="color: #64748b; margin-right: 12px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
       </a>
+      <!-- User Profile Avatar with active green dot -->
+      <div class="user-profile">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIgn6NDc0OGIiPjxhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==" alt="User Profile" class="avatar-img" style="background-color: rgba(255,255,255,0.08);" />
+        <span class="active-dot"></span>
+      </div>
+      
+      <!-- Graded Stats Card with Progress Indicator -->
+      <div class="stats-card">
+        <div class="stats-row">
+          <div class="stats-item">
+            <span class="stats-label">SOLVED</span>
+            <span class="stats-value stats-value--fraction">
+              <span class="stats-num" id="solvedCount">0</span>
+              <span class="stats-den" id="totalQuestions">2</span>
+            </span>
+          </div>
+          <div class="stats-divider"></div>
+          <div class="stats-item">
+            <span class="stats-label">MARKS</span>
+            <span class="stats-value stats-value--fraction">
+              <span class="stats-num" id="marksCount">0.0</span>
+              <span class="stats-den" id="totalMarks">2.0</span>
+            </span>
+          </div>
+        </div>
+        <div class="stats-progress-bar">
+          <div class="stats-progress-fill" id="statsProgressFill" style="width: 0%"></div>
+        </div>
+      </div>
     </div>
-  </div>
-</nav>
 
-<div class="profile-card" id="profileCard" 
-     role="dialog" 
-     aria-label="User profile summary"
-     aria-modal="false">
-  <div class="profile-card__header">
-    <div class="profile-card__info">
-      <h2 class="profile-card__name" id="profileName">Loading...</h2>
-      <p class="profile-card__email" id="profileEmail">loading@... </p>
+    <div class="header-center">
+      <!-- Day Selector Dropdown & Topic Selector Dropdown -->
+      <div class="day-navigation">
+        <div class="day-picker-pill">
+          <span class="day-picker-dot day-picker-dot--day"></span>
+          <select id="daySelect">
+            <!-- Populated dynamically -->
+          </select>
+          <span class="day-picker-chevron">
+            <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <div class="day-picker-pill topic-picker-pill">
+          <span class="day-picker-dot day-picker-dot--topic"></span>
+          <select id="topicSelect" onchange="onTopicSelectChange(this.value)">
+            <!-- Populated dynamically -->
+          </select>
+          <span class="day-picker-chevron">
+            <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <button class="hdr-btn hdr-btn--autoplay" id="navPlayBtn" onclick="toggleCombinedPlayback()" title="Play lecture narration" style="display: none;">
+          <span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>
+        </button>
+      </div>
     </div>
-    <span class="profile-card__badge" id="profileBadge">Free</span>
-  </div>
-  
-  <div class="profile-card__progress-section">
-    <div class="profile-card__progress-labels">
-      <span class="profile-card__progress-text">Overall Progress</span>
-      <span class="profile-card__progress-pct" id="profileProgressPct">0%</span>
+
+    <div class="header-right">
+      <button class="hdr-btn hdr-btn--test" id="takeTestBtn" onclick="openTestPortal()" title="Take the day test">🧪 Take Test</button>
+      <button class="hdr-btn hdr-btn--score" id="scoreBtn" onclick="openScoreCard()" title="View Score Card">
+        <svg class="score-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right: 4px;"><path d="M1.5 1.5H5.5V5.5H1.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 1.5H12.5V5.5H8.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 8.5H5.5V12.5H1.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8.5H12.5V12.5H8.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Score Card
+      </button>
     </div>
+  </header>
+
+  <div class="mobile-tabs-nav" id="mobileTabsNav">
+    <button class="mobile-tab-btn active" id="tabBtnTheory" onclick="setMobileTab('theory')">
+      <span class="tab-emoji">📖</span> Lesson
+    </button>
+    <button class="mobile-tab-btn" id="tabBtnPractice" onclick="setMobileTab('practice')">
+      <span class="tab-emoji">💻</span> Practice
+    </button>
   </div>
-  
-  <button class="profile-card__signout" id="signOutBtn">Sign Out</button>
-</div>
 
-<div class="pyodide-status" id="pyStatus">⏳ Loading Python Engine...</div>
-<div class="layout">
-  <main class="notebook" id="notebook">
-    <div class="nb-title"><h1>📊 Day 02 : Operators and Expressions</h1></div>
-<div class="nb-section" id="sec-0">
-<h2>🎯 Enterprise Objective</h2>
-<p>Operators are the verbs of Python — they act on data. Today we master every operator category, from basic arithmetic to bitwise manipulation and the modern walrus operator. You will learn not just <em>what</em> each operator does, but <em>when</em> and <em>why</em> to use it in professional data pipelines.</p>
-<h3>📋 Strategic Overview</h3>
-<table>
-<thead><tr><th>#</th><th>Category</th><th>Operators</th><th>Core Use Case</th></tr></thead><tbody>
-<tr><td>1</td><td>Arithmetic</td><td><code>+</code>, <code>-</code>, <code><em></code>, <code>/</code>, <code>//</code>, <code>%</code>, <code></em>*</code></td><td>Numeric computations</td></tr>
-<tr><td>2</td><td>Assignment</td><td><code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, etc.</td><td>In-place modification</td></tr>
-<tr><td>3</td><td>Comparison</td><td><code>==</code>, <code>!=</code>, <code><</code>, <code>></code>, <code><=</code>, <code>>=</code></td><td>Filtering & validation</td></tr>
-<tr><td>4</td><td>Logical</td><td><code>and</code>, <code>or</code>, <code>not</code></td><td>Boolean logic</td></tr>
-<tr><td>5</td><td>Identity & Membership</td><td><code>is</code>, <code>in</code></td><td>Object inspection</td></tr>
-<tr><td>6</td><td>Bitwise</td><td><code>&</code>, `\</td><td><code>, </code>^<code>, </code>~<code>, </code><<<code>, </code>>>`</td><td>Binary manipulation</td></tr>
-<tr><td>7</td><td>Ternary</td><td><code>x if cond else y</code></td><td>Inline conditionals</td></tr>
-<tr><td>8</td><td>Precedence</td><td>(evaluation order)</td><td>Correct formula design</td></tr>
-<tr><td>9</td><td>Short-Circuit</td><td><code>and</code>/<code>or</code> early exit</td><td>Safe access patterns</td></tr>
-<tr><td>10</td><td>Walrus</td><td><code>:=</code></td><td>Assignment expressions</td></tr>
-</tbody></table>
-</div>
-<div class="nb-section" id="sec-1">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>1. Arithmetic Operators : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Numeric Operations</span></b>
-</h2>
-<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <b>🔍 What is it?</b><br>
-</div></div>
-<p>Python has 7 built-in arithmetic operators: <code>+</code> (add), <code>-</code> (subtract), <code><em></code> (multiply), <code>/</code> (true division), <code>//</code> (floor division), <code>%</code> (modulo), and <code></em>*</code> (exponentiation). These are the fundamental building blocks for all numerical computations.</p>
-<p><strong>Quick Reference:</strong></p>
-<table>
-<thead><tr><th>Operator</th><th>Name</th><th>Example</th><th>Result</th></tr></thead><tbody>
-<tr><td><code>+</code></td><td>Addition</td><td><code>7 + 3</code></td><td><code>10</code></td></tr>
-<tr><td><code>-</code></td><td>Subtraction</td><td><code>7 - 3</code></td><td><code>4</code></td></tr>
-<tr><td><code>*</code></td><td>Multiplication</td><td><code>7 * 3</code></td><td><code>21</code></td></tr>
-<tr><td><code>/</code></td><td>True Division</td><td><code>7 / 3</code></td><td><code>2.333...</code></td></tr>
-<tr><td><code>//</code></td><td>Floor Division</td><td><code>7 // 3</code></td><td><code>2</code></td></tr>
-<tr><td><code>%</code></td><td>Modulo</td><td><code>7 % 3</code></td><td><code>1</code></td></tr>
-<tr><td><code>**</code></td><td>Power</td><td><code>2 ** 10</code></td><td><code>1024</code></td></tr>
-</tbody></table>
-<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
-<p>• <strong>Financial calculations</strong>: <code>profit = revenue - costs</code></p>
-<p>• <strong>Metrics generation</strong>: <code>margin = (profit / revenue) * 100</code></p>
-<p>• <strong>Batch processing</strong>: Using modulo <code>%</code> to execute code every Nth row</p>
-<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Division Always Returns Float</b></h3>
-<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-</div></div>
-<p>The <code>/</code> operator <b>always</b> returns a float, even if the result is whole: <code>10 / 2</code> → <code>5.0</code>. Use <code>//</code> for integer results.</p>
-<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
-<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-</div></div>
-<p>Exponentiation evaluates right-to-left: <code>2<strong>3</strong>2</code> = <code>2<strong>(3</strong>2)</code> = <code>2<strong>9</code> = 512, not <code>(2</strong>3)**2</code> = 64.</p>
-<div class="code-cell" id="cell-1">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-1">revenue = 150000
-costs   = 87500
-profit  = revenue - costs
-margin  = (profit / revenue) * 100
-print(f&#x27;Profit: ${profit:,}&#x27;)
-print(f&#x27;Margin: {margin:.1f}%&#x27;)
+  <!-- ═══════════════ SPLIT WORKSPACE ═══════════════ -->
+  <div class="workspace mobile-show-theory" id="workspaceContainer">
 
-# Floor division and modulo
-print(17 // 5)   # 3
-print(17 %  5)   # 2
-print(2 ** 10)   # 1024</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Arithmetic-3">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Arithmetic</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Compute <code>17 // 5</code> and <code>17 % 5</code>. Verify: <code>5 * (17//5) + (17%5) == 17</code>. Print all values and the verification.</p></div>
-<div class="code-cell" id="cell-2">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-2"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Write code that computes the area of a circle with radius <code>r = 7.5</code> using <code>pi = 3.14159</code>. Print the result rounded to 2 decimal places.</p></div>
-<div class="code-cell" id="cell-3">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-3"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Given <code>x = -7</code> and <code>y = 2</code>, compute <code>x / y</code>, <code>x // y</code>, and <code>x % y</code>. Explain why <code>x // y</code> is <code>-4</code> and not <code>-3</code>.</p></div>
-<div class="code-cell" id="cell-4">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-4"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Write code to extract the tens digit from <code>n = 4567</code> using only <code>//</code> and <code>%</code> operators. Print the result.</p></div>
-<div class="code-cell" id="cell-5">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-5"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Compute <code>2<strong>3</strong>2</code> and <code>(2<strong>3)</strong>2</code>. Print both results and explain why they differ (right-to-left associativity).</p></div>
-<div class="code-cell" id="cell-6">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-6"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-14">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>2. Assignment Operators : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">In-Place Operations</span></b>
-</h2>
-<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <b>🔍 What is it?</b><br>
-</div></div>
-<p>Assignment operators combine an arithmetic or bitwise operation with assignment. Instead of writing <code>x = x + 5</code>, you write <code>x += 5</code>. Python supports: <code>+=</code>, <code>-=</code>, <code><em>=</code>, <code>/=</code>, <code>//=</code>, <code>%=</code>, <code></em>*=</code>, and bitwise variants.</p>
-<table>
-<thead><tr><th>Operator</th><th>Equivalent</th><th>Example</th></tr></thead><tbody>
-<tr><td><code>x += 5</code></td><td><code>x = x + 5</code></td><td>Accumulate totals</td></tr>
-<tr><td><code>x -= 3</code></td><td><code>x = x - 3</code></td><td>Decrease counters</td></tr>
-<tr><td><code>x *= 2</code></td><td><code>x = x * 2</code></td><td>Scale values</td></tr>
-<tr><td><code>x //= 4</code></td><td><code>x = x // 4</code></td><td>Integer reduction</td></tr>
-<tr><td><code>x **= 2</code></td><td><code>x = x ** 2</code></td><td>Square values</td></tr>
-</tbody></table>
-<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
-<p>• <strong>Running totals</strong>: Accumulating sums in loops: <code>total += row_value</code></p>
-<p>• <strong>Counter patterns</strong>: <code>count += 1</code> is the most common pattern in data pipelines</p>
-<p>• <strong>Scaling</strong>: Normalize columns: <code>col *= scale_factor</code></p>
-<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Immutable Types</b></h3>
-<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-</div></div>
-<p>For immutable types like <code>str</code> and <code>tuple</code>, <code>+=</code> creates a <b>new object</b> rather than modifying in-place. This can be a performance trap in tight loops.</p>
-<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
-<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-</div></div>
-<p>Use <code>x <em>= -1</code> to flip the sign of a number. Use <code>x </em>*= 0.5</code> for square root.</p>
-<div class="code-cell" id="cell-7">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-7">total = 0
-for sale in [150, 230, 180, 410]:
-    total += sale
-print(f&#x27;Total sales: ${total:,}&#x27;)
 
-# Compound assignments
-x = 100
-x //= 3    # 33
-x **= 2    # 1089
-print(x)</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Assignment-16">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Assignment</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Start with <code>balance = 1000</code>. Apply these in order: <code>+= 500</code>, <code>-= 200</code>, <code>*= 1.1</code>, <code>//= 1</code>. Print balance after each step.</p></div>
-<div class="code-cell" id="cell-8">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-8"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Write a loop that computes <code>n! (factorial)</code> for <code>n = 10</code> using only <code>*=</code>. Print the result and verify with <code>math.factorial(10)</code>.</p></div>
-<div class="code-cell" id="cell-9">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-9')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-9')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-9"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Create <code>text = "Hello"</code>. Use <code>+=</code> to append <code>" World"</code>. Then check if <code>id(text)</code> changed (proving a new object was created). Print both IDs.</p></div>
-<div class="code-cell" id="cell-10">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-10')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-10')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-10"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Start with <code>x = 256</code>. Apply <code>//= 2</code> repeatedly in a loop until <code>x < 1</code>. Count and print how many iterations it took.</p></div>
-<div class="code-cell" id="cell-11">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-11')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-11')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-11"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Write code that uses <code>%=</code> to keep an angle within 0-359 degrees. Test with <code>angle = 750</code>. Print the normalized angle.</p></div>
-<div class="code-cell" id="cell-12">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-12')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-12')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-12"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-27">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>3. Comparison Operators : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Relational Logic</span></b>
-</h2>
-<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <b>🔍 What is it?</b><br>
-</div></div>
-<p>Comparison operators evaluate two values and return a <code>bool</code> (<code>True</code> or <code>False</code>). Python supports: <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>. A unique Python feature is <b>chained comparisons</b>: <code>1 &lt; x &lt; 10</code>.</p>
-<table>
-<thead><tr><th>Operator</th><th>Meaning</th><th>Example</th></tr></thead><tbody>
-<tr><td><code>==</code></td><td>Equal to</td><td><code>5 == 5</code> → <code>True</code></td></tr>
-<tr><td><code>!=</code></td><td>Not equal</td><td><code>5 != 3</code> → <code>True</code></td></tr>
-<tr><td><code><</code></td><td>Less than</td><td><code>3 < 5</code> → <code>True</code></td></tr>
-<tr><td><code>></code></td><td>Greater than</td><td><code>5 > 3</code> → <code>True</code></td></tr>
-<tr><td><code><=</code></td><td>Less or equal</td><td><code>5 <= 5</code> → <code>True</code></td></tr>
-<tr><td><code>>=</code></td><td>Greater or equal</td><td><code>6 >= 5</code> → <code>True</code></td></tr>
-</tbody></table>
-<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
-<p>• <strong>Data filtering</strong>: <code>df[df['age'] >= 18]</code> — core of pandas filtering</p>
-<p>• <strong>Validation</strong>: Check thresholds: <code>if revenue > target:</code></p>
-<p>• <strong>Sorting logic</strong>: Custom sort keys rely on <code><</code> and <code>></code> comparisons</p>
-<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ == vs is</b></h3>
-<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <code>==</code> checks <b>value equality</b>, <code>is</code> checks <b>identity</b> (same object in memory). Never use <code>is</code> to compare values; use it only for <code>None</code> checks: <code>if x is None</code>.
-</div>
-<h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
-<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-</div></div>
-<p>Python supports chained comparisons: <code>0 &lt;= x &lt; 100</code> is equivalent to <code>0 &lt;= x and x &lt; 100</code> but cleaner and faster.</p>
-<div class="code-cell" id="cell-13">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-13')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-13')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-13">score = 78
-print(score &gt;= 60)    # True
-print(score == 100)   # False
+    <!-- ─── LEFT PANEL ─── -->
+    <div class="panel-left" id="panelLeft">
 
-# Chained comparison
-age = 25
-print(18 &lt;= age &lt; 65)  # True — working age
+      <!-- Question Prompt -->
+      <div class="question-bar" id="questionBar">
+        <div class="q-marker"></div>
+        <div class="question-prompt" id="questionPrompt">
+          Loading Question...
+        </div>
+        <button class="audio-play-btn" id="questionAudioBtn" onclick="playQuestionAudio(this)" title="Play question narration" style="flex-shrink: 0; margin-top: 2px;">
+          <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="q-nav">
+          <button onclick="prevQuestion()" title="Previous question">◀</button>
+          <button onclick="nextQuestion()" title="Next question">▶</button>
+        </div>
+      </div>
 
-# Comparing different types
-print(1 == 1.0)   # True (value equality)
-print(1 is 1.0)   # False (different objects)</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Comparison-29">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Comparison</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Given <code>a = 10</code> and <code>b = 10.0</code>, test <code>a == b</code> and <code>a is b</code>. Print results and explain the difference between value equality and identity.</p></div>
-<div class="code-cell" id="cell-14">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-14')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-14')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-14"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Write a chained comparison that checks if <code>temperature = 37.5</code> is in the "normal" range (36.1 to 37.2). Print the result.</p></div>
-<div class="code-cell" id="cell-15">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-15')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-15')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-15"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Compare strings: <code>"apple" < "banana"</code>, <code>"Apple" < "apple"</code>. Print results and explain how Python compares strings (lexicographic, Unicode order).</p></div>
-<div class="code-cell" id="cell-16">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-16')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-16')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-16"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Write code that finds the maximum of three numbers <code>a, b, c</code> using only comparison operators (no <code>max()</code> built-in). Test with <code>a=15, b=42, c=8</code>.</p></div>
-<div class="code-cell" id="cell-17">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-17')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-17')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-17"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Demonstrate that <code>None == None</code> is <code>True</code> but <code>None == 0</code> is <code>False</code> and <code>None == False</code> is <code>False</code>. Why should you always use <code>is None</code> instead?</p></div>
-<div class="code-cell" id="cell-18">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-18')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-18')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-18"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-40">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>4. Logical Operators : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Boolean Algebra</span></b>
-</h2>
-<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <b>🔍 What is it?</b><br>
-</div></div>
-<p>Python has three logical operators: <code>and</code>, <code>or</code>, and <code>not</code>. They combine boolean expressions. Crucially, <code>and</code> and <code>or</code> use <b>short-circuit evaluation</b> — they stop evaluating as soon as the result is determined.</p>
-<table>
-<thead><tr><th>Operator</th><th>Returns True if...</th><th>Short-circuits when...</th></tr></thead><tbody>
-<tr><td><code>and</code></td><td>Both operands are truthy</td><td>Left operand is falsy</td></tr>
-<tr><td><code>or</code></td><td>At least one is truthy</td><td>Left operand is truthy</td></tr>
-<tr><td><code>not</code></td><td>Operand is falsy</td><td>Never</td></tr>
-</tbody></table>
-<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
-<p>• <strong>Multi-condition filters</strong>: <code>df[(df['age'] > 18) & (df['score'] > 90)]</code></p>
-<p>• <strong>Data validation</strong>: <code>if name and len(name) > 0:</code> — safe null checking</p>
-<p>• <strong>Default values</strong>: <code>result = value or 'N/A'</code> — using <code>or</code> for defaults</p>
-<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ and/or Return Values, Not Booleans</b></h3>
-<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <code>and</code> returns the first falsy value or the last value. <code>or</code> returns the first truthy value or the last value. <code>'hello' and 42</code> → <code>42</code>, not <code>True</code>.
-</div>
-<h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
-<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <code>value or default</code> is a common Python idiom for providing default values: <code>name = user_input or 'Anonymous'</code>.
-</div></div>
-<div class="code-cell" id="cell-19">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-19')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-19')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-19">age, income = 25, 55000
+      <!-- Editor Area -->
+      <div class="editor-area">
+        <!-- Toolbar -->
+        <div class="editor-toolbar">
+          <span class="q-counter" id="qCounter">Question-01</span>
+          <button class="audio-play-btn" id="solutionAudioBtn" onclick="playSolutionAudioFromBtn(this)" title="Play solution narration" style="margin-left: 6px;">
+            <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="tb-btn tb-btn--tables" id="peekTrigger" onclick="togglePeekPopover(event)">📊 Tables</button>
+          <button class="tb-btn tb-btn--reset" onclick="confirmResetDatabase()" style="margin-left: 6px;" title="Reset Database to original state">🔄 Reset DB</button>
+          <div class="spacer"></div>
+          <button class="tb-btn tb-btn--run" id="runBtn" onclick="runCurrentQuery()">▶ Run</button>
+          <button class="tb-btn tb-btn--clear" onclick="clearEditor()">✕ Clear</button>
+        </div>
 
-# Multi-condition check
-if age &gt;= 18 and income &gt;= 50000:
-    print(&#x27;Loan approved&#x27;)
+        <!-- CodeMirror Mount -->
+        <div class="editor-wrap" id="mainEditorWrap"></div>
 
-# Short-circuit: second part never runs
-x = 0
-result = x and (10 / x)  # No ZeroDivisionError!
-print(result)  # 0
+        <!-- Output Terminal -->
+        <div class="output-section" id="mainOutput">
+          <div class="output-label">Terminal Output</div>
+          <span class="output-success">Ready...</span>
+        </div>
+      </div>
+    </div>
 
-# or for defaults
-name = &#x27;&#x27; or &#x27;Anonymous&#x27;
-print(name)  # Anonymous</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Logical-42">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Logical</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Given <code>x = 5</code>, evaluate and print: <code>x > 3 and x < 10</code>, <code>x > 3 or x < 2</code>, <code>not(x > 3 and x < 10)</code>. Explain each result.</p></div>
-<div class="code-cell" id="cell-20">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-20')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-20')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-20"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Demonstrate short-circuit evaluation: write code where <code>and</code> prevents a <code>ZeroDivisionError</code>. Print a message proving the second operand was never evaluated.</p></div>
-<div class="code-cell" id="cell-21">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-21')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-21')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-21"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Write code showing that <code>"hello" and 42</code> returns <code>42</code>, while <code>"" and 42</code> returns <code>""</code>. Explain why <code>and</code>/<code>or</code> return values, not booleans.</p></div>
-<div class="code-cell" id="cell-22">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-22')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-22')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-22"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Write a function <code>is_valid_age(age)</code> that returns <code>True</code> only if age is an integer, positive, and less than 150. Use <code>and</code> chaining.</p></div>
-<div class="code-cell" id="cell-23">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-23')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-23')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-23"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Use <code>or</code> to set defaults: given <code>user_name = ""</code> and <code>fallback = "Guest"</code>, compute <code>display_name = user_name or fallback</code>. Print the result.</p></div>
-<div class="code-cell" id="cell-24">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-24')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-24')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-24"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-53">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>5. Identity & Membership : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Object Inspection</span></b>
-</h2>
-<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <b>🔍 What is it?</b><br>
-    <b>Identity operators</b> (<code>is</code>, <code>is not</code>) check whether two variables point to the <b>same object</b> in memory. <b>Membership operators</b> (<code>in</code>, <code>not in</code>) check whether a value exists inside a container (list, tuple, dict, set, string).
-</div></div>
-<table>
-<thead><tr><th>Operator</th><th>Purpose</th><th>Example</th></tr></thead><tbody>
-<tr><td><code>is</code></td><td>Same object?</td><td><code>x is None</code></td></tr>
-<tr><td><code>is not</code></td><td>Different objects?</td><td><code>x is not None</code></td></tr>
-<tr><td><code>in</code></td><td>Value in container?</td><td><code>'a' in 'abc'</code> → <code>True</code></td></tr>
-<tr><td><code>not in</code></td><td>Value absent?</td><td><code>5 not in [1,2,3]</code> → <code>True</code></td></tr>
-</tbody></table>
-<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
-<p>• <strong>Null checking</strong>: <code>if value is None:</code> — the Pythonic way to check for null</p>
-<p>• <strong>Data validation</strong>: <code>if col in df.columns:</code> — safe column access</p>
-<p>• <strong>Search & lookup</strong>: <code>if key in my_dict:</code> — O(1) dict membership</p>
-<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Integer Caching</b></h3>
-<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-</div></div>
-<p>Python caches integers from <code>-5</code> to <code>256</code>. So <code>a = 100; b = 100; a is b</code> → <code>True</code>, but <code>a = 1000; b = 1000; a is b</code> → <code>False</code> (different objects, same value).</p>
-<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
-<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-</div></div>
-<p>For <code>dict</code> and <code>set</code>, <code>in</code> is O(1). For <code>list</code>, <code>in</code> is O(n). Choose your data structure wisely for frequent membership tests.</p>
-<div class="code-cell" id="cell-25">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-25')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-25')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-25"># Identity
-a = [1, 2, 3]
-b = a
-c = [1, 2, 3]
-print(a is b)      # True — same object
-print(a is c)      # False — same value, different object
-print(a == c)      # True — value equality
+    <!-- ─── DIVIDER ─── -->
+    <div class="divider" id="divider">
+      <div class="divider-toggles">
+        <button class="div-toggle-btn div-toggle-btn--left" onclick="toggleLeftPanel(event)" title="Toggle code cell">◀</button>
+        <button class="div-toggle-btn div-toggle-btn--split" onclick="resetSplitScreen(event)" title="Reset split screen">◫</button>
+        <button class="div-toggle-btn div-toggle-btn--right" onclick="toggleRightPanel(event)" title="Toggle notes panel">▶</button>
+      </div>
+    </div>
 
-# Membership
-print(&#x27;P&#x27; in &#x27;Python&#x27;)           # True
-print(5 in [1, 2, 3, 4, 5])     # True
-print(&#x27;age&#x27; in {&#x27;name&#x27;: &#x27;Ali&#x27;}) # False — checks keys</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Identity & Membership-55">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Identity & Membership</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Create <code>a = [1, 2]</code> and <code>b = a</code> and <code>c = [1, 2]</code>. Test <code>a is b</code>, <code>a is c</code>, <code>a == c</code>. Print results and explain each.</p></div>
-<div class="code-cell" id="cell-26">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-26')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-26')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-26"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Demonstrate Python's integer caching: test <code>a = 256; b = 256; print(a is b)</code> then <code>a = 257; b = 257; print(a is b)</code>. Explain the results.</p></div>
-<div class="code-cell" id="cell-27">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-27')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-27')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-27"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Write code that checks if a column name <code>"salary"</code> exists in a list of column headers <code>["name", "age", "salary", "dept"]</code>. Use the <code>in</code> operator.</p></div>
-<div class="code-cell" id="cell-28">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-28')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-28')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-28"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Given <code>d = {"x": 1, "y": 2}</code>, demonstrate that <code>in</code> checks keys (not values): test <code>"x" in d</code> and <code>1 in d</code>. Print results.</p></div>
-<div class="code-cell" id="cell-29">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-29')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-29')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-29"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Write code showing <code>None is None</code> is <code>True</code> (singleton pattern). Then show why <code>if x is None:</code> is preferred over <code>if x == None:</code> (custom <code><strong>eq</strong></code> risk).</p></div>
-<div class="code-cell" id="cell-30">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-30')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-30')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-30"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-66">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>6. Bitwise Operators : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Binary-Level Control</span></b>
-</h2>
-<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <b>🔍 What is it?</b><br>
-</div></div>
-<p>Bitwise operators work on the binary (base-2) representation of integers. Python supports: <code>&amp;</code> (AND), <code>|</code> (OR), <code>^</code> (XOR), <code>~</code> (NOT), <code>&lt;&lt;</code> (left shift), <code>&gt;&gt;</code> (right shift).</p>
-<table>
-<thead><tr><th>Operator</th><th>Name</th><th>Example</th><th>Result</th></tr></thead><tbody>
-<tr><td><code>&</code></td><td>AND</td><td><code>5 & 3</code></td><td><code>1</code></td></tr>
-<tr><td>`\</td><td>`</td><td>OR</td><td>`5 \</td><td>3`</td><td><code>7</code></td></tr>
-<tr><td><code>^</code></td><td>XOR</td><td><code>5 ^ 3</code></td><td><code>6</code></td></tr>
-<tr><td><code>~</code></td><td>NOT</td><td><code>~5</code></td><td><code>-6</code></td></tr>
-<tr><td><code><<</code></td><td>Left shift</td><td><code>5 << 1</code></td><td><code>10</code></td></tr>
-<tr><td><code>>></code></td><td>Right shift</td><td><code>5 >> 1</code></td><td><code>2</code></td></tr>
-</tbody></table>
-<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
-<p>• <strong>Flag management</strong>: Using bitmasks to store multiple boolean flags in one integer</p>
-<p>• <strong>Performance</strong>: Left shift <code><< 1</code> is faster multiplication by 2</p>
-<p>• <strong>Hashing</strong>: XOR is used in hash functions and checksums</p>
-<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
-<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <code>n &amp; 1</code> checks if <code>n</code> is odd (returns 1) or even (returns 0). <code>n &amp; (n-1)</code> checks if <code>n</code> is a power of 2 (returns 0 if yes).
-</div></div>
-<div class="code-cell" id="cell-31">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-31')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-31')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-31">a, b = 12, 10  # 1100, 1010 in binary
-print(f&#x27;{a} &amp; {b}  = {a &amp; b}&#x27;)    # 8  (1000)
-print(f&#x27;{a} | {b}  = {a | b}&#x27;)    # 14 (1110)
-print(f&#x27;{a} ^ {b}  = {a ^ b}&#x27;)    # 6  (0110)
-print(f&#x27;{a} &lt;&lt; 1 = {a &lt;&lt; 1}&#x27;)     # 24 (multiply by 2)
-print(f&#x27;{a} &gt;&gt; 1 = {a &gt;&gt; 1}&#x27;)     # 6  (divide by 2)</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Bitwise-68">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Bitwise</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Convert <code>a = 12</code> and <code>b = 10</code> to binary using <code>bin()</code>. Then compute <code>a & b</code>, <code>a | b</code>, <code>a ^ b</code> and verify the results match the binary math.</p></div>
-<div class="code-cell" id="cell-32">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-32')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-32')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-32"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Write code that uses <code><< 1</code> to multiply by 2 and <code>>> 1</code> to divide by 2. Test with <code>n = 42</code>. Compare results with <code>* 2</code> and <code>// 2</code>.</p></div>
-<div class="code-cell" id="cell-33">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-33')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-33')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-33"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Write a function <code>is_odd(n)</code> using <code>n & 1</code>. Test with 5 numbers. Explain why this works at the binary level.</p></div>
-<div class="code-cell" id="cell-34">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-34')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-34')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-34"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Write a function <code>is_power_of_two(n)</code> using <code>n & (n - 1) == 0</code>. Test with <code>[1, 2, 3, 4, 8, 16, 18]</code>. Handle edge case <code>n <= 0</code>.</p></div>
-<div class="code-cell" id="cell-35">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-35')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-35')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-35"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Compute <code>~5</code> and explain why the result is <code>-6</code>. Relate it to two's complement: <code>~n = -(n+1)</code>.</p></div>
-<div class="code-cell" id="cell-36">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-36')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-36')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-36"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-79">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>7. Ternary Operator : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Inline Conditionals</span></b>
-</h2>
-<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <b>🔍 What is it?</b><br>
-</div></div>
-<p>The ternary (conditional) operator provides a one-line <code>if-else</code> expression: <code>value_if_true if condition else value_if_false</code>. It is an <b>expression</b> (returns a value), not a statement.</p>
-<pre class="nb-code-block"><code>status = &#x27;Adult&#x27; if age &gt;= 18 else &#x27;Minor&#x27;</code></pre>
-<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
-<p>• <strong>Column creation</strong>: <code>df['label'] = df['val'].apply(lambda x: 'High' if x > 50 else 'Low')</code></p>
-<p>• <strong>Default handling</strong>: <code>name = input_val if input_val else 'Unknown'</code></p>
-<p>• <strong>Compact logic</strong>: Replace 4-line if/else blocks with clean one-liners</p>
-<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Nested Ternaries</b></h3>
-<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-</div></div>
-<p>Nesting ternaries like <code>'A' if x > 90 else 'B' if x > 80 else 'C'</code> works but reduces readability. Use sparingly.</p>
-<div class="code-cell" id="cell-37">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-37')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-37')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-37">age = 20
-status = &#x27;Adult&#x27; if age &gt;= 18 else &#x27;Minor&#x27;
-print(status)  # Adult
+    <!-- ─── RIGHT PANEL ─── -->
+    <div class="panel-right" id="panelRight">
 
-# Nested (use sparingly)
-score = 85
-grade = &#x27;A&#x27; if score &gt;= 90 else &#x27;B&#x27; if score &gt;= 80 else &#x27;C&#x27; if score &gt;= 70 else &#x27;F&#x27;
-print(f&#x27;Score {score} → Grade {grade}&#x27;)</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Ternary-81">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Ternary</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Given <code>x = -5</code>, use the ternary operator to compute <code>abs_x</code> (absolute value) without using <code>abs()</code>. Print the result.</p></div>
-<div class="code-cell" id="cell-38">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-38')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-38')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-38"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Write a ternary expression that returns <code>"even"</code> if <code>n</code> is even, <code>"odd"</code> otherwise. Test with <code>n = 7</code> and <code>n = 12</code>.</p></div>
-<div class="code-cell" id="cell-39">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-39')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-39')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-39"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Use a nested ternary to classify <code>temp = 35</code> as <code>"Cold"</code> (< 15), <code>"Warm"</code> (15-30), or <code>"Hot"</code> (> 30). Print the result.</p></div>
-<div class="code-cell" id="cell-40">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-40')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-40')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-40"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Write a ternary that sets <code>discount = 0.2 if is_member else 0.05</code>. Test with <code>is_member = True</code> and <code>is_member = False</code>.</p></div>
-<div class="code-cell" id="cell-41">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-41')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-41')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-41"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Use a ternary inside an f-string: <code>f"You have {n} item{'s' if n != 1 else ''}"</code>. Test with <code>n = 1</code> and <code>n = 5</code>.</p></div>
-<div class="code-cell" id="cell-42">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-42')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-42')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-42"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-92">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>8. Operator Precedence : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Order of Evaluation</span></b>
-</h2>
-<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <b>🔍 What is it?</b><br>
-</div></div>
-<p>When an expression has multiple operators, Python follows a strict <b>precedence hierarchy</b>. Higher-precedence operators are evaluated first. When precedence is equal, <b>associativity</b> (left-to-right or right-to-left) determines the order.</p>
-<table>
-<thead><tr><th>Priority</th><th>Operators</th><th>Associativity</th></tr></thead><tbody>
-<tr><td>Highest</td><td><code>**</code></td><td>Right-to-left</td></tr>
-<tr><td></td><td><code>~</code>, <code>+x</code>, <code>-x</code> (unary)</td><td>Right-to-left</td></tr>
-<tr><td></td><td><code>*</code>, <code>/</code>, <code>//</code>, <code>%</code></td><td>Left-to-right</td></tr>
-<tr><td></td><td><code>+</code>, <code>-</code></td><td>Left-to-right</td></tr>
-<tr><td></td><td><code><<</code>, <code>>></code></td><td>Left-to-right</td></tr>
-<tr><td></td><td><code><</code>, <code><=</code>, <code>></code>, <code>>=</code>, <code>==</code>, <code>!=</code></td><td>Left-to-right</td></tr>
-<tr><td></td><td><code>not</code></td><td>Right-to-left</td></tr>
-<tr><td></td><td><code>and</code></td><td>Left-to-right</td></tr>
-<tr><td>Lowest</td><td><code>or</code></td><td>Left-to-right</td></tr>
-</tbody></table>
-<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
-<p>• <strong>Debugging</strong>: Understanding precedence prevents subtle calculation bugs</p>
-<p>• <strong>Code clarity</strong>: Explicit parentheses make complex formulas readable</p>
-<p>• <strong>Formula translation</strong>: Converting math formulas to code requires correct operator order</p>
-<div class="nb-rich"><h3 style="color: #81C784; background-color: #102414; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>🧠 Pro Tip</b></h3>
-<div style="border-left: 4px solid #81C784; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-</div></div>
-<p>When in doubt, <b>use parentheses</b>. They cost nothing at runtime and prevent bugs: <code>(a + b) * c</code> is clearer than relying on precedence.</p>
-<div class="code-cell" id="cell-43">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-43')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-43')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-43"># Without parentheses — precedence matters
-print(2 + 3 * 4)       # 14, not 20
-print(2 ** 3 ** 2)     # 512 (right-to-left)
-print(10 - 3 - 2)      # 5 (left-to-right)
+      <div class="right-content" id="rightContent">
 
-# Explicit parentheses for clarity
-result = (2 + 3) * 4   # 20
-print(result)</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Precedence-94">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Precedence</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Evaluate <code>2 + 3 <em> 4 </em>* 2</code> by hand, then verify with Python. Write out the step-by-step evaluation order.</p></div>
-<div class="code-cell" id="cell-44">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-44')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-44')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-44"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Write code showing that <code>not True or False and True</code> evaluates differently than <code>not (True or False) and True</code>. Print both results.</p></div>
-<div class="code-cell" id="cell-45">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-45')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-45')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-45"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Given <code>x = 10</code>, evaluate <code>x > 5 and x < 20 or x == 0</code>. Add parentheses to make the intent explicit. Test both versions.</p></div>
-<div class="code-cell" id="cell-46">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-46')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-46')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-46"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Demonstrate right-to-left associativity: compute <code>2 <strong> 3 </strong> 2</code> and <code>(2 <strong> 3) </strong> 2</code>. Print and explain the difference.</p></div>
-<div class="code-cell" id="cell-47">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-47')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-47')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-47"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Write the formula for BMI: <code>weight / height ** 2</code>. Test with <code>weight = 70, height = 1.75</code>. Does Python evaluate it correctly without parentheses? Verify.</p></div>
-<div class="code-cell" id="cell-48">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-48')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-48')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-48"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-105">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>9. Short-Circuit Evaluation : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Lazy Boolean Logic</span></b>
-</h2>
-<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <b>🔍 What is it?</b><br>
-</div></div>
-<p>Short-circuit evaluation means Python <b>stops evaluating</b> a boolean expression as soon as the result is determined. For <code>and</code>, if the left operand is falsy, the right is never evaluated. For <code>or</code>, if the left is truthy, the right is skipped.</p>
-<pre class="nb-code-block"><code># If x is 0, (10/x) is NEVER executed — no error!
-result = x != 0 and (10 / x) &gt; 2</code></pre>
-<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
-<p>• <strong>Safe access</strong>: <code>if key in d and d[key] > 0:</code> — prevents KeyError</p>
-<p>• <strong>Guard clauses</strong>: <code>if obj is not None and obj.value > 0:</code> — prevents AttributeError</p>
-<p>• <strong>Performance</strong>: Skip expensive checks when a cheaper one already determines the result</p>
-<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Side Effects</b></h3>
-<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-</div></div>
-<p>If the right operand has side effects (printing, modifying state), short-circuiting may silently skip them. Never rely on side effects in boolean expressions.</p>
-<div class="code-cell" id="cell-49">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-49')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-49')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-49"># Short-circuit prevents ZeroDivisionError
-x = 0
-safe = x != 0 and (10 / x) &gt; 2
-print(safe)  # False — division never happens
-
-# or short-circuits on first truthy value
-name = &#x27;&#x27; or &#x27;Default&#x27;
-print(name)  # Default
-
-# Practical guard clause
-data = None
-if data is not None and len(data) &gt; 0:
-    print(&#x27;Has data&#x27;)
-else:
-    print(&#x27;No data&#x27;)  # This prints</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Short-Circuit-107">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Short-Circuit</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Write code where <code>and</code> short-circuits to prevent a <code>ZeroDivisionError</code>. Use <code>x = 0</code> and <code>10 / x</code>. Print a message proving the division was skipped.</p></div>
-<div class="code-cell" id="cell-50">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-50')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-50')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-50"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Write a function with a side effect (increments a counter). Show that <code>False and side_effect()</code> never calls the function. Print the counter.</p></div>
-<div class="code-cell" id="cell-51">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-51')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-51')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-51"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Use <code>or</code> short-circuit to provide a default: <code>config = user_config or default_config</code>. Test with <code>user_config = {}</code> and <code>user_config = None</code>.</p></div>
-<div class="code-cell" id="cell-52">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-52')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-52')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-52"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Write a guard clause: <code>if lst is not None and len(lst) > 0:</code> that safely handles <code>lst = None</code>. Show it prevents <code>TypeError</code>.</p></div>
-<div class="code-cell" id="cell-53">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-53')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-53')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-53"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Demonstrate that <code>True or print("hi")</code> never prints, but <code>False or print("hi")</code> does. Explain why.</p></div>
-<div class="code-cell" id="cell-54">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-54')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-54')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-54"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-118">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>10. Walrus Operator (:=) : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Assignment Expressions</span></b>
-</h2>
-<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <b>🔍 What is it?</b><br>
-</div></div>
-<p>Introduced in Python 3.8, the walrus operator <code>:=</code> assigns a value to a variable <b>as part of an expression</b>. It eliminates the need to compute a value on one line and use it on the next.</p>
-<pre class="nb-code-block"><code># Before walrus
-data = get_data()
-if data:
-    process(data)
-
-# After walrus
-if (data := get_data()):
-    process(data)</code></pre>
-<div class="nb-rich"><h3 style="color: #64B5F6; background-color: #0F1A2A; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>💼 Why Data Analysts Care</b></h3></div>
-<p>• <strong>Loop optimization</strong>: Avoid calling expensive functions twice in while-loops</p>
-<p>• <strong>List comprehensions</strong>: Filter and transform in one pass: <code>[y for x in data if (y := transform(x)) > 0]</code></p>
-<p>• <strong>Inline validation</strong>: <code>if (n := len(data)) > 100: print(f'{n} records')</code></p>
-<div class="nb-rich"><h3 style="color: #FFB74D; background-color: #2B1A0D; padding: 8px 12px; border-radius: 4px; margin-top: 25px;"><b>⚠️ Readability</b></h3>
-<div style="border-left: 4px solid #FFB74D; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-</div></div>
-<p>The walrus operator can reduce readability if overused. Only use it when it genuinely eliminates redundancy.</p>
-<div class="code-cell" id="cell-55">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-55')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-55')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-55">import re
-text = &#x27;Hello World 2024&#x27;
-
-# Without walrus
-match = re.search(r&#x27;\d+&#x27;, text)
-if match:
-    print(f&#x27;Found number: {match.group()}&#x27;)
-
-# With walrus — more concise
-if (m := re.search(r&#x27;\d+&#x27;, text)):
-    print(f&#x27;Found: {m.group()}&#x27;)
-
-# In a list comprehension
-data = [1, 5, 12, 3, 18, 7]
-results = [y for x in data if (y := x * 2) &gt; 10]
-print(results)  # [24, 36, 14]</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Walrus-120">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Walrus</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Rewrite this using the walrus operator: <code>n = len(data); if n > 5: print(n)</code>. Test with <code>data = [1,2,3,4,5,6]</code>.</p></div>
-<div class="code-cell" id="cell-56">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-56')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-56')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-56"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Use <code>:=</code> in a while loop: read from a list until you find a negative number. Print each positive number as you go.</p></div>
-<div class="code-cell" id="cell-57">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-57')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-57')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-57"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Use <code>:=</code> in a list comprehension to filter and transform: from <code>[1,2,3,4,5]</code>, keep only values where <code>x**2 > 10</code>. Print the squares.</p></div>
-<div class="code-cell" id="cell-58">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-58')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-58')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-58"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Use <code>:=</code> with <code>re.search</code> to extract and print the first email address from <code>text = "Contact us at info@company.com for details"</code>.</p></div>
-<div class="code-cell" id="cell-59">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-59')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-59')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-59"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Write code comparing the readability of a 4-line pattern vs walrus operator. When is walrus helpful vs harmful? Add comments explaining.</p></div>
-<div class="code-cell" id="cell-60">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-60')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-60')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-60"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="practice">
-<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
-<p>Theory is useless without muscle memory. Complete these tasks to solidify your understanding.</p>
-<div class="question task"><p><strong>Task 1 (Expression Evaluator):</strong> Write a function <code>evaluate(a, op, b)</code> that takes two numbers and an operator string (<code>'+', '-', '<em>', '/', '//', '%', '</em>*'</code>) and returns the result. Handle division by zero gracefully. Test all 7 operators.</p></div>
-<div class="code-cell" id="cell-61">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-61')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-61')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-61"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question task"><p><strong>Task 2 (Grade Classifier):</strong> Given <code>score = 78</code>, use chained comparisons and logical operators to classify: A(90+), B(80-89), C(70-79), D(60-69), F(<60). Print the grade with an f-string.</p></div>
-<div class="code-cell" id="cell-62">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-62')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-62')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-62"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question task"><p><strong>Task 3 (Bit Counter):</strong> Use <code>%</code> and <code>//</code> operators to count how many digits are in a number <code>n = 123456</code>. Also compute the sum of its digits. No string conversion allowed.</p></div>
-<div class="code-cell" id="cell-63">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-63')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-63')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-63"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question task"><p><strong>Task 4 (Leap Year Checker):</strong> Write a leap year checker using logical operators: divisible by 4 AND (not divisible by 100 OR divisible by 400). Test with: 2000, 1900, 2024, 2023.</p></div>
-<div class="code-cell" id="cell-64">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-64')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-64')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-64"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question task"><p><strong>Task 5 (Bill Splitter):</strong> Given <code>total = 156.75</code>, <code>num_people = 4</code>, <code>tip_pct = 0.18</code>, compute: tip amount, total with tip, per-person share (rounded to 2 decimal places). Print a formatted receipt.</p></div>
-<div class="code-cell" id="cell-65">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-65')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-65')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-65"># Write your answer here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="interview">
-<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
-</div>
-<div class="nb-section" id="sec-143">
-<div class="question interview"><p><strong>Q1.</strong></p>
-<h3>Write a function <code>is_power_of_two(n)</code> using only bitwise operators (no loops, no log). Hint: <code>n & (n-1) == 0</code>. Handle edge cases.</h3>
-</div>
-<div class="code-cell" id="cell-66">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-66')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-66')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-66"># Solution for Q1</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-145">
-<div class="question interview"><p><strong>Q2.</strong></p>
-<h3>Write code to check if a number is even using: (a) modulo, (b) bitwise AND, (c) integer division. Show all three return the same result.</h3>
-</div>
-<div class="code-cell" id="cell-67">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-67')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-67')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-67"># Solution for Q2</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-147">
-<div class="question interview"><p><strong>Q3.</strong></p>
-<h3>Write a function <code>clamp(value, min_val, max_val)</code> that restricts a value to a range. Use <code>min()</code> and <code>max()</code>. Test edge cases.</h3>
-</div>
-<div class="code-cell" id="cell-68">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-68')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-68')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-68"># Solution for Q3</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-149">
-<div class="question interview"><p><strong>Q4.</strong></p>
-<h3>Write code demonstrating operator overloading: create a class where <code>+</code> concatenates strings with a separator.</h3>
-</div>
-<div class="code-cell" id="cell-69">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-69')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-69')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-69"># Solution for Q4</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-151">
-<div class="question interview"><p><strong>Q5.</strong></p>
-<h3>Write a function <code>evaluate(a, op, b)</code> that takes an operator as a string and returns the result. Handle division by zero.</h3>
-</div>
-<div class="code-cell" id="cell-70">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-70')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-70')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-70"># Solution for Q5</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-153">
-<div class="question interview"><p><strong>Q6.</strong></p>
-<h3>Write code using only bitwise operators (<code>&</code>,<code>|</code>,<code>^</code>,<code>~</code>,<code><<</code>,<code>>></code>) to: (a) multiply by 2, (b) divide by 2, (c) check if odd.</h3>
-</div>
-<div class="code-cell" id="cell-71">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-71')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-71')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-71"># Solution for Q6</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-155">
-<div class="question interview"><p><strong>Q7.</strong></p>
-<h3>Write a function <code>compare_floats(a, b, tolerance=1e-9)</code> that correctly handles floating-point comparison. Test with <code>0.1+0.2</code> vs <code>0.3</code>.</h3>
-</div>
-<div class="code-cell" id="cell-72">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-72')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-72')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-72"># Solution for Q7</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-157">
-<div class="question interview"><p><strong>Q8.</strong></p>
-<h3>Write code that computes <code>a<strong>b % m</code> efficiently for large numbers using Python's <code>pow(a, b, m)</code>. Compare with naive <code>(a</strong>b) % m</code>.</h3>
-</div>
-<div class="code-cell" id="cell-73">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-73')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-73')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-73"># Solution for Q8</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-159">
-<div class="question interview"><p><strong>Q9.</strong></p>
-<h3>Write a function <code>digital_root(n)</code> that repeatedly sums digits until single digit: <code>493</code> → <code>16</code> → <code>7</code>. Use only arithmetic operators.</h3>
-</div>
-<div class="code-cell" id="cell-74">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-74')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-74')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-74"># Solution for Q9</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-161">
-<div class="question interview"><p><strong>Q10.</strong></p>
-<h3>Write code demonstrating short-circuit evaluation: create a function with a side effect and show <code>and</code>/<code>or</code> skip it when appropriate.</h3>
-</div>
-<div class="code-cell" id="cell-75">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-75')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-75')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-75"># Solution for Q10</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-163">
-<div class="question interview"><p><strong>Q11.</strong></p>
-<h3>Write a function <code>negate_without_minus(n)</code> that returns <code>-n</code> without using <code>-</code>. Hint: <code>~n + 1</code> (two's complement).</h3>
-</div>
-<div class="code-cell" id="cell-76">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-76')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-76')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-76"># Solution for Q11</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-165">
-<div class="question interview"><p><strong>Q12.</strong></p>
-<h3>Write a function <code>abs_without_abs(n)</code> using only comparison and arithmetic operators. No <code>abs()</code> built-in.</h3>
-</div>
-<div class="code-cell" id="cell-77">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-77')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-77')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-77"># Solution for Q12</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-167">
-<div class="question interview"><p><strong>Q13.</strong></p>
-<h3>Write code demonstrating all 6 comparison operators with a custom class by implementing <code><strong>eq</strong></code>, <code><strong>lt</strong></code>, etc. on a <code>Temperature</code> class.</h3>
-</div>
-<div class="code-cell" id="cell-78">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-78')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-78')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-78"># Solution for Q13</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-169">
-<div class="question interview"><p><strong>Q14.</strong></p>
-<h3>Write a function <code>count_set_bits(n)</code> that counts the number of 1-bits in binary representation using <code>&</code> and <code>>></code> in a loop.</h3>
-</div>
-<div class="code-cell" id="cell-79">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-79')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-79')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-79"># Solution for Q14</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-171">
-<div class="question interview"><p><strong>Q15.</strong></p>
-<h3>Write a function <code>is_palindrome_number(n)</code> using only arithmetic operators to reverse digits and compare. No string conversion.</h3>
-</div>
-<div class="code-cell" id="cell-80">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-80')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-80')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-80"># Solution for Q15</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-173">
-<div class="question interview"><p><strong>Q16.</strong></p>
-<h3>Write code showing the ternary operator for 2 and 3 categories. Then write a nested ternary for grade classification.</h3>
-</div>
-<div class="code-cell" id="cell-81">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-81')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-81')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-81"># Solution for Q16</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-175">
-<div class="question interview"><p><strong>Q17.</strong></p>
-<h3>Write a function <code>gcd(a, b)</code> using only modulo and assignment (Euclidean algorithm). Test with several number pairs.</h3>
-</div>
-<div class="code-cell" id="cell-82">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-82')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-82')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-82"># Solution for Q17</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-177">
-<div class="question interview"><p><strong>Q18.</strong></p>
-<h3>Write code that computes <code>n!</code> (factorial) using <code>functools.reduce</code> and the <code>*</code> operator. Compare with <code>math.factorial</code>.</h3>
-</div>
-<div class="code-cell" id="cell-83">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-83')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-83')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-83"># Solution for Q18</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-179">
-<div class="question interview"><p><strong>Q19.</strong></p>
-<h3>Write a function <code>round_to_nearest(value, step)</code> that rounds to nearest multiple: <code>round_to_nearest(17, 5)</code> → <code>15</code>.</h3>
-</div>
-<div class="code-cell" id="cell-84">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-84')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-84')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-84"># Solution for Q19</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-181">
-<div class="question interview"><p><strong>Q20.</strong></p>
-<h3>Write code demonstrating <code>//</code> floor division with negative numbers: <code>-7 // 2</code>. Explain floor vs truncation division.</h3>
-</div>
-<div class="code-cell" id="cell-85">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-85')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-85')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-85"># Solution for Q20</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-183">
-<div class="question interview"><p><strong>Q21.</strong></p>
-<h3>Write a function <code>safe_divide(a, b)</code> returning <code>(quotient, remainder)</code> tuple. Handle: zero division, type errors, negatives.</h3>
-</div>
-<div class="code-cell" id="cell-86">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-86')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-86')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-86"># Solution for Q21</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-185">
-<div class="question interview"><p><strong>Q22.</strong></p>
-<h3>Write code using walrus operator to simplify: compute a value and use it in the same expression. Show before/after.</h3>
-</div>
-<div class="code-cell" id="cell-87">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-87')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-87')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-87"># Solution for Q22</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-187">
-<div class="question interview"><p><strong>Q23.</strong></p>
-<h3>Write a function <code>matrix_scalar_ops(matrix, scalar, op)</code> that applies <code>+,-,*,/</code> between a 2D list and a scalar.</h3>
-</div>
-<div class="code-cell" id="cell-88">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-88')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-88')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-88"># Solution for Q23</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-189">
-<div class="question interview"><p><strong>Q24.</strong></p>
-<h3>Write a function <code>chained_comparison(x, ranges)</code> where ranges is <code>[(0,10,'low'),(10,50,'mid'),(50,100,'high')]</code>. Return label.</h3>
-</div>
-<div class="code-cell" id="cell-89">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-89')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-89')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-89"># Solution for Q24</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="sec-191">
-<div class="question interview"><p><strong>Q25.</strong></p>
-<h3>Write a simple expression evaluator: parse and compute <code>'3 + 4 * 2 - 1'</code> respecting operator precedence.</h3>
-</div>
-<div class="code-cell" id="cell-90">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-90')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-90')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-90"># Solution for Q25</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="summary">
-<div class="section-header cyan"><h2>📊 Day 2 Executive Summary</h2></div>
-<table>
-<thead><tr><th>#</th><th>Topic</th><th>Key Takeaway</th><th>Professional Application</th></tr></thead><tbody>
-<tr><td>1</td><td>Arithmetic</td><td><code>/</code> always float; <code>//</code> floor; <code>%</code> remainder; <code>**</code> power</td><td>Financial calculations, metrics</td></tr>
-<tr><td>2</td><td>Assignment</td><td><code>+=</code>, <code>-=</code> modify in-place (except immutables)</td><td>Running totals, counters</td></tr>
-<tr><td>3</td><td>Comparison</td><td><code>==</code> value; <code>is</code> identity; chaining supported</td><td>Data filtering, validation</td></tr>
-<tr><td>4</td><td>Logical</td><td><code>and</code>/<code>or</code> return values, not booleans</td><td>Multi-condition filters</td></tr>
-<tr><td>5</td><td>Identity</td><td><code>is</code> checks memory, <code>in</code> checks membership</td><td>Null checks, lookups</td></tr>
-<tr><td>6</td><td>Bitwise</td><td>Binary-level manipulation of integers</td><td>Flags, performance tricks</td></tr>
-<tr><td>7</td><td>Ternary</td><td>Inline if-else expression</td><td>Compact conditional logic</td></tr>
-<tr><td>8</td><td>Precedence</td><td><code>*<em></code> > <code></em>/</code> > <code>+-</code> > comparisons > <code>not</code> > <code>and</code> > <code>or</code></td><td>Correct formula translation</td></tr>
-<tr><td>9</td><td>Short-Circuit</td><td><code>and</code>/<code>or</code> stop early when result is known</td><td>Safe access, guard clauses</td></tr>
-<tr><td>10</td><td>Walrus <code>:=</code></td><td>Assign inside expressions (Python 3.8+)</td><td>Loop optimization</td></tr>
-</tbody></table>
-<h2>✅ Instructor's End-of-Day Checklist</h2>
-<p>• [ ] I understand the difference between <code>/</code> (true division) and <code>//</code> (floor division).</p>
-<p>• [ ] I know that <code>and</code>/<code>or</code> return actual values, not just <code>True</code>/<code>False</code>.</p>
-<p>• [ ] I can use <code>is</code> vs <code>==</code> correctly (identity vs equality).</p>
-<p>• [ ] I understand operator precedence and use parentheses for clarity.</p>
-<p>• [ ] I can leverage short-circuit evaluation for safe access patterns.</p>
-<p>• [ ] I have completed all 5 practice tasks.</p>
-<p>• [ ] I have reviewed all 25 interview questions.</p>
-<div class="next-day-wrapper" style="margin-top: 3.5rem; margin-bottom: 2rem; text-align: center;">
-                <a href="day03.html" id="bottomNextBtn" class="cta-btn cta-cyan" style="display: inline-flex; width: 100%; max-width: 450px; justify-content: center; font-size: 1.15rem; padding: 1.1rem; box-shadow: 0 4px 15px rgba(0, 230, 246, 0.3);">🚀 Continue to Day 3 — Strings: Text Processing, Formatting, and Pattern Matching</a>
+        <!-- Slide Viewer -->
+        <div class="slide-viewer" id="slideViewer">
+          <div class="slide-card" style="position: relative;">
+            <div class="slide-header" id="slideHeader"></div>
+            <div class="slide-content" id="slideContent" style="position: relative; overflow-y: auto; min-height: 0;">
+              <!-- Canvas Overlay inside scrollable container -->
+              <canvas class="draw-canvas" id="workspaceDrawCanvas" style="position: absolute; top: 0; left: 0; z-index: 10;"></canvas>
+              <!-- Content container populated by JS -->
+              <div id="slideBodyText">
+                <!-- Populated by JS -->
+              </div>
             </div>
-</div>
-  </main>
-  <nav class="sidebar" id="sidebar">
-    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
-    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
-<li><a href="#sec-1" class="toc-link">1. Arithmetic Operators : Numeric Operations</a></li>
-<li><a href="#checks-Arithmetic-3" class="toc-link">🧪 Checks: Arithmetic</a></li>
-<li><a href="#sec-14" class="toc-link">2. Assignment Operators : In-Place Operations</a></li>
-<li><a href="#checks-Assignment-16" class="toc-link">🧪 Checks: Assignment</a></li>
-<li><a href="#sec-27" class="toc-link">3. Comparison Operators : Relational Logic</a></li>
-<li><a href="#checks-Comparison-29" class="toc-link">🧪 Checks: Comparison</a></li>
-<li><a href="#sec-40" class="toc-link">4. Logical Operators : Boolean Algebra</a></li>
-<li><a href="#checks-Logical-42" class="toc-link">🧪 Checks: Logical</a></li>
-<li><a href="#sec-53" class="toc-link">5. Identity & Membership : Object Inspection</a></li>
-<li><a href="#checks-Identity & Membership-55" class="toc-link">🧪 Checks: Identity & Membership</a></li>
-<li><a href="#sec-66" class="toc-link">6. Bitwise Operators : Binary-Level Control</a></li>
-<li><a href="#checks-Bitwise-68" class="toc-link">🧪 Checks: Bitwise</a></li>
-<li><a href="#sec-79" class="toc-link">7. Ternary Operator : Inline Conditionals</a></li>
-<li><a href="#checks-Ternary-81" class="toc-link">🧪 Checks: Ternary</a></li>
-<li><a href="#sec-92" class="toc-link">8. Operator Precedence : Order of Evaluation</a></li>
-<li><a href="#checks-Precedence-94" class="toc-link">🧪 Checks: Precedence</a></li>
-<li><a href="#sec-105" class="toc-link">9. Short-Circuit Evaluation : Lazy Boolean Logic</a></li>
-<li><a href="#checks-Short-Circuit-107" class="toc-link">🧪 Checks: Short-Circuit</a></li>
-<li><a href="#sec-118" class="toc-link">10. Walrus Operator (:=) : Assignment Expressions</a></li>
-<li><a href="#checks-Walrus-120" class="toc-link">🧪 Checks: Walrus</a></li>
-<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
-<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
-<li><a href="#sec-143" class="toc-link">Q1.</a></li>
-<li><a href="#sec-145" class="toc-link">Q2.</a></li>
-<li><a href="#sec-147" class="toc-link">Q3.</a></li>
-<li><a href="#sec-149" class="toc-link">Q4.</a></li>
-<li><a href="#sec-151" class="toc-link">Q5.</a></li>
-<li><a href="#sec-153" class="toc-link">Q6.</a></li>
-<li><a href="#sec-155" class="toc-link">Q7.</a></li>
-<li><a href="#sec-157" class="toc-link">Q8.</a></li>
-<li><a href="#sec-159" class="toc-link">Q9.</a></li>
-<li><a href="#sec-161" class="toc-link">Q10.</a></li>
-<li><a href="#sec-163" class="toc-link">Q11.</a></li>
-<li><a href="#sec-165" class="toc-link">Q12.</a></li>
-<li><a href="#sec-167" class="toc-link">Q13.</a></li>
-<li><a href="#sec-169" class="toc-link">Q14.</a></li>
-<li><a href="#sec-171" class="toc-link">Q15.</a></li>
-<li><a href="#sec-173" class="toc-link">Q16.</a></li>
-<li><a href="#sec-175" class="toc-link">Q17.</a></li>
-<li><a href="#sec-177" class="toc-link">Q18.</a></li>
-<li><a href="#sec-179" class="toc-link">Q19.</a></li>
-<li><a href="#sec-181" class="toc-link">Q20.</a></li>
-<li><a href="#sec-183" class="toc-link">Q21.</a></li>
-<li><a href="#sec-185" class="toc-link">Q22.</a></li>
-<li><a href="#sec-187" class="toc-link">Q23.</a></li>
-<li><a href="#sec-189" class="toc-link">Q24.</a></li>
-<li><a href="#sec-191" class="toc-link">Q25.</a></li>
-<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
-    <div class="sidebar-resize" id="sidebarResize"></div>
-  </nav>
-</div>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-<script defer src="notebook.js?v=2.1"></script>
-<script src="voice.js" defer></script>
+            <!-- Subtitle/Narration Caption bubble inside workspace slide card -->
+            <div class="vp-caption" id="workspaceVpCaption" style="display: none; margin: 0; padding: 10px 16px; background: rgba(124, 58, 237, 0.08); border-top: 1px solid rgba(124, 58, 237, 0.2); font-size: 0.78rem; font-weight: 500; color: #a78bfa; text-align: center; font-family: sans-serif; flex-shrink: 0;">
+              📢 Narrating slide events...
+            </div>
+          </div>
+          <!-- Workspace Drawing Toolbar -->
+          <div class="ws-draw-toolbar" id="wsDrawToolbar" style="display: none;">
+            <button class="tool-btn" id="wsRectBtn" onclick="setWsDrawMode('rect')" title="Highlight with Rectangle Box">⬜ Highlight</button>
+            <button class="tool-btn" id="wsUndoBtn" onclick="undoLastHighlight()" title="Undo Last Highlight">↶ Undo</button>
+            <button class="tool-btn" id="wsClearBtn" onclick="clearWsDrawings()" title="Clear All Drawings">✕ Clear</button>
+          </div>
+        </div>
 
-<script src="hints.js" defer></script>
+        <!-- Playback Controls -->
+        <div class="playback-bar" id="playbackBar">
+          <div class="playback-row">
+            <div class="playback-controls-row">
+              <div class="playback-left-controls">
+                <button class="play-btn" id="playPauseBtn" onclick="toggleCombinedPlayback()">▶</button>
+                <div class="playback-bar-controls">
+                  <!-- Volume Control Wrapper -->
+                  <div class="volume-control-wrapper">
+                    <button class="volume-btn" id="volumeBtn" onclick="toggleVolumePopover(event)" title="Adjust Volume">
+                      <svg class="volume-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                      </svg>
+                    </button>
+                    <div class="volume-popover" id="volumePopover">
+                      <input type="range" id="volumeSlider" min="0" max="100" value="100" step="1" oninput="setPlaybackVolume(this.value)">
+                      <span class="volume-value" id="volumeValue">100%</span>
+                    </div>
+                  </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const topBtn = document.getElementById('topNextBtn');
-    const btmBtn = document.getElementById('bottomNextBtn');
-    
-    const enforcePaywall = (e) => {
-      const isEnrolled = localStorage.getItem('manodemy_enrolled') === 'true';
-      if (!isEnrolled) {
-        e.preventDefault();
-        window.location.href = 'index.html#pricing?locked=true';
-      }
-    };
-    
-    if (topBtn) topBtn.addEventListener('click', enforcePaywall);
-    if (btmBtn) btmBtn.addEventListener('click', enforcePaywall);
-  });
-</script>
+                  <!-- Speed Control Wrapper -->
+                  <div class="speed-control-wrapper">
+                    <button class="speed-control-btn" id="speedControlBtn" onclick="toggleSpeedPopover(event)" title="Playback Speed">
+                      <svg class="speed-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 15.2a10 10 0 0 0 17.3 3.58 10 10 0 0 0-.27-10.21zM10.85 15.75a1.2 1.2 0 1 0 1.2-1.2 1.2 1.2 0 0 0-1.2 1.2zM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1z"/>
+                      </svg>
+                      <span id="speedValueLabel">1.0x</span>
+                    </button>
+                    <div class="speed-popover" id="speedPopover">
+                      <div class="speed-option active" onclick="selectSpeedOption(1, '1.0x')">1.0x</div>
+                      <div class="speed-option" onclick="selectSpeedOption(1.25, '1.25x')">1.25x</div>
+                      <div class="speed-option" onclick="selectSpeedOption(1.5, '1.5x')">1.5x</div>
+                      <div class="speed-option" onclick="selectSpeedOption(1.75, '1.75x')">1.75x</div>
+                      <div class="speed-option" onclick="selectSpeedOption(2, '2.0x')">2.0x</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="playback-right-controls">
+                <span class="playback-time" id="playbackTime">0:00 / 0:00</span>
+              </div>
+            </div>
+            <div class="playback-timeline-row">
+              <input type="range" class="seek-bar" id="seekBar" min="0" max="100" value="0" step="0.1" oninput="seekCombinedPlayback(this.value)">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<!-- PWA Service Worker Registration -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('[Service Worker] Registered scope:', reg.scope))
-        .catch(err => console.error('[Service Worker] Registration failed:', err));
-    });
-  }
-</script>
+  <!-- ═══════════════ PEEK DATA POPOVER ═══════════════ -->
+  <div class="peek-popover" id="peekPopover">
+    <div class="peek-title">
+      <span>👀 Peek Data — </span><span id="peekTableName">employees</span>
+      <button class="peek-close" onclick="closePeekPopover()">✕</button>
+    </div>
+    <div id="peekContent">
+      <!-- Populated by JS with live query results -->
+    </div>
+  </div>
+
+  <!-- ═══════════════ PRESENT MODE OVERLAY ═══════════════ -->
+  <div class="present-overlay" id="presentOverlay">
+    <div class="present-toolbar">
+      <div class="present-tools">
+        <button class="tool-btn" id="laserBtn" onclick="toggleLaser()">🔴 Laser</button>
+        <button class="tool-btn" id="penBtn" onclick="togglePen()">✏️ Draw</button>
+      </div>
+      <button class="tool-btn tool-btn--close" onclick="closePresentMode()">✕ Close</button>
+    </div>
+
+    <div class="present-body">
+      <canvas class="draw-canvas" id="drawCanvas"></canvas>
+      <div class="present-slide slide-content" id="presentSlideContent">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <div class="present-footer">
+      <button onclick="prevSlide()" title="Previous">◀</button>
+      <span class="present-counter" id="presentCounter">1 / 3</span>
+      <button onclick="nextSlide()" title="Next">▶</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TEST PORTAL MODAL ═══════════════ -->
+  <div class="test-overlay" id="testOverlay">
+    <div class="test-header">
+      <div class="test-header-left">
+        <!-- User Profile Avatar with active green dot -->
+        <div class="user-profile">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIjZkNzQ4YiI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==" alt="User Profile" class="avatar-img" style="background-color: rgba(255,255,255,0.08);" />
+          <span class="active-dot"></span>
+        </div>
+        
+        <!-- Test Progress Stats Card -->
+        <div class="stats-card">
+          <div class="stats-row">
+            <div class="stats-item">
+              <span class="stats-label">ATTEMPTED</span>
+              <span class="stats-value"><span id="testAttemptedCount">0</span><span class="stats-total"> / 25</span></span>
+            </div>
+            <div class="stats-divider"></div>
+            <div class="stats-item">
+              <span class="stats-label">BEST SCORE</span>
+              <span class="stats-value"><span id="testBestScoreCount">0</span><span class="stats-total"> / 25</span></span>
+            </div>
+          </div>
+          <div class="stats-progress-bar">
+            <div class="stats-progress-fill" id="testProgressFill" style="width: 0%; background: var(--cyan);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-header-center">
+        <div class="test-title">📝 Day 02 — SQL Interview Test</div>
+      </div>
+
+      <div class="test-header-right">
+        <!-- Score Card Button -->
+        <button class="hdr-btn hdr-btn--score" id="testScoreBtn" onclick="openTestScoreCard()" title="View Score Card">
+          <svg class="score-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right: 4px;"><path d="M1.5 1.5H5.5V5.5H1.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 1.5H12.5V5.5H8.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 8.5H5.5V12.5H1.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8.5H12.5V12.5H8.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Score Card
+        </button>
+        
+        <div class="test-timer-wrapper">
+          <span class="timer-icon">⏳</span>
+          <span class="test-timer" id="testTimer">120:00</span>
+        </div>
+        
+        <button class="test-close-btn" onclick="closeTestPortal()">✕ Exit Test</button>
+      </div>
+    </div>
+
+    <div class="test-body">
+      <!-- Sidebar -->
+      <div class="test-sidebar" id="testSidebar">
+        <!-- 25 buttons populated by JS -->
+      </div>
+
+      <!-- Main Test Area -->
+      <div class="test-main">
+        <div class="test-question-prompt" id="testQuestionPrompt">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="test-toolbar">
+          <span class="q-counter" id="testQCounter">Q1 / 25</span>
+          <div class="spacer" style="flex:1"></div>
+          <button class="tb-btn tb-btn--run" onclick="runTestQuery()">▶ Run</button>
+          <button class="tb-btn tb-btn--clear" onclick="clearTestEditor()">✕ Clear</button>
+        </div>
+
+        <div class="test-editor-wrap" id="testEditorWrap"></div>
+
+        <div class="test-output" id="testOutput">
+          <div class="output-label">Terminal Output</div>
+          <span class="output-success">Ready...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-submit-bar">
+      <span class="test-progress" id="testProgress">Attempted: 0 / 25</span>
+      <button class="test-submit-btn" id="submitTestBtn" onclick="submitTest()">Submit Test</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SCORECARD OVERLAY ═══════════════ -->
+  <div class="scorecard-overlay" id="scorecardOverlay">
+    <div class="scorecard">
+      <div class="scorecard-header">
+        <h2>📊 Test Results</h2>
+        <div class="score-big" id="scoreBig">0 / 25</div>
+        <div class="score-meta" id="scoreMeta">Time spent: 00:00</div>
+      </div>
+      <div class="scorecard-body">
+        <table class="scorecard-table" id="scorecardTable">
+          <thead>
+            <tr><th>#</th><th>Status</th><th>Your Query</th></tr>
+          </thead>
+          <tbody id="scorecardBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+      <div class="scorecard-footer">
+        <button class="scorecard-close-btn" onclick="closeScorecard()">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Supabase SDK -->
+  <script src="/supabase.js" defer></script>
+  <!-- Content & Grading modules -->
+  <script src="/Version-3/content/manifest.js?v=14.2"></script>
+  <script src="/Version-3/content/day-02.js?v=14.2"></script>
+  <script src="/Version-3/db-seeds/retail-seed.js?v=14.2"></script>
+  <script src="/Version-3/grading-engine.js?v=14.2"></script>
+  <script src="/Version-3/persistence.js?v=14.2"></script>
+  <!-- App JS -->
+  <script src="/Version-3/scrimba-engine.js?v=14.2"></script>
 </body>
 </html>

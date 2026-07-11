@@ -28,23 +28,32 @@ export async function middleware(request: NextRequest) {
   // ── Layer A: Redirect legacy dayXX.html → /notebook/dayXX ──────────────────
   const legacyMatch = path.match(/^\/day(\d{2})\.html$/);
   if (legacyMatch) {
-    const dayId = `day${legacyMatch[1]}`;
-    const targetUrl = new URL(`/notebook/${dayId}`, request.url);
-    return NextResponse.redirect(targetUrl, { status: 301 });
+    const dayNum = parseInt(legacyMatch[1], 10);
+    if (dayNum >= 3) {
+      const dayId = `day${legacyMatch[1]}`;
+      const targetUrl = new URL(`/notebook/${dayId}`, request.url);
+      return NextResponse.redirect(targetUrl, { status: 301 });
+    }
   }
 
   const legacySqlMatch = path.match(/^\/sql\/day(\d{2})\.html$/);
   if (legacySqlMatch) {
-    const dayId = `sql-day${legacySqlMatch[1]}`;
-    const targetUrl = new URL(`/notebook/${dayId}`, request.url);
-    return NextResponse.redirect(targetUrl, { status: 301 });
+    const dayNum = parseInt(legacySqlMatch[1], 10);
+    if (dayNum >= 3) {
+      const dayId = `sql-day${legacySqlMatch[1]}`;
+      const targetUrl = new URL(`/notebook/${dayId}`, request.url);
+      return NextResponse.redirect(targetUrl, { status: 301 });
+    }
   }
 
   const legacyExcelMatch = path.match(/^\/excel\/day(\d{2})\.html$/);
   if (legacyExcelMatch) {
-    const dayId = `excel-day${legacyExcelMatch[1]}`;
-    const targetUrl = new URL(`/notebook/${dayId}`, request.url);
-    return NextResponse.redirect(targetUrl, { status: 301 });
+    const dayNum = parseInt(legacyExcelMatch[1], 10);
+    if (dayNum >= 3) {
+      const dayId = `excel-day${legacyExcelMatch[1]}`;
+      const targetUrl = new URL(`/notebook/${dayId}`, request.url);
+      return NextResponse.redirect(targetUrl, { status: 301 });
+    }
   }
 
   // ── Layer B: Edge Auth Guard for premium notebook routes ────────────────────

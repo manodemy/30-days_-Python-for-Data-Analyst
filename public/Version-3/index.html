@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
 
   <!-- App CSS -->
-  <link rel="stylesheet" href="/Version-3/styles.css?v=12.5">
+  <link rel="stylesheet" href="/Version-3/styles.css?v=14.2">
 
   <!-- CodeMirror JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
@@ -35,6 +35,10 @@
   <!-- ═══════════════ HEADER ═══════════════ -->
   <header class="header">
     <div class="header-left">
+      <!-- Back Arrow Link -->
+      <a href="/" class="back-to-home-btn" title="Back to Home Dashboard" style="color: #64748b; margin-right: 12px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      </a>
       <!-- User Profile Avatar with active green dot -->
       <div class="user-profile">
         <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzY0NzQ4YiI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==" alt="User Profile" class="avatar-img" style="background-color: rgba(255,255,255,0.08);" />
@@ -72,10 +76,7 @@
         <div class="day-picker-pill">
           <span class="day-picker-dot day-picker-dot--day"></span>
           <select id="daySelect">
-            <option value="day01" selected>Day 01</option>
-            <option value="day02">Day 02</option>
-            <option value="day03">Day 03</option>
-            <option value="day04">Day 04</option>
+            <!-- Populated dynamically -->
           </select>
           <span class="day-picker-chevron">
             <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -147,6 +148,7 @@
             <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </button>
           <button class="tb-btn tb-btn--tables" id="peekTrigger" onclick="togglePeekPopover(event)">📊 Tables</button>
+          <button class="tb-btn tb-btn--reset" onclick="confirmResetDatabase()" style="margin-left: 6px;" title="Reset Database to original state">🔄 Reset DB</button>
           <div class="spacer"></div>
           <button class="tb-btn tb-btn--run" id="runBtn" onclick="runCurrentQuery()">▶ Run</button>
           <button class="tb-btn tb-btn--clear" onclick="clearEditor()">✕ Clear</button>
@@ -401,7 +403,13 @@
 
   <!-- Supabase SDK -->
   <script src="/supabase.js" defer></script>
+  <!-- Content & Grading modules -->
+  <script src="/Version-3/content/manifest.js?v=14.0"></script>
+  <script src="/Version-3/content/day-01.js?v=14.0"></script>
+  <script src="/Version-3/db-seeds/retail-seed.js?v=14.0"></script>
+  <script src="/Version-3/grading-engine.js?v=14.0"></script>
+  <script src="/Version-3/persistence.js?v=14.0"></script>
   <!-- App JS -->
-  <script src="/Version-3/scrimba-engine.js?v=13.8"></script>
+  <script src="/Version-3/scrimba-engine.js?v=14.0"></script>
 </body>
 </html>

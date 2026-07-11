@@ -76,7 +76,7 @@
       "permanent": true
     },
     {
-      "source": "/sql/day:day(0[1-9]|1[0-8]).html",
+      "source": "/sql/day:day(0[3-9]|1[0-8]).html",
       "destination": "/notebook/sql-day:day",
       "permanent": true
     },
@@ -86,7 +86,7 @@
       "permanent": true
     },
     {
-      "source": "/sql/day:day(0[1-9]|1[0-8])",
+      "source": "/sql/day:day(0[3-9]|1[0-8])",
       "destination": "/notebook/sql-day:day",
       "permanent": true
     },
@@ -145,7 +145,11 @@
   "rewrites": [
     {
       "source": "/notebook/sql-day01",
-      "destination": "/Version-3/index.html"
+      "destination": "/sql/day01.html"
+    },
+    {
+      "source": "/notebook/sql-day02",
+      "destination": "/sql/day02.html"
     }
   ]
 }
