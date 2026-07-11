@@ -471,8 +471,13 @@ WHERE department = 'Engineering';</pre>
         </div>
 
         <div class="slide-section">
-          <div class="interview-box">
-            <h4>🎓 Interview Q&amp;A</h4>
+          <div class="interview-box" id="projectionInterviewQs">
+            <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+              <h4 style="margin: 0; flex: 1;">🎓 Interview Q&amp;A</h4>
+              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio19.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
             <div id="iqReferentialIntegrity">
               <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
                 <p style="margin: 0; flex: 1;"><strong>Q: What is Referential Integrity and how does a Foreign Key enforce it?</strong></p>
@@ -680,7 +685,9 @@ WHERE department = 'Engineering';</pre>
         <div class="slide-section" id="indexOnlyScans">
           <h3 class="heading-with-audio">
             Index-Only Scans — The Ultimate Optimization
-            
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio13.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
           </h3>
           <p>When you project only columns that are part of a database index, the query optimizer can execute an <strong>Index-Only Scan</strong> (also called a <em>Covering Index Scan</em>): it reads data directly from the index B-tree without ever touching the physical table pages (heap).</p>
 
@@ -688,7 +695,9 @@ WHERE department = 'Engineering';</pre>
             <div class="vs-card vs-card--bad" id="heapLookupRequired">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">❌ SELECT * — Heap Lookup Required</h4>
-                
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio14.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
               </div>
               <pre style="margin: 0; font-size: 0.75rem;">SELECT * FROM employees
 WHERE department = 'Engineering';
@@ -700,7 +709,9 @@ WHERE department = 'Engineering';
             <div class="vs-card vs-card--good" id="indexOnlyScanGood">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">✅ Specific Projection — Index-Only Scan</h4>
-                
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio15.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
               </div>
               <pre style="margin: 0; font-size: 0.75rem;">SELECT name, department FROM employees
 WHERE department = 'Engineering';
@@ -715,7 +726,9 @@ WHERE department = 'Engineering';
         <div class="slide-section" id="columnOrientedDbs">
           <h3 class="heading-with-audio">
             Column-Oriented Databases — A Step Further
-            
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio16.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
           </h3>
           <p>Analytical databases like <strong>Google BigQuery</strong>, <strong>Snowflake</strong>, and <strong>Amazon Redshift</strong> store data by column on disk rather than by row. This means:</p>
           <div class="rdbms-infographic">
@@ -723,7 +736,9 @@ WHERE department = 'Engineering';
               <div class="info-card info-card--green" id="cardZeroOverhead">
                 <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
                   <div class="info-card-header" style="margin: 0; flex: 1;">ZERO OVERHEAD</div>
-                  
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio17.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
                 </div>
                 <ul class="info-card-bullets">
                   <li><span class="bullet-dot"></span>READS ONLY THE REQUESTED COLUMNS FROM DISK</li>
@@ -734,7 +749,9 @@ WHERE department = 'Engineering';
               <div class="info-card info-card--amber" id="cardBilledPerByte">
                 <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
                   <div class="info-card-header" style="margin: 0; flex: 1;">BILLED PER BYTE</div>
-                  
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
                 </div>
                 <ul class="info-card-bullets">
                   <li><span class="bullet-dot"></span>CLOUD ENGINES BILL PER QUANTITY OF SCANNED DATA</li>
@@ -745,7 +762,9 @@ WHERE department = 'Engineering';
               <div class="info-card info-card--cyan" id="cardCompression">
                 <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
                   <div class="info-card-header" style="margin: 0; flex: 1;">COMPRESSION</div>
-                  
+                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18(new).mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
                 </div>
                 <ul class="info-card-bullets">
                   <li><span class="bullet-dot"></span>SIMILAR DATA TYPES CLUSTERED ON DISK</li>
@@ -762,7 +781,9 @@ WHERE department = 'Engineering';
             <div style="flex: 1;">
               <strong>⚠️ Real-World Outage Scenario:</strong> A backend team deployed <code>SELECT *</code> on a users table. Six months later, a feature team added a <code>profile_picture BYTEA</code> column (storing binary image data up to 2 MB per user). Overnight, every query that previously returned 200 bytes per row now returned 2 MB per row — causing database memory exhaustion and a P0 outage. The fix: explicit column projection in every query. <strong>Lesson: never use SELECT * in application code, unless you are just manually exploring the table columns in your database console.</strong>
             </div>
-            
+            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
           </div>
         </div>
 
@@ -772,7 +793,9 @@ WHERE department = 'Engineering';
             <div id="iqIndexOnlyScan">
               <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
                 <p style="margin: 0; flex: 1;"><strong>Q: What is an index-only scan and when does the optimizer use it?</strong></p>
-                
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio20.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
               </div>
               <p><em>A: An index-only scan (covering index scan) occurs when every column requested in the SELECT list and WHERE clause is present within a single index. The optimizer can resolve the entire query from the index B-tree without reading the physical table (heap) pages, drastically reducing disk I/O. To enable this, design covering indexes that include all frequently projected columns alongside filter columns.</em></p>
             </div>
@@ -782,7 +805,9 @@ WHERE department = 'Engineering';
             <div id="iqSelectStarCosts">
               <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
                 <p style="margin: 0; flex: 1;"><strong>Q: Why does SELECT * hurt performance even when all columns are small?</strong></p>
-                
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio21.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
               </div>
               <p><em>A: Even with small columns, SELECT * prevents the optimizer from using index-only scans, increases network payload per row, fills more buffer pool pages (reducing cache hit ratio for other queries), and makes your code fragile — if new columns are added to the table, all queries silently start fetching extra data. Explicit projection makes performance deterministic and code future-proof.</em></p>
             </div>
@@ -792,7 +817,9 @@ WHERE department = 'Engineering';
             <div id="iqHeapScanVsIndexScan">
               <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
                 <p style="margin: 0; flex: 1;"><strong>Q: What is the difference between a heap scan and an index scan?</strong></p>
-
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio22.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
               </div>
               <p><em>A: A heap scan (sequential/full table scan) reads every page of the physical table in order — O(n) cost regardless of filters. An index scan traverses the B-tree index structure to locate matching row pointers (O(log n)), then optionally fetches the actual row from the heap (heap lookup). An index-only scan skips the heap lookup entirely when all needed data is in the index itself.</em></p>
             </div>
@@ -4084,7 +4111,7 @@ const topic01Tracks = [
   { src: 'New_Day1Part1Question03.mp3', target: '#questionBar', title: 'Q2: Inspect sqlite_master', type: 'question', qId: 2 }
 ];
 
-const topic02Durations = [27.5, 27.4, 20.7, 16.6, 12.3, 9.9, 10.4, 10.9, 10.3, 6.7, 9.5, 9.8, 12.7, 12.2, 27.0, 26.4];
+const topic02Durations = [27.5, 27.4, 20.7, 16.6, 12.3, 9.9, 10.4, 10.9, 10.3, 6.7, 9.5, 9.8, 12.7, 12.2, 19.9, 15.4, 17.6, 14.1, 14.0, 14.9, 16.2, 14.9, 35.7, 31.1, 28.6, 35.6, 27.0, 26.4];
 const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2audio01.mp3', target: '#columnProjectionIntro', title: 'What is Column Projection?' },
   { src: 'Day01topic2/New_Day1Part2audio02.mp3', target: '#cardPagesBlocks', title: 'PAGES / BLOCKS Card' },
@@ -4100,6 +4127,18 @@ const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2audio11(new).mp3', target: '#costNetworkOverhead', title: '3. Network Overhead' },
   { src: 'Day01topic2/New_Day1Part2audio11.mp3', target: '#costDefeatedIndex', title: '4. Defeated Index-Only Scans' },
   { src: 'Day01topic2/New_Day1Part2audio12.mp3', target: '#projectionMockTable', title: 'Mock Table (Projection)' },
+  { src: 'Day01topic2/New_Day1Part2audio13.mp3', target: '#indexOnlyScans', title: 'Index-Only Scans — The Ultimate Optimization' },
+  { src: 'Day01topic2/New_Day1Part2audio14.mp3', target: '#heapLookupRequired', title: 'SELECT * — Heap Lookup Required' },
+  { src: 'Day01topic2/New_Day1Part2audio15.mp3', target: '#indexOnlyScanGood', title: 'Specific Projection — Index-Only Scan' },
+  { src: 'Day01topic2/New_Day1Part2audio16.mp3', target: '#columnOrientedDbs', title: 'Column-Oriented Databases — A Step Further' },
+  { src: 'Day01topic2/New_Day1Part2audio17.mp3', target: '#cardZeroOverhead', title: 'ZERO OVERHEAD Card' },
+  { src: 'Day01topic2/New_Day1Part2audio18.mp3', target: '#cardBilledPerByte', title: 'BILLED PER BYTE Card' },
+  { src: 'Day01topic2/New_Day1Part2audio18(new).mp3', target: '#cardCompression', title: 'COMPRESSION Card' },
+  { src: 'Day01topic2/New_Day1Part2audio18.mp3', target: '#projectionProTip', title: '💡 Pro Tip: Real-World Outage Scenario' },
+  { src: 'Day01topic2/New_Day1Part2audio19.mp3', target: '#projectionInterviewQs', title: 'Interview Questions & Exercises' },
+  { src: 'Day01topic2/New_Day1Part2audio20.mp3', target: '#iqIndexOnlyScan', title: 'Q1. What is an Index-Only Scan?' },
+  { src: 'Day01topic2/New_Day1Part2audio21.mp3', target: '#iqSelectStarCosts', title: 'Q2. Why can SELECT * lead to buffer pool pollution?' },
+  { src: 'Day01topic2/New_Day1Part2audio22.mp3', target: '#iqHeapScanVsIndexScan', title: 'Q3. Compare Column-Oriented vs Row-Oriented databases' },
   { src: 'Day01topic2/New_Day1Part2Question01.mp3', target: '#questionBar', title: 'Q1: Retrieve name & department', type: 'question', qId: 1 },
   { src: 'Day01topic2/New_Day1Part2Question02.mp3', target: '#questionBar', title: 'Q2: Project id, name, salary', type: 'question', qId: 2 }
 ];
