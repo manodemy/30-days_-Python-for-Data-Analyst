@@ -734,10 +734,10 @@ WHERE department = 'Engineering';
           <div class="rdbms-infographic">
             <div class="info-columns">
               <div class="info-card info-card--green" id="cardZeroOverhead">
-                <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
-                  <div class="info-card-header" style="margin: 0; flex: 1;">ZERO OVERHEAD</div>
-                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio17.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <div class="info-card-header" style="position: relative; display: flex; align-items: center; justify-content: center; width: 100%;">
+                  <span style="flex: 1; text-align: center; padding-left: 24px;">ZERO OVERHEAD</span>
+                  <button class="audio-play-btn info-card-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio17.mp3', this)" title="Play narration">
+                    <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                   </button>
                 </div>
                 <ul class="info-card-bullets">
@@ -747,10 +747,10 @@ WHERE department = 'Engineering';
                 </ul>
               </div>
               <div class="info-card info-card--amber" id="cardBilledPerByte">
-                <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
-                  <div class="info-card-header" style="margin: 0; flex: 1;">BILLED PER BYTE</div>
-                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <div class="info-card-header" style="position: relative; display: flex; align-items: center; justify-content: center; width: 100%;">
+                  <span style="flex: 1; text-align: center; padding-left: 24px;">BILLED PER BYTE</span>
+                  <button class="audio-play-btn info-card-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18(new).mp3', this)" title="Play narration">
+                    <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                   </button>
                 </div>
                 <ul class="info-card-bullets">
@@ -760,10 +760,10 @@ WHERE department = 'Engineering';
                 </ul>
               </div>
               <div class="info-card info-card--cyan" id="cardCompression">
-                <div class="heading-with-audio" style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
-                  <div class="info-card-header" style="margin: 0; flex: 1;">COMPRESSION</div>
-                  <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18(new).mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <div class="info-card-header" style="position: relative; display: flex; align-items: center; justify-content: center; width: 100%;">
+                  <span style="flex: 1; text-align: center; padding-left: 24px;">COMPRESSION</span>
+                  <button class="audio-play-btn info-card-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio18.mp3', this)" title="Play narration">
+                    <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                   </button>
                 </div>
                 <ul class="info-card-bullets">
@@ -4111,7 +4111,7 @@ const topic01Tracks = [
   { src: 'New_Day1Part1Question03.mp3', target: '#questionBar', title: 'Q2: Inspect sqlite_master', type: 'question', qId: 2 }
 ];
 
-const topic02Durations = [27.5, 27.4, 20.7, 16.6, 12.3, 9.9, 10.4, 10.9, 10.3, 6.7, 9.5, 9.8, 12.7, 12.2, 19.9, 15.4, 17.6, 14.1, 14.0, 14.9, 16.2, 14.9, 35.7, 31.1, 28.6, 35.6, 27.0, 26.4];
+const topic02Durations = [27.5, 27.4, 20.7, 16.6, 12.3, 9.9, 10.4, 10.9, 10.3, 6.7, 9.5, 9.8, 12.7, 12.2, 19.9, 15.4, 17.6, 14.1, 14.0, 16.2, 14.9, 14.9, 35.7, 31.1, 28.6, 35.6, 27.0, 26.4];
 const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2audio01.mp3', target: '#columnProjectionIntro', title: 'What is Column Projection?' },
   { src: 'Day01topic2/New_Day1Part2audio02.mp3', target: '#cardPagesBlocks', title: 'PAGES / BLOCKS Card' },
@@ -4132,8 +4132,8 @@ const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2audio15.mp3', target: '#indexOnlyScanGood', title: 'Specific Projection — Index-Only Scan' },
   { src: 'Day01topic2/New_Day1Part2audio16.mp3', target: '#columnOrientedDbs', title: 'Column-Oriented Databases — A Step Further' },
   { src: 'Day01topic2/New_Day1Part2audio17.mp3', target: '#cardZeroOverhead', title: 'ZERO OVERHEAD Card' },
-  { src: 'Day01topic2/New_Day1Part2audio18.mp3', target: '#cardBilledPerByte', title: 'BILLED PER BYTE Card' },
-  { src: 'Day01topic2/New_Day1Part2audio18(new).mp3', target: '#cardCompression', title: 'COMPRESSION Card' },
+  { src: 'Day01topic2/New_Day1Part2audio18(new).mp3', target: '#cardBilledPerByte', title: 'BILLED PER BYTE Card' },
+  { src: 'Day01topic2/New_Day1Part2audio18.mp3', target: '#cardCompression', title: 'COMPRESSION Card' },
   { src: 'Day01topic2/New_Day1Part2audio18.mp3', target: '#projectionProTip', title: '💡 Pro Tip: Real-World Outage Scenario' },
   { src: 'Day01topic2/New_Day1Part2audio19.mp3', target: '#projectionInterviewQs', title: 'Interview Questions & Exercises' },
   { src: 'Day01topic2/New_Day1Part2audio20.mp3', target: '#iqIndexOnlyScan', title: 'Q1. What is an Index-Only Scan?' },

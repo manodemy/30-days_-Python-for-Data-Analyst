@@ -3917,3 +3917,50 @@ a { color: var(--cyan); text-decoration: none; }
   color: #0284c7 !important;
   font-weight: bold;
 }
+
+/* --- Premium Info-Card Play Buttons --- */
+.info-card-play-btn {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  border-radius: 50% !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  padding: 0 !important;
+  margin-right: 8px !important;
+  flex-shrink: 0 !important;
+}
+.info-card-play-btn:hover {
+  background: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #ffffff !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+.info-card-play-btn.playing {
+  background: #ffffff !important;
+  color: #059669 !important; /* Green default */
+  border-color: #ffffff !important;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.8) !important;
+  animation: pulse-glow-btn 1.5s infinite alternate !important;
+}
+.info-card--amber .info-card-play-btn.playing {
+  color: #d97706 !important; /* Amber */
+}
+.info-card--cyan .info-card-play-btn.playing {
+  color: #0891b2 !important; /* Cyan */
+}
+@keyframes pulse-glow-btn {
+  0% {
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+  }
+}
