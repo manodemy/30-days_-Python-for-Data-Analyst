@@ -608,28 +608,36 @@ WHERE department = 'Engineering';</pre>
             <div class="vs-card vs-card--bad" id="costExcessDiskIO">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">💾 1. Excess Disk I/O</h4>
-                
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio09.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
               </div>
               <p>More columns → more pages loaded from disk → higher latency, especially on large tables with millions of rows.</p>
             </div>
             <div class="vs-card vs-card--bad" id="costBufferPool">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">🧠 2. Buffer Pool Pollution</h4>
-                
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio10.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
               </div>
               <p>Unused columns occupy RAM in the database buffer cache, evicting frequently-needed pages and causing cache misses.</p>
             </div>
             <div class="vs-card vs-card--bad" id="costNetworkOverhead">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">🌐 3. Network Overhead</h4>
-                
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio11(new).mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
               </div>
               <p>Every byte travels over the network from the DB server to your app. Wide rows with BLOB columns cause noticeable latency under heavy traffic.</p>
             </div>
             <div class="vs-card vs-card--bad" id="costDefeatedIndex">
               <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <h4 style="margin: 0; flex: 1;">🚫 4. Defeated Index-Only Scans</h4>
-                
+                <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio11.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
               </div>
               <p>Even when a covering index exists, <code>SELECT *</code> forces a heap lookup — visiting actual table pages — because not all columns are in the index.</p>
             </div>
@@ -638,7 +646,7 @@ WHERE department = 'Engineering';</pre>
           <div class="db-mock-table-wrap" id="projectionMockTable">
             <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
               <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Only projected columns are loaded and returned — unused columns are discarded at query time.</small>
-              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio07.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio12.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
@@ -4076,7 +4084,7 @@ const topic01Tracks = [
   { src: 'New_Day1Part1Question03.mp3', target: '#questionBar', title: 'Q2: Inspect sqlite_master', type: 'question', qId: 2 }
 ];
 
-const topic02Durations = [27.5, 27.4, 20.7, 16.6, 12.3, 9.9, 10.4, 10.9, 10.3, 27.0, 26.4];
+const topic02Durations = [27.5, 27.4, 20.7, 16.6, 12.3, 9.9, 10.4, 10.9, 10.3, 6.7, 9.5, 9.8, 12.7, 12.2, 27.0, 26.4];
 const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2audio01.mp3', target: '#columnProjectionIntro', title: 'What is Column Projection?' },
   { src: 'Day01topic2/New_Day1Part2audio02.mp3', target: '#cardPagesBlocks', title: 'PAGES / BLOCKS Card' },
@@ -4087,6 +4095,11 @@ const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2audio06.mp3', target: '#projectionFilter', title: 'SELECT name, salary Node' },
   { src: 'Day01topic2/New_Day1Part2audio07.mp3', target: '#projectionResultSet', title: 'Result Set Node' },
   { src: 'Day01topic2/New_Day1Part2audio08.mp3', target: '#performanceCosts', title: 'The Four Performance Costs of SELECT *' },
+  { src: 'Day01topic2/New_Day1Part2audio09.mp3', target: '#costExcessDiskIO', title: '1. Excess Disk I/O' },
+  { src: 'Day01topic2/New_Day1Part2audio10.mp3', target: '#costBufferPool', title: '2. Buffer Pool Pollution' },
+  { src: 'Day01topic2/New_Day1Part2audio11(new).mp3', target: '#costNetworkOverhead', title: '3. Network Overhead' },
+  { src: 'Day01topic2/New_Day1Part2audio11.mp3', target: '#costDefeatedIndex', title: '4. Defeated Index-Only Scans' },
+  { src: 'Day01topic2/New_Day1Part2audio12.mp3', target: '#projectionMockTable', title: 'Mock Table (Projection)' },
   { src: 'Day01topic2/New_Day1Part2Question01.mp3', target: '#questionBar', title: 'Q1: Retrieve name & department', type: 'question', qId: 1 },
   { src: 'Day01topic2/New_Day1Part2Question02.mp3', target: '#questionBar', title: 'Q2: Project id, name, salary', type: 'question', qId: 2 }
 ];
