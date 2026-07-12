@@ -4287,26 +4287,26 @@ a { color: var(--cyan); text-decoration: none; }
 
 
 
-/* Top 3 UI/UX Matte Finish Headings Design */
+/* Top 3 UI/UX Matte Finish Headings Design - Color Science Aligned */
 .slide-content h2 {
   position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(20, 26, 45, 0.6) !important;
-  border: 1px solid rgba(255, 255, 255, 0.06) !important;
-  border-left: 4px solid #7c3aed !important; /* purple accent for SQL */
+  background: rgba(21, 15, 36, 0.8) !important; /* Amethyst matte */
+  border: 1px solid rgba(168, 85, 247, 0.15) !important; /* Amethyst-tinted border */
+  border-left: 4px solid #a855f7 !important; /* Royal purple accent line */
   padding: 14px 18px !important;
   border-radius: 10px !important;
-  color: #f8fafc !important;
+  color: #f5f3ff !important; /* Soft lavender-tinted white text */
   font-size: 1.25rem !important;
   font-weight: 700 !important;
   letter-spacing: -0.015em !important;
   margin-top: 28px !important;
   margin-bottom: 18px !important;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.22) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25) !important;
   backdrop-filter: blur(12px) !webkit-backdrop-filter: blur(12px);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 
 .slide-content h3 {
@@ -4314,17 +4314,17 @@ a { color: var(--cyan); text-decoration: none; }
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(20, 26, 45, 0.35) !important;
-  border: 1px solid rgba(255, 255, 255, 0.04) !important;
-  border-left: 3px solid rgba(124, 58, 237, 0.7) !important;
+  background: rgba(21, 15, 36, 0.45) !important;
+  border: 1px solid rgba(168, 85, 247, 0.08) !important;
+  border-left: 3px solid rgba(168, 85, 247, 0.6) !important;
   padding: 10px 14px !important;
   border-radius: 8px !important;
-  color: #e2e8f0 !important;
+  color: #ede9fe !important;
   font-size: 1.05rem !important;
   font-weight: 600 !important;
   margin-top: 20px !important;
   margin-bottom: 14px !important;
-  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.15) !important;
   backdrop-filter: blur(8px) !webkit-backdrop-filter: blur(8px);
 }
 
