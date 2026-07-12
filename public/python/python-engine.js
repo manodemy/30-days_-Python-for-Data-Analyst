@@ -89,6 +89,9 @@ print("Python engine ready.")
 
   // Init divider drag
   initDivider();
+
+  // Initialize premium custom dropdown overlays
+  initCustomDropdowns();
 }
 
 function updateLoadingProgress(pct) {
@@ -102,9 +105,174 @@ function buildDaySelector() {
   const sel = document.getElementById('daySelect');
   if (!sel || !window.COURSE_MANIFEST) return;
   sel.innerHTML = window.COURSE_MANIFEST.map(d =>
-    `<option value="${d.id}">Day ${String(d.day).padStart(2,'0')}</option>`
+    `<option value="${d.id}">${d.emoji || '🐍'} Day ${String(d.day).padStart(2,'0')}: ${d.title}</option>`
   ).join('');
   sel.addEventListener('change', () => loadDay(sel.value));
+}
+
+// Custom dropdown initializer to replace native select inputs with a premium dropdown menu
+function initCustomDropdowns() {
+  const selects = document.querySelectorAll('.day-picker-pill select');
+  selects.forEach(select => {
+    select.style.display = 'none';
+    const wrapper = select.parentElement;
+    
+    let trigger = wrapper.querySelector('.custom-select-trigger');
+    let optionsMenu = wrapper.querySelector('.custom-select-options');
+    
+    function updateTriggerText() {
+      const textSpan = trigger.querySelector('.selected-text');
+      if (textSpan) {
+        const option = select.options[select.selectedIndex];
+        if (select.id === 'topicSelect' && option) {
+          const slideIdx = parseInt(option.value);
+          const duration = getSlideDurationString(slideIdx);
+          const slide = currentDayData && currentDayData.slides && currentDayData.slides[slideIdx];
+          const cleanedTitle = slide ? slide.title.replace(/^\d+\.\s*/, '') : option.text;
+          textSpan.innerHTML = `
+            <span class="trigger-title">Topic 0${slideIdx + 1}: ${cleanedTitle}</span>
+            <span class="trigger-duration-badge">${duration}</span>
+          `;
+        } else if (option) {
+          if (select.id === 'daySelect') {
+            const dayMeta = window.COURSE_MANIFEST.find(d => d.id === option.value);
+            const dayNum = dayMeta ? String(dayMeta.day).padStart(2, '0') : '01';
+            textSpan.textContent = `Day ${dayNum}`;
+          } else {
+            textSpan.textContent = option.text;
+          }
+        } else {
+          textSpan.textContent = '';
+        }
+      }
+    }
+
+    function populateOptions() {
+      optionsMenu.innerHTML = '';
+      Array.from(select.options).forEach((opt) => {
+        const optionItem = document.createElement('div');
+        optionItem.className = `custom-select-option${opt.selected ? ' selected' : ''}`;
+        
+        if (select.id === 'topicSelect') {
+          const slideIdx = parseInt(opt.value);
+          const duration = getSlideDurationString(slideIdx);
+          const slide = currentDayData && currentDayData.slides && currentDayData.slides[slideIdx];
+          const cleanedTitle = slide ? slide.title.replace(/^\d+\.\s*/, '') : opt.text;
+          optionItem.innerHTML = `
+            <span class="option-title">Topic 0${slideIdx + 1}: ${cleanedTitle}</span>
+            <span class="option-duration">${duration}</span>
+          `;
+        } else {
+          optionItem.textContent = opt.text;
+        }
+        
+        optionItem.dataset.value = opt.value;
+        optionItem.addEventListener('click', (e) => {
+          e.stopPropagation();
+          select.value = opt.value;
+          select.dispatchEvent(new Event('change'));
+          optionsMenu.classList.remove('open');
+          wrapper.classList.remove('open');
+          trigger.classList.remove('open');
+        });
+        optionsMenu.appendChild(optionItem);
+      });
+      updateTriggerText();
+    }
+    
+    if (trigger && optionsMenu) {
+      populateOptions();
+      return;
+    }
+    
+    // Remove old native chevron
+    wrapper.querySelector('.day-picker-chevron')?.remove();
+    
+    if (!trigger) {
+      trigger = document.createElement('div');
+      trigger.className = 'custom-select-trigger';
+      wrapper.appendChild(trigger);
+    }
+    
+    if (!optionsMenu) {
+      optionsMenu = document.createElement('div');
+      optionsMenu.className = 'custom-select-options';
+      wrapper.appendChild(optionsMenu);
+    }
+    
+    trigger.innerHTML = `
+      <span class="selected-text"></span>
+      <span class="day-picker-chevron">
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1.5L5 5L9 1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    `;
+    
+    populateOptions();
+    
+    wrapper.onclick = (e) => {
+      e.stopPropagation();
+      const isOpen = optionsMenu.classList.contains('open');
+      document.querySelectorAll('.custom-select-options').forEach(menu => {
+        menu.classList.remove('open');
+        menu.parentElement.classList.remove('open');
+        menu.previousElementSibling.classList.remove('open');
+      });
+      if (!isOpen) {
+        optionsMenu.classList.add('open');
+        wrapper.classList.add('open');
+        trigger.classList.add('open');
+      }
+    };
+    
+    select.addEventListener('change', () => {
+      updateTriggerText();
+      optionsMenu.querySelectorAll('.custom-select-option').forEach(el => {
+        if (el.dataset.value === select.value) {
+          el.classList.add('selected');
+        } else {
+          el.classList.remove('selected');
+        }
+      });
+    });
+    
+    const observer = new MutationObserver(() => {
+      populateOptions();
+    });
+    observer.observe(select, { childList: true });
+    
+    const descriptor = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value');
+    Object.defineProperty(select, 'value', {
+      get() {
+        return descriptor.get.call(this);
+      },
+      set(val) {
+        descriptor.set.call(this, val);
+        updateTriggerText();
+        optionsMenu.querySelectorAll('.custom-select-option').forEach(el => {
+          if (el.dataset.value === String(val)) {
+            el.classList.add('selected');
+          } else {
+            el.classList.remove('selected');
+          }
+        });
+      }
+    });
+  });
+  
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.custom-select-options').forEach(menu => {
+      menu.classList.remove('open');
+      menu.parentElement.classList.remove('open');
+      menu.previousElementSibling.classList.remove('open');
+    });
+  });
+}
+
+function getSlideDurationString(slideIdx) {
+  if (currentDayData && currentDayData.slides && currentDayData.slides[slideIdx]) {
+    return currentDayData.slides[slideIdx].duration || '5:00';
+  }
+  return '5:00';
 }
 
 function loadDay(dayId) {
