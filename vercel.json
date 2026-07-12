@@ -146,6 +146,18 @@
     {
       "source": "/notebook/sql-day:day(0[1-9]|1[0-8])",
       "destination": "/sql/day:day.html"
+    },
+    {
+      "source": "/python",
+      "destination": "/python/index.html"
+    },
+    {
+      "source": "/day01.html",
+      "destination": "/python/index.html?day=1"
+    },
+    {
+      "source": "/day02.html",
+      "destination": "/python/index.html?day=2"
     }
   ]
 }

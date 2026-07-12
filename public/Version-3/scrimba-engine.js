@@ -389,6 +389,21 @@ function renderPresentSlide() {
 }
 
 function renderSideSlide() {
+  // Save progress of the last active slide before rendering the new one
+  if (typeof lastActiveSlideIndex !== 'undefined' && typeof lastActiveDay !== 'undefined') {
+    if (lastActiveSlideIndex !== currentSlide || lastActiveDay !== currentDay) {
+      const oldKey = `${lastActiveDay}_${lastActiveSlideIndex}`;
+      slideProgressHistory[oldKey] = {
+        trackIndex: combinedTrackIndex || 0,
+        audioTime: activeAudioInstance ? activeAudioInstance.currentTime : 0,
+        combinedTime: currentCombinedTime || 0
+      };
+    }
+  }
+  // Update tracking variables to current values
+  lastActiveSlideIndex = currentSlide;
+  lastActiveDay = currentDay;
+
   const slide = COURSE_CONFIG.slides[currentSlide];
   
   // Parse the slide HTML
@@ -455,9 +470,20 @@ function renderSideSlide() {
         activeAudioInstance = null;
       }
       isCombinedPlaying = false;
-      currentCombinedTime = 0;
-      combinedTrackIndex = 0;
       combinedAudios = [];
+      
+      // Restore progress if it exists in history
+      const newKey = `${currentDay}_${currentSlide}`;
+      const saved = slideProgressHistory[newKey];
+      if (saved) {
+        combinedTrackIndex = saved.trackIndex;
+        currentCombinedTime = saved.combinedTime;
+        pendingAudioStartTime = saved.audioTime;
+      } else {
+        currentCombinedTime = 0;
+        combinedTrackIndex = 0;
+        pendingAudioStartTime = 0;
+      }
       
       // Update UI button states
       updatePlayButtonStates(false);
@@ -3679,6 +3705,12 @@ let combinedTracks = slideTrackMap[0].tracks;
 const AUDIO_CDN_BASE = "/Version-3";
 let manifest = {};
 
+// Slide Progress History state variables
+let slideProgressHistory = {};
+let lastActiveSlideIndex = 0;
+let lastActiveDay = 'day01';
+let pendingAudioStartTime = 0;
+
 // Compute totalCombinedDuration immediately from hardcoded fallbacks so the
 // progress bar shows a real duration even before the manifest has loaded.
 totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
@@ -4306,7 +4338,8 @@ function playCombinedPlayback() {
       })
       .catch(err => console.log('Combined play error:', err));
   } else {
-    loadAndPlayTrack(combinedTrackIndex);
+    loadAndPlayTrack(combinedTrackIndex, pendingAudioStartTime);
+    pendingAudioStartTime = 0;
   }
 }
 

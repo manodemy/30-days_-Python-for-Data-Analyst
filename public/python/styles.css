@@ -4285,3 +4285,46 @@ a { color: var(--cyan); text-decoration: none; }
   100% { border-color: var(--amber); }
 }
 
+
+
+/* ---------------------------------------------------------------
+   PYTHON PLAYER — THEME OVERRIDES
+   --------------------------------------------------------------- */
+:root {
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --accent-soft: rgba(59,130,246,0.12);
+}
+.day-picker-dot--day { background: #3b82f6; }
+.hdr-btn--test { background: #3b82f6; }
+.hdr-btn--test:hover { background: #2563eb; }
+.stats-progress-fill { background: #3b82f6; }
+.py-loading-overlay { position:fixed;inset:0;background:rgba(6,9,19,0.95);z-index:9999;display:flex;align-items:center;justify-content:center; }
+.py-loading-card { background:#111827;border:1px solid rgba(59,130,246,0.3);border-radius:16px;padding:36px 48px;text-align:center;max-width:360px;width:90%;box-shadow:0 0 40px rgba(59,130,246,0.15); }
+.py-loading-spinner { width:40px;height:40px;border:3px solid rgba(59,130,246,0.2);border-top-color:#3b82f6;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.py-loading-title { font-size:1.1rem;font-weight:700;color:#f1f5f9;margin-bottom:8px; }
+.py-loading-sub { font-size:0.78rem;color:#64748b;margin-bottom:20px; }
+.py-loading-bar-wrap { background:rgba(255,255,255,0.05);border-radius:8px;height:6px;overflow:hidden; }
+.py-loading-bar { height:100%;width:0%;background:linear-gradient(90deg,#3b82f6,#60a5fa);border-radius:8px;transition:width 0.4s ease; }
+.sidebar-btn { width:36px;height:36px;border-radius:6px;border:1px solid rgba(255,255,255,0.07);background:#111827;color:#64748b;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center; }
+.sidebar-btn:hover { border-color:#3b82f6;color:#f1f5f9; }
+.sidebar-btn--passed { background:rgba(16,185,129,0.15);border-color:#10b981;color:#6ee7b7; }
+.sidebar-btn--attempted { background:rgba(239,68,68,0.1);border-color:#ef4444;color:#fca5a5; }
+.test-sidebar { display:flex;flex-wrap:wrap;gap:6px;padding:12px;width:200px;min-width:200px;border-right:1px solid rgba(255,255,255,0.07);align-content:flex-start; }
+.pro-tip-box { background:rgba(16,185,129,0.08);border-left:4px solid #10b981;border-radius:0 8px 8px 0;padding:12px 16px;margin:16px 0;font-size:0.88rem;color:#d1fae5; }
+.warn-box { background:rgba(245,158,11,0.08);border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:12px 16px;margin:16px 0;font-size:0.88rem;color:#fef3c7; }
+.info-box { background:rgba(59,130,246,0.08);border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;padding:12px 16px;margin:16px 0;font-size:0.88rem;color:#dbeafe; }
+.callout-box { background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.25);border-radius:8px;padding:12px 16px;margin:16px 0;font-size:0.88rem;color:#e9d5ff; }
+.type-chip { display:inline-block;padding:2px 8px;border-radius:20px;font-size:0.72rem;font-weight:700;font-family:monospace;background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.3);margin:2px; }
+.type-chip--immutable { background:rgba(16,185,129,0.12);color:#6ee7b7;border-color:rgba(16,185,129,0.3); }
+.type-chip--mutable { background:rgba(245,158,11,0.12);color:#fcd34d;border-color:rgba(245,158,11,0.3); }
+.type-heading { background:linear-gradient(135deg,rgba(59,130,246,0.15),rgba(59,130,246,0.05));border-left:5px solid #3b82f6;border-radius:0 8px 8px 0;padding:12px 18px;margin:28px 0 16px;display:flex;align-items:center;gap:10px; }
+.type-heading h3 { margin:0;font-size:1rem;font-weight:700;color:#93c5fd; }
+.sub-why { color:#60a5fa;font-size:0.9rem;font-weight:600;margin:18px 0 6px; }
+.sub-pitfall { color:#fbbf24;font-size:0.9rem;font-weight:600;margin:18px 0 6px; }
+.sub-memory { color:#34d399;font-size:0.9rem;font-weight:600;margin:18px 0 6px; }
+.code-output-table { width:100%;border-collapse:collapse;font-family:monospace;font-size:0.8rem;margin:12px 0;border-radius:6px;overflow:hidden; }
+.code-output-table th { background:rgba(255,255,255,0.06);padding:6px 12px;text-align:left;color:#64748b;font-weight:600;font-size:0.72rem;text-transform:uppercase; }
+.code-output-table td { padding:5px 12px;border-top:1px solid rgba(255,255,255,0.07);color:#f1f5f9; }
+button:disabled { opacity:0.5;cursor:not-allowed; }
