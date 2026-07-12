@@ -102,7 +102,7 @@ function buildDaySelector() {
   const sel = document.getElementById('daySelect');
   if (!sel || !window.COURSE_MANIFEST) return;
   sel.innerHTML = window.COURSE_MANIFEST.map(d =>
-    `<option value="${d.id}">${d.emoji || '🐍'} Day ${String(d.day).padStart(2,'0')}: ${d.title}</option>`
+    `<option value="${d.id}">Day ${String(d.day).padStart(2,'0')}</option>`
   ).join('');
   sel.addEventListener('change', () => loadDay(sel.value));
 }

@@ -7,5 +7,12 @@ window.COURSE_MANIFEST = [
     "title": "Data Types & Memory",
     "emoji": "🔢",
     "status": "live"
+  },
+  {
+    "day": 2,
+    "id": "pyDay02",
+    "title": "Operators & Expressions",
+    "emoji": "➕",
+    "status": "live"
   }
 ];
