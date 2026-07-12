@@ -26,6 +26,19 @@ let currentTestQuestionIndex = 0;
 // Main editor
 let mainEditor = null;
 
+// Narration/Playback State
+let isCombinedPlaying = false;
+let combinedTrackIndex = 0;
+let combinedTracks = [];
+let combinedTrackDurations = [];
+let totalCombinedDuration = 0;
+let currentCombinedTime = 0;
+let currentPlaybackRate = 1.0;
+let currentPlaybackVolume = 1.0;
+let ttsUtterance = null;
+let playbackTimerInterval = null;
+let isMuted = false;
+
 // Persistence
 const STORAGE_KEY = 'manodemy_python_progress';
 
@@ -359,6 +372,9 @@ function renderSlide(index) {
 
   // Update counters
   updateSlideCounter();
+
+  // Re-build slide narration track segments
+  buildNarrationTracksForSlide();
 }
 
 function updateSlideCounter() {
@@ -825,6 +841,339 @@ function setMobileTab(tab) {
     btnT.classList.remove('active');
   }
 }
+
+// ── Playback Controls & Narration System ──────────────────────
+
+function buildNarrationTracksForSlide() {
+  pauseCombinedPlayback();
+  
+  const slideContainer = document.getElementById('slideContent');
+  if (!slideContainer) return;
+  
+  // Find all slide sections
+  const sections = Array.from(slideContainer.querySelectorAll('.slide-section'));
+  if (sections.length === 0) {
+    sections.push(slideContainer);
+  }
+  
+  combinedTracks = sections.map((sect) => {
+    // Extract text, strip code block elements for clean reading
+    const clone = sect.cloneNode(true);
+    // Remove pre and code blocks
+    clone.querySelectorAll('pre, code, svg, .db-table-mock').forEach(el => el.remove());
+    
+    let text = clone.innerText || clone.textContent || "";
+    // Clean text: normalize spaces
+    text = text.replace(/\s+/g, ' ').trim();
+    
+    // Fallback if empty text
+    if (!text) {
+      text = "This section displays illustrations of the concept.";
+    }
+    
+    const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
+    const duration = Math.max(3.5, wordCount / 2.2);
+    
+    return {
+      element: sect,
+      text: text,
+      duration: duration
+    };
+  });
+  
+  combinedTrackDurations = combinedTracks.map(t => t.duration);
+  totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
+  combinedTrackIndex = 0;
+  currentCombinedTime = 0;
+  
+  // Show play buttons and progress bar
+  const navBtn = document.getElementById('navPlayBtn');
+  if (navBtn) navBtn.style.display = 'inline-flex';
+  document.getElementById('playbackBar')?.classList.add('visible');
+  
+  updatePlayButtonStates(false);
+  updateProgressUI();
+}
+
+function toggleCombinedPlayback() {
+  if (isCombinedPlaying) {
+    pauseCombinedPlayback();
+  } else {
+    playCombinedPlayback();
+  }
+}
+
+function playCombinedPlayback() {
+  isCombinedPlaying = true;
+  updatePlayButtonStates(true);
+  
+  // Start timer interval to update progress UI
+  if (playbackTimerInterval) clearInterval(playbackTimerInterval);
+  playbackTimerInterval = setInterval(() => {
+    if (isCombinedPlaying) {
+      currentCombinedTime = Math.min(totalCombinedDuration, currentCombinedTime + 0.1);
+      updateProgressUI();
+      
+      if (currentCombinedTime >= totalCombinedDuration) {
+        onCombinedPlaybackEnded();
+      }
+    }
+  }, 100);
+  
+  speakTrackSegment(combinedTrackIndex);
+}
+
+function pauseCombinedPlayback() {
+  isCombinedPlaying = false;
+  updatePlayButtonStates(false);
+  
+  if (playbackTimerInterval) {
+    clearInterval(playbackTimerInterval);
+    playbackTimerInterval = null;
+  }
+  
+  window.speechSynthesis.cancel();
+}
+
+function speakTrackSegment(trackIdx) {
+  if (!isCombinedPlaying) return;
+  if (trackIdx < 0 || trackIdx >= combinedTracks.length) {
+    onCombinedPlaybackEnded();
+    return;
+  }
+  
+  combinedTrackIndex = trackIdx;
+  const track = combinedTracks[trackIdx];
+  
+  // Highlight active section visually
+  combinedTracks.forEach((t, i) => {
+    if (i === trackIdx) {
+      t.element.classList.add('active-narration');
+      t.element.classList.remove('inactive-narration');
+      t.element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      t.element.classList.remove('active-narration');
+      t.element.classList.add('inactive-narration');
+    }
+  });
+
+  // Highlight caption box
+  const captionBox = document.getElementById('workspaceVpCaption');
+  if (captionBox) {
+    captionBox.style.display = 'block';
+    captionBox.textContent = `📢 Narrator: "${track.text.substring(0, 100)}${track.text.length > 100 ? '...' : ''}"`;
+  }
+  
+  // Calculate elapsed time up to the start of this segment
+  let startOffset = 0;
+  for (let i = 0; i < trackIdx; i++) {
+    startOffset += combinedTrackDurations[i];
+  }
+  currentCombinedTime = startOffset;
+  
+  // Cancel previous speech synthesis
+  window.speechSynthesis.cancel();
+  
+  // Create SpeechSynthesisUtterance
+  ttsUtterance = new SpeechSynthesisUtterance(track.text);
+  ttsUtterance.rate = currentPlaybackRate;
+  ttsUtterance.volume = isMuted ? 0 : currentPlaybackVolume;
+  
+  ttsUtterance.onend = () => {
+    if (isCombinedPlaying && combinedTrackIndex === trackIdx) {
+      speakTrackSegment(trackIdx + 1);
+    }
+  };
+  
+  ttsUtterance.onerror = (e) => {
+    console.log("TTS Error:", e);
+  };
+  
+  window.speechSynthesis.speak(ttsUtterance);
+}
+
+function seekCombinedPlayback(val) {
+  const targetTime = parseFloat(val);
+  
+  // Find which track segment targetTime belongs to
+  let elapsed = 0;
+  let trackIdx = 0;
+  
+  for (let i = 0; i < combinedTrackDurations.length; i++) {
+    const dur = combinedTrackDurations[i];
+    if (targetTime < elapsed + dur) {
+      trackIdx = i;
+      break;
+    }
+    elapsed += dur;
+    if (i === combinedTrackDurations.length - 1) {
+      trackIdx = i;
+    }
+  }
+  
+  currentCombinedTime = targetTime;
+  combinedTrackIndex = trackIdx;
+  
+  updateProgressUI();
+  
+  if (isCombinedPlaying) {
+    speakTrackSegment(trackIdx);
+  }
+}
+
+function onCombinedPlaybackEnded() {
+  pauseCombinedPlayback();
+  combinedTrackIndex = 0;
+  currentCombinedTime = 0;
+  
+  // Reset visual highlights
+  combinedTracks.forEach(t => {
+    t.element.classList.remove('active-narration');
+    t.element.classList.remove('inactive-narration');
+  });
+  
+  const captionBox = document.getElementById('workspaceVpCaption');
+  if (captionBox) captionBox.style.display = 'none';
+  
+  updateProgressUI();
+}
+
+function updateProgressUI() {
+  const seekBar = document.getElementById('seekBar');
+  const playbackTime = document.getElementById('playbackTime');
+  if (seekBar) {
+    seekBar.max = totalCombinedDuration || 100;
+    seekBar.value = currentCombinedTime;
+  }
+  if (playbackTime) {
+    playbackTime.textContent = `${formatTime(currentCombinedTime)} / ${formatTime(totalCombinedDuration)}`;
+  }
+}
+
+function formatTime(secs) {
+  const m = Math.floor(secs / 60);
+  const s = Math.floor(secs % 60);
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+function updatePlayButtonStates(isPlaying) {
+  const navBtn = document.getElementById('navPlayBtn');
+  const barBtn = document.getElementById('playPauseBtn');
+  
+  if (navBtn) {
+    navBtn.innerHTML = isPlaying 
+      ? `<span class="btn-icon">⏸</span> <span class="btn-text">Pause Lesson</span>`
+      : `<span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>`;
+  }
+  if (barBtn) {
+    barBtn.textContent = isPlaying ? '⏸' : '▶';
+  }
+}
+
+// Popover control functions
+function toggleVolumePopover(event) {
+  event.stopPropagation();
+  const volBtn = document.getElementById('volumeBtn');
+  const popover = document.getElementById('volumePopover');
+  const speedPopover = document.getElementById('speedPopover');
+  const speedBtn = document.getElementById('speedControlBtn');
+  
+  if (speedPopover) {
+    speedPopover.classList.remove('open');
+    speedBtn?.classList.remove('active');
+  }
+  
+  popover?.classList.toggle('open');
+  volBtn?.classList.toggle('active');
+}
+
+function toggleSpeedPopover(event) {
+  event.stopPropagation();
+  const speedBtn = document.getElementById('speedControlBtn');
+  const popover = document.getElementById('speedPopover');
+  const volPopover = document.getElementById('volumePopover');
+  const volBtn = document.getElementById('volumeBtn');
+  
+  if (volPopover) {
+    volPopover.classList.remove('open');
+    volBtn?.classList.remove('active');
+  }
+  
+  popover?.classList.toggle('open');
+  speedBtn?.classList.toggle('active');
+}
+
+function setPlaybackVolume(value) {
+  const vol = parseFloat(value) / 100;
+  currentPlaybackVolume = vol;
+  isMuted = (vol === 0);
+  
+  if (ttsUtterance) {
+    ttsUtterance.volume = vol;
+  }
+  
+  const valLabel = document.getElementById('volumeValue');
+  if (valLabel) valLabel.textContent = `${value}%`;
+  
+  const volBtn = document.getElementById('volumeBtn');
+  if (volBtn) {
+    if (value == 0) {
+      volBtn.innerHTML = `
+        <svg class="volume-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+        </svg>
+      `;
+    } else if (value < 50) {
+      volBtn.innerHTML = `
+        <svg class="volume-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>
+        </svg>
+      `;
+    } else {
+      volBtn.innerHTML = `
+        <svg class="volume-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+      `;
+    }
+  }
+}
+
+function selectSpeedOption(speed, labelText) {
+  const btn = document.getElementById('speedControlBtn');
+  currentPlaybackRate = parseFloat(speed);
+  
+  if (ttsUtterance) {
+    ttsUtterance.rate = currentPlaybackRate;
+  }
+  
+  if (isCombinedPlaying) {
+    speakTrackSegment(combinedTrackIndex);
+  }
+  
+  const valLabel = document.getElementById('speedValueLabel');
+  if (valLabel) valLabel.textContent = labelText;
+  
+  document.querySelectorAll('.speed-option').forEach(opt => {
+    const optSpeed = parseFloat(opt.textContent);
+    if (optSpeed === speed) {
+      opt.classList.add('active');
+    } else {
+      opt.classList.remove('active');
+    }
+  });
+  
+  document.getElementById('speedPopover')?.classList.remove('open');
+  btn?.classList.remove('active');
+}
+
+// Global click handler to close popovers when clicking outside
+document.addEventListener('click', () => {
+  document.getElementById('volumePopover')?.classList.remove('open');
+  document.getElementById('volumeBtn')?.classList.remove('active');
+  document.getElementById('speedPopover')?.classList.remove('open');
+  document.getElementById('speedControlBtn')?.classList.remove('active');
+});
 
 // ── Bootstrap ─────────────────────────────────────────────────
 

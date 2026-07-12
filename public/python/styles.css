@@ -4328,3 +4328,19 @@ a { color: var(--cyan); text-decoration: none; }
 .code-output-table th { background:rgba(255,255,255,0.06);padding:6px 12px;text-align:left;color:#64748b;font-weight:600;font-size:0.72rem;text-transform:uppercase; }
 .code-output-table td { padding:5px 12px;border-top:1px solid rgba(255,255,255,0.07);color:#f1f5f9; }
 button:disabled { opacity:0.5;cursor:not-allowed; }
+
+
+/* Active Narration Visual Highlight styles */
+.slide-section {
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.slide-section.inactive-narration {
+  opacity: 0.35;
+}
+.slide-section.active-narration {
+  opacity: 1 !important;
+  transform: scale(1.008);
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.25);
+  border-radius: 8px;
+  background: rgba(59, 130, 246, 0.02);
+}
