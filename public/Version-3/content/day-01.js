@@ -792,23 +792,23 @@ WHERE department = 'Engineering';</pre>
               <thead>
                 <tr>
                   <th style="opacity: 0.3; text-decoration: line-through;">id</th>
-                  <th style="border-left: 2px solid #2563eb; border-right: 2px solid #2563eb; background: #eff6ff; color: #1d4ed8 !important;">name ✓</th>
+                  <th class="column-projected-header">name ✓</th>
                   <th style="opacity: 0.3; text-decoration: line-through;">department</th>
-                  <th style="border-left: 2px solid #2563eb; border-right: 2px solid #2563eb; background: #eff6ff; color: #1d4ed8 !important;">salary ✓</th>
+                  <th class="column-projected-header">salary ✓</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td style="opacity: 0.3;">1</td>
-                  <td style="font-weight: 600;">Aarav Sharma</td>
+                  <td class="column-projected-cell">Aarav Sharma</td>
                   <td style="opacity: 0.3;">Engineering</td>
-                  <td style="font-weight: 600;">87,500</td>
+                  <td class="column-projected-cell">87,500</td>
                 </tr>
                 <tr>
                   <td style="opacity: 0.3;">2</td>
-                  <td style="font-weight: 600;">Priya Desai</td>
+                  <td class="column-projected-cell">Priya Desai</td>
                   <td style="opacity: 0.3;">Marketing</td>
-                  <td style="font-weight: 600;">63,200</td>
+                  <td class="column-projected-cell">63,200</td>
                 </tr>
               </tbody>
             </table>
@@ -1078,10 +1078,10 @@ WHERE department = 'Engineering';
           <table class="db-table-mock">
             <thead>
               <tr>
-                <th style="color: #0284c7;">employee_name <span style="display:block; font-size:0.62rem; opacity:0.6; font-weight:400;">→ alias of name</span></th>
-                <th style="color: #0284c7;">annual_pay <span style="display:block; font-size:0.62rem; opacity:0.6; font-weight:400;">→ alias of salary</span></th>
-                <th style="color: #0284c7;">monthly_rate <span style="display:block; font-size:0.62rem; opacity:0.6; font-weight:400;">→ salary / 12.0</span></th>
-                <th style="color: #0284c7;">bonus <span style="display:block; font-size:0.62rem; opacity:0.6; font-weight:400;">→ salary * 0.10</span></th>
+                <th style="color: #0284c7; padding-bottom: 10px;">employee_name <span class="table-th-subtitle table-th-subtitle--blue">→ alias of name</span></th>
+                <th style="color: #0284c7; padding-bottom: 10px;">annual_pay <span class="table-th-subtitle table-th-subtitle--blue">→ alias of salary</span></th>
+                <th style="color: #0284c7; padding-bottom: 10px;">monthly_rate <span class="table-th-subtitle table-th-subtitle--slate">→ salary / 12.0</span></th>
+                <th style="color: #0284c7; padding-bottom: 10px;">bonus <span class="table-th-subtitle table-th-subtitle--slate">→ salary * 0.10</span></th>
               </tr>
             </thead>
             <tbody>
@@ -1114,7 +1114,7 @@ WHERE department = 'Engineering';
             📝 SQL WRITING VS. LOGICAL EXECUTION ORDER
           </div>
           
-          <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+          <div class="exec-order-row-layout">
             
             <div class="info-card info-card--blue exec-order-card">
               <div class="info-card-header" style="min-height: 52px; font-size: 0.74rem; line-height: 1.25;">📝 WRITING ORDER<br/>(SYNTAX)</div>

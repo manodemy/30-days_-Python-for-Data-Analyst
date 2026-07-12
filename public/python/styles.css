@@ -5238,3 +5238,214 @@ button:disabled { opacity:0.5;cursor:not-allowed; }
   transform: none !important;
   opacity: 0.8 !important;
 }
+
+
+/* ==========================================
+   Writing vs Execution Order Redesign v4
+   Dashboard style side-by-side grid, timeline connector
+   ========================================== */
+
+/* Container forcing cards next to each other on all viewports */
+.exec-order-row-layout {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 580px !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
+}
+
+/* Card overrides for matching heights */
+.rdbms-infographic .exec-order-card {
+  flex: 1 1 45% !important;
+  height: 440px !important; /* Equal heights */
+  display: flex !important;
+  flex-direction: column !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03) !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  transition: all 0.2s ease !important;
+}
+.rdbms-infographic .exec-order-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Specific Header Gradients */
+.exec-order-card.info-card--blue .info-card-header {
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.exec-order-card.info-card--green .info-card-header {
+  background: linear-gradient(135deg, #064e3b, #10b981) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Flow container with a vertical timeline track line passing behind pills */
+.exec-flow-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-grow: 1 !important;
+  padding: 16px 10px 20px 10px !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+.exec-flow-container::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 24px !important;
+  bottom: 24px !important;
+  left: 50% !important;
+  width: 2px !important;
+  background: #cbd5e1 !important; /* Soft grey timeline connector line */
+  transform: translateX(-50%) !important;
+  z-index: 1 !important;
+}
+
+/* Timeline Pill layout (placed on top of the line) */
+.exec-pill {
+  width: 100% !important;
+  max-width: 180px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  border-radius: 6px !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #475569 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+  transition: all 0.15s ease !important;
+  box-sizing: border-box !important;
+  z-index: 2 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+.exec-pill:hover {
+  transform: translateY(-1px) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Custom Highlight States */
+.exec-pill--writing-active {
+  border-style: dashed !important;
+  border-color: #94a3b8 !important;
+  background: #f8fafc !important;
+  color: #334155 !important;
+}
+
+.exec-pill--select {
+  background: #eff6ff !important;
+  border: 1.5px solid #3b82f6 !important;
+  color: #1d4ed8 !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.12) !important;
+}
+
+.exec-pill--order {
+  background: #f0fdf4 !important;
+  border: 1.5px solid #22c55e !important;
+  color: #15803d !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.12) !important;
+}
+
+/* Styled Connector Badge on Timeline */
+.exec-arrow {
+  width: 16px !important;
+  height: 16px !important;
+  border-radius: 9999px !important;
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #6366f1 !important; /* Indigo accent indicator */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.55rem !important;
+  font-weight: 900 !important;
+  margin: 0 !important;
+  z-index: 2 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  transform: none !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+}
+
+/* Responsive adjustments for extremely narrow viewports */
+@media (max-width: 480px) {
+  .exec-order-row-layout {
+    gap: 6px !important;
+  }
+  .exec-pill {
+    font-size: 0.58rem !important;
+    height: 24px !important;
+  }
+  .rdbms-infographic .exec-order-card {
+    height: 400px !important;
+  }
+}
+
+
+/* ==========================================
+   Premium Table Design Enhancements
+   ========================================== */
+
+/* Table Header Subtitles / Badges */
+.table-th-subtitle {
+  display: block !important;
+  font-size: 0.6rem !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  margin-top: 5px !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  white-space: nowrap !important;
+  width: fit-content !important;
+  box-sizing: border-box !important;
+}
+
+.table-th-subtitle--blue {
+  background: #eff6ff !important;
+  color: #1d4ed8 !important;
+  border: 1px solid #dbeafe !important;
+}
+
+.table-th-subtitle--slate {
+  background: #f8fafc !important;
+  color: #475569 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* Stunning Table Hover Effects & Borders */
+.db-table-mock tr {
+  transition: background-color 0.15s ease !important;
+}
+.db-table-mock tbody tr:hover td {
+  background-color: #f8fafc !important;
+}
+
+/* Projected Column Highlight (Clean Blue Border) */
+.db-table-mock th.column-projected-header {
+  border-left: 1.5px solid #3b82f6 !important;
+  border-right: 1.5px solid #3b82f6 !important;
+  background: #eff6ff !important;
+  color: #1d4ed8 !important;
+}
+
+.db-table-mock td.column-projected-cell {
+  border-left: 1.5px solid #3b82f6 !important;
+  border-right: 1.5px solid #3b82f6 !important;
+  background: rgba(239, 246, 255, 0.4) !important; /* Soft blue tint background */
+  font-weight: 600 !important;
+}
