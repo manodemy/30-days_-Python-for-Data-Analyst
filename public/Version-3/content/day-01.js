@@ -1116,43 +1116,43 @@ WHERE department = 'Engineering';
           
           <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
             
-            <div class="info-card info-card--blue" style="flex: 1 1 200px; max-width: 280px;">
+            <div class="info-card info-card--blue exec-order-card">
               <div class="info-card-header" style="min-height: 52px; font-size: 0.74rem; line-height: 1.25;">📝 WRITING ORDER<br/>(SYNTAX)</div>
-              <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 12px 10px;">
-                <div class="exec-pill" style="border-style: dashed; background: #f8fafc; border-color: #94a3b8; color: #475569; width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">SELECT</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill" style="width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">FROM</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill" style="width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">WHERE</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill" style="width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">GROUP BY</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill" style="width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">HAVING</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill" style="width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">ORDER BY</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill" style="width: 140px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">LIMIT</div>
+              <div class="exec-flow-container">
+                <div class="exec-pill exec-pill--writing-active">SELECT</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill">FROM</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill">WHERE</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill">GROUP BY</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill">HAVING</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill">ORDER BY</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill">LIMIT</div>
               </div>
             </div>
 
-            <div class="info-card info-card--green" style="flex: 1 1 200px; max-width: 280px;">
+            <div class="info-card info-card--green exec-order-card">
               <div class="info-card-header" style="min-height: 52px; font-size: 0.74rem; line-height: 1.25;">⚙️ EXECUTION ORDER<br/>(LOGICAL)</div>
-              <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 12px 10px;">
-                <div class="exec-pill" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">1. FROM / JOIN</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">2. WHERE</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">3. GROUP BY</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">4. HAVING</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill exec-pill--select" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px; font-weight: 800;">5. SELECT (alias defined)</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">6. DISTINCT</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill exec-pill--order" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px; font-weight: 800;">7. ORDER BY (alias ok)</div>
-                <div class="exec-arrow" style="transform: rotate(90deg); margin: 1px 0; font-size: 0.65rem;">→</div>
-                <div class="exec-pill" style="width: 168px; text-align: center; font-size: 0.68rem; padding: 4px 6px;">8. LIMIT</div>
+              <div class="exec-flow-container">
+                <div class="exec-pill">1. FROM / JOIN</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill">2. WHERE</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill">3. GROUP BY</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill">4. HAVING</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill exec-pill--select">5. SELECT (alias defined)</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill">6. DISTINCT</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill exec-pill--order">7. ORDER BY (alias ok)</div>
+                <div class="exec-arrow">↓</div>
+                <div class="exec-pill">8. LIMIT</div>
               </div>
             </div>
 
