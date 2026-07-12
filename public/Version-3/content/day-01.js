@@ -705,7 +705,7 @@ WHERE department = 'Engineering';</pre>
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
-            <div class="relation-visual" style="justify-content: center; gap: 6px;">
+            <div class="relation-visual" style="align-items: center;">
               <div class="relation-node" id="projectionDiskPage" style="border-left: 4px solid #64748b; flex: none;">
                 <span class="node-icon">💽</span>
                 <div class="node-title">Disk Page</div>
@@ -720,7 +720,7 @@ WHERE department = 'Engineering';</pre>
                 <div class="node-title">SELECT name, salary</div>
                 <div class="node-subtitle">Projection Filter</div>
               </div>
-              <div id="projectionResultSet" style="display: contents;">
+              <div id="projectionResultSet" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
                 <div class="relation-link">
                   <div class="link-label">Returns</div>
                   <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
@@ -1056,7 +1056,7 @@ WHERE department = 'Engineering';
 
         <div class="relation-infographic" style="padding: 16px 20px;">
           <div class="explanation-title">How Aliasing Works</div>
-          <div class="relation-visual" style="justify-content: center; gap: 6px;">
+          <div class="relation-visual" style="align-items: center;">
             <div class="relation-node" style="border-left: 4px solid #64748b; flex: none;">
               <span class="node-icon">⚙️</span>
               <div class="node-title">salary / 12.0</div>
