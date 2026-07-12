@@ -572,8 +572,14 @@ function buildTestSidebar() {
   const qs = currentDayData.testQuestions;
   sidebar.innerHTML = qs.map((q, i) => {
     const state = testAnswers[q.id];
-    const cls = state ? (state.passed ? 'sidebar-btn--passed' : 'sidebar-btn--attempted') : '';
-    return `<button class="sidebar-btn ${cls}" onclick="loadTestQuestion(${i})" id="testSidebarBtn-${i}">${i + 1}</button>`;
+    let cls = '';
+    if (state) {
+      cls = state.passed ? 'correct' : 'incorrect';
+    }
+    if (i === currentTestQuestionIndex) {
+      cls += ' current';
+    }
+    return `<button class="test-q-btn ${cls}" onclick="loadTestQuestion(${i})" id="testSidebarBtn-${i}"><span class="q-prefix">Q</span>${i + 1}</button>`;
   }).join('');
 }
 
@@ -582,6 +588,15 @@ function loadTestQuestion(index) {
   if (index < 0 || index >= qs.length) return;
   currentTestQuestionIndex = index;
   const q = qs[index];
+
+  // Update current classes in sidebar
+  document.querySelectorAll('#testSidebar .test-q-btn').forEach((btn, i) => {
+    if (i === index) {
+      btn.classList.add('current');
+    } else {
+      btn.classList.remove('current');
+    }
+  });
 
   const prompt = document.getElementById('testQuestionPrompt');
   if (prompt) prompt.innerHTML = `
@@ -681,7 +696,7 @@ function hideBanner() {
 function updateSidebarButton(index, passed) {
   const btn = document.getElementById(`testSidebarBtn-${index}`);
   if (!btn) return;
-  btn.className = `sidebar-btn ${passed ? 'sidebar-btn--passed' : 'sidebar-btn--attempted'}`;
+  btn.className = `test-q-btn current ${passed ? 'correct' : 'incorrect'}`;
 }
 
 function updateTestProgress() {
