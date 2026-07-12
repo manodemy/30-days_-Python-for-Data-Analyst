@@ -4538,3 +4538,87 @@ button:disabled { opacity:0.5;cursor:not-allowed; }
   border-top: 1px solid #edf2f7;
   text-align: left !important;
 }
+
+
+/* Premium Infographic CSS */
+.relation-visual {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+}
+
+.relation-node {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 12px !important;
+  padding: 16px 20px !important;
+  text-align: center !important;
+  min-width: 180px !important;
+  max-width: 260px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+.relation-node:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08) !important;
+}
+
+.node-icon {
+  font-size: 1.5rem !important;
+  margin-bottom: 8px !important;
+  display: inline-block !important;
+}
+
+.relation-connector {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 60px !important;
+  justify-content: center !important;
+}
+
+.relation-connector::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  width: 2px !important;
+  background: linear-gradient(180deg, #64748b, #7c3aed) !important;
+  transform: translateX(-50%) !important;
+  z-index: 1 !important;
+}
+
+.relation-connector::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  width: 0 !important;
+  height: 0 !important;
+  border-left: 6px solid transparent !important;
+  border-right: 6px solid transparent !important;
+  border-top: 6px solid #7c3aed !important;
+  transform: translateX(-50%) !important;
+  z-index: 1 !important;
+}
+
+.connector-label {
+  background: #7c3aed !important;
+  color: #ffffff !important;
+  font-size: 0.65rem !important;
+  font-weight: 800 !important;
+  padding: 4px 10px !important;
+  border-radius: 9999px !important;
+  z-index: 2 !important;
+  box-shadow: 0 2px 4px rgba(124, 58, 237, 0.2) !important;
+  letter-spacing: 0.05em !important;
+}
+
+.connector-arrow {
+  display: none !important; /* Hide default messy svg arrow */
+}
