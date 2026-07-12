@@ -706,8 +706,8 @@ WHERE department = 'Engineering';</pre>
               </button>
             </div>
             <div class="relation-visual" style="align-items: center;">
-              <div class="relation-node" id="projectionDiskPage" style="border-left: 4px solid #64748b; flex: none;">
-                <span class="node-icon">💽</span>
+              <div class="relation-node" id="projectionDiskPage" style="flex: none;">
+                <div class="node-icon-badge">💽</div>
                 <div class="node-title">Disk Page</div>
                 <div class="node-subtitle">id · name · dept · salary</div>
               </div>
@@ -715,8 +715,8 @@ WHERE department = 'Engineering';</pre>
                 <div class="link-label">Loads</div>
                 <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
               </div>
-              <div class="relation-node" id="projectionFilter" style="border-left: 4px solid #3b82f6; flex: none;">
-                <span class="node-icon">🔍</span>
+              <div class="relation-node" id="projectionFilter" style="flex: none;">
+                <div class="node-icon-badge">🔍</div>
                 <div class="node-title">SELECT name, salary</div>
                 <div class="node-subtitle">Projection Filter</div>
               </div>
@@ -726,7 +726,7 @@ WHERE department = 'Engineering';</pre>
                   <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
                 </div>
                 <div class="relation-node relation-node--child" style="flex: none;">
-                  <span class="node-icon">✅</span>
+                  <div class="node-icon-badge">✅</div>
                   <div class="node-title">Result Set</div>
                   <div class="node-subtitle">name · salary only</div>
                 </div>
@@ -1057,8 +1057,8 @@ WHERE department = 'Engineering';
         <div class="relation-infographic" style="padding: 16px 20px;">
           <div class="explanation-title">How Aliasing Works</div>
           <div class="relation-visual" style="align-items: center;">
-            <div class="relation-node" style="border-left: 4px solid #64748b; flex: none;">
-              <span class="node-icon">⚙️</span>
+            <div class="relation-node" id="aliasRawExpr" style="flex: none;">
+              <div class="node-icon-badge">⚙️</div>
               <div class="node-title">salary / 12.0</div>
               <div class="node-subtitle">Raw Expression</div>
             </div>
@@ -1066,8 +1066,8 @@ WHERE department = 'Engineering';
               <div class="link-label">AS</div>
               <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
             </div>
-            <div class="relation-node relation-node--child" style="flex: none;">
-              <span class="node-icon">🏷️</span>
+            <div class="relation-node relation-node--child" id="aliasOutputCol" style="flex: none;">
+              <div class="node-icon-badge">🏷️</div>
               <div class="node-title">monthly_rate</div>
               <div class="node-subtitle">Named Output Column</div>
             </div>

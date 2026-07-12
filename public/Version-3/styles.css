@@ -4893,3 +4893,128 @@ a { color: var(--cyan); text-decoration: none; }
   letter-spacing: 0.04em !important;
   line-height: 1.2 !important;
 }
+
+
+/* ==========================================
+   Premium Infographic Redesign Styles
+   ========================================== */
+
+/* Centering container (Fixes JS reset display issues) */
+#projectionResultSet {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+/* Relation Nodes Redesign */
+.relation-node {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 16px !important;
+  padding: 16px 20px !important;
+  text-align: center !important;
+  min-width: 220px !important;
+  max-width: 280px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 16px -6px rgba(0, 0, 0, 0.02) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  z-index: 2 !important;
+  position: relative !important;
+}
+
+/* Elevated Hover Effects */
+.relation-node:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Glowing Accent Borders */
+#projectionDiskPage, #aliasRawExpr {
+  border-left: 4px solid #64748b !important; /* Slate Grey for raw input */
+}
+
+#projectionFilter {
+  border-left: 4px solid #3b82f6 !important; /* Blue for query filters */
+}
+
+.relation-node--child, #aliasOutputCol {
+  border-left: 4px solid #10b981 !important; /* Emerald green for output results */
+}
+
+/* Premium Icon Badges replacing raw text emojis */
+.node-icon-badge {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 12px !important;
+  font-size: 1.4rem !important;
+  transition: all 0.25s ease !important;
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Themed pastel backgrounds for icon badges */
+#projectionDiskPage .node-icon-badge, #aliasRawExpr .node-icon-badge {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+#projectionFilter .node-icon-badge {
+  background: #eff6ff !important;
+  border: 1px solid #dbeafe !important;
+}
+
+.relation-node--child .node-icon-badge, #aliasOutputCol .node-icon-badge {
+  background: #ecfdf5 !important;
+  border: 1px solid #d1fae5 !important;
+}
+
+.relation-node:hover .node-icon-badge {
+  transform: scale(1.1) rotate(5deg) !important;
+}
+
+/* Typography Enhancements */
+.node-title {
+  font-size: 0.88rem !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  margin: 0 !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.3 !important;
+}
+
+.node-subtitle {
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  color: #64748b !important;
+  margin-top: 4px !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* Customized Connector Gradients per Stage */
+#projectionLoads .link-arrow {
+  background: linear-gradient(180deg, #64748b, #3b82f6) !important;
+}
+#projectionLoads .link-arrow::after {
+  border-top-color: #3b82f6 !important;
+}
+#projectionLoads .link-label {
+  background: #3b82f6 !important;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3) !important;
+}
+
+#projectionResultSet .link-arrow {
+  background: linear-gradient(180deg, #3b82f6, #10b981) !important;
+}
+#projectionResultSet .link-arrow::after {
+  border-top-color: #10b981 !important;
+}
+#projectionResultSet .link-label {
+  background: #10b981 !important;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3) !important;
+}
