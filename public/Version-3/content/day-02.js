@@ -22,27 +22,27 @@ window.COURSE_CONTENT['day02'] = {
             
             <div class="relation-infographic" style="padding: 16px 20px;" id="whereFilterDiagram">
               <div class="explanation-title">How Row Filtering Works</div>
-              <div class="relation-visual" style="justify-content: center; gap: 6px;">
-                <div class="relation-node" style="border-left: 4px solid #64748b; flex: none;">
-                  <span class="node-icon">📋</span>
+              <div class="relation-visual" style="align-items: center;">
+                <div class="relation-node" id="filterRawTable" style="flex: none;">
+                  <div class="node-icon-badge">📋</div>
                   <div class="node-title">Raw Table</div>
                   <div class="node-subtitle">10 Employees</div>
                 </div>
-                <div class="relation-link">
+                <div class="relation-link" id="filterGateLoads">
                   <div class="link-label">Filter</div>
                   <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
                 </div>
-                <div class="relation-node" style="border-left: 4px solid #f97316; flex: none;">
-                  <span class="node-icon">⚡</span>
+                <div class="relation-node" id="filterGateExecute" style="flex: none;">
+                  <div class="node-icon-badge">⚡</div>
                   <div class="node-title">WHERE salary &gt;= 80000</div>
                   <div class="node-subtitle">Step 3 Execution Gate</div>
                 </div>
-                <div class="relation-link">
+                <div class="relation-link" id="filterGateOutput">
                   <div class="link-label">Output</div>
                   <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
                 </div>
-                <div class="relation-node relation-node--child" style="flex: none;">
-                  <span class="node-icon">✅</span>
+                <div class="relation-node relation-node--child" id="filterGateResult" style="flex: none;">
+                  <div class="node-icon-badge">✅</div>
                   <div class="node-title">Filtered Rows</div>
                   <div class="node-subtitle">3 Matching Records</div>
                 </div>
