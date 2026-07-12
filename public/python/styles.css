@@ -4421,3 +4421,115 @@ button:disabled { opacity:0.5;cursor:not-allowed; }
 .slide-content h3 {
   margin-top: 0 !important;
 }
+
+
+/* Premium SQL Syntax Cards Layout */
+.syntax-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.syntax-card {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+  transition: all 0.2s ease;
+}
+.syntax-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04) !important;
+}
+
+.syntax-card--recommended {
+  border-left: 4px solid #10b981 !important;
+}
+.syntax-card--warning {
+  border-left: 4px solid #f59e0b !important;
+}
+.syntax-card--info {
+  border-left: 4px solid #3b82f6 !important;
+}
+
+.syntax-card-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: #f8fafc !important;
+  padding: 10px 14px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.syntax-card-title {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: #1e293b !important;
+  margin-right: auto;
+}
+
+.syntax-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  letter-spacing: 0.025em;
+}
+.syntax-badge--recommended {
+  background: #ecfdf5 !important;
+  color: #065f46 !important;
+}
+.syntax-badge--warning {
+  background: #fffbeb !important;
+  color: #92400e !important;
+}
+.syntax-badge--info {
+  background: #eff6ff !important;
+  color: #1e40af !important;
+}
+.syntax-badge--ansi {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+.syntax-card-body pre {
+  margin: 0 !important;
+  padding: 12px 14px !important;
+  background: #0f172a !important; /* Premium dark theme code block inside the white card */
+  border: none !important;
+  border-radius: 0 !important;
+  font-size: 0.8rem !important;
+  text-align: left !important;
+}
+
+.syntax-card-body code {
+  color: #cbd5e1 !important;
+  font-family: var(--mono, monospace) !important;
+}
+
+/* Syntax Highlighting Colors */
+.sql-keyword {
+  color: #38bdf8 !important; /* Sky Blue keywords */
+  font-weight: bold;
+}
+.sql-number {
+  color: #f59e0b !important; /* Amber numbers */
+}
+.sql-string {
+  color: #10b981 !important; /* Green strings */
+}
+
+.syntax-card-footer {
+  padding: 10px 14px;
+  font-size: 0.78rem;
+  color: #475569 !important;
+  line-height: 1.45;
+  background: #f8fafc !important;
+  border-top: 1px solid #edf2f7;
+  text-align: left !important;
+}

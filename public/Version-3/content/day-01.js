@@ -999,23 +999,60 @@ WHERE department = 'Engineering';
         </div>
 
         <h3>Syntax — Three Valid Forms</h3>
-        <pre>-- Form 1: Explicit AS keyword (recommended, ANSI standard)
-SELECT
-  name            AS employee_name,
-  salary          AS annual_pay,
-  salary / 12.0   AS monthly_rate,
-  salary * 0.10   AS bonus
-FROM employees;
+        <div class="syntax-cards-container">
+          <!-- Form 1 -->
+          <div class="syntax-card syntax-card--recommended">
+            <div class="syntax-card-header">
+              <span class="syntax-card-title">Form 1: Explicit AS Keyword</span>
+              <span class="syntax-badge syntax-badge--recommended">Recommended</span>
+              <span class="syntax-badge syntax-badge--ansi">ANSI Standard</span>
+            </div>
+            <div class="syntax-card-body">
+              <pre><code class="sql"><span class="sql-keyword">SELECT</span>
+  name            <span class="sql-keyword">AS</span> employee_name,
+  salary          <span class="sql-keyword">AS</span> annual_pay,
+  salary / <span class="sql-number">12.0</span>   <span class="sql-keyword">AS</span> monthly_rate,
+  salary * <span class="sql-number">0.10</span>   <span class="sql-keyword">AS</span> bonus
+<span class="sql-keyword">FROM</span> employees;</code></pre>
+            </div>
+            <div class="syntax-card-footer">
+              Uses the explicit <code>AS</code> keyword. This is the cleanest, most readable, and standard practice.
+            </div>
+          </div>
 
--- Form 2: Omit AS keyword (still valid, less readable)
-SELECT name employee_name, salary annual_pay
-FROM employees;
+          <!-- Form 2 -->
+          <div class="syntax-card syntax-card--warning">
+            <div class="syntax-card-header">
+              <span class="syntax-card-title">Form 2: Omit AS Keyword</span>
+              <span class="syntax-badge syntax-badge--warning">Valid (Less Readable)</span>
+            </div>
+            <div class="syntax-card-body">
+              <pre><code class="sql"><span class="sql-keyword">SELECT</span> name employee_name, salary annual_pay
+<span class="sql-keyword">FROM</span> employees;</code></pre>
+            </div>
+            <div class="syntax-card-footer">
+              Omits the <code>AS</code> keyword entirely. While syntactically valid in SQL, it makes queries harder to read and debug.
+            </div>
+          </div>
 
--- Form 3: Multi-word alias with double quotes (ANSI standard)
-SELECT
-  name          AS "Employee Full Name",
-  department    AS "Department Name"
-FROM employees;</pre>
+          <!-- Form 3 -->
+          <div class="syntax-card syntax-card--info">
+            <div class="syntax-card-header">
+              <span class="syntax-card-title">Form 3: Multi-Word Alias</span>
+              <span class="syntax-badge syntax-badge--info">Double Quotes</span>
+              <span class="syntax-badge syntax-badge--ansi">ANSI Standard</span>
+            </div>
+            <div class="syntax-card-body">
+              <pre><code class="sql"><span class="sql-keyword">SELECT</span>
+  name          <span class="sql-keyword">AS</span> <span class="sql-string">"Employee Full Name"</span>,
+  department    <span class="sql-keyword">AS</span> <span class="sql-string">"Department Name"</span>
+<span class="sql-keyword">FROM</span> employees;</code></pre>
+            </div>
+            <div class="syntax-card-footer">
+              Requires <strong>double quotes</strong> when the alias name contains spaces or special characters.
+            </div>
+          </div>
+        </div>
 
         <div class="relation-infographic" style="padding: 16px 20px;">
           <div class="explanation-title">How Aliasing Works</div>
