@@ -4411,3 +4411,13 @@ button:disabled { opacity:0.5;cursor:not-allowed; }
   color: #ffffff !important;
   transform: scale(1.08) !important;
 }
+
+
+/* Heading Gap Reduction Styles */
+.rdbms-intro-section {
+  margin-top: 4px !important;
+  padding-top: 10px !important;
+}
+.slide-content h3 {
+  margin-top: 0 !important;
+}
