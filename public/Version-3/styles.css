@@ -4434,8 +4434,13 @@ a { color: var(--cyan); text-decoration: none; }
 }
 
 .syntax-card-body code {
-  color: #cbd5e1 !important;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  display: block !important;
+  color: #cbd5e1 !important; /* Standard neutral light-grey for variables */
   font-family: var(--mono, monospace) !important;
+  white-space: pre !important;
 }
 
 /* Syntax Highlighting Colors */
