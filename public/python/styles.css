@@ -4359,3 +4359,68 @@ button:disabled { opacity:0.5;cursor:not-allowed; }
   border-radius: 8px;
   background: rgba(59, 130, 246, 0.02);
 }
+
+
+/* Top 3 UI/UX Matte Finish Headings Design */
+.slide-content h2 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(20, 26, 45, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-left: 4px solid #3b82f6 !important;
+  padding: 14px 18px !important;
+  border-radius: 10px !important;
+  color: #f8fafc !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.015em !important;
+  margin-top: 28px !important;
+  margin-bottom: 18px !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.22) !important;
+  backdrop-filter: blur(12px) !webkit-backdrop-filter: blur(12px);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.slide-content h3 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(20, 26, 45, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+  border-left: 3px solid rgba(59, 130, 246, 0.7) !important;
+  padding: 10px 14px !important;
+  border-radius: 8px !important;
+  color: #e2e8f0 !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  margin-top: 20px !important;
+  margin-bottom: 14px !important;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12) !important;
+  backdrop-filter: blur(8px) !webkit-backdrop-filter: blur(8px);
+}
+
+.slide-content .audio-play-btn {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #94a3b8 !important;
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  margin-left: 8px !important;
+}
+
+.slide-content .audio-play-btn:hover {
+  background: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+  color: #ffffff !important;
+  transform: scale(1.08) !important;
+}
