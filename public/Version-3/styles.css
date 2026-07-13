@@ -76,11 +76,11 @@ a { color: var(--cyan); text-decoration: none; }
 .header {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-  padding: 0 1.25rem;
-  height: 52px;
+  padding: 0 0.85rem;
+  height: 42px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex-shrink: 0;
   z-index: 100;
   box-shadow: 0 2px 12px rgba(0,0,0,0.3);
@@ -89,7 +89,7 @@ a { color: var(--cyan); text-decoration: none; }
 .header-left, .header-center, .header-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 .header-left {
   flex: 1;
@@ -107,8 +107,8 @@ a { color: var(--cyan); text-decoration: none; }
 /* User Profile Avatar with Active Status Dot */
 .user-profile {
   position: relative;
-  width: 36px;
-  height: 36px;
+  width: 26px;
+  height: 26px;
   flex-shrink: 0;
 }
 .avatar-img {
@@ -123,10 +123,10 @@ a { color: var(--cyan); text-decoration: none; }
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 10px;
-  height: 10px;
+  width: 7px;
+  height: 7px;
   background: var(--green);
-  border: 2px solid #060913;
+  border: 1.5px solid #060913;
   border-radius: 50%;
 }
 
@@ -134,30 +134,30 @@ a { color: var(--cyan); text-decoration: none; }
 .stats-card {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 .stats-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 .stats-item {
   display: flex;
   flex-direction: column;
 }
 .stats-label {
-  font-size: 0.6rem;
+  font-size: 0.52rem;
   font-weight: 700;
   color: var(--text-dim);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 .stats-value {
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--cyan);
 }
@@ -241,15 +241,16 @@ a { color: var(--cyan); text-decoration: none; }
 .day-picker-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: rgba(15, 23, 42, 0.6) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  padding: 6px 32px 6px 12px !important;
-  border-radius: 8px !important; /* Clean modern rounded rectangle */
-  font-size: 0.82rem;
+  padding: 3px 24px 3px 8px !important;
+  border-radius: 6px !important; /* Compact modern rounded rectangle */
+  font-size: 0.72rem;
   font-weight: 600;
+  height: 25px;
   position: relative;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -271,8 +272,8 @@ a { color: var(--cyan); text-decoration: none; }
 }
 
 .day-picker-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   display: inline-block;
   flex-shrink: 0;
@@ -290,6 +291,11 @@ a { color: var(--cyan); text-decoration: none; }
   transform: scale(1.15);
 }
 
+#daySelect, #topicSelect {
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+}
+
 #topicSelect {
   max-width: none;
   white-space: nowrap;
@@ -298,10 +304,10 @@ a { color: var(--cyan); text-decoration: none; }
 .day-pill-badge {
   background: var(--cyan-dim);
   color: var(--cyan);
-  font-size: 0.72rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 16px;
+  padding: 2px 6px;
+  border-radius: 12px;
   letter-spacing: 0.02em;
 }
 
@@ -315,17 +321,18 @@ a { color: var(--cyan); text-decoration: none; }
   -moz-appearance: none;
   appearance: none;
   outline: none;
-  padding-right: 12px;
+  padding-right: 10px;
+  font-size: 0.72rem;
 }
 .day-picker-pill select option {
   background: #0d121f;
   color: #f8fafc;
-  padding: 10px;
-  font-size: 0.85rem;
+  padding: 6px 10px;
+  font-size: 0.76rem;
 }
 .day-picker-chevron {
   position: absolute;
-  right: 12px;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
@@ -402,14 +409,14 @@ a { color: var(--cyan); text-decoration: none; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 4px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--text);
-  height: 32px;
-  padding: 0 14px;
+  height: 25px;
+  padding: 0 10px;
   border-radius: 100px !important; /* Premium cohesive pill shape */
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   font-weight: 700;
   white-space: nowrap;
   box-sizing: border-box;
@@ -2437,34 +2444,34 @@ pre span {
   .header-right .hdr-btn {
     flex: 0 1 auto !important;
     white-space: nowrap !important;
-    padding: 0 10px !important;
-    font-size: 0.68rem !important;
-    gap: 4px !important;
-    height: 26px !important;
-    border-radius: 6px !important;
+    padding: 0 7px !important;
+    font-size: 0.62rem !important;
+    gap: 3px !important;
+    height: 22px !important;
+    border-radius: 5px !important;
     box-sizing: border-box !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
   }
   .hdr-btn--score svg {
-    width: 10px !important;
-    height: 10px !important;
-    margin-right: 2px !important;
+    width: 9px !important;
+    height: 9px !important;
+    margin-right: 1px !important;
   }
 
   /* Compact premium stats widget on mobile */
   .stats-card {
     background: rgba(15, 23, 42, 0.45) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    padding: 0 8px !important;
-    border-radius: 6px !important;
+    padding: 0 6px !important;
+    border-radius: 5px !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.02) !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
     gap: 1px !important;
-    height: 26px !important;
+    height: 22px !important;
     box-sizing: border-box !important;
     min-width: 0 !important;
     flex: 0 1 auto !important;
@@ -2472,17 +2479,17 @@ pre span {
   .stats-row {
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important;
+    gap: 6px !important;
     flex-wrap: nowrap !important;
   }
   .stats-item {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    gap: 4px !important;
+    gap: 3px !important;
   }
   .stats-label {
-    font-size: 0.5rem !important;
+    font-size: 0.45rem !important;
     font-weight: 700 !important;
     color: rgba(255, 255, 255, 0.4) !important;
     letter-spacing: 0.02em !important;
@@ -2495,7 +2502,7 @@ pre span {
     line-height: 0.95 !important;
   }
   .stats-value--fraction .stats-num {
-    font-size: 0.62rem !important;
+    font-size: 0.56rem !important;
     font-weight: 700 !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
     padding-bottom: 0.5px !important;
@@ -2504,7 +2511,7 @@ pre span {
     text-align: center !important;
   }
   .stats-value--fraction .stats-den {
-    font-size: 0.52rem !important;
+    font-size: 0.46rem !important;
     font-weight: 500 !important;
     color: rgba(255, 255, 255, 0.35) !important;
     display: block !important;
@@ -2512,7 +2519,7 @@ pre span {
   }
   .stats-divider {
     width: 1px !important;
-    height: 10px !important;
+    height: 8px !important;
     background: rgba(255, 255, 255, 0.12) !important;
   }
   .stats-progress-bar {
@@ -2531,44 +2538,44 @@ pre span {
 
   /* Compact selectors in Row 1 header */
   .day-picker-pill {
-    padding: 3px 20px 3px 8px !important;
-    gap: 6px !important;
-    height: 24px !important;
-    border-radius: 6px !important;
-    font-size: 0.68rem !important;
+    padding: 2px 18px 2px 6px !important;
+    gap: 4px !important;
+    height: 22px !important;
+    border-radius: 5px !important;
+    font-size: 0.64rem !important;
   }
   .day-picker-pill .custom-select-trigger {
-    font-size: 0.7rem !important;
+    font-size: 0.64rem !important;
   }
   .custom-select-option {
-    font-size: 0.74rem !important;
-    padding: 6px 12px 6px 20px !important;
+    font-size: 0.68rem !important;
+    padding: 4px 10px 4px 16px !important;
   }
   .day-picker-pill.topic-picker-pill {
     flex: 1 !important;
     min-width: 0 !important;
   }
   .day-picker-dot {
-    width: 6px !important;
-    height: 6px !important;
-  }
-  .day-picker-chevron {
-    right: 8px !important;
-  }
-  .day-picker-chevron svg {
-    width: 7px !important;
+    width: 4px !important;
     height: 4px !important;
   }
+  .day-picker-chevron {
+    right: 6px !important;
+  }
+  .day-picker-chevron svg {
+    width: 6px !important;
+    height: 3px !important;
+  }
   .day-pill-badge {
-    padding: 1px 4px !important;
-    font-size: 0.6rem !important;
+    padding: 1px 3px !important;
+    font-size: 0.55rem !important;
   }
   #daySelect {
-    max-width: 50px !important;
+    max-width: 44px !important;
     text-overflow: ellipsis !important;
     overflow: hidden !important;
     white-space: nowrap !important;
-    font-size: 0.68rem !important;
+    font-size: 0.64rem !important;
     font-weight: 700 !important;
   }
   #topicSelect {
@@ -2578,34 +2585,34 @@ pre span {
     text-overflow: ellipsis !important;
     overflow: hidden !important;
     white-space: nowrap !important;
-    font-size: 0.68rem !important;
+    font-size: 0.64rem !important;
     font-weight: 700 !important;
   }
 
   /* Row 1 Autoplay Play Lesson Button */
   .hdr-btn--autoplay {
-    padding: 2px 8px !important;
-    font-size: 0.7rem !important;
+    padding: 1px 6px !important;
+    font-size: 0.64rem !important;
     height: 22px !important;
     border-radius: 11px !important;
     gap: 2px !important;
   }
   .hdr-btn--autoplay .btn-icon {
-    font-size: 0.65rem !important;
+    font-size: 0.6rem !important;
   }
 
   /* Compact User Profile Avatar */
   .user-profile {
-    width: 26px !important;
-    height: 26px !important;
-    min-width: 26px !important;
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
     flex-shrink: 0 !important;
     overflow: hidden !important;
     border-radius: 50% !important;
   }
   .active-dot {
-    width: 6px !important;
-    height: 6px !important;
+    width: 5px !important;
+    height: 5px !important;
     border-width: 1px !important;
   }
 
