@@ -328,36 +328,95 @@ function autoHighlightSql(container) {
   if (!container) return;
   const pres = container.querySelectorAll('pre');
   pres.forEach(pre => {
-    if (pre.querySelector('.sql-keyword')) return;
+    if (pre.getAttribute('data-sql-highlighted') === 'true') return;
     let text = pre.textContent || pre.innerText;
     if (!text || !text.trim()) return;
-    
-    let escaped = text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
 
-    const tokenRegex = /(--[^\n]*)|("[^"\n]*"|'[^'\n]*')|\b(\d+(?:\.\d+)?)\b|(\b(?:SELECT|FROM|WHERE|AS|JOIN|LEFT|RIGHT|INNER|OUTER|CROSS|ON|GROUP BY|ORDER BY|HAVING|LIMIT|OFFSET|DISTINCT|UNION|ALL|INTERSECT|EXCEPT|INSERT|INTO|VALUES|UPDATE|SET|DELETE|CREATE|TABLE|DATABASE|PRIMARY|KEY|FOREIGN|REFERENCES|CONSTRAINT|DROP|ALTER|ADD|COLUMN|DEFAULT|CHECK|INDEX|VIEW|AND|OR|NOT|IN|IS|NULL|LIKE|ILIKE|BETWEEN|CASE|WHEN|THEN|ELSE|END|ASC|DESC|OVER|PARTITION BY|ROWS|RANGE|UNBOUNDED|PRECEDING|FOLLOWING|CURRENT ROW|COUNT|SUM|AVG|MIN|MAX|CAST|COALESCE|SUBQUERY|CTE|WITH|RECURSIVE|EXTRACT|DATE_TRUNC|DATE_PART|LAG|LEAD|RANK|DENSE_RANK|ROW_NUMBER|NTILE)\b)/gi;
-    
-    let highlighted = escaped.replace(tokenRegex, (match, p1, p2, p3, p4) => {
-      if (p1) {
-        const isError = p1.toLowerCase().includes('error');
-        const isSuccess = p1.includes('✅') || p1.toLowerCase().includes('valid') || p1.toLowerCase().includes('works');
-        const colorStyle = isError ? 'color: #f87171 !important;' : (isSuccess ? 'color: #34d399 !important;' : '');
-        return `<span class="sql-comment" style="${colorStyle}">${p1}</span>`;
+    let raw = text
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>');
+
+    function esc(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    const SQL_KEYWORDS = [
+      'SELECT', 'FROM', 'WHERE', 'AS', 'JOIN', 'LEFT', 'RIGHT', 'INNER', 'OUTER', 'CROSS',
+      'ON', 'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 'OFFSET', 'DISTINCT', 'UNION', 'ALL',
+      'INTERSECT', 'EXCEPT', 'INSERT', 'INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE', 'CREATE',
+      'TABLE', 'DATABASE', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES', 'CONSTRAINT', 'DROP',
+      'ALTER', 'ADD', 'COLUMN', 'DEFAULT', 'CHECK', 'INDEX', 'VIEW', 'AND', 'OR', 'NOT', 'IN',
+      'IS', 'NULL', 'LIKE', 'ILIKE', 'BETWEEN', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'ASC',
+      'DESC', 'OVER', 'PARTITION BY', 'ROWS', 'RANGE', 'UNBOUNDED', 'PRECEDING', 'FOLLOWING',
+      'CURRENT ROW', 'WITH', 'RECURSIVE', 'IF', 'EXISTS', 'UNIQUE'
+    ];
+
+    const SQL_TYPES = [
+      'UUID', 'TEXT', 'VARCHAR', 'CHAR', 'INT', 'INTEGER', 'BIGINT', 'SMALLINT',
+      'NUMERIC', 'DECIMAL', 'FLOAT', 'REAL', 'DOUBLE', 'PRECISION', 'BOOLEAN',
+      'DATE', 'TIME', 'TIMESTAMP', 'TIMESTAMPTZ', 'INTERVAL', 'JSON', 'JSONB', 'SERIAL', 'BIGSERIAL'
+    ];
+
+    const SQL_FUNCTIONS = [
+      'GEN_RANDOM_UUID', 'NOW', 'CURRENT_DATE', 'CURRENT_TIME', 'CURRENT_TIMESTAMP',
+      'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'CAST', 'COALESCE', 'EXTRACT', 'DATE_TRUNC',
+      'DATE_PART', 'LAG', 'LEAD', 'RANK', 'DENSE_RANK', 'ROW_NUMBER', 'NTILE', 'UPPER',
+      'LOWER', 'INITCAP', 'LENGTH', 'CHAR_LENGTH', 'TRIM', 'LTRIM', 'RTRIM', 'LPAD',
+      'RPAD', 'CONCAT', 'CONCAT_WS', 'SUBSTRING', 'LEFT', 'RIGHT', 'POSITION', 'STRPOS',
+      'REPLACE', 'REGEXP_REPLACE', 'SPLIT_PART', 'ROUND', 'CEIL', 'FLOOR', 'ABS'
+    ];
+
+    const SQL_BOOLEANS = ['TRUE', 'FALSE'];
+
+    const masterRegex = /(--[^\n]*)|("[^"\n]*"|'[^'\n]*')|\b([a-zA-Z_][a-zA-Z0-9_]*)\s*(?=\()|\b([a-zA-Z_][a-zA-Z0-9_]*|\d+(?:\.\d+)?)\b/g;
+
+    let resultHtml = raw.replace(masterRegex, (match, comment, str, func, word) => {
+      if (comment) {
+        const isError = comment.toLowerCase().includes('error');
+        const isSuccess = comment.includes('✅') || comment.toLowerCase().includes('valid') || comment.toLowerCase().includes('works');
+        const style = isError ? 'color: #f87171 !important;' : (isSuccess ? 'color: #34d399 !important;' : '');
+        return `<span class="sql-comment" style="${style}">${esc(comment)}</span>`;
       }
-      if (p2) return `<span class="sql-string">${p2}</span>`;
-      if (p3) return `<span class="sql-number">${p3}</span>`;
-      if (p4) return `<span class="sql-keyword">${p4}</span>`;
-      return match;
+      if (str) {
+        return `<span class="sql-string">${esc(str)}</span>`;
+      }
+      if (func) {
+        const upperFunc = func.toUpperCase();
+        if (SQL_FUNCTIONS.includes(upperFunc)) {
+          return `<span class="sql-function">${esc(func)}</span>`;
+        }
+        if (SQL_KEYWORDS.includes(upperFunc)) {
+          return `<span class="sql-keyword">${esc(func)}</span>`;
+        }
+        return `<span class="sql-function">${esc(func)}</span>`;
+      }
+      if (word) {
+        const upperWord = word.toUpperCase();
+        if (/^\d+(?:\.\d+)?$/.test(word)) {
+          return `<span class="sql-number">${esc(word)}</span>`;
+        }
+        if (SQL_BOOLEANS.includes(upperWord)) {
+          return `<span class="sql-boolean">${esc(word)}</span>`;
+        }
+        if (SQL_TYPES.includes(upperWord)) {
+          return `<span class="sql-type">${esc(word)}</span>`;
+        }
+        if (SQL_KEYWORDS.includes(upperWord)) {
+          return `<span class="sql-keyword">${esc(word)}</span>`;
+        }
+        return `<span class="sql-identifier">${esc(word)}</span>`;
+      }
+      return esc(match);
     });
 
     const codeEl = pre.querySelector('code');
     if (codeEl) {
-      codeEl.innerHTML = highlighted;
+      codeEl.innerHTML = resultHtml;
     } else {
-      pre.innerHTML = `<code class="sql">${highlighted}</code>`;
+      pre.innerHTML = `<code class="sql">${resultHtml}</code>`;
     }
+    pre.setAttribute('data-sql-highlighted', 'true');
   });
 }
 

@@ -4520,16 +4520,35 @@ pre span {
   white-space: pre !important;
 }
 
-/* Syntax Highlighting Colors */
+/* Syntax Highlighting Colors matching standard VS Code theme */
 .sql-keyword {
   color: #38bdf8 !important; /* Sky Blue keywords */
-  font-weight: bold;
+  font-weight: 700 !important;
+}
+.sql-type {
+  color: #38bdf8 !important; /* Sky Blue data types */
+  font-weight: 600 !important;
+}
+.sql-function {
+  color: #facc15 !important; /* Bright Gold functions */
+  font-weight: 600 !important;
+}
+.sql-string {
+  color: #fb923c !important; /* Warm Coral / Orange strings */
 }
 .sql-number {
   color: #f59e0b !important; /* Amber numbers */
 }
-.sql-string {
-  color: #10b981 !important; /* Green strings */
+.sql-boolean {
+  color: #38bdf8 !important; /* Blue booleans */
+  font-weight: 600 !important;
+}
+.sql-comment {
+  color: #64748b !important; /* Muted slate comments */
+  font-style: italic !important;
+}
+.sql-identifier {
+  color: #ffffff !important; /* Pure white for column & table names */
 }
 
 .syntax-card-footer {
