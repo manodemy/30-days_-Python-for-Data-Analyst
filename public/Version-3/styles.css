@@ -1250,7 +1250,8 @@ pre span {
   letter-spacing: -0.01em;
 }
 .slide-content .vs-card p,
-.slide-content .vs-card span {
+.slide-content .vs-card > span,
+.slide-content .vs-card p span {
   color: #475569 !important;
   font-size: 0.78rem !important;
   line-height: 1.55 !important;
@@ -4520,34 +4521,65 @@ pre span {
   white-space: pre !important;
 }
 
-/* Syntax Highlighting Colors matching standard VS Code theme */
-.sql-keyword {
+/* High specificity Syntax Highlighting Colors matching standard VS Code theme */
+.slide-content pre span.sql-keyword,
+.vs-card pre span.sql-keyword,
+.syntax-card-body span.sql-keyword,
+span.sql-keyword {
   color: #38bdf8 !important; /* Sky Blue keywords */
   font-weight: 700 !important;
 }
-.sql-type {
+
+.slide-content pre span.sql-type,
+.vs-card pre span.sql-type,
+.syntax-card-body span.sql-type,
+span.sql-type {
   color: #38bdf8 !important; /* Sky Blue data types */
   font-weight: 600 !important;
 }
-.sql-function {
+
+.slide-content pre span.sql-function,
+.vs-card pre span.sql-function,
+.syntax-card-body span.sql-function,
+span.sql-function {
   color: #facc15 !important; /* Bright Gold functions */
   font-weight: 600 !important;
 }
-.sql-string {
+
+.slide-content pre span.sql-string,
+.vs-card pre span.sql-string,
+.syntax-card-body span.sql-string,
+span.sql-string {
   color: #fb923c !important; /* Warm Coral / Orange strings */
 }
-.sql-number {
+
+.slide-content pre span.sql-number,
+.vs-card pre span.sql-number,
+.syntax-card-body span.sql-number,
+span.sql-number {
   color: #f59e0b !important; /* Amber numbers */
 }
-.sql-boolean {
+
+.slide-content pre span.sql-boolean,
+.vs-card pre span.sql-boolean,
+.syntax-card-body span.sql-boolean,
+span.sql-boolean {
   color: #38bdf8 !important; /* Blue booleans */
   font-weight: 600 !important;
 }
-.sql-comment {
+
+.slide-content pre span.sql-comment,
+.vs-card pre span.sql-comment,
+.syntax-card-body span.sql-comment,
+span.sql-comment {
   color: #64748b !important; /* Muted slate comments */
   font-style: italic !important;
 }
-.sql-identifier {
+
+.slide-content pre span.sql-identifier,
+.vs-card pre span.sql-identifier,
+.syntax-card-body span.sql-identifier,
+span.sql-identifier {
   color: #ffffff !important; /* Pure white for column & table names */
 }
 

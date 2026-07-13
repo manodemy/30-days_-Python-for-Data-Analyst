@@ -349,7 +349,7 @@ function autoHighlightSql(container) {
       'ALTER', 'ADD', 'COLUMN', 'DEFAULT', 'CHECK', 'INDEX', 'VIEW', 'AND', 'OR', 'NOT', 'IN',
       'IS', 'NULL', 'LIKE', 'ILIKE', 'BETWEEN', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'ASC',
       'DESC', 'OVER', 'PARTITION BY', 'ROWS', 'RANGE', 'UNBOUNDED', 'PRECEDING', 'FOLLOWING',
-      'CURRENT ROW', 'WITH', 'RECURSIVE', 'IF', 'EXISTS', 'UNIQUE'
+      'CURRENT ROW', 'WITH', 'RECURSIVE', 'IF', 'EXISTS', 'UNIQUE', 'RESTRICT', 'CASCADE'
     ];
 
     const SQL_TYPES = [
@@ -389,7 +389,10 @@ function autoHighlightSql(container) {
         if (SQL_KEYWORDS.includes(upperFunc)) {
           return `<span class="sql-keyword">${esc(func)}</span>`;
         }
-        return `<span class="sql-function">${esc(func)}</span>`;
+        if (SQL_TYPES.includes(upperFunc)) {
+          return `<span class="sql-type">${esc(func)}</span>`;
+        }
+        return `<span class="sql-identifier">${esc(func)}</span>`;
       }
       if (word) {
         const upperWord = word.toUpperCase();
