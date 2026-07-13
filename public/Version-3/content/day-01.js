@@ -1213,20 +1213,30 @@ WHERE department = 'Engineering';
           </div>
         </div>
 
-        <div class="interview-box">
-          <h4>🎓 Interview Q&amp;A</h4>
-          <p><strong>Q: Can you reference an alias in the WHERE clause? What about ORDER BY?</strong></p>
-          <p><em>A: No to WHERE — the logical query execution order processes WHERE (step 2) before SELECT (step 5), so aliases defined in SELECT do not exist yet when WHERE runs. However, most databases allow aliases in ORDER BY as a practical extension since ORDER BY runs after SELECT. For WHERE filtering on computed values, use a subquery or CTE that wraps the original query, or repeat the expression directly in the WHERE clause.</em></p>
+        <div class="slide-section">
+          <div class="interview-box">
+            <h4 style="margin: 0; margin-bottom: 12px;">🎓 Interview Q&amp;A</h4>
+            <div id="iqAliasWhere">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q: Can you reference an alias in the WHERE clause? What about ORDER BY?</strong></p>
+              </div>
+              <p><em>A: No to WHERE — the logical query execution order processes WHERE (step 2) before SELECT (step 5), so aliases defined in SELECT do not exist yet when WHERE runs. However, most databases allow aliases in ORDER BY as a practical extension since ORDER BY runs after SELECT. For WHERE filtering on computed values, use a subquery or CTE that wraps the original query, or repeat the expression directly in the WHERE clause.</em></p>
+            </div>
 
-          <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
+            <div id="iqColumnVsTableAlias">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q: What is the difference between a column alias and a table alias?</strong></p>
+              </div>
+              <p><em>A: A column alias (e.g., <code>salary AS monthly_pay</code>) renames a column in the output result set. A table alias (e.g., <code>FROM employees AS e</code>) renames a table within the query, letting you use shorthand references like <code>e.name</code> instead of <code>employees.name</code>. Table aliases are essential in self-joins where the same table is referenced twice and must be distinguished.</em></p>
+            </div>
 
-          <p><strong>Q: What is the difference between a column alias and a table alias?</strong></p>
-          <p><em>A: A column alias (e.g., <code>salary AS monthly_pay</code>) renames a column in the output result set. A table alias (e.g., <code>FROM employees AS e</code>) renames a table within the query, letting you use shorthand references like <code>e.name</code> instead of <code>employees.name</code>. Table aliases are essential in self-joins where the same table is referenced twice and must be distinguished.</em></p>
-
-          <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
-
-          <p><strong>Q: What is the logical SQL execution order and why does it matter?</strong></p>
-          <p><em>A: The logical order is: FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → DISTINCT → ORDER BY → LIMIT/OFFSET. Understanding this order explains many "gotchas": why you can't filter on a SELECT alias in WHERE, why aggregate functions aren't allowed in WHERE (use HAVING instead), and why window functions compute after GROUP BY. Interviewers test this to assess whether candidates understand SQL deeply or are just copying queries.</em></p>
+            <div id="iqLogicalSqlExecutionOrder">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q: What is the logical SQL execution order and why does it matter?</strong></p>
+              </div>
+              <p><em>A: The logical order is: FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → DISTINCT → ORDER BY → LIMIT/OFFSET. Understanding this order explains many "gotchas": why you can't filter on a SELECT alias in WHERE, why aggregate functions aren't allowed in WHERE (use HAVING instead), and why window functions compute after GROUP BY. Interviewers test this to assess whether candidates understand SQL deeply or are just copying queries.</em></p>
+            </div>
+          </div>
         </div>
       `
     }
