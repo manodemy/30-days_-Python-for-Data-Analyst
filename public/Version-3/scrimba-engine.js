@@ -324,6 +324,43 @@ function levenshtein(a, b) {
   return dp[m][n];
 }
 
+function autoHighlightSql(container) {
+  if (!container) return;
+  const pres = container.querySelectorAll('pre');
+  pres.forEach(pre => {
+    if (pre.querySelector('.sql-keyword')) return;
+    let text = pre.textContent || pre.innerText;
+    if (!text || !text.trim()) return;
+    
+    let escaped = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    const tokenRegex = /(--[^\n]*)|("[^"\n]*"|'[^'\n]*')|\b(\d+(?:\.\d+)?)\b|(\b(?:SELECT|FROM|WHERE|AS|JOIN|LEFT|RIGHT|INNER|OUTER|CROSS|ON|GROUP BY|ORDER BY|HAVING|LIMIT|OFFSET|DISTINCT|UNION|ALL|INTERSECT|EXCEPT|INSERT|INTO|VALUES|UPDATE|SET|DELETE|CREATE|TABLE|DATABASE|PRIMARY|KEY|FOREIGN|REFERENCES|CONSTRAINT|DROP|ALTER|ADD|COLUMN|DEFAULT|CHECK|INDEX|VIEW|AND|OR|NOT|IN|IS|NULL|LIKE|ILIKE|BETWEEN|CASE|WHEN|THEN|ELSE|END|ASC|DESC|OVER|PARTITION BY|ROWS|RANGE|UNBOUNDED|PRECEDING|FOLLOWING|CURRENT ROW|COUNT|SUM|AVG|MIN|MAX|CAST|COALESCE|SUBQUERY|CTE|WITH|RECURSIVE|EXTRACT|DATE_TRUNC|DATE_PART|LAG|LEAD|RANK|DENSE_RANK|ROW_NUMBER|NTILE)\b)/gi;
+    
+    let highlighted = escaped.replace(tokenRegex, (match, p1, p2, p3, p4) => {
+      if (p1) {
+        const isError = p1.toLowerCase().includes('error');
+        const isSuccess = p1.includes('✅') || p1.toLowerCase().includes('valid') || p1.toLowerCase().includes('works');
+        const colorStyle = isError ? 'color: #f87171 !important;' : (isSuccess ? 'color: #34d399 !important;' : '');
+        return `<span class="sql-comment" style="${colorStyle}">${p1}</span>`;
+      }
+      if (p2) return `<span class="sql-string">${p2}</span>`;
+      if (p3) return `<span class="sql-number">${p3}</span>`;
+      if (p4) return `<span class="sql-keyword">${p4}</span>`;
+      return match;
+    });
+
+    const codeEl = pre.querySelector('code');
+    if (codeEl) {
+      codeEl.innerHTML = highlighted;
+    } else {
+      pre.innerHTML = `<code class="sql">${highlighted}</code>`;
+    }
+  });
+}
+
 // ═══════════════════════════════════════════════════════════════
 // MODULE 5: PRESENTATION MODE + SLIDES
 // ═══════════════════════════════════════════════════════════════
@@ -372,7 +409,11 @@ function renderCurrentSlide() {
 
 function renderPresentSlide() {
   const slide = COURSE_CONFIG.slides[currentSlide];
-  document.getElementById('presentSlideContent').innerHTML = slide.html;
+  const container = document.getElementById('presentSlideContent');
+  if (container) {
+    container.innerHTML = slide.html;
+    autoHighlightSql(container);
+  }
   const cleanedTitle = slide.title.replace(/^\d+\.\s*/, '');
   document.getElementById('presentCounter').textContent = `Topic 0${currentSlide + 1} — ${cleanedTitle}`;
   const topicSelect = document.getElementById('topicSelect');
@@ -421,7 +462,10 @@ function renderSideSlide() {
   if (slideHeader) slideHeader.innerHTML = headerHtml;
   
   const slideBodyText = document.getElementById('slideBodyText');
-  if (slideBodyText) slideBodyText.innerHTML = bodyHtml;
+  if (slideBodyText) {
+    slideBodyText.innerHTML = bodyHtml;
+    autoHighlightSql(slideBodyText);
+  }
   
   // Update canvas size to match the new scroll size of slideContent
   resizeWsCanvas();

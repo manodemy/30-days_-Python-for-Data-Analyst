@@ -957,33 +957,18 @@ a { color: var(--cyan); text-decoration: none; }
   display: inline;
 }
 .slide-content pre {
-  background: #0f172a !important; /* Premium dark slate */
+  background: #0b1329 !important; /* Premium dark navy matching reference */
   border: 1px solid #1e293b !important;
   border-radius: 8px;
-  padding: 34px 16px 14px 16px !important; /* Top padding for window buttons */
+  padding: 14px 16px !important; /* Clean padding, 3 dots removed */
   margin: 14px 0;
   overflow-x: auto;
   font-family: 'JetBrains Mono', 'Fira Code', var(--mono), monospace !important;
   font-size: 0.78rem !important;
   line-height: 1.5;
-  color: #cbd5e1 !important;
+  color: #e2e8f0 !important;
   position: relative;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
-}
-/* macOS-like terminal window controls */
-.slide-content pre::before {
-  content: '';
-  position: absolute;
-  top: 12px;
-  left: 16px;
-  width: 38px;
-  height: 8px;
-  background: radial-gradient(circle, #ff5f56 2.5px, transparent 3px),
-              radial-gradient(circle, #ffbd2e 2.5px, transparent 3px),
-              radial-gradient(circle, #27c93f 2.5px, transparent 3px);
-  background-size: 8px 8px;
-  background-repeat: no-repeat;
-  background-position: 0px 0px, 14px 0px, 28px 0px;
 }
 /* Simulated tag on the right */
 .slide-content pre::after {
@@ -996,6 +981,7 @@ a { color: var(--cyan); text-decoration: none; }
   color: #475569;
   letter-spacing: 0.08em;
   font-family: Inter, system-ui, sans-serif;
+  pointer-events: none;
 }
 .slide-content .info-box {
   background: #f0fdfa !important;
@@ -1256,33 +1242,18 @@ a { color: var(--cyan); text-decoration: none; }
   margin-bottom: 6px !important;
 }
 .slide-content .vs-card pre {
-  background: #0f172a !important; /* Premium dark slate */
+  background: #0b1329 !important; /* Premium dark navy matching reference */
   border: 1px solid #1e293b !important;
   border-radius: 8px;
-  padding: 34px 14px 14px 14px !important; /* Top padding for terminal title bar */
+  padding: 14px 16px !important; /* Clean padding, 3 dots removed */
   font-family: 'JetBrains Mono', 'Fira Code', var(--mono), monospace !important;
-  font-size: 0.75rem !important;
+  font-size: 0.76rem !important;
   line-height: 1.5 !important;
   color: #e2e8f0 !important;
   margin: 12px 0 0 0 !important;
   overflow-x: auto;
   position: relative;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
-}
-/* macOS-like terminal window controls */
-.slide-content .vs-card pre::before {
-  content: '';
-  position: absolute;
-  top: 12px;
-  left: 14px;
-  width: 38px;
-  height: 8px;
-  background: radial-gradient(circle, #ff5f56 2.5px, transparent 3px),
-              radial-gradient(circle, #ffbd2e 2.5px, transparent 3px),
-              radial-gradient(circle, #27c93f 2.5px, transparent 3px);
-  background-size: 8px 8px;
-  background-repeat: no-repeat;
-  background-position: 0px 0px, 14px 0px, 28px 0px;
 }
 /* Simulated language tab/badge on the right */
 .slide-content .vs-card pre::after {
