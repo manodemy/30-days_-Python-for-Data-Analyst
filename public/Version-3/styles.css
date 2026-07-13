@@ -943,19 +943,45 @@ a { color: var(--cyan); text-decoration: none; }
 .slide-content ul { padding-left: 18px; }
 .slide-content li { margin-bottom: 4px; }
 .slide-content code {
-  background: #f1f5f9 !important;
-  color: #0f172a !important;
-  border: 1px solid #e2e8f0;
-  padding: 2px 4px;
-  border-radius: 4px;
-  font-family: var(--mono);
-  font-size: 0.72rem !important;
-  white-space: pre-wrap;
-  word-break: break-word;
+  font-family: 'JetBrains Mono', 'Fira Code', var(--mono), monospace !important;
   font-variant-ligatures: none !important;
   font-feature-settings: "liga" 0, "clig" 0, "calt" 0 !important;
-  display: inline;
 }
+
+/* Inline code badges in text paragraphs/lists */
+.slide-content :not(pre) > code,
+.slide-content p code,
+.slide-content li code,
+.slide-content td code {
+  background: #1e293b !important;
+  color: #38bdf8 !important;
+  border: 1px solid #334155 !important;
+  padding: 2px 5px !important;
+  border-radius: 4px !important;
+  font-size: 0.76rem !important;
+  display: inline !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+}
+
+/* Code blocks inside pre containers (NO white background highlights) */
+.slide-content pre code,
+.slide-content pre span,
+.slide-section pre code,
+.slide-section pre span,
+.vs-card pre code,
+.vs-card pre span,
+.syntax-card-body code,
+.syntax-card-body span,
+pre code,
+pre span {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
 .slide-content pre {
   background: #0b1329 !important; /* Premium dark navy matching reference */
   border: 1px solid #1e293b !important;
@@ -4475,21 +4501,22 @@ a { color: var(--cyan); text-decoration: none; }
 
 .syntax-card-body pre {
   margin: 0 !important;
-  padding: 12px 14px !important;
-  background: #0f172a !important; /* Premium dark theme code block inside the white card */
+  padding: 14px 16px !important;
+  background: #0b1329 !important; /* Dark navy background matching reference image */
   border: none !important;
   border-radius: 0 !important;
-  font-size: 0.8rem !important;
+  font-size: 0.78rem !important;
   text-align: left !important;
+  position: relative !important;
 }
 
 .syntax-card-body code {
-  background: none !important;
+  background: transparent !important;
   border: none !important;
   padding: 0 !important;
   display: block !important;
-  color: #cbd5e1 !important; /* Standard neutral light-grey for variables */
-  font-family: var(--mono, monospace) !important;
+  color: #e2e8f0 !important; /* Standard neutral light-grey for variables */
+  font-family: 'JetBrains Mono', 'Fira Code', var(--mono), monospace !important;
   white-space: pre !important;
 }
 
