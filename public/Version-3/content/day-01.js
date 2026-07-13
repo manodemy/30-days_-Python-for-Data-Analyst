@@ -1096,12 +1096,16 @@ WHERE department = 'Engineering';
           <div class="vs-card" style="border-left: 4px solid #10b981;">
             <h4 style="color: #047857;">🟢 Single Quotes <code style="font-size: 0.75rem;">' '</code></h4>
             <p>For <strong>string literals</strong> (text values).</p>
-            <pre style="margin: 8px 0 0 0; font-size: 0.74rem;">WHERE department = 'Engineering'</pre>
+            <div class="syntax-card-body" style="border-radius: 8px; overflow: hidden; margin-top: 8px;">
+              <pre><code class="sql"><span class="sql-keyword">WHERE</span> department = <span class="sql-string">'Engineering'</span></code></pre>
+            </div>
           </div>
           <div class="vs-card" style="border-left: 4px solid #3b82f6;">
             <h4 style="color: #1d4ed8;">🔵 Double Quotes <code style="font-size: 0.75rem;">" "</code></h4>
             <p>For <strong>identifiers</strong> (column names, alias names, table names).</p>
-            <pre style="margin: 8px 0 0 0; font-size: 0.74rem;">SELECT name AS "Employee Name"</pre>
+            <div class="syntax-card-body" style="border-radius: 8px; overflow: hidden; margin-top: 8px;">
+              <pre><code class="sql"><span class="sql-keyword">SELECT</span> name <span class="sql-keyword">AS</span> <span class="sql-string">"Employee Name"</span></code></pre>
+            </div>
           </div>
         </div>
         <p style="font-size: 0.8rem; color: #7c2d12; background: #fff7ed; border: 1px solid #fed7aa; border-left: 4px solid #f97316; border-radius: 6px; padding: 10px 14px; margin: 12px 0;">⚠️ Using single quotes for an alias (<code>SELECT name AS 'Employee Name'</code>) is an error in standard SQL. Some databases accept it but it has undefined behavior — avoid it entirely.</p>
@@ -1165,36 +1169,48 @@ WHERE department = 'Engineering';
 
         <div class="vs-block">
           <div class="vs-card vs-card--bad">
-            <h4>❌ Cannot Use Alias in WHERE</h4>
-            <pre style="margin: 0; font-size: 0.75rem;">SELECT salary / 12.0 AS monthly_rate
-FROM employees
-WHERE monthly_rate > 6000;
--- ERROR: column "monthly_rate"
--- does not exist at this step</pre>
-            <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">WHERE runs before SELECT — alias is not yet defined.</small>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <h4 style="margin: 0;">❌ Cannot Use Alias in WHERE</h4>
+              <span class="syntax-badge" style="background: #fef2f2; color: #dc2626; border: 1px solid #fecaca;">Syntax Error</span>
+            </div>
+            <div class="syntax-card-body" style="border-radius: 8px; overflow: hidden;">
+              <pre><code class="sql"><span class="sql-keyword">SELECT</span> salary / <span class="sql-number">12.0</span> <span class="sql-keyword">AS</span> monthly_rate
+<span class="sql-keyword">FROM</span> employees
+<span class="sql-keyword">WHERE</span> monthly_rate > <span class="sql-number">6000</span>;
+<span class="sql-comment" style="color: #f87171 !important;">-- ERROR: column "monthly_rate"
+-- does not exist at this step</span></code></pre>
+            </div>
+            <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 8px;">WHERE runs before SELECT — alias is not yet defined.</small>
           </div>
           <div class="vs-card vs-card--good">
-            <h4>✅ Workarounds: Subquery or CTE</h4>
-            <pre style="margin: 0; font-size: 0.75rem;">-- Option 1: Subquery
-SELECT * FROM (
-  SELECT name, salary / 12.0 AS monthly_rate
-  FROM employees
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <h4 style="margin: 0;">✅ Workarounds: Subquery or CTE</h4>
+              <span class="syntax-badge syntax-badge--recommended">Recommended</span>
+            </div>
+            <div class="syntax-card-body" style="border-radius: 8px; overflow: hidden;">
+              <pre><code class="sql"><span class="sql-comment">-- Option 1: Subquery</span>
+<span class="sql-keyword">SELECT</span> * <span class="sql-keyword">FROM</span> (
+  <span class="sql-keyword">SELECT</span> name, salary / <span class="sql-number">12.0</span> <span class="sql-keyword">AS</span> monthly_rate
+  <span class="sql-keyword">FROM</span> employees
 ) sub
-WHERE monthly_rate > 6000;
+<span class="sql-keyword">WHERE</span> monthly_rate > <span class="sql-number">6000</span>;
 
--- Option 2: Repeat the expression
-SELECT name, salary / 12.0 AS monthly_rate
-FROM employees
-WHERE salary / 12.0 > 6000;</pre>
-            <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">Both patterns are production-standard approaches.</small>
+<span class="sql-comment">-- Option 2: Repeat the expression</span>
+<span class="sql-keyword">SELECT</span> name, salary / <span class="sql-number">12.0</span> <span class="sql-keyword">AS</span> monthly_rate
+<span class="sql-keyword">FROM</span> employees
+<span class="sql-keyword">WHERE</span> salary / <span class="sql-number">12.0</span> > <span class="sql-number">6000</span>;</code></pre>
+            </div>
+            <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 8px;">Both patterns are production-standard approaches.</small>
           </div>
         </div>
 
         <div class="pro-tip-box">
           <strong>💡 Pro Tip — Aliases in ORDER BY:</strong> Most databases (SQLite, PostgreSQL, MySQL) allow aliases in the <code>ORDER BY</code> clause as a convenience extension — even though logically ORDER BY executes before SELECT. This is an intentional database-engine exception, not standard SQL. Always confirm behavior in your specific RDBMS.
-          <pre style="margin: 6px 0 0 0; font-size: 0.75rem;">SELECT name, salary * 12 AS yearly_salary
-FROM employees
-ORDER BY yearly_salary DESC; -- ✅ Works in most databases</pre>
+          <div class="syntax-card-body" style="border-radius: 8px; overflow: hidden; margin-top: 10px;">
+            <pre><code class="sql"><span class="sql-keyword">SELECT</span> name, salary * <span class="sql-number">12</span> <span class="sql-keyword">AS</span> yearly_salary
+<span class="sql-keyword">FROM</span> employees
+<span class="sql-keyword">ORDER BY</span> yearly_salary <span class="sql-keyword">DESC</span>; <span class="sql-comment" style="color: #34d399 !important;">-- ✅ Works in most databases</span></code></pre>
+          </div>
         </div>
 
         <div class="interview-box">
