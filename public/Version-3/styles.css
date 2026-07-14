@@ -5461,17 +5461,52 @@ span.sql-identifier {
   box-sizing: border-box !important;
 }
 
-/* Responsive adjustments for extremely narrow viewports */
-@media (max-width: 480px) {
+/* Responsive adjustments for mobile view - Maximized width for Writing & Execution Order tables */
+@media (max-width: 768px) {
+  .exec-order-infographic {
+    padding: 12px 4px !important;
+  }
   .exec-order-row-layout {
+    width: 100% !important;
+    max-width: 100% !important;
     gap: 6px !important;
+    margin: 0 !important;
+  }
+  .rdbms-infographic .exec-order-card {
+    height: 410px !important;
+    min-width: 0 !important;
+    flex: 1 1 50% !important;
+  }
+  .exec-flow-container {
+    padding: 12px 3px 16px 3px !important;
   }
   .exec-pill {
-    font-size: 0.58rem !important;
+    width: 98% !important;
+    max-width: none !important;
+    font-size: 0.6rem !important;
+    height: 25px !important;
+    padding: 0 2px !important;
+  }
+  .exec-order-card .info-card-header {
+    font-size: 0.68rem !important;
+    padding: 8px 3px !important;
+    min-height: 46px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .exec-order-infographic {
+    padding: 10px 2px !important;
+  }
+  .exec-order-row-layout {
+    gap: 4px !important;
+  }
+  .exec-pill {
+    font-size: 0.56rem !important;
     height: 24px !important;
   }
   .rdbms-infographic .exec-order-card {
-    height: 400px !important;
+    height: 395px !important;
   }
 }
 

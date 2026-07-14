@@ -1113,7 +1113,7 @@ WHERE department = 'Engineering';
         <h3>The Logical SQL Execution Order</h3>
         <p>Understanding <em>why</em> aliases work in some clauses but not others requires understanding the order in which SQL engines logically process a query. This is one of the most-tested SQL interview topics:</p>
 
-        <div class="rdbms-infographic" style="padding: 16px 20px;">
+        <div class="rdbms-infographic exec-order-infographic" style="padding: 16px 20px;">
           <div class="info-title" style="font-size: 0.9rem; margin-bottom: 16px;">
             📝 SQL WRITING VS. LOGICAL EXECUTION ORDER
           </div>
