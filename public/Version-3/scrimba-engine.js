@@ -483,7 +483,8 @@ function renderPresentSlide() {
     container.scrollTop = 0;
   }
   const cleanedTitle = slide.title.replace(/^\d+\.\s*/, '');
-  document.getElementById('presentCounter').textContent = `Topic 0${currentSlide + 1} — ${cleanedTitle}`;
+  const hasManySlides = COURSE_CONFIG.slides && COURSE_CONFIG.slides.length > 1;
+  document.getElementById('presentCounter').textContent = hasManySlides ? `Topic 0${currentSlide + 1} — ${cleanedTitle}` : cleanedTitle;
   const topicSelect = document.getElementById('topicSelect');
   if (topicSelect) topicSelect.value = currentSlide;
 
@@ -566,9 +567,10 @@ function renderSideSlide() {
   resizeWsCanvas();
 
   const cleanedTitle = slide.title.replace(/^\d+\.\s*/, '');
+  const hasManySlides = COURSE_CONFIG.slides && COURSE_CONFIG.slides.length > 1;
   const slideCounter = document.getElementById('slideCounter');
   if (slideCounter) {
-    slideCounter.textContent = `Topic 0${currentSlide + 1} — ${cleanedTitle}`;
+    slideCounter.textContent = hasManySlides ? `Topic 0${currentSlide + 1} — ${cleanedTitle}` : cleanedTitle;
   }
   const topicSelect = document.getElementById('topicSelect');
   if (topicSelect) topicSelect.value = currentSlide;
@@ -3275,9 +3277,10 @@ function loadDayContent(dayId) {
   // Rebuild topicSelect
   const topicSel = document.getElementById('topicSelect');
   if (topicSel && COURSE_CONFIG.slides) {
+    const multiTopic = COURSE_CONFIG.slides.length > 1;
     topicSel.innerHTML = COURSE_CONFIG.slides.map((s, i) => {
       const cleaned = s.title.replace(/^\d+\.\s*/, '');
-      return `<option value="${i}">Topic ${String(i+1).padStart(2,'0')}: ${cleaned}</option>`;
+      return `<option value="${i}">${multiTopic ? `Topic ${String(i+1).padStart(2,'0')}: ` : ''}${cleaned}</option>`;
     }).join('');
     topicSel.value = 0;
     initCustomDropdowns();
@@ -3458,10 +3461,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     // Populate topicSelect dropdown
     const topicSelect = document.getElementById('topicSelect');
     if (topicSelect) {
+      const multiTopic2 = COURSE_CONFIG.slides.length > 1;
       topicSelect.innerHTML = COURSE_CONFIG.slides.map((slide, idx) => {
         const cleanedTitle = slide.title.replace(/^\d+\.\s*/, '');
         const duration = getSlideDurationString(idx);
-        return `<option value="${idx}">Topic 0${idx + 1}: ${cleanedTitle} (${duration})</option>`;
+        return `<option value="${idx}">${multiTopic2 ? `Topic 0${idx + 1}: ` : ''}${cleanedTitle} (${duration})</option>`;
       }).join('');
       topicSelect.value = currentSlide;
     }
@@ -3605,8 +3609,9 @@ function initCustomDropdowns() {
           const duration = getSlideDurationString(slideIdx);
           const slide = COURSE_CONFIG.slides[slideIdx];
           const cleanedTitle = slide ? slide.title.replace(/^\d+\.\s*/, '') : option.text;
+          const multiTopic3 = COURSE_CONFIG.slides && COURSE_CONFIG.slides.length > 1;
           textSpan.innerHTML = `
-            <span class="trigger-title">Topic 0${slideIdx + 1}: ${cleanedTitle}</span>
+            <span class="trigger-title">${multiTopic3 ? `Topic 0${slideIdx + 1}: ` : ''}${cleanedTitle}</span>
             <span class="trigger-duration-badge">${duration}</span>
           `;
         } else if (option) {
@@ -3633,8 +3638,9 @@ function initCustomDropdowns() {
           const duration = getSlideDurationString(slideIdx);
           const slide = COURSE_CONFIG.slides[slideIdx];
           const cleanedTitle = slide ? slide.title.replace(/^\d+\.\s*/, '') : opt.text;
+          const multiTopic4 = COURSE_CONFIG.slides && COURSE_CONFIG.slides.length > 1;
           optionItem.innerHTML = `
-            <span class="option-title">Topic 0${slideIdx + 1}: ${cleanedTitle}</span>
+            <span class="option-title">${multiTopic4 ? `Topic 0${slideIdx + 1}: ` : ''}${cleanedTitle}</span>
             <span class="option-duration">${duration}</span>
           `;
         } else if (select.id === 'daySelect') {
