@@ -6,10 +6,10 @@ window.COURSE_CONTENT['day02'] = {
   "emoji": "🔍",
   "slides": [
     {
-      "title": "01. Row Filtering & The WHERE Clause",
+      "title": "Row Filtering & The WHERE Clause",
       "duration": "0:00",
       "html": `
-        <h2>🔍 01. Row Filtering &amp; The WHERE Clause</h2>
+        <h2>🔍 Row Filtering &amp; The WHERE Clause</h2>
         <div class="slide-section">
           <div class="rdbms-intro-section" id="rowFilteringIntro">
             <h3 class="heading-with-audio">
@@ -233,12 +233,7 @@ window.COURSE_CONTENT['day02'] = {
             </div>
           </div>
         </div>
-      `
-    },
-    {
-      "title": "02. Comparison & Logical Precedence",
-      "duration": "0:00",
-      "html": `
+
         <h2>⚡ 02. Comparison &amp; Logical Precedence</h2>
         <div class="slide-section">
           <div class="rdbms-intro-section" id="precedenceIntro">
@@ -343,7 +338,7 @@ WHERE (department_id = 10
 
             <div>
               <p style="margin: 0; margin-bottom: 4px;"><strong>Q: Explain how SQL optimizers handle "short-circuiting" compared to traditional programming languages.</strong></p>
-              <p><em>A: In standard programming languages, logical expressions are guaranteed to short-circuit from left to right. In declarative SQL, the query optimizer decides the order of evaluation based on statistics and cost models. A condition on the right could run first, meaning you cannot rely on left-to-right evaluation to prevent runtime exceptions like division-by-zero.</em></p>
+              <p><em>A: In traditional programming languages, logical expressions are guaranteed to short-circuit from left to right. In declarative SQL, the query optimizer decides the order of evaluation based on statistics and cost models. A condition on the right could run first, meaning you cannot rely on left-to-right evaluation to prevent runtime exceptions like division-by-zero.</em></p>
             </div>
 
             <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
@@ -354,12 +349,7 @@ WHERE (department_id = 10
             </div>
           </div>
         </div>
-      `
-    },
-    {
-      "title": "03. Range, Membership & NULL Filters",
-      "duration": "0:00",
-      "html": `
+
         <h2>📋 03. Range, Membership &amp; NULL Filters</h2>
         <div class="slide-section">
           <div class="rdbms-intro-section" id="rangeListIntro">
@@ -624,16 +614,6 @@ WHERE region IN ('North', 'East');
     {
       "id": "topic-1",
       "label": "Topic 1: Row Filtering & WHERE",
-      "recordingKey": null
-    },
-    {
-      "id": "topic-2",
-      "label": "Topic 2: Logical Precedence",
-      "recordingKey": null
-    },
-    {
-      "id": "topic-3",
-      "label": "Topic 3: Range & List Filters",
       "recordingKey": null
     }
   ]

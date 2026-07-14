@@ -589,7 +589,7 @@ function renderSideSlide() {
 
   // Show narration autoplay widget if the slide has tracks defined
   setTimeout(() => {
-    const config = typeof slideTrackMap !== 'undefined' ? slideTrackMap[currentSlide] : null;
+    const config = (typeof slideTrackMap !== 'undefined' && currentDay === 'day01') ? slideTrackMap[currentSlide] : null;
     if (config) {
       // Swapping track list dynamically
       combinedTracks = config.tracks;
