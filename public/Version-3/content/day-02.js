@@ -1,3 +1,4 @@
+// Day 02 content — Filtering Data with WHERE
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day02'] = {
   "day": 2,
@@ -9,98 +10,102 @@ window.COURSE_CONTENT['day02'] = {
       "title": "Row Filtering & The WHERE Clause",
       "duration": "0:00",
       "html": `
-        <h2>🔍 Row Filtering &amp; The WHERE Clause</h2>
+        <h2>🔍 Filtering Data with the WHERE Clause</h2>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- PART 01 — THE WHERE CLAUSE & ROW FILTERING                        -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="slide-section">
           <div class="rdbms-intro-section" id="rowFilteringIntro">
             <h3 class="heading-with-audio">
-              The Row Filter Gate
+              01. The WHERE Clause — A Horizontal Filter
               <button class="audio-play-btn" onclick="playAudio('New_Day2Part1audio01.mp3', this)" title="Play narration">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </h3>
-            <p>The <code>WHERE</code> clause acts as a <strong>horizontal filter</strong>. While SELECT projects fields vertically (reducing columns), WHERE checks each row against a boolean expression, keeping only the records that evaluate to <code>TRUE</code>.</p>
-            
+            <p>The <code>WHERE</code> clause acts as a <strong>horizontal filter</strong>. While <code>SELECT</code> projects fields <em>vertically</em> (reducing columns), <code>WHERE</code> evaluates each row against a boolean expression and keeps only the records that resolve to <code>TRUE</code>.</p>
+
             <div class="relation-infographic" style="padding: 16px 20px;" id="whereFilterDiagram">
               <div class="explanation-title">How Row Filtering Works</div>
               <div class="relation-visual" style="align-items: center;">
                 <div class="relation-node" id="filterRawTable" style="flex: none;">
                   <div class="node-icon-badge">📋</div>
                   <div class="node-title">Raw Table</div>
-                  <div class="node-subtitle">10 Employees</div>
+                  <div class="node-subtitle">All 10 Rows</div>
                 </div>
                 <div class="relation-link" id="filterGateLoads">
-                  <div class="link-label">Filter</div>
+                  <div class="link-label">Evaluated</div>
                   <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
                 </div>
                 <div class="relation-node" id="filterGateExecute" style="flex: none;">
                   <div class="node-icon-badge">⚡</div>
                   <div class="node-title">WHERE salary &gt;= 80000</div>
-                  <div class="node-subtitle">Step 3 Execution Gate</div>
+                  <div class="node-subtitle">Step 3 — Execution Gate</div>
                 </div>
                 <div class="relation-link" id="filterGateOutput">
-                  <div class="link-label">Output</div>
+                  <div class="link-label">Passes</div>
                   <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
                 </div>
                 <div class="relation-node relation-node--child" id="filterGateResult" style="flex: none;">
                   <div class="node-icon-badge">✅</div>
-                  <div class="node-title">Filtered Rows</div>
-                  <div class="node-subtitle">3 Matching Records</div>
+                  <div class="node-title">Filtered Result</div>
+                  <div class="node-subtitle">3 Matching Rows</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Execution Order & Performance -->
         <div class="slide-section">
           <h3 class="heading-with-audio" id="whyWhereEarly">
-            The Performance Benefit of Filtering Early
+            Why Filtering Early Improves Performance
             <button class="audio-play-btn" onclick="playAudio('New_Day2Part1audio02.mp3', this)" title="Play narration">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
-          <p>By placing filters in the <code>WHERE</code> clause, you reduce database overhead immediately after fetching rows from storage, which saves RAM and network bandwidth:</p>
+          <p>The <code>WHERE</code> clause is evaluated at <strong>Step 3</strong> of SQL's logical execution order — after <code>FROM</code> and <code>JOIN</code>, but before <code>GROUP BY</code>, <code>HAVING</code>, and <code>SELECT</code>. This means qualifying rows are removed early, before expensive aggregations and sorts run:</p>
 
           <div class="rdbms-infographic">
             <div class="info-columns">
               <div class="info-card info-card--blue">
                 <div class="info-card-header">STEP 3 OF EXECUTION</div>
                 <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>FROM ➔ JOIN ➔ WHERE (Evaluated 3rd)</li>
-                  <li><span class="bullet-dot"></span>Filters raw rows before grouping (GROUP BY)</li>
-                  <li><span class="bullet-dot"></span>Prevents sorting/aggregate computations on drop-candidate rows</li>
+                  <li><span class="bullet-dot"></span>FROM ➔ JOIN ➔ <strong>WHERE</strong> (3rd)</li>
+                  <li><span class="bullet-dot"></span>Filters raw rows before GROUP BY</li>
+                  <li><span class="bullet-dot"></span>Prevents wasted aggregation work</li>
                 </ul>
               </div>
               <div class="info-card info-card--green">
                 <div class="info-card-header">SARGABLE CONDITIONS</div>
                 <ul class="info-card-bullets">
-                  <li>
-                    <span class="bullet-dot"></span>
-                    <div style="display: flex; flex-direction: column; align-items: flex-start; width: 100%;">
-                      <span>Uses B-Tree indexes directly:</span>
-                      <div style="display: flex; justify-content: center; width: 100%; margin-top: 6px; box-sizing: border-box;">
-                        <code style="color: #065f46 !important; background: #e6f4ea !important; border: 1px solid #a3cfbb !important; padding: 3px 8px !important; border-radius: 4px; font-size: 0.72rem !important; font-family: JetBrains Mono, monospace; white-space: nowrap;">WHERE id = 5</code>
-                      </div>
-                    </div>
-                  </li>
-                  <li><span class="bullet-dot"></span>Avoids full table scans (reading every page)</li>
-                  <li><span class="bullet-dot"></span>Dramatically speeds up analytical queries</li>
+                  <li><span class="bullet-dot"></span>Bare columns allow B-Tree index use</li>
+                  <li><span class="bullet-dot"></span>Avoids full table scans on large tables</li>
+                  <li><span class="bullet-dot"></span>Example: <code style="font-size:0.68rem;background:#e6f4ea;padding:1px 4px;border-radius:3px;color:#065f46;">WHERE id = 5</code></li>
                 </ul>
               </div>
               <div class="info-card info-card--orange">
                 <div class="info-card-header">BANDWIDTH REDUCTION</div>
                 <ul class="info-card-bullets">
-                  <li><span class="bullet-dot"></span>Limits memory allocated for query workspace</li>
-                  <li><span class="bullet-dot"></span>Minimizes payload serialized to the app client</li>
-                  <li><span class="bullet-dot"></span>Reduces query timeouts and database locks</li>
+                  <li><span class="bullet-dot"></span>Less memory for query workspace</li>
+                  <li><span class="bullet-dot"></span>Smaller payloads sent to app client</li>
+                  <li><span class="bullet-dot"></span>Fewer database locks and timeouts</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Comparison Operators Reference Table -->
         <div class="slide-section">
-          <h4 style="color:#1e293b;margin:24px 0 8px;font-size:0.95rem;font-weight:700;">SQL Comparison Operators</h4>
-          <p>To compare values, SQL supports standard mathematical operators. Note that SQL defines a unique standard for inequality:</p>
+          <h3 class="heading-with-audio" id="comparisonOperatorsSection">
+            SQL Comparison Operators
+            <button class="audio-play-btn" onclick="playAudio('New_Day2Part1audio03.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
+          <p>SQL supports all standard mathematical comparison operators. The standard inequality operator is <code>&lt;&gt;</code>, though most engines also accept <code>!=</code>:</p>
+
           <div class="db-mock-table-wrap">
             <table class="db-table-mock db-table-mock--compact">
               <thead>
@@ -108,7 +113,7 @@ window.COURSE_CONTENT['day02'] = {
                   <th style="width: 15%;">Operator</th>
                   <th style="width: 30%;">Meaning</th>
                   <th style="width: 38%;">Example</th>
-                  <th style="width: 17%;">ANSI Compliance</th>
+                  <th style="width: 17%;">ANSI Standard</th>
                 </tr>
               </thead>
               <tbody>
@@ -120,13 +125,13 @@ window.COURSE_CONTENT['day02'] = {
                 </tr>
                 <tr>
                   <td><code>&lt;&gt;</code></td>
-                  <td>Not Equal To (Standard)</td>
+                  <td>Not Equal (Standard)</td>
                   <td><code>WHERE region &lt;&gt; 'North'</code></td>
-                  <td>✅ Yes (Standard)</td>
+                  <td>✅ Yes</td>
                 </tr>
                 <tr>
                   <td><code>!=</code></td>
-                  <td>Not Equal To (Alias)</td>
+                  <td>Not Equal (Alias)</td>
                   <td><code>WHERE region != 'North'</code></td>
                   <td>⚠️ Non-Standard</td>
                 </tr>
@@ -145,20 +150,21 @@ window.COURSE_CONTENT['day02'] = {
               </tbody>
             </table>
           </div>
-          <p style="font-size: 0.72rem; color: #64748b; margin-top: -6px; line-height: 1.45;">
-            <strong>💡 Notes:</strong> Although <code>!=</code> is technically non-standard, it is universally supported by almost all modern RDBMS engines (MySQL, PostgreSQL, SQL Server, SQLite, Oracle). The distinction mostly matters for strict compliance questions or working with legacy environments.
+          <p style="font-size: 0.72rem; color: #64748b; margin-top: 6px; line-height: 1.5;">
+            <strong>💡 Note:</strong> Although <code>!=</code> is non-standard, it is supported by MySQL, PostgreSQL, SQL Server, SQLite, and Oracle. The <code>&lt;&gt;</code> form is preferred for strict ANSI compliance and portability.
           </p>
         </div>
 
+        <!-- Row-by-Row Evaluation Visual Table -->
         <div class="slide-section">
           <h3 class="heading-with-audio" id="whereMockTableSection">
-            Interactive Processing Example
+            Row-by-Row Evaluation Visualized
             <button class="audio-play-btn" onclick="playAudio('New_Day2Part1audio03.mp3', this)" title="Play narration">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
-          <p>Let's visualize how the database evaluates <code>WHERE salary &gt;= 80000</code> row-by-row on the <code>employees</code> table:</p>
-          
+          <p>The database engine checks every row against <code>WHERE salary &gt;= 80000</code>. Rows that evaluate to <code>FALSE</code> are immediately discarded — they never reach <code>SELECT</code> projection:</p>
+
           <div class="db-mock-table-wrap">
             <table class="db-table-mock db-table-mock--compact">
               <thead>
@@ -171,105 +177,88 @@ window.COURSE_CONTENT['day02'] = {
                 </tr>
               </thead>
               <tbody>
-                <tr style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid #10b981;">
-                  <td>1</td>
-                  <td>Aarav Sharma</td>
-                  <td>Engineering</td>
+                <tr style="background: rgba(16, 185, 129, 0.08); border-left: 3px solid #10b981;">
+                  <td>1</td><td>Aarav Sharma</td><td>Engineering</td>
                   <td><strong>87,500</strong></td>
-                  <td style="color: #10b981; font-weight: 600;">✅ TRUE (Keep)</td>
+                  <td style="color: #10b981; font-weight: 600;">✅ TRUE — Keep</td>
                 </tr>
-                <tr style="opacity: 0.4; text-decoration: line-through;">
-                  <td>2</td>
-                  <td>Priya Desai</td>
-                  <td>Marketing</td>
+                <tr style="opacity: 0.38; text-decoration: line-through;">
+                  <td>2</td><td>Priya Desai</td><td>Marketing</td>
                   <td>63,200</td>
-                  <td style="color: #ef4444;">❌ FALSE (Drop)</td>
+                  <td style="color: #ef4444; text-decoration: none; opacity: 1;">❌ FALSE — Drop</td>
                 </tr>
-                <tr style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid #10b981;">
-                  <td>3</td>
-                  <td>Rohit Mehta</td>
-                  <td>Data Science</td>
+                <tr style="background: rgba(16, 185, 129, 0.08); border-left: 3px solid #10b981;">
+                  <td>3</td><td>Rohit Mehta</td><td>Data Science</td>
                   <td><strong>112,800</strong></td>
-                  <td style="color: #10b981; font-weight: 600;">✅ TRUE (Keep)</td>
+                  <td style="color: #10b981; font-weight: 600;">✅ TRUE — Keep</td>
                 </tr>
-                <tr style="opacity: 0.4; text-decoration: line-through;">
-                  <td>4</td>
-                  <td>Sneha Iyer</td>
-                  <td>Finance</td>
+                <tr style="opacity: 0.38; text-decoration: line-through;">
+                  <td>4</td><td>Sneha Iyer</td><td>Finance</td>
                   <td>74,900</td>
-                  <td style="color: #ef4444;">❌ FALSE (Drop)</td>
+                  <td style="color: #ef4444; text-decoration: none; opacity: 1;">❌ FALSE — Drop</td>
+                </tr>
+                <tr style="background: rgba(16, 185, 129, 0.08); border-left: 3px solid #10b981;">
+                  <td>5</td><td>Vikram Nair</td><td>Engineering</td>
+                  <td><strong>96,300</strong></td>
+                  <td style="color: #10b981; font-weight: 600;">✅ TRUE — Keep</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
+        <!-- Sargability Pro Tip -->
         <div class="slide-section">
-          <div class="pro-tip-box" id="whereProTip">
-            <strong>💡 Pro Tip — Sargability:</strong> Avoid using functions on columns in the <code>WHERE</code> clause (e.g., <code>WHERE UPPER(name) = 'ALICE'</code>). This makes the query <strong>non-sargable</strong>, meaning the database engine cannot use B-Tree indexes and must perform a full table scan. Instead, keep columns bare: <code>WHERE name = 'Alice'</code>.
-          </div>
-        </div>
-
-        <div class="slide-section">
-          <div class="interview-box">
-            <h4 style="margin: 0; margin-bottom: 12px;">🎓 Interview Q&amp;A</h4>
-            <div>
-              <p style="margin: 0; margin-bottom: 4px;"><strong>Q: What does "Sargable" mean in SQL?</strong></p>
-              <p><em>A: SARGable stands for "Search Argument Able". A condition is sargable if the query optimizer can use an index to speed up the query execution instead of performing a full table scan. Conditions that wrap columns in functions (like <code>YEAR(order_date) = 2024</code>) are non-sargable because the index was built on the raw column values, not the computed output. Keep columns bare for optimal B-Tree index traversal.</em></p>
-            </div>
-
-            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
-
-            <div>
-              <p style="margin: 0; margin-bottom: 4px;"><strong>Q: How does <code>WHERE</code> filter rows compared to <code>HAVING</code> in terms of query execution?</strong></p>
-              <p><em>A: The <code>WHERE</code> clause filters individual rows before grouping or aggregation takes place. The <code>HAVING</code> clause filters aggregated groups after the <code>GROUP BY</code> clause has been processed. Using <code>WHERE</code> to drop non-qualifying rows early is highly optimized because it reduces the volume of data that needs to be sorted and aggregated in memory.</em></p>
-            </div>
-
-            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
-
-            <div>
-              <p style="margin: 0; margin-bottom: 4px;"><strong>Q: Give an example of a non-sargable query using standard date operations, and show how you would rewrite it to be sargable.</strong></p>
-              <p><em>A: A query like <code>SELECT * FROM orders WHERE YEAR(order_date) = 2024</code> is non-sargable because the optimizer cannot traverse the B-Tree index built on <code>order_date</code>. To make it sargable, we keep the column bare and use a range query: <code>WHERE order_date &gt;= '2024-01-01' AND order_date &lt; '2025-01-01'</code>.</em></p>
+          <div class="pro-tip-box" id="whereProTip" style="display: flex; align-items: flex-start; gap: 10px;">
+            <div style="flex: 1;">
+              <strong>💡 Pro Tip — Sargability (Search Argument Able):</strong> Avoid wrapping columns inside functions in a <code>WHERE</code> clause (e.g. <code>WHERE UPPER(name) = 'ALICE'</code>). This makes the condition <strong>non-sargable</strong> — the engine cannot use a B-Tree index and is forced to perform a full table scan. Keep columns bare: <code>WHERE name = 'Alice'</code>.
             </div>
           </div>
         </div>
 
-        <h2>⚡ 02. Comparison &amp; Logical Precedence</h2>
-        <div class="slide-section">
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- PART 02 — LOGICAL OPERATORS & PRECEDENCE                          -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <div class="slide-section" style="margin-top: 32px;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0;">
+            <span style="font-size: 1.35rem;">⚡</span>
+            <h3 style="margin: 0; font-size: 1rem; font-weight: 700; color: #1e293b; letter-spacing: -0.01em;">02. Logical Operators &amp; Precedence</h3>
+          </div>
+
           <div class="rdbms-intro-section" id="precedenceIntro">
             <h3 class="heading-with-audio">
-              Operators &amp; Precedence Precaution
+              NOT → AND → OR: The Strict Hierarchy
               <button class="audio-play-btn" onclick="playAudio('New_Day2Part2audio01.mp3', this)" title="Play narration">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </h3>
-            <p>When filtering data with multiple criteria, logical operators evaluate in a strict hierarchical order of operations: <strong>NOT</strong> evaluates first, followed by <strong>AND</strong>, and finally <strong>OR</strong>.</p>
-            
+            <p>When multiple logical operators appear in a <code>WHERE</code> clause, SQL evaluates them in a strict, fixed order — <strong>NOT</strong> first, then <strong>AND</strong>, then <strong>OR</strong>. Misunderstanding this order is one of the most common sources of subtle data integrity bugs.</p>
+
             <div class="rdbms-infographic" style="margin-top: 15px;">
-              <div class="info-title">LOGICAL OPERATOR PRECEDENCE</div>
+              <div class="info-title">LOGICAL OPERATOR PRECEDENCE (Highest → Lowest)</div>
               <div class="info-columns">
                 <div class="info-card info-card--red">
-                  <div class="info-card-header">1. NOT (Negation)</div>
+                  <div class="info-card-header">1st — NOT</div>
                   <ul class="info-card-bullets">
-                    <li><span class="bullet-dot"></span>Highest precedence level</li>
-                    <li><span class="bullet-dot"></span>Evaluated first in boolean chain</li>
-                    <li><span class="bullet-dot"></span>Reverses the logic of its operand</li>
+                    <li><span class="bullet-dot"></span>Highest precedence</li>
+                    <li><span class="bullet-dot"></span>Inverts a single condition</li>
+                    <li><span class="bullet-dot"></span><code style="font-size:0.68rem;background:#fee2e2;padding:1px 4px;border-radius:3px;color:#991b1b;">NOT active = TRUE</code></li>
                   </ul>
                 </div>
                 <div class="info-card info-card--orange">
-                  <div class="info-card-header">2. AND (Conjunction)</div>
+                  <div class="info-card-header">2nd — AND</div>
                   <ul class="info-card-bullets">
-                    <li><span class="bullet-dot"></span>Medium precedence level</li>
-                    <li><span class="bullet-dot"></span>Acts as logical multiplication</li>
-                    <li><span class="bullet-dot"></span>Requires both inputs to be TRUE</li>
+                    <li><span class="bullet-dot"></span>Medium precedence</li>
+                    <li><span class="bullet-dot"></span>Both conditions must be TRUE</li>
+                    <li><span class="bullet-dot"></span>Acts like logical multiplication</li>
                   </ul>
                 </div>
                 <div class="info-card info-card--green">
-                  <div class="info-card-header">3. OR (Disjunction)</div>
+                  <div class="info-card-header">3rd — OR</div>
                   <ul class="info-card-bullets">
-                    <li><span class="bullet-dot"></span>Lowest precedence level</li>
-                    <li><span class="bullet-dot"></span>Acts as logical addition</li>
-                    <li><span class="bullet-dot"></span>Requires at least one input to be TRUE</li>
+                    <li><span class="bullet-dot"></span>Lowest precedence</li>
+                    <li><span class="bullet-dot"></span>At least one must be TRUE</li>
+                    <li><span class="bullet-dot"></span>Acts like logical addition</li>
                   </ul>
                 </div>
               </div>
@@ -277,6 +266,7 @@ window.COURSE_CONTENT['day02'] = {
           </div>
         </div>
 
+        <!-- Implicit vs Explicit Parentheses -->
         <div class="slide-section">
           <h3 class="heading-with-audio" id="precedenceComparison">
             Implicit vs. Explicit Parentheses
@@ -284,96 +274,82 @@ window.COURSE_CONTENT['day02'] = {
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
-          <p>Relying on implicit precedence can lead to severe data integrity bugs. Use parentheses explicitly to override the default ordering and secure correct query outcomes:</p>
+          <p>Because <code>AND</code> binds tighter than <code>OR</code>, mixing them without parentheses produces silent logic bugs. The query below looks correct but returns wrong data:</p>
 
           <div class="vs-block">
             <div class="vs-card vs-card--bad">
-              <h4>❌ Implicit Precedence (Bug Risk)</h4>
-              <pre style="margin: 0; font-size: 0.75rem;">SELECT * FROM employees
+              <h4>❌ Implicit Precedence — Data Bug</h4>
+              <pre style="margin: 0; font-size: 0.74rem;">SELECT * FROM employees
 WHERE department_id = 10
   AND salary > 80000
    OR department_id = 20;</pre>
-              <small style="color: #991b1b; font-size: 0.72rem; display: block; margin-top: 6px; font-weight: 600;">
-                ⚠️ Evaluates as: <code>(dept = 10 AND salary &gt; 80k) OR dept = 20</code>. Returns ANY employee in department 20, regardless of salary!
+              <small style="color: #991b1b; font-size: 0.72rem; display: block; margin-top: 8px; font-weight: 600; line-height: 1.5;">
+                ⚠️ SQL reads this as <code>(dept = 10 AND salary &gt; 80k) OR dept = 20</code>.<br/>
+                Every employee in dept 20 is returned — regardless of salary!
               </small>
             </div>
             <div class="vs-card vs-card--good">
-              <h4>✅ Explicit Parentheses (Secure Design)</h4>
-              <pre style="margin: 0; font-size: 0.75rem;">SELECT * FROM employees
+              <h4>✅ Explicit Parentheses — Correct Intent</h4>
+              <pre style="margin: 0; font-size: 0.74rem;">SELECT * FROM employees
 WHERE (department_id = 10
-   OR department_id = 20)
+    OR department_id = 20)
   AND salary > 80000;</pre>
-              <small style="color: #065f46; font-size: 0.72rem; display: block; margin-top: 6px; font-weight: 600;">
-                🛡️ Correctly groups the departments first, then applies the salary threshold to both. Reliable and readable.
+              <small style="color: #065f46; font-size: 0.72rem; display: block; margin-top: 8px; font-weight: 600; line-height: 1.5;">
+                🛡️ Groups departments first, then applies the salary threshold to both.<br/>
+                Reliable, readable, and unambiguous.
               </small>
             </div>
           </div>
         </div>
 
+        <!-- Short-Circuit Warning -->
         <div class="slide-section">
           <div class="warn-box" id="shortCircuitWarning">
-            <strong>⚠️ Instructor Gotcha: Logical Short-Circuiting &amp; Optimizer Freedom</strong>
-            <p>In imperative languages (Python/JS), logical expressions are guaranteed to short-circuit from left to right. In SQL, because it is <strong>declarative</strong>, the query optimizer has complete freedom to evaluate terms in whatever order it deems most efficient!</p>
-            <p>For example, writing:
-            <code>WHERE x != 0 AND y / x &gt; 2</code>
-            can still crash your query with a <strong>division-by-zero error</strong> because the database engine might choose to evaluate the division on the right before checking the inequality on the left!</p>
+            <strong>⚠️ Instructor Gotcha — Optimizer Freedom &amp; Short-Circuiting:</strong>
+            <p>In imperative languages like Python or JavaScript, logical expressions are <em>guaranteed</em> to short-circuit left-to-right. In SQL, the query optimizer is free to evaluate conditions in any order it deems most efficient.</p>
+            <p>This means writing <code>WHERE x != 0 AND y / x &gt; 2</code> can still raise a <strong>division-by-zero error</strong> — the engine may evaluate the right side first. Always use <code>CASE WHEN</code> or <code>NULLIF</code> to guard against unsafe arithmetic.</p>
           </div>
         </div>
 
         <div class="slide-section">
-          <div class="pro-tip-box" id="precedenceProTip">
-            <strong>💡 Pro Tip — Code Readability:</strong> Even when implicit precedence evaluates correctly, always use explicit parentheses to document your intent. This prevents future maintainers from misinterpreting the filter conditions and keeps query behavior deterministic.
-          </div>
-        </div>
-
-        <div class="slide-section">
-          <div class="interview-box">
-            <h4 style="margin: 0; margin-bottom: 12px;">🎓 Interview Q&amp;A</h4>
-            <div>
-              <p style="margin: 0; margin-bottom: 4px;"><strong>Q: What is the logical execution order of NOT, AND, and OR?</strong></p>
-              <p><em>A: SQL resolves negation (NOT) first, followed by conjunction (AND), and lastly disjunction (OR). Because AND has higher precedence than OR, a query like <code>A OR B AND C</code> will run as <code>A OR (B AND C)</code>. To change this ordering, wrap conditions in parentheses <code>(A OR B) AND C</code>.</em></p>
-            </div>
-
-            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
-
-            <div>
-              <p style="margin: 0; margin-bottom: 4px;"><strong>Q: Explain how SQL optimizers handle "short-circuiting" compared to traditional programming languages.</strong></p>
-              <p><em>A: In traditional programming languages, logical expressions are guaranteed to short-circuit from left to right. In declarative SQL, the query optimizer decides the order of evaluation based on statistics and cost models. A condition on the right could run first, meaning you cannot rely on left-to-right evaluation to prevent runtime exceptions like division-by-zero.</em></p>
-            </div>
-
-            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
-
-            <div>
-              <p style="margin: 0; margin-bottom: 4px;"><strong>Q: How does the presence of <code>NULL</code> values affect logical operations using <code>AND</code> and <code>OR</code>?</strong></p>
-              <p><em>A: SQL uses three-valued logic (TRUE, FALSE, UNKNOWN). A comparison involving <code>NULL</code> yields <code>UNKNOWN</code>. Therefore, <code>TRUE AND UNKNOWN</code> yields <code>UNKNOWN</code>, but <code>FALSE AND UNKNOWN</code> yields <code>FALSE</code> (since one false term invalidates the whole conjunction). For disjunctions, <code>TRUE OR UNKNOWN</code> yields <code>TRUE</code>, while <code>FALSE OR UNKNOWN</code> yields <code>UNKNOWN</code>.</em></p>
+          <div class="pro-tip-box" id="precedenceProTip" style="display: flex; align-items: flex-start; gap: 10px;">
+            <div style="flex: 1;">
+              <strong>💡 Pro Tip — Document Intent with Parentheses:</strong> Even when implicit precedence produces the correct result, always use explicit parentheses to communicate your logic to future maintainers. Parentheses cost nothing at runtime but eliminate entire classes of misinterpretation.
             </div>
           </div>
         </div>
 
-        <h2>📋 03. Range, Membership &amp; NULL Filters</h2>
-        <div class="slide-section">
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- PART 03 — BETWEEN, IN & NULL HANDLING                             -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <div class="slide-section" style="margin-top: 32px;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0;">
+            <span style="font-size: 1.35rem;">📋</span>
+            <h3 style="margin: 0; font-size: 1rem; font-weight: 700; color: #1e293b; letter-spacing: -0.01em;">03. Range, Membership &amp; NULL Filters</h3>
+          </div>
+
           <div class="rdbms-intro-section" id="rangeListIntro">
             <h3 class="heading-with-audio">
-              Using BETWEEN &amp; IN Cleanly
+              BETWEEN and IN — Shorthand Filters
               <button class="audio-play-btn" onclick="playAudio('New_Day2Part3audio01.mp3', this)" title="Play narration">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </h3>
-            <p>For cleaner and more performant query structures, SQL supports shorthand operators to verify bounds (<code>BETWEEN ... AND</code>) and lists of matches (<code>IN</code>):</p>
-            
+            <p>SQL provides two powerful shorthand operators that replace verbose chains of <code>AND</code> / <code>OR</code> conditions while keeping queries readable:</p>
+
             <div class="vs-block">
               <div class="vs-card vs-card--pk">
-                <h4>Inclusive Bounds: BETWEEN</h4>
-                <p style="font-size: 0.74rem;">Checks if a value falls within a range (bounds are <strong>inclusive</strong>).</p>
-                <pre style="margin: 6px 0 0 0; font-size: 0.74rem;">SELECT * FROM employees
+                <h4>📏 BETWEEN — Inclusive Range</h4>
+                <p style="font-size: 0.74rem; margin: 4px 0 8px;">Checks if a value falls within bounds. <strong>Both endpoints are inclusive.</strong></p>
+                <pre style="margin: 0; font-size: 0.74rem;">SELECT * FROM employees
 WHERE salary BETWEEN 60000 AND 90000;
 -- Equivalent to:
 -- salary >= 60000 AND salary <= 90000</pre>
               </div>
               <div class="vs-card vs-card--fk">
-                <h4>Discrete Lists: IN</h4>
-                <p style="font-size: 0.74rem;">Checks if a value matches any element in a predefined list.</p>
-                <pre style="margin: 6px 0 0 0; font-size: 0.74rem;">SELECT * FROM customers
+                <h4>📝 IN — Discrete List Match</h4>
+                <p style="font-size: 0.74rem; margin: 4px 0 8px;">Checks if a value matches any member of a list. Cleaner than multiple <code>OR</code> conditions.</p>
+                <pre style="margin: 0; font-size: 0.74rem;">SELECT * FROM customers
 WHERE region IN ('North', 'East');
 -- Equivalent to:
 -- region = 'North' OR region = 'East'</pre>
@@ -382,6 +358,7 @@ WHERE region IN ('North', 'East');
           </div>
         </div>
 
+        <!-- Date-Range BETWEEN Trap -->
         <div class="slide-section" id="dateBetweenTrapSection">
           <h3 class="heading-with-audio" id="dateBetweenTrap">
             ⚠️ The Date-Range BETWEEN Trap
@@ -389,18 +366,32 @@ WHERE region IN ('North', 'East');
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
-          <p>Using <code>BETWEEN</code> on date/timestamp fields is a common source of bugs in financial reports. Because dates without time components default to midnight, you can lose data:</p>
+          <p>When <code>BETWEEN</code> is used on <code>DATE</code> or <code>TIMESTAMP</code> columns, a common bug silently excludes records from financial reports:</p>
 
-          <div class="pro-tip-box" id="dateBetweenTrapBox">
-            <strong>⚠️ The Problem:</strong>
-            <p>Evaluating <code>WHERE order_date BETWEEN '2023-01-01' AND '2023-01-02'</code> translates logically to:
-            <code>order_date &gt;= '2023-01-01 00:00:00' AND order_date &lt;= '2023-01-02 00:00:00'</code></p>
-            <p>Notice the upper bound: it matches exactly midnight on Jan 2nd. <strong>An order placed at 2:30 PM on Jan 2nd will be silently excluded from your report!</strong></p>
-            <strong>The Best Practice Fix:</strong> Use explicit inequalities:
-            <code>WHERE order_date &gt;= '2023-01-01' AND order_date &lt; '2023-01-03'</code>
+          <div class="vs-block">
+            <div class="vs-card vs-card--bad">
+              <h4>❌ The Bug — Midnight Truncation</h4>
+              <pre style="margin: 0; font-size: 0.74rem;">WHERE order_date
+  BETWEEN '2023-01-01'
+      AND '2023-01-02'</pre>
+              <small style="color: #991b1b; font-size: 0.71rem; display: block; margin-top: 8px; font-weight: 600; line-height: 1.5;">
+                ⚠️ Upper bound becomes <code>2023-01-02 00:00:00</code>.<br/>
+                Orders placed at 2:30 PM on Jan 2nd are silently excluded!
+              </small>
+            </div>
+            <div class="vs-card vs-card--good">
+              <h4>✅ The Fix — Explicit Half-Open Range</h4>
+              <pre style="margin: 0; font-size: 0.74rem;">WHERE order_date >= '2023-01-01'
+  AND order_date <  '2023-01-03'</pre>
+              <small style="color: #065f46; font-size: 0.71rem; display: block; margin-top: 8px; font-weight: 600; line-height: 1.5;">
+                🛡️ Uses a half-open interval. Captures every record for Jan 1 and Jan 2<br/>
+                — including those with a time component.
+              </small>
+            </div>
           </div>
         </div>
 
+        <!-- NOT IN & NULL Nightmare -->
         <div class="slide-section">
           <h3 class="heading-with-audio" id="nullTrapSection">
             ⚠️ The NOT IN &amp; NULL Nightmare
@@ -408,43 +399,162 @@ WHERE region IN ('North', 'East');
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
-          <p>Three-Valued Logic causes major gotchas. If a list contains a <code>NULL</code>, using <code>NOT IN</code> collapses the entire filter logic:</p>
-          
+          <p>SQL's <strong>three-valued logic</strong> (TRUE / FALSE / UNKNOWN) creates a dangerous edge case: if a <code>NOT IN</code> list contains even a single <code>NULL</code>, the entire query returns <strong>zero rows</strong>.</p>
+
           <div class="warn-box" id="nullTrapBox">
-            <strong>How SQL processes <code>NOT IN (1, 2, NULL)</code>:</strong>
-            <p>Translates to: <code>val != 1 AND val != 2 AND val != NULL</code></p>
-            <p>In database logic, comparison with NULL (<code>val != NULL</code>) evaluates to <strong>UNKNOWN</strong>. 
-            Because <code>AND</code> requires all terms to be TRUE, the entire statement resolves to UNKNOWN. 
-            <strong>As a result, the query will return exactly zero rows!</strong></p>
+            <strong>How SQL evaluates <code>val NOT IN (1, 2, NULL)</code>:</strong>
+            <p>Expands to: <code>val != 1 AND val != 2 AND val != NULL</code></p>
+            <p>Any comparison with <code>NULL</code> yields <code>UNKNOWN</code>. Because <code>AND</code> requires all operands to be <code>TRUE</code>, the chain collapses to <code>UNKNOWN</code> — and rows with <code>UNKNOWN</code> are filtered out. <strong>Result: 0 rows returned.</strong></p>
           </div>
         </div>
 
+        <!-- IS NULL / IS NOT NULL -->
         <div class="slide-section">
-          <div class="pro-tip-box" style="background:#fffbeb; border:1px solid #fef3c7; border-left:4px solid #f59e0b; color:#78350f;">
-            <strong>💡 Pro Tip — Defending against NULL:</strong> Always filter out NULLs when using subqueries inside <code>NOT IN</code> (e.g. <code>WHERE id NOT IN (SELECT id FROM t WHERE id IS NOT NULL)</code>), or rewrite the query using <code>NOT EXISTS</code>.
+          <h3 style="font-size: 0.9rem; color: #1e293b; font-weight: 700; margin-bottom: 8px;">Filtering NULL Values Correctly</h3>
+          <p>Because <code>= NULL</code> always evaluates to <code>UNKNOWN</code>, SQL provides dedicated predicates to test for missing values:</p>
+
+          <div class="db-mock-table-wrap">
+            <table class="db-table-mock db-table-mock--compact">
+              <thead>
+                <tr>
+                  <th style="width: 30%;">Predicate</th>
+                  <th style="width: 35%;">Meaning</th>
+                  <th style="width: 35%;">Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>IS NULL</code></td>
+                  <td>Matches rows with no value in column</td>
+                  <td><code>WHERE manager_id IS NULL</code></td>
+                </tr>
+                <tr>
+                  <td><code>IS NOT NULL</code></td>
+                  <td>Matches rows that have a value</td>
+                  <td><code>WHERE email IS NOT NULL</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pro-tip-box" style="margin-top: 14px; background:#fffbeb; border:1px solid #fef3c7; border-left:4px solid #f59e0b; color:#78350f;">
+            <strong>💡 Pro Tip — Defending Against NULL in NOT IN:</strong> Always guard subqueries inside <code>NOT IN</code> with an explicit <code>IS NOT NULL</code> filter — or switch to <code>NOT EXISTS</code>, which handles NULLs correctly without any extra filtering.
+            <div style="margin-top: 8px; display: flex; gap: 12px; flex-wrap: wrap;">
+              <div style="background: rgba(245,158,11,0.12); padding: 6px 10px; border-radius: 6px; font-family: monospace; font-size: 0.71rem; line-height: 1.6;">
+                -- Safer NOT IN:<br/>
+                WHERE id NOT IN (<br/>
+                &nbsp;&nbsp;SELECT id FROM orders<br/>
+                &nbsp;&nbsp;WHERE id IS NOT NULL<br/>
+                )
+              </div>
+              <div style="background: rgba(16,185,129,0.08); padding: 6px 10px; border-radius: 6px; font-family: monospace; font-size: 0.71rem; line-height: 1.6; border-left: 3px solid #10b981;">
+                -- Best Practice (NOT EXISTS):<br/>
+                WHERE NOT EXISTS (<br/>
+                &nbsp;&nbsp;SELECT 1 FROM orders o<br/>
+                &nbsp;&nbsp;WHERE o.id = e.id<br/>
+                )
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="slide-section">
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- UNIFIED INTERVIEW Q&A — ALL 9 QUESTIONS TOGETHER                  -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <div class="slide-section" style="margin-top: 32px;">
           <div class="interview-box">
-            <h4 style="margin: 0; margin-bottom: 12px;">🎓 Interview Q&amp;A</h4>
-            <div>
-              <p style="margin: 0; margin-bottom: 4px;"><strong>Q: Why does NOT IN return 0 rows when the list has a NULL?</strong></p>
-              <p><em>A: In ANSI SQL, NULL represents an unknown value. The expression <code>x NOT IN (1, 2, NULL)</code> is logically equivalent to <code>x != 1 AND x != 2 AND x != NULL</code>. Since any comparison against NULL evaluates to UNKNOWN, the entire conjunct chain evaluates to UNKNOWN, causing the row filter to reject all records. Always use IS NOT NULL filters or EXISTS/NOT EXISTS clauses.</em></p>
+            <h4 style="margin: 0 0 6px;">🎓 Interview Q&amp;A — All Topics</h4>
+            <p style="font-size: 0.72rem; color: #64748b; margin: 0 0 14px; font-style: italic;">Covers WHERE Clause, Logical Precedence, BETWEEN, IN, and NULL handling</p>
+
+            <!-- Q1 -->
+            <div id="iq-sargable">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q1: What does "SARGable" mean and why does it matter for WHERE clauses?</strong></p>
+                <button class="audio-play-btn" onclick="playAudio('New_Day2Part1audio03.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <p><em>A: SARGable stands for "Search Argument Able." A condition is sargable when the query optimizer can leverage a B-Tree index to satisfy it — dramatically reducing the rows examined. Conditions that wrap a column inside a function (e.g. <code>WHERE YEAR(order_date) = 2024</code>) are non-sargable because the index was built on the raw column value, not the computed result. Keep columns bare (<code>WHERE order_date &gt;= '2024-01-01'</code>) to preserve index usability.</em></p>
             </div>
 
             <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
 
-            <div>
-              <p style="margin: 0; margin-bottom: 4px;"><strong>Q: What is the difference between <code>BETWEEN</code> and explicit <code>&gt;=</code> / <code>&lt;=</code> operators, especially when filtering dates?</strong></p>
-              <p><em>A: The <code>BETWEEN</code> operator is inclusive (e.g., <code>x BETWEEN 1 AND 5</code> includes 1 and 5). When filtering timestamped columns like <code>2024-12-31 15:30:00</code> with <code>BETWEEN '2024-01-01' AND '2024-12-31'</code>, it implicitly casts to <code>2024-12-31 00:00:00</code>. Thus, any records late on the final day are excluded. Using explicit ranges like <code>&gt;= '2024-01-01' AND &lt; '2025-01-01'</code> is much safer.</em></p>
+            <!-- Q2 -->
+            <div id="iq-where-vs-having">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q2: How does <code>WHERE</code> differ from <code>HAVING</code> in query execution?</strong></p>
+              </div>
+              <p><em>A: <code>WHERE</code> filters individual rows before any grouping or aggregation occurs. <code>HAVING</code> filters aggregated groups after <code>GROUP BY</code> has been applied. Using <code>WHERE</code> to eliminate non-qualifying rows early is always preferred — it reduces the number of rows that must be sorted and aggregated, which directly lowers memory and CPU usage.</em></p>
             </div>
 
             <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
 
-            <div>
-              <p style="margin: 0; margin-bottom: 4px;"><strong>Q: Why can't we use standard operators like <code>= NULL</code> or <code>!= NULL</code> to filter NULL values in SQL?</strong></p>
-              <p><em>A: In SQL, <code>NULL</code> represents a missing or unknown value, not a zero or empty string. Since we cannot know if two unknown values are equal, any comparison like <code>x = NULL</code> results in <code>UNKNOWN</code> rather than <code>TRUE</code>. To check for the absence or presence of a value, we must use the special unary predicates <code>IS NULL</code> or <code>IS NOT NULL</code>.</em></p>
+            <!-- Q3 -->
+            <div id="iq-sargable-rewrite">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q3: Rewrite a non-sargable date filter as a sargable one.</strong></p>
+              </div>
+              <p><em>A: Non-sargable: <code>WHERE YEAR(order_date) = 2024</code>. The function call prevents the optimizer from traversing the index on <code>order_date</code>. Sargable rewrite: <code>WHERE order_date &gt;= '2024-01-01' AND order_date &lt; '2025-01-01'</code>. The column is kept bare — the B-Tree index can serve this range scan directly, avoiding a full table scan.</em></p>
+            </div>
+
+            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
+
+            <!-- Q4 -->
+            <div id="iq-not-and-or-order">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q4: What is the logical execution order of NOT, AND, and OR?</strong></p>
+              </div>
+              <p><em>A: SQL resolves operators in the order NOT → AND → OR. Because AND binds more tightly than OR, an expression like <code>A OR B AND C</code> is evaluated as <code>A OR (B AND C)</code>. To override this and express <code>(A OR B) AND C</code>, parentheses must be used explicitly. Relying on implicit precedence without parentheses is a leading cause of logic bugs in production queries.</em></p>
+            </div>
+
+            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
+
+            <!-- Q5 -->
+            <div id="iq-short-circuit">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q5: Does SQL short-circuit logical expressions the same way Python or JavaScript does?</strong></p>
+              </div>
+              <p><em>A: No. Imperative languages guarantee left-to-right short-circuit evaluation. SQL is declarative — the query optimizer can evaluate conditions in any order it determines to be most efficient. Writing <code>WHERE x != 0 AND y / x &gt; 2</code> can still raise a division-by-zero error because the optimizer might evaluate the division before the guard condition. Use <code>CASE WHEN</code> or <code>NULLIF(x, 0)</code> to safely protect against unsafe arithmetic in filters.</em></p>
+            </div>
+
+            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
+
+            <!-- Q6 -->
+            <div id="iq-null-three-valued">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q6: How does NULL interact with AND and OR in SQL's three-valued logic?</strong></p>
+              </div>
+              <p><em>A: SQL uses three-valued logic: TRUE, FALSE, and UNKNOWN. Any comparison involving NULL yields UNKNOWN. With AND: <code>TRUE AND UNKNOWN = UNKNOWN</code>, but <code>FALSE AND UNKNOWN = FALSE</code>. With OR: <code>TRUE OR UNKNOWN = TRUE</code>, but <code>FALSE OR UNKNOWN = UNKNOWN</code>. Rows that evaluate to UNKNOWN in the WHERE clause are filtered out just like FALSE — they do not appear in the result set.</em></p>
+            </div>
+
+            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
+
+            <!-- Q7 -->
+            <div id="iq-not-in-null">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q7: Why does NOT IN return 0 rows when the subquery or list contains a NULL?</strong></p>
+              </div>
+              <p><em>A: <code>x NOT IN (1, 2, NULL)</code> expands to <code>x != 1 AND x != 2 AND x != NULL</code>. Because <code>x != NULL</code> always evaluates to UNKNOWN, the entire AND chain resolves to UNKNOWN regardless of x's actual value. Since UNKNOWN rows are discarded by WHERE, no rows pass the filter — zero rows are returned. Fix: add <code>WHERE id IS NOT NULL</code> inside the subquery, or switch to <code>NOT EXISTS</code>.</em></p>
+            </div>
+
+            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
+
+            <!-- Q8 -->
+            <div id="iq-between-dates">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q8: When is BETWEEN unsafe and what is the correct alternative for date ranges?</strong></p>
+              </div>
+              <p><em>A: <code>BETWEEN</code> is inclusive on both ends. When used on TIMESTAMP columns, the upper bound is implicitly cast to midnight of that date (e.g. <code>'2024-12-31 00:00:00'</code>). Any record timestamped later on that day is silently excluded. The safe alternative is a half-open interval: <code>WHERE order_date &gt;= '2024-01-01' AND order_date &lt; '2025-01-01'</code>. This captures every moment in the range without truncation.</em></p>
+            </div>
+
+            <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 10px 0;" />
+
+            <!-- Q9 -->
+            <div id="iq-is-null-equality">
+              <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
+                <p style="margin: 0; flex: 1;"><strong>Q9: Why can't we use <code>= NULL</code> or <code>!= NULL</code> to filter NULL values?</strong></p>
+              </div>
+              <p><em>A: NULL represents a missing or unknown value. Comparing any value to NULL using standard equality operators (<code>= NULL</code>, <code>!= NULL</code>) always produces UNKNOWN — never TRUE or FALSE. This means <code>WHERE manager_id = NULL</code> returns 0 rows even when NULL manager_ids exist. SQL provides special predicates for this: <code>IS NULL</code> to match missing values and <code>IS NOT NULL</code> to match rows that have a value.</em></p>
             </div>
           </div>
         </div>
@@ -469,7 +579,7 @@ WHERE region IN ('North', 'East');
     },
     {
       "id": 4,
-      "prompt": "<strong>Practice Task: High Stock Products</strong><br/>Identify products that need inventory control. Retrieve name and stock_qty for products with unit_price < 50 and stock_qty > 100.",
+      "prompt": "<strong>Practice Task: High Stock Products</strong><br/>Identify products that need inventory control. Retrieve name and stock_qty for products with unit_price &lt; 50 and stock_qty &gt; 100.",
       "referenceSql": "SELECT name, stock_qty FROM products WHERE unit_price < 50 AND stock_qty > 100;"
     },
     {
