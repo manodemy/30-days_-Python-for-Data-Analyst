@@ -5770,3 +5770,16 @@ span.sql-identifier {
   line-height: 1.4 !important;
   margin-bottom: 0 !important;
 }
+
+/* ─── Static Dropdown Pills for Single-Topic Days ─── */
+.day-picker-pill.no-dropdown {
+  cursor: default !important;
+  pointer-events: none !important;
+  background: rgba(15, 23, 42, 0.45) !important;
+  border-color: rgba(148, 163, 184, 0.08) !important;
+  box-shadow: none !important;
+}
+.day-picker-pill.no-dropdown .custom-select-trigger {
+  cursor: default !important;
+}
+

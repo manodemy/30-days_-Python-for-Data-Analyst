@@ -3595,13 +3595,6 @@ function initCustomDropdowns() {
   const selects = document.querySelectorAll('.day-picker-pill select');
   selects.forEach(select => {
     const wrapper = select.parentElement;
-    if (select.id === 'topicSelect' && COURSE_CONFIG.slides && COURSE_CONFIG.slides.length <= 1) {
-      wrapper.style.display = 'none';
-      return;
-    } else if (select.id === 'topicSelect') {
-      wrapper.style.display = 'flex';
-    }
-    
     select.style.display = 'none';
     
     let trigger = wrapper.querySelector('.custom-select-trigger');
@@ -3697,30 +3690,44 @@ function initCustomDropdowns() {
       wrapper.appendChild(optionsMenu);
     }
     
-    trigger.innerHTML = `
-      <span class="selected-text"></span>
-      <span class="day-picker-chevron">
-        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1.5L5 5L9 1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-    `;
+    const isSingleTopic = (select.id === 'topicSelect' && COURSE_CONFIG.slides && COURSE_CONFIG.slides.length <= 1);
+    
+    if (isSingleTopic) {
+      wrapper.classList.add('no-dropdown');
+      trigger.innerHTML = `
+        <span class="selected-text"></span>
+      `;
+    } else {
+      wrapper.classList.remove('no-dropdown');
+      trigger.innerHTML = `
+        <span class="selected-text"></span>
+        <span class="day-picker-chevron">
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1.5L5 5L9 1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      `;
+    }
     
     populateOptions();
     
-    // Click toggle open on the entire pill wrapper (including padding/chevron)
-    wrapper.onclick = (e) => {
-      e.stopPropagation();
-      const isOpen = optionsMenu.classList.contains('open');
-      document.querySelectorAll('.custom-select-options').forEach(menu => {
-        menu.classList.remove('open');
-        menu.parentElement.classList.remove('open');
-        menu.previousElementSibling.classList.remove('open');
-      });
-      if (!isOpen) {
-        optionsMenu.classList.add('open');
-        wrapper.classList.add('open');
-        trigger.classList.add('open');
-      }
-    };
+    if (isSingleTopic) {
+      wrapper.onclick = null;
+    } else {
+      // Click toggle open on the entire pill wrapper (including padding/chevron)
+      wrapper.onclick = (e) => {
+        e.stopPropagation();
+        const isOpen = optionsMenu.classList.contains('open');
+        document.querySelectorAll('.custom-select-options').forEach(menu => {
+          menu.classList.remove('open');
+          menu.parentElement.classList.remove('open');
+          menu.previousElementSibling.classList.remove('open');
+        });
+        if (!isOpen) {
+          optionsMenu.classList.add('open');
+          wrapper.classList.add('open');
+          trigger.classList.add('open');
+        }
+      };
+    }
     
     // Listen to changes on the native select
     select.addEventListener('change', () => {
