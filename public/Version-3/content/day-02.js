@@ -220,10 +220,7 @@ window.COURSE_CONTENT['day02'] = {
         <!-- PART 02 — LOGICAL OPERATORS & PRECEDENCE                          -->
         <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="slide-section" style="margin-top: 32px;">
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0;">
-            <span style="font-size: 1.35rem;">⚡</span>
-            <h3 style="margin: 0; font-size: 1rem; font-weight: 700; color: #1e293b; letter-spacing: -0.01em;">02. Logical Operators &amp; Precedence</h3>
-          </div>
+          <h3>02. Logical Operators &amp; Precedence</h3>
 
           <div class="rdbms-intro-section" id="precedenceIntro">
             <h3 class="heading-with-audio">
@@ -323,10 +320,7 @@ WHERE (department_id = 10
         <!-- PART 03 — BETWEEN, IN & NULL HANDLING                             -->
         <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="slide-section" style="margin-top: 32px;">
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0;">
-            <span style="font-size: 1.35rem;">📋</span>
-            <h3 style="margin: 0; font-size: 1rem; font-weight: 700; color: #1e293b; letter-spacing: -0.01em;">03. Range, Membership &amp; NULL Filters</h3>
-          </div>
+          <h3>03. Range, Membership &amp; NULL Filters</h3>
 
           <div class="rdbms-intro-section" id="rangeListIntro">
             <h3 class="heading-with-audio">
