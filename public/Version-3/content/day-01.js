@@ -1078,10 +1078,10 @@ WHERE department = 'Engineering';
           <table class="db-table-mock">
             <thead>
               <tr>
-                <th style="color: #0284c7; padding-bottom: 10px;">employee_name <span class="table-th-subtitle table-th-subtitle--blue">→ alias of name</span></th>
-                <th style="color: #0284c7; padding-bottom: 10px;">annual_pay <span class="table-th-subtitle table-th-subtitle--blue">→ alias of salary</span></th>
-                <th style="color: #0284c7; padding-bottom: 10px;">monthly_rate <span class="table-th-subtitle table-th-subtitle--slate">→ salary / 12.0</span></th>
-                <th style="color: #0284c7; padding-bottom: 10px;">bonus <span class="table-th-subtitle table-th-subtitle--slate">→ salary * 0.10</span></th>
+                <th><span class="sql-col-name">employee_name</span><span class="table-th-subtitle table-th-subtitle--blue">→ alias of name</span></th>
+                <th><span class="sql-col-name">annual_pay</span><span class="table-th-subtitle table-th-subtitle--blue">→ alias of salary</span></th>
+                <th><span class="sql-col-name">monthly_rate</span><span class="table-th-subtitle table-th-subtitle--slate">→ salary / 12.0</span></th>
+                <th><span class="sql-col-name">bonus</span><span class="table-th-subtitle table-th-subtitle--slate">→ salary * 0.10</span></th>
               </tr>
             </thead>
             <tbody>

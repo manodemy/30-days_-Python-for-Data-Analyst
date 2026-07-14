@@ -1830,7 +1830,7 @@ pre span {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  border: 1px solid #cbd5e1 !important;
+  border: none !important;
   border-radius: var(--radius);
   overflow: hidden;
   background: #ffffff !important;
@@ -1839,30 +1839,27 @@ pre span {
   font-feature-settings: "liga" 0, "clig" 0, "calt" 0 !important;
 }
 .db-table-mock th, .db-table-mock td {
-  padding: 10px 14px;
-  border-bottom: 1px solid #cbd5e1 !important;
-  border-right: 1px solid #cbd5e1 !important;
-  font-size: 0.82rem;
+  padding: 12px 16px !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  border-right: none !important; /* Premium borderless column design */
+  font-size: 0.8rem !important;
   line-height: 1.5;
   text-align: left;
   font-family: var(--font);
-}
-.db-table-mock th:last-child, .db-table-mock td:last-child {
-  border-right: none !important;
 }
 .db-table-mock tr:last-child td {
   border-bottom: none !important;
 }
 .db-table-mock th {
-  background: #f1f5f9 !important;
-  color: #1e293b !important;
+  background: #f8fafc !important; /* Cleaner grey-slate background */
+  color: #475569 !important; /* Softer text color */
   font-weight: 700;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 0.74rem !important;
+  letter-spacing: 0.03em;
+  border-bottom: 2px solid #e2e8f0 !important;
 }
 .db-table-mock td {
-  color: #334155 !important;
+  color: #1e293b !important;
   transition: opacity 0.3s;
 }
 .db-table-mock .pk-key {
@@ -2929,8 +2926,9 @@ pre span {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   margin: 16px 0;
-  border-radius: var(--radius);
-  border: 1px solid #cbd5e1 !important;
+  border-radius: 12px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03) !important;
 }
 .db-mock-table-wrap .db-table-mock {
   margin: 0 !important;
@@ -5495,28 +5493,43 @@ span.sql-identifier {
 /* Table Header Subtitles / Badges */
 .table-th-subtitle {
   display: block !important;
-  font-size: 0.6rem !important;
-  font-weight: 700 !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 0.56rem !important;
+  font-weight: 600 !important;
   text-transform: none !important;
   letter-spacing: 0 !important;
-  margin-top: 5px !important;
+  margin-top: 6px !important;
   padding: 2px 6px !important;
-  border-radius: 4px !important;
+  border-radius: 5px !important;
   white-space: nowrap !important;
   width: fit-content !important;
   box-sizing: border-box !important;
 }
 
 .table-th-subtitle--blue {
-  background: #eff6ff !important;
-  color: #1d4ed8 !important;
-  border: 1px solid #dbeafe !important;
+  background: rgba(59, 130, 246, 0.08) !important;
+  color: #2563eb !important;
+  border: 1px solid rgba(59, 130, 246, 0.16) !important;
 }
 
 .table-th-subtitle--slate {
-  background: #f8fafc !important;
+  background: rgba(100, 116, 139, 0.08) !important;
   color: #475569 !important;
-  border: 1px solid #e2e8f0 !important;
+  border: 1px solid rgba(100, 116, 139, 0.16) !important;
+}
+
+/* Premium database column header formatting */
+.db-table-mock th .sql-col-name {
+  font-family: 'JetBrains Mono', 'Fira Code', var(--font-mono, monospace) !important;
+  font-size: 0.76rem !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  display: block !important;
+  text-transform: none !important;
+  letter-spacing: -0.01em !important;
 }
 
 /* Stunning Table Hover Effects & Borders */
