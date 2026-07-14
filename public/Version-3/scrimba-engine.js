@@ -3727,6 +3727,7 @@ let totalCombinedDuration = 0; // Will be set immediately after combinedTrackDur
 let combinedTrackIndex = 0;
 let combinedAudios = [];
 let playProgressInterval = null;
+let isScrubbing = false;
 
 const topic01Durations = [23.4, 14.1, 20.4, 11.1, 8.4, 9.5, 12.1, 9.2, 17.9, 22.2, 21.8, 24.7, 13.2, 3.8, 9.5, 5.4, 7.8, 11.4, 12.3, 13.3, 11.3, 25.7, 26.1, 31.8, 20.5, 9.3, 16.6, 21.8];
 const topic01Tracks = [
@@ -3918,6 +3919,18 @@ async function loadAndPlayTrack(index, targetTime = 0) {
   prefetchedForIndex = null;
   prefetchFailed = false;
   activeAudioInstance = audio;
+  audio.addEventListener('waiting', () => {
+    if (myGeneration === currentGeneration) toggleBufferingState(true);
+  });
+  audio.addEventListener('stalled', () => {
+    if (myGeneration === currentGeneration) toggleBufferingState(true);
+  });
+  audio.addEventListener('playing', () => {
+    if (myGeneration === currentGeneration) toggleBufferingState(false);
+  });
+  audio.addEventListener('canplay', () => {
+    if (myGeneration === currentGeneration) toggleBufferingState(false);
+  });
   if (typeof currentPlaybackSpeed !== 'undefined') {
     activeAudioInstance.playbackRate = currentPlaybackSpeed;
   }
@@ -3988,8 +4001,9 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     if (solEntry) {
       if (mainEditor) { mainEditor.setValue(''); mainEditor.focus(); }
       cancelTypewriter();
-      const startDelay = (solEntry.startAt || 1.5) * 1000;
-      const charInterval = solEntry.charInterval || 70;
+      const speed = typeof currentPlaybackSpeed !== 'undefined' ? currentPlaybackSpeed : 1.0;
+      const startDelay = ((solEntry.startAt || 1.5) * 1000) / speed;
+      const charInterval = (solEntry.charInterval || 70) / speed;
       const chars = solEntry.code.split('');
       let typed = '';
       chars.forEach((char, i) => {
@@ -4006,8 +4020,8 @@ async function loadAndPlayTrack(index, targetTime = 0) {
               setTimeout(() => {
                 const outputEl = document.getElementById('mainOutput');
                 if (outputEl) outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-              }, 350);
-            }, 400);
+              }, 350 / speed);
+            }, 400 / speed);
           }
         }, startDelay + i * charInterval);
         typewriterTimers.push(t);
@@ -4022,7 +4036,7 @@ async function loadAndPlayTrack(index, targetTime = 0) {
             clearInterval(tableScrollInterval);
           } else { outputEl.scrollTop += 1; }
         }, 40);
-      }, 13500);
+      }, 13500 / speed);
       typewriterTimers.push(tst);
       
       // Clean up table scroll when active track ends
@@ -4078,6 +4092,12 @@ async function loadAndPlayTrack(index, targetTime = 0) {
       hasCompletedFirstGestureBoundPlay = true;
       isCombinedPlaying = true;
       updatePlayButtonStates(true);
+      if (track.type !== 'question' && track.type !== 'solution') {
+        isNarrationActive = true;
+        if (track.target) {
+          updateSlidePlaybackVisibility(track.target);
+        }
+      }
     })
     .catch((err) => {
       console.log('Play rejected:', err);
@@ -4174,11 +4194,14 @@ function toggleCombinedPlayback() {
 function updateProgressUI() {
   const seekBar = document.getElementById('seekBar');
   const playbackTime = document.getElementById('playbackTime');
+  const isDragging = typeof isScrubbing !== 'undefined' && isScrubbing;
   if (seekBar) {
     seekBar.max = totalCombinedDuration || 100;
-    seekBar.value = currentCombinedTime;
+    if (!isDragging) {
+      seekBar.value = currentCombinedTime;
+    }
   }
-  if (playbackTime) {
+  if (playbackTime && !isDragging) {
     playbackTime.textContent = `${formatTime(currentCombinedTime)} / ${formatTime(totalCombinedDuration)}`;
   }
 }
@@ -4371,6 +4394,29 @@ function initSlideNarration() {
     audio.preload = "none"; // lazy — don't pre-download all files on page load
     return audio;
   });
+
+  const seekBar = document.getElementById('seekBar');
+  if (seekBar && !seekBar.dataset.scrubbingBound) {
+    seekBar.dataset.scrubbingBound = 'true';
+    seekBar.removeAttribute('oninput');
+    seekBar.addEventListener('mousedown', () => { isScrubbing = true; });
+    seekBar.addEventListener('touchstart', () => { isScrubbing = true; });
+    seekBar.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      const playbackTime = document.getElementById('playbackTime');
+      if (playbackTime) {
+        playbackTime.textContent = `${formatTime(val)} / ${formatTime(totalCombinedDuration)}`;
+      }
+    });
+    seekBar.addEventListener('change', async (e) => {
+      isScrubbing = false;
+      await seekCombinedPlayback(e.target.value);
+    });
+    seekBar.addEventListener('touchend', async (e) => {
+      isScrubbing = false;
+      await seekCombinedPlayback(e.target.value);
+    });
+  }
 }
 
 function startProgressLoop() {
@@ -4378,6 +4424,29 @@ function startProgressLoop() {
   playProgressInterval = setInterval(() => {
     updateProgressUI();
   }, 250);
+}
+
+function toggleBufferingState(isBuffering) {
+  const navBtn = document.getElementById('navPlayBtn');
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  if (isBuffering) {
+    if (navBtn) {
+      navBtn.innerHTML = `<span class="btn-icon loading-spinner">⏳</span> <span class="btn-text">Buffering...</span>`;
+      navBtn.classList.add('buffering');
+    }
+    if (playPauseBtn) {
+      playPauseBtn.innerHTML = `<span class="loading-spinner" style="display:inline-block;animation:spin 1s linear infinite;">⏳</span>`;
+      playPauseBtn.classList.add('buffering');
+    }
+  } else {
+    if (navBtn) {
+      navBtn.classList.remove('buffering');
+    }
+    if (playPauseBtn) {
+      playPauseBtn.classList.remove('buffering');
+    }
+    updatePlayButtonStates(isCombinedPlaying);
+  }
 }
 
 function updatePlayButtonStates(isPlaying) {
@@ -4611,4 +4680,21 @@ function updateSlidePlaybackVisibility(targetSelector) {
     });
   });
 }
+
+// Global Keyboard Shortcuts for Playback control
+document.addEventListener('keydown', (e) => {
+  if (!e.target) return;
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.closest('.CodeMirror')) return;
+
+  if (e.key === ' ' || e.key === 'k') {
+    e.preventDefault();
+    toggleCombinedPlayback();
+  } else if (e.key === 'ArrowLeft' || e.key === 'j') {
+    e.preventDefault();
+    seekCombinedPlayback(Math.max(0, currentCombinedTime - 5));
+  } else if (e.key === 'ArrowRight' || e.key === 'l') {
+    e.preventDefault();
+    seekCombinedPlayback(Math.min(totalCombinedDuration, currentCombinedTime + 5));
+  }
+});
 
