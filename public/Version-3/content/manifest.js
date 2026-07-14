@@ -28,7 +28,7 @@ window.COURSE_MANIFEST = [
   {
     "day": 4,
     "id": "day04",
-    "title": "Sorting & Limiting Results",
+    "title": "Sorting, Limiting & Deduplication",
     "emoji": "\ud83d\udcc8",
     "db": "retail",
     "status": "live"
