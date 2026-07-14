@@ -482,7 +482,7 @@ function renderPresentSlide() {
     autoHighlightSql(container);
     container.scrollTop = 0;
   }
-  const cleanedTitle = slide.title.replace(/^\d+\.\s*/, '');
+  const cleanedTitle = slide.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '');
   const hasManySlides = COURSE_CONFIG.slides && COURSE_CONFIG.slides.length > 1;
   document.getElementById('presentCounter').textContent = hasManySlides ? `Topic 0${currentSlide + 1} — ${cleanedTitle}` : cleanedTitle;
   const topicSelect = document.getElementById('topicSelect');
@@ -566,7 +566,7 @@ function renderSideSlide() {
   // Update canvas size to match the new scroll size of slideContent
   resizeWsCanvas();
 
-  const cleanedTitle = slide.title.replace(/^\d+\.\s*/, '');
+  const cleanedTitle = slide.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '');
   const hasManySlides = COURSE_CONFIG.slides && COURSE_CONFIG.slides.length > 1;
   const slideCounter = document.getElementById('slideCounter');
   if (slideCounter) {
@@ -3279,7 +3279,7 @@ function loadDayContent(dayId) {
   if (topicSel && COURSE_CONFIG.slides) {
     const multiTopic = COURSE_CONFIG.slides.length > 1;
     topicSel.innerHTML = COURSE_CONFIG.slides.map((s, i) => {
-      const cleaned = s.title.replace(/^\d+\.\s*/, '');
+      const cleaned = s.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '');
       return `<option value="${i}">${multiTopic ? `Topic ${String(i+1).padStart(2,'0')}: ` : ''}${cleaned}</option>`;
     }).join('');
     topicSel.value = 0;
@@ -3463,7 +3463,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (topicSelect) {
       const multiTopic2 = COURSE_CONFIG.slides.length > 1;
       topicSelect.innerHTML = COURSE_CONFIG.slides.map((slide, idx) => {
-        const cleanedTitle = slide.title.replace(/^\d+\.\s*/, '');
+        const cleanedTitle = slide.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '');
         const duration = getSlideDurationString(idx);
         return `<option value="${idx}">${multiTopic2 ? `Topic 0${idx + 1}: ` : ''}${cleanedTitle} (${duration})</option>`;
       }).join('');
@@ -3594,8 +3594,15 @@ function getSlideDurationString(idx) {
 function initCustomDropdowns() {
   const selects = document.querySelectorAll('.day-picker-pill select');
   selects.forEach(select => {
-    select.style.display = 'none';
     const wrapper = select.parentElement;
+    if (select.id === 'topicSelect' && COURSE_CONFIG.slides && COURSE_CONFIG.slides.length <= 1) {
+      wrapper.style.display = 'none';
+      return;
+    } else if (select.id === 'topicSelect') {
+      wrapper.style.display = 'flex';
+    }
+    
+    select.style.display = 'none';
     
     let trigger = wrapper.querySelector('.custom-select-trigger');
     let optionsMenu = wrapper.querySelector('.custom-select-options');
@@ -3608,7 +3615,7 @@ function initCustomDropdowns() {
           const slideIdx = parseInt(option.value);
           const duration = getSlideDurationString(slideIdx);
           const slide = COURSE_CONFIG.slides[slideIdx];
-          const cleanedTitle = slide ? slide.title.replace(/^\d+\.\s*/, '') : option.text;
+          const cleanedTitle = slide ? slide.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '') : option.text;
           const multiTopic3 = COURSE_CONFIG.slides && COURSE_CONFIG.slides.length > 1;
           textSpan.innerHTML = `
             <span class="trigger-title">${multiTopic3 ? `Topic 0${slideIdx + 1}: ` : ''}${cleanedTitle}</span>
@@ -3637,7 +3644,7 @@ function initCustomDropdowns() {
           const slideIdx = parseInt(opt.value);
           const duration = getSlideDurationString(slideIdx);
           const slide = COURSE_CONFIG.slides[slideIdx];
-          const cleanedTitle = slide ? slide.title.replace(/^\d+\.\s*/, '') : opt.text;
+          const cleanedTitle = slide ? slide.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '') : opt.text;
           const multiTopic4 = COURSE_CONFIG.slides && COURSE_CONFIG.slides.length > 1;
           optionItem.innerHTML = `
             <span class="option-title">${multiTopic4 ? `Topic 0${slideIdx + 1}: ` : ''}${cleanedTitle}</span>
