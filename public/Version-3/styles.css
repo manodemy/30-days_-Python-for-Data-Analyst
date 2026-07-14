@@ -946,17 +946,17 @@ a { color: var(--cyan); text-decoration: none; }
   font-feature-settings: "liga" 0, "clig" 0, "calt" 0 !important;
 }
 
-/* Inline code badges in text paragraphs/lists */
+/* Inline code badges in text paragraphs/lists - Premium Light Theme aligned */
 .slide-content :not(pre) > code,
 .slide-content p code,
 .slide-content li code,
 .slide-content td code {
-  background: #1e293b !important;
-  color: #38bdf8 !important;
-  border: 1px solid #334155 !important;
+  background: rgba(15, 23, 42, 0.045) !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(15, 23, 42, 0.085) !important;
   padding: 2px 5px !important;
   border-radius: 4px !important;
-  font-size: 0.76rem !important;
+  font-size: 0.74rem !important;
   display: inline !important;
   white-space: pre-wrap !important;
   word-break: break-word !important;
@@ -1020,7 +1020,7 @@ pre span {
   border-left: 4px solid #dc2626 !important;
   border-radius: var(--radius-sm);
   padding: 12px 16px;
-  margin: 10px 0;
+  margin: 16px 0 !important;
   font-size: 0.82rem;
   color: #b91c1c !important;
   text-align: justify;
@@ -1160,12 +1160,38 @@ pre span {
 .slide-content .info-box p:first-of-type {
   margin-top: 4px !important;
 }
-.slide-content .pro-tip-box code,
-.slide-content .warn-box code,
-.slide-content .info-box code,
+/* Code tag styles inside specific layout boxes */
+.slide-content .pro-tip-box code {
+  font-size: 0.68rem !important;
+  padding: 2px 4px !important;
+  background: rgba(245, 158, 11, 0.08) !important;
+  color: #b45309 !important;
+  border: 1px solid rgba(245, 158, 11, 0.18) !important;
+  border-radius: 4px !important;
+}
+.slide-content .warn-box code {
+  font-size: 0.68rem !important;
+  padding: 2px 4px !important;
+  background: rgba(220, 38, 38, 0.07) !important;
+  color: #991b1b !important;
+  border: 1px solid rgba(220, 38, 38, 0.15) !important;
+  border-radius: 4px !important;
+}
+.slide-content .info-box code {
+  font-size: 0.68rem !important;
+  padding: 2px 4px !important;
+  background: rgba(16, 185, 129, 0.07) !important;
+  color: #065f46 !important;
+  border: 1px solid rgba(16, 185, 129, 0.15) !important;
+  border-radius: 4px !important;
+}
 .slide-content .interview-box code {
-  font-size: 0.66rem !important;
-  padding: 1px 3px;
+  font-size: 0.68rem !important;
+  padding: 2px 4px !important;
+  background: rgba(124, 58, 237, 0.06) !important;
+  color: #6d28d9 !important;
+  border: 1px solid rgba(124, 58, 237, 0.12) !important;
+  border-radius: 4px !important;
 }
 
 .slide-content .diagram {
@@ -4389,8 +4415,8 @@ pre span {
   color: #ffffff !important; /* Pure white text */
   font-size: 1.05rem !important;
   font-weight: 600 !important;
-  margin-top: 10px !important;
-  margin-bottom: 10px !important;
+  margin-top: 24px !important;
+  margin-bottom: 14px !important;
 }
 
 .slide-content .audio-play-btn {

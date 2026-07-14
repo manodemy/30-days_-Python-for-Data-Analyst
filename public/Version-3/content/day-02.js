@@ -396,14 +396,14 @@ WHERE region IN ('North', 'East');
           <div class="warn-box" id="nullTrapBox">
             <strong>How SQL evaluates <code>val NOT IN (1, 2, NULL)</code>:</strong>
             <p>Expands to: <code>val != 1 AND val != 2 AND val != NULL</code></p>
-            <p>Any comparison with <code>NULL</code> yields <code>UNKNOWN</code>. Because <code>AND</code> requires all operands to be <code>TRUE</code>, the chain collapses to <code>UNKNOWN</code> — and rows with <code>UNKNOWN</code> are filtered out. <strong>Result: 0 rows returned.</strong></p>
+            <p>Any comparison with <strong>NULL</strong> yields <strong>UNKNOWN</strong>. Because <strong>AND</strong> requires all operands to be <strong>TRUE</strong>, the chain collapses to <strong>UNKNOWN</strong> — and rows with <strong>UNKNOWN</strong> are filtered out. <strong>Result: 0 rows returned.</strong></p>
           </div>
         </div>
 
         <!-- IS NULL / IS NOT NULL -->
         <div class="slide-section">
           <h3 style="font-size: 0.9rem; color: #1e293b; font-weight: 700; margin-bottom: 8px;">Filtering NULL Values Correctly</h3>
-          <p>Because <code>= NULL</code> always evaluates to <code>UNKNOWN</code>, SQL provides dedicated predicates to test for missing values:</p>
+          <p>Because <code>= NULL</code> always evaluates to <strong>UNKNOWN</strong>, SQL provides dedicated predicates to test for missing values:</p>
 
           <div class="db-mock-table-wrap">
             <table class="db-table-mock db-table-mock--compact">
