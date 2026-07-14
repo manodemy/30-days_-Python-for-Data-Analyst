@@ -3588,6 +3588,15 @@ function initCustomDropdowns() {
             <span class="option-title">Topic 0${slideIdx + 1}: ${cleanedTitle}</span>
             <span class="option-duration">${duration}</span>
           `;
+        } else if (select.id === 'daySelect') {
+          const match = opt.text.match(/^(\S+)\s+(Day\s+\d+):\s*(.*)$/);
+          if (match) {
+            optionItem.innerHTML = `
+              <span class="option-day-tag"><span class="option-emoji">${match[1]}</span> <strong>${match[2]}:</strong> ${match[3]}</span>
+            `;
+          } else {
+            optionItem.textContent = opt.text;
+          }
         } else {
           optionItem.textContent = opt.text;
         }

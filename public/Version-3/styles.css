@@ -312,23 +312,14 @@ a { color: var(--cyan); text-decoration: none; }
 }
 
 .day-picker-pill select {
-  background: none;
-  border: none;
-  color: var(--text);
-  font: inherit;
-  cursor: pointer;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  outline: none;
-  padding-right: 10px;
-  font-size: 0.72rem;
-}
-.day-picker-pill select option {
-  background: #0d121f;
-  color: #f8fafc;
-  padding: 6px 10px;
-  font-size: 0.76rem;
+  display: none !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
 }
 .day-picker-chevron {
   position: absolute;
@@ -3498,21 +3489,32 @@ pre span {
   background: rgba(0, 246, 255, 0.08) !important;
   box-shadow: 0 0 6px rgba(0, 246, 255, 0.2);
 }
+@keyframes dropdownMenuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .custom-select-options {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
   width: max-content;
-  min-width: 100%;
-  max-width: calc(100vw - 24px) !important;
-  max-height: 280px;
+  min-width: 290px !important;
+  max-width: calc(100vw - 20px) !important;
+  max-height: 320px;
   overflow-y: auto;
-  background: rgba(15, 23, 42, 0.96) !important;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  background: rgba(10, 16, 32, 0.96) !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65), 0 0 1px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   display: none;
   flex-direction: column;
   padding: 6px;
@@ -3521,35 +3523,37 @@ pre span {
 }
 /* Scrollbar styling for custom dropdowns */
 .custom-select-options::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 .custom-select-options::-webkit-scrollbar-track {
   background: transparent;
 }
 .custom-select-options::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.18);
   border-radius: 4px;
 }
 .custom-select-options::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--cyan);
 }
 .topic-picker-pill .custom-select-options {
   right: 0 !important;
   left: auto !important;
   width: 320px !important;
-  max-width: calc(100vw - 24px) !important;
+  max-width: calc(100vw - 20px) !important;
 }
 .custom-select-options.open {
   display: flex;
+  animation: dropdownMenuFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 .custom-select-option {
-  padding: 8px 16px 8px 24px !important;
-  font-size: 0.72rem;
+  padding: 7px 12px 7px 26px !important;
+  font-size: 0.74rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.75) !important;
-  border-radius: 6px !important;
+  color: #cbd5e1 !important;
+  border-radius: 8px !important;
+  margin: 1.5px 0 !important;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
   text-align: left;
   position: relative;
@@ -3561,39 +3565,54 @@ pre span {
   overflow: hidden !important;
 }
 .custom-select-option:hover {
-  background: rgba(255, 255, 255, 0.06) !important;
+  background: rgba(56, 189, 248, 0.12) !important;
   color: #ffffff !important;
+  transform: translateX(2px);
 }
 .custom-select-option.selected {
-  background: rgba(255, 255, 255, 0.04) !important;
-  color: #ffffff !important;
+  background: linear-gradient(90deg, rgba(6, 182, 212, 0.22), rgba(6, 182, 212, 0.05)) !important;
+  color: #38bdf8 !important;
   font-weight: 700 !important;
 }
 .custom-select-option.selected::before {
   content: '';
   position: absolute;
-  left: 8px;
+  left: 9px;
   top: 50%;
   transform: translateY(-50%);
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--cyan);
-  box-shadow: 0 0 8px rgba(0, 246, 255, 0.8);
+  box-shadow: 0 0 10px rgba(0, 246, 255, 0.9);
 }
 .topic-picker-pill .custom-select-option.selected::before {
   background: var(--green);
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.9);
+}
+.option-day-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.option-day-tag strong {
+  color: #f8fafc;
+}
+.option-emoji {
+  font-size: 0.85rem;
 }
 .option-duration {
   font-family: var(--mono) !important;
-  font-size: 0.65rem !important;
-  color: rgba(255, 255, 255, 0.4) !important;
+  font-size: 0.64rem !important;
+  color: rgba(255, 255, 255, 0.45) !important;
   font-weight: 700 !important;
   margin-left: 8px !important;
   flex-shrink: 0 !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 4px !important;
   padding: 1px 5px !important;
   line-height: 1.2 !important;
