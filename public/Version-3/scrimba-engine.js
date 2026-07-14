@@ -497,6 +497,28 @@ function renderPresentSlide() {
 }
 
 function renderSideSlide() {
+  if (typeof currentGeneration !== 'undefined') {
+    currentGeneration++;
+  }
+  if (activeAudioInstance) {
+    activeAudioInstance.pause();
+    activeAudioInstance.src = "";
+    activeAudioInstance.load();
+    activeAudioInstance = null;
+  }
+  if (currentPlayingAudio) {
+    currentPlayingAudio.pause();
+    currentPlayingAudio.src = "";
+    currentPlayingAudio.load();
+    currentPlayingAudio = null;
+  }
+  if (currentPlayingBtn) {
+    currentPlayingBtn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+    currentPlayingBtn.classList.remove('playing');
+    currentPlayingBtn = null;
+  }
+  isCombinedPlaying = false;
+
   // Save progress of the last active slide before rendering the new one
   if (typeof lastActiveSlideIndex !== 'undefined' && typeof lastActiveDay !== 'undefined') {
     if (lastActiveSlideIndex !== currentSlide || lastActiveDay !== currentDay) {
@@ -3902,6 +3924,12 @@ async function loadAndPlayTrack(index, targetTime = 0) {
   await loadManifest();
 
   combinedTrackIndex = index;
+  let elapsedBefore = 0;
+  for (let i = 0; i < index; i++) {
+    elapsedBefore += combinedTrackDurations[i] || 0;
+  }
+  currentCombinedTime = elapsedBefore + targetTime;
+  updateProgressUI();
   const track = combinedTracks[index];
   const filename = track.src.split('/').pop().replace('.mp3', '');
   const trackId = `day01_${filename}`;
