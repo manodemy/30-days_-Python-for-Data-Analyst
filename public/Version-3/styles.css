@@ -5588,7 +5588,7 @@ span.sql-identifier {
 /* ─── DESKTOP VIEWPORT LAYOUT & SPACING RHYTHM ─── */
 
 .slide-content {
-  padding: 0 24px 80px 24px !important; /* Spacious desktop padding, top gap reset */
+  padding: 0 24px 32px 24px !important; /* Premium desktop spacing, top gap reset */
 }
 
 /* Heading hierarchy */
@@ -5682,7 +5682,7 @@ span.sql-identifier {
 
 @media (max-width: 768px) {
   .slide-content {
-    padding: 0 16px 74px 16px !important; /* Dense screen space optimization, top gap reset */
+    padding: 0 16px 24px 16px !important; /* Premium mobile spacing, top gap reset */
   }
 
   .slide-content h2 {
