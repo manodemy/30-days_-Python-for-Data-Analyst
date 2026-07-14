@@ -994,18 +994,9 @@ pre span {
   position: relative;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
 }
-/* Simulated tag on the right */
 .slide-content pre::after {
-  content: 'SQL';
-  position: absolute;
-  top: 8px;
-  right: 16px;
-  font-size: 0.58rem;
-  font-weight: 700;
-  color: #475569;
-  letter-spacing: 0.08em;
-  font-family: Inter, system-ui, sans-serif;
-  pointer-events: none;
+  display: none !important;
+  content: none !important;
 }
 .slide-content .info-box {
   background: #f0fdfa !important;
@@ -1280,25 +1271,11 @@ pre span {
   position: relative;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
 }
-/* Simulated language tab/badge on the right */
-.slide-content .vs-card pre::after {
-  content: 'SQL QUERY';
-  position: absolute;
-  top: 8px;
-  right: 14px;
-  font-size: 0.58rem;
-  font-weight: 700;
-  color: #475569;
-  letter-spacing: 0.08em;
-  font-family: Inter, system-ui, sans-serif;
-}
-.slide-content .vs-card--bad pre::after {
-  content: 'ERROR CODE';
-  color: #ef4444;
-}
+.slide-content .vs-card pre::after,
+.slide-content .vs-card--bad pre::after,
 .slide-content .vs-card--good pre::after {
-  content: 'WORKAROUND';
-  color: #10b981;
+  display: none !important;
+  content: none !important;
 }
 .slide-content .vs-card small {
   font-size: 0.74rem !important;
