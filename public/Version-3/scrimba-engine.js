@@ -3215,6 +3215,7 @@ function loadDayContent(dayId) {
   // ── Apply content to COURSE_CONFIG ──
   COURSE_CONFIG.dayId = dayId;
   COURSE_CONFIG.title = dayContent.title || COURSE_CONFIG.title;
+  document.title = `Manodemy — Day ${String(parseInt(dayId.replace('day', ''), 10)).padStart(2, '0')}: ${COURSE_CONFIG.title}`;
 
   if (dayContent.slides && dayContent.slides.length > 0) {
     COURSE_CONFIG.slides = dayContent.slides;
@@ -3417,6 +3418,14 @@ window.addEventListener('DOMContentLoaded', async () => {
       if (badge) {
         const dayNum = selectedDay.replace('day', '').toUpperCase();
         badge.textContent = `DAY ${dayNum}`;
+      }
+
+      // Update URL in address bar if pathname ends with a dayXX.html format
+      const path = window.location.pathname;
+      const pathMatch = path.match(/day\d+\.html/i);
+      if (pathMatch) {
+        const newPath = path.replace(/day\d+\.html/i, `${selectedDay}.html`);
+        history.pushState(null, '', newPath);
       }
 
       // Sync active slide and topicSelect to match the day
