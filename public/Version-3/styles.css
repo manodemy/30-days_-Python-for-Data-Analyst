@@ -5562,7 +5562,7 @@ span.sql-identifier {
 /* ─── DESKTOP VIEWPORT LAYOUT & SPACING RHYTHM ─── */
 
 .slide-content {
-  padding: 16px 24px 80px 24px !important; /* Spacious desktop padding */
+  padding: 0 24px 80px 24px !important; /* Spacious desktop padding, top gap reset */
 }
 
 /* Heading hierarchy */
@@ -5586,7 +5586,7 @@ span.sql-identifier {
 .slide-content h2:first-of-type,
 .slide-content #slideBodyText > h3:first-child,
 .slide-content #slideBodyText > h2:first-child {
-  margin-top: 6px !important;
+  margin-top: 0 !important;
 }
 
 /* Standard paragraph flow */
@@ -5656,7 +5656,7 @@ span.sql-identifier {
 
 @media (max-width: 768px) {
   .slide-content {
-    padding: 12px 16px 74px 16px !important; /* Dense screen space optimization */
+    padding: 0 16px 74px 16px !important; /* Dense screen space optimization, top gap reset */
   }
 
   .slide-content h2 {
@@ -5675,7 +5675,7 @@ span.sql-identifier {
   .slide-content h2:first-of-type,
   .slide-content #slideBodyText > h3:first-child,
   .slide-content #slideBodyText > h2:first-child {
-    margin-top: 4px !important;
+    margin-top: 0 !important;
   }
 
   .slide-content p {
