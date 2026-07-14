@@ -786,6 +786,13 @@ function getWsCtx() { const c = getWsCanvas(); return c ? c.getContext('2d') : n
 function resizeWsCanvas() {
   const canvas = getWsCanvas();
   if (!canvas) return;
+  
+  // Collapse canvas temporarily to prevent layout stretching feedback loop
+  canvas.style.width = '0px';
+  canvas.style.height = '0px';
+  canvas.width = 0;
+  canvas.height = 0;
+  
   const parent = canvas.parentElement;
   const scrollWidth = parent.scrollWidth || parent.clientWidth;
   const scrollHeight = parent.scrollHeight || parent.clientHeight;
