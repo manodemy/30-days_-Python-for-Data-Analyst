@@ -200,52 +200,50 @@ window.COURSE_CONTENT['day01'] = {
         <h2>📊 01. Relational Databases &amp; SQL</h2>
 
         <div class="slide-section">
-          <div class="rdbms-intro-section" id="rdbmsIntro">
-            <h3 class="heading-with-audio">
-              What is RDBMS?
-              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio01.mp3', this)" title="Play narration">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </h3>
-            <p>A <strong>Relational Database Management System (RDBMS)</strong> is the software used to store, manage, query, and retrieve data stored in a relational database. It formats data into structured <strong>tables</strong> (also called <strong>relations</strong>) which are connected to one another through defined relationships.</p>
-            
-            <div class="rdbms-diagram-container">
-              <div class="rdbms-table-title">📁 Table: Employees</div>
-              <table class="db-table-mock rdbms-interactive-mock">
-                <thead>
-                  <tr>
-                    <th>🔑 ID (PK) <span class="type-tag">INT</span></th>
-                    <th>Name <span class="type-tag">VARCHAR</span></th>
-                    <th>Role <span class="type-tag">VARCHAR</span></th>
-                    <th>Salary <span class="type-tag">DECIMAL</span></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Alice Johnson</td>
-                    <td>Data Analyst</td>
-                    <td>$85,000</td>
-                  </tr>
-                  <tr class="highlighted-row">
-                    <td>2</td>
-                    <td>Bob Smith</td>
-                    <td>SQL Developer</td>
-                    <td>$92,000</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Charlie Brown</td>
-                    <td>DBA</td>
-                    <td>$105,000</td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="rdbms-legend">
-                <span class="legend-item"><span class="legend-color legend-color--column"></span> Column (Field / Attribute)</span>
-                <span class="legend-item"><span class="legend-color legend-color--row"></span> Row (Record / Tuple)</span>
-                <span class="legend-item">🔑 Primary Key (PK)</span>
-              </div>
+          <h3 class="heading-with-audio">
+            What is RDBMS?
+            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio01.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
+          <p>A <strong>Relational Database Management System (RDBMS)</strong> is the software used to store, manage, query, and retrieve data stored in a relational database. It formats data into structured <strong>tables</strong> (also called <strong>relations</strong>) which are connected to one another through defined relationships.</p>
+          
+          <div class="rdbms-diagram-container">
+            <div class="rdbms-table-title">📁 Table: Employees</div>
+            <table class="db-table-mock rdbms-interactive-mock">
+              <thead>
+                <tr>
+                  <th>🔑 ID (PK) <span class="type-tag">INT</span></th>
+                  <th>Name <span class="type-tag">VARCHAR</span></th>
+                  <th>Role <span class="type-tag">VARCHAR</span></th>
+                  <th>Salary <span class="type-tag">DECIMAL</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Alice Johnson</td>
+                  <td>Data Analyst</td>
+                  <td>$85,000</td>
+                </tr>
+                <tr class="highlighted-row">
+                  <td>2</td>
+                  <td>Bob Smith</td>
+                  <td>SQL Developer</td>
+                  <td>$92,000</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Charlie Brown</td>
+                  <td>DBA</td>
+                  <td>$105,000</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="rdbms-legend">
+              <span class="legend-item"><span class="legend-color legend-color--column"></span> Column (Field / Attribute)</span>
+              <span class="legend-item"><span class="legend-color legend-color--row"></span> Row (Record / Tuple)</span>
+              <span class="legend-item">🔑 Primary Key (PK)</span>
             </div>
           </div>
         </div>

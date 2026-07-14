@@ -16,41 +16,39 @@ window.COURSE_CONTENT['day02'] = {
         <!-- PART 01 — THE WHERE CLAUSE & ROW FILTERING                        -->
         <!-- ═══════════════════════════════════════════════════════════════════ -->
         <div class="slide-section">
-          <div class="rdbms-intro-section" id="rowFilteringIntro">
-            <h3 class="heading-with-audio">
-              01. The WHERE Clause — A Horizontal Filter
-              <button class="audio-play-btn" onclick="playAudio('New_Day2Part1audio01.mp3', this)" title="Play narration">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </h3>
-            <p>The <code>WHERE</code> clause acts as a <strong>horizontal filter</strong>. While <code>SELECT</code> projects fields <em>vertically</em> (reducing columns), <code>WHERE</code> evaluates each row against a boolean expression and keeps only the records that resolve to <code>TRUE</code>.</p>
+          <h3 class="heading-with-audio">
+            01. The WHERE Clause — A Horizontal Filter
+            <button class="audio-play-btn" onclick="playAudio('New_Day2Part1audio01.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
+          <p>The <code>WHERE</code> clause acts as a <strong>horizontal filter</strong>. While <code>SELECT</code> projects fields <em>vertically</em> (reducing columns), <code>WHERE</code> evaluates each row against a boolean expression and keeps only the records that resolve to <code>TRUE</code>.</p>
 
-            <div class="relation-infographic" style="padding: 16px 20px;" id="whereFilterDiagram">
-              <div class="explanation-title">How Row Filtering Works</div>
-              <div class="relation-visual" style="align-items: center;">
-                <div class="relation-node" id="filterRawTable" style="flex: none;">
-                  <div class="node-icon-badge">📋</div>
-                  <div class="node-title">Raw Table</div>
-                  <div class="node-subtitle">All 10 Rows</div>
-                </div>
-                <div class="relation-link" id="filterGateLoads">
-                  <div class="link-label">Evaluated</div>
-                  <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
-                </div>
-                <div class="relation-node" id="filterGateExecute" style="flex: none;">
-                  <div class="node-icon-badge">⚡</div>
-                  <div class="node-title">WHERE salary &gt;= 80000</div>
-                  <div class="node-subtitle">Step 3 — Execution Gate</div>
-                </div>
-                <div class="relation-link" id="filterGateOutput">
-                  <div class="link-label">Passes</div>
-                  <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
-                </div>
-                <div class="relation-node relation-node--child" id="filterGateResult" style="flex: none;">
-                  <div class="node-icon-badge">✅</div>
-                  <div class="node-title">Filtered Result</div>
-                  <div class="node-subtitle">3 Matching Rows</div>
-                </div>
+          <div class="relation-infographic" style="padding: 16px 20px;" id="whereFilterDiagram">
+            <div class="explanation-title">How Row Filtering Works</div>
+            <div class="relation-visual" style="align-items: center;">
+              <div class="relation-node" id="filterRawTable" style="flex: none;">
+                <div class="node-icon-badge">📋</div>
+                <div class="node-title">Raw Table</div>
+                <div class="node-subtitle">All 10 Rows</div>
+              </div>
+              <div class="relation-link" id="filterGateLoads">
+                <div class="link-label">Evaluated</div>
+                <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+              </div>
+              <div class="relation-node" id="filterGateExecute" style="flex: none;">
+                <div class="node-icon-badge">⚡</div>
+                <div class="node-title">WHERE salary &gt;= 80000</div>
+                <div class="node-subtitle">Step 3 — Execution Gate</div>
+              </div>
+              <div class="relation-link" id="filterGateOutput">
+                <div class="link-label">Passes</div>
+                <div class="link-arrow"><div class="link-line"></div><svg class="arrow-head" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M2 2L6 6L2 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+              </div>
+              <div class="relation-node relation-node--child" id="filterGateResult" style="flex: none;">
+                <div class="node-icon-badge">✅</div>
+                <div class="node-title">Filtered Result</div>
+                <div class="node-subtitle">3 Matching Rows</div>
               </div>
             </div>
           </div>
