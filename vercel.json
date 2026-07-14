@@ -58,6 +58,20 @@
       ]
     },
     {
+      "source": "/Version-3/content/(.*)\\.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "Pragma", "value": "no-cache" }
+      ]
+    },
+    {
+      "source": "/sql/(.*)\\.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "Pragma", "value": "no-cache" }
+      ]
+    },
+    {
       "source": "/(.*)\\.(css|js)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
@@ -78,7 +92,7 @@
     {
       "source": "/sql/day:day(0[3-9]|1[0-8]).html",
       "destination": "/notebook/sql-day:day",
-      "permanent": true
+      "permanent": false
     },
     {
       "source": "/excel/day:day(0[3-9]|1[0-2]).html",
