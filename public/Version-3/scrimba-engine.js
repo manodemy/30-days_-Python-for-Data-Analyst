@@ -480,6 +480,7 @@ function renderPresentSlide() {
   if (container) {
     container.innerHTML = slide.html;
     autoHighlightSql(container);
+    container.scrollTop = 0;
   }
   const cleanedTitle = slide.title.replace(/^\d+\.\s*/, '');
   document.getElementById('presentCounter').textContent = `Topic 0${currentSlide + 1} — ${cleanedTitle}`;
@@ -554,6 +555,11 @@ function renderSideSlide() {
   if (slideBodyText) {
     slideBodyText.innerHTML = bodyHtml;
     autoHighlightSql(slideBodyText);
+  }
+  
+  const slideContent = document.getElementById('slideContent');
+  if (slideContent) {
+    slideContent.scrollTop = 0;
   }
   
   // Update canvas size to match the new scroll size of slideContent
