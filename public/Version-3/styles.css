@@ -5731,3 +5731,16 @@ span.sql-identifier {
   display: inline-block !important;
   animation: spin 1s linear infinite !important;
 }
+
+/* ─── Infographic Bullets Specificity Overrides ─── */
+.slide-content .info-card-bullets {
+  list-style: none !important;
+  padding: 14px 12px !important;
+  margin: 0 !important;
+}
+.slide-content .info-card-bullets li {
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  margin-bottom: 0 !important;
+}
