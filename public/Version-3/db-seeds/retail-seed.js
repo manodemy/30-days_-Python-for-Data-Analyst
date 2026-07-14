@@ -1,5 +1,22 @@
-// Auto-generated Retail Database Seeds from retail.db
 if (!window.DB_SEEDS) window.DB_SEEDS = {};
+
+window.DB_SEEDS['day01_db'] = {
+  name: 'day01_db',
+  tables: [
+    {
+      name: "employees",
+      createSQL: "CREATE TABLE employees (\n  id INTEGER PRIMARY KEY,\n  name TEXT NOT NULL,\n  department TEXT NOT NULL,\n  salary INTEGER NOT NULL\n);",
+      seedSQL: "INSERT INTO employees VALUES\n  (1, 'Aarav Sharma', 'Engineering', 87500),\n  (2, 'Priya Desai', 'Marketing', 63200),\n  (3, 'Rohit Mehta', 'Data Science', 112800),\n  (4, 'Sneha Iyer', 'Finance', 74900),\n  (5, 'Vikram Nair', 'Engineering', 96300),\n  (6, 'Anjali Gupta', 'Design', 58700),\n  (7, 'Karthik Reddy', 'Marketing', 67400),\n  (8, 'Divya Patel', 'Data Science', 105600),\n  (9, 'Arjun Joshi', 'Finance', 71200),\n  (10, 'Meera Krishnan', 'Design', 62800);",
+      columns: [
+        { name: "id", type: "INTEGER", pk: true },
+        { name: "name", type: "TEXT", pk: false },
+        { name: "department", type: "TEXT", pk: false },
+        { name: "salary", type: "INTEGER", pk: false }
+      ]
+    }
+  ]
+};
+
 window.DB_SEEDS['retail'] = {
   name: 'retail',
   tables: [

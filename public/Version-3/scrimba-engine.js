@@ -35,69 +35,74 @@ let SQL_INSTANCE = null;  // Cached SQL.js constructor
 const dbCache = new Map(); // Cache<seedKey, SQL.Database>
 let activeSeedKey = null;
 
-function initDatabase() {
-  return initSqlJs({
-    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
-  }).then(SQL => {
-    SQL_INSTANCE = SQL;
-    // Seed Day 01's simple employees DB by default
-    const seedKey = 'day01_db';
-    if (!dbCache.has(seedKey)) {
-      const newDb = new SQL.Database();
-      COURSE_CONFIG.schema.tables.forEach(t => {
-        if (t.createSQL) newDb.run(t.createSQL);
-        if (t.seedSQL)   newDb.run(t.seedSQL);
-      });
-      dbCache.set(seedKey, newDb);
-    }
-    db = dbCache.get(seedKey);
-    activeSeedKey = seedKey;
-    console.log('SQL.js initialized with Day 01 database.');
-    return db;
-  });
+function getSeedDefinition(seedKey) {
+  if (window.DB_SEEDS && window.DB_SEEDS[seedKey]) {
+    return window.DB_SEEDS[seedKey];
+  }
+  if (seedKey === 'day01_db' && window.COURSE_CONTENT && window.COURSE_CONTENT['day01'] && window.COURSE_CONTENT['day01'].schema) {
+    return window.COURSE_CONTENT['day01'].schema;
+  }
+  if (COURSE_CONFIG && COURSE_CONFIG.schema && COURSE_CONFIG.schema.tables && COURSE_CONFIG.schema.tables.length > 0) {
+    return COURSE_CONFIG.schema;
+  }
+  return null;
 }
 
-// Load or switch to a different DB seed
 function loadDatabaseSeed(seedKey) {
   if (!SQL_INSTANCE) return;
-  if (activeSeedKey === seedKey && dbCache.has(seedKey)) {
-    db = dbCache.get(seedKey);
-    return;
-  }
+  
+  // Verify if existing cached DB is valid and non-empty
   if (dbCache.has(seedKey)) {
-    db = dbCache.get(seedKey);
-    activeSeedKey = seedKey;
-    return;
+    const cachedDb = dbCache.get(seedKey);
+    try {
+      const checkRes = cachedDb.exec("SELECT count(*) FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';");
+      if (checkRes.length > 0 && checkRes[0].values && checkRes[0].values[0] && checkRes[0].values[0][0] > 0) {
+        db = cachedDb;
+        activeSeedKey = seedKey;
+        const seedDef = getSeedDefinition(seedKey);
+        if (seedDef) COURSE_CONFIG.schema = seedDef;
+        return;
+      }
+    } catch (e) {
+      // Corrupt or invalid cached DB, clear and rebuild
+    }
+    dbCache.delete(seedKey);
   }
-  // Build from window.DB_SEEDS
-  const seedDef = window.DB_SEEDS && window.DB_SEEDS[seedKey];
+
+  const seedDef = getSeedDefinition(seedKey);
   const newDb = new SQL_INSTANCE.Database();
   if (seedDef && seedDef.tables) {
     seedDef.tables.forEach(t => {
-      if (t.createSQL) { try { newDb.run(t.createSQL); } catch(e) {} }
-      if (t.seedSQL)   { try { newDb.run(t.seedSQL); } catch(e) {} }
+      if (t.createSQL) { try { newDb.run(t.createSQL); } catch(e) { console.error('Create SQL error:', e); } }
+      if (t.seedSQL)   { try { newDb.run(t.seedSQL); } catch(e) { console.error('Seed SQL error:', e); } }
     });
+    COURSE_CONFIG.schema = seedDef;
   }
   dbCache.set(seedKey, newDb);
   db = newDb;
   activeSeedKey = seedKey;
 }
 
+function initDatabase() {
+  return initSqlJs({
+    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
+  }).then(SQL => {
+    SQL_INSTANCE = SQL;
+    const targetSeed = (window.COURSE_CONTENT && window.COURSE_CONTENT[currentDay] && window.COURSE_CONTENT[currentDay].db) || 'day01_db';
+    loadDatabaseSeed(targetSeed);
+    console.log('SQL.js initialized with database:', targetSeed);
+    return db;
+  });
+}
+
 // Reset the active database to original seeded state
 function confirmResetDatabase() {
   if (!confirm('Reset the database to its original state? Any data changes you made in this session will be lost.')) return;
   if (!SQL_INSTANCE || !activeSeedKey) return;
-  const seedDef = activeSeedKey === 'day01_db'
-    ? { tables: COURSE_CONFIG.schema.tables }
-    : (window.DB_SEEDS && window.DB_SEEDS[activeSeedKey]);
-  if (!seedDef) return;
-  const newDb = new SQL_INSTANCE.Database();
-  seedDef.tables.forEach(t => {
-    if (t.createSQL) { try { newDb.run(t.createSQL); } catch(e) {} }
-    if (t.seedSQL)   { try { newDb.run(t.seedSQL); } catch(e) {} }
-  });
-  dbCache.set(activeSeedKey, newDb);
-  db = newDb;
+  
+  dbCache.delete(activeSeedKey);
+  loadDatabaseSeed(activeSeedKey);
+
   // Clear output
   const outputEl = document.getElementById('mainOutput');
   if (outputEl) {
