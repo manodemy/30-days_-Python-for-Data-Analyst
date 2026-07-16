@@ -3647,7 +3647,13 @@ function initCustomDropdowns() {
           const match = opt.text.match(/^(\S+)\s+(Day\s+\d+):\s*(.*)$/);
           if (match) {
             optionItem.innerHTML = `
-              <span class="option-day-tag"><span class="option-emoji">${match[1]}</span> <strong>${match[2]}:</strong> ${match[3]}</span>
+              <span class="option-day-tag">
+                <span class="option-emoji">${match[1]}</span>
+                <span style="display:flex;flex-direction:column;gap:1px;overflow:hidden;">
+                  <strong>${match[2]}</strong>
+                  <span class="option-day-title">${match[3]}</span>
+                </span>
+              </span>
             `;
           } else {
             optionItem.textContent = opt.text;
