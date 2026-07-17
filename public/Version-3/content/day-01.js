@@ -1,4 +1,4 @@
-﻿// Day 01 content
+// Day 01 content
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day01'] = {
   "day": 1,
@@ -1116,8 +1116,8 @@ WHERE department = 'Engineering';
         <div class="sof-wrap" id="sofDiagram-t03">
           <style>
             .sof-wrap{width:100%;margin:4px 0 12px}
-            .sof-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
-            .sof-col{background:rgba(9,15,28,0.85);border:1px solid rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35)}
+            .sof-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch}
+            .sof-col{display:flex;flex-direction:column;height:100%;background:rgba(9,15,28,0.85);border:1px solid rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35)}
             .sof-hdr{padding:10px 12px;display:flex;align-items:center;gap:8px;animation:sofFadeDown 0.45s ease 0.1s both}
             .sof-hdr--blue{background:linear-gradient(135deg,rgba(23,37,84,0.95),rgba(29,78,216,0.95))}
             .sof-hdr--teal{background:linear-gradient(135deg,rgba(19,78,74,0.95),rgba(15,118,110,0.95))}
@@ -1125,7 +1125,7 @@ WHERE department = 'Engineering';
             .sof-hdr-text{display:flex;flex-direction:column;gap:1px}
             .sof-hdr-title{font-family:'JetBrains Mono',monospace;font-size:0.63rem;font-weight:700;color:#fff;letter-spacing:0.06em;text-transform:uppercase}
             .sof-hdr-sub{font-size:0.53rem;color:rgba(255,255,255,0.65);font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
-            .sof-body{padding:10px 10px;display:flex;flex-direction:column;align-items:center}
+            .sof-body{flex-grow:1;padding:10px 10px;display:flex;flex-direction:column;align-items:center}
             
             /* Premium Compact Dark Node styling */
             .sof-node{
