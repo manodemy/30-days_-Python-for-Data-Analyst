@@ -959,7 +959,9 @@ a { color: var(--cyan); text-decoration: none; }
   font-size: 0.74rem !important;
   display: inline !important;
   white-space: pre-wrap !important;
-  word-break: break-word !important;.slide-content .info-box {
+  word-break: break-word !important;
+}
+.slide-content .info-box {
   background: rgba(13, 148, 136, 0.05) !important;
   border: 1px solid rgba(13, 148, 136, 0.12) !important;
   border-left: 4px solid #0d9488 !important;
