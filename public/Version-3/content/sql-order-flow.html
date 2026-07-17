@@ -3,580 +3,466 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SQL Order Flow</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<title>SQL Execution Order — Animated Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 body {
-  background: #0a0f1e;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: #080e1c;
   min-height: 100vh;
-  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
   font-family: 'Inter', sans-serif;
 }
 
-/* ═══════════════════════════════════════
-   CONTAINER
-   ═══════════════════════════════════════ */
-.sql-order-flow {
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   LAYOUT
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.flow-diagram {
   width: 100%;
-  max-width: 680px;
+  max-width: 660px;
 }
 
-.flow-wrap {
+.flow-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 24px;
   align-items: start;
 }
 
-/* ═══════════════════════════════════════
-   COLUMN
-   ═══════════════════════════════════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   COLUMN CARD
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .flow-col {
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
+  background: rgba(13, 20, 40, 0.85);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 18px;
   overflow: hidden;
-  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45);
 }
 
-.flow-col-header {
-  padding: 16px 20px;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HEADER
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.flow-header {
+  padding: 15px 18px;
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 700;
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   opacity: 0;
-  transform: translateY(-8px);
+  transform: translateY(-6px);
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
+.flow-header.vis { opacity: 1; transform: none; }
 
-.flow-col-header.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.flow-header--blue  { background: linear-gradient(120deg,#1e40af,#2563eb); }
+.flow-header--teal  { background: linear-gradient(120deg,#0f766e,#0d9488); }
 
-.flow-col-header--blue {
-  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+.hdr-icon { font-size: 1.1rem; flex-shrink: 0; }
+.hdr-text { display: flex; flex-direction: column; gap: 1px; }
+.hdr-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.69rem;
+  font-weight: 700;
   color: #fff;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
 }
-
-.flow-col-header--teal {
-  background: linear-gradient(135deg, #0d9488, #10b981);
-  color: #fff;
-}
-
-.col-header-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.col-header-inner span {
-  display: block;
-}
-
-.col-header-sub {
-  font-size: 0.6rem;
-  opacity: 0.75;
+.hdr-sub {
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.65);
   font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.col-icon {
-  font-size: 1.1rem;
-  flex-shrink: 0;
-}
-
-/* ═══════════════════════════════════════
-   NODES AREA
-   ═══════════════════════════════════════ */
-.flow-nodes {
-  padding: 16px 14px;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NODE BODY
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.flow-body {
+  padding: 16px 14px 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
 }
 
-/* ═══════════════════════════════════════
-   FLOW NODE
-   ═══════════════════════════════════════ */
-.flow-node {
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NODE BOX
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fnode {
   width: 100%;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.11);
   border-radius: 10px;
-  padding: 11px 14px;
+  padding: 10px 14px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  color: #cbd5e1;
+  color: #94a3b8;
   text-align: center;
   letter-spacing: 0.04em;
-
-  /* Hidden initially */
+  /* hidden initially */
   opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.4s ease, transform 0.4s ease,
+  transform: translateY(-8px);
+  transition: opacity 0.38s ease, transform 0.38s ease,
               box-shadow 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
+.fnode.vis { opacity: 1; transform: none; }
 
-.flow-node.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Dashed node (SELECT in writing order) */
-.flow-node--dashed {
+/* dashed (SELECT in writing order) */
+.fnode--dash {
   border-style: dashed;
-  border-color: rgba(255, 255, 255, 0.22);
-  color: #94a3b8;
+  border-color: rgba(255,255,255,0.18);
 }
 
-/* Highlighted: blue */
-.flow-node--hl-blue {
+/* blue highlight */
+.fnode--blue {
   border-color: #3b82f6;
   color: #93c5fd;
-  background: rgba(59, 130, 246, 0.08);
+  background: rgba(59,130,246,0.08);
+}
+.fnode--blue.vis {
+  animation: pulseBlue 2.6s ease-in-out infinite;
 }
 
-.flow-node--hl-blue.visible {
-  animation: glowBlue 2.4s ease-in-out infinite;
-  animation-delay: 0.2s;
-}
-
-/* Highlighted: green */
-.flow-node--hl-green {
+/* green highlight */
+.fnode--green {
   border-color: #10b981;
   color: #6ee7b7;
-  background: rgba(16, 185, 129, 0.08);
+  background: rgba(16,185,129,0.08);
+}
+.fnode--green.vis {
+  animation: pulseGreen 2.6s ease-in-out infinite;
 }
 
-.flow-node--hl-green.visible {
-  animation: glowGreen 2.4s ease-in-out infinite;
-  animation-delay: 0.4s;
-}
-
-/* ═══════════════════════════════════════
-   CONNECTOR (SVG ARROW)
-   ═══════════════════════════════════════ */
-.flow-connector {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 32px;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CONNECTOR
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.fconn {
   position: relative;
+  height: 46px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.32s ease;
+  overflow: visible;
 }
+.fconn.vis { opacity: 1; }
 
-.flow-connector.visible {
-  opacity: 1;
-}
-
-.flow-connector svg {
-  width: 22px;
-  height: 32px;
+/* SVG inside connector */
+.fconn svg {
+  width: 24px;
+  height: 46px;
   overflow: visible;
 }
 
-.connector-line {
-  stroke: #475569;
+/* static line */
+.c-stem {
+  stroke: rgba(71,85,105,0.6);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+/* arrowhead ring */
+.c-ring {
+  fill: rgba(8,14,28,0.95);
+  stroke: rgba(71,85,105,0.6);
+  stroke-width: 1.5;
+}
+
+/* chevron inside ring */
+.c-chev {
+  stroke: #64748b;
   stroke-width: 1.5;
   stroke-linecap: round;
+  stroke-linejoin: round;
   fill: none;
-  stroke-dasharray: 18;
-  stroke-dashoffset: 18;
-  transition: stroke-dashoffset 0.45s ease;
 }
 
-.flow-connector.visible .connector-line {
-  stroke-dashoffset: 0;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MOVING DOT
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.c-dot {
+  /* dot starts at top of stem */
+  transform: translateY(0px);
+  transform-box: fill-box;
+  transform-origin: center top;
+  /* paused until flow-active */
+  animation: dotTravel 1.35s cubic-bezier(0.4,0,0.6,1) infinite;
+  animation-play-state: paused;
+  opacity: 0;
+  filter: blur(0px);
 }
 
-/* After all nodes appear: marching ants on connector lines */
-.flow-col.flow-active .connector-line {
-  animation: marchingAnts 0.6s linear infinite;
-  stroke: #38bdf8;
+/* activate dots when column is live */
+.flow-col.flow-active .c-dot {
+  animation-play-state: running;
 }
 
-.flow-col--exec.flow-active .connector-line {
-  stroke: #34d399;
+/* left col = cyan dot */
+.flow-col--write .c-dot { fill: #38bdf8; filter: drop-shadow(0 0 3px rgba(56,189,248,0.8)); }
+/* right col = teal dot */
+.flow-col--exec  .c-dot { fill: #34d399; filter: drop-shadow(0 0 3px rgba(52,211,153,0.8)); }
+
+/* dot travel animation — moves from cy=2 to cy=28 along the stem */
+@keyframes dotTravel {
+  0%   { transform: translateY(0px);  opacity: 0; }
+  7%   { opacity: 1; }
+  86%  { opacity: 1; }
+  100% { transform: translateY(28px); opacity: 0; }
 }
 
-.connector-circle {
-  fill: rgba(15, 23, 42, 0.95);
-  stroke: #475569;
-  stroke-width: 1.5;
-  transition: stroke 0.3s ease;
+/* stagger dots per connector index */
+.fconn[data-di="0"] .c-dot { animation-delay: 0.00s; }
+.fconn[data-di="1"] .c-dot { animation-delay: 0.18s; }
+.fconn[data-di="2"] .c-dot { animation-delay: 0.36s; }
+.fconn[data-di="3"] .c-dot { animation-delay: 0.54s; }
+.fconn[data-di="4"] .c-dot { animation-delay: 0.72s; }
+.fconn[data-di="5"] .c-dot { animation-delay: 0.90s; }
+.fconn[data-di="6"] .c-dot { animation-delay: 1.08s; }
+
+/* also update ring/stem color when active */
+.flow-col--write.flow-active .c-ring  { stroke: rgba(56,189,248,0.45); }
+.flow-col--write.flow-active .c-chev  { stroke: #38bdf8; }
+.flow-col--exec.flow-active  .c-ring  { stroke: rgba(52,211,153,0.45); }
+.flow-col--exec.flow-active  .c-chev  { stroke: #34d399; }
+.c-ring, .c-chev { transition: stroke 0.5s ease; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   GLOW KEYFRAMES
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes pulseBlue {
+  0%,100% {
+    box-shadow: 0 0 8px rgba(59,130,246,0.25);
+    border-color: #3b82f6;
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59,130,246,0.6), 0 0 40px rgba(59,130,246,0.15);
+    border-color: #60a5fa;
+  }
+}
+@keyframes pulseGreen {
+  0%,100% {
+    box-shadow: 0 0 8px rgba(16,185,129,0.25);
+    border-color: #10b981;
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(16,185,129,0.6), 0 0 40px rgba(16,185,129,0.15);
+    border-color: #34d399;
+  }
 }
 
-.flow-col.flow-active .connector-circle {
-  stroke: #38bdf8;
-}
-.flow-col--exec.flow-active .connector-circle {
-  stroke: #34d399;
-}
-
-.connector-arrow {
-  fill: #475569;
-  transition: fill 0.3s ease;
-}
-
-.flow-col.flow-active .connector-arrow {
-  fill: #38bdf8;
-}
-.flow-col--exec.flow-active .connector-arrow {
-  fill: #34d399;
-}
-
-/* ═══════════════════════════════════════
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    REPLAY BUTTON
-   ═══════════════════════════════════════ */
-.flow-replay {
-  margin-top: 20px;
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.flow-controls {
+  margin-top: 22px;
   display: flex;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.4s ease;
 }
+.flow-controls.vis { opacity: 1; }
 
-.flow-replay.visible {
-  opacity: 1;
-}
-
-.replay-btn {
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.3);
+.btn-replay {
+  background: transparent;
+  border: 1px solid rgba(56,189,248,0.35);
   border-radius: 8px;
   color: #38bdf8;
   font-family: 'Inter', sans-serif;
   font-size: 0.72rem;
   font-weight: 600;
-  padding: 8px 20px;
-  cursor: pointer;
   letter-spacing: 0.04em;
-  transition: all 0.2s ease;
+  padding: 8px 22px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
-
-.replay-btn:hover {
-  background: rgba(56, 189, 248, 0.2);
-  border-color: rgba(56, 189, 248, 0.6);
+.btn-replay:hover {
+  background: rgba(56,189,248,0.1);
+  border-color: rgba(56,189,248,0.6);
   transform: translateY(-1px);
 }
 
-/* ═══════════════════════════════════════
-   KEYFRAMES
-   ═══════════════════════════════════════ */
-@keyframes marchingAnts {
-  from { stroke-dashoffset: 12; }
-  to   { stroke-dashoffset: 0;  }
-}
-
-@keyframes glowBlue {
-  0%, 100% {
-    box-shadow: 0 0 8px rgba(59, 130, 246, 0.3), inset 0 0 8px rgba(59, 130, 246, 0.05);
-    border-color: #3b82f6;
-  }
-  50% {
-    box-shadow: 0 0 22px rgba(59, 130, 246, 0.7), 0 0 44px rgba(59, 130, 246, 0.2), inset 0 0 12px rgba(59, 130, 246, 0.1);
-    border-color: #60a5fa;
-  }
-}
-
-@keyframes glowGreen {
-  0%, 100% {
-    box-shadow: 0 0 8px rgba(16, 185, 129, 0.3), inset 0 0 8px rgba(16, 185, 129, 0.05);
-    border-color: #10b981;
-  }
-  50% {
-    box-shadow: 0 0 22px rgba(16, 185, 129, 0.7), 0 0 44px rgba(16, 185, 129, 0.2), inset 0 0 12px rgba(16, 185, 129, 0.1);
-    border-color: #34d399;
-  }
-}
-
-/* ═══════════════════════════════════════
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    MOBILE
-   ═══════════════════════════════════════ */
-@media (max-width: 540px) {
-  .flow-wrap {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .flow-node {
-    font-size: 0.65rem;
-    padding: 9px 10px;
-  }
-  .flow-col-header {
-    font-size: 0.65rem;
-  }
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 520px) {
+  .flow-grid { grid-template-columns: 1fr; gap: 16px; }
+  .fnode { font-size: 0.62rem; }
+  .hdr-title { font-size: 0.62rem; }
 }
 </style>
 </head>
 <body>
 
-<div class="sql-order-flow" id="sqlOrderFlow">
-  <div class="flow-wrap">
+<!-- Helper: builds a connector SVG with moving dot -->
+<template id="tpl-conn">
+  <svg width="24" height="46" viewBox="0 0 24 46" xmlns="http://www.w3.org/2000/svg">
+    <!-- stem line -->
+    <line x1="12" y1="0" x2="12" y2="28" class="c-stem"/>
+    <!-- arrowhead ring -->
+    <circle cx="12" cy="37" r="7" class="c-ring"/>
+    <!-- chevron -->
+    <polyline points="9.5,34.5 12,38.5 14.5,34.5" class="c-chev"/>
+    <!-- moving dot -->
+    <circle cx="12" cy="2" r="3" class="c-dot"/>
+  </svg>
+</template>
+
+<div class="flow-diagram" id="flowDiagram">
+  <div class="flow-grid">
 
     <!-- ═══ LEFT: WRITING ORDER ═══ -->
-    <div class="flow-col flow-col--write" id="writeCol">
-      <div class="flow-col-header flow-col-header--blue" id="writeHeader">
-        <span class="col-icon">📄</span>
-        <div class="col-header-inner">
-          <span>WRITING ORDER</span>
-          <span class="col-header-sub">(SYNTAX)</span>
+    <div class="flow-col flow-col--write" id="colWrite">
+      <div class="flow-header flow-header--blue" id="hdrWrite">
+        <span class="hdr-icon">📄</span>
+        <div class="hdr-text">
+          <span class="hdr-title">Writing Order</span>
+          <span class="hdr-sub">Syntax</span>
         </div>
       </div>
-      <div class="flow-nodes" id="writeNodes">
-
-        <div class="flow-node flow-node--dashed" data-seq="0">SELECT</div>
-
-        <div class="flow-connector" data-seq="0">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node" data-seq="1">FROM</div>
-
-        <div class="flow-connector" data-seq="1">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node" data-seq="2">WHERE</div>
-
-        <div class="flow-connector" data-seq="2">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node" data-seq="3">GROUP BY</div>
-
-        <div class="flow-connector" data-seq="3">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node" data-seq="4">HAVING</div>
-
-        <div class="flow-connector" data-seq="4">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node" data-seq="5">ORDER BY</div>
-
-        <div class="flow-connector" data-seq="5">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node" data-seq="6">LIMIT</div>
-
+      <div class="flow-body" id="bodyWrite">
+        <div class="fnode fnode--dash" data-ni="0">SELECT</div>
+        <div class="fconn" data-fi="0" data-di="0"></div>
+        <div class="fnode" data-ni="1">FROM</div>
+        <div class="fconn" data-fi="1" data-di="1"></div>
+        <div class="fnode" data-ni="2">WHERE</div>
+        <div class="fconn" data-fi="2" data-di="2"></div>
+        <div class="fnode" data-ni="3">GROUP BY</div>
+        <div class="fconn" data-fi="3" data-di="3"></div>
+        <div class="fnode" data-ni="4">HAVING</div>
+        <div class="fconn" data-fi="4" data-di="4"></div>
+        <div class="fnode" data-ni="5">ORDER BY</div>
+        <div class="fconn" data-fi="5" data-di="5"></div>
+        <div class="fnode" data-ni="6">LIMIT</div>
       </div>
     </div>
 
     <!-- ═══ RIGHT: EXECUTION ORDER ═══ -->
-    <div class="flow-col flow-col--exec" id="execCol">
-      <div class="flow-col-header flow-col-header--teal" id="execHeader">
-        <span class="col-icon">⚙️</span>
-        <div class="col-header-inner">
-          <span>EXECUTION ORDER</span>
-          <span class="col-header-sub">(LOGICAL)</span>
+    <div class="flow-col flow-col--exec" id="colExec">
+      <div class="flow-header flow-header--teal" id="hdrExec">
+        <span class="hdr-icon">⚙️</span>
+        <div class="hdr-text">
+          <span class="hdr-title">Execution Order</span>
+          <span class="hdr-sub">Logical</span>
         </div>
       </div>
-      <div class="flow-nodes" id="execNodes">
-
-        <div class="flow-node" data-seq="0">1. FROM / JOIN</div>
-
-        <div class="flow-connector" data-seq="0">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node" data-seq="1">2. WHERE</div>
-
-        <div class="flow-connector" data-seq="1">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node" data-seq="2">3. GROUP BY</div>
-
-        <div class="flow-connector" data-seq="2">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node" data-seq="3">4. HAVING</div>
-
-        <div class="flow-connector" data-seq="3">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node flow-node--hl-blue" data-seq="4">5. SELECT <span style="font-size:0.6rem;opacity:0.85;">(alias defined)</span></div>
-
-        <div class="flow-connector" data-seq="4">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node" data-seq="5">6. DISTINCT</div>
-
-        <div class="flow-connector" data-seq="5">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node flow-node--hl-green" data-seq="6">7. ORDER BY <span style="font-size:0.6rem;opacity:0.85;">(alias ok)</span></div>
-
-        <div class="flow-connector" data-seq="6">
-          <svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg">
-            <line x1="11" y1="0" x2="11" y2="18" class="connector-line"/>
-            <circle cx="11" cy="24" r="6" class="connector-circle"/>
-            <polyline points="8.5,22 11,26 13.5,22" class="connector-arrow" fill="none" stroke="#475569" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-
-        <div class="flow-node" data-seq="7">8. LIMIT</div>
-
+      <div class="flow-body" id="bodyExec">
+        <div class="fnode" data-ni="0">1. FROM / JOIN</div>
+        <div class="fconn" data-fi="0" data-di="0"></div>
+        <div class="fnode" data-ni="1">2. WHERE</div>
+        <div class="fconn" data-fi="1" data-di="1"></div>
+        <div class="fnode" data-ni="2">3. GROUP BY</div>
+        <div class="fconn" data-fi="2" data-di="2"></div>
+        <div class="fnode" data-ni="3">4. HAVING</div>
+        <div class="fconn" data-fi="3" data-di="3"></div>
+        <div class="fnode fnode--blue" data-ni="4">5. SELECT&nbsp;<small style="font-size:0.58em;opacity:0.8;">(alias defined)</small></div>
+        <div class="fconn" data-fi="4" data-di="4"></div>
+        <div class="fnode" data-ni="5">6. DISTINCT</div>
+        <div class="fconn" data-fi="5" data-di="5"></div>
+        <div class="fnode fnode--green" data-ni="6">7. ORDER BY&nbsp;<small style="font-size:0.58em;opacity:0.8;">(alias ok)</small></div>
+        <div class="fconn" data-fi="6" data-di="6"></div>
+        <div class="fnode" data-ni="7">8. LIMIT</div>
       </div>
     </div>
 
-  </div><!-- /flow-wrap -->
-
-  <div class="flow-replay" id="flowReplay">
-    <button class="replay-btn" id="replayBtn">↺ Replay Animation</button>
   </div>
-</div><!-- /sql-order-flow -->
+
+  <div class="flow-controls" id="flowControls">
+    <button class="btn-replay" id="btnReplay">↺ &nbsp;Replay</button>
+  </div>
+</div>
 
 <script>
-(function() {
-  const STEP_DELAY  = 260;  // ms between each node reveal
-  const CONN_OFFSET = 130;  // ms after a node before its connector appears
+(function () {
+  /* ── Inject connector SVGs ── */
+  const tpl = document.getElementById('tpl-conn');
+  document.querySelectorAll('.fconn').forEach(el => {
+    el.appendChild(tpl.content.cloneNode(true));
+  });
 
-  function getNodes(colId)       { return Array.from(document.querySelectorAll(`#${colId} .flow-node`)); }
-  function getConnectors(colId)  { return Array.from(document.querySelectorAll(`#${colId} .flow-connector`)); }
+  /* ── Timing config ── */
+  const NODE_STEP  = 280;  // ms between successive node reveals
+  const CONN_LAG   = 100;  // ms after node before connector appears
+  const HDR_DELAY  = 100;  // ms before headers appear
 
-  function resetAll() {
-    ['writeHeader','execHeader'].forEach(id => {
-      const el = document.getElementById(id);
-      el.classList.remove('visible');
-    });
-    ['writeCol','execCol'].forEach(id => {
-      const el = document.getElementById(id);
-      el.classList.remove('flow-active');
-    });
-    ['writeNodes','execNodes'].forEach(id => {
-      getNodes(id).forEach(n => n.classList.remove('visible'));
-      getConnectors(id).forEach(c => c.classList.remove('visible'));
-    });
-    document.getElementById('flowReplay').classList.remove('visible');
+  /* ── Selectors ── */
+  const hdrWrite   = document.getElementById('hdrWrite');
+  const hdrExec    = document.getElementById('hdrExec');
+  const colWrite   = document.getElementById('colWrite');
+  const colExec    = document.getElementById('colExec');
+  const controls   = document.getElementById('flowControls');
+  const btnReplay  = document.getElementById('btnReplay');
+
+  const writeNodes = [...document.querySelectorAll('#bodyWrite .fnode')];
+  const writeConns = [...document.querySelectorAll('#bodyWrite .fconn')];
+  const execNodes  = [...document.querySelectorAll('#bodyExec  .fnode')];
+  const execConns  = [...document.querySelectorAll('#bodyExec  .fconn')];
+
+  /* ── Reset everything ── */
+  function reset() {
+    [hdrWrite, hdrExec].forEach(el => el.classList.remove('vis'));
+    colWrite.classList.remove('flow-active');
+    colExec.classList.remove('flow-active');
+    controls.classList.remove('vis');
+    [...writeNodes, ...writeConns, ...execNodes, ...execConns]
+      .forEach(el => el.classList.remove('vis'));
   }
 
-  function runAnimation() {
-    resetAll();
+  /* ── Run animation ── */
+  function run() {
+    reset();
+    const timers = [];
 
-    // Headers appear first
-    setTimeout(() => {
-      document.getElementById('writeHeader').classList.add('visible');
-      document.getElementById('execHeader').classList.add('visible');
-    }, 100);
+    /* headers */
+    timers.push(setTimeout(() => {
+      hdrWrite.classList.add('vis');
+      hdrExec.classList.add('vis');
+    }, HDR_DELAY));
 
-    // Animate LEFT column nodes (7 nodes, 6 connectors)
-    const writeNodes = getNodes('writeNodes');
-    const writeConns = getConnectors('writeNodes');
+    /* stagger left column nodes + connectors */
     writeNodes.forEach((node, i) => {
-      const t = 400 + i * (STEP_DELAY + CONN_OFFSET);
-      setTimeout(() => node.classList.add('visible'), t);
+      const t = 400 + i * NODE_STEP;
+      timers.push(setTimeout(() => node.classList.add('vis'), t));
       if (writeConns[i]) {
-        setTimeout(() => writeConns[i].classList.add('visible'), t + STEP_DELAY);
+        timers.push(setTimeout(() => writeConns[i].classList.add('vis'), t + CONN_LAG));
       }
     });
 
-    // Animate RIGHT column nodes (8 nodes, 7 connectors) — slight offset
-    const execNodes = getNodes('execNodes');
-    const execConns = getConnectors('execNodes');
+    /* stagger right column — slightly offset so both feel alive simultaneously */
     execNodes.forEach((node, i) => {
-      const t = 550 + i * (STEP_DELAY + CONN_OFFSET);
-      setTimeout(() => node.classList.add('visible'), t);
+      const t = 520 + i * NODE_STEP;
+      timers.push(setTimeout(() => node.classList.add('vis'), t));
       if (execConns[i]) {
-        setTimeout(() => execConns[i].classList.add('visible'), t + STEP_DELAY);
+        timers.push(setTimeout(() => execConns[i].classList.add('vis'), t + CONN_LAG));
       }
     });
 
-    // After all nodes revealed → enable marching ants
-    const totalTime = 550 + (execNodes.length - 1) * (STEP_DELAY + CONN_OFFSET) + STEP_DELAY + 300;
-    setTimeout(() => {
-      document.getElementById('writeCol').classList.add('flow-active');
-      document.getElementById('execCol').classList.add('flow-active');
-    }, totalTime);
+    /* activate moving dots after all nodes appear */
+    const maxT = 520 + (execNodes.length - 1) * NODE_STEP + CONN_LAG + 350;
+    timers.push(setTimeout(() => {
+      colWrite.classList.add('flow-active');
+      colExec.classList.add('flow-active');
+    }, maxT));
 
-    // Show replay button
-    setTimeout(() => {
-      document.getElementById('flowReplay').classList.add('visible');
-    }, totalTime + 200);
+    /* show replay button */
+    timers.push(setTimeout(() => controls.classList.add('vis'), maxT + 250));
   }
 
-  // IntersectionObserver — trigger when diagram enters viewport
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        runAnimation();
-        observer.disconnect(); // only trigger once on scroll-in
-      }
-    });
+  /* ── IntersectionObserver: auto-start on scroll-into-view ── */
+  const io = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { run(); io.disconnect(); }
   }, { threshold: 0.15 });
+  io.observe(document.getElementById('flowDiagram'));
 
-  observer.observe(document.getElementById('sqlOrderFlow'));
-
-  // Replay button
-  document.getElementById('replayBtn').addEventListener('click', runAnimation);
+  /* ── Replay button ── */
+  btnReplay.addEventListener('click', run);
 })();
 </script>
 
