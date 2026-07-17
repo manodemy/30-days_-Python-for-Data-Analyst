@@ -30,3 +30,8 @@ desktop.ini
 .env
 .env.*
 .env*
+
+# Ignore Next.js build outputs
+.next
+.next/
+next-env.d.ts
