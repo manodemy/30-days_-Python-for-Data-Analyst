@@ -1111,59 +1111,287 @@ WHERE department = 'Engineering';
         <h3>The Logical SQL Execution Order</h3>
         <p>Understanding <em>why</em> aliases work in some clauses but not others requires understanding the order in which SQL engines logically process a query. This is one of the most-tested SQL interview topics:</p>
 
-        <div class="rdbms-infographic exec-order-infographic" style="padding: 16px 20px;">
-          <div class="info-title" style="font-size: 0.9rem; margin-bottom: 16px;">
-            📝 SQL WRITING VS. LOGICAL EXECUTION ORDER
-          </div>
-          
-          <div class="exec-order-row-layout">
-            
-            <div class="info-card info-card--blue exec-order-card">
-              <div class="info-card-header" style="min-height: 52px; font-size: 0.74rem; line-height: 1.25;">📝 WRITING ORDER<br/>(SYNTAX)</div>
-              <div class="exec-flow-container">
-                <div class="exec-pill exec-pill--writing-active">SELECT</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill">FROM</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill">WHERE</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill">GROUP BY</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill">HAVING</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill">ORDER BY</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill">LIMIT</div>
+        <!-- ── Animated SQL Order Flow Diagram ── -->
+        <div class="sof-wrap" id="sofDiagram-t03">
+          <style>
+            /* ── Scoped to .sof-wrap — no global conflicts ── */
+            .sof-wrap { width: 100%; margin: 4px 0 16px; }
+            .sof-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 16px;
+              align-items: start;
+            }
+            .sof-col {
+              background: rgba(255,255,255,0.03);
+              border: 1px solid rgba(255,255,255,0.08);
+              border-radius: 14px;
+              overflow: hidden;
+            }
+            /* Header */
+            .sof-hdr {
+              padding: 12px 14px;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              opacity: 0;
+              transform: translateY(-5px);
+              transition: opacity 0.45s ease, transform 0.45s ease;
+            }
+            .sof-hdr.sof-vis { opacity: 1; transform: none; }
+            .sof-hdr--blue { background: linear-gradient(120deg,#1e3a8a,#2563eb); }
+            .sof-hdr--teal { background: linear-gradient(120deg,#0f766e,#0d9488); }
+            .sof-hdr-icon { font-size: 1rem; flex-shrink: 0; }
+            .sof-hdr-text { display: flex; flex-direction: column; gap: 1px; }
+            .sof-hdr-title {
+              font-family: 'JetBrains Mono', monospace;
+              font-size: 0.65rem;
+              font-weight: 700;
+              color: #fff;
+              letter-spacing: 0.07em;
+              text-transform: uppercase;
+            }
+            .sof-hdr-sub {
+              font-size: 0.55rem;
+              color: rgba(255,255,255,0.6);
+              font-weight: 500;
+              letter-spacing: 0.04em;
+              text-transform: uppercase;
+            }
+            /* Body */
+            .sof-body {
+              padding: 12px 10px 14px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+            }
+            /* Node */
+            .sof-node {
+              width: 100%;
+              background: rgba(255,255,255,0.04);
+              border: 1px solid rgba(255,255,255,0.1);
+              border-radius: 8px;
+              padding: 9px 10px;
+              font-family: 'JetBrains Mono', monospace;
+              font-size: 0.64rem;
+              font-weight: 600;
+              color: #94a3b8;
+              text-align: center;
+              letter-spacing: 0.04em;
+              opacity: 0;
+              transform: translateY(-7px);
+              transition: opacity 0.36s ease, transform 0.36s ease,
+                          box-shadow 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+            }
+            .sof-node.sof-vis { opacity: 1; transform: none; }
+            .sof-node--dash { border-style: dashed; border-color: rgba(255,255,255,0.16); }
+            .sof-node--blue {
+              border-color: #3b82f6;
+              color: #93c5fd;
+              background: rgba(59,130,246,0.08);
+            }
+            .sof-node--blue.sof-vis { animation: sofGlowBlue 2.6s ease-in-out infinite; }
+            .sof-node--green {
+              border-color: #10b981;
+              color: #6ee7b7;
+              background: rgba(16,185,129,0.08);
+            }
+            .sof-node--green.sof-vis { animation: sofGlowGreen 2.6s ease-in-out infinite; }
+            /* Connector */
+            .sof-conn {
+              position: relative;
+              height: 42px;
+              width: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: flex-start;
+              opacity: 0;
+              transition: opacity 0.3s ease;
+              overflow: visible;
+            }
+            .sof-conn.sof-vis { opacity: 1; }
+            .sof-conn svg { width: 22px; height: 42px; overflow: visible; }
+            .sof-stem { stroke: rgba(71,85,105,0.55); stroke-width: 1.5; stroke-linecap: round; }
+            .sof-ring { fill: rgba(8,14,28,0.92); stroke: rgba(71,85,105,0.55); stroke-width: 1.4; }
+            .sof-chev { stroke: #64748b; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+            /* Moving dot */
+            .sof-dot {
+              transform: translateY(0px);
+              transform-box: fill-box;
+              transform-origin: center top;
+              animation: sofDotTravel 1.35s cubic-bezier(0.4,0,0.6,1) infinite;
+              animation-play-state: paused;
+              opacity: 0;
+            }
+            .sof-col--write .sof-dot { fill: #38bdf8; filter: drop-shadow(0 0 2.5px rgba(56,189,248,0.85)); }
+            .sof-col--exec  .sof-dot { fill: #34d399; filter: drop-shadow(0 0 2.5px rgba(52,211,153,0.85)); }
+            .sof-col.sof-active .sof-dot { animation-play-state: running; }
+            .sof-col--write.sof-active .sof-ring { stroke: rgba(56,189,248,0.4); }
+            .sof-col--write.sof-active .sof-chev { stroke: #38bdf8; }
+            .sof-col--exec.sof-active  .sof-ring { stroke: rgba(52,211,153,0.4); }
+            .sof-col--exec.sof-active  .sof-chev { stroke: #34d399; }
+            .sof-ring, .sof-chev { transition: stroke 0.5s ease; }
+            /* stagger dots */
+            .sof-conn[data-di="0"] .sof-dot { animation-delay: 0.00s; }
+            .sof-conn[data-di="1"] .sof-dot { animation-delay: 0.18s; }
+            .sof-conn[data-di="2"] .sof-dot { animation-delay: 0.36s; }
+            .sof-conn[data-di="3"] .sof-dot { animation-delay: 0.54s; }
+            .sof-conn[data-di="4"] .sof-dot { animation-delay: 0.72s; }
+            .sof-conn[data-di="5"] .sof-dot { animation-delay: 0.90s; }
+            .sof-conn[data-di="6"] .sof-dot { animation-delay: 1.08s; }
+            /* keyframes */
+            @keyframes sofDotTravel {
+              0%   { transform: translateY(0px);  opacity: 0; }
+              7%   { opacity: 1; }
+              86%  { opacity: 1; }
+              100% { transform: translateY(26px); opacity: 0; }
+            }
+            @keyframes sofGlowBlue {
+              0%,100% { box-shadow: 0 0 7px rgba(59,130,246,0.25); border-color: #3b82f6; }
+              50%     { box-shadow: 0 0 18px rgba(59,130,246,0.6), 0 0 36px rgba(59,130,246,0.12); border-color: #60a5fa; }
+            }
+            @keyframes sofGlowGreen {
+              0%,100% { box-shadow: 0 0 7px rgba(16,185,129,0.25); border-color: #10b981; }
+              50%     { box-shadow: 0 0 18px rgba(16,185,129,0.6), 0 0 36px rgba(16,185,129,0.12); border-color: #34d399; }
+            }
+            /* replay */
+            .sof-controls { margin-top: 14px; display: flex; justify-content: center; opacity: 0; transition: opacity 0.4s ease; }
+            .sof-controls.sof-vis { opacity: 1; }
+            .sof-replay-btn {
+              background: transparent;
+              border: 1px solid rgba(56,189,248,0.3);
+              border-radius: 7px;
+              color: #38bdf8;
+              font-family: 'Inter', sans-serif;
+              font-size: 0.68rem;
+              font-weight: 600;
+              letter-spacing: 0.04em;
+              padding: 7px 20px;
+              cursor: pointer;
+              transition: background 0.2s, border-color 0.2s, transform 0.15s;
+            }
+            .sof-replay-btn:hover { background: rgba(56,189,248,0.09); border-color: rgba(56,189,248,0.55); transform: translateY(-1px); }
+            /* mobile */
+            @media (max-width: 500px) {
+              .sof-grid { grid-template-columns: 1fr; gap: 12px; }
+              .sof-node { font-size: 0.6rem; padding: 8px 8px; }
+              .sof-hdr-title { font-size: 0.6rem; }
+            }
+          </style>
+
+          <div class="sof-grid">
+            <!-- ── LEFT: Writing Order ── -->
+            <div class="sof-col sof-col--write" id="sofWrite-t03">
+              <div class="sof-hdr sof-hdr--blue" id="sofHdrW-t03">
+                <span class="sof-hdr-icon">📄</span>
+                <div class="sof-hdr-text">
+                  <span class="sof-hdr-title">Writing Order</span>
+                  <span class="sof-hdr-sub">Syntax</span>
+                </div>
+              </div>
+              <div class="sof-body" id="sofBodyW-t03">
+                <div class="sof-node sof-node--dash">SELECT</div>
+                <div class="sof-conn" data-di="0"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node">FROM</div>
+                <div class="sof-conn" data-di="1"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node">WHERE</div>
+                <div class="sof-conn" data-di="2"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node">GROUP BY</div>
+                <div class="sof-conn" data-di="3"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node">HAVING</div>
+                <div class="sof-conn" data-di="4"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node">ORDER BY</div>
+                <div class="sof-conn" data-di="5"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node">LIMIT</div>
               </div>
             </div>
 
-            <div class="info-card info-card--green exec-order-card">
-              <div class="info-card-header" style="min-height: 52px; font-size: 0.74rem; line-height: 1.25;">⚙️ EXECUTION ORDER<br/>(LOGICAL)</div>
-              <div class="exec-flow-container">
-                <div class="exec-pill">1. FROM / JOIN</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill">2. WHERE</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill">3. GROUP BY</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill">4. HAVING</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill exec-pill--select">5. SELECT (alias defined)</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill">6. DISTINCT</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill exec-pill--order">7. ORDER BY (alias ok)</div>
-                <div class="exec-arrow">↓</div>
-                <div class="exec-pill">8. LIMIT</div>
+            <!-- ── RIGHT: Execution Order ── -->
+            <div class="sof-col sof-col--exec" id="sofExec-t03">
+              <div class="sof-hdr sof-hdr--teal" id="sofHdrE-t03">
+                <span class="sof-hdr-icon">⚙️</span>
+                <div class="sof-hdr-text">
+                  <span class="sof-hdr-title">Execution Order</span>
+                  <span class="sof-hdr-sub">Logical</span>
+                </div>
+              </div>
+              <div class="sof-body" id="sofBodyE-t03">
+                <div class="sof-node">1. FROM / JOIN</div>
+                <div class="sof-conn" data-di="0"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node">2. WHERE</div>
+                <div class="sof-conn" data-di="1"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node">3. GROUP BY</div>
+                <div class="sof-conn" data-di="2"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node">4. HAVING</div>
+                <div class="sof-conn" data-di="3"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node sof-node--blue">5. SELECT <small style="font-size:0.54em;opacity:0.8;">(alias defined)</small></div>
+                <div class="sof-conn" data-di="4"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node">6. DISTINCT</div>
+                <div class="sof-conn" data-di="5"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node sof-node--green">7. ORDER BY <small style="font-size:0.54em;opacity:0.8;">(alias ok)</small></div>
+                <div class="sof-conn" data-di="6"><svg viewBox="0 0 22 42" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="26" class="sof-stem"/><circle cx="11" cy="34" r="6.5" class="sof-ring"/><polyline points="9,31.5 11,35.5 13,31.5" class="sof-chev"/><circle cx="11" cy="2" r="2.8" class="sof-dot"/></svg></div>
+                <div class="sof-node">8. LIMIT</div>
               </div>
             </div>
-
           </div>
-          
-          <p style="font-size: 0.78rem; color: #475569; margin: 16px 0 0 0; line-height: 1.5; text-align: left;">
-            💡 Notice that <strong>SELECT</strong> is written 1st but executed 5th! This explains why aliases defined in SELECT are <em>not visible</em> during filtering steps like <code>WHERE</code> (executed 2nd).
-          </p>
+
+          <div class="sof-controls" id="sofCtrl-t03">
+            <button class="sof-replay-btn" id="sofReplay-t03">↺ &nbsp;Replay</button>
+          </div>
         </div>
+
+        <script>
+        (function(){
+          var ID = 't03';
+          var hdrW  = document.getElementById('sofHdrW-'  + ID);
+          var hdrE  = document.getElementById('sofHdrE-'  + ID);
+          var colW  = document.getElementById('sofWrite-' + ID);
+          var colE  = document.getElementById('sofExec-'  + ID);
+          var ctrl  = document.getElementById('sofCtrl-'  + ID);
+          var btn   = document.getElementById('sofReplay-'+ ID);
+          var wNodes= [].slice.call(colW.querySelectorAll('.sof-node'));
+          var wConns= [].slice.call(colW.querySelectorAll('.sof-conn'));
+          var eNodes= [].slice.call(colE.querySelectorAll('.sof-node'));
+          var eConns= [].slice.call(colE.querySelectorAll('.sof-conn'));
+          var STEP=270, LAG=110, timers=[];
+
+          function reset(){
+            timers.forEach(clearTimeout); timers=[];
+            [hdrW,hdrE].forEach(function(e){e.classList.remove('sof-vis');});
+            [colW,colE].forEach(function(e){e.classList.remove('sof-active');});
+            ctrl.classList.remove('sof-vis');
+            [].concat(wNodes,wConns,eNodes,eConns).forEach(function(e){e.classList.remove('sof-vis');});
+          }
+
+          function run(){
+            reset();
+            timers.push(setTimeout(function(){ hdrW.classList.add('sof-vis'); hdrE.classList.add('sof-vis'); },100));
+            wNodes.forEach(function(n,i){
+              timers.push(setTimeout(function(){ n.classList.add('sof-vis'); },380+i*(STEP+LAG)));
+              if(wConns[i]) timers.push(setTimeout(function(){ wConns[i].classList.add('sof-vis'); },380+i*(STEP+LAG)+STEP));
+            });
+            eNodes.forEach(function(n,i){
+              timers.push(setTimeout(function(){ n.classList.add('sof-vis'); },500+i*(STEP+LAG)));
+              if(eConns[i]) timers.push(setTimeout(function(){ eConns[i].classList.add('sof-vis'); },500+i*(STEP+LAG)+STEP));
+            });
+            var done=500+(eNodes.length-1)*(STEP+LAG)+STEP+320;
+            timers.push(setTimeout(function(){ colW.classList.add('sof-active'); colE.classList.add('sof-active'); },done));
+            timers.push(setTimeout(function(){ ctrl.classList.add('sof-vis'); },done+250));
+          }
+
+          // IntersectionObserver — auto-start on scroll into view
+          var io=new IntersectionObserver(function(entries){
+            if(entries[0].isIntersecting){ run(); io.disconnect(); }
+          },{threshold:0.15});
+          io.observe(document.getElementById('sofDiagram-'+ID));
+
+          btn.addEventListener('click', run);
+        })();
+        </script>
+
+        <p style="font-size: 0.78rem; color: #64748b; margin: 0 0 16px 0; line-height: 1.6; text-align: left;">
+          💡 Notice <strong style="color:#e2e8f0;">SELECT</strong> is written 1st but executed 5th! This is why aliases defined in <code>SELECT</code> are <em>not visible</em> during <code>WHERE</code> (step 2) — but are available in <code>ORDER BY</code> (step 7).
+        </p>
 
         <div class="vs-block">
           <div class="vs-card vs-card--bad">
