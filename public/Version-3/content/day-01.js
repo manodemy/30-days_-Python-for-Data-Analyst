@@ -964,10 +964,10 @@ WHERE department = 'Engineering';
       html: `
         <h2>🏷️ 03. Column Aliasing &amp; the AS Keyword</h2>
 
-        <h3>What is Column Aliasing?</h3>
+        <h3 id="columnAliasingIntro">What is Column Aliasing?</h3>
         <p><strong>Column Aliasing</strong> temporarily renames a column or expression in the query's output result set using the <code>AS</code> keyword. The alias exists <em>only for the duration of that query</em> — it never modifies the underlying table schema. It is one of the most frequently used SQL features in data analysis, reporting, and API development.</p>
 
-        <div class="rdbms-infographic">
+        <div class="rdbms-infographic" id="aliasingBenefits">
           <div class="info-columns">
             <div class="info-card info-card--blue">
               <div class="info-card-header">READABLE HEADERS</div>
@@ -996,7 +996,7 @@ WHERE department = 'Engineering';
           </div>
         </div>
 
-        <h3>Syntax — Three Valid Forms</h3>
+        <h3 id="aliasingSyntax">Syntax — Three Valid Forms</h3>
         <div class="syntax-cards-container">
           <!-- Form 1 -->
           <div class="syntax-card syntax-card--recommended">
@@ -1052,7 +1052,7 @@ WHERE department = 'Engineering';
           </div>
         </div>
 
-        <div class="relation-infographic" style="padding: 16px 20px;">
+        <div class="relation-infographic" id="aliasingWorksDiagram" style="padding: 16px 20px;">
           <div class="explanation-title">How Aliasing Works</div>
           <div class="relation-visual" style="align-items: center;">
             <div class="relation-node" id="aliasRawExpr" style="flex: none;">
@@ -1072,7 +1072,7 @@ WHERE department = 'Engineering';
           </div>
         </div>
 
-        <div class="db-mock-table-wrap">
+        <div class="db-mock-table-wrap" id="aliasingMockTable">
           <table class="db-table-mock">
             <thead>
               <tr>
@@ -1089,7 +1089,7 @@ WHERE department = 'Engineering';
           </table>
         </div>
 
-        <h3>⚠️ Quoting Rules — Single vs. Double Quotes</h3>
+        <h3 id="aliasingQuoting">⚠️ Quoting Rules — Single vs. Double Quotes</h3>
         <div class="vs-block">
           <div class="vs-card" style="border-left: 4px solid #10b981;">
             <h4 style="color: #047857;">🟢 Single Quotes <code style="font-size: 0.75rem;">' '</code></h4>
@@ -1106,14 +1106,14 @@ WHERE department = 'Engineering';
             </div>
           </div>
         </div>
-        <p style="font-size: 0.8rem; color: #7c2d12; background: #fff7ed; border: 1px solid #fed7aa; border-left: 4px solid #f97316; border-radius: 6px; padding: 10px 14px; margin: 12px 0;">⚠️ Using single quotes for an alias (<code>SELECT name AS 'Employee Name'</code>) is an error in standard SQL. Some databases accept it but it has undefined behavior — avoid it entirely.</p>
+        <div class="warn-box" style="margin: 12px 0;">⚠️ Using single quotes for an alias (<code>SELECT name AS 'Employee Name'</code>) is an error in standard SQL. Some databases accept it but it has undefined behavior — avoid it entirely.</div>
 
         <h3>The Logical SQL Execution Order</h3>
         <p>Understanding <em>why</em> aliases work in some clauses but not others requires understanding the order in which SQL engines logically process a query. This is one of the most-tested SQL interview topics:</p>
 
         <!-- ── Animated SQL Order Flow Diagram (Premium Clean Version) ── -->
         <!-- ── Animated SQL Order Flow Diagram (Compact Dark Version) ── -->
-        <div class="sof-wrap" id="sofDiagram-t03">
+        <div class="sof-wrap" id="aliasingLogicalOrder">
           <style>
             .sof-wrap{width:100%;margin:4px 0 12px}
             .sof-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch}
@@ -1260,11 +1260,11 @@ WHERE department = 'Engineering';
         <p style="font-size:0.78rem;color:#64748b;margin:0 0 16px 0;line-height:1.6;text-align:left;">
           💡 Notice <strong style="color:#e2e8f0;">SELECT</strong> is written 1st but executed 5th! This is why aliases defined in <code>SELECT</code> are <em>not visible</em> during <code>WHERE</code> (step 2) — but are available in <code>ORDER BY</code> (step 7).
         </p>
-        <div class="vs-block">
+        <div class="vs-block" id="aliasingWhereVS">
           <div class="vs-card vs-card--bad">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
               <h4 style="margin: 0;">❌ Cannot Use Alias in WHERE</h4>
-              <span class="syntax-badge" style="background: #fef2f2; color: #dc2626; border: 1px solid #fecaca;">Syntax Error</span>
+              <span class="syntax-badge" style="background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 600;">Syntax Error</span>
             </div>
             <div class="syntax-card-body" style="border-radius: 8px; overflow: hidden;">
               <pre><code class="sql"><span class="sql-keyword">SELECT</span> salary / <span class="sql-number">12.0</span> <span class="sql-keyword">AS</span> monthly_rate
@@ -1297,7 +1297,7 @@ WHERE department = 'Engineering';
           </div>
         </div>
 
-        <div class="pro-tip-box">
+        <div class="pro-tip-box" id="aliasingOrderByTip">
           <strong>💡 Pro Tip — Aliases in ORDER BY:</strong> Most databases (SQLite, PostgreSQL, MySQL) allow aliases in the <code>ORDER BY</code> clause as a convenience extension — even though logically ORDER BY executes before SELECT. This is an intentional database-engine exception, not standard SQL. Always confirm behavior in your specific RDBMS.
           <div class="syntax-card-body" style="border-radius: 8px; overflow: hidden; margin-top: 10px;">
             <pre><code class="sql"><span class="sql-keyword">SELECT</span> name, salary * <span class="sql-number">12</span> <span class="sql-keyword">AS</span> yearly_salary
@@ -1309,7 +1309,7 @@ WHERE department = 'Engineering';
         <div class="slide-section">
           <div class="interview-box">
             <h4 style="margin: 0; margin-bottom: 12px;">🎓 Interview Q&amp;A</h4>
-            <div id="iqAliasWhere">
+            <div id="iqReferenceAlias">
               <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
                 <p style="margin: 0; flex: 1;"><strong>Q: Can you reference an alias in the WHERE clause? What about ORDER BY?</strong></p>
               </div>
@@ -1323,7 +1323,7 @@ WHERE department = 'Engineering';
               <p><em>A: A column alias (e.g., <code>salary AS monthly_pay</code>) renames a column in the output result set. A table alias (e.g., <code>FROM employees AS e</code>) renames a table within the query, letting you use shorthand references like <code>e.name</code> instead of <code>employees.name</code>. Table aliases are essential in self-joins where the same table is referenced twice and must be distinguished.</em></p>
             </div>
 
-            <div id="iqLogicalSqlExecutionOrder">
+            <div id="iqLogicalOrderExplanation">
               <div class="heading-with-audio" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px;">
                 <p style="margin: 0; flex: 1;"><strong>Q: What is the logical SQL execution order and why does it matter?</strong></p>
               </div>

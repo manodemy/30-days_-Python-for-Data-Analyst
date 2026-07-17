@@ -556,6 +556,15 @@ function renderSideSlide() {
   if (slideBodyText) {
     slideBodyText.innerHTML = bodyHtml;
     autoHighlightSql(slideBodyText);
+    // Re-execute any <script> tags injected via innerHTML (browser security blocks them)
+    slideBodyText.querySelectorAll('script').forEach(function(oldScript) {
+      const newScript = document.createElement('script');
+      Array.from(oldScript.attributes).forEach(function(attr) {
+        newScript.setAttribute(attr.name, attr.value);
+      });
+      newScript.textContent = oldScript.textContent;
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
   }
   
   const slideContent = document.getElementById('slideContent');

@@ -959,70 +959,32 @@ a { color: var(--cyan); text-decoration: none; }
   font-size: 0.74rem !important;
   display: inline !important;
   white-space: pre-wrap !important;
-  word-break: break-word !important;
-}
-
-/* Code blocks inside pre containers (NO white background highlights) */
-.slide-content pre code,
-.slide-content pre span,
-.slide-section pre code,
-.slide-section pre span,
-.vs-card pre code,
-.vs-card pre span,
-.syntax-card-body code,
-.syntax-card-body span,
-pre code,
-pre span {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-}
-
-.slide-content pre {
-  background: #282a36 !important; /* Dracula theme background */
-  border: 1px solid #343746 !important;
-  border-radius: 8px;
-  padding: 14px 16px !important; /* Clean padding, 3 dots removed */
-  margin: 14px 0;
-  overflow-x: auto;
-  font-family: 'JetBrains Mono', 'Fira Code', var(--mono), monospace !important;
-  font-size: 0.78rem !important;
-  line-height: 1.5;
-  color: #e2e8f0 !important;
-  position: relative;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
-}
-.slide-content pre::after {
-  display: none !important;
-  content: none !important;
-}
-.slide-content .info-box {
-  background: #f0fdfa !important;
-  border: 1px solid #ccfbf1 !important;
+  word-break: break-word !important;.slide-content .info-box {
+  background: rgba(13, 148, 136, 0.05) !important;
+  border: 1px solid rgba(13, 148, 136, 0.12) !important;
   border-left: 4px solid #0d9488 !important;
   border-radius: var(--radius-sm);
   padding: 12px 16px;
   margin: 10px 0;
-  font-size: 0.82rem;
-  color: #0f766e !important;
+  font-size: 0.80rem;
+  color: #ccfbf1 !important;
   text-align: justify;
 }
 .slide-content .info-box code {
-  background: #ccfbf1 !important;
-  color: #0f766e !important;
-  border-color: #99f6e4 !important;
+  background: rgba(13, 148, 136, 0.15) !important;
+  color: #2dd4bf !important;
+  border: 1px solid rgba(13, 148, 136, 0.3) !important;
+  border-radius: 4px !important;
 }
 .slide-content .warn-box {
-  background: #fef2f2 !important;
-  border: 1px solid #fee2e2 !important;
-  border-left: 4px solid #dc2626 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+  border: 1px solid rgba(239, 68, 68, 0.12) !important;
+  border-left: 4px solid #ef4444 !important;
   border-radius: var(--radius-sm);
   padding: 12px 16px;
   margin: 16px 0 !important;
-  font-size: 0.82rem;
-  color: #b91c1c !important;
+  font-size: 0.80rem;
+  color: #fee2e2 !important;
   text-align: justify;
 }
 /* Improved Slide Notes Elements */
@@ -1039,23 +1001,23 @@ pre span {
 }
 .slide-content .concept-badge--primary {
   background: rgba(14, 165, 233, 0.08) !important;
-  color: #0284c7 !important;
+  color: #38bdf8 !important;
   border: 1px solid rgba(14, 165, 233, 0.2);
 }
 .slide-content .concept-badge--success {
   background: rgba(16, 185, 129, 0.08) !important;
-  color: #059669 !important;
+  color: #34d399 !important;
   border: 1px solid rgba(16, 185, 129, 0.2);
 }
 .slide-content .concept-badge--amber {
   background: rgba(245, 158, 11, 0.08) !important;
-  color: #d97706 !important;
+  color: #fbbf24 !important;
   border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
 .slide-content .section-card {
-  background: #f8fafc !important;
-  border: 1px solid #e2e8f0;
+  background: rgba(13, 20, 38, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
   border-radius: var(--radius);
   padding: 16px;
   margin: 14px 0;
@@ -1063,7 +1025,7 @@ pre span {
 .slide-content .section-card h4 {
   font-size: 0.85rem;
   font-weight: 700;
-  color: #0f172a !important;
+  color: #f1f5f9 !important;
   margin-bottom: 8px;
   margin-top: 0;
   display: flex;
@@ -1072,18 +1034,18 @@ pre span {
 }
 
 .slide-content .interview-box {
-  background: #f8fafc !important;
-  border: 1px solid #e2e8f0 !important;
+  background: rgba(124, 58, 237, 0.03) !important;
+  border: 1px solid rgba(124, 58, 237, 0.12) !important;
   border-left: 4px solid #8b5cf6 !important;
   border-radius: 12px;
   padding: 16px 18px;
   margin: 16px 0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 .slide-content .interview-box h4 {
   font-size: 0.9rem;
   font-weight: 750;
-  color: #5b21b6 !important;
+  color: #a78bfa !important;
   margin: 0 0 12px 0 !important;
   display: flex;
   align-items: center;
@@ -1092,17 +1054,17 @@ pre span {
 }
 /* Individual Q&A Card Rows */
 .slide-content .interview-box > div {
-  background: #ffffff !important;
-  border: 1px solid #f1f5f9;
+  background: rgba(13, 20, 38, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
   border-radius: 10px;
   padding: 12px 14px;
   margin: 10px 0;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.01);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   transition: all 0.22s ease-in-out;
 }
 .slide-content .interview-box > div:hover {
-  border-color: #ddd6fe;
-  box-shadow: 0 4px 10px rgba(124,58,237,0.05);
+  border-color: rgba(124, 58, 237, 0.3) !important;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.1);
   transform: translateY(-1px);
 }
 .slide-content .interview-box hr {
@@ -1113,7 +1075,7 @@ pre span {
   text-align: justify;
 }
 .slide-content .interview-box p strong {
-  color: #6d28d9 !important;
+  color: #c084fc !important;
   font-size: 0.85rem;
   font-weight: 700;
   line-height: 1.5;
@@ -1122,28 +1084,27 @@ pre span {
 }
 .slide-content .interview-box p em {
   font-style: normal !important;
-  color: #334155 !important;
+  color: #94a3b8 !important;
   font-size: 0.82rem;
   line-height: 1.55;
   display: block;
   margin-top: 8px;
-  border-top: 1px solid #f1f5f9;
-  padding-top: 8px;
 }
 
 .slide-content .pro-tip-box {
-  background: #fffbeb !important;
-  border: 1px solid #fef3c7 !important;
-  border-left: 4px solid #d97706 !important;
+  background: rgba(245, 158, 11, 0.05) !important;
+  border: 1px solid rgba(245, 158, 11, 0.12) !important;
+  border-left: 4px solid #f59e0b !important;
   border-radius: var(--radius-sm);
   padding: 12px 16px;
   margin: 14px 0;
-  font-size: 0.82rem;
-  color: #78350f !important;
+  font-size: 0.80rem;
+  color: #fef3c7 !important;
   text-align: justify;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 .slide-content .pro-tip-box strong {
-  color: #b45309 !important;
+  color: #fbbf24 !important;
 }
 
 /* Callout Box Nesting & Monospace Scaling Rules to Prevent Cropping/Gaps */
@@ -1164,9 +1125,9 @@ pre span {
 .slide-content .pro-tip-box code {
   font-size: 0.68rem !important;
   padding: 2px 4px !important;
-  background: rgba(245, 158, 11, 0.08) !important;
-  color: #b45309 !important;
-  border: 1px solid rgba(245, 158, 11, 0.18) !important;
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fde047 !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
   border-radius: 4px !important;
 }
 .slide-content .warn-box code {
@@ -1234,68 +1195,70 @@ pre span {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 16px;
   margin: 16px 0;
+  align-items: stretch;
 }
 .slide-content .vs-card {
-  background: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
+  background: rgba(13, 20, 38, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
   border-radius: 12px;
-  padding: 18px;
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
-  color: #334155 !important;
+  padding: 16px 18px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  color: #cbd5e1 !important;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
+  height: 100%;
   position: relative;
   overflow: hidden;
 }
 .slide-content .vs-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
-  border-color: #cbd5e1 !important;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.15) !important;
 }
 .slide-content .vs-card h4 {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
   margin-top: 0;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #1e293b !important;
+  color: #f1f5f9 !important;
   letter-spacing: -0.01em;
 }
 .slide-content .vs-card p,
 .slide-content .vs-card > span,
 .slide-content .vs-card p span {
-  color: #475569 !important;
-  font-size: 0.78rem !important;
+  color: #94a3b8 !important;
+  font-size: 0.76rem !important;
   line-height: 1.55 !important;
-  margin: 0 0 10px 0 !important;
+  margin: 0 0 8px 0 !important;
 }
 .slide-content .vs-card ul {
-  margin: 6px 0 14px 0 !important;
+  margin: 6px 0 12px 0 !important;
   padding-left: 20px !important;
   flex: 1;
 }
 .slide-content .vs-card li {
-  font-size: 0.78rem !important;
+  font-size: 0.76rem !important;
   line-height: 1.55 !important;
-  color: #475569 !important;
-  margin-bottom: 6px !important;
+  color: #94a3b8 !important;
+  margin-bottom: 5px !important;
 }
 .slide-content .vs-card pre {
-  background: #282a36 !important; /* Dracula theme background */
-  border: 1px solid #343746 !important;
+  background: rgba(30, 41, 59, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
   border-radius: 8px;
-  padding: 14px 16px !important; /* Clean padding, 3 dots removed */
+  padding: 12px 14px !important;
   font-family: 'JetBrains Mono', 'Fira Code', var(--mono), monospace !important;
-  font-size: 0.76rem !important;
-  line-height: 1.5 !important;
+  font-size: 0.74rem !important;
+  line-height: 1.45 !important;
   color: #e2e8f0 !important;
-  margin: 12px 0 0 0 !important;
+  margin: 10px 0 0 0 !important;
   overflow-x: auto;
   position: relative;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.35);
 }
 .slide-content .vs-card pre::after,
 .slide-content .vs-card--bad pre::after,
@@ -1304,12 +1267,12 @@ pre span {
   content: none !important;
 }
 .slide-content .vs-card small {
-  font-size: 0.74rem !important;
-  line-height: 1.5 !important;
+  font-size: 0.72rem !important;
+  line-height: 1.45 !important;
   color: #64748b !important;
   display: block;
   margin-top: 10px !important;
-  border-top: 1px dashed #e2e8f0;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
   padding-top: 8px;
 }
 .slide-content .vs-card-illustration {
