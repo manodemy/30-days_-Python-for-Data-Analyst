@@ -25,3 +25,8 @@ supabase/
 Thumbs.db
 .DS_Store
 desktop.ini
+
+# Ignore local environment variable files
+.env
+.env.*
+.env*
