@@ -2279,13 +2279,11 @@ function checkAndResumeTest(dayId) {
     const timeRemaining = attempt.timeRemaining - timeSpent;
     
     if (timeRemaining > 0) {
-      const resume = confirm(`Resume your in-progress test for ${dayId.replace('day', 'Day ')}? You have ${Math.floor(timeRemaining / 60)} minutes remaining.`);
-      if (resume) {
-        resumeTestAttempt(dayId, attempt, timeRemaining);
-        return;
-      }
+      // Auto-resume without blocking confirm dialog
+      resumeTestAttempt(dayId, attempt, timeRemaining);
+      return;
     }
-    // If expired or user cancelled, clear the attempt
+    // If expired, clear the attempt
     dp.testAttempt = null;
     ProgressManager.save();
   }
