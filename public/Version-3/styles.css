@@ -508,31 +508,32 @@ a { color: var(--cyan); text-decoration: none; }
   color: #ffffff !important;
 }
 .hdr-btn--autoplay {
-  background: rgba(6, 182, 212, 0.07) !important;
-  border: 1px solid rgba(6, 182, 212, 0.25) !important;
-  color: var(--cyan) !important;
-  border-radius: 100px !important;
+  background: #ef4444 !important; /* Premium YouTube-like Red */
+  border: 1px solid #dc2626 !important;
+  color: #ffffff !important;
+  border-radius: 6px !important;
   font-weight: 700 !important;
-  box-shadow: 0 0 10px rgba(6, 182, 212, 0.05);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 .hdr-btn--autoplay:hover {
-  background: var(--cyan) !important;
-  color: var(--bg) !important;
-  border-color: var(--cyan) !important;
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
+  background: #dc2626 !important;
+  color: #ffffff !important;
+  border-color: #b91c1c !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5) !important;
   transform: translateY(-1px);
 }
 .hdr-btn--autoplay.playing {
-  background: rgba(239, 68, 68, 0.1) !important;
-  color: #ef4444 !important;
-  border-color: rgba(239, 68, 68, 0.25) !important;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.05);
+  background: #dc2626 !important;
+  color: #ffffff !important;
+  border-color: #b91c1c !important;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.35) !important;
 }
 .hdr-btn--autoplay.playing:hover {
-  background: #ef4444 !important;
+  background: #b91c1c !important;
   color: #ffffff !important;
-  border-color: #ef4444 !important;
-  box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
+  border-color: #991b1b !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.5) !important;
 }
 .score-icon {
   display: inline-block;
@@ -2699,7 +2700,7 @@ pre span {
     padding: 1px 6px !important;
     font-size: 0.64rem !important;
     height: 22px !important;
-    border-radius: 11px !important;
+    border-radius: 5px !important;
     gap: 2px !important;
   }
   .hdr-btn--autoplay .btn-icon {
