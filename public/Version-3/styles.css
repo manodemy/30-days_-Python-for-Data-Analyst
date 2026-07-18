@@ -1,9 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
 /* ═══════════════════════════════════════════════════════════════
    Version-3: Scrimba SQL Sandbox — Complete Stylesheet
    ═══════════════════════════════════════════════════════════════ */
 
 /* ─── Design Tokens ─── */
 :root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
   --bg: #060913;
   --surface: #0b0f1a;
   --surface-2: #111827;
@@ -24,8 +30,8 @@
   --red-glow: rgba(239,68,68,0.15);
   --amber: #f59e0b;
   --amber-glow: rgba(245,158,11,0.15);
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font: var(--font-sans);
+  --mono: var(--font-mono);
   --radius: 10px;
   --radius-sm: 6px;
   --radius-lg: 14px;
@@ -50,6 +56,33 @@ body {
   flex-direction: column;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography & Readability Upgrades ─── */
+h1, h2, h3, h4, h5, h6,
+.slide-header h2,
+.slide-content h3,
+.test-title,
+.scorecard h2,
+.peek-title,
+.tab-btn,
+.selected-text,
+.day-picker-pill {
+  font-family: var(--font-display) !important;
+  letter-spacing: -0.025em !important;
+}
+.slide-content p,
+.slide-content li {
+  font-size: 0.86rem !important;
+  line-height: 1.68 !important;
+  letter-spacing: 0.005em !important;
+  color: #1e293b !important; /* Premium dark slate reading color */
+}
+pre, code, kbd, samp, .CodeMirror {
+  font-family: var(--font-mono) !important;
+  font-variant-ligatures: common-ligatures !important;
+  -webkit-font-variant-ligatures: common-ligatures !important;
 }
 
 /* Custom Scrollbar Styles */
