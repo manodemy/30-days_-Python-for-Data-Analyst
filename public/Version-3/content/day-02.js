@@ -128,26 +128,147 @@ LIMIT  5 OFFSET 5;</code></pre>
         </div>
 
         <div class="slide-section">
-          <h3>06. SQL Logical Execution Order</h3>
-          <p>Understanding <em>when</em> each clause is evaluated is critical for writing correct queries and debugging alias errors:</p>
+          <h3>06. The Logical SQL Execution Order</h3>
+          <p>Understanding <em>why</em> aliases work in some clauses but not others requires understanding the order in which SQL engines logically process a query. This is one of the most-tested SQL interview topics:</p>
 
-          <div class="db-mock-table-wrap">
-            <table class="db-table-mock db-table-mock--compact">
-              <thead>
-                <tr><th>#</th><th>Clause</th><th>What It Does</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>1</td><td><code>FROM</code></td><td>Identify the source table(s)</td></tr>
-                <tr><td>2</td><td><code>JOIN</code></td><td>Combine tables on a condition</td></tr>
-                <tr><td>3</td><td><code>WHERE</code></td><td>Filter individual rows</td></tr>
-                <tr><td>4</td><td><code>GROUP BY</code></td><td>Aggregate rows into groups</td></tr>
-                <tr><td>5</td><td><code>HAVING</code></td><td>Filter groups after aggregation</td></tr>
-                <tr><td>6</td><td><code>SELECT</code></td><td>Choose columns and compute expressions</td></tr>
-                <tr><td>7</td><td><code>DISTINCT</code></td><td>Remove duplicate rows</td></tr>
-                <tr><td>8</td><td><code>ORDER BY</code></td><td>Sort the result set</td></tr>
-                <tr><td>9</td><td><code>LIMIT / OFFSET</code></td><td>Trim the result set</td></tr>
-              </tbody>
-            </table>
+          <div class="sof-wrap" id="day02LogicalOrder">
+            <style>
+              .sof-wrap{width:100%;margin:4px 0 12px}
+              .sof-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch}
+              .sof-col{display:flex;flex-direction:column;height:100%;background:rgba(9,15,28,0.85);border:1px solid rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.35)}
+              .sof-hdr{padding:10px 12px;display:flex;align-items:center;gap:8px;animation:sofFadeDown 0.45s ease 0.1s both}
+              .sof-hdr--blue{background:linear-gradient(135deg,rgba(23,37,84,0.95),rgba(29,78,216,0.95))}
+              .sof-hdr--teal{background:linear-gradient(135deg,rgba(19,78,74,0.95),rgba(15,118,110,0.95))}
+              .sof-hdr-icon{font-size:0.95rem;flex-shrink:0}
+              .sof-hdr-text{display:flex;flex-direction:column;gap:1px}
+              .sof-hdr-title{font-family:'JetBrains Mono',monospace;font-size:0.63rem;font-weight:700;color:#fff;letter-spacing:0.06em;text-transform:uppercase}
+              .sof-hdr-sub{font-size:0.53rem;color:rgba(255,255,255,0.65);font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
+              .sof-body{flex-grow:1;padding:10px 10px;display:flex;flex-direction:column;align-items:center}
+              
+              .sof-node{
+                width:100%;
+                background:rgba(20,29,51,0.95);
+                border:1px solid rgba(255,255,255,0.07);
+                border-left:3px solid #64748b;
+                border-radius:6px;
+                padding:7px 10px;
+                font-family:'JetBrains Mono',monospace;
+                font-size:0.63rem;
+                font-weight:600;
+                color:#f1f5f9;
+                text-align:center;
+                letter-spacing:0.02em;
+                box-shadow:0 2px 6px rgba(0,0,0,0.2);
+                transition:all 0.25s ease;
+                animation:sofReveal 0.45s ease var(--d,0.3s) both;
+              }
+              .sof-node--dash{border-style:dashed;border-color:rgba(255,255,255,0.12)}
+              
+              .sof-col--write .sof-node { border-left-color: #3b82f6; }
+              .sof-col--exec .sof-node { border-left-color: #0d9488; }
+              
+              .sof-node--blue{
+                border-color:#3b82f6;
+                border-left-width:3.5px;
+                color:#93c5fd;
+                background:rgba(59,130,246,0.14);
+                animation:sofReveal 0.45s ease var(--d,0.3s) both,sofGlowBlue 2.6s ease-in-out var(--gd,4.5s) infinite;
+              }
+              .sof-node--green{
+                border-color:#10b981;
+                border-left-width:3.5px;
+                color:#6ee7b7;
+                background:rgba(16,185,129,0.14);
+                animation:sofReveal 0.45s ease var(--d,0.3s) both,sofGlowGreen 2.6s ease-in-out var(--gd,4.5s) infinite;
+              }
+              
+              .sof-conn{position:relative;height:20px;width:100%;display:flex;justify-content:center;align-items:flex-start;overflow:visible;animation:sofFadeIn 0.3s ease var(--d,0.5s) both}
+              .sof-conn svg{width:20px;height:20px;overflow:visible}
+              .sof-stem{stroke:rgba(100,116,139,0.55);stroke-width:1.4;stroke-linecap:round;animation:sofStemColorW 0.4s ease 4.5s forwards}
+              .sof-ring{fill:rgba(9,15,28,0.98);stroke:rgba(100,116,139,0.55);stroke-width:1.3;animation:sofRingColorW 0.4s ease 4.5s forwards}
+              .sof-chev{stroke:#64748b;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;fill:none;animation:sofChevColorW 0.4s ease 4.5s forwards}
+              
+              .sof-col--exec .sof-stem{animation-name:sofStemColorE}
+              .sof-col--exec .sof-ring{animation-name:sofRingColorE}
+              .sof-col--exec .sof-chev{animation-name:sofChevColorE}
+              
+              .sof-dot{transform:translateY(0);transform-box:fill-box;transform-origin:center top;animation:sofDotTravel 1.35s cubic-bezier(0.4,0,0.6,1) var(--dd,4.5s) infinite}
+              .sof-col--write .sof-dot{fill:#38bdf8;filter:drop-shadow(0 0 2.5px rgba(56,189,248,0.9))}
+              .sof-col--exec .sof-dot{fill:#34d399;filter:drop-shadow(0 0 2.5px rgba(52,211,153,0.9))}
+              
+              .sof-conn[data-di="0"] .sof-dot{--dd:4.50s}
+              .sof-conn[data-di="1"] .sof-dot{--dd:4.68s}
+              .sof-conn[data-di="2"] .sof-dot{--dd:4.86s}
+              .sof-conn[data-di="3"] .sof-dot{--dd:5.04s}
+              .sof-conn[data-di="4"] .sof-dot{--dd:5.22s}
+              .sof-conn[data-di="5"] .sof-dot{--dd:5.40s}
+              .sof-conn[data-di="6"] .sof-dot{--dd:5.58s}
+              
+              @media(max-width:500px){.sof-grid{grid-template-columns:1fr;gap:12px}.sof-node{font-size:0.6rem;padding:6px 8px}.sof-hdr-title{font-size:0.6rem}}
+              
+              @keyframes sofReveal{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+              @keyframes sofFadeDown{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+              @keyframes sofFadeIn{from{opacity:0}to{opacity:1}}
+              @keyframes sofDotTravel{0%{transform:translateY(0);opacity:0}8%{opacity:1}84%{opacity:1}100%{transform:translateY(12px);opacity:0}}
+              @keyframes sofGlowBlue{0%,100%{box-shadow:0 0 5px rgba(59,130,246,0.22);border-color:#3b82f6}50%{box-shadow:0 0 14px rgba(59,130,246,0.5),0 0 24px rgba(59,130,246,0.1);border-color:#60a5fa}}
+              @keyframes sofGlowGreen{0%,100%{box-shadow:0 0 5px rgba(16,185,129,0.22);border-color:#10b981}50%{box-shadow:0 0 14px rgba(16,185,129,0.5),0 0 24px rgba(16,185,129,0.1);border-color:#34d399}}
+              @keyframes sofRingColorW{to{stroke:rgba(56,189,248,0.45)}}
+              @keyframes sofChevColorW{to{stroke:#38bdf8}}
+              @keyframes sofStemColorW{to{stroke:rgba(56,189,248,0.35)}}
+              @keyframes sofRingColorE{to{stroke:rgba(52,211,153,0.45)}}
+              @keyframes sofChevColorE{to{stroke:#34d399}}
+              @keyframes sofStemColorE{to{stroke:rgba(52,211,153,0.35)}}
+            </style>
+
+            <div class="sof-grid">
+              <!-- ── LEFT: Writing Order ── -->
+              <div class="sof-col sof-col--write">
+                <div class="sof-hdr sof-hdr--blue">
+                  <span class="sof-hdr-icon">📄</span>
+                  <div class="sof-hdr-text"><span class="sof-hdr-title">Writing Order</span><span class="sof-hdr-sub">Syntax</span></div>
+                </div>
+                <div class="sof-body">
+                  <div class="sof-node sof-node--dash" style="--d:0.25s">SELECT</div>
+                  <div class="sof-conn" data-di="0" style="--d:0.50s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="1.5" r="2" class="sof-dot"/></svg></div>
+                  <div class="sof-node" style="--d:0.65s">FROM</div>
+                  <div class="sof-conn" data-di="1" style="--d:0.90s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="1.5" r="2" class="sof-dot"/></svg></div>
+                  <div class="sof-node" style="--d:1.05s">WHERE</div>
+                  <div class="sof-conn" data-di="2" style="--d:1.30s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="1.5" r="2" class="sof-dot"/></svg></div>
+                  <div class="sof-node" style="--d:1.45s">GROUP BY</div>
+                  <div class="sof-conn" data-di="3" style="--d:1.70s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="1.5" r="2" class="sof-dot"/></svg></div>
+                  <div class="sof-node" style="--d:1.85s">HAVING</div>
+                  <div class="sof-conn" data-di="4" style="--d:2.10s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="1.5" r="2" class="sof-dot"/></svg></div>
+                  <div class="sof-node" style="--d:2.25s">ORDER BY</div>
+                  <div class="sof-conn" data-di="5" style="--d:2.50s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="2" r="2.5" class="sof-dot"/></svg></div>
+                  <div class="sof-node" style="--d:2.65s">LIMIT</div>
+                </div>
+              </div>
+
+              <!-- ── RIGHT: Execution Order ── -->
+              <div class="sof-col sof-col--exec">
+                <div class="sof-hdr sof-hdr--teal">
+                  <span class="sof-hdr-icon">⚙️</span>
+                  <div class="sof-hdr-text"><span class="sof-hdr-title">Execution Order</span><span class="sof-hdr-sub">Logical</span></div>
+                </div>
+                <div class="sof-body">
+                  <div class="sof-node" style="--d:0.45s">1. FROM / JOIN</div>
+                  <div class="sof-conn" data-di="0" style="--d:0.70s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="1.5" r="2" class="sof-dot"/></svg></div>
+                  <div class="sof-node" style="--d:0.85s">2. WHERE</div>
+                  <div class="sof-conn" data-di="1" style="--d:1.10s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="1.5" r="2" class="sof-dot"/></svg></div>
+                  <div class="sof-node" style="--d:1.25s">3. GROUP BY</div>
+                  <div class="sof-conn" data-di="2" style="--d:1.50s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="1.5" r="2" class="sof-dot"/></svg></div>
+                  <div class="sof-node" style="--d:1.65s">4. HAVING</div>
+                  <div class="sof-conn" data-di="3" style="--d:1.90s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="1.5" r="2" class="sof-dot"/></svg></div>
+                  <div class="sof-node sof-node--blue" style="--d:2.05s;--gd:4.5s">5. SELECT <small style="font-size:0.54em;opacity:0.8">(alias defined)</small></div>
+                  <div class="sof-conn" data-di="4" style="--d:2.30s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="1.5" r="2" class="sof-dot"/></svg></div>
+                  <div class="sof-node" style="--d:2.45s">6. DISTINCT</div>
+                  <div class="sof-conn" data-di="5" style="--d:2.70s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="1.5" r="2" class="sof-dot"/></svg></div>
+                  <div class="sof-node sof-node--green" style="--d:2.85s;--gd:4.5s">7. ORDER BY <small style="font-size:0.54em;opacity:0.8">(alias ok)</small></div>
+                  <div class="sof-conn" data-di="6" style="--d:3.10s"><svg viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><line x1="11" y1="0" x2="11" y2="8" class="sof-stem"/><circle cx="11" cy="14" r="5" class="sof-ring"/><polyline points="9.5,12.5 11,15 12.5,12.5" class="sof-chev"/><circle cx="11" cy="1.5" r="2" class="sof-dot"/></svg></div>
+                  <div class="sof-node" style="--d:3.25s">8. LIMIT</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       `
