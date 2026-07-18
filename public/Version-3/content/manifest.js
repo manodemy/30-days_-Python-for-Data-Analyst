@@ -12,7 +12,7 @@ window.COURSE_MANIFEST = [
   {
     "day": 2,
     "id": "day02",
-    "title": "Basic Retrieval",
+    "title": "Basic Retrieval: SELECT, DISTINCT, ORDER BY & LIMIT",
     "emoji": "\ud83d\udcbe",
     "db": "retail",
     "status": "live"

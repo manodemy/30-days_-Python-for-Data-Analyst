@@ -2,7 +2,7 @@
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day02'] = {
   "day": 2,
-  "title": "Basic Retrieval",
+  "title": "Basic Retrieval: SELECT, DISTINCT, ORDER BY & LIMIT",
   "db": "retail",
   "emoji": "💾",
   "slides": [
@@ -10,7 +10,7 @@ window.COURSE_CONTENT['day02'] = {
       "title": "SELECT & FROM — Reading Data from a Table",
       "duration": "0:00",
       "html": `
-        <h2>💾 Basic Retrieval: SELECT & FROM</h2>
+        <h2>💾 Basic Retrieval: SELECT, DISTINCT, ORDER BY & LIMIT</h2>
 
         <div class="slide-section">
           <h3>01. The Anatomy of a SELECT Statement</h3>
