@@ -7,7 +7,7 @@ window.COURSE_CONTENT['day02'] = {
   "emoji": "💾",
   "slides": [
     {
-      "title": "SELECT & FROM — Reading Data from a Table",
+      "title": "Basic Retrieval: SELECT, DISTINCT, ORDER BY & LIMIT",
       "duration": "0:00",
       "html": `
         <h2>💾 Basic Retrieval: SELECT, DISTINCT, ORDER BY & LIMIT</h2>
