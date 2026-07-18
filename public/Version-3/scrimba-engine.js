@@ -135,9 +135,13 @@ function runSQL(query) {
 
 function getSchemaInfo() {
   const info = {};
-  COURSE_CONFIG.schema.tables.forEach(t => {
-    info[t.name] = t.columns.map(c => c.name);
-  });
+  if (COURSE_CONFIG && COURSE_CONFIG.schema && COURSE_CONFIG.schema.tables) {
+    COURSE_CONFIG.schema.tables.forEach(t => {
+      if (t && t.name && t.columns) {
+        info[t.name] = t.columns.map(c => c.name);
+      }
+    });
+  }
   return info;
 }
 
@@ -3280,96 +3284,107 @@ function loadDayContent(dayId) {
       if (slideContent) {
         slideContent.innerHTML = `<div style="padding:32px;text-align:center;color:#ef4444;"><p>Failed to load Day ${dayNum} content.</p></div>`;
       }
+      // Guarantee transition clean up on script load failure
+      const ws = document.getElementById('workspaceContainer');
+      if (ws) {
+        ws.style.opacity = '1';
+        ws.style.filter = 'none';
+        ws.style.transform = 'none';
+      }
     };
     document.head.appendChild(script);
     return;
   }
 
-  // ── Apply content to COURSE_CONFIG ──
-  COURSE_CONFIG.dayId = dayId;
-  COURSE_CONFIG.title = dayContent.title || COURSE_CONFIG.title;
-  document.title = `Manodemy — Day ${String(parseInt(dayId.replace('day', ''), 10)).padStart(2, '0')}: ${COURSE_CONFIG.title}`;
+  try {
+    // ── Apply content to COURSE_CONFIG ──
+    COURSE_CONFIG.dayId = dayId;
+    COURSE_CONFIG.title = dayContent.title || COURSE_CONFIG.title;
+    document.title = `Manodemy — Day ${String(parseInt(dayId.replace('day', ''), 10)).padStart(2, '0')}: ${COURSE_CONFIG.title}`;
 
-  if (dayContent.slides && dayContent.slides.length > 0) {
-    COURSE_CONFIG.slides = dayContent.slides;
-  }
-  if (dayContent.practiceQuestions) {
-    COURSE_CONFIG.practiceQuestions = dayContent.practiceQuestions;
-    // Also update allPracticeQuestions map
-    if (!COURSE_CONFIG.allPracticeQuestions) COURSE_CONFIG.allPracticeQuestions = {};
-    COURSE_CONFIG.allPracticeQuestions[dayId] = dayContent.practiceQuestions;
-  }
-  if (dayContent.testQuestions) {
-    COURSE_CONFIG.testQuestions = dayContent.testQuestions;
-  }
-  if (dayContent.topics) {
-    COURSE_CONFIG.topics = dayContent.topics;
-  }
-  if (dayContent.schema) {
-    COURSE_CONFIG.schema = dayContent.schema;
-  }
-
-  // ── Switch database ──
-  const dbKey = dayContent.db || 'retail';
-  if (dbKey === 'day01_db') {
-    // Day 01 uses simple employees db already in COURSE_CONFIG.schema
-    loadDatabaseSeed('day01_db');
-  } else {
-    loadDatabaseSeed(dbKey);
-    // Update schema cards based on retail DB
-    if (window.DB_SEEDS && window.DB_SEEDS[dbKey]) {
-      COURSE_CONFIG.schema = window.DB_SEEDS[dbKey];
+    if (dayContent.slides && dayContent.slides.length > 0) {
+      COURSE_CONFIG.slides = dayContent.slides;
     }
-  }
+    if (dayContent.practiceQuestions) {
+      COURSE_CONFIG.practiceQuestions = dayContent.practiceQuestions;
+      // Also update allPracticeQuestions map
+      if (!COURSE_CONFIG.allPracticeQuestions) COURSE_CONFIG.allPracticeQuestions = {};
+      COURSE_CONFIG.allPracticeQuestions[dayId] = dayContent.practiceQuestions;
+    }
+    if (dayContent.testQuestions) {
+      COURSE_CONFIG.testQuestions = dayContent.testQuestions;
+    }
+    if (dayContent.topics) {
+      COURSE_CONFIG.topics = dayContent.topics;
+    }
+    if (dayContent.schema) {
+      COURSE_CONFIG.schema = dayContent.schema;
+    }
 
-  // ── Re-render UI ──
-  currentSlide = 0;
-  currentDay = dayId;
-  currentPracticeQ = 0;
-  renderSideSlide();
-  clearDrawCanvas();
-  renderPracticeQuestion();
-  renderSchemaCards();
-  updatePracticeStats();
+    // ── Switch database ──
+    const dbKey = dayContent.db || 'retail';
+    if (dbKey === 'day01_db') {
+      // Day 01 uses simple employees db already in COURSE_CONFIG.schema
+      loadDatabaseSeed('day01_db');
+    } else {
+      loadDatabaseSeed(dbKey);
+      // Update schema cards based on retail DB
+      if (window.DB_SEEDS && window.DB_SEEDS[dbKey]) {
+        COURSE_CONFIG.schema = window.DB_SEEDS[dbKey];
+      }
+    }
 
-  // Rebuild topicSelect
-  const topicSel = document.getElementById('topicSelect');
-  if (topicSel && COURSE_CONFIG.slides) {
-    const multiTopic = COURSE_CONFIG.slides.length > 1;
-    topicSel.innerHTML = COURSE_CONFIG.slides.map((s, i) => {
-      const cleaned = s.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '');
-      return `<option value="${i}">${multiTopic ? `Topic ${String(i+1).padStart(2,'0')}: ` : ''}${cleaned}</option>`;
-    }).join('');
-    topicSel.value = 0;
-    initCustomDropdowns();
-  }
+    // ── Re-render UI ──
+    currentSlide = 0;
+    currentDay = dayId;
+    currentPracticeQ = 0;
+    renderSideSlide();
+    clearDrawCanvas();
+    renderPracticeQuestion();
+    renderSchemaCards();
+    updatePracticeStats();
 
-  // Update test title dynamically
-  const testTitleEl = document.querySelector('.test-title');
-  if (testTitleEl) {
-    const dayStr = String(parseInt(dayId.replace('day', ''), 10)).padStart(2, '0');
-    testTitleEl.textContent = `📝 Day ${dayStr} — SQL Interview Test`;
-  }
+    // Rebuild topicSelect
+    const topicSel = document.getElementById('topicSelect');
+    if (topicSel && COURSE_CONFIG.slides) {
+      const multiTopic = COURSE_CONFIG.slides.length > 1;
+      topicSel.innerHTML = COURSE_CONFIG.slides.map((s, i) => {
+        const cleaned = s.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '');
+        return `<option value="${i}">${multiTopic ? `Topic ${String(i+1).padStart(2,'0')}: ` : ''}${cleaned}</option>`;
+      }).join('');
+      topicSel.value = 0;
+      initCustomDropdowns();
+    }
 
-  // Clear editor and terminal
-  clearOutputSection();
-  loadSavedPracticeAnswer();
+    // Update test title dynamically
+    const testTitleEl = document.querySelector('.test-title');
+    if (testTitleEl) {
+      const dayStr = String(parseInt(dayId.replace('day', ''), 10)).padStart(2, '0');
+      testTitleEl.textContent = `📝 Day ${dayStr} — SQL Interview Test`;
+    }
 
-  // Re-init autocomplete with new schema columns
-  if (mainEditor) {
-    const schema = getSchemaInfo();
-    const hintTables = {};
-    Object.keys(schema).forEach(t => { hintTables[t] = schema[t]; });
-    mainEditor.setOption('hintOptions', { tables: hintTables });
-  }
+    // Clear editor and terminal
+    clearOutputSection();
+    loadSavedPracticeAnswer();
 
-  // Transition animation
-  const ws = document.getElementById('workspaceContainer');
-  if (ws) {
-    ws.classList.add('day-transition');
-    ws.style.opacity = '1';
-    ws.style.filter = 'none';
-    ws.style.transform = 'none';
+    // Re-init autocomplete with new schema columns
+    if (mainEditor) {
+      const schema = getSchemaInfo();
+      const hintTables = {};
+      Object.keys(schema).forEach(t => { hintTables[t] = schema[t]; });
+      mainEditor.setOption('hintOptions', { tables: hintTables });
+    }
+  } catch (err) {
+    console.error('Error loading day content modules:', err);
+  } finally {
+    // ALWAYS clear transition styles and blur, even on execution errors!
+    const ws = document.getElementById('workspaceContainer');
+    if (ws) {
+      ws.classList.add('day-transition');
+      ws.style.opacity = '1';
+      ws.style.filter = 'none';
+      ws.style.transform = 'none';
+    }
   }
 
   console.log(`Day ${dayId} loaded successfully.`);
