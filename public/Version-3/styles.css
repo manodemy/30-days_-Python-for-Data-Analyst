@@ -131,64 +131,84 @@ a { color: var(--cyan); text-decoration: none; }
 }
 
 /* Graded Stats Card */
+/* Graded Stats Card - Executive Graphic Design Overhaul */
 .stats-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 3px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  background: rgba(15, 23, 42, 0.75) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  padding: 5px 12px 6px 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
 }
 .stats-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
 }
 .stats-item {
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
 }
 .stats-label {
-  font-size: 0.52rem;
-  font-weight: 700;
-  color: var(--text-dim);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-size: 0.52rem !important;
+  font-weight: 800 !important;
+  color: #94a3b8 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 2px !important;
+  line-height: 1 !important;
 }
 .stats-value {
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
   color: var(--cyan);
 }
 .stats-value--fraction {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 1;
-  vertical-align: middle;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: baseline !important;
+  gap: 2px !important;
+  line-height: 1 !important;
 }
 .stats-value--fraction .stats-num {
-  border-bottom: 1.5px solid rgba(255, 255, 255, 0.25);
-  padding-bottom: 1px;
-  margin-bottom: 1px;
-  display: block;
-  text-align: center;
-  width: 100%;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+  display: inline-block !important;
+  font-family: 'JetBrains Mono', 'Fira Code', var(--mono), monospace !important;
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  width: auto !important;
+  text-align: left !important;
 }
 .stats-value--fraction .stats-den {
-  display: block;
-  text-align: center;
-  font-size: 0.85em;
-  color: var(--text-muted);
+  display: inline-block !important;
+  font-family: 'JetBrains Mono', 'Fira Code', var(--mono), monospace !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  color: #64748b !important;
+  line-height: 1 !important;
+  text-align: left !important;
+}
+.stats-value--fraction .stats-den::before {
+  content: "/" !important;
+  margin-right: 2px !important;
+  color: #64748b !important;
+  opacity: 0.6 !important;
 }
 #solvedCount {
-  color: var(--cyan) !important;
-  text-shadow: 0 0 6px rgba(6, 182, 212, 0.3) !important;
+  color: #38bdf8 !important;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.45) !important;
 }
 #marksCount {
-  color: #a78bfa !important;
-  text-shadow: 0 0 6px rgba(167, 139, 250, 0.3) !important;
+  color: #c084fc !important;
+  text-shadow: 0 0 8px rgba(192, 132, 252, 0.45) !important;
 }
 .stats-total {
   font-size: 0.75rem;
@@ -196,21 +216,23 @@ a { color: var(--cyan); text-decoration: none; }
   font-weight: 500;
 }
 .stats-divider {
-  width: 1px;
-  height: 20px;
-  background: var(--border);
+  width: 1px !important;
+  height: 24px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.12), rgba(255,255,255,0.02)) !important;
 }
 .stats-progress-bar {
-  width: 100%;
-  height: 3px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 2px;
-  overflow: hidden;
+  width: 100% !important;
+  height: 3px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 99px !important;
+  overflow: hidden !important;
 }
 .stats-progress-fill {
-  height: 100%;
-  background: var(--cyan);
-  transition: width 0.3s ease;
+  height: 100% !important;
+  background: linear-gradient(90deg, #38bdf8, #c084fc) !important;
+  border-radius: 99px !important;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6) !important;
 }
 
 /* Day Carousel Navigation */
