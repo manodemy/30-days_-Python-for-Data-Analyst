@@ -101,8 +101,6 @@ ORDER BY new_salary DESC;</code></pre>
             💡 <strong>Pro Tip — NULL in ORDER BY:</strong> In most databases, <code>NULL</code> values sort as either the lowest or highest value depending on the engine. SQLite treats <code>NULL</code> as less than any other value, so <code>ORDER BY col ASC</code> puts NULLs first. Use <code>ORDER BY col DESC NULLS LAST</code> in PostgreSQL to control this explicitly.
           </div>
         </div>
-
-        <div class="slide-section">
           <h3>05. LIMIT — Restricting Row Count</h3>
           <p><code>LIMIT</code> (SQLite/MySQL/PostgreSQL) or <code>TOP</code> (SQL Server) restricts how many rows are returned. It is applied <em>after</em> filtering, grouping, and sorting — meaning it returns the first N rows <em>of the sorted result</em>.</p>
 
@@ -117,14 +115,6 @@ SELECT first_name, last_name, salary
 FROM   employees
 ORDER BY salary DESC
 LIMIT  5 OFFSET 5;</code></pre>
-
-          <div class="interview-box">
-            <h4>🎯 Interview Insight — LIMIT vs TOP</h4>
-            <div>
-              <p><strong>Q: What is the difference between LIMIT and TOP?</strong></p>
-              <p><em>A: Both restrict row count. <code>LIMIT</code> is the ANSI-preferred syntax used by MySQL, PostgreSQL, and SQLite; it goes at the end of the query and supports <code>OFFSET</code> for pagination. <code>TOP n</code> is SQL Server / MS Access syntax; it goes immediately after <code>SELECT</code> and uses <code>FETCH NEXT n ROWS ONLY</code> for pagination in modern T-SQL.</em></p>
-            </div>
-          </div>
         </div>
 
         <div class="slide-section">
@@ -146,12 +136,14 @@ LIMIT  5 OFFSET 5;</code></pre>
               .sof-body{flex-grow:1;padding:10px 10px;display:flex;flex-direction:column;align-items:center}
               
               .sof-node{
-                width:100%;
+                width:fit-content;
+                max-width:92%;
+                margin:0 auto;
                 background:rgba(20,29,51,0.95);
                 border:1px solid rgba(255,255,255,0.07);
-                border-left:3px solid #64748b;
+                border-left:3.5px solid #64748b;
                 border-radius:6px;
-                padding:7px 10px;
+                padding:6px 16px;
                 font-family:'JetBrains Mono',monospace;
                 font-size:0.63rem;
                 font-weight:600;
@@ -268,6 +260,28 @@ LIMIT  5 OFFSET 5;</code></pre>
                   <div class="sof-node" style="--d:3.25s">8. LIMIT</div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Interview Q&A Consolidated Section ── -->
+        <div class="slide-section">
+          <div class="interview-box">
+            <h4>🎯 Interview Insights &amp; Q&amp;A</h4>
+            
+            <div style="margin-bottom: 14px;">
+              <p><strong>Q: What is the difference between LIMIT and TOP?</strong></p>
+              <p><em>A: Both restrict row count. <code>LIMIT</code> is the ANSI-preferred syntax used by MySQL, PostgreSQL, and SQLite; it goes at the end of the query and supports <code>OFFSET</code> for pagination. <code>TOP n</code> is SQL Server / MS Access syntax; it goes immediately after <code>SELECT</code> and uses <code>FETCH NEXT n ROWS ONLY</code> for pagination in modern T-SQL.</em></p>
+            </div>
+
+            <div style="margin-bottom: 14px;">
+              <p><strong>Q: Why can't column aliases defined in SELECT be referenced in the WHERE clause?</strong></p>
+              <p><em>A: Because of SQL's logical execution order — <code>WHERE</code> (step 2) is evaluated BEFORE <code>SELECT</code> (step 5). When <code>WHERE</code> filters rows, column aliases do not exist yet. However, <code>ORDER BY</code> (step 7) evaluates AFTER <code>SELECT</code>, so aliases ARE valid in <code>ORDER BY</code>.</em></p>
+            </div>
+
+            <div>
+              <p><strong>Q: What is the performance impact of SELECT * vs selecting named columns?</strong></p>
+              <p><em>A: <code>SELECT *</code> forces the database engine to read every column from disk, blocking index-only scans, polluting the buffer pool cache, and increasing network payload. Explicitly specifying named columns allows query optimizers to leverage covering indexes and read minimal data.</em></p>
             </div>
           </div>
         </div>
