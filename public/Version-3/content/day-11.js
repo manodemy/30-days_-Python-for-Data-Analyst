@@ -1,181 +1,206 @@
-// Day 11 Content
+// Day 11 — Advanced Joins: LEFT, RIGHT, FULL OUTER, SELF, CROSS
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day11'] = {
   "day": 11,
-  "title": "SELF JOIN & Multi-Table Queries",
+  "title": "Advanced Joins",
   "db": "retail",
-  "emoji": "\ud83d\udc65",
+  "emoji": "🔄",
   "slides": [
     {
-      "title": "Topic 01: SELF JOIN & Multi-Table Queries",
+      "title": "Advanced Joins — Outer, Self & Cross Joins",
       "duration": "0:00",
-      "html": "\n            <h2>\ud83d\udc65 Topic 01: SELF JOIN & Multi-Table Queries</h2>\n            <div class=\"slide-section\">\n              <h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">What is a SELF JOIN?</h3>\n<p style=\"color:#cbd5e1;line-height:1.75;margin:10px 0;\">A SELF JOIN is when a table is joined to <strong style=\"color:#f1f5f9;\">itself</strong>. This is necessary when a table has a <strong style=\"color:#f1f5f9;\">hierarchical or recursive relationship</strong> \u2014 the most common being an employees table where each employee has a <code style=\"background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;\">manager_id</code> that references another <code style=\"background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;\">employee_id</code> in the same table.</p>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- Employee table has: employee_id, first_name, manager_id\n-- manager_id references employee_id of the manager (who is also an employee)\n\n-- Self JOIN to show employee + their manager's name\nSELECT\n    e.employee_id,\n    e.first_name    AS employee_name,\n    e.salary        AS employee_salary,\n    m.first_name    AS manager_name\nFROM employees e            -- e = the employee\nINNER JOIN employees m      -- m = the same table, representing the manager\n    ON e.manager_id = m.employee_id;\n\n-- Use LEFT JOIN to include top-level employees (who have no manager):\nSELECT\n    e.first_name   AS employee_name,\n    COALESCE(m.first_name, 'Top-Level') AS manager_name\nFROM employees e\nLEFT JOIN employees m\n    ON e.manager_id = m.employee_id;</code></pre>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">Finding Peers (employees in the same department)</h3>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- Find all pairs of employees in the same department\nSELECT\n    a.first_name AS employee1,\n    b.first_name AS employee2,\n    a.department_id\nFROM employees a\nINNER JOIN employees b\n    ON a.department_id = b.department_id\n   AND a.employee_id &lt; b.employee_id;  -- Prevent duplicates and self-pairing\n-- a.employee_id &lt; b.employee_id ensures (Alice, Bob) appears but not (Bob, Alice) or (Alice, Alice)</code></pre>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">Multi-Table Queries \u2014 Best Practices</h3>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- Joining 4+ tables: define relationships clearly\nSELECT\n    o.order_id,\n    c.customer_name,\n    p.product_name,\n    oi.quantity,\n    oi.unit_price,\n    oi.quantity * oi.unit_price AS line_total,\n    e.first_name AS sales_rep\nFROM orders o\nINNER JOIN customers c     ON o.customer_id = c.customer_id\nINNER JOIN order_items oi  ON o.order_id = oi.order_id\nINNER JOIN products p      ON oi.product_id = p.product_id\nLEFT JOIN employees e      ON o.sales_rep_id = e.employee_id;  -- LEFT: some orders may have no rep</code></pre>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">CROSS JOIN \u2014 All Combinations</h3>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- Generates every combination of rows from two tables\nSELECT a.size, b.color\nFROM sizes a\nCROSS JOIN colors b;\n-- 5 sizes \u00d7 4 colors = 20 combination rows\n\n-- Real use case: generate a date range or all possible category combinations\nSELECT d.date, p.product_id\nFROM date_dimension d\nCROSS JOIN products p\nWHERE d.date BETWEEN '2024-01-01' AND '2024-12-31';</code></pre>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">LATERAL JOIN (PostgreSQL) / APPLY (SQL Server)</h3>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- LATERAL allows the right side to reference columns from the left table\nSELECT e.first_name, e.salary, latest_order.order_date\nFROM employees e\nCROSS JOIN LATERAL (\n    SELECT order_date\n    FROM orders o\n    WHERE o.sales_rep_id = e.employee_id\n    ORDER BY order_date DESC\n    LIMIT 1\n) latest_order;</code></pre>\n<hr style=\"border:none;border-top:1px solid #1e293b;margin:24px 0;\">\n            </div>\n            "
+      "html": `
+        <h2>🔄 Advanced Joins</h2>
+
+        <div class="slide-section">
+          <h3>01. LEFT JOIN — Keep All Rows from the Left Table</h3>
+          <p>A <code>LEFT JOIN</code> returns all rows from the <strong>left table</strong> and matching rows from the right table. Where there is no match in the right table, columns from the right table contain <code>NULL</code>. This is the most commonly used outer join.</p>
+
+          <pre><code>-- All customers — including those with no orders
+SELECT c.customer_id,
+       c.first_name,
+       c.last_name,
+       o.order_id,
+       o.total_amount
+FROM   customers AS c
+LEFT JOIN orders AS o
+  ON c.customer_id = o.customer_id;
+
+-- Find customers who have NEVER placed an order
+SELECT c.customer_id, c.first_name
+FROM   customers AS c
+LEFT JOIN orders AS o
+  ON c.customer_id = o.customer_id
+WHERE  o.order_id IS NULL;</code></pre>
+
+          <div class="info-box">
+            ℹ️ <strong>Anti-Join Pattern:</strong> <code>LEFT JOIN ... WHERE right_table.id IS NULL</code> is a classic anti-join — it finds rows in the left table with NO match in the right. This is an interview staple.
+          </div>
+        </div>
+
+        <div class="slide-section">
+          <h3>02. RIGHT JOIN — Keep All Rows from the Right Table</h3>
+          <p>A <code>RIGHT JOIN</code> returns all rows from the <strong>right table</strong> and matching rows from the left table. <code>RIGHT JOIN</code> is less commonly used — any right join can be rewritten as a left join by swapping table order.</p>
+
+          <pre><code>-- All products — including those never ordered
+SELECT p.name,
+       SUM(oi.qty) AS total_sold
+FROM   order_items AS oi
+RIGHT JOIN products AS p
+  ON oi.product_id = p.product_id
+GROUP BY p.product_id, p.name;
+
+-- Rewritten as LEFT JOIN (preferred):
+SELECT p.name,
+       SUM(oi.qty) AS total_sold
+FROM   products AS p
+LEFT JOIN order_items AS oi
+  ON p.product_id = oi.product_id
+GROUP BY p.product_id, p.name;</code></pre>
+        </div>
+
+        <div class="slide-section">
+          <h3>03. FULL OUTER JOIN — All Rows from Both Tables</h3>
+          <p>A <code>FULL OUTER JOIN</code> returns all rows from both tables. Where there is no match on either side, the missing columns are <code>NULL</code>. SQLite does not support FULL OUTER JOIN natively — simulate with <code>LEFT JOIN UNION ALL RIGHT JOIN</code>.</p>
+
+          <pre><code>-- FULL OUTER JOIN in PostgreSQL / SQL Server:
+SELECT c.customer_id,
+       c.first_name,
+       o.order_id
+FROM   customers AS c
+FULL OUTER JOIN orders AS o
+  ON c.customer_id = o.customer_id;
+
+-- Simulation in SQLite using UNION:
+SELECT c.customer_id, c.first_name, o.order_id
+FROM   customers c LEFT JOIN orders o ON c.customer_id = o.customer_id
+UNION ALL
+SELECT c.customer_id, c.first_name, o.order_id
+FROM   customers c RIGHT JOIN orders o ON c.customer_id = o.customer_id
+WHERE  c.customer_id IS NULL;</code></pre>
+        </div>
+
+        <div class="slide-section">
+          <h3>04. SELF JOIN — Joining a Table to Itself</h3>
+          <p>A self join joins a table to itself using aliases. Common use case: hierarchical data (employee → manager) where both the employee and their manager are in the same table.</p>
+
+          <pre><code>-- Find each employee and their manager's name
+SELECT e.first_name                       AS employee,
+       m.first_name                       AS manager
+FROM   employees AS e
+LEFT JOIN employees AS m
+  ON e.manager_id = m.employee_id;
+
+-- Only show employees who HAVE a manager
+SELECT e.first_name AS employee,
+       m.first_name AS manager
+FROM   employees AS e
+INNER JOIN employees AS m
+  ON e.manager_id = m.employee_id;</code></pre>
+
+          <div class="pro-tip-box">
+            💡 <strong>Self Join Key:</strong> Both the left and right table reference the same physical table, so you MUST alias them differently (<code>e</code> and <code>m</code> above). Without aliases, the query would be syntactically invalid.
+          </div>
+        </div>
+
+        <div class="slide-section">
+          <h3>05. CROSS JOIN — Cartesian Product</h3>
+          <p>A <code>CROSS JOIN</code> produces every combination of rows from two tables — rows(A) × rows(B). It is the explicit way to generate Cartesian products. Useful for generating test data, combinations, or calendar grids.</p>
+
+          <pre><code>-- All product-region combinations (for a sales matrix)
+SELECT p.name AS product, c.region
+FROM   products AS p
+CROSS JOIN (SELECT DISTINCT region FROM customers) AS c
+ORDER BY p.name, c.region;</code></pre>
+        </div>
+
+        <div class="slide-section">
+          <h3>06. Join Type Summary</h3>
+          <div class="db-mock-table-wrap">
+            <table class="db-table-mock db-table-mock--compact">
+              <thead><tr><th>Join Type</th><th>Returns</th><th>Unmatched left</th><th>Unmatched right</th></tr></thead>
+              <tbody>
+                <tr><td><code>INNER JOIN</code></td><td>Matching rows only</td><td>Excluded</td><td>Excluded</td></tr>
+                <tr><td><code>LEFT JOIN</code></td><td>All left + matching right</td><td>Included (NULLs in right)</td><td>Excluded</td></tr>
+                <tr><td><code>RIGHT JOIN</code></td><td>All right + matching left</td><td>Excluded</td><td>Included (NULLs in left)</td></tr>
+                <tr><td><code>FULL OUTER JOIN</code></td><td>All rows from both</td><td>Included (NULLs in right)</td><td>Included (NULLs in left)</td></tr>
+                <tr><td><code>CROSS JOIN</code></td><td>All combinations</td><td>N/A</td><td>N/A</td></tr>
+                <tr><td><code>SELF JOIN</code></td><td>Same table joined to itself</td><td>Depends on INNER/LEFT</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="interview-box">
+            <h4>🎯 Interview Insight</h4>
+            <div>
+              <p><strong>Q: When would you use a LEFT JOIN over an INNER JOIN?</strong></p>
+              <p><em>A: Use LEFT JOIN when you need ALL rows from the left (primary) table regardless of whether they have matching data in the right table. Classic examples: customers who haven't ordered, products never purchased, employees without a manager. INNER JOIN loses these unmatched rows — which may be exactly the rows you need to find.</em></p>
+            </div>
+          </div>
+        </div>
+      `
     }
   ],
   "practiceQuestions": [
     {
       "id": 1,
-      "prompt": "Write a self join query to display employee names and their manager's name from the employees table.",
-      "referenceSql": "SELECT e.first_name AS employee, m.first_name AS manager FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
+      "prompt": "<strong>Task: Customers Without Orders</strong><br/>Using a LEFT JOIN, find all customers who have never placed an order. Show <code>customer_id</code> and <code>first_name</code>.",
+      "referenceSql": "SELECT c.customer_id, c.first_name FROM customers AS c LEFT JOIN orders AS o ON c.customer_id = o.customer_id WHERE o.order_id IS NULL;"
     },
     {
       "id": 2,
-      "prompt": "Write a self join query to find employees who earn more than their manager.",
-      "referenceSql": "SELECT e.first_name, e.salary, m.first_name, m.salary FROM employees e INNER JOIN employees m ON e.manager_id = m.employee_id WHERE e.salary > m.salary;"
+      "prompt": "<strong>Task: Products Never Ordered</strong><br/>Find all products that have never appeared in any order. Show product <code>name</code>.",
+      "referenceSql": "SELECT p.name FROM products AS p LEFT JOIN order_items AS oi ON p.product_id = oi.product_id WHERE oi.order_id IS NULL;"
     },
     {
       "id": 3,
-      "prompt": "Write a self join to find pairs of employees working in the same department (exclude self-pairings).",
-      "referenceSql": "SELECT e1.first_name, e2.first_name, e1.department_id FROM employees e1 INNER JOIN employees e2 ON e1.department_id = e2.department_id WHERE e1.employee_id < e2.employee_id;"
+      "prompt": "<strong>Task: Employee-Manager Hierarchy</strong><br/>Using a SELF JOIN, show each employee's name and their manager's name. Include employees with no manager (use LEFT JOIN).",
+      "referenceSql": "SELECT e.first_name AS employee, m.first_name AS manager FROM employees AS e LEFT JOIN employees AS m ON e.manager_id = m.employee_id;"
     },
     {
       "id": 4,
-      "prompt": "<strong>Practice Task: Manager Hierarchies</strong><br/>The HR team wants employee roster with managers. Return first_name and manager_name. Display 'CEO' if manager_id is NULL.",
-      "referenceSql": "-- Complete this query"
+      "prompt": "<strong>Task: All Products with Sales Summary</strong><br/>Using a LEFT JOIN, show all products with their total qty sold. Include products with no sales (qty = NULL or 0).",
+      "referenceSql": "SELECT p.name, COALESCE(SUM(oi.qty), 0) AS total_sold FROM products AS p LEFT JOIN order_items AS oi ON p.product_id = oi.product_id GROUP BY p.product_id, p.name ORDER BY total_sold DESC;"
     },
     {
       "id": 5,
-      "prompt": "<strong>Practice Task: Department Cohorts</strong><br/>Find pairs of employees hired in the same year. Retrieve employee_id, name, and hire_date.",
-      "referenceSql": "-- Complete this query"
+      "prompt": "<strong>Task: All Customers with Order Counts</strong><br/>Show all customers with their order count. Customers with no orders should show 0.",
+      "referenceSql": "SELECT c.first_name, COUNT(o.order_id) AS order_count FROM customers AS c LEFT JOIN orders AS o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.first_name;"
     },
     {
       "id": 6,
-      "prompt": "<strong>Practice Task: Salary Peer Audit</strong><br/>Join employees to find pairs in the same department who have identical salaries.",
-      "referenceSql": "-- Complete this query"
+      "prompt": "<strong>Task: Employees with their Department (allow no dept)</strong><br/>Using LEFT JOIN, show all employees and their department name. Employees with no department should still appear with NULL department.",
+      "referenceSql": "SELECT e.first_name, e.last_name, d.name AS dept FROM employees AS e LEFT JOIN departments AS d ON e.department_id = d.department_id;"
     }
   ],
   "testQuestions": [
-    {
-      "id": 1,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 2,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 3,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 4,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 5,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 6,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 7,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 8,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 9,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 10,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 11,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 12,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 13,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 14,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 15,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 16,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 17,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 18,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 19,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 20,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 21,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 22,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 23,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 24,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    },
-    {
-      "id": 25,
-      "prompt": "Retrieve employee first_name and their manager's first_name via a self-join.",
-      "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;"
-    }
+    { "id": 1, "prompt": "Find all customers and their orders using LEFT JOIN (include customers with no orders).", "ref": "SELECT c.first_name, o.order_id FROM customers c LEFT JOIN orders o ON c.customer_id = o.customer_id;" },
+    { "id": 2, "prompt": "Find customers who have never placed an order (anti-join).", "ref": "SELECT c.first_name FROM customers c LEFT JOIN orders o ON c.customer_id = o.customer_id WHERE o.order_id IS NULL;" },
+    { "id": 3, "prompt": "Find all products and total qty sold; include products with 0 sales.", "ref": "SELECT p.name, COALESCE(SUM(oi.qty), 0) AS qty FROM products p LEFT JOIN order_items oi ON p.product_id = oi.product_id GROUP BY p.product_id, p.name;" },
+    { "id": 4, "prompt": "Self join employees to find each employee's manager name.", "ref": "SELECT e.first_name AS emp, m.first_name AS mgr FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;" },
+    { "id": 5, "prompt": "Find products with no orders using LEFT JOIN and IS NULL filter.", "ref": "SELECT p.name FROM products p LEFT JOIN order_items oi ON p.product_id = oi.product_id WHERE oi.order_id IS NULL;" },
+    { "id": 6, "prompt": "Find all customers with their order count (0 if none) using LEFT JOIN and COUNT.", "ref": "SELECT c.first_name, COUNT(o.order_id) AS order_count FROM customers c LEFT JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.first_name;" },
+    { "id": 7, "prompt": "Find employees who have no manager (top-level) using LEFT JOIN self join WHERE IS NULL.", "ref": "SELECT e.first_name FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id WHERE e.manager_id IS NULL;" },
+    { "id": 8, "prompt": "Find all employees and their department names (LEFT JOIN — include employees with no dept).", "ref": "SELECT e.first_name, d.name AS dept FROM employees e LEFT JOIN departments d ON e.department_id = d.department_id;" },
+    { "id": 9, "prompt": "Show all products and their category name using LEFT JOIN.", "ref": "SELECT p.name, cat.name AS category FROM products p LEFT JOIN categories cat ON p.category_id = cat.category_id;" },
+    { "id": 10, "prompt": "Find departments with no employees (anti-join using LEFT JOIN on employees).", "ref": "SELECT d.name FROM departments d LEFT JOIN employees e ON d.department_id = e.department_id WHERE e.employee_id IS NULL;" },
+    { "id": 11, "prompt": "Find all customers and their region, with total orders. Show customers with 0 orders too.", "ref": "SELECT c.first_name, c.region, COUNT(o.order_id) AS orders FROM customers c LEFT JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id, c.first_name, c.region;" },
+    { "id": 12, "prompt": "Using a self join, find all employees who report to the same manager as employee_id = 2.", "ref": "SELECT e.first_name FROM employees e WHERE e.manager_id = (SELECT manager_id FROM employees WHERE employee_id = 2) AND e.employee_id <> 2;" },
+    { "id": 13, "prompt": "Find all products with their total revenue (qty * price from order_items). Include products with 0 revenue.", "ref": "SELECT p.name, COALESCE(SUM(oi.qty * oi.price), 0) AS revenue FROM products p LEFT JOIN order_items oi ON p.product_id = oi.product_id GROUP BY p.product_id, p.name;" },
+    { "id": 14, "prompt": "Find employees who have never processed an order (LEFT JOIN orders on employee_id, IS NULL).", "ref": "SELECT e.first_name FROM employees e LEFT JOIN orders o ON e.employee_id = o.employee_id WHERE o.order_id IS NULL;" },
+    { "id": 15, "prompt": "Using CROSS JOIN, generate a combination of all product names and all regions.", "ref": "SELECT p.name, r.region FROM products p CROSS JOIN (SELECT DISTINCT region FROM customers) r ORDER BY p.name, r.region;" },
+    { "id": 16, "prompt": "Find all categories and the count of products in each (include categories with 0 products).", "ref": "SELECT cat.name, COUNT(p.product_id) AS product_count FROM categories cat LEFT JOIN products p ON cat.category_id = p.category_id GROUP BY cat.category_id, cat.name;" },
+    { "id": 17, "prompt": "Using self join, find pairs of employees in the same department.", "ref": "SELECT a.first_name AS emp1, b.first_name AS emp2, a.department_id FROM employees a INNER JOIN employees b ON a.department_id = b.department_id AND a.employee_id < b.employee_id;" },
+    { "id": 18, "prompt": "Find orders with customer first_name and the processing employee's first_name using two INNER JOINs.", "ref": "SELECT o.order_id, c.first_name AS customer, e.first_name AS employee FROM orders o INNER JOIN customers c ON o.customer_id = c.customer_id INNER JOIN employees e ON o.employee_id = e.employee_id;" },
+    { "id": 19, "prompt": "Show all employees and their manager's name; top-level managers show NULL for manager.", "ref": "SELECT e.first_name AS employee, m.first_name AS manager FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id ORDER BY manager;" },
+    { "id": 20, "prompt": "Find customers in 'North' region who have no orders.", "ref": "SELECT c.first_name FROM customers c LEFT JOIN orders o ON c.customer_id = o.customer_id WHERE c.region = 'North' AND o.order_id IS NULL;" },
+    { "id": 21, "prompt": "Retrieve all employees with their departments, showing 'Unassigned' for those without a department.", "ref": "SELECT e.first_name, COALESCE(d.name, 'Unassigned') AS dept FROM employees e LEFT JOIN departments d ON e.department_id = d.department_id;" },
+    { "id": 22, "prompt": "Find products with no sales in 2024 (order_items joined with orders on year filter).", "ref": "SELECT p.name FROM products p LEFT JOIN order_items oi ON p.product_id = oi.product_id LEFT JOIN orders o ON oi.order_id = o.order_id AND strftime('%Y', o.order_date) = '2024' WHERE oi.order_id IS NULL;" },
+    { "id": 23, "prompt": "Show each employee and the count of orders they've processed (include employees with 0 orders).", "ref": "SELECT e.first_name, COUNT(o.order_id) AS orders_processed FROM employees e LEFT JOIN orders o ON e.employee_id = o.employee_id GROUP BY e.employee_id, e.first_name;" },
+    { "id": 24, "prompt": "Find customers who placed at least one order and at least one cancelled order (use INNER JOIN twice).", "ref": "SELECT DISTINCT c.first_name FROM customers c INNER JOIN orders o ON c.customer_id = o.customer_id WHERE o.status = 'Cancelled';" },
+    { "id": 25, "prompt": "Using LEFT JOIN anti-join, find all categories with no products assigned.", "ref": "SELECT cat.name FROM categories cat LEFT JOIN products p ON cat.category_id = p.category_id WHERE p.product_id IS NULL;" }
   ],
   "topics": [
-    {
-      "id": "topic-1",
-      "label": "Topic 1: SELF JOIN & Multi-Table Queries",
-      "recordingKey": null
-    }
+    { "id": "topic-1", "label": "Topic 1: LEFT, RIGHT, FULL OUTER, SELF & CROSS Joins", "recordingKey": null }
   ]
 };

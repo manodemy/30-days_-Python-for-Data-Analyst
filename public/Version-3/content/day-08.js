@@ -1,181 +1,194 @@
-// Day 08 Content
+// Day 08 — Date & Time Functions
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day08'] = {
   "day": 8,
-  "title": "CASE WHEN (Conditional Logic)",
+  "title": "Date & Time Functions",
   "db": "retail",
-  "emoji": "\ud83d\udd00",
+  "emoji": "📅",
   "slides": [
     {
-      "title": "Topic 01: CASE WHEN (Conditional Logic)",
+      "title": "Date & Time Functions in SQL",
       "duration": "0:00",
-      "html": "\n            <h2>\ud83d\udd00 Topic 01: CASE WHEN (Conditional Logic)</h2>\n            <div class=\"slide-section\">\n              <h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">What is CASE WHEN?</h3>\n<p style=\"color:#cbd5e1;line-height:1.75;margin:10px 0;\"><code style=\"background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;\">CASE WHEN</code> is SQL's conditional expression \u2014 it's the equivalent of <code style=\"background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;\">IF/ELSE</code> from programming. It evaluates conditions row-by-row and returns a value based on the first matching condition.</p>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">Syntax: Simple CASE vs. Searched CASE</h3>\n<h4 style=\"color:#7dd3fc;margin:20px 0 8px;font-size:1em;font-weight:600;\">Simple CASE (equality checks only)</h4>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">SELECT\n    employee_id,\n    department_id,\n    CASE department_id\n        WHEN 1 THEN 'Engineering'\n        WHEN 2 THEN 'Sales'\n        WHEN 3 THEN 'HR'\n        WHEN 4 THEN 'Finance'\n        ELSE 'Other'\n    END AS department_name\nFROM employees;</code></pre>\n<h4 style=\"color:#7dd3fc;margin:20px 0 8px;font-size:1em;font-weight:600;\">Searched CASE (any condition, most flexible)</h4>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">SELECT\n    employee_id,\n    salary,\n    CASE\n        WHEN salary &gt;= 100000 THEN 'Senior Level'\n        WHEN salary &gt;= 70000  THEN 'Mid Level'\n        WHEN salary &gt;= 40000  THEN 'Junior Level'\n        ELSE 'Entry Level'\n    END AS salary_band\nFROM employees;</code></pre>\n<blockquote style=\"border-left:4px solid #f59e0b;background:#1c1a0e;padding:10px 16px;margin:12px 0;color:#fcd34d;border-radius:4px;\"><strong style=\"color:#f1f5f9;\">Execution:</strong> <code style=\"background:#1e2d40;color:#7dd3fc;padding:2px 6px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:0.88em;\">CASE WHEN</code> evaluates conditions <strong style=\"color:#f1f5f9;\">top to bottom</strong> and returns the value of the <strong style=\"color:#f1f5f9;\">first match</strong>. Once matched, it stops checking remaining conditions \u2014 order matters!</blockquote>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">CASE WHEN in SELECT, WHERE, ORDER BY, GROUP BY</h3>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- In SELECT (most common use)\nSELECT first_name,\n       CASE WHEN is_active THEN 'Active' ELSE 'Inactive' END AS status\nFROM employees;\n\n-- In ORDER BY (custom sort order)\nSELECT first_name, job_title\nFROM employees\nORDER BY\n    CASE job_title\n        WHEN 'CEO' THEN 1\n        WHEN 'VP' THEN 2\n        WHEN 'Director' THEN 3\n        ELSE 4\n    END;\n\n-- In GROUP BY (create dynamic categories)\nSELECT\n    CASE\n        WHEN salary &gt;= 100000 THEN 'High'\n        WHEN salary &gt;= 60000  THEN 'Medium'\n        ELSE 'Low'\n    END AS salary_bracket,\n    COUNT(*) AS headcount\nFROM employees\nGROUP BY\n    CASE\n        WHEN salary &gt;= 100000 THEN 'High'\n        WHEN salary &gt;= 60000  THEN 'Medium'\n        ELSE 'Low'\n    END;\n\n-- In WHERE (conditional filtering)\nSELECT *\nFROM orders\nWHERE\n    CASE\n        WHEN status = 'priority' THEN amount\n        ELSE 0\n    END &gt; 1000;</code></pre>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">CASE WHEN for Conditional Aggregation</h3>\n<p style=\"color:#cbd5e1;line-height:1.75;margin:10px 0;\">This is the <strong style=\"color:#f1f5f9;\">most powerful</strong> and interview-frequent use of CASE WHEN.</p>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- Count by category in a SINGLE query (pivot-style)\nSELECT\n    COUNT(*)                                      AS total_employees,\n    COUNT(CASE WHEN department_id = 1 THEN 1 END) AS engineering_count,\n    COUNT(CASE WHEN department_id = 2 THEN 1 END) AS sales_count,\n    SUM(CASE WHEN is_active THEN salary ELSE 0 END) AS active_payroll,\n    AVG(CASE WHEN gender = 'F' THEN salary END)   AS avg_female_salary\nFROM employees;</code></pre>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">IIF \u2014 Shorthand (SQL Server / Access)</h3>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- SQL Server shorthand for simple CASE:\nSELECT IIF(salary &gt; 70000, 'High', 'Low') AS pay_tier\nFROM employees;</code></pre>\n<hr style=\"border:none;border-top:1px solid #1e293b;margin:24px 0;\">\n            </div>\n            "
+      "html": `
+        <h2>📅 Date & Time Functions</h2>
+
+        <div class="slide-section">
+          <h3>01. Date Storage in SQL</h3>
+          <p>SQL stores dates as a standardised format: <code>YYYY-MM-DD</code> for dates and <code>YYYY-MM-DD HH:MM:SS</code> for datetimes. In SQLite, dates are stored as TEXT strings in ISO format and manipulated using date functions. Understanding this is critical for correct comparisons and arithmetic.</p>
+
+          <div class="info-box">
+            ℹ️ <strong>Date formats by engine:</strong> MySQL uses <code>DATE</code> / <code>DATETIME</code> types. PostgreSQL uses <code>DATE</code> / <code>TIMESTAMP</code>. SQLite stores dates as TEXT, REAL, or INTEGER and uses <code>strftime()</code> for all date operations. The retail database stores dates as TEXT in ISO format.
+          </div>
+        </div>
+
+        <div class="slide-section">
+          <h3>02. Getting the Current Date & Time</h3>
+          <pre><code>-- SQLite equivalents (ISO standard functions)
+SELECT date('now')              AS today,          -- 2026-07-18
+       time('now')              AS current_time,   -- 07:35:00
+       datetime('now')          AS current_datetime;
+
+-- MySQL / PostgreSQL equivalents (for reference)
+-- SELECT NOW(), CURDATE(), CURRENT_DATE, CURRENT_TIMESTAMP;
+
+-- Days since order was placed
+SELECT order_id,
+       order_date,
+       julianday('now') - julianday(order_date) AS days_since_order
+FROM   orders;</code></pre>
+        </div>
+
+        <div class="slide-section">
+          <h3>03. DATEDIFF — Days Between Two Dates</h3>
+          <p>In SQLite, use <code>julianday()</code> difference. In MySQL, use <code>DATEDIFF(end, start)</code>. In PostgreSQL, subtract dates directly.</p>
+
+          <pre><code>-- Days between order_date and shipped_date (SQLite)
+SELECT order_id,
+       order_date,
+       shipped_date,
+       CAST(julianday(shipped_date) - julianday(order_date) AS INTEGER) AS fulfillment_days
+FROM   orders
+WHERE  shipped_date IS NOT NULL;
+
+-- Employee tenure in days
+SELECT first_name,
+       hire_date,
+       CAST(julianday('now') - julianday(hire_date) AS INTEGER) AS tenure_days
+FROM   employees;</code></pre>
+        </div>
+
+        <div class="slide-section">
+          <h3>04. DATE_ADD / DATE_SUB — Date Arithmetic</h3>
+          <p>In SQLite, use the <code>date(base, modifier)</code> function to add or subtract intervals. MySQL uses <code>DATE_ADD(date, INTERVAL n unit)</code>.</p>
+
+          <pre><code>-- SQLite: Add 30 days to order_date
+SELECT order_id,
+       order_date,
+       date(order_date, '+30 days')  AS delivery_deadline
+FROM   orders;
+
+-- SQLite: Subtract 90 days from today (last 90 days filter)
+SELECT * FROM orders
+WHERE  order_date >= date('now', '-90 days');
+
+-- MySQL reference syntax (for interviews):
+-- SELECT DATE_ADD(order_date, INTERVAL 30 DAY) FROM orders;
+-- SELECT DATE_SUB(NOW(), INTERVAL 3 MONTH);</code></pre>
+        </div>
+
+        <div class="slide-section">
+          <h3>05. EXTRACT / strftime — Getting Date Parts</h3>
+          <p>Use <code>strftime(format, date)</code> in SQLite or <code>EXTRACT(part FROM date)</code> in PostgreSQL/MySQL to extract year, month, day, etc.</p>
+
+          <pre><code>-- SQLite: Extract year, month, day
+SELECT order_id,
+       order_date,
+       strftime('%Y', order_date)    AS order_year,
+       strftime('%m', order_date)    AS order_month,
+       strftime('%d', order_date)    AS order_day
+FROM   orders;
+
+-- Group orders by year
+SELECT strftime('%Y', order_date) AS year,
+       COUNT(*)                   AS order_count,
+       SUM(total_amount)          AS revenue
+FROM   orders
+GROUP BY year
+ORDER BY year;</code></pre>
+
+          <div class="pro-tip-box">
+            💡 <strong>SQLite strftime format codes:</strong> <code>%Y</code> = 4-digit year, <code>%m</code> = 2-digit month (01-12), <code>%d</code> = 2-digit day (01-31), <code>%H</code> = hour (00-23), <code>%M</code> = minute, <code>%w</code> = day of week (0=Sunday).
+          </div>
+        </div>
+
+        <div class="slide-section">
+          <h3>06. DATE_FORMAT — Formatting Dates for Display</h3>
+          <pre><code>-- Format hire_date as 'Month DD, YYYY' style
+-- SQLite uses strftime for formatting
+SELECT first_name,
+       strftime('%d-%m-%Y', hire_date) AS formatted_hire_date
+FROM   employees;
+
+-- Find employees hired in 2022
+SELECT first_name, hire_date
+FROM   employees
+WHERE  strftime('%Y', hire_date) = '2022';
+
+-- Find orders placed on a specific month
+SELECT * FROM orders
+WHERE  strftime('%m', order_date) = '12';  -- December orders</code></pre>
+
+          <div class="interview-box">
+            <h4>🎯 Interview Insight — Date Functions Across Databases</h4>
+            <div>
+              <p><strong>Q: How do you calculate the number of days between two dates in MySQL vs PostgreSQL vs SQLite?</strong></p>
+              <p><em>A: MySQL: DATEDIFF(end_date, start_date) returns an integer. PostgreSQL: Simply subtract dates: end_date - start_date returns an INTERVAL; use EXTRACT(DAY FROM ...) for a number. SQLite: Use julianday(end) - julianday(start) which returns a floating-point day count. All three are commonly asked in interviews — knowing all three shows database breadth.</em></p>
+            </div>
+          </div>
+        </div>
+      `
     }
   ],
   "practiceQuestions": [
     {
       "id": 1,
-      "prompt": "Create a query that classifies products as 'High Price' (unit_price > 100) or 'Low Price' otherwise.",
-      "referenceSql": "SELECT name, CASE WHEN unit_price > 100 THEN 'High Price' ELSE 'Low Price' END AS price_category FROM products;"
+      "prompt": "<strong>Task: Fulfillment Days</strong><br/>For each shipped order, compute the number of days between <code>order_date</code> and <code>shipped_date</code> as <code>fulfillment_days</code>.",
+      "referenceSql": "SELECT order_id, order_date, shipped_date, CAST(julianday(shipped_date) - julianday(order_date) AS INTEGER) AS fulfillment_days FROM orders WHERE shipped_date IS NOT NULL;"
     },
     {
       "id": 2,
-      "prompt": "Create a query to show employee salary grade: 'A' (salary > 100000), 'B' (salary between 70000 and 100000), or 'C' otherwise.",
-      "referenceSql": "SELECT first_name, salary, CASE WHEN salary > 100000 THEN 'A' WHEN salary >= 70000 THEN 'B' ELSE 'C' END AS grade FROM employees;"
+      "prompt": "<strong>Task: Employee Tenure</strong><br/>Compute how many days each employee has been employed (from <code>hire_date</code> to today). Show <code>first_name</code>, <code>hire_date</code>, and <code>tenure_days</code>.",
+      "referenceSql": "SELECT first_name, hire_date, CAST(julianday('now') - julianday(hire_date) AS INTEGER) AS tenure_days FROM employees;"
     },
     {
       "id": 3,
-      "prompt": "Find the total active employees count and inactive employees count using CASE WHEN inside COUNT.",
-      "referenceSql": "SELECT COUNT(CASE WHEN is_active = 1 THEN 1 END) AS active_count, COUNT(CASE WHEN is_active = 0 THEN 1 END) AS inactive_count FROM employees;"
+      "prompt": "<strong>Task: Orders by Year</strong><br/>Group orders by year (extract year from <code>order_date</code>) and count orders and total revenue per year.",
+      "referenceSql": "SELECT strftime('%Y', order_date) AS year, COUNT(*) AS order_count, SUM(total_amount) AS revenue FROM orders GROUP BY year ORDER BY year;"
     },
     {
       "id": 4,
-      "prompt": "<strong>Practice Task: Region Tier Class</strong><br/>Categorize customers as 'Tier 1' (North/South regions) or 'Tier 2' (East/West regions).",
-      "referenceSql": "-- Complete this query"
+      "prompt": "<strong>Task: Delivery Deadline</strong><br/>For each order, compute a <code>delivery_deadline</code> as <code>order_date</code> + 7 days.",
+      "referenceSql": "SELECT order_id, order_date, date(order_date, '+7 days') AS delivery_deadline FROM orders;"
     },
     {
       "id": 5,
-      "prompt": "<strong>Practice Task: Order Urgency Tag</strong><br/>Tag orders based on amount: 'Premium' (>500), 'Mid' (100-500), or 'Standard' (<100).",
-      "referenceSql": "-- Complete this query"
+      "prompt": "<strong>Task: Recent Orders</strong><br/>Find all orders placed in the last 365 days from today.",
+      "referenceSql": "SELECT * FROM orders WHERE order_date >= date('now', '-365 days');"
     },
     {
       "id": 6,
-      "prompt": "<strong>Practice Task: Department Budget Level</strong><br/>Label departments as 'High Budget' (>2000000) or 'Normal Budget'.",
-      "referenceSql": "-- Complete this query"
+      "prompt": "<strong>Task: Monthly Order Report</strong><br/>Group orders by year and month, count orders, and sum revenue. Sort by year and month.",
+      "referenceSql": "SELECT strftime('%Y', order_date) AS year, strftime('%m', order_date) AS month, COUNT(*) AS orders, SUM(total_amount) AS revenue FROM orders GROUP BY year, month ORDER BY year, month;"
     }
   ],
   "testQuestions": [
-    {
-      "id": 1,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 2,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 3,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 4,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 5,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 6,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 7,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 8,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 9,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 10,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 11,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 12,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 13,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 14,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 15,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 16,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 17,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 18,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 19,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 20,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 21,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 22,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 23,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 24,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    },
-    {
-      "id": 25,
-      "prompt": "Evaluate employee salaries, labeling those earning > 80,000 as 'High' and others as 'Standard' in a column aliased as 'tier'.",
-      "ref": "SELECT first_name, salary, CASE WHEN salary > 80000 THEN 'High' ELSE 'Standard' END AS tier FROM employees;"
-    }
+    { "id": 1, "prompt": "Get the current date in SQLite using <code>date('now')</code>.", "ref": "SELECT date('now') AS today;" },
+    { "id": 2, "prompt": "Find how many days have passed since each order was placed.", "ref": "SELECT order_id, CAST(julianday('now') - julianday(order_date) AS INTEGER) AS days_ago FROM orders;" },
+    { "id": 3, "prompt": "Compute fulfillment days (shipped_date - order_date) for all shipped orders.", "ref": "SELECT order_id, CAST(julianday(shipped_date) - julianday(order_date) AS INTEGER) AS fulfillment_days FROM orders WHERE shipped_date IS NOT NULL;" },
+    { "id": 4, "prompt": "Extract the year from each employee's hire_date.", "ref": "SELECT first_name, strftime('%Y', hire_date) AS hire_year FROM employees;" },
+    { "id": 5, "prompt": "Extract the month from each order's order_date.", "ref": "SELECT order_id, strftime('%m', order_date) AS month FROM orders;" },
+    { "id": 6, "prompt": "Find all employees hired in 2021.", "ref": "SELECT * FROM employees WHERE strftime('%Y', hire_date) = '2021';" },
+    { "id": 7, "prompt": "Add 30 days to each order's order_date as a delivery_deadline.", "ref": "SELECT order_id, order_date, date(order_date, '+30 days') AS delivery_deadline FROM orders;" },
+    { "id": 8, "prompt": "Find orders placed in the last 180 days.", "ref": "SELECT * FROM orders WHERE order_date >= date('now', '-180 days');" },
+    { "id": 9, "prompt": "Find orders placed in December (month = '12').", "ref": "SELECT * FROM orders WHERE strftime('%m', order_date) = '12';" },
+    { "id": 10, "prompt": "Calculate employee tenure in years (approximate: days / 365).", "ref": "SELECT first_name, ROUND((julianday('now') - julianday(hire_date)) / 365.0, 1) AS tenure_years FROM employees;" },
+    { "id": 11, "prompt": "Count orders placed per month.", "ref": "SELECT strftime('%m', order_date) AS month, COUNT(*) AS order_count FROM orders GROUP BY month;" },
+    { "id": 12, "prompt": "Find orders placed before 2024-06-01 and shipped after 2024-06-10.", "ref": "SELECT * FROM orders WHERE order_date < '2024-06-01' AND shipped_date > '2024-06-10';" },
+    { "id": 13, "prompt": "Format hire_date as DD-MM-YYYY for all employees.", "ref": "SELECT first_name, strftime('%d-%m-%Y', hire_date) AS formatted_date FROM employees;" },
+    { "id": 14, "prompt": "Find employees hired in the first half of the year (months 01-06).", "ref": "SELECT * FROM employees WHERE strftime('%m', hire_date) <= '06';" },
+    { "id": 15, "prompt": "Compute a contract expiry date as hire_date + 3 years for all employees.", "ref": "SELECT first_name, hire_date, date(hire_date, '+3 years') AS contract_expiry FROM employees;" },
+    { "id": 16, "prompt": "Find orders with fulfillment time more than 5 days.", "ref": "SELECT * FROM orders WHERE shipped_date IS NOT NULL AND CAST(julianday(shipped_date) - julianday(order_date) AS INTEGER) > 5;" },
+    { "id": 17, "prompt": "Find total revenue per year from orders.", "ref": "SELECT strftime('%Y', order_date) AS year, SUM(total_amount) AS revenue FROM orders GROUP BY year;" },
+    { "id": 18, "prompt": "Find employees who have been employed for more than 3 years.", "ref": "SELECT * FROM employees WHERE julianday('now') - julianday(hire_date) > 3 * 365;" },
+    { "id": 19, "prompt": "Count customers who signed up per year.", "ref": "SELECT strftime('%Y', signup_date) AS year, COUNT(*) AS signups FROM customers GROUP BY year;" },
+    { "id": 20, "prompt": "Find orders placed on weekends (day of week 0=Sunday, 6=Saturday).", "ref": "SELECT * FROM orders WHERE strftime('%w', order_date) IN ('0', '6');" },
+    { "id": 21, "prompt": "Compute the number of days between customer signup_date and today.", "ref": "SELECT first_name, CAST(julianday('now') - julianday(signup_date) AS INTEGER) AS days_since_signup FROM customers;" },
+    { "id": 22, "prompt": "Find the month with the highest total revenue from orders.", "ref": "SELECT strftime('%m', order_date) AS month, SUM(total_amount) AS revenue FROM orders GROUP BY month ORDER BY revenue DESC LIMIT 1;" },
+    { "id": 23, "prompt": "Find orders placed between 2024-10-01 and 2024-12-31.", "ref": "SELECT * FROM orders WHERE order_date BETWEEN '2024-10-01' AND '2024-12-31';" },
+    { "id": 24, "prompt": "Find employees hired in Q1 (Jan, Feb, Mar) of any year.", "ref": "SELECT * FROM employees WHERE strftime('%m', hire_date) IN ('01', '02', '03');" },
+    { "id": 25, "prompt": "Compute average fulfillment days across all shipped orders.", "ref": "SELECT ROUND(AVG(julianday(shipped_date) - julianday(order_date)), 1) AS avg_fulfillment_days FROM orders WHERE shipped_date IS NOT NULL;" }
   ],
   "topics": [
-    {
-      "id": "topic-1",
-      "label": "Topic 1: CASE WHEN (Conditional Logic)",
-      "recordingKey": null
-    }
+    { "id": "topic-1", "label": "Topic 1: Date & Time Functions", "recordingKey": null }
   ]
 };

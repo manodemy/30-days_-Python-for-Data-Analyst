@@ -1,181 +1,211 @@
-// Day 16 Content
+// Day 16 — Window Functions II: Analytic (LAG, LEAD, SUM OVER, AVG OVER, FIRST/LAST VALUE)
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day16'] = {
   "day": 16,
-  "title": "String Functions",
+  "title": "Window Functions II — Analytic",
   "db": "retail",
-  "emoji": "\ud83e\uddf9",
+  "emoji": "📈",
   "slides": [
     {
-      "title": "Topic 01: String Functions",
+      "title": "Window Functions II — Analytic Functions",
       "duration": "0:00",
-      "html": "\n            <h2>\ud83e\uddf9 Topic 01: String Functions</h2>\n            <div class=\"slide-section\">\n              <h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">Why String Functions Matter for Analysts</h3>\n<p style=\"color:#cbd5e1;line-height:1.75;margin:10px 0;\">Real-world data is messy. Product names have extra spaces, emails are in inconsistent case, phone numbers have dashes and parentheses, and names are split or combined differently across systems. String functions are the data analyst's cleansing toolkit.</p>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">Core String Functions</h3>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- Case functions\nUPPER('hello world')          \u2192 'HELLO WORLD'\nLOWER('HELLO WORLD')          \u2192 'hello world'\nINITCAP('hello world')        \u2192 'Hello World'  -- PostgreSQL\n\n-- Length\nLENGTH('hello')               \u2192 5\nCHAR_LENGTH('hello')          \u2192 5  (counts characters, not bytes)\n\n-- Trimming whitespace\nTRIM('  hello  ')             \u2192 'hello'\nLTRIM('  hello  ')            \u2192 'hello  '\nRTRIM('  hello  ')            \u2192 '  hello'\nTRIM(BOTH '-' FROM '--hello--') \u2192 'hello'  -- trim specific characters\n\n-- Padding\nLPAD('42', 5, '0')            \u2192 '00042'  -- pad left to width 5 with '0'\nRPAD('hello', 10, '.')        \u2192 'hello.....'\n\n-- Concatenation\n'hello' || ' ' || 'world'     \u2192 'hello world'  -- PostgreSQL\nCONCAT('hello', ' ', 'world') \u2192 'hello world'   -- Standard SQL\nCONCAT_WS(', ', 'Alice', 'Bob', 'Charlie')       \u2192 'Alice, Bob, Charlie'</code></pre>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">Substring Extraction</h3>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- SUBSTRING(string, start, length)\nSUBSTRING('Hello World', 1, 5)          \u2192 'Hello'  -- 1-indexed\nSUBSTRING('Hello World', 7)             \u2192 'World'  -- from position 7 to end\n\n-- LEFT and RIGHT\nLEFT('Hello World', 5)                  \u2192 'Hello'\nRIGHT('Hello World', 5)                 \u2192 'World'\n\n-- Extract email domain\nSELECT RIGHT(email, LENGTH(email) - POSITION('@' IN email)) AS domain\nFROM employees;\n-- 'alice@manodemy.com' \u2192 'manodemy.com'</code></pre>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">Pattern Search</h3>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- POSITION / STRPOS: find character position\nPOSITION('@' IN 'alice@manodemy.com')   \u2192 6\nSTRPOS('alice@manodemy.com', '@')       \u2192 6  -- PostgreSQL\n\n-- LIKE (already covered Day 3)\n-- REGEXP_MATCH / ~ (regex)\nSELECT * FROM employees WHERE email ~ '^[a-z]+\\.[a-z]+@manodemy\\.com$';</code></pre>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">String Replacement</h3>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- REPLACE: replaces all occurrences\nREPLACE('hello world', 'world', 'SQL')  \u2192 'hello SQL'\nREPLACE(phone, '-', '')                 \u2192 removes all dashes from phone number\n\n-- REGEXP_REPLACE: replace using regex\nREGEXP_REPLACE('Hello  World', '\\s+', ' ', 'g')  \u2192 'Hello World'  -- normalize spaces\nREGEXP_REPLACE(phone, '[^0-9]', '', 'g')          \u2192 keeps only digits</code></pre>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">SPLIT_PART \u2014 Splitting Strings by Delimiter</h3>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- SPLIT_PART(string, delimiter, field_number)\nSPLIT_PART('John|Doe|35', '|', 1)       \u2192 'John'\nSPLIT_PART('John|Doe|35', '|', 2)       \u2192 'Doe'\nSPLIT_PART('John|Doe|35', '|', 3)       \u2192 '35'\n\n-- Extract username from email\nSELECT SPLIT_PART(email, '@', 1) AS username FROM employees;</code></pre>\n<h3 style=\"color:#a5b4fc;margin:28px 0 10px;font-size:1.05em;font-weight:700;border-bottom:1px solid #1e293b;padding-bottom:6px;\">Practical Data Cleaning Example</h3>\n<pre style=\"background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:16px;overflow-x:auto;margin:16px 0;\"><code class=\"language-sql\" style=\"color:#e6edf3;font-family:JetBrains Mono,monospace;font-size:0.88em;white-space:pre;\">-- Clean a messy name column in one query\nSELECT\n    TRIM(                            -- remove leading/trailing spaces\n        REGEXP_REPLACE(              -- normalize multiple spaces\n            INITCAP(                 -- proper case\n                LOWER(name)          -- normalize case first\n            ),\n        '\\s+', ' ', 'g')\n    ) AS clean_name\nFROM raw_customers;</code></pre>\n<hr style=\"border:none;border-top:1px solid #1e293b;margin:24px 0;\">\n            </div>\n            "
+      "html": `
+        <h2>📈 Window Functions II — Analytic</h2>
+
+        <div class="slide-section">
+          <h3>01. Running Totals with SUM OVER</h3>
+          <p>Using <code>SUM()</code> with an <code>OVER</code> clause and an ORDER BY creates a <strong>running total</strong> — each row shows the cumulative sum up to and including that row. This is the most commonly asked window function in data analyst interviews.</p>
+
+          <pre><code>-- Running total of order amounts over time
+SELECT order_id,
+       order_date,
+       total_amount,
+       SUM(total_amount) OVER (
+         ORDER BY order_date
+       ) AS running_total;
+FROM   orders;
+
+-- Running total WITHIN each customer
+SELECT customer_id,
+       order_id,
+       order_date,
+       total_amount,
+       SUM(total_amount) OVER (
+         PARTITION BY customer_id
+         ORDER BY order_date
+       ) AS customer_running_total
+FROM   orders;</code></pre>
+        </div>
+
+        <div class="slide-section">
+          <h3>02. Moving Averages with ROWS BETWEEN</h3>
+          <p>The <strong>window frame</strong> (ROWS/RANGE BETWEEN) specifies which rows to include in the aggregate. This enables rolling/moving averages.</p>
+
+          <pre><code>-- 3-row moving average of order amounts
+SELECT order_id,
+       order_date,
+       total_amount,
+       AVG(total_amount) OVER (
+         ORDER BY order_date
+         ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+       ) AS moving_avg_3
+FROM   orders;
+
+-- Frame specification reference:
+-- UNBOUNDED PRECEDING = start of partition
+-- N PRECEDING         = N rows before current
+-- CURRENT ROW         = current row
+-- N FOLLOWING         = N rows after current
+-- UNBOUNDED FOLLOWING = end of partition</code></pre>
+
+          <div class="info-box">
+            ℹ️ Default frame when ORDER BY is present: <code>RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</code>. This means cumulative sum/avg is the default behaviour when ORDER BY is in OVER.
+          </div>
+        </div>
+
+        <div class="slide-section">
+          <h3>03. LAG and LEAD — Accessing Previous/Next Row</h3>
+          <p><code>LAG(col, n)</code> returns the value from <strong>n rows behind</strong> the current row. <code>LEAD(col, n)</code> returns the value from <strong>n rows ahead</strong>. Both return <code>NULL</code> when there is no preceding/following row.</p>
+
+          <pre><code>-- Compare each order to the previous order (month-over-month)
+SELECT order_id,
+       order_date,
+       total_amount,
+       LAG(total_amount, 1, 0) OVER (ORDER BY order_date) AS prev_amount,
+       total_amount - LAG(total_amount, 1, 0) OVER (ORDER BY order_date) AS delta
+FROM   orders;
+
+-- Per-customer: how much did they spend vs. their previous order?
+SELECT customer_id,
+       order_id,
+       total_amount,
+       LAG(total_amount) OVER (PARTITION BY customer_id ORDER BY order_date) AS prev_order
+FROM   orders;</code></pre>
+
+          <pre><code>-- LEAD: Show the next order date for each customer
+SELECT customer_id,
+       order_date,
+       LEAD(order_date) OVER (
+         PARTITION BY customer_id ORDER BY order_date
+       ) AS next_order_date
+FROM   orders;</code></pre>
+        </div>
+
+        <div class="slide-section">
+          <h3>04. FIRST_VALUE and LAST_VALUE</h3>
+          <p><code>FIRST_VALUE(col)</code> returns the value from the <strong>first row</strong> in the window frame. <code>LAST_VALUE(col)</code> returns the value from the <strong>last row</strong> (requires explicit <code>ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</code> to see all rows).</p>
+
+          <pre><code>-- First and last salary in each department (by hire_date)
+SELECT first_name,
+       department_id,
+       hire_date,
+       salary,
+       FIRST_VALUE(salary) OVER (
+         PARTITION BY department_id
+         ORDER BY hire_date
+       ) AS first_hire_salary,
+       LAST_VALUE(salary) OVER (
+         PARTITION BY department_id
+         ORDER BY hire_date
+         ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+       ) AS last_hire_salary
+FROM   employees;</code></pre>
+
+          <div class="warn-box">
+            ⚠️ <code>LAST_VALUE</code> gotcha: Without <code>ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</code>, the default frame only extends to the current row, so LAST_VALUE returns the current row's value — not the true last. Always specify the full frame for LAST_VALUE.
+          </div>
+        </div>
+
+        <div class="slide-section">
+          <h3>05. Percentage of Total with Window SUM</h3>
+          <p>Combine a window SUM (total) with individual row values to compute each row's <strong>share of the total</strong> — without a subquery or self-join.</p>
+
+          <pre><code>-- Each order's percentage of total revenue
+SELECT order_id,
+       total_amount,
+       SUM(total_amount) OVER ()                            AS grand_total,
+       ROUND(total_amount * 100.0 /
+             SUM(total_amount) OVER (), 2)                  AS pct_of_total
+FROM   orders;
+
+-- Each department's payroll as % of company payroll
+SELECT department_id,
+       salary,
+       SUM(salary) OVER () AS company_payroll,
+       ROUND(salary * 100.0 / SUM(salary) OVER (), 2) AS pct_of_payroll
+FROM   employees;</code></pre>
+
+          <div class="interview-box">
+            <h4>🎯 Interview Insight</h4>
+            <div>
+              <p><strong>Q: Explain the difference between LAG and LEAD with an example.</strong></p>
+              <p><em>A: LAG(col, 1) returns the value from the previous row in the ordered partition — useful for computing period-over-period change (e.g., this month's sales vs. last month). LEAD(col, 1) looks forward — useful for computing time-to-next-event (e.g., days until the customer's next purchase). Both default to NULL when there is no preceding/following row; a third argument provides a default: LAG(salary, 1, 0) returns 0 instead of NULL for the first row.</em></p>
+            </div>
+          </div>
+        </div>
+      `
     }
   ],
   "practiceQuestions": [
     {
       "id": 1,
-      "prompt": "Write a query to return customer first_name in lowercase and last_name in uppercase.",
-      "referenceSql": "SELECT LOWER(first_name), UPPER(last_name) FROM customers;"
+      "prompt": "<strong>Task: Running Total</strong><br/>Compute a running total of <code>total_amount</code> over time from the <code>orders</code> table, ordered by <code>order_date</code>.",
+      "referenceSql": "SELECT order_id, order_date, total_amount, SUM(total_amount) OVER (ORDER BY order_date) AS running_total FROM orders;"
     },
     {
       "id": 2,
-      "prompt": "Write a query to extract the domain from employee email addresses. (Hint: use SUBSTR and INSTR).",
-      "referenceSql": "SELECT email, SUBSTR(email, INSTR(email, '@') + 1) AS domain FROM employees;"
+      "prompt": "<strong>Task: Customer Running Total</strong><br/>Compute a running total of <code>total_amount</code> per customer (PARTITION BY customer_id), ordered by order_date.",
+      "referenceSql": "SELECT customer_id, order_id, order_date, total_amount, SUM(total_amount) OVER (PARTITION BY customer_id ORDER BY order_date) AS customer_running_total FROM orders;"
     },
     {
       "id": 3,
-      "prompt": "Write a query to trim leading and trailing spaces from first_name in raw_customers.",
-      "referenceSql": "SELECT name, TRIM(email) FROM raw_customers;"
+      "prompt": "<strong>Task: Month-over-Month Delta</strong><br/>Using LAG, compute each order's <code>total_amount</code> and the delta from the previous order (by order_date).",
+      "referenceSql": "SELECT order_id, order_date, total_amount, LAG(total_amount) OVER (ORDER BY order_date) AS prev_amount, total_amount - LAG(total_amount, 1, 0) OVER (ORDER BY order_date) AS delta FROM orders;"
     },
     {
       "id": 4,
-      "prompt": "<strong>Practice Task: Customer Name Format</strong><br/>Standardize display. Combine customers first_name and last_name, converting to title case or uppercase.",
-      "referenceSql": "-- Complete this query"
+      "prompt": "<strong>Task: Next Order Date</strong><br/>Using LEAD, show each order's <code>order_date</code> and the customer's next order date.",
+      "referenceSql": "SELECT customer_id, order_id, order_date, LEAD(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) AS next_order_date FROM orders;"
     },
     {
       "id": 5,
-      "prompt": "<strong>Practice Task: Area Code Extract</strong><br/>Find area codes from phone. Use SUBSTR to extract first 3 characters from raw_customers phone column.",
-      "referenceSql": "-- Complete this query"
+      "prompt": "<strong>Task: Percentage of Total Revenue</strong><br/>For each order, compute its percentage of total revenue using SUM OVER () without PARTITION.",
+      "referenceSql": "SELECT order_id, total_amount, ROUND(total_amount * 100.0 / SUM(total_amount) OVER (), 2) AS pct_of_total FROM orders;"
     },
     {
       "id": 6,
-      "prompt": "<strong>Practice Task: Product Initial Tag</strong><br/>Retrieve name and first 3 characters of name in uppercase as product code.",
-      "referenceSql": "-- Complete this query"
+      "prompt": "<strong>Task: 3-Row Moving Average</strong><br/>Compute a 3-row moving average of <code>total_amount</code> using ROWS BETWEEN 2 PRECEDING AND CURRENT ROW.",
+      "referenceSql": "SELECT order_id, order_date, total_amount, ROUND(AVG(total_amount) OVER (ORDER BY order_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS moving_avg FROM orders;"
     }
   ],
   "testQuestions": [
-    {
-      "id": 1,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 2,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 3,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 4,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 5,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 6,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 7,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 8,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 9,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 10,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 11,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 12,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 13,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 14,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 15,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 16,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 17,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 18,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 19,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 20,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 21,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 22,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 23,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 24,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    },
-    {
-      "id": 25,
-      "prompt": "Apply UPPER() to first_name and TRIM() to last_name, returning them under aliases upper_name and clean_last.",
-      "ref": "SELECT UPPER(first_name) AS upper_name, TRIM(last_name) AS clean_last FROM employees;"
-    }
+    { "id": 1, "prompt": "Compute a running total of total_amount from orders ordered by order_date.", "ref": "SELECT order_id, total_amount, SUM(total_amount) OVER (ORDER BY order_date) AS running_total FROM orders;" },
+    { "id": 2, "prompt": "Compute a running total of salary within each department ordered by hire_date.", "ref": "SELECT first_name, department_id, salary, SUM(salary) OVER (PARTITION BY department_id ORDER BY hire_date) AS running_payroll FROM employees;" },
+    { "id": 3, "prompt": "Show each employee's salary and the previous employee's salary (by hire_date) using LAG.", "ref": "SELECT first_name, hire_date, salary, LAG(salary) OVER (ORDER BY hire_date) AS prev_salary FROM employees;" },
+    { "id": 4, "prompt": "Show each employee's salary and the next employee's salary (by hire_date) using LEAD.", "ref": "SELECT first_name, hire_date, salary, LEAD(salary) OVER (ORDER BY hire_date) AS next_salary FROM employees;" },
+    { "id": 5, "prompt": "Compute % of total company payroll for each employee's salary.", "ref": "SELECT first_name, salary, ROUND(salary * 100.0 / SUM(salary) OVER (), 2) AS pct FROM employees;" },
+    { "id": 6, "prompt": "Compute % of department payroll for each employee within their department.", "ref": "SELECT first_name, department_id, salary, ROUND(salary * 100.0 / SUM(salary) OVER (PARTITION BY department_id), 2) AS dept_pct FROM employees;" },
+    { "id": 7, "prompt": "Compute a 3-order moving average of total_amount per customer.", "ref": "SELECT customer_id, order_id, total_amount, AVG(total_amount) OVER (PARTITION BY customer_id ORDER BY order_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS moving_avg FROM orders;" },
+    { "id": 8, "prompt": "Show first salary hired in each department using FIRST_VALUE.", "ref": "SELECT first_name, department_id, hire_date, salary, FIRST_VALUE(salary) OVER (PARTITION BY department_id ORDER BY hire_date) AS first_salary FROM employees;" },
+    { "id": 9, "prompt": "Compute LAG to find each customer's order amount change from previous order.", "ref": "SELECT customer_id, order_id, total_amount, LAG(total_amount) OVER (PARTITION BY customer_id ORDER BY order_date) AS prev, total_amount - LAG(total_amount, 1, 0) OVER (PARTITION BY customer_id ORDER BY order_date) AS delta FROM orders;" },
+    { "id": 10, "prompt": "Show running average of unit_price across products ordered by unit_price.", "ref": "SELECT name, unit_price, AVG(unit_price) OVER (ORDER BY unit_price ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_avg FROM products;" },
+    { "id": 11, "prompt": "Using LEAD, show each employee's hire_date and the next hire_date in their department.", "ref": "SELECT first_name, department_id, hire_date, LEAD(hire_date) OVER (PARTITION BY department_id ORDER BY hire_date) AS next_hire FROM employees;" },
+    { "id": 12, "prompt": "Compute running count of orders over time.", "ref": "SELECT order_id, order_date, COUNT(*) OVER (ORDER BY order_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_count FROM orders;" },
+    { "id": 13, "prompt": "Compute each department's salary as % of total company payroll.", "ref": "SELECT department_id, SUM(salary) AS dept_pay, ROUND(SUM(salary)*100.0 / SUM(SUM(salary)) OVER (), 2) AS pct FROM employees GROUP BY department_id;" },
+    { "id": 14, "prompt": "Show the LAST_VALUE of salary (most recent hire's salary) in each department.", "ref": "SELECT first_name, department_id, salary, LAST_VALUE(salary) OVER (PARTITION BY department_id ORDER BY hire_date ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_hired_salary FROM employees;" },
+    { "id": 15, "prompt": "Using LAG(2), compare each order to 2 orders ago.", "ref": "SELECT order_id, total_amount, LAG(total_amount, 2) OVER (ORDER BY order_date) AS two_orders_ago FROM orders;" },
+    { "id": 16, "prompt": "Compute a cumulative sum of qty sold per product over time from order_items (joined with orders).", "ref": "SELECT oi.product_id, o.order_date, oi.qty, SUM(oi.qty) OVER (PARTITION BY oi.product_id ORDER BY o.order_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumulative_qty FROM order_items oi INNER JOIN orders o ON oi.order_id = o.order_id;" },
+    { "id": 17, "prompt": "Compute % of total orders (count) per status.", "ref": "SELECT status, COUNT(*) AS cnt, ROUND(COUNT(*)*100.0 / SUM(COUNT(*)) OVER (), 2) AS pct FROM orders GROUP BY status;" },
+    { "id": 18, "prompt": "Show each order's total_amount and the difference from the order before it per customer.", "ref": "SELECT customer_id, order_id, total_amount, total_amount - LAG(total_amount, 1, 0) OVER (PARTITION BY customer_id ORDER BY order_date) AS diff_from_prev FROM orders;" },
+    { "id": 19, "prompt": "Compute 5-row moving average of total_amount globally.", "ref": "SELECT order_id, order_date, total_amount, AVG(total_amount) OVER (ORDER BY order_date ROWS BETWEEN 4 PRECEDING AND CURRENT ROW) AS moving_avg_5 FROM orders;" },
+    { "id": 20, "prompt": "Find each customer's order that had the biggest jump from the previous order.", "ref": "WITH deltas AS (SELECT customer_id, order_id, total_amount, total_amount - LAG(total_amount, 1, 0) OVER (PARTITION BY customer_id ORDER BY order_date) AS jump FROM orders), ranked AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY jump DESC) AS rn FROM deltas) SELECT * FROM ranked WHERE rn = 1;" },
+    { "id": 21, "prompt": "Compute running minimum salary within each department.", "ref": "SELECT first_name, department_id, salary, MIN(salary) OVER (PARTITION BY department_id ORDER BY hire_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_min FROM employees;" },
+    { "id": 22, "prompt": "Show each order and how many days until the NEXT order for that customer (LEAD on order_date).", "ref": "SELECT customer_id, order_id, order_date, CAST(julianday(LEAD(order_date) OVER (PARTITION BY customer_id ORDER BY order_date)) - julianday(order_date) AS INTEGER) AS days_to_next FROM orders;" },
+    { "id": 23, "prompt": "Compute each employee's salary as a running % of their department total (ordered by hire_date).", "ref": "SELECT first_name, department_id, salary, ROUND(SUM(salary) OVER (PARTITION BY department_id ORDER BY hire_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) * 100.0 / SUM(salary) OVER (PARTITION BY department_id), 2) AS cumulative_pct FROM employees;" },
+    { "id": 24, "prompt": "Show each product's unit_price and the price of the next-cheaper product using LEAD sorted ASC.", "ref": "SELECT name, unit_price, LEAD(unit_price) OVER (ORDER BY unit_price ASC) AS next_cheaper FROM products;" },
+    { "id": 25, "prompt": "Compute the year-over-year revenue growth using LAG on annual totals.", "ref": "WITH yearly AS (SELECT strftime('%Y', order_date) AS yr, SUM(total_amount) AS rev FROM orders GROUP BY yr) SELECT yr, rev, LAG(rev) OVER (ORDER BY yr) AS prev_rev, ROUND((rev - LAG(rev) OVER (ORDER BY yr)) * 100.0 / LAG(rev) OVER (ORDER BY yr), 2) AS yoy_growth_pct FROM yearly;" }
   ],
   "topics": [
-    {
-      "id": "topic-1",
-      "label": "Topic 1: String Functions",
-      "recordingKey": null
-    }
+    { "id": "topic-1", "label": "Topic 1: LAG, LEAD, SUM/AVG OVER, Moving Averages, FIRST/LAST VALUE", "recordingKey": null }
   ]
 };
