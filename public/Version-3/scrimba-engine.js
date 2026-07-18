@@ -3608,15 +3608,28 @@ function initCustomDropdowns() {
     
     let trigger = wrapper.querySelector('.custom-select-trigger');
     let optionsMenu = wrapper.querySelector('.custom-select-options');
+
+    if (!trigger) {
+      wrapper.querySelector('.day-picker-chevron')?.remove();
+      trigger = document.createElement('div');
+      trigger.className = 'custom-select-trigger';
+      wrapper.appendChild(trigger);
+    }
+    
+    if (!optionsMenu) {
+      optionsMenu = document.createElement('div');
+      optionsMenu.className = 'custom-select-options';
+      wrapper.appendChild(optionsMenu);
+    }
     
     function updateTriggerText() {
       const textSpan = trigger.querySelector('.selected-text');
       if (textSpan) {
         const option = select.options[select.selectedIndex];
         if (select.id === 'topicSelect' && option) {
-          const slideIdx = parseInt(option.value);
+          const slideIdx = parseInt(option.value, 10);
           const duration = getSlideDurationString(slideIdx);
-          const slide = COURSE_CONFIG.slides[slideIdx];
+          const slide = COURSE_CONFIG.slides ? COURSE_CONFIG.slides[slideIdx] : null;
           const cleanedTitle = slide ? slide.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '') : option.text;
           const multiTopic3 = COURSE_CONFIG.slides && COURSE_CONFIG.slides.length > 1;
           textSpan.innerHTML = `
@@ -3643,9 +3656,9 @@ function initCustomDropdowns() {
         optionItem.className = `custom-select-option${opt.selected ? ' selected' : ''}`;
         
         if (select.id === 'topicSelect') {
-          const slideIdx = parseInt(opt.value);
+          const slideIdx = parseInt(opt.value, 10);
           const duration = getSlideDurationString(slideIdx);
-          const slide = COURSE_CONFIG.slides[slideIdx];
+          const slide = COURSE_CONFIG.slides ? COURSE_CONFIG.slides[slideIdx] : null;
           const cleanedTitle = slide ? slide.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '') : opt.text;
           const multiTopic4 = COURSE_CONFIG.slides && COURSE_CONFIG.slides.length > 1;
           optionItem.innerHTML = `
@@ -3682,67 +3695,43 @@ function initCustomDropdowns() {
         });
         optionsMenu.appendChild(optionItem);
       });
+
+      const isSingleTopic = (select.id === 'topicSelect' && (!COURSE_CONFIG.slides || COURSE_CONFIG.slides.length <= 1));
+      
+      if (isSingleTopic) {
+        wrapper.classList.add('no-dropdown');
+        trigger.innerHTML = `<span class="selected-text"></span>`;
+        wrapper.onclick = null;
+      } else {
+        wrapper.classList.remove('no-dropdown');
+        if (!trigger.querySelector('.day-picker-chevron')) {
+          trigger.innerHTML = `
+            <span class="selected-text"></span>
+            <span class="day-picker-chevron">
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1.5L5 5L9 1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          `;
+        }
+        wrapper.onclick = (e) => {
+          e.stopPropagation();
+          const isOpen = optionsMenu.classList.contains('open');
+          document.querySelectorAll('.custom-select-options').forEach(menu => {
+            menu.classList.remove('open');
+            menu.parentElement.classList.remove('open');
+            menu.previousElementSibling.classList.remove('open');
+          });
+          if (!isOpen) {
+            optionsMenu.classList.add('open');
+            wrapper.classList.add('open');
+            trigger.classList.add('open');
+          }
+        };
+      }
+
       updateTriggerText();
     }
-    
-    if (trigger && optionsMenu) {
-      populateOptions();
-      return;
-    }
-    
-    // Remove old native chevron (only during first-time initialization)
-    wrapper.querySelector('.day-picker-chevron')?.remove();
-    
-    if (!trigger) {
-      trigger = document.createElement('div');
-      trigger.className = 'custom-select-trigger';
-      wrapper.appendChild(trigger);
-    }
-    
-    if (!optionsMenu) {
-      optionsMenu = document.createElement('div');
-      optionsMenu.className = 'custom-select-options';
-      wrapper.appendChild(optionsMenu);
-    }
-    
-    const isSingleTopic = (select.id === 'topicSelect' && COURSE_CONFIG.slides && COURSE_CONFIG.slides.length <= 1);
-    
-    if (isSingleTopic) {
-      wrapper.classList.add('no-dropdown');
-      trigger.innerHTML = `
-        <span class="selected-text"></span>
-      `;
-    } else {
-      wrapper.classList.remove('no-dropdown');
-      trigger.innerHTML = `
-        <span class="selected-text"></span>
-        <span class="day-picker-chevron">
-          <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1.5L5 5L9 1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </span>
-      `;
-    }
-    
+
     populateOptions();
-    
-    if (isSingleTopic) {
-      wrapper.onclick = null;
-    } else {
-      // Click toggle open on the entire pill wrapper (including padding/chevron)
-      wrapper.onclick = (e) => {
-        e.stopPropagation();
-        const isOpen = optionsMenu.classList.contains('open');
-        document.querySelectorAll('.custom-select-options').forEach(menu => {
-          menu.classList.remove('open');
-          menu.parentElement.classList.remove('open');
-          menu.previousElementSibling.classList.remove('open');
-        });
-        if (!isOpen) {
-          optionsMenu.classList.add('open');
-          wrapper.classList.add('open');
-          trigger.classList.add('open');
-        }
-      };
-    }
     
     // Listen to changes on the native select
     select.addEventListener('change', () => {
