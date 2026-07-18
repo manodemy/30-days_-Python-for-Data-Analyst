@@ -32,6 +32,7 @@
   --shadow: 0 8px 32px rgba(0,0,0,0.35);
   --shadow-lg: 0 16px 48px rgba(0,0,0,0.5);
   --transition: 0.2s ease;
+  --editor-bg: #1e222b;
 }
 
 /* ─── Reset ─── */
@@ -784,12 +785,20 @@ a { color: var(--cyan); text-decoration: none; }
   overflow: hidden;
   min-height: 180px;
 }
+.CodeMirror,
+.CodeMirror-gutters,
+.cm-s-dracula.CodeMirror,
+.cm-s-dracula .CodeMirror-gutters,
+.editor-wrap .CodeMirror,
+.test-editor-wrap .CodeMirror,
+.vp-editor-wrap .CodeMirror {
+  background: var(--editor-bg) !important;
+}
 .editor-wrap .CodeMirror {
   height: 100% !important;
   font-family: var(--mono);
   font-size: 0.88rem;
   line-height: 1.5;
-  background: #0d1117;
 }
 
 /* ─── Output Terminal ─── */
@@ -1000,8 +1009,8 @@ a { color: var(--cyan); text-decoration: none; }
   display: inline;
 }
 .slide-content pre {
-  background: #282a36 !important; /* Dracula theme background */
-  border: 1px solid #343746 !important;
+  background: var(--editor-bg) !important; /* Unified dark background */
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   border-radius: var(--radius-sm);
   padding: 14px 16px !important;
   margin: 10px 0;
@@ -2210,7 +2219,6 @@ a { color: var(--cyan); text-decoration: none; }
   font-family: var(--mono);
   font-size: 0.88rem;
   line-height: 1.5;
-  background: #0d1117;
 }
 .test-toolbar {
   display: flex;
