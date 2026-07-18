@@ -483,6 +483,9 @@ function formatHeadingBoxes(container) {
     h3.classList.add('heading-box-formatted');
 
     const audioBtn = h3.querySelector('.audio-play-btn');
+    if (audioBtn) {
+      audioBtn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> <span class="btn-text">Play Lesson</span>`;
+    }
     const audioHtml = audioBtn ? audioBtn.outerHTML : '';
     if (audioBtn) audioBtn.remove();
 
@@ -4601,10 +4604,10 @@ function updatePlayButtonStates(isPlaying) {
       if (match) {
         const btnSrc = match[1];
         if (activeSrc && activeSrc === btnSrc && isPlaying) {
-          btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+          btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> <span class="btn-text">Pause Lesson</span>`;
           btn.classList.add('playing');
         } else {
-          btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+          btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> <span class="btn-text">Play Lesson</span>`;
           btn.classList.remove('playing');
         }
       }
