@@ -1452,7 +1452,7 @@ function rebuildRecordingState(targetMs) {
     renderResultTable(lastRun.result, 'mainOutput');
   } else {
     const outputEl = document.getElementById('mainOutput');
-    if (outputEl) outputEl.innerHTML = '<span class="output-success">Ready...</span>';
+    if (outputEl) outputEl.innerHTML = '<div class="output-label">Terminal Output</div><span class="output-success">⚡ Write your SQL query above and click \'Run\' to execute it!</span>';
   }
 
   // Handle caption display
@@ -2101,7 +2101,7 @@ function renderTestQuestion(idx) {
   testEditor.focus();
 
   // Clear output
-  document.getElementById('testOutput').innerHTML = '<div class="output-label">Terminal Output</div><span class="output-success">Ready...</span>';
+  document.getElementById('testOutput').innerHTML = '<div class="output-label">Terminal Output</div><span class="output-success">⚡ Write your query and click \'Run\' to verify your answer!</span>';
 }
 
 function runTestQuery() {
@@ -2864,7 +2864,7 @@ function clearOutputSection() {
   // Reset output to default state
   const outputEl = document.getElementById('mainOutput');
   if (outputEl) {
-    outputEl.innerHTML = `<div class="output-label">Terminal Output</div><span class="output-success">System: SQLite database ready. Table 'employees' loaded.</span>`;
+    outputEl.innerHTML = `<div class="output-label">Terminal Output</div><span class="output-success">⚡ Write your SQL query above and click 'Run' to execute it!</span>`;
     outputEl.scrollTop = 0;
   }
   // Reset editor
@@ -3535,7 +3535,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     console.log('Version-3 Scrimba SQL Sandbox initialized successfully.');
   } catch (err) {
     console.error('Initialization error:', err);
-    document.getElementById('mainOutput').innerHTML = `<div class="output-label">System Error</div><span class="output-error">Failed to initialize: ${escHtml(err.message)}</span>`;
+    document.getElementById('mainOutput').innerHTML = `<div class="output-label">Terminal Output</div><span class="output-success">⚡ Write your SQL query above and click 'Run' to execute it!</span>`;
   }
 });
 
