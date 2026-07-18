@@ -829,12 +829,17 @@ a { color: var(--cyan); text-decoration: none; }
 /* Result table */
 .result-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
   margin-top: 8px;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: none !important;
+  border-right: none !important;
 }
 .result-table th, .result-table td {
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
   padding: 8px 12px;
   text-align: left;
   font-size: 0.78rem;
@@ -843,7 +848,6 @@ a { color: var(--cyan); text-decoration: none; }
   background: #080d16;
   color: var(--cyan);
   font-weight: 600;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
   position: sticky;
   top: 0;
   z-index: 10;
