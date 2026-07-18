@@ -135,22 +135,23 @@ a { color: var(--cyan); text-decoration: none; }
 /* Graded Stats Card - Restored Fraction Format with Separate Containers */
 /* Graded Stats Card - Compact 32px Height Fit for 42px Navbar */
 /* Graded Stats Card - Clean Non-Overlapping Inline Design (Navbar Fit) */
+/* Graded Stats Card - Premium Joined Dual-Pill Fraction Badge (User Sketch Concept) */
 .stats-card {
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
   display: flex !important;
-  flex-direction: column !important;
+  flex-direction: row !important;
+  align-items: center !important;
   height: 32px !important;
-  justify-content: center !important;
   box-shadow: none !important;
   flex-shrink: 0 !important;
 }
 .stats-row {
   display: flex !important;
   align-items: center !important;
-  gap: 6px !important;
-  height: 32px !important;
+  gap: 8px !important;
+  height: 28px !important;
 }
 .stats-divider {
   display: none !important;
@@ -160,69 +161,84 @@ a { color: var(--cyan); text-decoration: none; }
 }
 .stats-item {
   display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: rgba(15, 23, 42, 0.7) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.09) !important;
-  border-radius: 6px !important;
-  padding: 3px 10px !important;
-  height: 32px !important;
-  min-width: 52px !important;
-  box-sizing: border-box !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  height: 28px !important;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35)) !important;
 }
 .stats-label {
-  font-size: 0.46rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-right: none !important;
+  border-radius: 6px 0 0 6px !important;
+  padding: 0 8px !important;
+  font-size: 0.55rem !important;
   font-weight: 800 !important;
-  color: #94a3b8 !important;
-  letter-spacing: 0.06em !important;
+  color: #cbd5e1 !important;
+  letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
   line-height: 1 !important;
-  margin-bottom: 2px !important;
-  text-align: center !important;
+  margin: 0 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
 }
 .stats-value {
-  font-size: 0.72rem !important;
+  font-size: 0.58rem !important;
   font-weight: 700 !important;
-  color: var(--cyan);
 }
 .stats-value--fraction {
   display: flex !important;
-  flex-direction: row !important;
-  align-items: baseline !important;
+  flex-direction: column !important;
+  align-items: center !important;
   justify-content: center !important;
-  gap: 2px !important;
+  background: rgba(30, 41, 59, 0.9) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 0 6px 6px 0 !important;
+  padding: 2px 7px !important;
+  min-width: 26px !important;
   line-height: 1 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+.stats-item:first-child .stats-value--fraction {
+  background: rgba(14, 116, 144, 0.22) !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
+}
+.stats-item:last-child .stats-value--fraction,
+.stats-item:nth-child(3) .stats-value--fraction {
+  background: rgba(126, 34, 206, 0.22) !important;
+  border-color: rgba(192, 132, 252, 0.3) !important;
 }
 .stats-value--fraction .stats-num {
-  border-bottom: none !important;
-  padding-bottom: 0 !important;
-  margin-bottom: 0 !important;
-  display: inline-block !important;
+  display: block !important;
+  text-align: center !important;
+  width: 100% !important;
   font-family: 'JetBrains Mono', 'Fira Code', var(--mono), monospace !important;
-  font-size: 0.72rem !important;
+  font-size: 0.58rem !important;
   font-weight: 800 !important;
   line-height: 1 !important;
-  width: auto !important;
-  text-align: right !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25) !important;
+  padding-bottom: 1px !important;
+  margin-bottom: 1px !important;
 }
 .stats-value--fraction .stats-den {
-  display: inline-block !important;
+  display: block !important;
+  text-align: center !important;
+  width: 100% !important;
   font-family: 'JetBrains Mono', 'Fira Code', var(--mono), monospace !important;
-  font-size: 0.60rem !important;
+  font-size: 0.52rem !important;
   font-weight: 700 !important;
-  color: #64748b !important;
+  color: #94a3b8 !important;
   line-height: 1 !important;
-  text-align: left !important;
 }
 .stats-value--fraction .stats-den::before {
-  content: "/" !important;
-  margin-right: 2px !important;
-  color: #64748b !important;
-  opacity: 0.6 !important;
+  content: none !important;
 }
 #solvedCount {
   color: #38bdf8 !important;
