@@ -2447,79 +2447,94 @@ a { color: var(--cyan); text-decoration: none; }
   }
 
   /* Compact premium stats widget on mobile */
+  /* Compact joined dual-pill stats badge on mobile */
   .stats-card {
-    background: rgba(15, 23, 42, 0.45) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    padding: 0 8px !important;
-    border-radius: 6px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.02) !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
     display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    gap: 1px !important;
-    height: 26px !important;
-    box-sizing: border-box !important;
-    min-width: 0 !important;
-    flex: 0 1 auto !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    height: 24px !important;
+    box-shadow: none !important;
+    flex-shrink: 0 !important;
   }
   .stats-row {
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important;
+    gap: 5px !important;
+    height: 24px !important;
     flex-wrap: nowrap !important;
+  }
+  .stats-divider {
+    display: none !important;
+  }
+  .stats-progress-bar {
+    display: none !important;
   }
   .stats-item {
     display: flex !important;
     flex-direction: row !important;
-    align-items: center !important;
-    gap: 4px !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    height: 24px !important;
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.3)) !important;
   }
   .stats-label {
-    font-size: 0.5rem !important;
-    font-weight: 700 !important;
-    color: rgba(255, 255, 255, 0.4) !important;
-    letter-spacing: 0.02em !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(15, 23, 42, 0.85) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-right: none !important;
+    border-radius: 5px 0 0 5px !important;
+    padding: 0 5px !important;
+    font-size: 0.46rem !important;
+    font-weight: 800 !important;
+    color: #cbd5e1 !important;
+    letter-spacing: 0.04em !important;
     text-transform: uppercase !important;
+    line-height: 1 !important;
+    margin: 0 !important;
   }
   .stats-value--fraction {
-    display: inline-flex !important;
+    display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    line-height: 0.95 !important;
+    justify-content: center !important;
+    border-radius: 0 5px 5px 0 !important;
+    padding: 1px 5px !important;
+    min-width: 22px !important;
+    line-height: 1 !important;
+  }
+  .stats-item:first-child .stats-value--fraction {
+    background: rgba(14, 116, 144, 0.25) !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  }
+  .stats-item:last-child .stats-value--fraction,
+  .stats-item:nth-child(3) .stats-value--fraction {
+    background: rgba(126, 34, 206, 0.25) !important;
+    border: 1px solid rgba(192, 132, 252, 0.35) !important;
   }
   .stats-value--fraction .stats-num {
-    font-size: 0.62rem !important;
-    font-weight: 700 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+    font-size: 0.50rem !important;
+    font-weight: 800 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25) !important;
     padding-bottom: 0.5px !important;
     margin-bottom: 0.5px !important;
     display: block !important;
     text-align: center !important;
+    width: 100% !important;
   }
   .stats-value--fraction .stats-den {
-    font-size: 0.52rem !important;
-    font-weight: 500 !important;
-    color: rgba(255, 255, 255, 0.35) !important;
+    font-size: 0.44rem !important;
+    font-weight: 700 !important;
+    color: #94a3b8 !important;
     display: block !important;
     text-align: center !important;
-  }
-  .stats-divider {
-    width: 1px !important;
-    height: 10px !important;
-    background: rgba(255, 255, 255, 0.12) !important;
-  }
-  .stats-progress-bar {
-    display: block !important;
-    height: 1.5px !important;
-    border-radius: 1px !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-    margin-top: 1px !important;
     width: 100% !important;
-    overflow: hidden !important;
-  }
-  .stats-progress-fill {
-    height: 100% !important;
-    background: linear-gradient(90deg, var(--cyan), #a78bfa) !important;
   }
 
   /* Compact selectors in Row 1 header */
