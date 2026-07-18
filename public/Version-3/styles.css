@@ -4457,21 +4457,84 @@ pre span {
   color: var(--text, #f8fafc) !important;
 }
 
-.slide-content h3 {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #070a13 !important; /* Deeper integrated obsidian matte */
-  border: 1px solid rgba(255, 255, 255, 0.03) !important;
-  border-left: 3px solid rgba(168, 85, 247, 0.7) !important;
-  padding: 10px 14px !important;
-  border-radius: 6px !important;
-  color: #ffffff !important; /* Pure white text */
-  font-size: 1.05rem !important;
-  font-weight: 600 !important;
-  margin-top: 24px !important;
-  margin-bottom: 14px !important;
+/* ═══════════════════════════════════════════════════════════════
+   PREMIUM DUAL-BOX HEADING DESIGN (JOINED NUM & TITLE BOXES)
+   ═══════════════════════════════════════════════════════════════ */
+
+.slide-content h3,
+.slide-content h3.heading-box-wrap,
+.heading-box-wrap {
+  display: flex !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-top: 26px !important;
+  margin-bottom: 16px !important;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.18)) !important;
+}
+
+/* Left Box: Number Badge */
+.heading-num-box {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  color: #ffffff !important;
+  font-family: 'JetBrains Mono', var(--mono), monospace !important;
+  font-size: 0.85rem !important;
+  font-weight: 800 !important;
+  padding: 8px 14px !important;
+  border-radius: 8px 0 0 8px !important;
+  border: 1px solid rgba(139, 92, 246, 0.6) !important;
+  border-right: none !important;
+  letter-spacing: 0.05em !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+  flex-shrink: 0 !important;
+  min-width: 44px !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Right Box: Title Box */
+.heading-title-box {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex: 1 !important;
+  background: #0f172a !important; /* Deep obsidian matte */
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-left: 1px solid rgba(139, 92, 246, 0.4) !important;
+  border-radius: 0 8px 8px 0 !important;
+  padding: 8px 16px !important;
+  color: #f8fafc !important;
+  font-size: 0.94rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+.heading-title-text {
+  flex: 1 !important;
+  color: #f8fafc !important;
+  font-size: 0.94rem !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+}
+
+@media (max-width: 768px) {
+  .heading-num-box {
+    font-size: 0.78rem !important;
+    padding: 6px 10px !important;
+    min-width: 38px !important;
+  }
+  .heading-title-box {
+    font-size: 0.86rem !important;
+    padding: 6px 12px !important;
+  }
+  .heading-title-text {
+    font-size: 0.86rem !important;
+  }
 }
 
 .slide-content .audio-play-btn {

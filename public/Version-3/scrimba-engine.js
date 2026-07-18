@@ -474,11 +474,59 @@ function renderCurrentSlide() {
   renderSideSlide();
 }
 
+function formatHeadingBoxes(container) {
+  if (!container) return;
+  const headings = container.querySelectorAll('h3:not(.heading-box-formatted)');
+  let sectionIndex = 1;
+  headings.forEach(h3 => {
+    if (h3.classList.contains('heading-box-formatted')) return;
+    h3.classList.add('heading-box-formatted');
+
+    const audioBtn = h3.querySelector('.audio-play-btn');
+    const audioHtml = audioBtn ? audioBtn.outerHTML : '';
+    if (audioBtn) audioBtn.remove();
+
+    let rawText = h3.textContent.trim();
+    
+    let emoji = '';
+    const emojiMatch = rawText.match(/^([\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F000}-\u{1F02F}\u{1F0A0}-\u{1F0F5}\u{1F1E0}-\u{1F1FF}]+)\s*/u);
+    if (emojiMatch) {
+      emoji = emojiMatch[1] + ' ';
+      rawText = rawText.slice(emojiMatch[0].length).trim();
+    }
+
+    const numMatch = rawText.match(/^(\d+\.?)\s*(.*)$/);
+
+    let numStr = '';
+    let textStr = '';
+
+    if (numMatch) {
+      numStr = numMatch[1].replace(/\.$/, '');
+      if (numStr.length === 1) numStr = '0' + numStr;
+      textStr = emoji + numMatch[2];
+    } else {
+      numStr = String(sectionIndex).padStart(2, '0');
+      textStr = emoji + rawText;
+    }
+    sectionIndex++;
+
+    h3.classList.add('heading-box-wrap');
+    h3.innerHTML = `
+      <span class="heading-num-box">${numStr}</span>
+      <span class="heading-title-box">
+        <span class="heading-title-text">${textStr}</span>
+        ${audioHtml}
+      </span>
+    `;
+  });
+}
+
 function renderPresentSlide() {
   const slide = COURSE_CONFIG.slides[currentSlide];
   const container = document.getElementById('presentSlideContent');
   if (container) {
     container.innerHTML = slide.html;
+    formatHeadingBoxes(container);
     autoHighlightSql(container);
     container.scrollTop = 0;
   }
@@ -555,6 +603,7 @@ function renderSideSlide() {
   const slideBodyText = document.getElementById('slideBodyText');
   if (slideBodyText) {
     slideBodyText.innerHTML = bodyHtml;
+    formatHeadingBoxes(slideBodyText);
     autoHighlightSql(slideBodyText);
     // Re-execute any <script> tags injected via innerHTML (browser security blocks them)
     slideBodyText.querySelectorAll('script').forEach(function(oldScript) {
