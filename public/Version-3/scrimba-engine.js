@@ -1938,6 +1938,23 @@ let testAnswers = []; // array of { answer: string, attempted: bool }
 let testSubmitted = false;
 
 function openTestPortal() {
+  if (window.ProgressManager) {
+    const dp = ProgressManager.getDayProgress(currentDay);
+    if (dp && dp.testAttempt && !dp.testAttempt.submitted) {
+      const attempt = dp.testAttempt;
+      const timeSpent = Math.floor((Date.now() - attempt.startedAt) / 1000);
+      const timeRemaining = attempt.timeRemaining - timeSpent;
+      if (timeRemaining > 0) {
+        resumeTestAttempt(currentDay, attempt, timeRemaining);
+        return;
+      } else {
+        // Expired
+        dp.testAttempt = null;
+        ProgressManager.save();
+      }
+    }
+  }
+
   testOpen = true;
   testSubmitted = false;
   testSecondsRemaining = 7200;
@@ -2271,22 +2288,7 @@ function autosaveTestProgress() {
 }
 
 function checkAndResumeTest(dayId) {
-  if (!window.ProgressManager) return;
-  const dp = ProgressManager.getDayProgress(dayId);
-  if (dp && dp.testAttempt && !dp.testAttempt.submitted) {
-    const attempt = dp.testAttempt;
-    const timeSpent = Math.floor((Date.now() - attempt.startedAt) / 1000);
-    const timeRemaining = attempt.timeRemaining - timeSpent;
-    
-    if (timeRemaining > 0) {
-      // Auto-resume without blocking confirm dialog
-      resumeTestAttempt(dayId, attempt, timeRemaining);
-      return;
-    }
-    // If expired, clear the attempt
-    dp.testAttempt = null;
-    ProgressManager.save();
-  }
+  // Disabled auto-resuming on page load/refresh.
 }
 
 function resumeTestAttempt(dayId, attempt, timeRemaining) {
