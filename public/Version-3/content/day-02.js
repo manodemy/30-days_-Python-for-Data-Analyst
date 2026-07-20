@@ -37,14 +37,14 @@ FROM   employees;</code></pre>
 
           <div class="info-box" id="day02AnatomyInfo">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
-              <strong style="color: #60a5fa;">ℹ️ SELECT * vs. Named Columns:</strong>
+              <strong style="color: #0f766e;">ℹ️ SELECT * vs. Named Columns:</strong>
               <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio03.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
-            <div style="color: #cbd5e1; font-size: 0.82rem; line-height: 1.5;">
+            <p>
               <code>SELECT *</code> is convenient for exploration but costly in production — it forces the engine to read every column from disk, blocking index-only scans and increasing network payload. Always prefer named columns in application queries.
-            </div>
+            </p>
           </div>
         </div>
 
@@ -126,14 +126,14 @@ ORDER BY department_id;</code></pre>
 
           <div class="warn-box" id="day02DistinctWarn">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
-              <strong style="color: #fca5a5;">⚠️ Performance Warning:</strong>
+              <strong style="color: #b91c1c;">⚠️ Performance Warning:</strong>
               <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio10.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
-            <div style="color: #fca5a5; font-size: 0.82rem; line-height: 1.55;">
+            <p>
               <code>DISTINCT</code> requires a sort or hash operation to compare all rows. On large tables this is expensive. Before using <code>DISTINCT</code> ask yourself: "Why do I have duplicates?" — the root cause (e.g. a missing join condition) is often a better fix.
-            </div>
+            </p>
           </div>
         </div>
 
@@ -169,14 +169,14 @@ ORDER BY new_salary DESC;</code></pre>
 
           <div class="pro-tip-box" id="day02OrderByTip">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
-              <strong style="color: #60a5fa;">💡 Pro Tip — NULL in ORDER BY:</strong>
+              <strong style="color: #b45309;">💡 Pro Tip — NULL in ORDER BY:</strong>
               <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio13.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
-            <div style="color: #cbd5e1; font-size: 0.82rem; line-height: 1.55;">
+            <p>
               In most databases, <code>NULL</code> values sort as either the lowest or highest value depending on the engine. SQLite treats <code>NULL</code> as less than any other value, so <code>ORDER BY col ASC</code> puts NULLs first. Use <code>ORDER BY col DESC NULLS LAST</code> in PostgreSQL to control this explicitly.
-            </div>
+            </p>
           </div>
         </div>
 

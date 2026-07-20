@@ -41,14 +41,14 @@ WHERE  salary > 80000;</code></pre>
 
           <div class="info-box" id="day03WhereInfo">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
-              <strong style="color: #60a5fa;">ℹ️ Execution Order:</strong>
+              <strong style="color: #0f766e;">ℹ️ Execution Order:</strong>
               <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio03.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
-            <div style="color: #cbd5e1; font-size: 0.82rem; line-height: 1.55;">
+            <p>
               <code>WHERE</code> is Step 2 in SQL's logical execution order — <em>after</em> <code>FROM</code> but <em>before</em> <code>GROUP BY</code>, <code>HAVING</code>, and <code>SELECT</code>. This means <code>WHERE</code> <strong>cannot reference column aliases</strong> defined in the <code>SELECT</code> list because those aliases don't exist yet at filtering time.
-            </div>
+            </p>
           </div>
         </div>
 
@@ -358,14 +358,14 @@ WHERE  (department_id = 10 OR department_id = 20)
 
           <div class="warn-box" id="day03LogicWarn">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
-              <strong style="color: #fca5a5;">⚠️ Precedence Trap:</strong>
+              <strong style="color: #b91c1c;">⚠️ Precedence Trap:</strong>
               <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio09.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
-            <div style="color: #fca5a5; font-size: 0.82rem; line-height: 1.55;">
+            <p>
               <code>WHERE dept = 10 OR dept = 20 AND salary &gt; 60000</code> is parsed as <code>WHERE dept = 10 OR (dept = 20 AND salary &gt; 60000)</code> — which is very different from filtering both departments! Always wrap <code>OR</code> groups in parentheses: <code>WHERE (dept = 10 OR dept = 20) AND salary &gt; 60000</code>.
-            </div>
+            </p>
           </div>
         </div>
 
@@ -469,14 +469,14 @@ WHERE  department_id NOT IN (10, 20);</code></pre>
 
           <div class="warn-box" id="day03InWarn">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
-              <strong style="color: #fca5a5;">⚠️ NOT IN with NULLs — Silent Data Loss:</strong>
+              <strong style="color: #b91c1c;">⚠️ NOT IN with NULLs — Silent Data Loss:</strong>
               <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio16.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
-            <div style="color: #fca5a5; font-size: 0.82rem; line-height: 1.55;">
+            <p>
               If the list passed to <code>NOT IN</code> contains even a single <code>NULL</code>, the entire query returns <strong>zero rows</strong>. Why? Every comparison with <code>NULL</code> yields <code>UNKNOWN</code>, not <code>TRUE</code>, so the <code>WHERE</code> filter passes nothing. When the list comes from a subquery that might return <code>NULL</code>, use <code>NOT EXISTS</code> or add <code>WHERE col IS NOT NULL</code> to the subquery.
-            </div>
+            </p>
           </div>
         </div>
 
@@ -553,14 +553,14 @@ WHERE  email NOT LIKE '%@gmail.com';</code></pre>
 
           <div class="pro-tip-box" id="day03LikeTip">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
-              <strong style="color: #60a5fa;">💡 Case Sensitivity by Engine:</strong>
+              <strong style="color: #b45309;">💡 Case Sensitivity by Engine:</strong>
               <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio21.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
-            <div style="color: #cbd5e1; font-size: 0.82rem; line-height: 1.55;">
+            <p>
               In <strong>SQLite</strong> and <strong>MySQL</strong>, <code>LIKE</code> is case-insensitive for ASCII characters by default. In <strong>PostgreSQL</strong>, <code>LIKE</code> is case-sensitive — use <code>ILIKE</code> for a case-insensitive match. In <strong>SQL Server</strong>, behaviour depends on the column's collation setting.
-            </div>
+            </p>
           </div>
         </div>
 

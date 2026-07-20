@@ -603,9 +603,9 @@ WHERE department = 'Engineering';</pre>
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
-            <div style="color: #cbd5e1; font-size: 0.82rem; line-height: 1.55;">
+            <p>
               SQLite (used here) is a lightweight, file-based database embedded directly inside the application — perfect for learning, mobile apps, and local tools. PostgreSQL is the modern production standard for most systems. MySQL and MariaDB are widely used in web stacks, while SQL Server dominates corporate Windows environments.
-            </div>
+            </p>
           </div>
         </div>
 
@@ -918,9 +918,9 @@ WHERE department = 'Engineering';
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
-            <div style="color: #fca5a5; font-size: 0.82rem; line-height: 1.55;">
+            <p>
               A backend team deployed <code>SELECT *</code> on a users table. Six months later, a feature team added a <code>profile_picture BYTEA</code> column (storing binary image data up to 2 MB per user). Overnight, every query that previously returned 200 bytes per row now returned 2 MB per row — causing database memory exhaustion and a P0 outage. The fix: explicit column projection in every query. <strong>Lesson: never use SELECT * in application code, unless you are just manually exploring the table columns in your database console.</strong>
-            </div>
+            </p>
           </div>
         </div>
 
