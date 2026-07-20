@@ -153,8 +153,9 @@ WHERE  (department_id = 10 OR department_id = 20)
 
               #day03PrecWrap .prec-header {
                 display: flex;
-                align-items: center;
-                justify-content: space-between;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
                 padding-bottom: 8px;
                 margin-bottom: 2px;
@@ -192,40 +193,6 @@ WHERE  (department_id = 10 OR department_id = 20)
               #day03PrecWrap .prec-priority {
                 display: flex;
                 align-items: center;
-                gap: 5px;
-              }
-              
-              #day03PrecWrap .prec-priority .num {
-                width: 16px;
-                height: 16px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-family: 'JetBrains Mono', monospace;
-                font-size: 0.62rem;
-                font-weight: 800;
-              }
-              
-              #day03PrecWrap .prec-priority--1 .num {
-                background: rgba(239, 68, 68, 0.18);
-                border: 1px solid rgba(239, 68, 68, 0.45);
-                color: #fca5a5;
-                box-shadow: 0 0 6px rgba(239, 68, 68, 0.3);
-              }
-              
-              #day03PrecWrap .prec-priority--2 .num {
-                background: rgba(245, 158, 11, 0.18);
-                border: 1px solid rgba(245, 158, 11, 0.45);
-                color: #fcd34d;
-                box-shadow: 0 0 6px rgba(245, 158, 11, 0.3);
-              }
-              
-              #day03PrecWrap .prec-priority--3 .num {
-                background: rgba(16, 185, 129, 0.18);
-                border: 1px solid rgba(16, 185, 129, 0.45);
-                color: #6ee7b7;
-                box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
               }
               
               #day03PrecWrap .prec-priority .label {
@@ -257,11 +224,10 @@ WHERE  (department_id = 10 OR department_id = 20)
               <!-- CARD 1: NOT -->
               <div class="prec-card prec-card--not" style="--d:0.15s;animation-delay:0.15s">
                 <div class="prec-header">
-                  <div class="prec-op prec-op--not">NOT</div>
                   <div class="prec-priority prec-priority--1">
-                    <span class="num">1</span>
                     <span class="label">1st • HIGHEST</span>
                   </div>
+                  <div class="prec-op prec-op--not">NOT</div>
                 </div>
                 
                 <!-- Venn SVG -->
@@ -302,11 +268,10 @@ WHERE  (department_id = 10 OR department_id = 20)
               <!-- CARD 2: AND -->
               <div class="prec-card prec-card--and" style="--d:0.3s;animation-delay:0.3s">
                 <div class="prec-header">
-                  <div class="prec-op prec-op--and">AND</div>
                   <div class="prec-priority prec-priority--2">
-                    <span class="num">2</span>
                     <span class="label">2nd • MIDDLE</span>
                   </div>
+                  <div class="prec-op prec-op--and">AND</div>
                 </div>
                 
                 <!-- Venn SVG -->
@@ -348,11 +313,10 @@ WHERE  (department_id = 10 OR department_id = 20)
               <!-- CARD 3: OR -->
               <div class="prec-card prec-card--or" style="--d:0.45s;animation-delay:0.45s">
                 <div class="prec-header">
-                  <div class="prec-op prec-op--or">OR</div>
                   <div class="prec-priority prec-priority--3">
-                    <span class="num">3</span>
                     <span class="label">3rd • LOWEST</span>
                   </div>
+                  <div class="prec-op prec-op--or">OR</div>
                 </div>
                 
                 <!-- Venn SVG -->
