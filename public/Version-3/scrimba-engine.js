@@ -4456,6 +4456,20 @@ const COMPLETION_MOMENTS = [
 function cd(resource) { completionDisposables.push(resource); return resource; }
 
 // ── Helper: Canvas Texture Sprite Generator (Dynamic Auto-Sizing to Prevent Text Cropping) ──
+function drawRoundRect(ctx, x, y, width, height, radius) {
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height - radius);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  ctx.lineTo(x + radius, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+}
+
 function createCanvasTexture(THREE, text, options = {}) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -4471,6 +4485,24 @@ function createCanvasTexture(THREE, text, options = {}) {
   canvas.height = options.height || Math.max(96, fontSize + padY * 2);
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (options.drawBgTag) {
+    ctx.save();
+    ctx.shadowBlur = 0; // Disable text shadow for background drawing
+
+    // Draw background card fill
+    ctx.fillStyle = options.bgTagColor || 'rgba(15, 23, 42, 0.85)';
+    drawRoundRect(ctx, 4, 4, canvas.width - 8, canvas.height - 8, 16);
+    ctx.fill();
+
+    // Draw glowing border
+    ctx.strokeStyle = options.borderColor || 'rgba(255, 255, 255, 0.12)';
+    ctx.lineWidth = options.borderWidth || 3.0;
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
   if (options.glowColor) {
     ctx.shadowColor = options.glowColor;
     ctx.shadowBlur = options.shadowBlur || 22;
@@ -5034,14 +5066,38 @@ function buildSortedBars(THREE) {
   const emissiveCols = [0x6d28d9, 0x1d4ed8, 0x0e7490, 0x047857, 0xd97706];
   const labelGlows   = ['#c084fc', '#60a5fa', '#22d3ee', '#34d399', '#fef08a'];
   const bars = [];
+  
+  const colSpacing = 0.58; // Widened spacing for perfect text nameplate separation
 
-  // Ground Baseline Rail Connecting All Columns
-  const railMat = cd(new THREE.MeshPhysicalMaterial({ color: 0x1e293b, metalness: 0.85, roughness: 0.15, envMapIntensity: 1.2 }));
-  const rail = new THREE.Mesh(cd(new THREE.BoxGeometry(2.8, 0.05, 0.42)), railMat);
-  rail.position.set(0, -0.52, 0);
-  group.add(rail);
+  // 1. Premium Brushed Titanium Lower Plinth Base
+  const lowerBaseMat = cd(new THREE.MeshPhysicalMaterial({ color: 0x0f172a, metalness: 0.9, roughness: 0.1, clearcoat: 0.8, envMapIntensity: 1.5 }));
+  const lowerBase = new THREE.Mesh(cd(new THREE.BoxGeometry(3.1, 0.08, 0.52)), lowerBaseMat);
+  lowerBase.position.set(0, -0.56, 0);
+  group.add(lowerBase);
+
+  // 2. Cyber-Cyan Glowing Glass Upper Deck
+  const upperDeckMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0x06b6d4,
+    emissive: 0x0891b2,
+    emissiveIntensity: 0.7,
+    transmission: 0.85,
+    thickness: 0.2,
+    roughness: 0.05,
+    envMapIntensity: 1.3
+  }));
+  const upperDeck = new THREE.Mesh(cd(new THREE.BoxGeometry(2.92, 0.03, 0.44)), upperDeckMat);
+  upperDeck.position.set(0, -0.51, 0);
+  group.add(upperDeck);
 
   for (let i = 0; i < 5; i++) {
+    const colX = (i - 2) * colSpacing;
+
+    // 3. Metallic Foot Bracket for each column
+    const bracketMat = cd(new THREE.MeshPhysicalMaterial({ color: 0x1e293b, metalness: 0.8, roughness: 0.2 }));
+    const bracket = new THREE.Mesh(cd(new THREE.BoxGeometry(0.44, 0.02, 0.44)), bracketMat);
+    bracket.position.set(colX, -0.49, 0);
+    group.add(bracket);
+
     const barMat = cd(new THREE.MeshPhysicalMaterial({
       color: barColors[i],
       emissive: emissiveCols[i],
@@ -5055,21 +5111,31 @@ function buildSortedBars(THREE) {
       envMapIntensity: 1.2
     }));
     const barMesh = new THREE.Mesh(cd(new THREE.BoxGeometry(0.36, 1, 0.36)), barMat);
-    barMesh.position.x = (i - 2) * 0.52;
+    barMesh.position.x = colX;
     barMesh.position.y = 0;
     barMesh.scale.y = 0.01;
     barMesh.userData = { targetHeight: barHeights[i], sortIndex: i };
     group.add(barMesh);
     bars.push(barMesh);
 
-    // High-Contrast Crisp Bottom Labels
+    // 4. Premium Glowing Acrylic Capsule Nameplate Badges
     const labelText = i === 4 ? "TOP 1" : `#${5 - i}`;
-    const tex = cd(createCanvasTexture(THREE, labelText, { color: '#ffffff', glowColor: labelGlows[i], fontSize: 80, padX: 40, padY: 28 }));
+    const tex = cd(createCanvasTexture(THREE, labelText, {
+      color: '#ffffff',
+      glowColor: labelGlows[i],
+      fontSize: 80,
+      padX: 42,
+      padY: 28,
+      drawBgTag: true,
+      bgTagColor: 'rgba(9, 13, 26, 0.95)',
+      borderColor: labelGlows[i] + 'aa', // Color-matched glow accent border
+      borderWidth: 3.5
+    }));
     const spriteMat = cd(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
     const sprite = new THREE.Sprite(spriteMat);
-    const h = 0.42;
+    const h = 0.44;
     sprite.scale.set(h * tex.aspect, h, 1);
-    sprite.position.set((i - 2) * 0.52, -0.65, 0.15);
+    sprite.position.set(colX, -0.66, 0.15);
     sprite.renderOrder = 3;
     group.add(sprite);
   }
@@ -5169,8 +5235,8 @@ function buildSortedBars(THREE) {
   apexCrossHoriz.position.y = 0.53;
   crownGroup.add(apexOrb, apexCrossVert, apexCrossHoriz);
 
-  // Position crown neatly at the TOP of the TOP 1 bar (x = 1.04, y = 2.3)
-  crownGroup.position.set(1.04, 2.3, 0);
+  // Position crown neatly at the TOP of the TOP 1 bar (x = 1.16, y = 2.3)
+  crownGroup.position.set(1.16, 2.3, 0);
   crownGroup.scale.setScalar(0.01);
   group.add(crownGroup);
 
