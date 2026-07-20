@@ -5939,41 +5939,49 @@ function initCompletionScene() {
 }
 
 // ── Helper: Explosive 3D Blast Appearance Effect (Dual Shockwaves + Radial Spark Burst) ──
-function createAppearanceBlast(THREE, accentHex = 0x00ffcc) {
+function createAppearanceBlast(THREE, accentHex = 0x00ffcc, skipRings = false) {
   const blastGroup = new THREE.Group();
   blastGroup.name = 'appearanceBlast';
 
   const hexStr = accentHex ? '#' + accentHex.toString(16).padStart(6, '0') : '#00ffcc';
 
-  // 1. Primary Shockwave Ring
-  const ringGeom1 = cd(new THREE.RingGeometry(0.08, 0.22, 64));
-  const ringMat1 = cd(new THREE.MeshBasicMaterial({
-    color: accentHex,
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 1.0,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending
-  }));
-  const ring1 = new THREE.Mesh(ringGeom1, ringMat1);
-  ring1.name = 'shockwave1';
-  ring1.userData = { billboard: true };
-  blastGroup.add(ring1);
+  let ring1 = null;
+  let ringMat1 = null;
+  if (!skipRings) {
+    // 1. Primary Shockwave Ring
+    const ringGeom1 = cd(new THREE.RingGeometry(0.08, 0.22, 64));
+    ringMat1 = cd(new THREE.MeshBasicMaterial({
+      color: accentHex,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 1.0,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    }));
+    ring1 = new THREE.Mesh(ringGeom1, ringMat1);
+    ring1.name = 'shockwave1';
+    ring1.userData = { billboard: true };
+    blastGroup.add(ring1);
+  }
 
-  // 2. Secondary Gold Flare Shockwave Ring
-  const ringGeom2 = cd(new THREE.RingGeometry(0.05, 0.16, 64));
-  const ringMat2 = cd(new THREE.MeshBasicMaterial({
-    color: 0xfbbf24,
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 0.9,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending
-  }));
-  const ring2 = new THREE.Mesh(ringGeom2, ringMat2);
-  ring2.name = 'shockwave2';
-  ring2.userData = { billboard: true };
-  blastGroup.add(ring2);
+  let ring2 = null;
+  let ringMat2 = null;
+  if (!skipRings) {
+    // 2. Secondary Gold Flare Shockwave Ring
+    const ringGeom2 = cd(new THREE.RingGeometry(0.05, 0.16, 64));
+    ringMat2 = cd(new THREE.MeshBasicMaterial({
+      color: 0xfbbf24,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.9,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    }));
+    ring2 = new THREE.Mesh(ringGeom2, ringMat2);
+    ring2.name = 'shockwave2';
+    ring2.userData = { billboard: true };
+    blastGroup.add(ring2);
+  }
 
   // 3. Central Energy Flash Glow Disc
   const flashGeom = cd(new THREE.CircleGeometry(0.4, 32));
@@ -6066,9 +6074,10 @@ function spawnMomentObject(momentId, accent) {
   obj.__fadeIn = true;
   obj.__fadeStart = performance.now();
 
-  // Add explosive appearance blast effect
+  // Add explosive appearance blast effect (skip shockwave rings for Act 1 & 2 to avoid flat depth-clipping visual bugs)
   try {
-    const blast = createAppearanceBlast(THREE, accent);
+    const skipRings = (momentId === 'complete' || momentId === 'greatWork');
+    const blast = createAppearanceBlast(THREE, accent, skipRings);
     obj.add(blast);
   } catch (e) {
     console.warn('Could not spawn blast effect:', e);
@@ -6252,14 +6261,18 @@ function startCompletionAnimation(audioObj, targetTime = 0) {
         const bData = blast.userData;
         const bElapsed = Math.min((now - bData.startTime) / bData.duration, 1.0);
         if (bElapsed < 1.0) {
-          const scale1 = 0.1 + Math.pow(bElapsed, 0.5) * 5.2;
-          bData.ring1.scale.setScalar(scale1);
-          bData.ringMat1.opacity = Math.max(0, 1.0 - Math.pow(bElapsed, 0.7));
+          if (bData.ring1 && bData.ringMat1) {
+            const scale1 = 0.1 + Math.pow(bElapsed, 0.5) * 5.2;
+            bData.ring1.scale.setScalar(scale1);
+            bData.ringMat1.opacity = Math.max(0, 1.0 - Math.pow(bElapsed, 0.7));
+          }
 
-          const bElapsed2 = Math.max(0, (now - bData.startTime - 50) / (bData.duration - 50));
-          const scale2 = 0.1 + Math.pow(bElapsed2, 0.45) * 4.2;
-          bData.ring2.scale.setScalar(scale2);
-          bData.ringMat2.opacity = Math.max(0, 0.95 - Math.pow(bElapsed2, 0.8));
+          if (bData.ring2 && bData.ringMat2) {
+            const bElapsed2 = Math.max(0, (now - bData.startTime - 50) / (bData.duration - 50));
+            const scale2 = 0.1 + Math.pow(bElapsed2, 0.45) * 4.2;
+            bData.ring2.scale.setScalar(scale2);
+            bData.ringMat2.opacity = Math.max(0, 0.95 - Math.pow(bElapsed2, 0.8));
+          }
 
           const flashP = Math.min((now - bData.startTime) / 250, 1.0);
           bData.flashDisc.scale.setScalar(1.0 + flashP * 2.5);
