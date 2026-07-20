@@ -154,7 +154,7 @@ WHERE  (department_id = 10 OR department_id = 20)
               #day03PrecWrap .prec-header {
                 display: flex;
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center;
                 gap: 6px;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
                 padding-bottom: 8px;
