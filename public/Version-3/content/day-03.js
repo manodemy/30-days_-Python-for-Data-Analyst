@@ -190,12 +190,12 @@ WHERE  (department_id = 10 OR department_id = 20)
                   <svg viewBox="0 0 200 110" width="100%" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                       <radialGradient id="glow-not" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#ef4444" stop-opacity="0.3"/>
+                        <stop offset="0%" stop-color="#ef4444" stop-opacity="0.35"/>
                         <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
                       </radialGradient>
                       <mask id="not-a-mask">
                         <rect x="0" y="0" width="200" height="110" fill="#ffffff" />
-                        <circle cx="75" cy="55" r="30" fill="#000000" />
+                        <circle cx="75" cy="55" r="38" fill="#000000" />
                       </mask>
                     </defs>
                     <pattern id="grid-pattern-1" width="10" height="10" patternUnits="userSpaceOnUse">
@@ -204,15 +204,15 @@ WHERE  (department_id = 10 OR department_id = 20)
                     <rect width="100%" height="100%" fill="url(#grid-pattern-1)" rx="4" />
                     <!-- Universal Set Glow without outer stroke box -->
                     <rect width="100%" height="100%" fill="url(#glow-not)" mask="url(#not-a-mask)" />
-                    <rect width="100%" height="100%" fill="rgba(239, 68, 68, 0.05)" mask="url(#not-a-mask)" />
+                    <rect width="100%" height="100%" fill="rgba(239, 68, 68, 0.06)" mask="url(#not-a-mask)" />
                     
                     <!-- Circle Wireframes -->
-                    <circle cx="75" cy="55" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-dasharray="2 2" stroke-width="1.2" />
-                    <circle cx="125" cy="55" r="30" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" />
+                    <circle cx="75" cy="55" r="38" fill="none" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2 2" stroke-width="1.2" />
+                    <circle cx="125" cy="55" r="38" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" />
                     
                     <!-- Text Labels -->
-                    <text x="75" y="58" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="rgba(255,255,255,0.3)" text-anchor="middle">A</text>
-                    <text x="125" y="58" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="rgba(255,255,255,0.8)" text-anchor="middle">B</text>
+                    <text x="75" y="59" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="rgba(255,255,255,0.3)" text-anchor="middle">A</text>
+                    <text x="125" y="59" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="rgba(255,255,255,0.85)" text-anchor="middle">B</text>
                     <text x="14" y="18" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#fca5a5">U (NOT A)</text>
                   </svg>
                 </div>
@@ -232,11 +232,11 @@ WHERE  (department_id = 10 OR department_id = 20)
                   <svg viewBox="0 0 200 110" width="100%" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                       <radialGradient id="glow-and" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.35"/>
+                        <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.45"/>
                         <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
                       </radialGradient>
                       <clipPath id="intersect-clip">
-                        <circle cx="75" cy="55" r="30" />
+                        <circle cx="75" cy="55" r="38" />
                       </clipPath>
                     </defs>
                     <pattern id="grid-pattern-2" width="10" height="10" patternUnits="userSpaceOnUse">
@@ -245,18 +245,18 @@ WHERE  (department_id = 10 OR department_id = 20)
                     <rect width="100%" height="100%" fill="url(#grid-pattern-2)" rx="4" />
                     
                     <!-- Highlighted Intersection Area -->
-                    <circle cx="125" cy="55" r="30" fill="url(#glow-and)" clip-path="url(#intersect-clip)" />
-                    <circle cx="125" cy="55" r="30" fill="rgba(245, 158, 11, 0.12)" clip-path="url(#intersect-clip)" />
-                    <circle cx="125" cy="55" r="30" fill="none" stroke="#f59e0b" stroke-width="1.5" clip-path="url(#intersect-clip)" />
+                    <circle cx="125" cy="55" r="38" fill="url(#glow-and)" clip-path="url(#intersect-clip)" />
+                    <circle cx="125" cy="55" r="38" fill="rgba(245, 158, 11, 0.16)" clip-path="url(#intersect-clip)" />
+                    <circle cx="125" cy="55" r="38" fill="none" stroke="#f59e0b" stroke-width="1.8" clip-path="url(#intersect-clip)" />
 
                     <!-- Circle Wireframes -->
-                    <circle cx="75" cy="55" r="30" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" />
-                    <circle cx="125" cy="55" r="30" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" />
+                    <circle cx="75" cy="55" r="38" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" />
+                    <circle cx="125" cy="55" r="38" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" />
                     
                     <!-- Text Labels -->
-                    <text x="54" y="58" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="rgba(255,255,255,0.8)" text-anchor="middle">A</text>
-                    <text x="146" y="58" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="rgba(255,255,255,0.8)" text-anchor="middle">B</text>
-                    <text x="100" y="58" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#f59e0b" text-anchor="middle">A ∩ B</text>
+                    <text x="50" y="59" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="rgba(255,255,255,0.85)" text-anchor="middle">A</text>
+                    <text x="150" y="59" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="rgba(255,255,255,0.85)" text-anchor="middle">B</text>
+                    <text x="100" y="59" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#f59e0b" text-anchor="middle">A ∩ B</text>
                   </svg>
                 </div>
                 
@@ -275,7 +275,7 @@ WHERE  (department_id = 10 OR department_id = 20)
                   <svg viewBox="0 0 200 110" width="100%" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                       <radialGradient id="glow-or" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
+                        <stop offset="0%" stop-color="#10b981" stop-opacity="0.35"/>
                         <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
                       </radialGradient>
                     </defs>
@@ -285,19 +285,19 @@ WHERE  (department_id = 10 OR department_id = 20)
                     <rect width="100%" height="100%" fill="url(#grid-pattern-3)" rx="4" />
                     
                     <!-- Highlighted Union Area -->
-                    <circle cx="75" cy="55" r="30" fill="url(#glow-or)" />
-                    <circle cx="125" cy="55" r="30" fill="url(#glow-or)" />
-                    <circle cx="75" cy="55" r="30" fill="rgba(16, 185, 129, 0.08)" />
-                    <circle cx="125" cy="55" r="30" fill="rgba(16, 185, 129, 0.08)" />
+                    <circle cx="75" cy="55" r="38" fill="url(#glow-or)" />
+                    <circle cx="125" cy="55" r="38" fill="url(#glow-or)" />
+                    <circle cx="75" cy="55" r="38" fill="rgba(16, 185, 129, 0.1)" />
+                    <circle cx="125" cy="55" r="38" fill="rgba(16, 185, 129, 0.1)" />
                     
                     <!-- Circle Wireframes / Borders -->
-                    <circle cx="75" cy="55" r="30" fill="none" stroke="#10b981" stroke-width="1.2" />
-                    <circle cx="125" cy="55" r="30" fill="none" stroke="#10b981" stroke-width="1.2" />
+                    <circle cx="75" cy="55" r="38" fill="none" stroke="#10b981" stroke-width="1.5" />
+                    <circle cx="125" cy="55" r="38" fill="none" stroke="#10b981" stroke-width="1.5" />
                     
                     <!-- Text Labels -->
-                    <text x="60" y="58" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="#ffffff" text-anchor="middle">A</text>
-                    <text x="140" y="58" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="#ffffff" text-anchor="middle">B</text>
-                    <text x="100" y="58" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#10b981" text-anchor="middle">A ∪ B</text>
+                    <text x="58" y="59" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">A</text>
+                    <text x="142" y="59" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">B</text>
+                    <text x="100" y="59" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#10b981" text-anchor="middle">A ∪ B</text>
                   </svg>
                 </div>
                 
