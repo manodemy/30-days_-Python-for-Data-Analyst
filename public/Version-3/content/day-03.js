@@ -105,7 +105,7 @@ WHERE  unit_price <= 1000
 
         <div class="slide-section">
           <h3 class="heading-with-audio" id="day03LogicOps">
-            03. AND, OR, NOT — Combining Conditions
+            03. Logical Operators — Combining Conditions
             <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio06.mp3', this)" title="Play narration">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
@@ -738,7 +738,7 @@ WHERE commission IS NOT NULL -- ✅</code></pre>
   ],
   "topics": [
     { "id": "topic-1", "label": "Topic 1: WHERE & Comparison Operators", "recordingKey": null },
-    { "id": "topic-2", "label": "Topic 2: AND / OR / NOT & Operator Precedence", "recordingKey": null },
+    { "id": "topic-2", "label": "Topic 2: Logical Operators & Operator Precedence", "recordingKey": null },
     { "id": "topic-3", "label": "Topic 3: BETWEEN, IN, LIKE & IS NULL", "recordingKey": null }
   ]
 };
