@@ -36,13 +36,14 @@ SELECT first_name, last_name, salary
 FROM   employees;</code></pre>
 
           <div class="info-box" id="day02AnatomyInfo">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
-              <div style="flex: 1;">
-                ℹ️ <strong>SELECT * vs. Named Columns:</strong> <code>SELECT *</code> is convenient for exploration but costly in production — it forces the engine to read every column from disk, blocking index-only scans and increasing network payload. Always prefer named columns in application queries.
-              </div>
-              <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio03.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #60a5fa;">ℹ️ SELECT * vs. Named Columns:</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio03.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
+            </div>
+            <div style="color: #cbd5e1; font-size: 0.82rem; line-height: 1.5;">
+              <code>SELECT *</code> is convenient for exploration but costly in production — it forces the engine to read every column from disk, blocking index-only scans and increasing network payload. Always prefer named columns in application queries.
             </div>
           </div>
         </div>
@@ -70,12 +71,12 @@ FROM   employees;</code></pre>
 
           <div class="vs-block" id="day02AliasesVs">
             <div class="vs-card" id="day02AliasesValid">
-              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; margin-bottom: 6px;">
-                <h4 style="margin: 0;">✅ Valid Alias Forms</h4>
+              <h4 style="margin: 0 0 6px; display: flex; align-items: center; gap: 8px;">
+                <span>✅ Valid Alias Forms</span>
                 <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio06.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                   <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
-              </div>
+              </h4>
               <ul>
                 <li><code>column AS alias</code> — Standard (preferred)</li>
                 <li><code>column alias</code> — Omitting AS (works in most engines)</li>
@@ -83,12 +84,12 @@ FROM   employees;</code></pre>
               </ul>
             </div>
             <div class="vs-card" id="day02AliasesScope">
-              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; margin-bottom: 6px;">
-                <h4 style="margin: 0;">⚠️ Alias Scope Rules</h4>
+              <h4 style="margin: 0 0 6px; display: flex; align-items: center; gap: 8px;">
+                <span>⚠️ Alias Scope Rules</span>
                 <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio07.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                   <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
-              </div>
+              </h4>
               <ul>
                 <li>Alias is available in <code>ORDER BY</code> ✅</li>
                 <li>Alias is <strong>NOT</strong> available in <code>WHERE</code> ❌</li>
@@ -124,13 +125,14 @@ FROM   employees
 ORDER BY department_id;</code></pre>
 
           <div class="warn-box" id="day02DistinctWarn">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
-              <div style="flex: 1;">
-                ⚠️ <strong>Performance Warning:</strong> <code>DISTINCT</code> requires a sort or hash operation to compare all rows. On large tables this is expensive. Before using <code>DISTINCT</code> ask yourself: "Why do I have duplicates?" — the root cause (e.g. a missing join condition) is often a better fix.
-              </div>
-              <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio10.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #fca5a5;">⚠️ Performance Warning:</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio10.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
+            </div>
+            <div style="color: #fca5a5; font-size: 0.82rem; line-height: 1.55;">
+              <code>DISTINCT</code> requires a sort or hash operation to compare all rows. On large tables this is expensive. Before using <code>DISTINCT</code> ask yourself: "Why do I have duplicates?" — the root cause (e.g. a missing join condition) is often a better fix.
             </div>
           </div>
         </div>
@@ -166,13 +168,14 @@ FROM   employees
 ORDER BY new_salary DESC;</code></pre>
 
           <div class="pro-tip-box" id="day02OrderByTip">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
-              <div style="flex: 1;">
-                💡 <strong>Pro Tip — NULL in ORDER BY:</strong> In most databases, <code>NULL</code> values sort as either the lowest or highest value depending on the engine. SQLite treats <code>NULL</code> as less than any other value, so <code>ORDER BY col ASC</code> puts NULLs first. Use <code>ORDER BY col DESC NULLS LAST</code> in PostgreSQL to control this explicitly.
-              </div>
-              <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio13.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #60a5fa;">💡 Pro Tip — NULL in ORDER BY:</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio13.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
+            </div>
+            <div style="color: #cbd5e1; font-size: 0.82rem; line-height: 1.55;">
+              In most databases, <code>NULL</code> values sort as either the lowest or highest value depending on the engine. SQLite treats <code>NULL</code> as less than any other value, so <code>ORDER BY col ASC</code> puts NULLs first. Use <code>ORDER BY col DESC NULLS LAST</code> in PostgreSQL to control this explicitly.
             </div>
           </div>
         </div>

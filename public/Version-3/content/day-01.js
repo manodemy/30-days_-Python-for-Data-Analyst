@@ -596,13 +596,16 @@ WHERE department = 'Engineering';</pre>
         </div>
 
         <div class="slide-section">
-          <div class="pro-tip-box" id="proTipRdbms" style="display: flex; align-items: flex-start; gap: 10px;">
-            <div style="flex: 1;">
-              <strong>💡 Pro Tip — Which RDBMS to Choose?</strong> SQLite (used here) is a lightweight, file-based database embedded directly inside the application — perfect for learning, mobile apps, and local tools. PostgreSQL is the modern production standard for most systems. MySQL and MariaDB are widely used in web stacks, while SQL Server dominates corporate Windows environments.
+          <div class="pro-tip-box" id="proTipRdbms">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              <strong style="color: #60a5fa;">💡 Pro Tip — Which RDBMS to Choose?</strong>
+              <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio22.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
             </div>
-            <button class="audio-play-btn" onclick="playAudio('New_Day1Part1audio22.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
+            <div style="color: #cbd5e1; font-size: 0.82rem; line-height: 1.55;">
+              SQLite (used here) is a lightweight, file-based database embedded directly inside the application — perfect for learning, mobile apps, and local tools. PostgreSQL is the modern production standard for most systems. MySQL and MariaDB are widely used in web stacks, while SQL Server dominates corporate Windows environments.
+            </div>
           </div>
         </div>
 
@@ -908,13 +911,16 @@ WHERE department = 'Engineering';
         </div>
 
         <div class="slide-section" id="projectionProTip">
-          <div class="pro-tip-box" style="display: flex; align-items: flex-start; gap: 10px;">
-            <div style="flex: 1;">
-              <strong>⚠️ Real-World Outage Scenario:</strong> A backend team deployed <code>SELECT *</code> on a users table. Six months later, a feature team added a <code>profile_picture BYTEA</code> column (storing binary image data up to 2 MB per user). Overnight, every query that previously returned 200 bytes per row now returned 2 MB per row — causing database memory exhaustion and a P0 outage. The fix: explicit column projection in every query. <strong>Lesson: never use SELECT * in application code, unless you are just manually exploring the table columns in your database console.</strong>
+          <div class="pro-tip-box">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              <strong style="color: #fca5a5;">⚠️ Real-World Outage Scenario:</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio19.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
             </div>
-            <button class="audio-play-btn" onclick="playAudio('Day01topic2/New_Day1Part2audio19.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
+            <div style="color: #fca5a5; font-size: 0.82rem; line-height: 1.55;">
+              A backend team deployed <code>SELECT *</code> on a users table. Six months later, a feature team added a <code>profile_picture BYTEA</code> column (storing binary image data up to 2 MB per user). Overnight, every query that previously returned 200 bytes per row now returned 2 MB per row — causing database memory exhaustion and a P0 outage. The fix: explicit column projection in every query. <strong>Lesson: never use SELECT * in application code, unless you are just manually exploring the table columns in your database console.</strong>
+            </div>
           </div>
         </div>
 

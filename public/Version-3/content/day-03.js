@@ -40,13 +40,14 @@ FROM   employees
 WHERE  salary > 80000;</code></pre>
 
           <div class="info-box" id="day03WhereInfo">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
-              <div style="flex: 1;">
-                ℹ️ <strong>Execution Order:</strong> <code>WHERE</code> is Step 2 in SQL's logical execution order — <em>after</em> <code>FROM</code> but <em>before</em> <code>GROUP BY</code>, <code>HAVING</code>, and <code>SELECT</code>. This means <code>WHERE</code> <strong>cannot reference column aliases</strong> defined in the <code>SELECT</code> list because those aliases don't exist yet at filtering time.
-              </div>
-              <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio03.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #60a5fa;">ℹ️ Execution Order:</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio03.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
+            </div>
+            <div style="color: #cbd5e1; font-size: 0.82rem; line-height: 1.55;">
+              <code>WHERE</code> is Step 2 in SQL's logical execution order — <em>after</em> <code>FROM</code> but <em>before</em> <code>GROUP BY</code>, <code>HAVING</code>, and <code>SELECT</code>. This means <code>WHERE</code> <strong>cannot reference column aliases</strong> defined in the <code>SELECT</code> list because those aliases don't exist yet at filtering time.
             </div>
           </div>
         </div>
@@ -356,13 +357,14 @@ WHERE  (department_id = 10 OR department_id = 20)
           </div>
 
           <div class="warn-box" id="day03LogicWarn">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
-              <div style="flex: 1;">
-                ⚠️ <strong>Precedence Trap:</strong> <code>WHERE dept = 10 OR dept = 20 AND salary &gt; 60000</code> is parsed as <code>WHERE dept = 10 OR (dept = 20 AND salary &gt; 60000)</code> — which is very different from filtering both departments! Always wrap <code>OR</code> groups in parentheses: <code>WHERE (dept = 10 OR dept = 20) AND salary &gt; 60000</code>.
-              </div>
-              <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio09.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #fca5a5;">⚠️ Precedence Trap:</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio09.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
+            </div>
+            <div style="color: #fca5a5; font-size: 0.82rem; line-height: 1.55;">
+              <code>WHERE dept = 10 OR dept = 20 AND salary &gt; 60000</code> is parsed as <code>WHERE dept = 10 OR (dept = 20 AND salary &gt; 60000)</code> — which is very different from filtering both departments! Always wrap <code>OR</code> groups in parentheses: <code>WHERE (dept = 10 OR dept = 20) AND salary &gt; 60000</code>.
             </div>
           </div>
         </div>
@@ -402,12 +404,12 @@ WHERE  unit_price NOT BETWEEN 1000 AND 5000;</code></pre>
 
           <div class="vs-block" id="day03BetweenVs">
             <div class="vs-card" id="day03BetweenOk">
-              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; margin-bottom: 6px;">
-                <h4 style="margin: 0;">✅ BETWEEN — Correct Usage</h4>
+              <h4 style="margin: 0 0 6px; display: flex; align-items: center; gap: 8px;">
+                <span>✅ BETWEEN — Correct Usage</span>
                 <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio12.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                   <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
-              </div>
+              </h4>
               <ul>
                 <li>Always put the <em>smaller</em> value first: <code>BETWEEN 50 AND 100</code></li>
                 <li><code>BETWEEN 100 AND 50</code> returns zero rows — it's valid SQL but logically empty</li>
@@ -415,12 +417,12 @@ WHERE  unit_price NOT BETWEEN 1000 AND 5000;</code></pre>
               </ul>
             </div>
             <div class="vs-card" id="day03BetweenDateTip">
-              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; margin-bottom: 6px;">
-                <h4 style="margin: 0;">⏰ Date Precision Gotcha</h4>
+              <h4 style="margin: 0 0 6px; display: flex; align-items: center; gap: 8px;">
+                <span>⏰ Date Precision Gotcha</span>
                 <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio13.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                   <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
-              </div>
+              </h4>
               <ul>
                 <li>For <code>DATETIME</code> columns, <code>BETWEEN '2024-12-31'</code> stops at <code>2024-12-31 00:00:00</code></li>
                 <li>To include the full last day, use <code>&lt; '2025-01-01'</code> instead</li>
@@ -466,13 +468,14 @@ FROM   employees
 WHERE  department_id NOT IN (10, 20);</code></pre>
 
           <div class="warn-box" id="day03InWarn">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
-              <div style="flex: 1;">
-                ⚠️ <strong>NOT IN with NULLs — Silent Data Loss:</strong> If the list passed to <code>NOT IN</code> contains even a single <code>NULL</code>, the entire query returns <strong>zero rows</strong>. Why? Every comparison with <code>NULL</code> yields <code>UNKNOWN</code>, not <code>TRUE</code>, so the <code>WHERE</code> filter passes nothing. When the list comes from a subquery that might return <code>NULL</code>, use <code>NOT EXISTS</code> or add <code>WHERE col IS NOT NULL</code> to the subquery.
-              </div>
-              <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio16.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #fca5a5;">⚠️ NOT IN with NULLs — Silent Data Loss:</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio16.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
+            </div>
+            <div style="color: #fca5a5; font-size: 0.82rem; line-height: 1.55;">
+              If the list passed to <code>NOT IN</code> contains even a single <code>NULL</code>, the entire query returns <strong>zero rows</strong>. Why? Every comparison with <code>NULL</code> yields <code>UNKNOWN</code>, not <code>TRUE</code>, so the <code>WHERE</code> filter passes nothing. When the list comes from a subquery that might return <code>NULL</code>, use <code>NOT EXISTS</code> or add <code>WHERE col IS NOT NULL</code> to the subquery.
             </div>
           </div>
         </div>
@@ -488,12 +491,12 @@ WHERE  department_id NOT IN (10, 20);</code></pre>
 
           <div class="vs-block" id="day03LikeVs">
             <div class="vs-card" id="day03LikePercent">
-              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; margin-bottom: 6px;">
-                <h4 style="margin: 0;"><code>%</code> — Zero or More Characters</h4>
+              <h4 style="margin: 0 0 6px; display: flex; align-items: center; gap: 8px;">
+                <span><code>%</code> — Zero or More Characters</span>
                 <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio18.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                   <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
-              </div>
+              </h4>
               <pre><code>-- Names starting with 'R'
 WHERE first_name LIKE 'R%'
 
@@ -507,12 +510,12 @@ WHERE first_name LIKE '%esh%'
 WHERE email LIKE '%@gmail.com'</code></pre>
             </div>
             <div class="vs-card" id="day03LikeUnderscore">
-              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; margin-bottom: 6px;">
-                <h4 style="margin: 0;"><code>_</code> — Exactly One Character</h4>
+              <h4 style="margin: 0 0 6px; display: flex; align-items: center; gap: 8px;">
+                <span><code>_</code> — Exactly One Character</span>
                 <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio19.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                   <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
-              </div>
+              </h4>
               <pre><code>-- Exactly 5-letter names starting with 'R'
 WHERE first_name LIKE 'R____'
 
@@ -549,13 +552,14 @@ FROM   customers
 WHERE  email NOT LIKE '%@gmail.com';</code></pre>
 
           <div class="pro-tip-box" id="day03LikeTip">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
-              <div style="flex: 1;">
-                💡 <strong>Case Sensitivity by Engine:</strong> In <strong>SQLite</strong> and <strong>MySQL</strong>, <code>LIKE</code> is case-insensitive for ASCII characters by default. In <strong>PostgreSQL</strong>, <code>LIKE</code> is case-sensitive — use <code>ILIKE</code> for a case-insensitive match. In <strong>SQL Server</strong>, behaviour depends on the column's collation setting.
-              </div>
-              <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio21.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #60a5fa;">💡 Case Sensitivity by Engine:</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio21.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
+            </div>
+            <div style="color: #cbd5e1; font-size: 0.82rem; line-height: 1.55;">
+              In <strong>SQLite</strong> and <strong>MySQL</strong>, <code>LIKE</code> is case-insensitive for ASCII characters by default. In <strong>PostgreSQL</strong>, <code>LIKE</code> is case-sensitive — use <code>ILIKE</code> for a case-insensitive match. In <strong>SQL Server</strong>, behaviour depends on the column's collation setting.
             </div>
           </div>
         </div>
@@ -598,12 +602,12 @@ WHERE  is_active = 1
 
           <div class="vs-block" id="day03NullVs">
             <div class="vs-card" id="day03NullWrong">
-              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; margin-bottom: 6px;">
-                <h4 style="margin: 0;">❌ Wrong — Returns No Rows</h4>
+              <h4 style="margin: 0 0 6px; display: flex; align-items: center; gap: 8px;">
+                <span>❌ Wrong — Returns No Rows</span>
                 <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio24.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                   <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
-              </div>
+              </h4>
               <pre><code>-- = NULL always yields UNKNOWN
 WHERE commission = NULL    -- ❌
 
@@ -612,12 +616,12 @@ WHERE commission != NULL   -- ❌</code></pre>
               <p style="font-size:0.72rem;color:#f87171;margin:6px 0 0;">These return zero rows regardless of data because any comparison with <code>NULL</code> produces <code>UNKNOWN</code>, and <code>WHERE</code> only keeps <code>TRUE</code>.</p>
             </div>
             <div class="vs-card" id="day03NullRight">
-              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; margin-bottom: 6px;">
-                <h4 style="margin: 0;">✅ Correct — Use IS NULL</h4>
+              <h4 style="margin: 0 0 6px; display: flex; align-items: center; gap: 8px;">
+                <span>✅ Correct — Use IS NULL</span>
                 <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio25.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                   <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </button>
-              </div>
+              </h4>
               <pre><code>-- Correctly finds NULL rows
 WHERE commission IS NULL     -- ✅
 
