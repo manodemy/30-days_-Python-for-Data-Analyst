@@ -158,7 +158,7 @@ WHERE  (department_id = 10 OR department_id = 20)
               
               #day03PrecWrap .prec-rank{font-size:0.64rem;color:#94a3b8;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
               #day03PrecWrap .prec-desc{font-size:0.72rem;color:#cbd5e1;line-height:1.45;margin-bottom:2px}
-              #day03PrecWrap .prec-venn{width:100%;background:rgba(5, 8, 16, 0.7);border-radius:8px;padding:6px;border:1px solid rgba(255, 255, 255, 0.04);box-sizing:border-box}
+              #day03PrecWrap .prec-venn{width:100%;background:rgba(5, 8, 16, 0.7);border-radius:8px;padding:0;border:1px solid rgba(255, 255, 255, 0.08);box-sizing:border-box;overflow:hidden;display:flex;align-items:center;justify-content:center}
               
               #day03PrecWrap .prec-table-title{font-size:0.6rem;color:#64748b;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-top:4px}
               #day03PrecWrap .prec-matrix{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:#94a3b8;background:rgba(0,0,0,0.25);border-radius:6px;padding:8px 10px;margin:0;line-height:1.4;border:1px solid rgba(255,255,255,0.03)}
@@ -187,7 +187,7 @@ WHERE  (department_id = 10 OR department_id = 20)
                 
                 <!-- Venn SVG -->
                 <div class="prec-venn">
-                  <svg viewBox="0 0 200 110" width="100%" xmlns="http://www.w3.org/2000/svg">
+                  <svg viewBox="25 15 150 80" width="100%" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                       <radialGradient id="glow-not" cx="50%" cy="50%" r="50%">
                         <stop offset="0%" stop-color="#ef4444" stop-opacity="0.35"/>
@@ -201,10 +201,10 @@ WHERE  (department_id = 10 OR department_id = 20)
                     <pattern id="grid-pattern-1" width="10" height="10" patternUnits="userSpaceOnUse">
                       <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.06)" />
                     </pattern>
-                    <rect width="100%" height="100%" fill="url(#grid-pattern-1)" rx="4" />
+                    <rect x="0" y="0" width="200" height="110" fill="url(#grid-pattern-1)" rx="4" />
                     <!-- Universal Set Glow without outer stroke box -->
-                    <rect width="100%" height="100%" fill="url(#glow-not)" mask="url(#not-a-mask)" />
-                    <rect width="100%" height="100%" fill="rgba(239, 68, 68, 0.06)" mask="url(#not-a-mask)" />
+                    <rect x="0" y="0" width="200" height="110" fill="url(#glow-not)" mask="url(#not-a-mask)" />
+                    <rect x="0" y="0" width="200" height="110" fill="rgba(239, 68, 68, 0.06)" mask="url(#not-a-mask)" />
                     
                     <!-- Circle Wireframes -->
                     <circle cx="75" cy="55" r="38" fill="none" stroke="rgba(255,255,255,0.12)" stroke-dasharray="2 2" stroke-width="1.2" />
@@ -213,7 +213,7 @@ WHERE  (department_id = 10 OR department_id = 20)
                     <!-- Text Labels -->
                     <text x="75" y="59" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="rgba(255,255,255,0.3)" text-anchor="middle">A</text>
                     <text x="125" y="59" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="rgba(255,255,255,0.85)" text-anchor="middle">B</text>
-                    <text x="14" y="18" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#fca5a5">U (NOT A)</text>
+                    <text x="32" y="27" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#fca5a5">U (NOT A)</text>
                   </svg>
                 </div>
                 
@@ -229,7 +229,7 @@ WHERE  (department_id = 10 OR department_id = 20)
                 
                 <!-- Venn SVG -->
                 <div class="prec-venn">
-                  <svg viewBox="0 0 200 110" width="100%" xmlns="http://www.w3.org/2000/svg">
+                  <svg viewBox="25 15 150 80" width="100%" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                       <radialGradient id="glow-and" cx="50%" cy="50%" r="50%">
                         <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.45"/>
@@ -242,7 +242,7 @@ WHERE  (department_id = 10 OR department_id = 20)
                     <pattern id="grid-pattern-2" width="10" height="10" patternUnits="userSpaceOnUse">
                       <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.06)" />
                     </pattern>
-                    <rect width="100%" height="100%" fill="url(#grid-pattern-2)" rx="4" />
+                    <rect x="0" y="0" width="200" height="110" fill="url(#grid-pattern-2)" rx="4" />
                     
                     <!-- Highlighted Intersection Area -->
                     <circle cx="125" cy="55" r="38" fill="url(#glow-and)" clip-path="url(#intersect-clip)" />
@@ -272,7 +272,7 @@ WHERE  (department_id = 10 OR department_id = 20)
                 
                 <!-- Venn SVG -->
                 <div class="prec-venn">
-                  <svg viewBox="0 0 200 110" width="100%" xmlns="http://www.w3.org/2000/svg">
+                  <svg viewBox="25 15 150 80" width="100%" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                       <radialGradient id="glow-or" cx="50%" cy="50%" r="50%">
                         <stop offset="0%" stop-color="#10b981" stop-opacity="0.35"/>
@@ -282,7 +282,7 @@ WHERE  (department_id = 10 OR department_id = 20)
                     <pattern id="grid-pattern-3" width="10" height="10" patternUnits="userSpaceOnUse">
                       <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.06)" />
                     </pattern>
-                    <rect width="100%" height="100%" fill="url(#grid-pattern-3)" rx="4" />
+                    <rect x="0" y="0" width="200" height="110" fill="url(#grid-pattern-3)" rx="4" />
                     
                     <!-- Highlighted Union Area -->
                     <circle cx="75" cy="55" r="38" fill="url(#glow-or)" />
