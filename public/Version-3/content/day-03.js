@@ -202,9 +202,9 @@ WHERE  (department_id = 10 OR department_id = 20)
                       <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.06)" />
                     </pattern>
                     <rect width="100%" height="100%" fill="url(#grid-pattern-1)" rx="4" />
-                    <!-- Universal Set Glow -->
-                    <rect x="6" y="6" width="188" height="98" rx="4" fill="url(#glow-not)" mask="url(#not-a-mask)" />
-                    <rect x="6" y="6" width="188" height="98" rx="4" fill="rgba(239, 68, 68, 0.05)" mask="url(#not-a-mask)" stroke="rgba(239, 68, 68, 0.3)" stroke-width="1.2" />
+                    <!-- Universal Set Glow without outer stroke box -->
+                    <rect width="100%" height="100%" fill="url(#glow-not)" mask="url(#not-a-mask)" />
+                    <rect width="100%" height="100%" fill="rgba(239, 68, 68, 0.05)" mask="url(#not-a-mask)" />
                     
                     <!-- Circle Wireframes -->
                     <circle cx="75" cy="55" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-dasharray="2 2" stroke-width="1.2" />
@@ -218,11 +218,6 @@ WHERE  (department_id = 10 OR department_id = 20)
                 </div>
                 
                 <span class="prec-desc">A <strong>unary operator</strong> that negates a condition. In set theory, it represents the <strong>Complement</strong> (everything outside Set A). Evaluated first.</span>
-                
-                <span class="prec-table-title">Truth Matrix (NOT)</span>
-                <pre class="prec-matrix">NOT <span class="t">TRUE</span>    ➔ <span class="f">FALSE</span>
-NOT <span class="f">FALSE</span>   ➔ <span class="t">TRUE</span>
-NOT <span class="u">NULL</span>    ➔ <span class="u">NULL</span></pre>
               </div>
               
               <!-- CARD 2: AND -->
@@ -248,7 +243,6 @@ NOT <span class="u">NULL</span>    ➔ <span class="u">NULL</span></pre>
                       <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.06)" />
                     </pattern>
                     <rect width="100%" height="100%" fill="url(#grid-pattern-2)" rx="4" />
-                    <rect x="6" y="6" width="188" height="98" rx="4" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" />
                     
                     <!-- Highlighted Intersection Area -->
                     <circle cx="125" cy="55" r="30" fill="url(#glow-and)" clip-path="url(#intersect-clip)" />
@@ -267,12 +261,6 @@ NOT <span class="u">NULL</span>    ➔ <span class="u">NULL</span></pre>
                 </div>
                 
                 <span class="prec-desc">A <strong>binary operator</strong> that returns TRUE if <em>both</em> conditions are TRUE. Represents the <strong>Intersection</strong>. Binds tighter than OR.</span>
-                
-                <span class="prec-table-title">Truth Matrix (AND)</span>
-                <pre class="prec-matrix"><span class="t">T</span> AND <span class="t">T</span>     ➔ <span class="t">TRUE</span>
-<span class="t">T</span> AND <span class="f">F</span>     ➔ <span class="f">FALSE</span>
-<span class="f">F</span> AND <span class="u">NULL</span>  ➔ <span class="f">FALSE</span> <small style="color:#64748b">(short-circuit)</small>
-<span class="t">T</span> AND <span class="u">NULL</span>  ➔ <span class="u">UNKNOWN</span></pre>
               </div>
               
               <!-- CARD 3: OR -->
@@ -295,7 +283,6 @@ NOT <span class="u">NULL</span>    ➔ <span class="u">NULL</span></pre>
                       <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.06)" />
                     </pattern>
                     <rect width="100%" height="100%" fill="url(#grid-pattern-3)" rx="4" />
-                    <rect x="6" y="6" width="188" height="98" rx="4" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" />
                     
                     <!-- Highlighted Union Area -->
                     <circle cx="75" cy="55" r="30" fill="url(#glow-or)" />
@@ -315,12 +302,6 @@ NOT <span class="u">NULL</span>    ➔ <span class="u">NULL</span></pre>
                 </div>
                 
                 <span class="prec-desc">A <strong>binary operator</strong> that returns TRUE if <em>at least one</em> condition is TRUE. Represents the <strong>Union</strong>. Evaluated last.</span>
-                
-                <span class="prec-table-title">Truth Matrix (OR)</span>
-                <pre class="prec-matrix"><span class="t">T</span> OR <span class="f">F</span>      ➔ <span class="t">TRUE</span>
-<span class="f">F</span> OR <span class="f">F</span>      ➔ <span class="f">FALSE</span>
-<span class="t">T</span> OR <span class="u">NULL</span>     ➔ <span class="t">TRUE</span> <small style="color:#64748b">(short-circuit)</small>
-<span class="f">F</span> OR <span class="u">NULL</span>     ➔ <span class="u">UNKNOWN</span></pre>
               </div>
             </div>
           </div>
