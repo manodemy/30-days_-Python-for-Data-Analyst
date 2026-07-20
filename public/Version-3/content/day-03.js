@@ -285,7 +285,7 @@ WHERE  unit_price <= 1000
 
                 <!-- Formula badge -->
                 <div class="formula-bar">
-                  <span class="formula-badge formula-badge--not">NOT A &nbsp;(U \ A)</span>
+                  <span class="formula-badge formula-badge--not">NOT A = A′ = U ∖ A</span>
                 </div>
                 
                 <ul class="prec-list" style="--bullet-color: #ef4444;">
@@ -335,7 +335,7 @@ WHERE  unit_price <= 1000
 
                 <!-- Formula badge -->
                 <div class="formula-bar">
-                  <span class="formula-badge formula-badge--and">A AND B &nbsp;(A ∩ B)</span>
+                  <span class="formula-badge formula-badge--and">A AND B = A ∩ B</span>
                 </div>
                 
                 <ul class="prec-list" style="--bullet-color: #f59e0b;">
@@ -383,7 +383,7 @@ WHERE  unit_price <= 1000
 
                 <!-- Formula badge -->
                 <div class="formula-bar">
-                  <span class="formula-badge formula-badge--or">A OR B &nbsp;(A ∪ B)</span>
+                  <span class="formula-badge formula-badge--or">A OR B = A ∪ B</span>
                 </div>
                 
                 <ul class="prec-list" style="--bullet-color: #10b981;">
