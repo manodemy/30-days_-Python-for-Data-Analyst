@@ -50,7 +50,7 @@ function getSeedDefinition(seedKey) {
 
 function loadDatabaseSeed(seedKey) {
   if (!SQL_INSTANCE) return;
-  
+
   // Verify if existing cached DB is valid and non-empty
   if (dbCache.has(seedKey)) {
     const cachedDb = dbCache.get(seedKey);
@@ -73,8 +73,8 @@ function loadDatabaseSeed(seedKey) {
   const newDb = new SQL_INSTANCE.Database();
   if (seedDef && seedDef.tables) {
     seedDef.tables.forEach(t => {
-      if (t.createSQL) { try { newDb.run(t.createSQL); } catch(e) { console.error('Create SQL error:', e); } }
-      if (t.seedSQL)   { try { newDb.run(t.seedSQL); } catch(e) { console.error('Seed SQL error:', e); } }
+      if (t.createSQL) { try { newDb.run(t.createSQL); } catch (e) { console.error('Create SQL error:', e); } }
+      if (t.seedSQL) { try { newDb.run(t.seedSQL); } catch (e) { console.error('Seed SQL error:', e); } }
     });
     COURSE_CONFIG.schema = seedDef;
   }
@@ -99,7 +99,7 @@ function initDatabase() {
 function confirmResetDatabase() {
   if (!confirm('Reset the database to its original state? Any data changes you made in this session will be lost.')) return;
   if (!SQL_INSTANCE || !activeSeedKey) return;
-  
+
   dbCache.delete(activeSeedKey);
   loadDatabaseSeed(activeSeedKey);
 
@@ -329,7 +329,7 @@ function levenshtein(a, b) {
   for (let j = 0; j <= n; j++) dp[0][j] = j;
   for (let i = 1; i <= m; i++)
     for (let j = 1; j <= n; j++)
-      dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+      dp[i][j] = a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
   return dp[m][n];
 }
 
@@ -491,7 +491,7 @@ function formatHeadingBoxes(container) {
     if (audioBtn) audioBtn.remove();
 
     let rawText = h3.textContent.trim();
-    
+
     let emoji = '';
     const emojiMatch = rawText.match(/^([\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F000}-\u{1F02F}\u{1F0A0}-\u{1F0F5}\u{1F1E0}-\u{1F1FF}]+)\s*/u);
     if (emojiMatch) {
@@ -589,42 +589,42 @@ function renderSideSlide() {
   lastActiveDay = currentDay;
 
   const slide = COURSE_CONFIG.slides[currentSlide];
-  
+
   // Parse the slide HTML
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = slide.html;
-  
+
   // Extract h2
   const h2 = tempDiv.querySelector('h2');
   const headerHtml = h2 ? h2.outerHTML : '';
   if (h2) h2.remove();
   const bodyHtml = tempDiv.innerHTML;
-  
+
   // Populate elements
   const slideHeader = document.getElementById('slideHeader');
   if (slideHeader) slideHeader.innerHTML = headerHtml;
-  
+
   const slideBodyText = document.getElementById('slideBodyText');
   if (slideBodyText) {
     slideBodyText.innerHTML = bodyHtml;
     formatHeadingBoxes(slideBodyText);
     autoHighlightSql(slideBodyText);
     // Re-execute any <script> tags injected via innerHTML (browser security blocks them)
-    slideBodyText.querySelectorAll('script').forEach(function(oldScript) {
+    slideBodyText.querySelectorAll('script').forEach(function (oldScript) {
       const newScript = document.createElement('script');
-      Array.from(oldScript.attributes).forEach(function(attr) {
+      Array.from(oldScript.attributes).forEach(function (attr) {
         newScript.setAttribute(attr.name, attr.value);
       });
       newScript.textContent = oldScript.textContent;
       oldScript.parentNode.replaceChild(newScript, oldScript);
     });
   }
-  
+
   const slideContent = document.getElementById('slideContent');
   if (slideContent) {
     slideContent.scrollTop = 0;
   }
-  
+
   // Update canvas size to match the new scroll size of slideContent
   resizeWsCanvas();
 
@@ -659,12 +659,13 @@ function renderSideSlide() {
 
   // Show narration autoplay widget if the slide has tracks defined
   setTimeout(() => {
-    const config = (typeof slideTrackMap !== 'undefined' && currentDay === 'day01') ? slideTrackMap[currentSlide] : null;
+    const dayConfig = (typeof slideTrackMap !== 'undefined') ? slideTrackMap[currentDay] : null;
+    const config = dayConfig ? dayConfig[currentSlide] : null;
     if (config) {
       // Swapping track list dynamically
       combinedTracks = config.tracks;
       combinedTrackDurations = config.durations;
-      
+
       // Stop currently playing combined narration cleanly if active
       if (activeAudioInstance) {
         activeAudioInstance.pause();
@@ -674,7 +675,7 @@ function renderSideSlide() {
       }
       isCombinedPlaying = false;
       combinedAudios = [];
-      
+
       // Restore progress if it exists in history
       const newKey = `${currentDay}_${currentSlide}`;
       const saved = slideProgressHistory[newKey];
@@ -687,10 +688,10 @@ function renderSideSlide() {
         combinedTrackIndex = 0;
         pendingAudioStartTime = 0;
       }
-      
+
       // Update UI button states
       updatePlayButtonStates(false);
-      
+
       // Re-calculate total duration
       totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
 
@@ -850,35 +851,35 @@ function getWsCtx() { const c = getWsCanvas(); return c ? c.getContext('2d') : n
 function resizeWsCanvas() {
   const canvas = getWsCanvas();
   if (!canvas) return;
-  
+
   // Collapse canvas temporarily to prevent layout stretching feedback loop
   canvas.style.width = '0px';
   canvas.style.height = '0px';
   canvas.width = 0;
   canvas.height = 0;
-  
+
   const parent = canvas.parentElement;
   const scrollWidth = parent.scrollWidth || parent.clientWidth;
   const scrollHeight = parent.scrollHeight || parent.clientHeight;
-  
+
   const dpr = window.devicePixelRatio || 1;
-  
+
   // Backing store buffer (scaled by DPR)
   canvas.width = scrollWidth * dpr;
   canvas.height = scrollHeight * dpr;
-  
+
   // CSS layout size (logical pixels)
   canvas.style.width = `${scrollWidth}px`;
   canvas.style.height = `${scrollHeight}px`;
-  
+
   const ctx = getWsCtx();
   if (ctx) {
     ctx.scale(dpr, dpr);
   }
-  
+
   // Repaint all stored rects after resize (setting .width clears canvas)
   repaintWsRects();
-  
+
   // Refresh timeline layout positions
   if (typeof updateTimelineView === 'function') {
     updateTimelineView();
@@ -889,23 +890,23 @@ function repaintWsRects() {
   const canvas = getWsCanvas();
   const ctx = getWsCtx();
   if (!canvas || !ctx) return;
-  
+
   ctx.save();
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.restore();
-  
+
   const parent = canvas.parentElement;
   if (!parent) return;
   const logicalWidth = parent.scrollWidth || parent.clientWidth;
   const logicalHeight = parent.scrollHeight || parent.clientHeight;
-  
+
   wsDrawnRects.forEach(r => {
     const x = r.x1Pct * logicalWidth;
     const y = r.y1Pct * logicalHeight;
     const w = (r.x2Pct - r.x1Pct) * logicalWidth;
     const h = (r.y2Pct - r.y1Pct) * logicalHeight;
-    
+
     ctx.fillStyle = 'rgba(245, 158, 11, 0.15)';
     ctx.strokeStyle = '#f59e0b';
     ctx.lineWidth = 1.5;
@@ -1109,14 +1110,14 @@ function closePeekPopover() {
 }
 
 // Close popover on outside click
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
   const pop = document.getElementById('peekPopover');
   if (pop.classList.contains('open') && !pop.contains(e.target) && !e.target.closest('.peek-btn') && !e.target.closest('.tb-btn--tables')) {
     closePeekPopover();
   }
 });
 
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') closePeekPopover();
 });
 
@@ -1464,7 +1465,7 @@ function rebuildRecordingState(targetMs) {
   if (captionEl) {
     if (timelineOpen) {
       captionEl.style.display = 'block';
-      captionEl.textContent = activeCaption ? activeCaption.text : `📢 Timeline Preview Mode (${formatTime(targetMs/1000)} / ${formatTime(getTimelineDurationMs()/1000)})`;
+      captionEl.textContent = activeCaption ? activeCaption.text : `📢 Timeline Preview Mode (${formatTime(targetMs / 1000)} / ${formatTime(getTimelineDurationMs() / 1000)})`;
     } else {
       captionEl.style.display = 'none';
     }
@@ -1801,12 +1802,12 @@ function toggleVolumePopover(event) {
   const popover = document.getElementById('volumePopover');
   const speedPopover = document.getElementById('speedPopover');
   const speedBtn = document.getElementById('speedControlBtn');
-  
+
   if (speedPopover) {
     speedPopover.classList.remove('open');
     speedBtn?.classList.remove('active');
   }
-  
+
   popover.classList.toggle('open');
   volBtn.classList.toggle('active');
 }
@@ -1817,12 +1818,12 @@ function toggleSpeedPopover(event) {
   const popover = document.getElementById('speedPopover');
   const volPopover = document.getElementById('volumePopover');
   const volBtn = document.getElementById('volumeBtn');
-  
+
   if (volPopover) {
     volPopover.classList.remove('open');
     volBtn?.classList.remove('active');
   }
-  
+
   popover.classList.toggle('open');
   speedBtn.classList.toggle('active');
 }
@@ -1830,14 +1831,14 @@ function toggleSpeedPopover(event) {
 function setPlaybackVolume(value) {
   const vol = parseFloat(value) / 100;
   currentPlaybackVolume = vol;
-  
+
   if (activeAudioInstance) activeAudioInstance.volume = vol;
   if (playbackAudio) playbackAudio.volume = vol;
   if (currentPlayingAudio) currentPlayingAudio.volume = vol;
-  
+
   const valLabel = document.getElementById('volumeValue');
   if (valLabel) valLabel.textContent = `${value}%`;
-  
+
   const volBtn = document.getElementById('volumeBtn');
   if (volBtn) {
     if (value == 0) {
@@ -1865,10 +1866,10 @@ function setPlaybackVolume(value) {
 function selectSpeedOption(speed, labelText) {
   const btn = document.getElementById('speedControlBtn');
   setPlaybackSpeed(speed, btn);
-  
+
   const valLabel = document.getElementById('speedValueLabel');
   if (valLabel) valLabel.textContent = labelText;
-  
+
   document.querySelectorAll('.speed-option').forEach(opt => {
     const optSpeed = parseFloat(opt.textContent);
     if (optSpeed === speed) {
@@ -1877,7 +1878,7 @@ function selectSpeedOption(speed, labelText) {
       opt.classList.remove('active');
     }
   });
-  
+
   document.getElementById('speedPopover')?.classList.remove('open');
   btn?.classList.remove('active');
 }
@@ -1888,7 +1889,7 @@ document.addEventListener('click', (e) => {
   const volBtn = document.getElementById('volumeBtn');
   const speedPopover = document.getElementById('speedPopover');
   const speedBtn = document.getElementById('speedControlBtn');
-  
+
   if (volPopover && !volPopover.contains(e.target) && !volBtn.contains(e.target)) {
     volPopover.classList.remove('open');
     volBtn?.classList.remove('active');
@@ -1967,7 +1968,7 @@ function openTestPortal() {
   testAnswers = COURSE_CONFIG.testQuestions.map(() => ({ answer: '', attempted: false }));
 
   document.getElementById('testOverlay').classList.add('open');
-  
+
   // Pause lesson narration if playing
   if (typeof pauseCombinedPlayback === 'function') {
     pauseCombinedPlayback();
@@ -1979,7 +1980,7 @@ function openTestPortal() {
       if (typeof currentPlayingBtn !== 'undefined' && currentPlayingBtn) {
         currentPlayingBtn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
       }
-    } catch (e) {}
+    } catch (e) { }
   }
 
   // Hide the timeline playback bar
@@ -1993,7 +1994,7 @@ function openTestPortal() {
   const bestEl = document.getElementById('testBestScoreCount');
   if (bestEl) bestEl.textContent = bestScore;
   updateTestProgress();
-  
+
   // Save initial attempt state
   if (window.ProgressManager) {
     ProgressManager.saveTestAttempt(currentDay, {
@@ -2012,7 +2013,7 @@ function openTestPortal() {
   const sidebar = document.getElementById('testSidebar');
   let html = '';
   for (let i = 0; i < 25; i++) {
-    html += `<button class="test-q-btn ${i === 0 ? 'current' : ''}" id="tqBtn${i}" onclick="switchTestQuestion(${i})"><span class="q-prefix">Q</span>${i+1}</button>`;
+    html += `<button class="test-q-btn ${i === 0 ? 'current' : ''}" id="tqBtn${i}" onclick="switchTestQuestion(${i})"><span class="q-prefix">Q</span>${i + 1}</button>`;
   }
   sidebar.innerHTML = html;
 
@@ -2129,11 +2130,11 @@ function updateTestProgress() {
   const attempted = testAnswers.filter(a => a.attempted).length;
   const attemptedCountEl = document.getElementById('testAttemptedCount');
   if (attemptedCountEl) attemptedCountEl.textContent = attempted;
-  
+
   const pct = (attempted / 25) * 100;
   const fillEl = document.getElementById('testProgressFill');
   if (fillEl) fillEl.style.width = `${pct}%`;
-  
+
   const testProgressEl = document.getElementById('testProgress');
   if (testProgressEl) testProgressEl.textContent = `Attempted: ${attempted} / 25`;
 }
@@ -2199,7 +2200,7 @@ function submitTest() {
     const statusText = r.correct ? 'Correct' : (r.attempted ? 'Incorrect' : 'Skipped');
     const badgeColor = r.correct ? 'var(--green)' : (r.attempted ? 'var(--red)' : 'var(--text-muted)');
     const cardClass = r.correct ? 'review-card--correct' : 'review-card--incorrect';
-    
+
     reviewCardsHtml += `
       <div class="review-card ${cardClass}">
         <div class="review-header">
@@ -2223,7 +2224,7 @@ function submitTest() {
       </div>
     `;
   });
-  
+
   // Replaces the table inside scorecard-body with our review cards container
   const scorecardBody = document.getElementById('scorecardBody');
   if (scorecardBody) {
@@ -2231,7 +2232,7 @@ function submitTest() {
     if (table) {
       table.style.display = 'none'; // Hide the raw table
     }
-    
+
     let cardContainer = document.getElementById('scorecardCards');
     if (!cardContainer) {
       cardContainer = document.createElement('div');
@@ -2256,11 +2257,14 @@ function submitTest() {
     ProgressManager.saveTestAttempt(currentDay, attempt);
   }
 
+  // Stop the urgent Take Test blink — user has now completed the test
+  deactivateTakeTestBlink();
+
   // Update best score bestEl
   const best = ProgressManager.getDayProgress(currentDay).bestScore || totalCorrect;
   const bestEl = document.getElementById('testBestScoreCount');
   if (bestEl) bestEl.textContent = best;
-  
+
   // Make progress bar show 100% completed green
   const fillEl = document.getElementById('testProgressFill');
   if (fillEl) {
@@ -2304,7 +2308,7 @@ function resumeTestAttempt(dayId, attempt, timeRemaining) {
   testAnswers = attempt.answers;
 
   document.getElementById('testOverlay').classList.add('open');
-  
+
   if (typeof pauseCombinedPlayback === 'function') {
     pauseCombinedPlayback();
   }
@@ -2327,7 +2331,7 @@ function resumeTestAttempt(dayId, attempt, timeRemaining) {
   let html = '';
   for (let i = 0; i < 25; i++) {
     const isAttempted = testAnswers[i] && testAnswers[i].attempted;
-    html += `<button class="test-q-btn ${i === 0 ? 'current' : ''} ${isAttempted ? 'attempted' : ''}" id="tqBtn${i}" onclick="switchTestQuestion(${i})"><span class="q-prefix">Q</span>${i+1}</button>`;
+    html += `<button class="test-q-btn ${i === 0 ? 'current' : ''} ${isAttempted ? 'attempted' : ''}" id="tqBtn${i}" onclick="switchTestQuestion(${i})"><span class="q-prefix">Q</span>${i + 1}</button>`;
   }
   sidebar.innerHTML = html;
 
@@ -2338,7 +2342,7 @@ function resumeTestAttempt(dayId, attempt, timeRemaining) {
 
 function renderScorecardFromAttempt(attempt) {
   if (!attempt) return;
-  
+
   document.getElementById('scoreBig').textContent = `${attempt.score} / 25`;
   document.getElementById('scoreBig').className = `score-big ${attempt.score >= 13 ? 'pass' : 'fail'}`;
   document.getElementById('scoreMeta').textContent = `${attempt.score >= 13 ? '✅ PASSED' : '❌ NEEDS REVIEW'}`;
@@ -2347,7 +2351,7 @@ function renderScorecardFromAttempt(attempt) {
   let reviewCardsHtml = '';
   COURSE_CONFIG.testQuestions.forEach((q, i) => {
     const ansObj = attempt.answers[i] || { answer: '', attempted: false };
-    
+
     // Evaluate correctness dynamically
     let correct = false;
     if (ansObj.answer && ansObj.answer.trim() !== '' && ansObj.answer !== '-- Write your answer here') {
@@ -2358,11 +2362,11 @@ function renderScorecardFromAttempt(attempt) {
         correct = false;
       }
     }
-    
+
     const statusText = correct ? 'Correct' : (ansObj.attempted ? 'Incorrect' : 'Skipped');
     const badgeColor = correct ? 'var(--green)' : (ansObj.attempted ? 'var(--red)' : 'var(--text-muted)');
     const cardClass = correct ? 'review-card--correct' : 'review-card--incorrect';
-    
+
     reviewCardsHtml += `
       <div class="review-card ${cardClass}">
         <div class="review-header">
@@ -2386,14 +2390,14 @@ function renderScorecardFromAttempt(attempt) {
       </div>
     `;
   });
-  
+
   const scorecardBody = document.getElementById('scorecardBody');
   if (scorecardBody) {
     const table = document.getElementById('scorecardTable');
     if (table) {
       table.style.display = 'none'; // Hide raw table
     }
-    
+
     let cardContainer = document.getElementById('scorecardCards');
     if (!cardContainer) {
       cardContainer = document.createElement('div');
@@ -2409,7 +2413,7 @@ function renderScorecardFromAttempt(attempt) {
 
 function getInterviewersAngle(dayId, qId, prompt) {
   const dayNum = parseInt(dayId.replace('day', ''), 10);
-  
+
   const angles = {
     1: [
       "Tests basic column selection. Strong candidates project specific columns instead of using SELECT * to avoid memory overhead.",
@@ -2548,8 +2552,12 @@ const questionAudioMap = {
     2: 'New_Day1Part1Question03.mp3'
   },
   'day02': {
-    1: 'Day01topic2/New_Day1Part2audio21.mp3',
-    2: 'Day01topic2/New_Day1Part2audio22.mp3'
+    1: 'Day02/New_Day2Question01.mp3',
+    2: 'Day02/New_Day2Question02.mp3',
+    3: 'Day02/New_Day2Question03.mp3',
+    4: 'Day02/New_Day2Question04.mp3',
+    5: 'Day02/New_Day2Question05.mp3',
+    6: 'Day02/New_Day2Question06.mp3'
   },
   'day03': {
     1: 'Day01topic3/New_Day1Part3Question01.mp3',
@@ -2563,8 +2571,90 @@ const questionSolutionMap = {
     1: { src: 'New_Day1Part1Question02.mp3', code: 'SELECT * FROM employees;', startAt: 1.5, charInterval: 110 }
   },
   'day02': {
-    1: { src: 'Day01topic2/New_Day1Part2Question01.mp3', code: 'SELECT name, department FROM employees;', startAt: 1.5, charInterval: 110 },
-    2: { src: 'Day01topic2/New_Day1Part2Question02.mp3', code: '', startAt: 0, charInterval: 0 }
+    1: {
+      src: 'Day02/New_Day2Question01sol.mp3',
+      code: 'SELECT name, unit_price, stock_qty\nFROM   products\nORDER BY unit_price DESC;',
+      // Segments aligned to exact Whisper word timestamps from narration:
+      // 3.14s "select" → 3.42s "name," → 4.48s "unit [_price]" → 6.06s "stock [_qty]"
+      // 11.18s "from products" → 15.16s "order" → 15.60s "unit [_price DESC]"
+      segments: [
+        { text: "SELECT ", startAt: 3.14, charInterval: 80 },
+        { text: "name, ", startAt: 3.42, charInterval: 60 },
+        { text: "unit_price, ", startAt: 4.48, charInterval: 50 },
+        { text: "stock_qty\n", startAt: 6.06, charInterval: 55 },
+        { text: "FROM   products\n", startAt: 11.18, charInterval: 55 },
+        { text: "ORDER BY ", startAt: 15.16, charInterval: 50 },
+        { text: "unit_price DESC;", startAt: 15.60, charInterval: 45 }
+      ],
+      scrollAt: 17.0
+    },
+    2: {
+      src: 'Day02/New_Day2Question02sol.mp3',
+      code: 'SELECT first_name, last_name, salary\nFROM   employees\nORDER BY salary DESC\nLIMIT 5;',
+      segments: [
+        { text: "SELECT ", startAt: 2.64, charInterval: 80 },
+        { text: "first_name, ", startAt: 3.06, charInterval: 50 },
+        { text: "last_name, ", startAt: 4.02, charInterval: 50 },
+        { text: "salary\n", startAt: 4.88, charInterval: 55 },
+        { text: "FROM   employees\n", startAt: 5.22, charInterval: 55 },
+        { text: "ORDER BY ", startAt: 11.48, charInterval: 50 },
+        { text: "salary DESC\n", startAt: 12.04, charInterval: 50 },
+        { text: "LIMIT 5;", startAt: 16.70, charInterval: 50 }
+      ],
+      scrollAt: 17.3
+    },
+    3: {
+      src: 'Day02/New_Day2Question03sol.mp3',
+      code: 'SELECT DISTINCT region\nFROM   customers;',
+      segments: [
+        // "SELECT DISTINCT " — merged to avoid RAF overlap (4.62→5.08s = 28ms/char)
+        { text: "SELECT DISTINCT ", startAt: 4.62, charInterval: 28 },
+        { text: "region\n", startAt: 5.08, charInterval: 55 },
+        { text: "FROM   ", startAt: 9.20, charInterval: 30 },
+        { text: "customers;", startAt: 9.42, charInterval: 45 }
+      ],
+      scrollAt: 13.5
+    },
+    4: {
+      src: 'Day02/New_Day2Question04sol.mp3',
+      code: 'SELECT first_name, salary AS annual_salary\nFROM   employees\nORDER BY first_name ASC;',
+      segments: [
+        { text: "SELECT ", startAt: 2.74, charInterval: 60 },
+        { text: "first_name, ", startAt: 3.30, charInterval: 45 },
+        { text: "salary AS ", startAt: 5.50, charInterval: 45 },
+        { text: "annual_salary\n", startAt: 6.68, charInterval: 50 },
+        { text: "FROM   employees\n", startAt: 13.50, charInterval: 50 },
+        { text: "ORDER BY ", startAt: 18.62, charInterval: 45 },
+        { text: "first_name ASC;", startAt: 19.36, charInterval: 45 }
+      ],
+      scrollAt: 24.0
+    },
+    5: {
+      src: 'Day02/New_Day2Question05sol.mp3',
+      code: 'SELECT *\nFROM   customers\nLIMIT 5;',
+      segments: [
+        { text: "SELECT *\n", startAt: 2.36, charInterval: 60 },
+        { text: "FROM   customers\n", startAt: 6.88, charInterval: 50 },
+        { text: "LIMIT 5;", startAt: 8.94, charInterval: 50 }
+      ],
+      scrollAt: 9.8
+    },
+    6: {
+      src: 'Day02/New_Day2Question06sol.mp3',
+      code: 'SELECT name,\n       unit_price,\n       cost_price,\n       unit_price - cost_price AS profit\nFROM   products\nORDER BY profit DESC;',
+      // Whisper word timestamps from New_Day2Question06sol.mp3 (24.1s)
+      // Formatted in structured multi-line order matching reference image:
+      segments: [
+        { text: "SELECT name,\n", startAt: 3.40, charInterval: 45 },
+        { text: "       unit_price,\n", startAt: 4.44, charInterval: 45 },
+        { text: "       cost_price,\n", startAt: 5.32, charInterval: 45 },
+        { text: "       unit_price - cost_price ", startAt: 10.78, charInterval: 40 },
+        { text: "AS profit\n", startAt: 14.36, charInterval: 45 },
+        { text: "FROM   products\n", startAt: 17.58, charInterval: 45 },
+        { text: "ORDER BY profit DESC;", startAt: 22.56, charInterval: 40 }
+      ],
+      scrollAt: 23.9
+    }
   },
   'day03': {
     1: { src: 'Day01topic3/New_Day1Part3Question01_sol.mp3', code: 'SELECT name AS Employee_Name, salary AS Monthly_Salary FROM employees;', startAt: 1.5, charInterval: 110 },
@@ -2573,10 +2663,154 @@ const questionSolutionMap = {
 };
 
 let typewriterTimers = []; // pending typewriter timeouts for cancellation
+let typewriterRafId = null; // requestAnimationFrame id for audio-synced typewriter
+let currentTableScrollInterval = null;
 
 function cancelTypewriter() {
   typewriterTimers.forEach(t => clearTimeout(t));
   typewriterTimers = [];
+  if (typewriterRafId !== null) {
+    cancelAnimationFrame(typewriterRafId);
+    typewriterRafId = null;
+  }
+  if (currentTableScrollInterval) {
+    clearInterval(currentTableScrollInterval);
+    currentTableScrollInterval = null;
+  }
+}
+
+// ─── Unified Audio-Synced Typewriter Engine (Supports scrubbing/seeking/resuming) ───
+function startAudioSyncedTypewriter(audioObj, solEntry) {
+  cancelTypewriter();
+  if (!audioObj || !solEntry) return;
+
+  const speed = typeof currentPlaybackSpeed !== 'undefined' ? currentPlaybackSpeed : 1.0;
+  let syncEvents = [];
+
+  if (solEntry.segments && Array.isArray(solEntry.segments)) {
+    let currentCode = '';
+    solEntry.segments.forEach(seg => {
+      const chars = seg.text.split('');
+      const intervalSec = ((seg.charInterval || 70) / 1000) / speed;
+      chars.forEach((ch, idx) => {
+        currentCode += ch;
+        syncEvents.push({ atSec: seg.startAt / speed + idx * intervalSec, text: currentCode });
+      });
+    });
+  } else {
+    const chars = (solEntry.code || '').split('');
+    let currentCode = '';
+    const startAtSec = (solEntry.startAt || 1.5) / speed;
+    const intervalSec = ((solEntry.charInterval || 70) / 1000) / speed;
+    chars.forEach((ch, idx) => {
+      currentCode += ch;
+      syncEvents.push({ atSec: startAtSec + idx * intervalSec, text: currentCode });
+    });
+  }
+
+  syncEvents.sort((a, b) => a.atSec - b.atSec);
+
+  const scrollAtSec = (solEntry.scrollAt || 13.5) / speed;
+  const initialTime = audioObj.currentTime || 0;
+
+  // Fast-forward editor state to initialTime if seeked into middle of track
+  let nextEvtIdx = 0;
+  let currentText = '';
+  while (nextEvtIdx < syncEvents.length && initialTime >= syncEvents[nextEvtIdx].atSec) {
+    currentText = syncEvents[nextEvtIdx].text;
+    nextEvtIdx++;
+  }
+
+  if (mainEditor) {
+    mainEditor.setValue(currentText);
+    if (currentText) {
+      const lastLine = mainEditor.lastLine();
+      mainEditor.setCursor({ line: lastLine, ch: mainEditor.getLine(lastLine).length });
+    }
+  }
+
+  let qFired = nextEvtIdx >= syncEvents.length && syncEvents.length > 0;
+  if (qFired && initialTime < scrollAtSec) {
+    runCurrentQuery();
+  }
+
+  let sFired = initialTime >= scrollAtSec;
+  if (sFired) {
+    runCurrentQuery();
+    const outputEl = document.getElementById('mainOutput');
+    if (outputEl) outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function rafLoop() {
+    if (!audioObj || audioObj.paused || audioObj.ended) {
+      typewriterRafId = null;
+      return;
+    }
+    const ct = audioObj.currentTime;
+
+    // Handle backward seek/scrubbing seamlessly
+    if (nextEvtIdx > 0 && ct < syncEvents[nextEvtIdx - 1].atSec) {
+      nextEvtIdx = 0;
+      let text = '';
+      while (nextEvtIdx < syncEvents.length && ct >= syncEvents[nextEvtIdx].atSec) {
+        text = syncEvents[nextEvtIdx].text;
+        nextEvtIdx++;
+      }
+      if (mainEditor) {
+        mainEditor.setValue(text);
+        if (text) {
+          const lastLine = mainEditor.lastLine();
+          mainEditor.setCursor({ line: lastLine, ch: mainEditor.getLine(lastLine).length });
+        }
+      }
+    }
+
+    while (nextEvtIdx < syncEvents.length && ct >= syncEvents[nextEvtIdx].atSec) {
+      const ev = syncEvents[nextEvtIdx];
+      if (mainEditor) {
+        mainEditor.setValue(ev.text);
+        const lastLine = mainEditor.lastLine();
+        mainEditor.setCursor({ line: lastLine, ch: mainEditor.getLine(lastLine).length });
+      }
+      nextEvtIdx++;
+    }
+
+    if (!qFired && nextEvtIdx >= syncEvents.length && syncEvents.length > 0) {
+      qFired = true;
+      runCurrentQuery();
+      setTimeout(() => {
+        const outputEl = document.getElementById('mainOutput');
+        if (outputEl) outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 350 / speed);
+    }
+
+    if (!sFired && ct >= scrollAtSec) {
+      sFired = true;
+      const outputEl = document.getElementById('mainOutput');
+      if (outputEl) {
+        currentTableScrollInterval = setInterval(() => {
+          if (outputEl.scrollTop + outputEl.clientHeight >= outputEl.scrollHeight - 2) {
+            clearInterval(currentTableScrollInterval);
+            currentTableScrollInterval = null;
+          } else {
+            outputEl.scrollTop += 1;
+          }
+        }, 40);
+      }
+    }
+
+    typewriterRafId = requestAnimationFrame(rafLoop);
+  }
+
+  typewriterRafId = requestAnimationFrame(rafLoop);
+
+  audioObj.addEventListener('ended', () => {
+    if (currentTableScrollInterval) {
+      clearInterval(currentTableScrollInterval);
+      currentTableScrollInterval = null;
+    }
+    cancelTypewriter();
+  }, { once: true });
 }
 
 function renderPracticeQuestion() {
@@ -2767,66 +3001,121 @@ function playSolutionAudio(solutionEntry, triggerBtn) {
 
   audio.play().catch(e => console.log('Solution audio play error:', e));
 
+  // ─── Audio-currentTime-driven typewriter (frame-perfect sync) ───────────────
+  // Build flat sorted event list: { atSec, text } where text is cumulative code
+  let syncEvents = [];
 
-  // Schedule typewriter: one char every charInterval ms starting at startAt seconds
-  const startDelay = startAt * 1000;
-  const chars = code.split('');
-  let typed = '';
+  if (solutionEntry.segments && Array.isArray(solutionEntry.segments)) {
+    let currentCode = '';
+    solutionEntry.segments.forEach(seg => {
+      const chars = seg.text.split('');
+      chars.forEach((ch, idx) => {
+        currentCode += ch;
+        syncEvents.push({ atSec: seg.startAt + idx * (seg.charInterval || 70) / 1000, text: currentCode });
+      });
+    });
+  } else {
+    const chars = (code || '').split('');
+    let currentCode = '';
+    chars.forEach((ch, idx) => {
+      currentCode += ch;
+      syncEvents.push({ atSec: (startAt || 1.5) + idx * (charInterval || 70) / 1000, text: currentCode });
+    });
+  }
 
-  chars.forEach((char, i) => {
-    const t = setTimeout(() => {
-      typed += char;
+  syncEvents.sort((a, b) => a.atSec - b.atSec);
+  let nextEventIdx = 0;
+  let queryFired = false;
+  let scrollFired = false;
+  const scrollAtSec = solutionEntry.scrollAt || 13.5;
+  let tableScrollInterval = null;
+
+  function rafTypewriterLoop() {
+    if (!audio || audio.paused || audio.ended) {
+      typewriterRafId = null;
+      return;
+    }
+    const t = audio.currentTime;
+
+    // Type all pending characters whose timestamp has passed
+    while (nextEventIdx < syncEvents.length && t >= syncEvents[nextEventIdx].atSec) {
+      const evt = syncEvents[nextEventIdx];
       if (mainEditor) {
-        mainEditor.setValue(typed);
+        mainEditor.setValue(evt.text);
         const lastLine = mainEditor.lastLine();
         mainEditor.setCursor({ line: lastLine, ch: mainEditor.getLine(lastLine).length });
       }
+      nextEventIdx++;
+    }
 
-      // After the last character is typed — run query + scroll result into view
-      if (i === chars.length - 1) {
-        setTimeout(() => {
-          runCurrentQuery();
-          setTimeout(() => {
-            const outputEl = document.getElementById('mainOutput');
-            if (outputEl) {
-              outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-          }, 350);
-        }, 400);
+    // Run query once all typing is done
+    if (!queryFired && nextEventIdx >= syncEvents.length && syncEvents.length > 0) {
+      queryFired = true;
+      runCurrentQuery();
+      setTimeout(() => {
+        const outputEl = document.getElementById('mainOutput');
+        if (outputEl) outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 350);
+    }
+
+    // Start table scroll at scrollAt timestamp
+    if (!scrollFired && t >= scrollAtSec) {
+      scrollFired = true;
+      const outputEl = document.getElementById('mainOutput');
+      if (outputEl) {
+        tableScrollInterval = setInterval(() => {
+          if (outputEl.scrollTop + outputEl.clientHeight >= outputEl.scrollHeight - 2) {
+            clearInterval(tableScrollInterval);
+          } else {
+            outputEl.scrollTop += 1;
+          }
+        }, 40);
       }
-    }, startDelay + i * charInterval);
-    typewriterTimers.push(t);
-  });
+    }
 
-  // ── Table cinematic scroll: start at 13.5s, scroll slowly until audio ends ──
-  let tableScrollInterval = null;
-  const tableScrollStartDelay = 13500; // ms from audio start
+    typewriterRafId = requestAnimationFrame(rafTypewriterLoop);
+  }
 
-  const tableScrollTimer = setTimeout(() => {
-    const outputEl = document.getElementById('mainOutput');
-    if (!outputEl) return;
-
-    // Scroll the table slowly downward (1px every 40ms ≈ 25px/s)
-    tableScrollInterval = setInterval(() => {
-      const atBottom = outputEl.scrollTop + outputEl.clientHeight >= outputEl.scrollHeight - 2;
-      if (atBottom) {
-        clearInterval(tableScrollInterval);
-      } else {
-        outputEl.scrollTop += 1;
-      }
-    }, 40);
-  }, tableScrollStartDelay);
-  typewriterTimers.push(tableScrollTimer); // tracked so cancelTypewriter() stops it too
+  typewriterRafId = requestAnimationFrame(rafTypewriterLoop);
 
   audio.onended = () => {
     if (tableScrollInterval) clearInterval(tableScrollInterval);
+    cancelTypewriter(); // also cancels RAF loop
     if (btn) {
       btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
       btn.classList.remove('playing');
     }
-    cancelTypewriter();
     currentPlayingAudio = null;
     currentPlayingBtn = null;
+
+    // ── Auto-chain: advance to next practice question after solution ends ──
+    const qs = COURSE_CONFIG.practiceQuestions;
+    if (qs && currentPracticeQ < qs.length - 1) {
+      setTimeout(() => {
+        currentPracticeQ++;
+        renderPracticeQuestion();
+        updatePracticeStats();
+        // Scroll practice panel to top
+        const slideContent = document.getElementById('slideContent');
+        if (slideContent) slideContent.scrollTo({ top: 0, behavior: 'smooth' });
+        // Play next question audio automatically
+        const nextQ = qs[currentPracticeQ];
+        const qMap = questionAudioMap[currentDay] || questionAudioMap['day01'];
+        const nextSrc = qMap ? qMap[nextQ.id] : null;
+        if (nextSrc) {
+          const nextBtn = document.querySelector(`[data-qaudio-id="${nextQ.id}"]`);
+          setTimeout(() => playQuestionAudio(nextSrc, nextBtn), 300);
+        }
+      }, 600);
+    } else {
+      // ── Last question solution ended! Auto-chain to final completion narration ──
+      const completionIdx = combinedTracks.findIndex(t => t.type === 'completion');
+      if (completionIdx !== -1) {
+        setTimeout(() => {
+          loadAndPlayTrack(completionIdx);
+        }, 600);
+      }
+    }
   };
 }
 
@@ -2882,7 +3171,7 @@ function saveCurrentPracticeAnswer() {
   const val = mainEditor.getValue().trim();
   const solvedKey = `${currentDay}-${q.id}`;
   const isSolved = solvedQuestions.has(solvedKey);
-  
+
   if (window.ProgressManager) {
     ProgressManager.savePracticeAnswer(currentDay, q.id, val, isSolved);
   }
@@ -2892,7 +3181,7 @@ function loadSavedPracticeAnswer() {
   if (!mainEditor || !COURSE_CONFIG.practiceQuestions) return;
   const q = COURSE_CONFIG.practiceQuestions[currentPracticeQ];
   if (!q) return;
-  
+
   if (window.ProgressManager) {
     const dp = ProgressManager.getDayProgress(currentDay);
     const saved = dp.practiceAnswers[q.id];
@@ -2908,7 +3197,7 @@ function formatGradingDiff(diff) {
   if (!diff) return '';
   let html = `<div class="grading-diff-alert" style="margin-top: 10px; padding: 12px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 6px; font-size: 0.78rem; line-height: 1.45;">`;
   html += `<div style="font-weight: 700; color: var(--red); margin-bottom: 6px; display: flex; align-items: center; gap: 4px;">❌ Grading Check Failed</div>`;
-  
+
   if (diff.type === 'column_count_mismatch') {
     html += `<div><strong>Column Count Mismatch:</strong> Expected <strong>${diff.expected}</strong> columns, but your query returned <strong>${diff.actual}</strong> columns.</div>`;
   } else if (diff.type === 'column_name_mismatch') {
@@ -2957,17 +3246,17 @@ function updatePracticeStats() {
     }
   });
   const total = COURSE_CONFIG.practiceQuestions.length;
-  
+
   const solvedEl = document.getElementById('solvedCount');
   const marksEl = document.getElementById('marksCount');
   if (solvedEl) solvedEl.textContent = solved;
   if (marksEl) marksEl.textContent = solved + '.0';
-  
+
   const totalQEl = document.getElementById('totalQuestions');
   const totalMEl = document.getElementById('totalMarks');
   if (totalQEl) totalQEl.textContent = total;
   if (totalMEl) totalMEl.textContent = total + '.0';
-  
+
   const pct = total > 0 ? (solved / total) * 100 : 0;
   const fill = document.getElementById('statsProgressFill');
   if (fill) fill.style.width = `${pct}%`;
@@ -3027,7 +3316,7 @@ function runCurrentQuery() {
         const diffDiv = document.createElement('div');
         diffDiv.innerHTML = diffHtml;
         document.getElementById('mainOutput').appendChild(diffDiv);
-        
+
         // Save practice answer even if incorrect
         if (window.ProgressManager) {
           ProgressManager.savePracticeAnswer(currentDay, q.id, query, false);
@@ -3077,12 +3366,12 @@ function toggleLeftPanel(e) {
   if (e) e.stopPropagation();
   const panelL = document.getElementById('panelLeft');
   const panelR = document.getElementById('panelRight');
-  
+
   leftCollapsed = !leftCollapsed;
   if (leftCollapsed) {
     // Collapse Left (Notes takes full width)
     panelL.classList.add('collapsed');
-    
+
     if (rightCollapsed) {
       rightCollapsed = false;
       panelR.classList.remove('collapsed');
@@ -3091,7 +3380,7 @@ function toggleLeftPanel(e) {
     // Restore Left (split view)
     panelL.classList.remove('collapsed');
   }
-  
+
   updateDividerArrows();
 
   // Smooth layout resize loop for CodeMirror editor as the screen slides
@@ -3107,12 +3396,12 @@ function toggleRightPanel(e) {
   if (e) e.stopPropagation();
   const panelL = document.getElementById('panelLeft');
   const panelR = document.getElementById('panelRight');
-  
+
   rightCollapsed = !rightCollapsed;
   if (rightCollapsed) {
     // Collapse Right (Code takes full width)
     panelR.classList.add('collapsed');
-    
+
     if (leftCollapsed) {
       leftCollapsed = false;
       panelL.classList.remove('collapsed');
@@ -3121,7 +3410,7 @@ function toggleRightPanel(e) {
     // Restore Right (split view)
     panelR.classList.remove('collapsed');
   }
-  
+
   updateDividerArrows();
 
   // Smooth layout resize loop for CodeMirror editor as the screen slides
@@ -3135,23 +3424,23 @@ function toggleRightPanel(e) {
 
 function resetSplitScreen(e) {
   if (e) e.stopPropagation();
-  
+
   const panelL = document.getElementById('panelLeft');
   const panelR = document.getElementById('panelRight');
-  
+
   leftCollapsed = false;
   rightCollapsed = false;
-  
+
   panelL.classList.remove('collapsed');
   panelR.classList.remove('collapsed');
-  
+
   // Clear layout variables and restore default 55/45 split ratios
   savedLeftWidth = '55%';
   panelL.style.flexBasis = '55%';
   panelL.style.minWidth = '';
   panelL.style.borderRightWidth = '';
   panelR.style.flexBasis = '';
-  
+
   updateDividerArrows();
 
   // Smooth layout resize loop for CodeMirror editor as the screen slides
@@ -3171,11 +3460,11 @@ function resetSplitScreen(e) {
 
   divider.addEventListener('mousedown', (e) => {
     if (e.target.closest('.div-toggle-btn')) return;
-    
+
     // Auto-restore collapsed panels on drag initiation
     if (leftCollapsed) toggleLeftPanel();
     if (rightCollapsed) toggleRightPanel();
-    
+
     dragging = true;
     divider.classList.add('dragging');
     e.preventDefault();
@@ -3185,7 +3474,7 @@ function resetSplitScreen(e) {
     if (!dragging) return;
     const workspace = document.querySelector('.workspace');
     const rect = workspace.getBoundingClientRect();
-    
+
     if (window.innerWidth > 768) {
       // Horizontal split (desktop)
       const pct = ((e.clientX - rect.left) / rect.width) * 100;
@@ -3218,7 +3507,7 @@ let resizeWsCanvasRAF = null;
 function initSlideContentObserver() {
   const container = document.getElementById('slideContent');
   if (!container) return;
-  
+
   const observer = new ResizeObserver(() => {
     if (resizeWsCanvasRAF) {
       cancelAnimationFrame(resizeWsCanvasRAF);
@@ -3350,7 +3639,7 @@ function loadDayContent(dayId) {
       const multiTopic = COURSE_CONFIG.slides.length > 1;
       topicSel.innerHTML = COURSE_CONFIG.slides.map((s, i) => {
         const cleaned = s.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '');
-        return `<option value="${i}">${multiTopic ? `Topic ${String(i+1).padStart(2,'0')}: ` : ''}${cleaned}</option>`;
+        return `<option value="${i}">${multiTopic ? `Topic ${String(i + 1).padStart(2, '0')}: ` : ''}${cleaned}</option>`;
       }).join('');
       topicSel.value = 0;
       initCustomDropdowns();
@@ -3447,7 +3736,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     initMainEditor();
 
     // Eagerly load the manifest so accurate durations are available immediately
-    loadManifest().catch(() => {}); // Non-blocking — fallback durations already set
+    loadManifest().catch(() => { }); // Non-blocking — fallback durations already set
 
     // Populate Day Selector from COURSE_MANIFEST
     populateDaySelector();
@@ -3477,6 +3766,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     setupStudentTakeover();
     setupTimelineDragging();
 
+    // Restore Take Test blink if user saw completion audio but hasn't taken the test
+    restoreTakeTestBlinkIfNeeded();
+
     // Init IndexedDB and load bookmarks
     await openIDB();
     await loadBookmarks();
@@ -3488,7 +3780,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     initKeyboardShortcuts();
 
     // Handle daySelect change
-    document.getElementById('daySelect')?.addEventListener('change', function() {
+    document.getElementById('daySelect')?.addEventListener('change', function () {
       const selectedDay = this.value;
       // Animate transition
       const ws = document.getElementById('workspaceContainer');
@@ -3501,7 +3793,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       setTimeout(() => {
         loadDayContent(selectedDay);
       }, 250);
-      
+
       // Sync indicator badge text
       const badge = document.querySelector('.day-pill-badge');
       if (badge) {
@@ -3521,12 +3813,12 @@ window.addEventListener('DOMContentLoaded', async () => {
       currentSlide = 0;
       renderCurrentSlide();
       clearDrawCanvas();
-      
+
       const topicSelect = document.getElementById('topicSelect');
       if (topicSelect) {
         topicSelect.value = 0;
       }
-      
+
       // Load day-specific practice questions
       loadQuestionsForDay(selectedDay);
     });
@@ -3655,7 +3947,8 @@ function updateTimelinePlayhead() {
 }
 
 function getSlideDurationString(idx) {
-  const mapEntry = slideTrackMap[idx];
+  const dayConfig = (typeof slideTrackMap !== 'undefined') ? slideTrackMap[currentDay] : null;
+  const mapEntry = dayConfig ? dayConfig[idx] : null;
   if (!mapEntry || !mapEntry.durations) {
     return COURSE_CONFIG.slides[idx]?.duration || '0:00';
   }
@@ -3669,7 +3962,7 @@ function initCustomDropdowns() {
   selects.forEach(select => {
     const wrapper = select.parentElement;
     select.style.display = 'none';
-    
+
     let trigger = wrapper.querySelector('.custom-select-trigger');
     let optionsMenu = wrapper.querySelector('.custom-select-options');
 
@@ -3679,13 +3972,13 @@ function initCustomDropdowns() {
       trigger.className = 'custom-select-trigger';
       wrapper.appendChild(trigger);
     }
-    
+
     if (!optionsMenu) {
       optionsMenu = document.createElement('div');
       optionsMenu.className = 'custom-select-options';
       wrapper.appendChild(optionsMenu);
     }
-    
+
     function updateTriggerText() {
       const textSpan = trigger.querySelector('.selected-text');
       if (textSpan) {
@@ -3718,7 +4011,7 @@ function initCustomDropdowns() {
       Array.from(select.options).forEach((opt) => {
         const optionItem = document.createElement('div');
         optionItem.className = `custom-select-option${opt.selected ? ' selected' : ''}`;
-        
+
         if (select.id === 'topicSelect') {
           const slideIdx = parseInt(opt.value, 10);
           const duration = getSlideDurationString(slideIdx);
@@ -3747,7 +4040,7 @@ function initCustomDropdowns() {
         } else {
           optionItem.textContent = opt.text;
         }
-        
+
         optionItem.dataset.value = opt.value;
         optionItem.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -3761,7 +4054,7 @@ function initCustomDropdowns() {
       });
 
       const isSingleTopic = (select.id === 'topicSelect' && (!COURSE_CONFIG.slides || COURSE_CONFIG.slides.length <= 1));
-      
+
       if (isSingleTopic) {
         wrapper.classList.add('no-dropdown');
         trigger.innerHTML = `<span class="selected-text"></span>`;
@@ -3796,7 +4089,7 @@ function initCustomDropdowns() {
     }
 
     populateOptions();
-    
+
     // Listen to changes on the native select
     select.addEventListener('change', () => {
       updateTriggerText();
@@ -3808,13 +4101,13 @@ function initCustomDropdowns() {
         }
       });
     });
-    
+
     // Watch for dynamic updates to child options (e.g. innerHTML changes)
     const observer = new MutationObserver(() => {
       populateOptions();
     });
     observer.observe(select, { childList: true });
-    
+
     // Intercept programmatic select.value updates
     const descriptor = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value');
     Object.defineProperty(select, 'value', {
@@ -3834,7 +4127,7 @@ function initCustomDropdowns() {
       }
     });
   });
-  
+
   // Close menu on click outside
   document.addEventListener('click', () => {
     document.querySelectorAll('.custom-select-options').forEach(menu => {
@@ -3946,14 +4239,57 @@ const topic03Tracks = [
   { src: 'Day01topic3/New_Day1Part3Question02_sol.mp3', target: '#questionBar', title: 'Q2 Solution: raise', type: 'solution', qId: 2 }
 ];
 
+const day02Durations = [31.1, 25.9, 22.7, 22.4, 25.9, 22.9, 19.0, 18.8, 21.9, 24.1, 24.2, 30.7, 19.5, 22.8, 25.6, 18.2, 18.3, 37.5, 29.1, 28.7, 24.2, 17.3, 19.2, 14.3, 17.6, 10.4, 17.2, 14.4, 27.5, 16.5, 11.9, 19.5, 24.1, 23.0];
+const day02Tracks = [
+  { src: 'Day02/New_Day2Part1audio01.mp3', target: '#day02Anatomy', title: 'Anatomy of a SELECT Statement' },
+  { src: 'Day02/New_Day2Part1audio02.mp3', target: '#day02AnatomyCode', title: 'SELECT * Example' },
+  { src: 'Day02/New_Day2Part1audio03.mp3', target: '#day02AnatomyInfo', title: 'SELECT * vs Named Columns' },
+  { src: 'Day02/New_Day2Part1audio04.mp3', target: '#day02Aliases', title: 'Column Aliases' },
+  { src: 'Day02/New_Day2Part1audio05.mp3', target: '#day02AliasesCode', title: 'Aliases Example' },
+  { src: 'Day02/New_Day2Part1audio06.mp3', target: '#day02AliasesValid', title: 'Valid vs Invalid Aliases' },
+  { src: 'Day02/New_Day2Part1audio07.mp3', target: '#day02AliasesScope', title: 'Alias Scope Rules' },
+  { src: 'Day02/New_Day2Part1audio08.mp3', target: '#day02Distinct', title: 'DISTINCT Clause' },
+  { src: 'Day02/New_Day2Part1audio09.mp3', target: '#day02DistinctCode', title: 'DISTINCT Example' },
+  { src: 'Day02/New_Day2Part1audio10.mp3', target: '#day02DistinctWarn', title: 'DISTINCT Performance' },
+  { src: 'Day02/New_Day2Part1audio11.mp3', target: '#day02OrderBy', title: 'ORDER BY Clause' },
+  { src: 'Day02/New_Day2Part1audio12.mp3', target: '#day02OrderByCode', title: 'ORDER BY Examples' },
+  { src: 'Day02/New_Day2Part1audio13.mp3', target: '#day02OrderByTip', title: 'ORDER BY Pro Tip' },
+  { src: 'Day02/New_Day2Part1audio14.mp3', target: '#day02Limit', title: 'LIMIT Clause' },
+  { src: 'Day02/New_Day2Part1audio15.mp3', target: '#day02LimitCode', title: 'LIMIT Example' },
+  { src: 'Day02/New_Day2Part1audio16.mp3', target: '#day02Logical', title: 'Logical Execution Order' },
+  { src: 'Day02/New_Day2Part1audio17.mp3', target: '#day02LogicalWrite', title: 'Writing Order Syntax' },
+  { src: 'Day02/New_Day2Part1audio18.mp3', target: '#day02LogicalExec', title: 'Execution Order Logical' },
+  { src: 'Day02/New_Day2Part1audio19.mp3', target: '#day02QALimit', title: 'LIMIT vs TOP Q&A' },
+  { src: 'Day02/New_Day2Part1audio20.mp3', target: '#day02QAAlias', title: 'Alias in WHERE Q&A' },
+  { src: 'Day02/New_Day2Part1audio21.mp3', target: '#day02QAStar', title: 'SELECT * Performance Q&A' },
+  { src: 'Day02/New_Day2Question01.mp3', target: '#questionBar', title: 'Q1: Product Catalog', type: 'question', qId: 1 },
+  { src: 'Day02/New_Day2Question01sol.mp3', target: '#questionBar', title: 'Q1 Solution: Product Catalog', type: 'solution', qId: 1 },
+  { src: 'Day02/New_Day2Question02.mp3', target: '#questionBar', title: 'Q2: Top 5 Earners', type: 'question', qId: 2 },
+  { src: 'Day02/New_Day2Question02sol.mp3', target: '#questionBar', title: 'Q2 Solution: Top 5 Earners', type: 'solution', qId: 2 },
+  { src: 'Day02/New_Day2Question03.mp3', target: '#questionBar', title: 'Q3: Distinct Regions', type: 'question', qId: 3 },
+  { src: 'Day02/New_Day2Question03sol.mp3', target: '#questionBar', title: 'Q3 Solution: Distinct Regions', type: 'solution', qId: 3 },
+  { src: 'Day02/New_Day2Question04.mp3', target: '#questionBar', title: 'Q4: Salary with Alias', type: 'question', qId: 4 },
+  { src: 'Day02/New_Day2Question04sol.mp3', target: '#questionBar', title: 'Q4 Solution: Salary with Alias', type: 'solution', qId: 4 },
+  { src: 'Day02/New_Day2Question05.mp3', target: '#questionBar', title: 'Q5: Customer Snapshot', type: 'question', qId: 5 },
+  { src: 'Day02/New_Day2Question05sol.mp3', target: '#questionBar', title: 'Q5 Solution: Customer Snapshot', type: 'solution', qId: 5 },
+  { src: 'Day02/New_Day2Question06.mp3', target: '#questionBar', title: 'Q6: Profit Margin Column', type: 'question', qId: 6 },
+  { src: 'Day02/New_Day2Question06sol.mp3', target: '#questionBar', title: 'Q6 Solution: Profit Margin Column', type: 'solution', qId: 6 },
+  { src: 'Day02/Final_Audio.mp3', target: '#day02Completion', title: 'Day 2 Complete! 🎉', type: 'completion' }
+];
+
 const slideTrackMap = {
-  0: { tracks: topic01Tracks, durations: topic01Durations },
-  1: { tracks: topic02Tracks, durations: topic02Durations },
-  2: { tracks: topic03Tracks, durations: topic03Durations }
+  'day01': {
+    0: { tracks: topic01Tracks, durations: topic01Durations },
+    1: { tracks: topic02Tracks, durations: topic02Durations },
+    2: { tracks: topic03Tracks, durations: topic03Durations }
+  },
+  'day02': {
+    0: { tracks: day02Tracks, durations: day02Durations }
+  }
 };
 
-let combinedTrackDurations = slideTrackMap[0].durations;
-let combinedTracks = slideTrackMap[0].tracks;
+let combinedTrackDurations = slideTrackMap['day01'][0].durations;
+let combinedTracks = slideTrackMap['day01'][0].tracks;
 
 const AUDIO_CDN_BASE = "/Version-3";
 let manifest = {};
@@ -3980,15 +4316,18 @@ async function loadManifest() {
     const res = await fetch('/Version-3/manifest.json');
     manifest = await res.json();
     // Re-calculate durations from manifest metadata for all slides
-    Object.keys(slideTrackMap).forEach(key => {
-      const config = slideTrackMap[key];
-      config.tracks.forEach((t, index) => {
-        const filename = t.src.split('/').pop().replace('.mp3', '');
-        const trackId = `day01_${filename}`;
-        const entry = manifest[trackId];
-        if (entry && entry.durationMs) {
-          config.durations[index] = entry.durationMs / 1000;
-        }
+    Object.keys(slideTrackMap).forEach(dayKey => {
+      const dayConfig = slideTrackMap[dayKey];
+      Object.keys(dayConfig).forEach(slideKey => {
+        const config = dayConfig[slideKey];
+        config.tracks.forEach((t, index) => {
+          const filename = t.src.split('/').pop().replace('.mp3', '');
+          const trackId = `${dayKey}_${filename}`;
+          const entry = manifest[trackId];
+          if (entry && entry.durationMs) {
+            config.durations[index] = entry.durationMs / 1000;
+          }
+        });
       });
     });
     totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
@@ -4021,6 +4360,2179 @@ function getAudioUrl(entry) {
   return `${AUDIO_CDN_BASE}/${entry.audioPath}`;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// ║  COMPLETION ANIMATION ENGINE — Day 2 Final_Audio.mp3                       ║
+// ║  Three.js narration companion: 7 3D objects synced to audio.currentTime    ║
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ── CDN Loader ────────────────────────────────────────────────────────────────
+function ensureThreeLoaded(callback) {
+  if (window.THREE) {
+    loadPostProcessingIfPossible(callback);
+    return;
+  }
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+  s.onload = () => loadPostProcessingIfPossible(callback);
+  s.onerror = () => {
+    const f = document.createElement('script');
+    f.src = 'https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js';
+    f.onload = () => loadPostProcessingIfPossible(callback);
+    f.onerror = () => console.warn('[Completion] Three.js CDN failed to load.');
+    document.head.appendChild(f);
+  };
+  document.head.appendChild(s);
+}
+
+function loadPostProcessingIfPossible(callback) {
+  const isMobile = window.innerWidth < 768;
+  if (isMobile) {
+    callback();
+    return;
+  }
+
+  const scripts = [
+    'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js',
+    'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js',
+    'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js',
+    'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js',
+    'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js',
+    'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js',
+    'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/VignetteShader.js'
+  ];
+
+  let loaded = 0;
+  function next() {
+    if (loaded === scripts.length) {
+      callback();
+      return;
+    }
+    const s = document.createElement('script');
+    s.src = scripts[loaded];
+    s.onload = () => {
+      loaded++;
+      next();
+    };
+    s.onerror = (e) => {
+      console.warn('[Completion] Postprocessing script failed to load. Falling back.', scripts[loaded], e);
+      callback(); // Fallback gracefully
+    };
+    document.head.appendChild(s);
+  }
+  next();
+}
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let completionRafId = null;
+let completionOverlayDiv = null;
+let completionCanvas = null;
+let completionCaption = null;
+let completionLegend = null;
+let completionFadeState = null;  // { dir: 'in'|'out', progress: 0..1, mesh }
+let completionRenderer = null;
+let completionComposer = null;
+let completionScene = null;
+let completionCamera = null;
+let completionClock = null;
+let completionActiveObj = null;
+let completionOutroObj = null;
+let completionActiveMomentId = null;
+const completionDisposables = [];    // all geometries/materials to dispose on teardown
+
+// ── MOMENTS ARRAY ─────────────────────────────────────────────────────────────
+// Exact word-level ASR timestamps extracted directly from Final_Audio.mp3 (23.0s total duration)
+const COMPLETION_MOMENTS = [
+  { id: 'complete', startAt: 0.00, endAt: 1.90, label: '✅ Day 2 Complete!', builder: 'buildCheckmark', accent: 0x00ffcc },
+  { id: 'greatWork', startAt: 1.90, endAt: 5.80, label: '🌟 Great Work!', builder: 'buildGreatWork', accent: 0x10b981 },
+  { id: 'distinct', startAt: 5.80, endAt: 7.20, label: '💎 DISTINCT', builder: 'buildGem', accent: 0xa78bfa },
+  { id: 'orderLimit', startAt: 7.20, endAt: 9.60, label: '📊 ORDER BY & LIMIT', builder: 'buildSortedBars', accent: 0x38bdf8 },
+  { id: 'logicOrder', startAt: 9.60, endAt: 14.60, label: '⚙️ Logical Execution Order', builder: 'buildPipeline', accent: 0xfbbf24 },
+  { id: 'questions', startAt: 14.60, endAt: 17.50, label: '❓ 25 Interview Questions', builder: 'buildQuestionCluster', accent: 0xf472b6 },
+  { id: 'cert', startAt: 17.50, endAt: 21.40, label: '🏆 25 Marks • Certification', builder: 'buildTrophy', accent: 0xfbbf24 },
+  { id: 'nextLevel', startAt: 21.40, endAt: 26.50, label: '🚀 Ready for the Next Level', builder: 'buildRocket', accent: 0xf97316 },
+];
+
+// ── Helper: track disposable ──────────────────────────────────────────────────
+function cd(resource) { completionDisposables.push(resource); return resource; }
+
+// ── Helper: Canvas Texture Sprite Generator (Dynamic Auto-Sizing to Prevent Text Cropping) ──
+function createCanvasTexture(THREE, text, options = {}) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const fontSize = options.fontSize || 56;
+
+  ctx.font = `800 ${fontSize}px system-ui, -apple-system, sans-serif`;
+  const metrics = ctx.measureText(text);
+  const textWidth = Math.ceil(metrics.width);
+  const padX = options.padX !== undefined ? options.padX : 64;
+  const padY = options.padY !== undefined ? options.padY : 40;
+
+  canvas.width = options.width || Math.max(128, textWidth + padX * 2);
+  canvas.height = options.height || Math.max(96, fontSize + padY * 2);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (options.glowColor) {
+    ctx.shadowColor = options.glowColor;
+    ctx.shadowBlur = options.shadowBlur || 22;
+  }
+  ctx.font = `800 ${fontSize}px system-ui, -apple-system, sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = options.color || '#ffffff';
+  ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  texture.aspect = canvas.width / canvas.height;
+  return texture;
+}
+
+function createGearMesh(THREE, radius, colorHex, teethCount = 12) {
+  const gearGroup = new THREE.Group();
+
+  const gearMat = cd(new THREE.MeshPhysicalMaterial({
+    color: colorHex,
+    emissive: colorHex,
+    emissiveIntensity: 0.35,
+    metalness: 0.92,
+    roughness: 0.12,
+    clearcoat: 0.6,
+    clearcoatRoughness: 0.1,
+    envMapIntensity: 1.5
+  }));
+
+  const darkMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0x0f172a,
+    metalness: 0.8,
+    roughness: 0.3
+  }));
+
+  // Outer Gear Ring
+  const outerRing = new THREE.Mesh(cd(new THREE.CylinderGeometry(radius, radius, 0.14, 36)), gearMat);
+  gearGroup.add(outerRing);
+
+  // Bezel Rims for rich 3D depth
+  const rimFront = new THREE.Mesh(cd(new THREE.TorusGeometry(radius, 0.035, 16, 48)), gearMat);
+  rimFront.position.z = 0.07;
+  const rimBack = new THREE.Mesh(cd(new THREE.TorusGeometry(radius, 0.035, 16, 48)), gearMat);
+  rimBack.position.z = -0.07;
+  gearGroup.add(rimFront, rimBack);
+
+  // Inner Hollow Cutout & Center Hub
+  const hole = new THREE.Mesh(cd(new THREE.CylinderGeometry(radius * 0.45, radius * 0.45, 0.16, 32)), darkMat);
+  gearGroup.add(hole);
+
+  const hub = new THREE.Mesh(cd(new THREE.CylinderGeometry(radius * 0.25, radius * 0.25, 0.18, 24)), gearMat);
+  gearGroup.add(hub);
+
+  const axleHole = new THREE.Mesh(cd(new THREE.CylinderGeometry(radius * 0.1, radius * 0.1, 0.20, 16)), darkMat);
+  gearGroup.add(axleHole);
+
+  // 4 Internal Spokes
+  for (let s = 0; s < 4; s++) {
+    const spokeAngle = (s / 4) * Math.PI * 2;
+    const spoke = new THREE.Mesh(cd(new THREE.BoxGeometry(radius * 0.7, 0.06, 0.1)), gearMat);
+    spoke.rotation.z = spokeAngle;
+    gearGroup.add(spoke);
+  }
+
+  // Precision Gear Teeth
+  for (let i = 0; i < teethCount; i++) {
+    const angle = (i / teethCount) * Math.PI * 2;
+    const tooth = new THREE.Mesh(cd(new THREE.BoxGeometry(0.12, 0.18, 0.14)), gearMat);
+    tooth.position.set(Math.cos(angle) * (radius + 0.08), Math.sin(angle) * (radius + 0.08), 0);
+    tooth.rotation.z = angle;
+    gearGroup.add(tooth);
+  }
+
+  // Face front towards camera
+  gearGroup.rotation.x = 0;
+  return gearGroup;
+}
+
+// ── v2 Realism Helpers ────────────────────────────────────────────────────────
+
+// Helper: Circular gradient billboard texture for neon stardust particles
+function createGlowDotTexture(THREE, colorHex) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grad.addColorStop(0, colorHex);
+  grad.addColorStop(0.3, colorHex);
+  grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 64, 64);
+  const tex = new THREE.CanvasTexture(canvas);
+  return tex;
+}
+
+// Helper: Procedural 3D Block Extruded Numeral Badge
+function create3DBlockNumber(THREE, numStr, colorHex) {
+  const numGroup = new THREE.Group();
+  const mat = cd(new THREE.MeshPhysicalMaterial({
+    color: colorHex,
+    emissive: colorHex,
+    emissiveIntensity: 0.4,
+    metalness: 0.85,
+    roughness: 0.15,
+    clearcoat: 0.4,
+    envMapIntensity: 1.3
+  }));
+
+  const segmentDepth = 0.25;
+
+  function addSegment(gx, gy, w, h) {
+    const mesh = new THREE.Mesh(cd(new THREE.BoxGeometry(w, h, segmentDepth)), mat);
+    mesh.position.set(gx, gy, 0);
+    numGroup.add(mesh);
+  }
+
+  let xOffset = numStr.length === 2 ? -0.45 : 0;
+
+  for (let char of numStr) {
+    if (char === '2') {
+      addSegment(xOffset + 0, 0.6, 0.6, 0.15);
+      addSegment(xOffset + 0.225, 0.3, 0.15, 0.45);
+      addSegment(xOffset + 0, 0, 0.6, 0.15);
+      addSegment(xOffset - 0.225, -0.3, 0.15, 0.45);
+      addSegment(xOffset + 0, -0.6, 0.6, 0.15);
+    } else if (char === '5') {
+      addSegment(xOffset + 0, 0.6, 0.6, 0.15);
+      addSegment(xOffset - 0.225, 0.3, 0.15, 0.45);
+      addSegment(xOffset + 0, 0, 0.6, 0.15);
+      addSegment(xOffset + 0.225, -0.3, 0.15, 0.45);
+      addSegment(xOffset + 0, -0.6, 0.6, 0.15);
+    }
+    xOffset += 0.9;
+  }
+
+  return numGroup;
+}
+
+// Helper: Procedural Extruded 3D Star
+function create3DStar(THREE, radius, depth, colorHex) {
+  const shape = new THREE.Shape();
+  const spikes = 5;
+  const outerRadius = radius;
+  const innerRadius = radius * 0.4;
+
+  for (let i = 0; i < spikes * 2; i++) {
+    const angle = (i * Math.PI) / spikes - Math.PI / 2; // Point upwards
+    const r = i % 2 === 0 ? outerRadius : innerRadius;
+    const x = Math.cos(angle) * r;
+    const y = Math.sin(angle) * r;
+    if (i === 0) shape.moveTo(x, y);
+    else shape.lineTo(x, y);
+  }
+  shape.closePath();
+
+  const extrudeOpts = { depth: depth, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.02, bevelSegments: 3 };
+  const mat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0xfbbf24,
+    emissive: 0xfbbf24,
+    emissiveIntensity: 0.9,
+    metalness: 0.3,
+    roughness: 0.08,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.05,
+    envMapIntensity: 1.8
+  }));
+  const mesh = new THREE.Mesh(cd(new THREE.ExtrudeGeometry(shape, extrudeOpts)), mat);
+  mesh.geometry.center();
+  return mesh;
+}
+
+// Helper: Procedural high-contrast white-grey marble texture
+function createMarbleTexture(THREE) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 0, 256, 256);
+
+  ctx.strokeStyle = '#cbd5e1';
+  ctx.lineWidth = 2.5;
+  for (let i = 0; i < 6; i++) {
+    ctx.beginPath();
+    let x = Math.random() * 256;
+    let y = 0;
+    ctx.moveTo(x, y);
+    while (y < 256) {
+      y += 10 + Math.random() * 20;
+      x += (Math.random() - 0.5) * 25;
+      ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+  const tex = cd(new THREE.CanvasTexture(canvas));
+  return tex;
+}
+
+// Helper: Soft contact shadow plane to ground subject in space
+function createContactShadowPlane(THREE) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 128;
+  canvas.height = 128;
+  const ctx = canvas.getContext('2d');
+  const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+  grad.addColorStop(0, 'rgba(10, 14, 26, 0.45)');
+  grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 128, 128);
+
+  const tex = cd(new THREE.CanvasTexture(canvas));
+  const mat = cd(new THREE.MeshBasicMaterial({
+    map: tex,
+    transparent: true,
+    depthWrite: false
+  }));
+  const geom = cd(new THREE.PlaneGeometry(3.5, 3.5));
+  const mesh = new THREE.Mesh(geom, mat);
+  mesh.rotation.x = -Math.PI / 2;
+  mesh.position.y = -2.0;
+  return mesh;
+}
+
+// Safe-zone viewport boundary radius calculator
+function getSafeOrbitalRadius(camera, r, objectRadius = 0.3) {
+  const d = camera ? camera.position.z : 6.8;
+  const fov = camera ? camera.fov : 45;
+  const aspect = camera ? camera.aspect : (window.innerWidth / window.innerHeight);
+  const h = 2 * d * Math.tan((fov * Math.PI) / 360);
+  const w = h * aspect;
+  const marginFraction = 0.4; // 10% margins => center bound max width/height fraction
+  const maxR = marginFraction * Math.min(w, h) - objectRadius;
+  return Math.min(r, maxR);
+}
+
+// ── Screen-space overlap resolution system ───────────────────────────────────
+function nudgeAlongCameraPlane(obj, camera, pxX, pxY) {
+  const THREE = window.THREE;
+  const d = camera.position.distanceTo(obj.position);
+  const vHeight = 2 * d * Math.tan((camera.fov * Math.PI) / 360);
+  const vWidth = vHeight * camera.aspect;
+  const worldPushX = (pxX / window.innerWidth) * vWidth;
+  const worldPushY = (-pxY / window.innerHeight) * vHeight;
+
+  const right = new THREE.Vector3();
+  const up = new THREE.Vector3();
+  camera.matrixWorld.extractBasis(right, up, new THREE.Vector3());
+
+  obj.position.addScaledVector(right, worldPushX);
+  obj.position.addScaledVector(up, worldPushY);
+}
+
+function resolveOverlaps(group, camera, renderer) {
+  if (!group || !camera || !renderer) return;
+  const objects = [];
+  group.traverse(child => {
+    if (child !== group && child.userData && child.userData.screenRadius) {
+      objects.push(child);
+    }
+  });
+
+  if (objects.length < 2) return;
+
+  const width = renderer.domElement.width;
+  const height = renderer.domElement.height;
+
+  // Reset all objects with basePos to their non-nudged coordinates first
+  objects.forEach(obj => {
+    if (obj.userData && obj.userData.basePos) {
+      obj.position.copy(obj.userData.basePos);
+    }
+  });
+
+  const projected = objects.map(obj => {
+    const v = obj.position.clone().project(camera);
+    return {
+      obj,
+      x: (v.x * 0.5 + 0.5) * width,
+      y: (-v.y * 0.5 + 0.5) * height,
+      radius: obj.userData.screenRadius
+    };
+  });
+
+  for (let i = 0; i < projected.length; i++) {
+    for (let j = i + 1; j < projected.length; j++) {
+      const a = projected[i];
+      const b = projected[j];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const dist = Math.hypot(dx, dy);
+      const minDist = a.radius + b.radius + 12; // 12px breathing room
+      if (dist < minDist && dist > 0.001) {
+        const push = (minDist - dist) / 2;
+        const nx = dx / dist;
+        const ny = dy / dist;
+        nudgeAlongCameraPlane(a.obj, camera, -nx * push, -ny * push);
+        nudgeAlongCameraPlane(b.obj, camera, nx * push, ny * push);
+      }
+    }
+  }
+}
+
+// Act 1: "Day 2 Complete" — Grand Glowing Checkmark Shield Medallion
+function buildCheckmark(THREE) {
+  const group = new THREE.Group();
+  const outerMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0xfbbf24,
+    emissive: 0xd97706,
+    emissiveIntensity: 0.5,
+    metalness: 0.95,
+    roughness: 0.12,
+    clearcoat: 0.4,
+    envMapIntensity: 1.4
+  }));
+  const outerRing = new THREE.Mesh(cd(new THREE.TorusGeometry(1.45, 0.12, 24, 96)), outerMat);
+
+  const innerMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0x00ffcc,
+    emissive: 0x00ffcc,
+    emissiveIntensity: 1.4,
+    metalness: 0.1,
+    roughness: 0.1
+  }));
+  const innerRing = new THREE.Mesh(cd(new THREE.TorusGeometry(1.2, 0.06, 16, 80)), innerMat);
+  group.add(outerRing, innerRing);
+
+  const discMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0x0a192f,
+    transparent: true,
+    opacity: 0.75,
+    roughness: 0.4,
+    metalness: 0.3
+  }));
+  const disc = new THREE.Mesh(cd(new THREE.CircleGeometry(1.15, 48)), discMat);
+  disc.position.z = -0.05;
+  group.add(disc);
+
+  const shape = new THREE.Shape();
+  shape.moveTo(-0.45, -0.05);
+  shape.lineTo(-0.15, -0.38);
+  shape.lineTo(0.55, 0.38);
+  shape.lineTo(0.42, 0.52);
+  shape.lineTo(-0.15, -0.20);
+  shape.lineTo(-0.35, 0.05);
+  shape.closePath();
+
+  const extrudeOpts = { depth: 0.22, bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.04, bevelSegments: 4 };
+  const checkGeom = cd(new THREE.ExtrudeGeometry(shape, extrudeOpts));
+  checkGeom.center();
+
+  const checkMesh = new THREE.Mesh(
+    checkGeom,
+    cd(new THREE.MeshPhysicalMaterial({
+      color: 0x00ffcc,
+      emissive: 0x00ffcc,
+      emissiveIntensity: 1.6,
+      metalness: 0.3,
+      roughness: 0.15,
+      clearcoat: 0.8
+    }))
+  );
+  checkMesh.position.z = 0.1;
+  checkMesh.userData = { billboard: true };
+  group.add(checkMesh);
+
+  // Glowing Camera-Facing "✓ COMPLETE!" Sprite Badge (Uncropped Auto-Aspect)
+  const tex = cd(createCanvasTexture(THREE, "✓ COMPLETE!", { color: '#00ffcc', glowColor: '#00ffcc', fontSize: 64 }));
+  const spriteMat = cd(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
+  const sprite = new THREE.Sprite(spriteMat);
+  const h = 0.75;
+  sprite.scale.set(h * tex.aspect, h, 1);
+  sprite.position.set(0, 1.75, 0.25);
+  sprite.renderOrder = 3;
+  group.add(sprite);
+
+  // Soft circular gradient particles
+  const particleTex = cd(createGlowDotTexture(THREE, '#60efff'));
+  const pMat = cd(new THREE.PointsMaterial({
+    size: 0.14,
+    map: particleTex,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  }));
+  const pGeom = new THREE.BufferGeometry();
+  const positions = [];
+  for (let i = 0; i < 36; i++) {
+    const a = (i / 36) * Math.PI * 2;
+    const r = 1.85 + (i % 3) * 0.15;
+    positions.push(Math.cos(a) * r, Math.sin(a) * r, (Math.random() - 0.5) * 0.4);
+  }
+  pGeom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  const points = new THREE.Points(pGeom, pMat);
+  points.name = 'particles';
+  group.add(points);
+
+  return group;
+}
+
+// Act 2: "Great Work!" — 3D Clapping Emoji (👏) Shield & Celebration Confetti
+function buildGreatWork(THREE) {
+  const group = new THREE.Group();
+
+  // Outer Emerald Laurel Torus Ring
+  const ringMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0x10b981,
+    emissive: 0x059669,
+    emissiveIntensity: 0.6,
+    metalness: 0.9,
+    roughness: 0.15,
+    clearcoat: 0.5,
+    envMapIntensity: 1.4
+  }));
+  const ring = new THREE.Mesh(cd(new THREE.TorusGeometry(1.5, 0.1, 24, 96)), ringMat);
+  group.add(ring);
+
+  // Inner Emerald Shield Disc
+  const discMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0x064e3b,
+    transparent: true,
+    opacity: 0.65,
+    roughness: 0.3,
+    metalness: 0.4
+  }));
+  const disc = new THREE.Mesh(cd(new THREE.CircleGeometry(1.3, 48)), discMat);
+  disc.position.z = -0.05;
+  group.add(disc);
+
+  // 3D Star Shield Medallion Base in Center
+  const star = create3DStar(THREE, 0.75, 0.2, 0xf59e0b);
+  star.position.set(0, 0, 0.05);
+  star.userData = { billboard: true };
+  group.add(star);
+
+  // 3D Clapping Emoji 👏 Badge Group (Pulsing Rhythm)
+  const clapGroup = new THREE.Group();
+  clapGroup.name = 'clapEmojiGroup';
+
+  const clapTex = cd(createCanvasTexture(THREE, "👏", { fontSize: 110, padX: 40, padY: 40 }));
+  const clapMat = cd(new THREE.SpriteMaterial({ map: clapTex, transparent: true, depthTest: false, depthWrite: false }));
+  const clapSprite = new THREE.Sprite(clapMat);
+  const hClap = 1.35;
+  clapSprite.scale.set(hClap * clapTex.aspect, hClap, 1);
+  clapSprite.position.set(0, 0.05, 0.2);
+  clapSprite.renderOrder = 3;
+  clapGroup.add(clapSprite);
+
+  clapGroup.userData = { billboard: true };
+  group.add(clapGroup);
+
+  // High-Contrast Billboard Text Badge "GREAT WORK!" (Positioned at Top of 3D Object)
+  const tex = cd(createCanvasTexture(THREE, "GREAT WORK!", { color: '#ffffff', glowColor: '#10b981', fontSize: 64 }));
+  const spriteMat = cd(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
+  const sprite = new THREE.Sprite(spriteMat);
+  const hText = 0.75;
+  sprite.scale.set(hText * tex.aspect, hText, 1);
+  sprite.position.set(0, 1.75, 0.25);
+  sprite.renderOrder = 3;
+  group.add(sprite);
+
+  // Celebration Confetti/Particles
+  const pTex = cd(createGlowDotTexture(THREE, '#34d399'));
+  const pMat = cd(new THREE.PointsMaterial({
+    size: 0.15,
+    map: pTex,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  }));
+  const pGeom = new THREE.BufferGeometry();
+  const positions = [];
+  for (let i = 0; i < 45; i++) {
+    const a = (i / 45) * Math.PI * 2;
+    const r = 1.65 + (i % 4) * 0.15;
+    positions.push(Math.cos(a) * r, Math.sin(a) * r, (Math.random() - 0.5) * 0.5);
+  }
+  pGeom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  const confetti = new THREE.Points(pGeom, pMat);
+  confetti.name = 'particles';
+  group.add(confetti);
+
+  return group;
+}
+
+// Act 2: "DISTINCT" — Faceted Diamond Gem & Orbiting Crystal Shards
+function buildGem(THREE) {
+  const group = new THREE.Group();
+  const gemMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0xa78bfa,
+    emissive: 0x7c3aed,
+    emissiveIntensity: 0.5,
+    metalness: 0.1,
+    roughness: 0.02,
+    transmission: 0.95,
+    thickness: 0.8,
+    transparent: true,
+    opacity: 0.85,
+    depthWrite: false,
+    ior: 2.4,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.1,
+    envMapIntensity: 1.4
+  }));
+  const gem = new THREE.Mesh(cd(new THREE.OctahedronGeometry(1.35, 0)), gemMat);
+  gem.name = 'diamondGem';
+  gem.renderOrder = 0;
+  group.add(gem);
+
+  const coreMat = cd(new THREE.MeshBasicMaterial({ color: 0xe879f9 }));
+  const core = new THREE.Mesh(cd(new THREE.SphereGeometry(0.45, 16, 16)), coreMat);
+  core.name = 'gemCore';
+  core.renderOrder = 1;
+  group.add(core);
+
+  // Floating Camera-Facing "DISTINCT" Text Badge inside/front of gem core (Uncropped Auto-Aspect)
+  const tex = cd(createCanvasTexture(THREE, "DISTINCT", { color: '#ffffff', glowColor: '#a78bfa', fontSize: 64 }));
+  const spriteMat = cd(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
+  const sprite = new THREE.Sprite(spriteMat);
+  const h = 0.65;
+  sprite.scale.set(h * tex.aspect, h, 1);
+  sprite.position.set(0, 0, 0);
+  sprite.renderOrder = 3;
+  group.add(sprite);
+
+  const shardGroup = new THREE.Group();
+  shardGroup.name = 'shards';
+
+  const r = getSafeOrbitalRadius(completionCamera, 1.95, 0.2);
+
+  const shardMat = cd(new THREE.MeshStandardMaterial({
+    color: 0x22d3ee,
+    emissive: 0x06b6d4,
+    emissiveIntensity: 0.6,
+    metalness: 0.9,
+    roughness: 0.1
+  }));
+
+  for (let i = 0; i < 8; i++) {
+    const angle = (i / 8) * Math.PI * 2;
+    const shard = new THREE.Mesh(cd(new THREE.TetrahedronGeometry(0.2, 0)), shardMat);
+    shard.position.set(Math.cos(angle) * r, (i % 2 === 0 ? 0.35 : -0.35), Math.sin(angle) * r);
+    shard.userData = { screenRadius: 20, basePos: shard.position.clone() };
+    shardGroup.add(shard);
+  }
+  group.add(shardGroup);
+
+  return group;
+}
+
+// Act 3: "ORDER BY & LIMIT" — Sequential Live Animated Bars + TOP 1 Crown
+function buildSortedBars(THREE) {
+  const group = new THREE.Group();
+  const barHeights = [0.6, 1.1, 1.6, 2.1, 2.7];
+  
+  // Color Science Progression: Violet ➔ Cobalt ➔ Aqua ➔ Emerald ➔ Imperial Gold
+  const barColors    = [0x8b5cf6, 0x3b82f6, 0x06b6d4, 0x10b981, 0xfbbf24];
+  const emissiveCols = [0x6d28d9, 0x1d4ed8, 0x0e7490, 0x047857, 0xd97706];
+  const labelGlows   = ['#c084fc', '#60a5fa', '#22d3ee', '#34d399', '#fef08a'];
+  const bars = [];
+
+  // Ground Baseline Rail Connecting All Columns
+  const railMat = cd(new THREE.MeshPhysicalMaterial({ color: 0x1e293b, metalness: 0.85, roughness: 0.15, envMapIntensity: 1.2 }));
+  const rail = new THREE.Mesh(cd(new THREE.BoxGeometry(2.8, 0.05, 0.42)), railMat);
+  rail.position.set(0, -0.52, 0);
+  group.add(rail);
+
+  for (let i = 0; i < 5; i++) {
+    const barMat = cd(new THREE.MeshPhysicalMaterial({
+      color: barColors[i],
+      emissive: emissiveCols[i],
+      emissiveIntensity: i === 4 ? 0.55 : 0.42,
+      metalness: 0.3,
+      roughness: 0.08,
+      transmission: 0.80,
+      thickness: 0.5,
+      clearcoat: 0.8,
+      clearcoatRoughness: 0.1,
+      envMapIntensity: 1.2
+    }));
+    const barMesh = new THREE.Mesh(cd(new THREE.BoxGeometry(0.36, 1, 0.36)), barMat);
+    barMesh.position.x = (i - 2) * 0.52;
+    barMesh.position.y = 0;
+    barMesh.scale.y = 0.01;
+    barMesh.userData = { targetHeight: barHeights[i], sortIndex: i };
+    group.add(barMesh);
+    bars.push(barMesh);
+
+    // High-Contrast Crisp Bottom Labels
+    const labelText = i === 4 ? "TOP 1" : `#${5 - i}`;
+    const tex = cd(createCanvasTexture(THREE, labelText, { color: '#ffffff', glowColor: labelGlows[i], fontSize: 80, padX: 40, padY: 28 }));
+    const spriteMat = cd(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
+    const sprite = new THREE.Sprite(spriteMat);
+    const h = 0.42;
+    sprite.scale.set(h * tex.aspect, h, 1);
+    sprite.position.set((i - 2) * 0.52, -0.65, 0.15);
+    sprite.renderOrder = 3;
+    group.add(sprite);
+  }
+
+  // ── Royal Imperial 3D Gold Crown ───────────────────────────────────
+  const crownGroup = new THREE.Group();
+  crownGroup.name = 'crownGroup';
+
+  const goldMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0xfbbf24,
+    emissive: 0xd97706,
+    emissiveIntensity: 0.35,
+    metalness: 0.95,
+    roughness: 0.1,
+    clearcoat: 0.8,
+    clearcoatRoughness: 0.1,
+    envMapIntensity: 1.5
+  }));
+
+  const darkGoldMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0xd97706,
+    metalness: 0.9,
+    roughness: 0.2
+  }));
+
+  const rubyMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0xef4444,
+    emissive: 0xd97706,
+    emissiveIntensity: 0.6,
+    metalness: 0.2,
+    roughness: 0.05,
+    transmission: 0.85,
+    thickness: 0.3,
+    ior: 1.77
+  }));
+
+  const diamondMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0x38bdf8,
+    emissive: 0x0284c7,
+    emissiveIntensity: 0.5,
+    metalness: 0.1,
+    roughness: 0.02,
+    transmission: 0.9,
+    thickness: 0.3,
+    ior: 2.4
+  }));
+
+  // 1. Royal Crown Base Ring & Torus Bezel Rim
+  const crownBase = new THREE.Mesh(cd(new THREE.CylinderGeometry(0.32, 0.30, 0.12, 32, 1, true)), goldMat);
+  crownGroup.add(crownBase);
+
+  const baseRimTop = new THREE.Mesh(cd(new THREE.TorusGeometry(0.32, 0.025, 16, 48)), goldMat);
+  baseRimTop.rotation.x = Math.PI / 2;
+  baseRimTop.position.y = 0.06;
+  const baseRimBot = new THREE.Mesh(cd(new THREE.TorusGeometry(0.30, 0.025, 16, 48)), darkGoldMat);
+  baseRimBot.rotation.x = Math.PI / 2;
+  baseRimBot.position.y = -0.06;
+  crownGroup.add(baseRimTop, baseRimBot);
+
+  // 2. Crimson Velvet Inner Cushion Cap
+  const velvetMat = cd(new THREE.MeshPhysicalMaterial({ color: 0x881337, roughness: 0.8, metalness: 0.1 }));
+  const velvetCap = new THREE.Mesh(cd(new THREE.SphereGeometry(0.29, 24, 16, 0, Math.PI * 2, 0, Math.PI * 0.45)), velvetMat);
+  velvetCap.position.y = -0.04;
+  crownGroup.add(velvetCap);
+
+  // 3. 8 Arched Imperial Peaks with Set Rubies & Diamonds
+  const peakCount = 8;
+  for (let c = 0; c < peakCount; c++) {
+    const angle = (c / peakCount) * Math.PI * 2;
+    const isMajor = c % 2 === 0;
+    const peakH = isMajor ? 0.32 : 0.22;
+    const peakR = isMajor ? 0.065 : 0.045;
+
+    const spike = new THREE.Mesh(cd(new THREE.ConeGeometry(peakR, peakH, 16)), goldMat);
+    const radPos = 0.30;
+    spike.position.set(Math.cos(angle) * radPos, 0.06 + peakH / 2, Math.sin(angle) * radPos);
+    crownGroup.add(spike);
+
+    // Gem on tip of peak
+    const gemMat = isMajor ? rubyMat : diamondMat;
+    const gem = new THREE.Mesh(cd(new THREE.SphereGeometry(isMajor ? 0.045 : 0.035, 12, 12)), gemMat);
+    gem.position.set(Math.cos(angle) * radPos, 0.06 + peakH + 0.03, Math.sin(angle) * radPos);
+    crownGroup.add(gem);
+
+    // Jewel studs around base ring
+    const stud = new THREE.Mesh(cd(new THREE.SphereGeometry(0.025, 8, 8)), gemMat);
+    stud.position.set(Math.cos(angle) * 0.32, 0, Math.sin(angle) * 0.32);
+    crownGroup.add(stud);
+  }
+
+  // 4. Center Gold Cross / Star Orb Apex
+  const apexOrb = new THREE.Mesh(cd(new THREE.SphereGeometry(0.06, 16, 16)), goldMat);
+  apexOrb.position.y = 0.44;
+  const apexCrossVert = new THREE.Mesh(cd(new THREE.BoxGeometry(0.025, 0.12, 0.025)), goldMat);
+  apexCrossVert.position.y = 0.52;
+  const apexCrossHoriz = new THREE.Mesh(cd(new THREE.BoxGeometry(0.09, 0.025, 0.025)), goldMat);
+  apexCrossHoriz.position.y = 0.53;
+  crownGroup.add(apexOrb, apexCrossVert, apexCrossHoriz);
+
+  // Position crown neatly at the TOP of the TOP 1 bar (x = 1.04, y = 2.3)
+  crownGroup.position.set(1.04, 2.3, 0);
+  crownGroup.scale.setScalar(0.01);
+  group.add(crownGroup);
+
+  group.userData = { bars, crownGroup };
+  return group;
+}
+
+// Act 4: "Logical Execution Order" — Holographic 4-Node Pipeline + Sprites & Mechanical 3D Gears
+function buildPipeline(THREE) {
+  const group = new THREE.Group();
+  const nodeLabels = ['FROM', 'WHERE', 'GROUP BY', 'SELECT'];
+  const nodePositions = [-2.1, -0.7, 0.7, 2.1]; // Widened for zero text badge overlap
+  const nodes = [];
+
+  // Holographic Metallic Base Pipeline Connector Rail
+  const pipelineRail = new THREE.Mesh(
+    cd(new THREE.BoxGeometry(4.6, 0.04, 0.12)),
+    cd(new THREE.MeshPhysicalMaterial({ color: 0x38bdf8, emissive: 0x0284c7, emissiveIntensity: 0.5, metalness: 0.8, roughness: 0.2 }))
+  );
+  pipelineRail.position.set(0, 0.28, 0);
+  group.add(pipelineRail);
+
+  for (let i = 0; i < 4; i++) {
+    const node = new THREE.Mesh(
+      cd(new THREE.SphereGeometry(0.35, 32, 32)),
+      cd(new THREE.MeshPhysicalMaterial({
+        color: 0xfbbf24,
+        emissive: 0xd97706,
+        emissiveIntensity: 0.45,
+        metalness: 0.85,
+        roughness: 0.1,
+        clearcoat: 0.6,
+        envMapIntensity: 1.4
+      }))
+    );
+    node.position.set(nodePositions[i], 0.7, 0);
+    group.add(node);
+    nodes.push(node);
+
+    // Dynamic uncropped text sprite badge with generous padding to prevent text overlap
+    const tex = cd(createCanvasTexture(THREE, nodeLabels[i], { color: '#ffffff', glowColor: '#fbbf24', fontSize: 52, padX: 48, padY: 32 }));
+    const spriteMat = cd(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
+    const sprite = new THREE.Sprite(spriteMat);
+    const h = 0.46;
+    sprite.scale.set(h * tex.aspect, h, 1);
+    sprite.position.set(nodePositions[i], 1.35, 0);
+    sprite.renderOrder = 3;
+    group.add(sprite);
+
+    if (i < 3) {
+      const beamGeom = cd(new THREE.CylinderGeometry(0.06, 0.06, 1.4, 16));
+      const beamMat = cd(new THREE.MeshPhysicalMaterial({
+        color: 0x38bdf8,
+        emissive: 0x0284c7,
+        emissiveIntensity: 0.7,
+        metalness: 0.3,
+        roughness: 0.1,
+        transmission: 0.8,
+        thickness: 0.2
+      }));
+      const beam = new THREE.Mesh(beamGeom, beamMat);
+      beam.rotation.z = Math.PI / 2;
+      beam.position.set((nodePositions[i] + nodePositions[i + 1]) / 2, 0.7, 0);
+      beam.name = `plasmaBeam${i}`;
+      group.add(beam);
+    }
+  }
+
+  // 3D Interlocking Mechanical Gear Cluster (Front-facing to camera)
+  const gear1 = createGearMesh(THREE, 0.65, 0x38bdf8, 14); // Silver-Cyan Chrome Gear
+  gear1.name = 'gear1';
+  gear1.position.set(-0.75, -0.65, 0);
+
+  const gear2 = createGearMesh(THREE, 0.52, 0xfbbf24, 12); // Gold Gear (Interlocking)
+  gear2.name = 'gear2';
+  gear2.position.set(0.35, -0.65, 0);
+
+  const gear3 = createGearMesh(THREE, 0.38, 0xf472b6, 10); // Magenta-Ruby Gear (3rd Interlocking)
+  gear3.name = 'gear3';
+  gear3.position.set(1.18, -0.65, 0);
+
+  group.add(gear1, gear2, gear3);
+
+  group.userData = { nodes };
+  return group;
+}
+
+// Act 5: "25 Questions" — 3D Holographic Question Shield + Glass Orbs & Header Badge
+function buildQuestionCluster(THREE) {
+  const group = new THREE.Group();
+
+  // 1. Outer Magenta/Violet Metallic Torus Bezel Ring
+  const ringMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0xec4899,
+    emissive: 0xdb2777,
+    emissiveIntensity: 0.65,
+    metalness: 0.92,
+    roughness: 0.12,
+    clearcoat: 0.8,
+    envMapIntensity: 1.5
+  }));
+  const outerRing = new THREE.Mesh(cd(new THREE.TorusGeometry(1.45, 0.08, 24, 96)), ringMat);
+  const innerRing = new THREE.Mesh(cd(new THREE.TorusGeometry(1.15, 0.04, 16, 80)), ringMat);
+  group.add(outerRing, innerRing);
+
+  // 2. Frosted Violet Glass Shield Disc
+  const discMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0x5b21b6,
+    emissive: 0x4c1d95,
+    emissiveIntensity: 0.5,
+    transparent: true,
+    opacity: 0.75,
+    roughness: 0.25,
+    metalness: 0.35,
+    transmission: 0.6,
+    thickness: 0.3
+  }));
+  const disc = new THREE.Mesh(cd(new THREE.CircleGeometry(1.1, 48)), discMat);
+  disc.position.z = -0.06;
+  group.add(disc);
+
+  // 3. Central 3D Glowing "25" Hero Badge
+  const numTex = cd(createCanvasTexture(THREE, "25", { color: '#ffffff', glowColor: '#ec4899', fontSize: 130, padX: 40, padY: 40 }));
+  const numMat = cd(new THREE.SpriteMaterial({ map: numTex, transparent: true, depthTest: false, depthWrite: false }));
+  const numSprite = new THREE.Sprite(numMat);
+  const hNum = 1.25;
+  numSprite.scale.set(hNum * numTex.aspect, hNum, 1);
+  numSprite.position.set(0, 0, 0.1);
+  numSprite.renderOrder = 3;
+  numSprite.userData = { billboard: true };
+  group.add(numSprite);
+
+  // 4. Orbiting Glass Orbs with Embedded Neon Question Marks
+  const orbGroup = new THREE.Group();
+  orbGroup.name = 'questionOrbs';
+
+  const orbRadius = 1.6;
+  const qTex = cd(createCanvasTexture(THREE, "?", { color: '#ffffff', glowColor: '#f472b6', fontSize: 72, padX: 24, padY: 24 }));
+
+  const glassOrbMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0xf472b6,
+    emissive: 0xdb2777,
+    emissiveIntensity: 0.5,
+    metalness: 0.2,
+    roughness: 0.1,
+    transmission: 0.85,
+    thickness: 0.4,
+    clearcoat: 0.9,
+    envMapIntensity: 1.4
+  }));
+
+  for (let i = 0; i < 10; i++) {
+    const angle = (i / 10) * Math.PI * 2;
+    const yOffset = Math.sin(angle * 3) * 0.45;
+    const orbX = Math.cos(angle) * orbRadius;
+    const orbZ = Math.sin(angle) * orbRadius;
+
+    // Glowing Glass Sphere
+    const orb = new THREE.Mesh(cd(new THREE.SphereGeometry(0.20, 20, 20)), glassOrbMat);
+    orb.position.set(orbX, yOffset, orbZ);
+    orbGroup.add(orb);
+
+    // Embedded Camera-Facing Question Mark Sprite Inside Sphere
+    const qSpriteMat = cd(new THREE.SpriteMaterial({ map: qTex, transparent: true, depthTest: false, depthWrite: false }));
+    const qSprite = new THREE.Sprite(qSpriteMat);
+    const hQ = 0.32;
+    qSprite.scale.set(hQ * qTex.aspect, hQ, 1);
+    qSprite.position.set(orbX, yOffset, orbZ + 0.05);
+    qSprite.renderOrder = 3;
+    orbGroup.add(qSprite);
+  }
+  group.add(orbGroup);
+
+  // 5. High-Contrast Billboard Header Badge "❓ 25 QUESTIONS" at Top (y = 1.75)
+  const headerTex = cd(createCanvasTexture(THREE, "❓ 25 QUESTIONS", { color: '#ffffff', glowColor: '#ec4899', fontSize: 60, padX: 48, padY: 32 }));
+  const headerSpriteMat = cd(new THREE.SpriteMaterial({ map: headerTex, transparent: true, depthTest: false, depthWrite: false }));
+  const headerSprite = new THREE.Sprite(headerSpriteMat);
+  const hText = 0.65;
+  headerSprite.scale.set(hText * headerTex.aspect, hText, 1);
+  headerSprite.position.set(0, 1.75, 0.25);
+  headerSprite.renderOrder = 4;
+  group.add(headerSprite);
+
+  // 6. Celebration Magenta Stardust Particles
+  const pTex = cd(createGlowDotTexture(THREE, '#f472b6'));
+  const pMat = cd(new THREE.PointsMaterial({
+    size: 0.14,
+    map: pTex,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  }));
+  const pGeom = new THREE.BufferGeometry();
+  const positions = [];
+  for (let i = 0; i < 32; i++) {
+    const a = (i / 32) * Math.PI * 2;
+    const r = 1.75 + (i % 3) * 0.15;
+    positions.push(Math.cos(a) * r, Math.sin(a * 2) * 0.4, Math.sin(a) * r);
+  }
+  pGeom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  const points = new THREE.Points(pGeom, pMat);
+  points.name = 'stardust';
+  group.add(points);
+
+  return group;
+}
+
+// Act 6: "Certification" — Sculpted 3D Gold Championship Chalice Trophy + Floating Star Apex
+function buildTrophy(THREE) {
+  const group = new THREE.Group();
+
+  // 1. Polished Italian Dark Marble Pedestal with Gold Bevel Rim
+  const marbleMap = createMarbleTexture(THREE);
+  const marbleMat = cd(new THREE.MeshPhysicalMaterial({
+    map: marbleMap,
+    color: 0x1e293b,
+    roughness: 0.1,
+    metalness: 0.3,
+    clearcoat: 0.8,
+    envMapIntensity: 1.2
+  }));
+
+  const baseBottom = new THREE.Mesh(cd(new THREE.CylinderGeometry(0.95, 1.10, 0.35, 36)), marbleMat);
+  baseBottom.position.y = -1.15;
+
+  const baseTop = new THREE.Mesh(cd(new THREE.CylinderGeometry(0.78, 0.88, 0.35, 36)), marbleMat);
+  baseTop.position.y = -0.80;
+
+  group.add(baseBottom, baseTop);
+
+  // 2. 24K Polished Gold Physical Material
+  const goldMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0xfbbf24,
+    emissive: 0xd97706,
+    emissiveIntensity: 0.45,
+    metalness: 0.96,
+    roughness: 0.08,
+    clearcoat: 0.9,
+    clearcoatRoughness: 0.05,
+    envMapIntensity: 1.6
+  }));
+
+  const darkGoldMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0xd97706,
+    metalness: 0.9,
+    roughness: 0.2
+  }));
+
+  // Gold Base Ring Trim
+  const baseTrim = new THREE.Mesh(cd(new THREE.TorusGeometry(0.72, 0.04, 16, 48)), goldMat);
+  baseTrim.rotation.x = Math.PI / 2;
+  baseTrim.position.y = -0.61;
+  group.add(baseTrim);
+
+  // Fluted Hourglass Stem & Knurled Rings
+  const stemPillar = new THREE.Mesh(cd(new THREE.CylinderGeometry(0.22, 0.32, 0.45, 24)), goldMat);
+  stemPillar.position.y = -0.38;
+
+  const stemKnurl = new THREE.Mesh(cd(new THREE.TorusGeometry(0.26, 0.035, 16, 36)), darkGoldMat);
+  stemKnurl.rotation.x = Math.PI / 2;
+  stemKnurl.position.y = -0.38;
+
+  const stemTopCap = new THREE.Mesh(cd(new THREE.CylinderGeometry(0.40, 0.24, 0.12, 28)), goldMat);
+  stemTopCap.position.y = -0.10;
+  group.add(stemPillar, stemKnurl, stemTopCap);
+
+  // 3. Photorealistic Sculpted Chalice Cup (Lathe Profile Geometry)
+  const cupPoints = [];
+  cupPoints.push(new THREE.Vector2(0.36, -0.04));
+  cupPoints.push(new THREE.Vector2(0.48, 0.12));
+  cupPoints.push(new THREE.Vector2(0.65, 0.45));
+  cupPoints.push(new THREE.Vector2(0.78, 0.82));
+  cupPoints.push(new THREE.Vector2(0.82, 0.86)); // Outer flared rim lip
+  cupPoints.push(new THREE.Vector2(0.76, 0.84)); // Inner lip
+  cupPoints.push(new THREE.Vector2(0.60, 0.50)); // Inner hollow cup
+  cupPoints.push(new THREE.Vector2(0.40, 0.20));
+  cupPoints.push(new THREE.Vector2(0.0, 0.16));  // Inner bowl center bottom
+
+  const chaliceGeom = cd(new THREE.LatheGeometry(cupPoints, 48));
+  const chaliceMesh = new THREE.Mesh(chaliceGeom, goldMat);
+  chaliceMesh.position.y = -0.04;
+  group.add(chaliceMesh);
+
+  // Embossed Front Gold Star Medallion on Cup Surface
+  const cupStar = create3DStar(THREE, 0.18, 0.04, 0xfbbf24);
+  cupStar.position.set(0, 0.42, 0.68);
+  group.add(cupStar);
+
+  // 4. Seamless Royal Double-Curved Handles
+  for (let s = -1; s <= 1; s += 2) {
+    const handleGroup = new THREE.Group();
+    const handleArc = cd(new THREE.TorusGeometry(0.44, 0.065, 16, 48, Math.PI * 0.95));
+    const handleMesh = new THREE.Mesh(handleArc, goldMat);
+    handleMesh.rotation.z = s * (Math.PI * 0.52);
+    handleMesh.position.set(s * 0.60, 0.42, 0);
+    handleGroup.add(handleMesh);
+    group.add(handleGroup);
+  }
+
+  // 5. Radiant Floating 3D Gold Star Apex (Elevated above chalice mouth with glowing aura disc)
+  const starGroup = new THREE.Group();
+  starGroup.name = 'starMedallion';
+
+  const star = create3DStar(THREE, 0.52, 0.15, 0xfbbf24);
+  star.position.set(0, 0, 0);
+  starGroup.add(star);
+
+  // Glowing backdrop disc behind floating star for 100% silhouette clarity
+  const starGlowDisc = new THREE.Mesh(
+    cd(new THREE.CircleGeometry(0.65, 32)),
+    cd(new THREE.MeshBasicMaterial({
+      color: 0xfbbf24,
+      transparent: true,
+      opacity: 0.4,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    }))
+  );
+  starGlowDisc.position.set(0, 0, -0.08);
+  starGroup.add(starGlowDisc);
+
+  starGroup.position.set(0, 1.25, 0);
+  group.add(starGroup);
+
+  // 6. Glowing Uncropped Header Badge "★ 25 MARKS • CERTIFIED"
+  const tex = cd(createCanvasTexture(THREE, "★ 25 MARKS • CERTIFIED", { color: '#ffffff', glowColor: '#fbbf24', fontSize: 56, padX: 48, padY: 32 }));
+  const spriteMat = cd(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
+  const markSprite = new THREE.Sprite(spriteMat);
+  const h = 0.52;
+  markSprite.scale.set(h * tex.aspect, h, 1);
+  markSprite.position.set(0, 2.15, 0.1);
+  markSprite.renderOrder = 3;
+  group.add(markSprite);
+
+  // 7. Victory Golden Stardust Halo
+  const particleTex = cd(createGlowDotTexture(THREE, '#fbbf24'));
+  const haloMat = cd(new THREE.PointsMaterial({
+    size: 0.12,
+    map: particleTex,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  }));
+
+  const haloGeom = new THREE.BufferGeometry();
+  const positions = [];
+  const r = getSafeOrbitalRadius(completionCamera, 1.35, 0.15);
+
+  for (let i = 0; i < 32; i++) {
+    const a = (i / 32) * Math.PI * 2;
+    positions.push(Math.cos(a) * r, 0.8 + Math.sin(i) * 0.15, Math.sin(a) * r);
+  }
+  haloGeom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  const haloPoints = new THREE.Points(haloGeom, haloMat);
+  haloPoints.name = 'stardust';
+  group.add(haloPoints);
+
+  return group;
+}
+
+// Act 7: "Next Level" — Sci-Fi Rocket + Launch Pad Base Rings & Zig-Zag Ascent
+function buildRocket(THREE) {
+  const group = new THREE.Group();
+
+  // 1. Stationary Launch Pad Base Rings & Ground Warp Portals (Stay on ground at y = -1.6)
+  const portalMat = cd(new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true, transparent: true, opacity: 0.55 }));
+  const portal = new THREE.Mesh(cd(new THREE.TorusGeometry(1.5, 0.08, 12, 48)), portalMat);
+  portal.rotation.x = Math.PI / 2;
+  portal.position.y = -1.6;
+  portal.name = 'warpPortal1';
+  group.add(portal);
+
+  const portalMat2 = cd(new THREE.MeshBasicMaterial({ color: 0x0891b2, wireframe: true, transparent: true, opacity: 0.3 }));
+  const portal2 = new THREE.Mesh(cd(new THREE.TorusGeometry(1.85, 0.04, 8, 36)), portalMat2);
+  portal2.rotation.x = Math.PI / 2;
+  portal2.position.y = -1.75;
+  portal2.name = 'warpPortal2';
+  group.add(portal2);
+
+  // Ground Launch Ring Glow Pad
+  const launchPadDisc = new THREE.Mesh(
+    cd(new THREE.CircleGeometry(1.4, 32)),
+    cd(new THREE.MeshBasicMaterial({ color: 0x0284c7, transparent: true, opacity: 0.35, side: THREE.DoubleSide }))
+  );
+  launchPadDisc.rotation.x = Math.PI / 2;
+  launchPadDisc.position.y = -1.62;
+  group.add(launchPadDisc);
+
+  // Ground Liftoff Shockwave Smoke Expansion Ring
+  const smokeRingMat = cd(new THREE.MeshBasicMaterial({ color: 0xf97316, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, side: THREE.DoubleSide }));
+  const smokeRing = new THREE.Mesh(cd(new THREE.RingGeometry(0.4, 0.95, 36)), smokeRingMat);
+  smokeRing.rotation.x = Math.PI / 2;
+  smokeRing.position.y = -1.61;
+  smokeRing.name = 'rocketLaunchSmokeRing';
+  group.add(smokeRing);
+
+  // 2. Launchable Rocket Body Group (Moves & Zig-Zags Upward)
+  const rocketBodyGroup = new THREE.Group();
+  rocketBodyGroup.name = 'rocketBodyGroup';
+
+  const bodyMat = cd(new THREE.MeshPhysicalMaterial({ color: 0xf8fafc, roughness: 0.15, metalness: 0.85, envMapIntensity: 1.3 }));
+  const noseMat = cd(new THREE.MeshPhysicalMaterial({ color: 0xf97316, roughness: 0.2, metalness: 0.7, envMapIntensity: 1.2 }));
+  const finMat = cd(new THREE.MeshPhysicalMaterial({ color: 0x38bdf8, roughness: 0.2, metalness: 0.8, envMapIntensity: 1.1 }));
+  const visorMat = cd(new THREE.MeshPhysicalMaterial({
+    color: 0x06b6d4,
+    emissive: 0x0284c7,
+    emissiveIntensity: 0.8,
+    metalness: 0.1,
+    roughness: 0.05,
+    transmission: 0.9,
+    thickness: 0.2,
+    ior: 1.5
+  }));
+
+  const body = new THREE.Mesh(cd(new THREE.CylinderGeometry(0.4, 0.45, 1.3, 32)), bodyMat);
+  body.position.y = -0.25;
+  rocketBodyGroup.add(body);
+
+  const nose = new THREE.Mesh(cd(new THREE.ConeGeometry(0.4, 0.85, 32)), noseMat);
+  nose.position.y = 0.8;
+  rocketBodyGroup.add(nose);
+
+  const visor = new THREE.Mesh(cd(new THREE.SphereGeometry(0.2, 24, 16)), visorMat);
+  visor.position.set(0, 0.2, 0.35);
+  rocketBodyGroup.add(visor);
+
+  for (let i = 0; i < 3; i++) {
+    const a = (i / 3) * Math.PI * 2;
+    const fin = new THREE.Mesh(cd(new THREE.BoxGeometry(0.08, 0.65, 0.45)), finMat);
+    fin.position.set(Math.sin(a) * 0.45, -0.55, Math.cos(a) * 0.45);
+    fin.rotation.y = a;
+    rocketBodyGroup.add(fin);
+  }
+
+  const fMatInner = cd(new THREE.MeshBasicMaterial({ color: 0xfef08a, transparent: true, opacity: 0.95 }));
+  const fMatOuter = cd(new THREE.MeshBasicMaterial({ color: 0xef4444, transparent: true, opacity: 0.75 }));
+  const flameIn = new THREE.Mesh(cd(new THREE.ConeGeometry(0.18, 0.7, 16)), fMatInner);
+  const flameOut = new THREE.Mesh(cd(new THREE.ConeGeometry(0.32, 1.1, 16)), fMatOuter);
+  flameIn.rotation.x = Math.PI; flameIn.position.y = -1.1;
+  flameOut.rotation.x = Math.PI; flameOut.position.y = -1.25;
+  rocketBodyGroup.add(flameIn, flameOut);
+
+  const smokeMat = cd(new THREE.MeshBasicMaterial({ color: 0xffa500, transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending }));
+  const flameSmoke = new THREE.Mesh(cd(new THREE.ConeGeometry(0.42, 1.4, 16)), smokeMat);
+  flameSmoke.rotation.x = Math.PI;
+  flameSmoke.position.y = -1.35;
+  rocketBodyGroup.add(flameSmoke);
+
+  // Floating Stationary Header Badge "🚀 READY NEXT LEVEL" (Stays at y = 1.75)
+  const tex = cd(createCanvasTexture(THREE, "NEXT LEVEL", { color: '#ffffff', glowColor: '#f97316', fontSize: 56, padX: 48, padY: 32 }));
+  const spriteMat = cd(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
+  const markSprite = new THREE.Sprite(spriteMat);
+  const h = 0.52;
+  markSprite.scale.set(h * tex.aspect, h, 1);
+  markSprite.position.set(0, 1.75, 0.1);
+  markSprite.renderOrder = 3;
+  group.add(markSprite);
+
+  group.add(rocketBodyGroup);
+  return group;
+}
+
+const COMPLETION_BUILDERS = {
+  buildCheckmark, buildGreatWork, buildGem, buildSortedBars, buildPipeline,
+  buildQuestionCluster, buildTrophy, buildRocket
+};
+
+const NARRATION_CARDS = [
+  { pill: 'ACT 1 • LESSON COMPLETE', title: 'Day 2 SQL Mastery Unlocked', sub: 'Officially finished Day 2 lessons', accent: '#00ffcc', bgPill: 'rgba(0, 255, 204, 0.2)' },
+  { pill: 'ACT 2 • PRAISE & PROGRESS', title: 'Great Work! Milestone Achieved', sub: 'Outstanding effort mastering core SQL', accent: '#10b981', bgPill: 'rgba(16, 185, 129, 0.2)' },
+  { pill: 'ACT 3 • DATA REFINEMENT', title: 'Filtering Unique Records', sub: 'Eliminating duplicate rows with DISTINCT', accent: '#a78bfa', bgPill: 'rgba(167, 139, 250, 0.2)' },
+  { pill: 'ACT 4 • RESULT SET STRUCTURE', title: 'Sorting & Quantity Control', sub: 'ORDER BY ASC/DESC & LIMIT Top Rows', accent: '#38bdf8', bgPill: 'rgba(56, 189, 248, 0.2)' },
+  { pill: 'ACT 5 • ENGINE INTERNALS', title: 'Logical Execution Order', sub: 'FROM ➔ WHERE ➔ GROUP BY ➔ SELECT', accent: '#fbbf24', bgPill: 'rgba(251, 191, 36, 0.2)' },
+  { pill: 'ACT 6 • ASSESSMENT READY', title: '25 Curated Interview Questions', sub: 'Real-world technical SQL evaluation', accent: '#f472b6', bgPill: 'rgba(244, 114, 182, 0.2)' },
+  { pill: 'ACT 7 • CERTIFICATION MARKS', title: '25 Marks Earned Toward Badge', sub: 'Verified proficiency score tracking', accent: '#fbbf24', bgPill: 'rgba(251, 191, 36, 0.2)' },
+  { pill: 'ACT 8 • NEXT LEVEL UNLOCKED', title: 'Ready for Advanced Filtering', sub: 'Proceeding to Day 3 Complex Queries', accent: '#f97316', bgPill: 'rgba(249, 115, 22, 0.2)' }
+];
+
+// ── DOM: Inject 3D Animation Overlay Bounded Below Header (Covers Bottom Completely) ──
+function createCompletionOverlay() {
+  const container = document.body;
+  const isMobile = window.innerWidth < 768;
+
+  const headerEl = document.querySelector('.header');
+  const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 60;
+
+  const dividerEl = document.getElementById('divider');
+  if (dividerEl) dividerEl.style.display = 'none';
+
+  const slideHeaderEl = document.getElementById('slideHeader');
+  if (slideHeaderEl) slideHeaderEl.style.display = 'none';
+
+  completionOverlayDiv = document.createElement('div');
+  completionOverlayDiv.id = 'completionOverlayDiv';
+  Object.assign(completionOverlayDiv.style, {
+    position: 'fixed',
+    top: `${headerHeight}px`,
+    left: '0',
+    width: '100vw',
+    height: `calc(100vh - ${headerHeight}px)`,
+    background: 'radial-gradient(circle at 50% 45%, rgba(15, 23, 42, 0.68) 20%, rgba(8, 12, 22, 0.92) 100%)',
+    backdropFilter: 'blur(16px)', webkitBackdropFilter: 'blur(16px)',
+    pointerEvents: 'none', opacity: '1', transition: 'opacity 0.5s ease',
+    zIndex: '9999'
+  });
+
+  completionCanvas = document.createElement('canvas');
+  completionCanvas.id = 'completionCanvas';
+  Object.assign(completionCanvas.style, {
+    position: 'absolute', top: '0', left: '0',
+    width: '100%', height: '100%',
+    pointerEvents: 'none'
+  });
+  completionOverlayDiv.appendChild(completionCanvas);
+
+  completionCaption = document.createElement('div');
+  completionCaption.id = 'completionCaption';
+  Object.assign(completionCaption.style, {
+    position: 'absolute', bottom: isMobile ? '20px' : '30px', left: '50%', transform: 'translateX(-50%)',
+    background: 'rgba(15, 23, 42, 0.92)', backdropFilter: 'blur(12px)', webkitBackdropFilter: 'blur(12px)',
+    border: '1px solid rgba(255, 255, 255, 0.18)', borderRadius: '10px',
+    padding: isMobile ? '8px 14px' : '10px 24px', fontFamily: 'var(--mono,"Fira Mono",monospace)',
+    fontSize: isMobile ? '0.8rem' : '0.95rem', fontWeight: '700', color: '#f8fafc',
+    whiteSpace: isMobile ? 'normal' : 'nowrap', textAlign: 'center', maxWidth: isMobile ? '90vw' : 'auto',
+    boxShadow: '0 10px 25px rgba(0,0,0,0.5)', zIndex: '10000',
+    pointerEvents: 'none', opacity: '0', transition: 'opacity 0.4s ease'
+  });
+  completionCaption.textContent = '';
+  completionOverlayDiv.appendChild(completionCaption);
+
+  container.appendChild(completionOverlayDiv);
+}
+
+function updateCompletionLegend(momentIdx) {
+  const pill = document.getElementById('cardPill');
+  const title = document.getElementById('cardTitle');
+  const sub = document.getElementById('cardSub');
+  const cData = NARRATION_CARDS[momentIdx];
+
+  if (pill && title && sub && cData) {
+    pill.textContent = cData.pill;
+    pill.style.color = cData.accent;
+    pill.style.background = cData.bgPill;
+    pill.style.borderColor = cData.accent + '66';
+    title.textContent = cData.title;
+    sub.textContent = cData.sub;
+  }
+}
+
+// ── Take Test Blink Helpers ───────────────────────────────────────────────────
+function activateTakeTestBlink() {
+  const dp = window.ProgressManager?.getDayProgress(currentDay);
+  if (dp?.testAttempt?.submitted) return;
+  const btn = document.getElementById('takeTestBtn');
+  if (btn) btn.classList.add('take-test--urgent');
+  try { sessionStorage.setItem(`${currentDay}_testUrgent`, '1'); } catch (e) { }
+}
+
+function deactivateTakeTestBlink() {
+  const btn = document.getElementById('takeTestBtn');
+  if (btn) btn.classList.remove('take-test--urgent');
+  try { sessionStorage.removeItem(`${currentDay}_testUrgent`); } catch (e) { }
+}
+
+function restoreTakeTestBlinkIfNeeded() {
+  try {
+    if (sessionStorage.getItem(`${currentDay}_testUrgent`) === '1') {
+      const dp = window.ProgressManager?.getDayProgress(currentDay);
+      if (!dp?.testAttempt?.submitted) activateTakeTestBlink();
+      else deactivateTakeTestBlink();
+    }
+  } catch (e) { }
+}
+
+// Procedural dynamic lighting environment map
+function createProceduralEnvironment(THREE, renderer) {
+  const pmremGenerator = new THREE.PMREMGenerator(renderer);
+  const envScene = new THREE.Scene();
+
+  const sphereGeom = new THREE.SphereGeometry(1.5, 16, 16);
+
+  const light1 = new THREE.Mesh(sphereGeom, new THREE.MeshBasicMaterial({ color: 0x00ffcc }));
+  light1.position.set(4, 5, 4);
+  const light2 = new THREE.Mesh(sphereGeom, new THREE.MeshBasicMaterial({ color: 0xf472b6 }));
+  light2.position.set(-4, 3, -4);
+  const light3 = new THREE.Mesh(sphereGeom, new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
+  light3.position.set(0, -5, 3);
+  const light4 = new THREE.Mesh(sphereGeom, new THREE.MeshBasicMaterial({ color: 0xfbbf24 }));
+  light4.position.set(2, -3, -2);
+
+  envScene.add(light1, light2, light3, light4);
+
+  const renderTarget = pmremGenerator.fromScene(envScene, 0.04);
+  if (pmremGenerator && typeof pmremGenerator.dispose === 'function') {
+    pmremGenerator.dispose();
+  }
+  return renderTarget.texture;
+}
+
+// ── Camera Rig v2 Specification: Hollywood Continuous Orbit Perspective ──
+const CAMERA_SHOTS = {
+  // Act 1: Checkmark Medallion — Hero reveal looking down at gold shield ring
+  complete: { yawStart: 0.0, yawEnd: 8.0, pitchStart: 8.5, pitchEnd: 8.5, dollyStart: 7.2, dollyEnd: 7.0 },
+
+  // Act 2: Clapping Emoji 👏 — High-angle celebration framing
+  greatWork: { yawStart: 8.0, yawEnd: 18.0, pitchStart: 8.5, pitchEnd: 8.5, dollyStart: 7.0, dollyEnd: 7.0 },
+
+  // Act 3: DISTINCT Diamond Gem 💎 — Facet reveal looking down at pavilion facets
+  distinct: { yawStart: 18.0, yawEnd: 32.0, pitchStart: 8.5, pitchEnd: 8.5, dollyStart: 7.0, dollyEnd: 6.8 },
+
+  // Act 4: ORDER BY & LIMIT 📊 — Generous 7.8 dolly framing providing full headroom for #1 bar & gold crown
+  orderLimit: { yawStart: 32.0, yawEnd: 0.0, pitchStart: 11.0, pitchEnd: 8.0, dollyStart: 8.0, dollyEnd: 7.8 },
+
+  // Act 5: Execution Pipeline ⚙️ — High-angle (+18° to +14°) sweeping 3D orbit showcasing mechanical gears
+  logicOrder: { yawStart: 0.0, yawEnd: -16.0, pitchStart: 18.0, pitchEnd: 14.0, dollyStart: 7.4, dollyEnd: 7.0 },
+
+  // Act 6: 25 Questions ❓ — Sizing-up-the-challenge 3D orbit
+  questions: { yawStart: 20.0, yawEnd: 8.0, pitchStart: 8.5, pitchEnd: 9.0, dollyStart: 7.2, dollyEnd: 7.0 },
+
+  // Act 7: 25 Marks Trophy 🏆 — Generous 7.6 dolly framing ensuring zero clipping of top certified badge & star apex
+  cert: { yawStart: 8.0, yawEnd: -8.0, pitchStart: 9.0, pitchEnd: 9.5, dollyStart: 7.6, dollyEnd: 7.6 },
+
+  // Act 8: Next Level Rocket 🚀 — Generous 8.0 dolly framing accommodating ground launch pad & vertical ascent
+  nextLevel: { yawStart: -8.0, yawEnd: -24.0, pitchStart: 9.5, pitchEnd: -10.0, dollyStart: 7.6, dollyEnd: 8.2 }
+};
+
+function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+// ── Three.js Scene Setup (Centered Camera View, Responsive FOV & Rich Lighting) ──
+function initCompletionScene() {
+  const THREE = window.THREE;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const isMobile = w < 768;
+
+  completionRenderer = new THREE.WebGLRenderer({ canvas: completionCanvas, alpha: true, antialias: true });
+  completionRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  completionRenderer.setSize(w, h, false);
+  completionRenderer.setClearColor(0x000000, 0);
+
+  if (THREE.ACESFilmicToneMapping) {
+    completionRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+    completionRenderer.toneMappingExposure = 1.15;
+  }
+  if (THREE.SRGBColorSpace) {
+    completionRenderer.outputColorSpace = THREE.SRGBColorSpace;
+  } else if (THREE.sRGBEncoding) {
+    completionRenderer.outputEncoding = THREE.sRGBEncoding;
+  }
+
+  completionRenderer.physicallyCorrectLights = true;
+  completionRenderer.shadowMap.enabled = true;
+  completionRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  completionScene = new THREE.Scene();
+
+  // Environment map for photorealistic materials
+  try {
+    const envTexture = createProceduralEnvironment(THREE, completionRenderer);
+    completionScene.environment = envTexture;
+  } catch (err) {
+    console.warn('Could not generate environment map:', err);
+  }
+
+  const fov = isMobile ? 55 : 50;
+  completionCamera = new THREE.PerspectiveCamera(fov, w / h, 0.1, 100);
+  completionCamera.position.set(0, 0, isMobile ? 7.6 : 6.8);
+
+  // 15% Ambient + Environment Map
+  const amb = new THREE.AmbientLight(0xffffff, 0.15);
+  completionScene.add(amb);
+
+  // Reusable 3-point studio lighting rig
+  const keyLight = new THREE.SpotLight(0xffffff, 4.5);
+  keyLight.name = 'keyLight';
+  keyLight.position.set(5, 8, 5);
+  keyLight.angle = 0.38;
+  keyLight.penumbra = 0.5;
+  keyLight.castShadow = true;
+  keyLight.shadow.mapSize.width = 1024;
+  keyLight.shadow.mapSize.height = 1024;
+  keyLight.shadow.bias = -0.001;
+  completionScene.add(keyLight);
+
+  const fillLight = new THREE.PointLight(0x38bdf8, 1.6, 18);
+  fillLight.name = 'fillLight';
+  fillLight.position.set(-5, 3, 4);
+  completionScene.add(fillLight);
+
+  const rimLight = new THREE.SpotLight(0xffffff, 4.5);
+  rimLight.name = 'rimLight';
+  rimLight.position.set(0, 4, -5);
+  rimLight.angle = 0.6;
+  rimLight.penumbra = 0.4;
+  completionScene.add(rimLight);
+
+  // Post-processing EffectComposer setup
+  if (THREE.EffectComposer && !isMobile) {
+    try {
+      const size = completionRenderer.getDrawingBufferSize(new THREE.Vector2());
+      const renderTarget = new THREE.WebGLMultisampleRenderTarget(size.width, size.height, {
+        format: THREE.RGBAFormat,
+        type: THREE.UnsignedByteType,
+        encoding: THREE.sRGBEncoding
+      });
+      renderTarget.samples = 4; // Anti-aliasing pass built-in
+
+      completionComposer = new THREE.EffectComposer(completionRenderer, renderTarget);
+
+      const renderPass = new THREE.RenderPass(completionScene, completionCamera);
+      completionComposer.addPass(renderPass);
+
+      // UnrealBloomPass: strength 0.55, radius 0.4, threshold 0.82
+      const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(size.width, size.height), 0.55, 0.4, 0.82);
+      completionComposer.addPass(bloomPass);
+
+      if (THREE.VignetteShader) {
+        const vignettePass = new THREE.ShaderPass(THREE.VignetteShader);
+        vignettePass.uniforms["darkness"].value = 1.0;
+        vignettePass.uniforms["offset"].value = 1.0;
+        completionComposer.addPass(vignettePass);
+      }
+    } catch (e) {
+      console.warn('Error setting up post-processing. Falling back to normal renderer.', e);
+      completionComposer = null;
+    }
+  } else {
+    completionComposer = null;
+  }
+
+  completionClock = new THREE.Clock();
+}
+
+// ── Helper: Explosive 3D Blast Appearance Effect (Dual Shockwaves + Radial Spark Burst) ──
+function createAppearanceBlast(THREE, accentHex = 0x00ffcc) {
+  const blastGroup = new THREE.Group();
+  blastGroup.name = 'appearanceBlast';
+
+  const hexStr = accentHex ? '#' + accentHex.toString(16).padStart(6, '0') : '#00ffcc';
+
+  // 1. Primary Shockwave Ring
+  const ringGeom1 = cd(new THREE.RingGeometry(0.08, 0.22, 64));
+  const ringMat1 = cd(new THREE.MeshBasicMaterial({
+    color: accentHex,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 1.0,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  }));
+  const ring1 = new THREE.Mesh(ringGeom1, ringMat1);
+  ring1.name = 'shockwave1';
+  ring1.userData = { billboard: true };
+  blastGroup.add(ring1);
+
+  // 2. Secondary Gold Flare Shockwave Ring
+  const ringGeom2 = cd(new THREE.RingGeometry(0.05, 0.16, 64));
+  const ringMat2 = cd(new THREE.MeshBasicMaterial({
+    color: 0xfbbf24,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.9,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  }));
+  const ring2 = new THREE.Mesh(ringGeom2, ringMat2);
+  ring2.name = 'shockwave2';
+  ring2.userData = { billboard: true };
+  blastGroup.add(ring2);
+
+  // 3. Central Energy Flash Glow Disc
+  const flashGeom = cd(new THREE.CircleGeometry(0.4, 32));
+  const flashMat = cd(new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 1.0,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  }));
+  const flashDisc = new THREE.Mesh(flashGeom, flashMat);
+  flashDisc.name = 'flashDisc';
+  flashDisc.userData = { billboard: true };
+  blastGroup.add(flashDisc);
+
+  // 4. Radial Spark Particles Burst
+  const particleCount = 75;
+  const positions = new Float32Array(particleCount * 3);
+  const velocities = [];
+
+  const dotTex = cd(createGlowDotTexture(THREE, hexStr));
+  const pMat = cd(new THREE.PointsMaterial({
+    size: 0.24,
+    map: dotTex,
+    transparent: true,
+    opacity: 1.0,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  }));
+
+  for (let i = 0; i < particleCount; i++) {
+    positions[i * 3] = 0;
+    positions[i * 3 + 1] = 0;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 0.3;
+
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 3.0 + Math.random() * 5.0;
+    velocities.push(new THREE.Vector3(
+      Math.cos(angle) * speed,
+      Math.sin(angle) * speed,
+      (Math.random() - 0.5) * 2.5
+    ));
+  }
+
+  const pGeom = new THREE.BufferGeometry();
+  pGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const burstPoints = new THREE.Points(pGeom, pMat);
+  burstPoints.name = 'blastSparks';
+  blastGroup.add(burstPoints);
+
+  blastGroup.userData = {
+    startTime: performance.now(),
+    duration: 850,
+    velocities: velocities,
+    pMat: pMat,
+    ringMat1: ringMat1,
+    ringMat2: ringMat2,
+    flashMat: flashMat,
+    ring1: ring1,
+    ring2: ring2,
+    flashDisc: flashDisc,
+    burstPoints: burstPoints
+  };
+
+  return blastGroup;
+}
+
+// ── Spawn Active 3D Object Centered with Cross-Fade Outro ────────────────────
+function spawnMomentObject(momentId, accent) {
+  const THREE = window.THREE;
+  const m = COMPLETION_MOMENTS.find(x => x.id === momentId);
+  if (!m) return;
+
+  // Seamless 3D Object Cross-Fade: Transfer outgoing object to completionOutroObj instead of instant deletion
+  if (completionActiveObj) {
+    if (completionOutroObj) {
+      completionScene.remove(completionOutroObj);
+    }
+    completionOutroObj = completionActiveObj;
+    completionOutroObj.__isOutro = true;
+    completionOutroObj.__outroStart = performance.now();
+    completionActiveObj = null;
+  }
+
+  const builderFn = COMPLETION_BUILDERS[m.builder];
+  const obj = builderFn(THREE);
+  obj.position.set(0, 0, 0); // Position dead-center
+  obj.rotation.set(0, 0, 0); // Stationary orientation (Camera orbits around object)
+  obj.scale.setScalar(0.01);
+  obj.__fadeIn = true;
+  obj.__fadeStart = performance.now();
+
+  // Add explosive appearance blast effect
+  try {
+    const blast = createAppearanceBlast(THREE, accent);
+    obj.add(blast);
+  } catch (e) {
+    console.warn('Could not spawn blast effect:', e);
+  }
+
+  // Trigger studio key light smooth specular flare
+  if (completionScene) {
+    const keyLight = completionScene.getObjectByName('keyLight');
+    if (keyLight) keyLight.__flashStart = performance.now();
+  }
+
+  // Add soft contact shadow to ground floating object
+  try {
+    const shadow = createContactShadowPlane(THREE);
+    obj.add(shadow);
+  } catch (e) { }
+
+  // Add backstage studio halo glow disc behind 3D object for 100% silhouette separation
+  try {
+    const auraCanvas = document.createElement('canvas');
+    auraCanvas.width = 256; auraCanvas.height = 256;
+    const auraCtx = auraCanvas.getContext('2d');
+    const rad = auraCtx.createRadialGradient(128, 128, 0, 128, 128, 128);
+    const hexColor = accent ? '#' + accent.toString(16).padStart(6, '0') : '#38bdf8';
+    rad.addColorStop(0, hexColor);
+    rad.addColorStop(0.4, hexColor + '66');
+    rad.addColorStop(1, 'rgba(0,0,0,0)');
+    auraCtx.fillStyle = rad;
+    auraCtx.fillRect(0, 0, 256, 256);
+
+    const auraTex = cd(new THREE.CanvasTexture(auraCanvas));
+    const auraMat = cd(new THREE.MeshBasicMaterial({
+      map: auraTex,
+      transparent: true,
+      opacity: 0.55,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    }));
+    const auraMesh = new THREE.Mesh(cd(new THREE.PlaneGeometry(5.2, 5.2)), auraMat);
+    auraMesh.position.set(0, 0, -1.2);
+    auraMesh.name = 'backstageAura';
+    obj.add(auraMesh);
+  } catch (e) { }
+
+  completionScene.add(obj);
+  completionActiveObj = obj;
+}
+
+// ── Main Animation Loop ───────────────────────────────────────────────────────
+function startCompletionAnimation(audioObj, targetTime = 0) {
+  if (!window.THREE || !completionRenderer) return;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Fade in full-screen overlay + controls
+  if (completionOverlayDiv) completionOverlayDiv.style.opacity = '1';
+  if (completionCaption) completionCaption.style.opacity = '1';
+
+  const FADE_IN_MS = 400;
+
+  function rafLoop() {
+    completionRafId = requestAnimationFrame(rafLoop);
+    const ct = (audioObj && !isNaN(audioObj.currentTime) && audioObj.currentTime > 0) ? audioObj.currentTime : targetTime;
+    const t = ct;
+    const dt = completionClock.getDelta();
+    const now = performance.now();
+    const isMobile = window.innerWidth < 768;
+    const baseScale = (completionActiveMomentId === 'nextLevel') ? (isMobile ? 0.68 : 0.82) : (isMobile ? 0.78 : 0.96);
+
+    // ── Camera Rig v2: Continuous Damped Orbit Motion ──
+    const m = COMPLETION_MOMENTS.find(x => x.id === completionActiveMomentId);
+    if (m && completionCamera) {
+      const shot = CAMERA_SHOTS[m.id] || CAMERA_SHOTS.complete;
+      const duration = m.endAt - m.startAt;
+      const elapsed = Math.max(0, Math.min(t - m.startAt, duration));
+
+      const moveDuration = Math.max(0.1, duration - 0.3);
+      const pAct = Math.min(1.0, elapsed / moveDuration);
+      const easedP = easeInOutCubic(pAct);
+
+      let yawDeg = shot.yawStart + (shot.yawEnd - shot.yawStart) * easedP;
+      let pitchDeg = shot.pitchStart + (shot.pitchEnd - shot.pitchStart) * easedP;
+      let dollyVal = shot.dollyStart + (shot.dollyEnd - shot.dollyStart) * easedP;
+
+      const yawRad = (yawDeg * Math.PI) / 180;
+      const pitchRad = (pitchDeg * Math.PI) / 180;
+      const dollyDist = dollyVal * (isMobile ? 1.08 : 1.0);
+
+      const targetCamX = dollyDist * Math.cos(pitchRad) * Math.sin(yawRad);
+      const targetCamY = dollyDist * Math.sin(pitchRad);
+      const targetCamZ = dollyDist * Math.cos(pitchRad) * Math.cos(yawRad);
+
+      const targetCamPos = new THREE.Vector3(targetCamX, targetCamY, targetCamZ);
+      if (!completionCamera.__dampedPos) {
+        completionCamera.__dampedPos = targetCamPos.clone();
+      }
+      const damp = 1 - Math.exp(-12 * dt);
+      completionCamera.__dampedPos.lerp(targetCamPos, damp);
+      completionCamera.position.copy(completionCamera.__dampedPos);
+      completionCamera.lookAt(0, 0, 0);
+
+      // Keep key light positioned relative to camera for consistent PBR highlights
+      const keyLight = completionScene.getObjectByName('keyLight');
+      if (keyLight) {
+        keyLight.position.set(completionCamera.position.x + 3.5, completionCamera.position.y + 5.5, completionCamera.position.z + 3.5);
+      }
+    }
+
+    // ── Check Moment Transition ───────────────────────────────────────────
+    const mIdx = COMPLETION_MOMENTS.findIndex(moment => t >= moment.startAt && t < moment.endAt);
+    const currentMoment = mIdx !== -1 ? COMPLETION_MOMENTS[mIdx] : COMPLETION_MOMENTS[0];
+    const newId = currentMoment ? currentMoment.id : null;
+
+    if (newId !== completionActiveMomentId) {
+      completionActiveMomentId = newId;
+      if (newId) {
+        spawnMomentObject(newId, currentMoment.accent);
+        if (completionCaption) completionCaption.textContent = currentMoment.label;
+        updateCompletionLegend(mIdx);
+      } else {
+        if (completionActiveObj) {
+          if (completionOutroObj) completionScene.remove(completionOutroObj);
+          completionOutroObj = completionActiveObj;
+          completionOutroObj.__outroStart = performance.now();
+          completionActiveObj = null;
+        }
+        if (completionCaption) completionCaption.textContent = '';
+      }
+    }
+
+    // ── Animate Outgoing Object Cross-Fade Dissolve ────────────────────────
+    if (completionOutroObj) {
+      const outroElapsed = now - (completionOutroObj.__outroStart || now);
+      const outroP = Math.min(outroElapsed / 320, 1.0);
+      const fadeScale = (1 - Math.pow(outroP, 1.8)) * baseScale;
+      completionOutroObj.scale.setScalar(Math.max(0.0001, fadeScale));
+
+      completionOutroObj.traverse(child => {
+        if (child.material) {
+          child.material.transparent = true;
+          if (child.material.__origOpacity === undefined) {
+            child.material.__origOpacity = child.material.opacity !== undefined ? child.material.opacity : 1.0;
+          }
+          child.material.opacity = child.material.__origOpacity * (1 - outroP);
+        }
+      });
+
+      if (outroP >= 1.0) {
+        completionScene.remove(completionOutroObj);
+        completionOutroObj = null;
+      }
+    }
+
+    // ── Animate Incoming 3D Object & Lock Content Screen Orientation ──────
+    if (completionActiveObj) {
+      const obj = completionActiveObj;
+      const elapsed = now - (obj.__fadeStart || now);
+
+      // Keep internal text, badges, and sprites fixed to screen orientation
+      obj.traverse(child => {
+        if (child.isSprite || (child.userData && child.userData.billboard)) {
+          child.quaternion.copy(completionCamera.quaternion);
+        }
+      });
+
+      // Key light smooth specular flare decay
+      const keyLight = completionScene ? completionScene.getObjectByName('keyLight') : null;
+      if (keyLight && keyLight.__flashStart) {
+        const flashElapsed = (now - keyLight.__flashStart) / 400;
+        if (flashElapsed <= 1.0) {
+          keyLight.intensity = 4.5 + (1.0 - Math.pow(flashElapsed, 0.7)) * 2.3;
+        } else {
+          keyLight.intensity = 4.5;
+          keyLight.__flashStart = null;
+        }
+      }
+
+      // Animate appearance blast effect if active
+      const blast = obj.getObjectByName('appearanceBlast');
+      if (blast && blast.userData) {
+        const bData = blast.userData;
+        const bElapsed = Math.min((now - bData.startTime) / bData.duration, 1.0);
+        if (bElapsed < 1.0) {
+          const scale1 = 0.1 + Math.pow(bElapsed, 0.5) * 5.2;
+          bData.ring1.scale.setScalar(scale1);
+          bData.ringMat1.opacity = Math.max(0, 1.0 - Math.pow(bElapsed, 0.7));
+
+          const bElapsed2 = Math.max(0, (now - bData.startTime - 50) / (bData.duration - 50));
+          const scale2 = 0.1 + Math.pow(bElapsed2, 0.45) * 4.2;
+          bData.ring2.scale.setScalar(scale2);
+          bData.ringMat2.opacity = Math.max(0, 0.95 - Math.pow(bElapsed2, 0.8));
+
+          const flashP = Math.min((now - bData.startTime) / 250, 1.0);
+          bData.flashDisc.scale.setScalar(1.0 + flashP * 2.5);
+          bData.flashMat.opacity = Math.max(0, 1.0 - flashP);
+
+          const positions = bData.burstPoints.geometry.attributes.position.array;
+          for (let i = 0; i < bData.velocities.length; i++) {
+            const vel = bData.velocities[i];
+            positions[i * 3] += vel.x * dt;
+            positions[i * 3 + 1] += vel.y * dt;
+            positions[i * 3 + 2] += vel.z * dt;
+            vel.multiplyScalar(0.93);
+          }
+          bData.burstPoints.geometry.attributes.position.needsUpdate = true;
+          bData.pMat.opacity = Math.max(0, 1.0 - Math.pow(bElapsed, 0.8));
+        } else {
+          obj.remove(blast);
+        }
+      }
+
+      // Signature Distinct 3D Object Entrance Styles per Act
+      if (obj.__fadeIn) {
+        const p = Math.min(elapsed / FADE_IN_MS, 1);
+
+        if (completionActiveMomentId === 'complete') {
+          // Act 1: Elastic Drop from Above + Spring Pulse
+          const eased = (1 + 0.35 * Math.sin(p * Math.PI * 1.2)) * Math.pow(p, 0.7);
+          obj.scale.setScalar(Math.max(0.001, eased * baseScale));
+          obj.position.y = (1 - Math.pow(p, 0.8)) * 1.4;
+        } else if (completionActiveMomentId === 'greatWork') {
+          // Act 2: Pop Entrance with Elastic Double Bounce
+          const bounce = 1 + 0.45 * Math.sin(p * Math.PI * 2.5) * Math.exp(-p * 3.5);
+          obj.scale.setScalar(Math.max(0.001, bounce * baseScale));
+          obj.position.y = 0;
+        } else if (completionActiveMomentId === 'distinct') {
+          // Act 3: Precessional Y-Axis Spin & Prismatic Crystallization
+          const eased = Math.pow(p, 1.8);
+          obj.scale.setScalar(Math.max(0.001, eased * baseScale));
+          obj.rotation.y = (1 - p) * Math.PI * 1.8;
+          obj.position.y = 0;
+        } else if (completionActiveMomentId === 'orderLimit') {
+          // Act 4: Solid Base with Sequential Bar Column Rise & Crown Descent
+          obj.scale.setScalar(baseScale);
+          obj.position.set(0, 0, 0);
+        } else if (completionActiveMomentId === 'logicOrder') {
+          // Act 5: Smooth Horizontal Slide-In along X-Axis
+          obj.scale.setScalar(baseScale);
+          obj.position.x = (-1 + Math.pow(p, 0.6)) * 1.2;
+          obj.position.y = 0;
+        } else if (completionActiveMomentId === 'questions') {
+          // Act 6: Vortex Swirl & Shield Unfold
+          const eased = 1 - Math.pow(1 - p, 3);
+          obj.scale.setScalar(Math.max(0.001, eased * baseScale));
+          obj.rotation.z = (1 - p) * Math.PI * 0.5;
+          obj.position.set(0, 0, 0);
+        } else if (completionActiveMomentId === 'cert') {
+          // Act 7: Majestic Award Presentation Ascent from Below
+          const eased = Math.pow(p, 1.6);
+          obj.scale.setScalar(Math.max(0.001, eased * baseScale));
+          obj.position.y = (-1 + Math.pow(p, 0.7)) * 0.8;
+        } else if (completionActiveMomentId === 'nextLevel') {
+          // Act 8: Stationary Base Pads + Thruster Ignition
+          obj.scale.setScalar(baseScale);
+          obj.position.set(0, 0, 0);
+        } else {
+          const eased = p < 1 ? (1 + 0.35 * Math.sin(p * Math.PI * 1.2)) * Math.pow(p, 0.7) : 1;
+          obj.scale.setScalar(Math.max(0.001, eased * baseScale));
+        }
+
+        if (p >= 1) {
+          obj.__fadeIn = false;
+          obj.scale.setScalar(baseScale);
+          obj.position.set(0, 0, 0);
+          obj.rotation.set(0, 0, 0);
+        }
+      } else {
+        obj.scale.setScalar(baseScale);
+      }
+
+      // Sequential Bar Column Sorting Animation for Act 3 ("ORDER BY & LIMIT")
+      if (completionActiveMomentId === 'orderLimit' && obj.userData && obj.userData.bars) {
+        const momentElapsed = (m && m.startAt !== undefined) ? Math.max(0, t - m.startAt) : 0;
+        obj.userData.bars.forEach((bar, idx) => {
+          const delay = idx * 0.15;
+          const barP = Math.min(Math.max((momentElapsed - delay) / 0.35, 0), 1);
+          const barScaleY = barP < 1 ? (1 - Math.pow(1 - barP, 3)) * bar.userData.targetHeight : bar.userData.targetHeight;
+          bar.scale.y = Math.max(0.01, barScaleY);
+          bar.position.y = (barScaleY * 1.0) / 2 - 0.5;
+        });
+
+        if (obj.userData.crownGroup) {
+          const crownP = Math.min(Math.max((momentElapsed - 0.8) / 0.4, 0), 1);
+          const crownScale = crownP < 1 ? (1 + 0.35 * Math.sin(crownP * Math.PI)) * crownP : 1;
+          obj.userData.crownGroup.scale.setScalar(crownScale * 0.85);
+
+          // Position neatly right ON TOP of the highest bar (top surface y = 2.2)
+          const hoverOffset = Math.sin((t || 0) * 3) * 0.03;
+          obj.userData.crownGroup.position.y = (crownP < 1 ? 3.4 - crownP * 1.1 : 2.3) + hoverOffset;
+          obj.userData.crownGroup.rotation.y = (t || 0) * 0.6;
+        }
+      }
+
+      // Traveling Plasma Energy Pulse along Pipeline for Act 5 ("logicOrder")
+      if (completionActiveMomentId === 'logicOrder') {
+        const mElapsed = (m && m.startAt !== undefined) ? Math.max(0, t - m.startAt) : 0;
+        const cycle = (mElapsed * 1.2) % 3;
+        const stage = Math.floor(cycle);
+        const stageP = cycle - stage;
+
+        obj.userData.nodes?.forEach((node, idx) => {
+          if (node.material) {
+            if (idx === stage || idx === stage + 1) {
+              node.material.emissiveIntensity = 0.4 + Math.sin(stageP * Math.PI) * 0.8;
+            } else {
+              node.material.emissiveIntensity = 0.3;
+            }
+          }
+        });
+
+        for (let b = 0; b < 3; b++) {
+          const beam = obj.getObjectByName(`plasmaBeam${b}`);
+          if (beam && beam.material) {
+            if (b === stage) {
+              beam.material.emissiveIntensity = 0.5 + Math.sin(stageP * Math.PI) * 1.2;
+            } else {
+              beam.material.emissiveIntensity = 0.3;
+            }
+          }
+        }
+      }
+
+      // Vertical Motion & Audio-Synced Rotations
+      if (!reducedMotion) {
+        const animTime = t;
+
+        // Act 8 ("nextLevel"): Fast High-Energy Straight Rocket Launch + Expanding Liftoff Smoke Ring
+        if (completionActiveMomentId === 'nextLevel') {
+          const mElapsed = (m && m.startAt !== undefined) ? Math.max(0, t - m.startAt) : 0;
+          const rocketBody = obj.getObjectByName('rocketBodyGroup');
+          const smokeRing = obj.getObjectByName('rocketLaunchSmokeRing');
+
+          if (rocketBody) {
+            if (mElapsed < 0.2) {
+              // Quick high-frequency thruster rumble prior to liftoff
+              rocketBody.position.y = Math.sin(animTime * 50) * 0.025;
+              rocketBody.position.x = 0;
+              rocketBody.position.z = 0;
+              rocketBody.rotation.z = 0;
+              if (smokeRing) smokeRing.material.opacity = 0;
+            } else {
+              // Fast, high-energy straight vertical rocket launch into space!
+              const launchP = Math.min(1.0, (mElapsed - 0.2) / 1.3);
+              const ascendY = Math.pow(launchP, 2.5) * 14.0;
+
+              rocketBody.position.y = ascendY;
+              rocketBody.position.x = 0;
+              rocketBody.position.z = 0;
+              rocketBody.rotation.z = 0;
+
+              // Animate expanding ground shockwave smoke ring
+              if (smokeRing) {
+                const ringScale = 1.0 + launchP * 4.5;
+                smokeRing.scale.setScalar(ringScale);
+                smokeRing.material.opacity = Math.max(0, 0.85 * (1.0 - Math.pow(launchP, 0.7)));
+              }
+            }
+          }
+          // Main group (stationary header badge & ground launch pad rings) remain fixed at y = 0
+          obj.position.y = 0;
+        } else {
+          obj.position.y = Math.sin(animTime * 1.4) * (isMobile ? 0.05 : 0.08);
+        }
+
+        // Act 2: Clapping Emoji 👏 Pulsing Sub-animation
+        const clapEmojiGroup = obj.getObjectByName('clapEmojiGroup');
+        if (clapEmojiGroup) {
+          const pulse = 1 + Math.abs(Math.sin(animTime * 8)) * 0.18;
+          clapEmojiGroup.scale.setScalar(pulse);
+        }
+
+        // Act 3: Faceted Diamond Gem Precessional 3D Tilt & Nucleus Pulse
+        const diamondGem = obj.getObjectByName('diamondGem');
+        if (diamondGem) {
+          diamondGem.rotation.y = animTime * 0.6;
+          diamondGem.rotation.x = Math.sin(animTime * 1.8) * 0.18;
+        }
+        const gemCore = obj.getObjectByName('gemCore');
+        if (gemCore) {
+          const corePulse = 1 + Math.sin(animTime * 6) * 0.15;
+          gemCore.scale.setScalar(corePulse);
+        }
+
+        const particles = obj.getObjectByName('particles');
+        if (particles) particles.rotation.z = animTime * 0.2;
+
+        const shards = obj.getObjectByName('shards');
+        if (shards) shards.rotation.y = animTime * 0.3;
+
+        const gear1 = obj.getObjectByName('gear1');
+        const gear2 = obj.getObjectByName('gear2');
+        const gear3 = obj.getObjectByName('gear3');
+        if (gear1) gear1.rotation.z = animTime * 0.9;
+        if (gear2) gear2.rotation.z = -animTime * 1.12;
+        if (gear3) gear3.rotation.z = animTime * 1.5;
+
+        // Act 6: Embedded Glass Question Orbs Independent Levitation Float
+        const qOrbs = obj.getObjectByName('questionOrbs');
+        if (qOrbs) {
+          qOrbs.rotation.y = animTime * 0.4;
+          qOrbs.position.y = Math.sin(animTime * 2.5) * 0.04;
+        }
+
+        // Act 7: Victory Golden Stardust Confetti Swirl
+        const dust = obj.getObjectByName('stardust');
+        if (dust) {
+          dust.rotation.y = -animTime * 0.35;
+          dust.position.y = Math.sin(animTime * 2.2) * 0.05;
+        }
+
+        const starMedallion = obj.getObjectByName('starMedallion');
+        if (starMedallion) starMedallion.rotation.z = Math.sin(animTime * 2.5) * 0.12;
+
+        const warpPortal1 = obj.getObjectByName('warpPortal1');
+        const warpPortal2 = obj.getObjectByName('warpPortal2');
+        if (warpPortal1) warpPortal1.rotation.z = animTime * 1.2;
+        if (warpPortal2) warpPortal2.rotation.z = -animTime * 1.5;
+      }
+    }
+
+    // ── Fullscreen Window Resizing & Mobile FOV adjustment ──────────────
+    const cw = window.innerWidth;
+    const ch = window.innerHeight;
+    if (completionRenderer.domElement.width !== cw || completionRenderer.domElement.height !== ch) {
+      completionRenderer.setSize(cw, ch, false);
+      if (completionCamera) {
+        completionCamera.aspect = cw / ch;
+        completionCamera.fov = cw < 768 ? 55 : 45;
+        completionCamera.updateProjectionMatrix();
+      }
+    }
+
+    completionRenderer.render(completionScene, completionCamera);
+  }
+
+  rafLoop();
+}
+
+// ── Teardown Fullscreen Overlay ───────────────────────────────────────────────
+function teardownCompletionAnimation() {
+  if (typeof completionRafId !== 'undefined' && completionRafId) {
+    cancelAnimationFrame(completionRafId);
+    completionRafId = null;
+  }
+
+  if (typeof completionDisposables !== 'undefined' && Array.isArray(completionDisposables)) {
+    completionDisposables.forEach(r => { try { r.dispose(); } catch (e) { } });
+    completionDisposables.length = 0;
+  }
+
+  if (typeof completionRenderer !== 'undefined' && completionRenderer) {
+    try {
+      completionRenderer.dispose();
+      completionRenderer.forceContextLoss?.();
+    } catch (e) { }
+    completionRenderer = null;
+  }
+
+  completionScene = null;
+  completionCamera = null;
+  completionClock = null;
+  completionActiveObj = null;
+  completionOutroObj = null;
+  completionActiveMomentId = null;
+
+  if (typeof completionOverlayDiv !== 'undefined' && completionOverlayDiv && completionOverlayDiv.parentNode) {
+    try { completionOverlayDiv.parentNode.removeChild(completionOverlayDiv); } catch (e) { }
+  }
+  completionOverlayDiv = null;
+  completionCanvas = null;
+  completionCaption = null;
+  completionLegend = null;
+
+  // Restore split-pane divider line + control pill and slide header card
+  const dividerEl = document.getElementById('divider');
+  if (dividerEl) dividerEl.style.display = '';
+
+  const slideHeaderEl = document.getElementById('slideHeader');
+  if (slideHeaderEl) slideHeaderEl.style.display = '';
+}
+
+// ── Entry Point (called from loadAndPlayTrack for completion tracks) ───────────
+function launchCompletionAnimation(audioObj, targetTime = 0) {
+  teardownCompletionAnimation(); // clean any previous
+  if (audioObj) {
+    if (audioObj.ended || audioObj.currentTime >= (audioObj.duration || 26) - 0.5) {
+      try { audioObj.currentTime = 0; } catch (e) { }
+    }
+  }
+  createCompletionOverlay();
+  ensureThreeLoaded(() => {
+    initCompletionScene();
+    startCompletionAnimation(audioObj, targetTime);
+  });
+}
+
+// ════════════════════════════════════════════════════════════════════════════════
+
 async function loadAndPlayTrack(index, targetTime = 0) {
   const myGeneration = ++currentGeneration;
 
@@ -4042,7 +6554,7 @@ async function loadAndPlayTrack(index, targetTime = 0) {
   updateProgressUI();
   const track = combinedTracks[index];
   const filename = track.src.split('/').pop().replace('.mp3', '');
-  const trackId = `day01_${filename}`;
+  const trackId = `${currentDay}_${filename}`;
   const entry = manifest[trackId] || { audioPath: track.src };
   const url = getAudioUrl(entry);
 
@@ -4077,7 +6589,19 @@ async function loadAndPlayTrack(index, targetTime = 0) {
   }
 
   if (targetTime > 0) {
-    audio.currentTime = targetTime;
+    const applyTargetTime = () => {
+      try {
+        if (Math.abs(audio.currentTime - targetTime) > 0.1) {
+          audio.currentTime = targetTime;
+        }
+      } catch (e) { }
+    };
+    if (audio.readyState >= 1) {
+      applyTargetTime();
+    } else {
+      audio.addEventListener('loadedmetadata', applyTargetTime, { once: true });
+      audio.addEventListener('canplay', applyTargetTime, { once: true });
+    }
   }
 
   // Load events lazily
@@ -4090,14 +6614,14 @@ async function loadAndPlayTrack(index, targetTime = 0) {
 
   audio.addEventListener('timeupdate', () => {
     if (myGeneration !== currentGeneration) return;
-    
+
     // Calculate cumulative current time
     let elapsed = 0;
     for (let i = 0; i < combinedTrackIndex; i++) {
       elapsed += combinedTrackDurations[i] || 0;
     }
     elapsed += audio.currentTime;
-    
+
     currentCombinedTime = elapsed;
     updateProgressUI();
     maybePrefetchNext(audio, index);
@@ -4109,20 +6633,23 @@ async function loadAndPlayTrack(index, targetTime = 0) {
   });
 
   // Slide navigation, typewriter, and output table scrolls trigger JIT at playback start
+  cancelTypewriter();
+
   if (track.type === 'question') {
     isNarrationActive = false;
     if (typeof clearSlidePlaybackVisibility === 'function') clearSlidePlaybackVisibility();
     const targetQIdx = COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === track.qId);
-    if (targetQIdx !== -1 && targetQIdx !== currentPracticeQ) {
-      clearOutputSection();
+    if (targetQIdx !== -1) {
+      if (targetQIdx !== currentPracticeQ) clearOutputSection();
       currentPracticeQ = targetQIdx;
       renderPracticeQuestion();
+      updatePracticeStats();
     }
     const bar = document.getElementById('questionBar');
     if (bar) bar.classList.add('question-playing');
     const slideContent = document.getElementById('slideContent');
     if (slideContent) slideContent.scrollTo({ top: 0, behavior: 'smooth' });
-    
+
     // Auto switch to SQL Sandbox tab on mobile
     setMobileTab('practice');
 
@@ -4133,57 +6660,31 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     if (targetQIdx !== -1) {
       currentPracticeQ = targetQIdx;
       renderPracticeQuestion();
+      updatePracticeStats();
     }
+    const bar = document.getElementById('questionBar');
+    if (bar) bar.classList.add('question-playing');
+
     const solMap = questionSolutionMap[currentDay] || questionSolutionMap['day01'];
     const solEntry = solMap ? solMap[track.qId] : null;
     if (solEntry) {
-      if (mainEditor) { mainEditor.setValue(''); mainEditor.focus(); }
-      cancelTypewriter();
-      const speed = typeof currentPlaybackSpeed !== 'undefined' ? currentPlaybackSpeed : 1.0;
-      const startDelay = ((solEntry.startAt || 1.5) * 1000) / speed;
-      const charInterval = (solEntry.charInterval || 70) / speed;
-      const chars = solEntry.code.split('');
-      let typed = '';
-      chars.forEach((char, i) => {
-        const t = setTimeout(() => {
-          typed += char;
-          if (mainEditor) {
-            mainEditor.setValue(typed);
-            const lastLine = mainEditor.lastLine();
-            mainEditor.setCursor({ line: lastLine, ch: mainEditor.getLine(lastLine).length });
-          }
-          if (i === chars.length - 1) {
-            setTimeout(() => {
-              runCurrentQuery();
-              setTimeout(() => {
-                const outputEl = document.getElementById('mainOutput');
-                if (outputEl) outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-              }, 350 / speed);
-            }, 400 / speed);
-          }
-        }, startDelay + i * charInterval);
-        typewriterTimers.push(t);
-      });
-      // Table scroll at 13.5s
-      let tableScrollInterval = null;
-      const tst = setTimeout(() => {
-        const outputEl = document.getElementById('mainOutput');
-        if (!outputEl) return;
-        tableScrollInterval = setInterval(() => {
-          if (outputEl.scrollTop + outputEl.clientHeight >= outputEl.scrollHeight - 2) {
-            clearInterval(tableScrollInterval);
-          } else { outputEl.scrollTop += 1; }
-        }, 40);
-      }, 13500 / speed);
-      typewriterTimers.push(tst);
-      
-      // Clean up table scroll when active track ends
-      audio.addEventListener('ended', () => { if (tableScrollInterval) clearInterval(tableScrollInterval); }, { once: true });
+      startAudioSyncedTypewriter(audio, solEntry);
     }
 
     // Auto switch to SQL Sandbox tab on mobile
     setMobileTab('practice');
-    
+
+  } else if (track.type === 'completion') {
+    // ── Day completion: Three.js narration companion ──────────────────────
+    isNarrationActive = false;
+    if (typeof clearSlidePlaybackVisibility === 'function') clearSlidePlaybackVisibility();
+    const bar = document.getElementById('questionBar');
+    if (bar) bar.classList.remove('question-playing');
+    // Switch to theory tab so the lesson area canvas is visible
+    setMobileTab('theory');
+    // Launch Three.js scene synced to this audio element
+    launchCompletionAnimation(audio, targetTime);
+
   } else {
     isNarrationActive = true;
     const bar = document.getElementById('questionBar');
@@ -4252,7 +6753,8 @@ function maybePrefetchNext(audio, currentIndex) {
   const hasNext = currentIndex < combinedTracks.length - 1;
   if (hasNext && remaining < 5 && prefetchedForIndex !== currentIndex + 1) {
     const nextTrack = combinedTracks[currentIndex + 1];
-    const trackId = `day01_${nextTrack.src.replace('.mp3', '')}`;
+    const filename = nextTrack.src.split('/').pop().replace('.mp3', '');
+    const trackId = `${currentDay}_${filename}`;
     const nextEntry = manifest[trackId] || { audioPath: nextTrack.src };
     const url = getAudioUrl(nextEntry);
 
@@ -4353,6 +6855,8 @@ function formatTime(secs) {
 function onNarrationSegmentEnded(index, events) {
   if (index !== combinedTrackIndex) return;
 
+  const endedTrack = combinedTracks[index];
+
   if (combinedTrackIndex < combinedTracks.length - 1) {
     combinedTrackIndex++;
     loadAndPlayTrack(combinedTrackIndex);
@@ -4369,6 +6873,14 @@ function onNarrationSegmentEnded(index, events) {
     // Remove question bar highlight
     const bar = document.getElementById('questionBar');
     if (bar) bar.classList.remove('question-playing');
+
+    // If the last track was the completion track, hold final frame for 1s before teardown + blink Take Test
+    if (endedTrack && endedTrack.type === 'completion') {
+      setTimeout(() => {
+        teardownCompletionAnimation();
+        activateTakeTestBlink();
+      }, 1000);
+    }
   }
 }
 
@@ -4380,7 +6892,7 @@ async function seekCombinedPlayback(val) {
   let elapsed = 0;
   let trackIdx = 0;
   let localOffset = targetTime;
-  
+
   for (let i = 0; i < combinedTrackDurations.length; i++) {
     const dur = combinedTrackDurations[i];
     if (targetTime < elapsed + dur) {
@@ -4400,8 +6912,43 @@ async function seekCombinedPlayback(val) {
     await loadAndPlayTrack(trackIdx, localOffset);
   } else if (activeAudioInstance) {
     activeAudioInstance.currentTime = localOffset;
+    cancelTypewriter();
+
+    const track = combinedTracks[trackIdx];
+    if (track) {
+      if (track.type === 'question' || track.type === 'solution') {
+        teardownCompletionAnimation();
+        const targetQIdx = COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === track.qId);
+        if (targetQIdx !== -1) {
+          currentPracticeQ = targetQIdx;
+          renderPracticeQuestion();
+          updatePracticeStats();
+        }
+        const bar = document.getElementById('questionBar');
+        if (bar) bar.classList.add('question-playing');
+        setMobileTab('practice');
+
+        if (track.type === 'solution') {
+          const solMap = questionSolutionMap[currentDay] || questionSolutionMap['day01'];
+          const solEntry = solMap ? solMap[track.qId] : null;
+          if (solEntry) {
+            startAudioSyncedTypewriter(activeAudioInstance, solEntry);
+          }
+        }
+      } else if (track.type === 'completion') {
+        if (!completionOverlayDiv || !completionScene) {
+          launchCompletionAnimation(activeAudioInstance);
+        }
+      } else {
+        teardownCompletionAnimation();
+        const bar = document.getElementById('questionBar');
+        if (bar) bar.classList.remove('question-playing');
+        scrollToTarget(track.target);
+        setMobileTab('theory');
+      }
+    }
   }
-  
+
   currentCombinedTime = targetTime;
   updateProgressUI();
 }
@@ -4470,7 +7017,7 @@ function playAudio(src, btn) {
     }
     return;
   }
-  
+
   if (combinedTrackIndex === idx) {
     toggleCombinedPlayback();
   } else {
@@ -4490,9 +7037,9 @@ function setMobileTab(tab) {
   const container = document.getElementById('workspaceContainer');
   const btnTheory = document.getElementById('tabBtnTheory');
   const btnPractice = document.getElementById('tabBtnPractice');
-  
+
   if (!container) return;
-  
+
   if (tab === 'theory') {
     container.classList.remove('mobile-show-practice');
     container.classList.add('mobile-show-theory');
@@ -4503,7 +7050,7 @@ function setMobileTab(tab) {
     container.classList.add('mobile-show-practice');
     if (btnPractice) btnPractice.classList.add('active');
     if (btnTheory) btnTheory.classList.remove('active');
-    
+
     // Refresh CodeMirror when visual display toggles
     setTimeout(() => {
       if (typeof mainEditor !== 'undefined' && mainEditor) {
@@ -4516,7 +7063,10 @@ function setMobileTab(tab) {
 // Missing audio orchestration functions
 function initSlideNarration() {
   // Kick off a manifest load so loadAndPlayTrack() gets accurate paths/durations.
-  loadManifest().catch(() => {});
+  loadManifest().catch(() => { });
+
+  // Eagerly preload Three.js in background so 3D completion narration visuals load instantly
+  ensureThreeLoaded(() => { });
 
   // Populate combinedAudios[] — required by syncCombinedToTrack(), playQuestionAudio()
   // and playSolutionAudio() which address individual tracks by index.
@@ -4525,7 +7075,7 @@ function initSlideNarration() {
 
   combinedAudios = combinedTracks.map(track => {
     const filename = track.src.split('/').pop().replace('.mp3', '');
-    const trackId = `day01_${filename}`;
+    const trackId = `${currentDay}_${filename}`;
     const entry = manifest[trackId] || { audioPath: track.src };
     const url = getAudioUrl(entry);
     const audio = new Audio(url);
@@ -4615,7 +7165,7 @@ function updatePlayButtonStates(isPlaying) {
 
   document.querySelectorAll('.audio-play-btn').forEach(btn => {
     const onclickStr = btn.getAttribute('onclick') || '';
-    
+
     // For playAudio('filename.mp3', this)
     if (onclickStr.includes('playAudio')) {
       const match = onclickStr.match(/playAudio\(['"]([^'"]+)['"]/);
@@ -4630,7 +7180,7 @@ function updatePlayButtonStates(isPlaying) {
         }
       }
     }
-    
+
     // For playQuestionAudio(this)
     if (onclickStr.includes('playQuestionAudio')) {
       if (activeTrack && activeTrack.type === 'question' && isPlaying) {
@@ -4658,14 +7208,41 @@ function updatePlayButtonStates(isPlaying) {
 function playCombinedPlayback() {
   isCombinedPlaying = true;
   if (activeAudioInstance) {
+    if (activeAudioInstance.ended || activeAudioInstance.currentTime >= (activeAudioInstance.duration || 26) - 0.5) {
+      try { activeAudioInstance.currentTime = 0; } catch (e) { }
+    }
     activeAudioInstance.play()
       .then(() => {
         updatePlayButtonStates(true);
-        // Re-apply focus filter AND scroll back on resume
-        if (isNarrationActive) {
-          const activeTrack = combinedTracks[combinedTrackIndex];
-          if (activeTrack && activeTrack.target) {
-            scrollToTarget(activeTrack.target);
+        const activeTrack = combinedTracks[combinedTrackIndex];
+        if (activeTrack) {
+          if (activeTrack.type === 'question' || activeTrack.type === 'solution') {
+            teardownCompletionAnimation();
+            const targetQIdx = COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === activeTrack.qId);
+            if (targetQIdx !== -1) {
+              currentPracticeQ = targetQIdx;
+              renderPracticeQuestion();
+              updatePracticeStats();
+            }
+            const bar = document.getElementById('questionBar');
+            if (bar) bar.classList.add('question-playing');
+
+            if (activeTrack.type === 'solution') {
+              const solMap = questionSolutionMap[currentDay] || questionSolutionMap['day01'];
+              const solEntry = solMap ? solMap[activeTrack.qId] : null;
+              if (solEntry) {
+                startAudioSyncedTypewriter(activeAudioInstance, solEntry);
+              }
+            }
+          } else if (activeTrack.type === 'completion') {
+            if (!completionOverlayDiv || !completionScene) {
+              launchCompletionAnimation(activeAudioInstance);
+            }
+          } else {
+            teardownCompletionAnimation();
+            if (isNarrationActive && activeTrack.target) {
+              scrollToTarget(activeTrack.target);
+            }
           }
         }
       })
@@ -4678,10 +7255,16 @@ function playCombinedPlayback() {
 
 function pauseCombinedPlayback() {
   isCombinedPlaying = false;
+  cancelTypewriter();
   if (activeAudioInstance) {
     activeAudioInstance.pause();
   }
   updatePlayButtonStates(false);
+
+  const activeTrack = combinedTracks[combinedTrackIndex];
+  if (activeTrack && activeTrack.type !== 'completion') {
+    teardownCompletionAnimation();
+  }
   // Show all content when paused so user can read freely
   if (typeof clearSlidePlaybackVisibility === 'function') clearSlidePlaybackVisibility();
 

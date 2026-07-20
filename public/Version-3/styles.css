@@ -530,6 +530,50 @@ a { color: var(--cyan); text-decoration: none; }
   box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
   transform: translateY(-1px);
 }
+
+/* ── Take Test Urgent Blink ────────────────────────────────────────────────
+   Applied when Day completion audio finishes and user hasn't taken the test.
+   Removed automatically after submitTest() grades and stores the score.      */
+.take-test--urgent {
+  animation: testUrgentPulse 1.2s ease-in-out infinite !important;
+  position: relative;
+}
+.take-test--urgent::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: 0 0 0 2px #fbbf24;
+  animation: testUrgentRing 1.2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes testUrgentPulse {
+  0%, 100% {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+    transform: scale(1);
+  }
+  50% {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    box-shadow: 0 0 18px 4px rgba(251, 191, 36, 0.55), 0 4px 12px rgba(251,191,36,0.35), inset 0 1px 0 rgba(255,255,255,0.25) !important;
+    transform: scale(1.04);
+  }
+}
+@keyframes testUrgentRing {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(251,191,36,0.25); }
+  50%       { box-shadow: 0 0 0 4px rgba(251,191,36,0.7); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .take-test--urgent {
+    animation: testUrgentOpacity 1.2s ease-in-out infinite !important;
+  }
+  .take-test--urgent::after { display: none; }
+  @keyframes testUrgentOpacity {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.6; }
+  }
+}
 .hdr-btn--score {
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   color: rgba(255, 255, 255, 0.9) !important;

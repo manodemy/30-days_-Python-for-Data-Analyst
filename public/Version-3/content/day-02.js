@@ -7,16 +7,27 @@ window.COURSE_CONTENT['day02'] = {
   "emoji": "💾",
   "slides": [
     {
-      "title": "Basic Retrieval: SELECT, DISTINCT, ORDER BY & LIMIT",
-      "duration": "0:00",
+      "title": "Basic Retrieval : SELECT, DISTINCT, ORDER BY & LIMIT",
+      "duration": "12:28",
       "html": `
-        <h2>💾 Basic Retrieval: SELECT, DISTINCT, ORDER BY & LIMIT</h2>
+        <h2>💾 Basic Retrieval : SELECT, DISTINCT, ORDER BY & LIMIT</h2>
 
         <div class="slide-section">
-          <h3>01. The Anatomy of a SELECT Statement</h3>
+          <h3 class="heading-with-audio" id="day02Anatomy">
+            01. The Anatomy of a SELECT Statement
+            <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio01.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
           <p>Every SQL query begins with <code>SELECT</code> — the command that tells the database engine <em>what data to return</em>. The <code>FROM</code> clause specifies <em>which table</em> to read from. Together they form the minimum viable SQL query.</p>
 
-          <pre><code>-- Retrieve every column from the employees table
+          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">SELECT * vs Named Columns Examples</small>
+            <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio02.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <pre id="day02AnatomyCode"><code>-- Retrieve every column from the employees table
 SELECT *
 FROM   employees;
 
@@ -24,32 +35,60 @@ FROM   employees;
 SELECT first_name, last_name, salary
 FROM   employees;</code></pre>
 
-          <div class="info-box">
-            ℹ️ <strong>SELECT * vs. Named Columns:</strong> <code>SELECT *</code> is convenient for exploration but costly in production — it forces the engine to read every column from disk, blocking index-only scans and increasing network payload. Always prefer named columns in application queries.
+          <div class="info-box" id="day02AnatomyInfo">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
+              <div style="flex: 1;">
+                ℹ️ <strong>SELECT * vs. Named Columns:</strong> <code>SELECT *</code> is convenient for exploration but costly in production — it forces the engine to read every column from disk, blocking index-only scans and increasing network payload. Always prefer named columns in application queries.
+              </div>
+              <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio03.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
           </div>
         </div>
 
         <div class="slide-section">
-          <h3>02. Column Aliases — Renaming Output Headers</h3>
+          <h3 class="heading-with-audio" id="day02Aliases">
+            02. Column Aliases — Renaming Output Headers
+            <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio04.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
           <p>The <code>AS</code> keyword assigns a temporary label to a column or expression in the result set. Aliases appear in the output header and can be used in <code>ORDER BY</code>, but <strong>not</strong> in <code>WHERE</code> (evaluated before SELECT).</p>
 
-          <pre><code>SELECT first_name                   AS "First Name",
+          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">SELECT Alias Examples</small>
+            <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio05.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <pre id="day02AliasesCode"><code>SELECT first_name                   AS "First Name",
        last_name                    AS "Last Name",
        salary * 1.1                 AS revised_salary,
        salary - 50000               AS salary_above_base
 FROM   employees;</code></pre>
 
-          <div class="vs-block">
-            <div class="vs-card">
-              <h4>✅ Valid Alias Forms</h4>
+          <div class="vs-block" id="day02AliasesVs">
+            <div class="vs-card" id="day02AliasesValid">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; margin-bottom: 6px;">
+                <h4 style="margin: 0;">✅ Valid Alias Forms</h4>
+                <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio06.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
               <ul>
                 <li><code>column AS alias</code> — Standard (preferred)</li>
                 <li><code>column alias</code> — Omitting AS (works in most engines)</li>
                 <li><code>column AS "alias with spaces"</code> — Double-quotes for spaces</li>
               </ul>
             </div>
-            <div class="vs-card">
-              <h4>⚠️ Alias Scope Rules</h4>
+            <div class="vs-card" id="day02AliasesScope">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; margin-bottom: 6px;">
+                <h4 style="margin: 0;">⚠️ Alias Scope Rules</h4>
+                <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio07.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
               <ul>
                 <li>Alias is available in <code>ORDER BY</code> ✅</li>
                 <li>Alias is <strong>NOT</strong> available in <code>WHERE</code> ❌</li>
@@ -61,10 +100,21 @@ FROM   employees;</code></pre>
         </div>
 
         <div class="slide-section">
-          <h3>03. DISTINCT — Removing Duplicate Rows</h3>
+          <h3 class="heading-with-audio" id="day02Distinct">
+            03. DISTINCT — Removing Duplicate Rows
+            <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio08.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
           <p><code>DISTINCT</code> applies <em>after</em> the result set is constructed and eliminates duplicate rows based on the selected columns. It operates on the combination of all selected columns — not just one.</p>
 
-          <pre><code>-- All unique regions (deduplicates region column)
+          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">SELECT DISTINCT Examples</small>
+            <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio09.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <pre id="day02DistinctCode"><code>-- All unique regions (deduplicates region column)
 SELECT DISTINCT region
 FROM   customers;
 
@@ -73,16 +123,34 @@ SELECT DISTINCT department_id, job_title
 FROM   employees
 ORDER BY department_id;</code></pre>
 
-          <div class="warn-box">
-            ⚠️ <strong>Performance Warning:</strong> <code>DISTINCT</code> requires a sort or hash operation to compare all rows. On large tables this is expensive. Before using <code>DISTINCT</code> ask yourself: "Why do I have duplicates?" — the root cause (e.g. a missing join condition) is often a better fix.
+          <div class="warn-box" id="day02DistinctWarn">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
+              <div style="flex: 1;">
+                ⚠️ <strong>Performance Warning:</strong> <code>DISTINCT</code> requires a sort or hash operation to compare all rows. On large tables this is expensive. Before using <code>DISTINCT</code> ask yourself: "Why do I have duplicates?" — the root cause (e.g. a missing join condition) is often a better fix.
+              </div>
+              <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio10.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
           </div>
         </div>
 
         <div class="slide-section">
-          <h3>04. ORDER BY — Sorting Results</h3>
+          <h3 class="heading-with-audio" id="day02OrderBy">
+            04. ORDER BY — Sorting Results
+            <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio11.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
           <p><code>ORDER BY</code> is evaluated <em>last</em> in SQL's logical execution order (just before <code>LIMIT</code>). You can sort by column names, column positions, or aliases. Multiple columns create a hierarchical sort.</p>
 
-          <pre><code>-- Single column sort (ascending is default)
+          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">ORDER BY Examples</small>
+            <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio12.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <pre id="day02OrderByCode"><code>-- Single column sort (ascending is default)
 SELECT first_name, salary
 FROM   employees
 ORDER BY salary DESC;
@@ -97,14 +165,34 @@ SELECT first_name, salary * 1.1 AS new_salary
 FROM   employees
 ORDER BY new_salary DESC;</code></pre>
 
-          <div class="pro-tip-box">
-            💡 <strong>Pro Tip — NULL in ORDER BY:</strong> In most databases, <code>NULL</code> values sort as either the lowest or highest value depending on the engine. SQLite treats <code>NULL</code> as less than any other value, so <code>ORDER BY col ASC</code> puts NULLs first. Use <code>ORDER BY col DESC NULLS LAST</code> in PostgreSQL to control this explicitly.
+          <div class="pro-tip-box" id="day02OrderByTip">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
+              <div style="flex: 1;">
+                💡 <strong>Pro Tip — NULL in ORDER BY:</strong> In most databases, <code>NULL</code> values sort as either the lowest or highest value depending on the engine. SQLite treats <code>NULL</code> as less than any other value, so <code>ORDER BY col ASC</code> puts NULLs first. Use <code>ORDER BY col DESC NULLS LAST</code> in PostgreSQL to control this explicitly.
+              </div>
+              <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio13.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
           </div>
         </div>
-          <h3>05. LIMIT — Restricting Row Count</h3>
+
+        <div class="slide-section">
+          <h3 class="heading-with-audio" id="day02Limit">
+            05. LIMIT — Restricting Row Count
+            <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio14.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
           <p><code>LIMIT</code> (SQLite/MySQL/PostgreSQL) or <code>TOP</code> (SQL Server) restricts how many rows are returned. It is applied <em>after</em> filtering, grouping, and sorting — meaning it returns the first N rows <em>of the sorted result</em>.</p>
 
-          <pre><code>-- Top 5 highest-paid employees
+          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">LIMIT Examples</small>
+            <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio15.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <pre id="day02LimitCode"><code>-- Top 5 highest-paid employees
 SELECT first_name, last_name, salary
 FROM   employees
 ORDER BY salary DESC
@@ -118,7 +206,12 @@ LIMIT  5 OFFSET 5;</code></pre>
         </div>
 
         <div class="slide-section">
-          <h3>06. The Logical SQL Execution Order</h3>
+          <h3 class="heading-with-audio" id="day02Logical">
+            06. The Logical SQL Execution Order
+            <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio16.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
           <p>Understanding <em>why</em> aliases work in some clauses but not others requires understanding the order in which SQL engines logically process a query. This is one of the most-tested SQL interview topics:</p>
 
           <div class="sof-wrap" id="day02LogicalOrder">
@@ -214,10 +307,15 @@ LIMIT  5 OFFSET 5;</code></pre>
 
             <div class="sof-grid">
               <!-- ── LEFT: Writing Order ── -->
-              <div class="sof-col sof-col--write">
-                <div class="sof-hdr sof-hdr--blue">
-                  <span class="sof-hdr-icon">📄</span>
-                  <div class="sof-hdr-text"><span class="sof-hdr-title">Writing Order</span><span class="sof-hdr-sub">Syntax</span></div>
+              <div class="sof-col sof-col--write" id="day02LogicalWrite">
+                <div class="sof-hdr sof-hdr--blue" style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="sof-hdr-icon">📄</span>
+                    <div class="sof-hdr-text"><span class="sof-hdr-title">Writing Order</span><span class="sof-hdr-sub">Syntax</span></div>
+                  </div>
+                  <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio17.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                    <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
                 </div>
                 <div class="sof-body">
                   <div class="sof-node sof-node--dash" style="--d:0.25s">SELECT</div>
@@ -237,10 +335,15 @@ LIMIT  5 OFFSET 5;</code></pre>
               </div>
 
               <!-- ── RIGHT: Execution Order ── -->
-              <div class="sof-col sof-col--exec">
-                <div class="sof-hdr sof-hdr--teal">
-                  <span class="sof-hdr-icon">⚙️</span>
-                  <div class="sof-hdr-text"><span class="sof-hdr-title">Execution Order</span><span class="sof-hdr-sub">Logical</span></div>
+              <div class="sof-col sof-col--exec" id="day02LogicalExec">
+                <div class="sof-hdr sof-hdr--teal" style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="sof-hdr-icon">⚙️</span>
+                    <div class="sof-hdr-text"><span class="sof-hdr-title">Execution Order</span><span class="sof-hdr-sub">Logical</span></div>
+                  </div>
+                  <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio18.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                    <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
                 </div>
                 <div class="sof-body">
                   <div class="sof-node" style="--d:0.45s">1. FROM / JOIN</div>
@@ -267,21 +370,42 @@ LIMIT  5 OFFSET 5;</code></pre>
         <!-- ── Interview Q&A Consolidated Section ── -->
         <div class="slide-section">
           <div class="interview-box">
-            <h4>🎯 Interview Insights &amp; Q&amp;A</h4>
+            <h4 id="day02QAHeading">🎯 Interview Insights &amp; Q&amp;A</h4>
             
-            <div style="margin-bottom: 14px;">
-              <p><strong>Q: What is the difference between LIMIT and TOP?</strong></p>
-              <p><em>A: Both restrict row count. <code>LIMIT</code> is the ANSI-preferred syntax used by MySQL, PostgreSQL, and SQLite; it goes at the end of the query and supports <code>OFFSET</code> for pagination. <code>TOP n</code> is SQL Server / MS Access syntax; it goes immediately after <code>SELECT</code> and uses <code>FETCH NEXT n ROWS ONLY</code> for pagination in modern T-SQL.</em></p>
+            <div style="margin-bottom: 14px;" id="day02QALimit">
+              <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
+                <div style="flex: 1;">
+                  <p><strong>Q: What is the difference between LIMIT and TOP?</strong></p>
+                  <p style="margin-bottom: 0;"><em>A: Both restrict row count. <code>LIMIT</code> is the ANSI-preferred syntax used by MySQL, PostgreSQL, and SQLite; it goes at the end of the query and supports <code>OFFSET</code> for pagination. <code>TOP n</code> is SQL Server / MS Access syntax; it goes immediately after <code>SELECT</code> and uses <code>FETCH NEXT n ROWS ONLY</code> for pagination in modern T-SQL.</em></p>
+                </div>
+                <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio19.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
             </div>
 
-            <div style="margin-bottom: 14px;">
-              <p><strong>Q: Why can't column aliases defined in SELECT be referenced in the WHERE clause?</strong></p>
-              <p><em>A: Because of SQL's logical execution order — <code>WHERE</code> (step 2) is evaluated BEFORE <code>SELECT</code> (step 5). When <code>WHERE</code> filters rows, column aliases do not exist yet. However, <code>ORDER BY</code> (step 7) evaluates AFTER <code>SELECT</code>, so aliases ARE valid in <code>ORDER BY</code>.</em></p>
+            <div style="margin-bottom: 14px;" id="day02QAAlias">
+              <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
+                <div style="flex: 1;">
+                  <p><strong>Q: Why can't column aliases defined in SELECT be referenced in the WHERE clause?</strong></p>
+                  <p style="margin-bottom: 0;"><em>A: Because of SQL's logical execution order — <code>WHERE</code> (step 2) is evaluated BEFORE <code>SELECT</code> (step 5). When <code>WHERE</code> filters rows, column aliases do not exist yet. However, <code>ORDER BY</code> (step 7) evaluates AFTER <code>SELECT</code>, so aliases ARE valid in <code>ORDER BY</code>.</em></p>
+                </div>
+                <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio20.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
             </div>
 
-            <div>
-              <p><strong>Q: What is the performance impact of SELECT * vs selecting named columns?</strong></p>
-              <p><em>A: <code>SELECT *</code> forces the database engine to read every column from disk, blocking index-only scans, polluting the buffer pool cache, and increasing network payload. Explicitly specifying named columns allows query optimizers to leverage covering indexes and read minimal data.</em></p>
+            <div id="day02QAStar">
+              <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%;">
+                <div style="flex: 1;">
+                  <p><strong>Q: What is the performance impact of SELECT * vs selecting named columns?</strong></p>
+                  <p style="margin-bottom: 0;"><em>A: <code>SELECT *</code> forces the database engine to read every column from disk, blocking index-only scans, polluting the buffer pool cache, and increasing network payload. Explicitly specifying named columns allows query optimizers to leverage covering indexes and read minimal data.</em></p>
+                </div>
+                <button class="audio-play-btn" onclick="playAudio('Day02/New_Day2Part1audio21.mp3', this)" title="Play narration" style="flex-shrink: 0; margin-top: 2px;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>

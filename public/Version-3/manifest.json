@@ -138,5 +138,175 @@
     "audioPath": "New_Day1Part1Question03.mp3",
     "eventsPath": "New_Day1Part1Question03.events.json",
     "durationMs": 21812
+  },
+  "day02_New_Day2Part1audio01": {
+    "audioPath": "Day02/New_Day2Part1audio01.mp3",
+    "eventsPath": null,
+    "durationMs": 31060
+  },
+  "day02_New_Day2Part1audio02": {
+    "audioPath": "Day02/New_Day2Part1audio02.mp3",
+    "eventsPath": null,
+    "durationMs": 25861
+  },
+  "day02_New_Day2Part1audio03": {
+    "audioPath": "Day02/New_Day2Part1audio03.mp3",
+    "eventsPath": null,
+    "durationMs": 22700
+  },
+  "day02_New_Day2Part1audio04": {
+    "audioPath": "Day02/New_Day2Part1audio04.mp3",
+    "eventsPath": null,
+    "durationMs": 22413
+  },
+  "day02_New_Day2Part1audio05": {
+    "audioPath": "Day02/New_Day2Part1audio05.mp3",
+    "eventsPath": null,
+    "durationMs": 25913
+  },
+  "day02_New_Day2Part1audio06": {
+    "audioPath": "Day02/New_Day2Part1audio06.mp3",
+    "eventsPath": null,
+    "durationMs": 22935
+  },
+  "day02_New_Day2Part1audio07": {
+    "audioPath": "Day02/New_Day2Part1audio07.mp3",
+    "eventsPath": null,
+    "durationMs": 18991
+  },
+  "day02_New_Day2Part1audio08": {
+    "audioPath": "Day02/New_Day2Part1audio08.mp3",
+    "eventsPath": null,
+    "durationMs": 18755
+  },
+  "day02_New_Day2Part1audio09": {
+    "audioPath": "Day02/New_Day2Part1audio09.mp3",
+    "eventsPath": null,
+    "durationMs": 21916
+  },
+  "day02_New_Day2Part1audio10": {
+    "audioPath": "Day02/New_Day2Part1audio10.mp3",
+    "eventsPath": null,
+    "durationMs": 24084
+  },
+  "day02_New_Day2Part1audio11": {
+    "audioPath": "Day02/New_Day2Part1audio11.mp3",
+    "eventsPath": null,
+    "durationMs": 24241
+  },
+  "day02_New_Day2Part1audio12": {
+    "audioPath": "Day02/New_Day2Part1audio12.mp3",
+    "eventsPath": null,
+    "durationMs": 30693
+  },
+  "day02_New_Day2Part1audio13": {
+    "audioPath": "Day02/New_Day2Part1audio13.mp3",
+    "eventsPath": null,
+    "durationMs": 19539
+  },
+  "day02_New_Day2Part1audio14": {
+    "audioPath": "Day02/New_Day2Part1audio14.mp3",
+    "eventsPath": null,
+    "durationMs": 22752
+  },
+  "day02_New_Day2Part1audio15": {
+    "audioPath": "Day02/New_Day2Part1audio15.mp3",
+    "eventsPath": null,
+    "durationMs": 25573
+  },
+  "day02_New_Day2Part1audio16": {
+    "audioPath": "Day02/New_Day2Part1audio16.mp3",
+    "eventsPath": null,
+    "durationMs": 18155
+  },
+  "day02_New_Day2Part1audio17": {
+    "audioPath": "Day02/New_Day2Part1audio17.mp3",
+    "eventsPath": null,
+    "durationMs": 18285
+  },
+  "day02_New_Day2Part1audio18": {
+    "audioPath": "Day02/New_Day2Part1audio18.mp3",
+    "eventsPath": null,
+    "durationMs": 37511
+  },
+  "day02_New_Day2Part1audio19": {
+    "audioPath": "Day02/New_Day2Part1audio19.mp3",
+    "eventsPath": null,
+    "durationMs": 29100
+  },
+  "day02_New_Day2Part1audio20": {
+    "audioPath": "Day02/New_Day2Part1audio20.mp3",
+    "eventsPath": null,
+    "durationMs": 28734
+  },
+  "day02_New_Day2Part1audio21": {
+    "audioPath": "Day02/New_Day2Part1audio21.mp3",
+    "eventsPath": null,
+    "durationMs": 24241
+  },
+  "day02_New_Day2Question01": {
+    "audioPath": "Day02/New_Day2Question01.mp3",
+    "eventsPath": null,
+    "durationMs": 17319
+  },
+  "day02_New_Day2Question01sol": {
+    "audioPath": "Day02/New_Day2Question01sol.mp3",
+    "eventsPath": null,
+    "durationMs": 19226
+  },
+  "day02_New_Day2Question02": {
+    "audioPath": "Day02/New_Day2Question02.mp3",
+    "eventsPath": null,
+    "durationMs": 14341
+  },
+  "day02_New_Day2Question02sol": {
+    "audioPath": "Day02/New_Day2Question02sol.mp3",
+    "eventsPath": null,
+    "durationMs": 17580
+  },
+  "day02_New_Day2Question03": {
+    "audioPath": "Day02/New_Day2Question03.mp3",
+    "eventsPath": null,
+    "durationMs": 10397
+  },
+  "day02_New_Day2Question03sol": {
+    "audioPath": "Day02/New_Day2Question03sol.mp3",
+    "eventsPath": null,
+    "durationMs": 17215
+  },
+  "day02_New_Day2Question04": {
+    "audioPath": "Day02/New_Day2Question04.mp3",
+    "eventsPath": null,
+    "durationMs": 14445
+  },
+  "day02_New_Day2Question04sol": {
+    "audioPath": "Day02/New_Day2Question04sol.mp3",
+    "eventsPath": null,
+    "durationMs": 27533
+  },
+  "day02_New_Day2Question05": {
+    "audioPath": "Day02/New_Day2Question05.mp3",
+    "eventsPath": null,
+    "durationMs": 16483
+  },
+  "day02_New_Day2Question05sol": {
+    "audioPath": "Day02/New_Day2Question05sol.mp3",
+    "eventsPath": null,
+    "durationMs": 11886
+  },
+  "day02_New_Day2Question06": {
+    "audioPath": "Day02/New_Day2Question06.mp3",
+    "eventsPath": null,
+    "durationMs": 19461
+  },
+  "day02_New_Day2Question06sol": {
+    "audioPath": "Day02/New_Day2Question06sol.mp3",
+    "eventsPath": null,
+    "durationMs": 24059
+  },
+  "day02_Final_Audio": {
+    "audioPath": "Day02/Final_Audio.mp3",
+    "eventsPath": null,
+    "durationMs": 23014
   }
 }
