@@ -5685,20 +5685,68 @@ function createCompletionOverlay() {
   });
   completionOverlayDiv.appendChild(completionCanvas);
 
+  // Modern Glassmorphic Narration Card (Dynamic & Responsive Legend Container)
+  completionCaption = document.createElement('div');
+  completionCaption.id = 'completionCaption';
+  Object.assign(completionCaption.style, {
+    position: 'absolute',
+    bottom: isMobile ? 'calc(16px + env(safe-area-inset-bottom, 0px))' : '32px',
+    left: '50%',
+    transform: 'translateX(-50%) translateY(12px)',
+    width: '450px',
+    maxWidth: '92vw',
+    background: 'rgba(15, 23, 42, 0.82)',
+    backdropFilter: 'blur(20px)',
+    webkitBackdropFilter: 'blur(20px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '16px',
+    padding: isMobile ? '12px 16px' : '16px 24px',
+    boxShadow: '0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
+    zIndex: '100000',
+    pointerEvents: 'auto',
+    opacity: '0',
+    transition: 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: isMobile ? '6px' : '8px',
+    textAlign: 'center'
+  });
+
+  // Card Main Title
+  const titleEl = document.createElement('div');
+  titleEl.id = 'cardTitle';
+  Object.assign(titleEl.style, {
+    fontSize: isMobile ? '0.96rem' : '1.18rem',
+    fontWeight: '800',
+    color: '#ffffff',
+    lineHeight: '1.25',
+    transition: 'all 0.3s ease'
+  });
+  completionCaption.appendChild(titleEl);
+
+  // Card Description Subtitle
+  const subEl = document.createElement('div');
+  subEl.id = 'cardSub';
+  Object.assign(subEl.style, {
+    fontSize: isMobile ? '0.76rem' : '0.86rem',
+    fontWeight: '500',
+    color: '#94a3b8',
+    lineHeight: '1.4',
+    transition: 'all 0.3s ease'
+  });
+  completionCaption.appendChild(subEl);
+
+  completionOverlayDiv.appendChild(completionCaption);
   container.appendChild(completionOverlayDiv);
 }
 
 function updateCompletionLegend(momentIdx) {
-  const pill = document.getElementById('cardPill');
   const title = document.getElementById('cardTitle');
   const sub = document.getElementById('cardSub');
   const cData = NARRATION_CARDS[momentIdx];
 
-  if (pill && title && sub && cData) {
-    pill.textContent = cData.pill;
-    pill.style.color = cData.accent;
-    pill.style.background = cData.bgPill;
-    pill.style.borderColor = cData.accent + '66';
+  if (title && sub && cData) {
     title.textContent = cData.title;
     sub.textContent = cData.sub;
   }
