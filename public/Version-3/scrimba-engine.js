@@ -5067,11 +5067,11 @@ function buildSortedBars(THREE) {
   const labelGlows   = ['#c084fc', '#60a5fa', '#22d3ee', '#34d399', '#fef08a'];
   const bars = [];
   
-  const colSpacing = 0.58; // Widened spacing for perfect text nameplate separation
+  const colSpacing = 0.60; // Slightly widened spacing for perfect, guaranteed non-overlapping layouts
 
   // 1. Premium Brushed Titanium Lower Plinth Base
   const lowerBaseMat = cd(new THREE.MeshPhysicalMaterial({ color: 0x0f172a, metalness: 0.9, roughness: 0.1, clearcoat: 0.8, envMapIntensity: 1.5 }));
-  const lowerBase = new THREE.Mesh(cd(new THREE.BoxGeometry(3.1, 0.08, 0.52)), lowerBaseMat);
+  const lowerBase = new THREE.Mesh(cd(new THREE.BoxGeometry(3.2, 0.08, 0.52)), lowerBaseMat);
   lowerBase.position.set(0, -0.56, 0);
   group.add(lowerBase);
 
@@ -5085,7 +5085,7 @@ function buildSortedBars(THREE) {
     roughness: 0.05,
     envMapIntensity: 1.3
   }));
-  const upperDeck = new THREE.Mesh(cd(new THREE.BoxGeometry(2.92, 0.03, 0.44)), upperDeckMat);
+  const upperDeck = new THREE.Mesh(cd(new THREE.BoxGeometry(3.0, 0.03, 0.44)), upperDeckMat);
   upperDeck.position.set(0, -0.51, 0);
   group.add(upperDeck);
 
@@ -5118,22 +5118,24 @@ function buildSortedBars(THREE) {
     group.add(barMesh);
     bars.push(barMesh);
 
-    // 4. Premium Glowing Acrylic Capsule Nameplate Badges
+    // 4. Premium Glowing Acrylic Capsule Nameplate Badges with Fixed Aspect Ratio (Prevents Overlap)
     const labelText = i === 4 ? "TOP 1" : `#${5 - i}`;
     const tex = cd(createCanvasTexture(THREE, labelText, {
       color: '#ffffff',
       glowColor: labelGlows[i],
-      fontSize: 80,
-      padX: 42,
-      padY: 28,
+      fontSize: 52, // Perfectly scaled text footprint
+      width: 220,   // Fixed width
+      height: 110,  // Fixed height (aspect ratio is exactly 2.0)
+      padX: 10,
+      padY: 10,
       drawBgTag: true,
-      bgTagColor: 'rgba(9, 13, 26, 0.95)',
-      borderColor: labelGlows[i] + 'aa', // Color-matched glow accent border
-      borderWidth: 3.5
+      bgTagColor: 'rgba(11, 17, 33, 0.95)',
+      borderColor: labelGlows[i] + 'dd', // High-intensity color-matched glow border
+      borderWidth: 4.0
     }));
     const spriteMat = cd(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
     const sprite = new THREE.Sprite(spriteMat);
-    const h = 0.44;
+    const h = 0.25; // Compact 3D height scale (yields 0.25 * 2.0 = 0.50 width, leaving a guaranteed 0.10 unit gap between badges!)
     sprite.scale.set(h * tex.aspect, h, 1);
     sprite.position.set(colX, -0.66, 0.15);
     sprite.renderOrder = 3;
@@ -5235,8 +5237,8 @@ function buildSortedBars(THREE) {
   apexCrossHoriz.position.y = 0.53;
   crownGroup.add(apexOrb, apexCrossVert, apexCrossHoriz);
 
-  // Position crown neatly at the TOP of the TOP 1 bar (x = 1.16, y = 2.3)
-  crownGroup.position.set(1.16, 2.3, 0);
+  // Position crown neatly at the TOP of the TOP 1 bar (x = 1.20, y = 2.3)
+  crownGroup.position.set(1.20, 2.3, 0);
   crownGroup.scale.setScalar(0.01);
   group.add(crownGroup);
 
