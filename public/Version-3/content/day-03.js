@@ -112,7 +112,6 @@ WHERE  unit_price <= 1000
           </h3>
           <p>Logical operators let you compose complex filters from simple predicates. SQL evaluates them in <strong>operator precedence</strong> order: <code>NOT</code> binds tightest → then <code>AND</code> → then <code>OR</code>. Mixing <code>AND</code> and <code>OR</code> without parentheses is a classic bug source — always use brackets to make your intent explicit.</p>
 
-          <!-- Operator Precedence & Venn Diagrams Visual -->
           <div id="day03PrecWrap" style="width:100%;margin:14px 0 16px">
             <style>
               #day03PrecWrap .prec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
@@ -178,7 +177,6 @@ WHERE  unit_price <= 1000
               #day03PrecWrap .prec-priority--2 .label { color: #fcd34d; }
               #day03PrecWrap .prec-priority--3 .label { color: #6ee7b7; }
               
-              #day03PrecWrap .prec-desc{font-size:0.72rem;color:#cbd5e1;line-height:1.45;margin-top:2px}
               #day03PrecWrap .prec-venn{width:100%;background:rgba(5, 8, 16, 0.7);border-radius:8px;padding:0;border:1px solid rgba(255, 255, 255, 0.08);box-sizing:border-box;overflow:hidden;display:flex;align-items:center;justify-content:center}
 
               #day03PrecWrap .formula-bar {
@@ -188,12 +186,13 @@ WHERE  unit_price <= 1000
               }
               #day03PrecWrap .formula-badge {
                 font-family: 'JetBrains Mono', monospace;
-                font-size: 0.76rem;
+                font-size: 0.70rem;
                 font-weight: 700;
-                padding: 4px 10px;
+                padding: 3px 8px;
                 border-radius: 6px;
-                letter-spacing: 0.02em;
+                letter-spacing: 0.01em;
                 box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+                white-space: nowrap;
               }
               #day03PrecWrap .formula-badge--not {
                 background: rgba(239, 68, 68, 0.12) !important;
@@ -209,6 +208,32 @@ WHERE  unit_price <= 1000
                 background: rgba(16, 185, 129, 0.12) !important;
                 color: #6ee7b7 !important;
                 border: 1px solid rgba(16, 185, 129, 0.25) !important;
+              }
+
+              #day03PrecWrap .prec-list {
+                list-style: none;
+                padding: 0;
+                margin: 4px 0 0 0;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+              }
+              #day03PrecWrap .prec-list li {
+                font-size: 0.70rem;
+                line-height: 1.4;
+                color: #cbd5e1;
+                display: flex;
+                align-items: flex-start;
+                gap: 6px;
+              }
+              #day03PrecWrap .prec-list li strong {
+                color: #f8fafc;
+              }
+              #day03PrecWrap .prec-list li::before {
+                content: "•";
+                color: var(--bullet-color);
+                font-weight: bold;
+                flex-shrink: 0;
               }
 
               @keyframes precReveal{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
@@ -268,7 +293,11 @@ WHERE  unit_price <= 1000
                   <span class="formula-badge formula-badge--not">NOT A &nbsp;(U \ A)</span>
                 </div>
                 
-                <span class="prec-desc">A <strong>unary operator</strong> that negates a condition. In set theory, it represents the <strong>Complement</strong> (everything outside Set A). Evaluated first.</span>
+                <ul class="prec-list" style="--bullet-color: #ef4444;">
+                  <li><strong>Operator:</strong> Unary (negates condition)</li>
+                  <li><strong>Set Theory:</strong> Represents the <strong>Complement</strong></li>
+                  <li><strong>Precedence:</strong> 1st • Evaluated first</li>
+                </ul>
               </div>
               
               <!-- CARD 2: AND -->
@@ -317,7 +346,11 @@ WHERE  unit_price <= 1000
                   <span class="formula-badge formula-badge--and">A AND B &nbsp;(A ∩ B)</span>
                 </div>
                 
-                <span class="prec-desc">A <strong>binary operator</strong> that returns TRUE if <em>both</em> conditions are TRUE. Represents the <strong>Intersection</strong>. Binds tighter than OR.</span>
+                <ul class="prec-list" style="--bullet-color: #f59e0b;">
+                  <li><strong>Operator:</strong> Binary (both must be TRUE)</li>
+                  <li><strong>Set Theory:</strong> Represents the <strong>Intersection</strong></li>
+                  <li><strong>Precedence:</strong> 2nd • Binds tighter than OR</li>
+                </ul>
               </div>
               
               <!-- CARD 3: OR -->
@@ -364,7 +397,11 @@ WHERE  unit_price <= 1000
                   <span class="formula-badge formula-badge--or">A OR B &nbsp;(A ∪ B)</span>
                 </div>
                 
-                <span class="prec-desc">A <strong>binary operator</strong> that returns TRUE if <em>at least one</em> condition is TRUE. Represents the <strong>Union</strong>. Evaluated last.</span>
+                <ul class="prec-list" style="--bullet-color: #10b981;">
+                  <li><strong>Operator:</strong> Binary (one must be TRUE)</li>
+                  <li><strong>Set Theory:</strong> Represents the <strong>Union</strong></li>
+                  <li><strong>Precedence:</strong> 3rd • Evaluated last</li>
+                </ul>
               </div>
             </div>
           </div>
