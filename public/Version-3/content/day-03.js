@@ -144,27 +144,103 @@ WHERE  (department_id = 10 OR department_id = 20)
           <div id="day03PrecWrap" style="width:100%;margin:14px 0 16px">
             <style>
               #day03PrecWrap .prec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
-              #day03PrecWrap .prec-card{background:rgba(9,15,28,0.92);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;animation:precReveal 0.45s ease both;transition:transform 0.25s ease, border-color 0.25s ease;overflow:hidden;position:relative}
+              #day03PrecWrap .prec-card{background:rgba(9,15,28,0.92);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;animation:precReveal 0.45s ease both;transition:transform 0.25s ease, border-color 0.25s ease;overflow:hidden;position:relative}
               #day03PrecWrap .prec-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.12)}
               
               #day03PrecWrap .prec-card--not{border-top:3px solid #ef4444}
               #day03PrecWrap .prec-card--and{border-top:3px solid #f59e0b}
               #day03PrecWrap .prec-card--or{border-top:3px solid #10b981}
 
-              #day03PrecWrap .prec-badge{display:inline-block;width:fit-content;padding:2px 10px;border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.05em}
-              #day03PrecWrap .prec-badge--red{background:rgba(239,68,68,0.18);color:#fca5a5;border:1px solid rgba(239,68,68,0.3)}
-              #day03PrecWrap .prec-badge--amber{background:rgba(245,158,11,0.18);color:#fcd34d;border:1px solid rgba(245,158,11,0.3)}
-              #day03PrecWrap .prec-badge--emerald{background:rgba(16,185,129,0.18);color:#6ee7b7;border:1px solid rgba(16,185,129,0.3)}
+              #day03PrecWrap .prec-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                padding-bottom: 8px;
+                margin-bottom: 2px;
+              }
               
-              #day03PrecWrap .prec-rank{font-size:0.64rem;color:#94a3b8;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
-              #day03PrecWrap .prec-desc{font-size:0.72rem;color:#cbd5e1;line-height:1.45;margin-bottom:2px}
+              #day03PrecWrap .prec-op {
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 0.72rem;
+                font-weight: 800;
+                padding: 3px 10px;
+                border-radius: 6px;
+                letter-spacing: 0.04em;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+                box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+              }
+              
+              #day03PrecWrap .prec-op--not {
+                background: linear-gradient(135deg, #ef4444, #b91c1c);
+                color: #fff;
+                border: 1px solid rgba(239, 68, 68, 0.4);
+              }
+              
+              #day03PrecWrap .prec-op--and {
+                background: linear-gradient(135deg, #f59e0b, #d97706);
+                color: #fff;
+                border: 1px solid rgba(245, 158, 11, 0.4);
+              }
+              
+              #day03PrecWrap .prec-op--or {
+                background: linear-gradient(135deg, #10b981, #047857);
+                color: #fff;
+                border: 1px solid rgba(16, 185, 129, 0.4);
+              }
+              
+              #day03PrecWrap .prec-priority {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+              }
+              
+              #day03PrecWrap .prec-priority .num {
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 0.62rem;
+                font-weight: 800;
+              }
+              
+              #day03PrecWrap .prec-priority--1 .num {
+                background: rgba(239, 68, 68, 0.18);
+                border: 1px solid rgba(239, 68, 68, 0.45);
+                color: #fca5a5;
+                box-shadow: 0 0 6px rgba(239, 68, 68, 0.3);
+              }
+              
+              #day03PrecWrap .prec-priority--2 .num {
+                background: rgba(245, 158, 11, 0.18);
+                border: 1px solid rgba(245, 158, 11, 0.45);
+                color: #fcd34d;
+                box-shadow: 0 0 6px rgba(245, 158, 11, 0.3);
+              }
+              
+              #day03PrecWrap .prec-priority--3 .num {
+                background: rgba(16, 185, 129, 0.18);
+                border: 1px solid rgba(16, 185, 129, 0.45);
+                color: #6ee7b7;
+                box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
+              }
+              
+              #day03PrecWrap .prec-priority .label {
+                font-family: 'Inter', sans-serif;
+                font-size: 0.58rem;
+                font-weight: 800;
+                letter-spacing: 0.06em;
+              }
+              
+              #day03PrecWrap .prec-priority--1 .label { color: #fca5a5; }
+              #day03PrecWrap .prec-priority--2 .label { color: #fcd34d; }
+              #day03PrecWrap .prec-priority--3 .label { color: #6ee7b7; }
+              
+              #day03PrecWrap .prec-desc{font-size:0.72rem;color:#cbd5e1;line-height:1.45;margin-top:2px}
               #day03PrecWrap .prec-venn{width:100%;background:rgba(5, 8, 16, 0.7);border-radius:8px;padding:0;border:1px solid rgba(255, 255, 255, 0.08);box-sizing:border-box;overflow:hidden;display:flex;align-items:center;justify-content:center}
-              
-              #day03PrecWrap .prec-table-title{font-size:0.6rem;color:#64748b;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-top:4px}
-              #day03PrecWrap .prec-matrix{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:#94a3b8;background:rgba(0,0,0,0.25);border-radius:6px;padding:8px 10px;margin:0;line-height:1.4;border:1px solid rgba(255,255,255,0.03)}
-              #day03PrecWrap .prec-matrix span.t{color:#34d399}
-              #day03PrecWrap .prec-matrix span.f{color:#f87171}
-              #day03PrecWrap .prec-matrix span.u{color:#fb7185;opacity:0.85}
 
               @keyframes precReveal{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
               @media(max-width:768px){#day03PrecWrap .prec-grid{grid-template-columns:1fr;gap:12px}}
@@ -180,9 +256,12 @@ WHERE  (department_id = 10 OR department_id = 20)
             <div class="prec-grid">
               <!-- CARD 1: NOT -->
               <div class="prec-card prec-card--not" style="--d:0.15s;animation-delay:0.15s">
-                <div style="display:flex;align-items:center;justify-content:space-between;">
-                  <span class="prec-badge prec-badge--red">NOT</span>
-                  <span class="prec-rank" style="color:#ef4444">1. Highest</span>
+                <div class="prec-header">
+                  <div class="prec-op prec-op--not">NOT</div>
+                  <div class="prec-priority prec-priority--1">
+                    <span class="num">1</span>
+                    <span class="label">1st • HIGHEST</span>
+                  </div>
                 </div>
                 
                 <!-- Venn SVG -->
@@ -222,9 +301,12 @@ WHERE  (department_id = 10 OR department_id = 20)
               
               <!-- CARD 2: AND -->
               <div class="prec-card prec-card--and" style="--d:0.3s;animation-delay:0.3s">
-                <div style="display:flex;align-items:center;justify-content:space-between;">
-                  <span class="prec-badge prec-badge--amber">AND</span>
-                  <span class="prec-rank" style="color:#f59e0b">2. Middle</span>
+                <div class="prec-header">
+                  <div class="prec-op prec-op--and">AND</div>
+                  <div class="prec-priority prec-priority--2">
+                    <span class="num">2</span>
+                    <span class="label">2nd • MIDDLE</span>
+                  </div>
                 </div>
                 
                 <!-- Venn SVG -->
@@ -265,9 +347,12 @@ WHERE  (department_id = 10 OR department_id = 20)
               
               <!-- CARD 3: OR -->
               <div class="prec-card prec-card--or" style="--d:0.45s;animation-delay:0.45s">
-                <div style="display:flex;align-items:center;justify-content:space-between;">
-                  <span class="prec-badge prec-badge--emerald">OR</span>
-                  <span class="prec-rank" style="color:#10b981">3. Lowest</span>
+                <div class="prec-header">
+                  <div class="prec-op prec-op--or">OR</div>
+                  <div class="prec-priority prec-priority--3">
+                    <span class="num">3</span>
+                    <span class="label">3rd • LOWEST</span>
+                  </div>
                 </div>
                 
                 <!-- Venn SVG -->
