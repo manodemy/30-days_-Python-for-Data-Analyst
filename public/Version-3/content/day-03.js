@@ -249,9 +249,6 @@ WHERE  unit_price <= 1000
               <!-- CARD 1: NOT -->
               <div class="prec-card prec-card--not" style="--d:0.15s;animation-delay:0.15s">
                 <div class="prec-header">
-                  <div class="prec-priority prec-priority--1">
-                    <span class="label">1st • HIGHEST</span>
-                  </div>
                   <div class="prec-op prec-op--not">NOT</div>
                 </div>
                 
@@ -301,9 +298,6 @@ WHERE  unit_price <= 1000
               <!-- CARD 2: AND -->
               <div class="prec-card prec-card--and" style="--d:0.3s;animation-delay:0.3s">
                 <div class="prec-header">
-                  <div class="prec-priority prec-priority--2">
-                    <span class="label">2nd • MIDDLE</span>
-                  </div>
                   <div class="prec-op prec-op--and">AND</div>
                 </div>
                 
@@ -354,9 +348,6 @@ WHERE  unit_price <= 1000
               <!-- CARD 3: OR -->
               <div class="prec-card prec-card--or" style="--d:0.45s;animation-delay:0.45s">
                 <div class="prec-header">
-                  <div class="prec-priority prec-priority--3">
-                    <span class="label">3rd • LOWEST</span>
-                  </div>
                   <div class="prec-op prec-op--or">OR</div>
                 </div>
                 
