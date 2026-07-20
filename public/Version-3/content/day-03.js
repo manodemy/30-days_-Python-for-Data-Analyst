@@ -492,9 +492,9 @@ WHERE  unit_price NOT BETWEEN 1000 AND 5000;</code></pre>
                 </button>
               </h4>
               <ul>
-                <li>For <code>DATETIME</code> columns, <code>BETWEEN '2024-12-31'</code> stops at <code>2024-12-31 00:00:00</code></li>
-                <li>To include the full last day, use <code>&lt; '2025-01-01'</code> instead</li>
-                <li>Safer pattern: <code>order_date &gt;= '2024-01-01' AND order_date &lt; '2025-01-01'</code></li>
+                <li>A range like <code>BETWEEN '2024-01-01' AND '2024-12-31'</code> truncates the end date to <code>2024-12-31 00:00:00</code> on <code>DATETIME</code> columns.</li>
+                <li>This means any records or transactions occurring later in the day on December 31st will be completely missed.</li>
+                <li><strong>Safer Pattern:</strong> Avoid <code>BETWEEN</code> for date ranges; use <code>order_date &gt;= '2024-01-01' AND order_date &lt; '2025-01-01'</code> instead.</li>
               </ul>
             </div>
           </div>
