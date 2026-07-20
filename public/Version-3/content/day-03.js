@@ -211,29 +211,27 @@ WHERE  unit_price <= 1000
               }
 
               #day03PrecWrap .prec-list {
-                list-style: none;
-                padding: 0;
-                margin: 4px 0 0 0;
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
+                list-style-type: disc !important;
+                padding: 0 0 0 14px !important;
+                margin: 6px 0 0 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 5px !important;
               }
               #day03PrecWrap .prec-list li {
-                font-size: 0.70rem;
-                line-height: 1.4;
-                color: #cbd5e1;
-                display: flex;
-                align-items: flex-start;
-                gap: 6px;
+                font-size: 0.72rem !important;
+                line-height: 1.45 !important;
+                color: #cbd5e1 !important; /* Force readable light text */
+                margin-bottom: 0 !important;
+                padding: 0 !important;
+                display: list-item !important;
+              }
+              #day03PrecWrap .prec-list li::marker {
+                color: var(--bullet-color) !important;
+                font-size: 0.78rem !important;
               }
               #day03PrecWrap .prec-list li strong {
-                color: #f8fafc;
-              }
-              #day03PrecWrap .prec-list li::before {
-                content: "•";
-                color: var(--bullet-color);
-                font-weight: bold;
-                flex-shrink: 0;
+                color: #f8fafc !important; /* Force high-contrast white labels */
               }
 
               @keyframes precReveal{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
@@ -294,9 +292,9 @@ WHERE  unit_price <= 1000
                 </div>
                 
                 <ul class="prec-list" style="--bullet-color: #ef4444;">
-                  <li><strong>Operator:</strong> Unary (negates condition)</li>
-                  <li><strong>Set Theory:</strong> Represents the <strong>Complement</strong></li>
-                  <li><strong>Precedence:</strong> 1st • Evaluated first</li>
+                  <li><strong>Unary:</strong> Negates a condition</li>
+                  <li><strong>Complement:</strong> Area outside A</li>
+                  <li><strong>1st Priority:</strong> Evaluated first</li>
                 </ul>
               </div>
               
@@ -347,9 +345,9 @@ WHERE  unit_price <= 1000
                 </div>
                 
                 <ul class="prec-list" style="--bullet-color: #f59e0b;">
-                  <li><strong>Operator:</strong> Binary (both must be TRUE)</li>
-                  <li><strong>Set Theory:</strong> Represents the <strong>Intersection</strong></li>
-                  <li><strong>Precedence:</strong> 2nd • Binds tighter than OR</li>
+                  <li><strong>Binary:</strong> Both must be TRUE</li>
+                  <li><strong>Intersection:</strong> Overlapping area</li>
+                  <li><strong>2nd Priority:</strong> Binds tighter than OR</li>
                 </ul>
               </div>
               
@@ -398,9 +396,9 @@ WHERE  unit_price <= 1000
                 </div>
                 
                 <ul class="prec-list" style="--bullet-color: #10b981;">
-                  <li><strong>Operator:</strong> Binary (one must be TRUE)</li>
-                  <li><strong>Set Theory:</strong> Represents the <strong>Union</strong></li>
-                  <li><strong>Precedence:</strong> 3rd • Evaluated last</li>
+                  <li><strong>Binary:</strong> One must be TRUE</li>
+                  <li><strong>Union:</strong> Combined area</li>
+                  <li><strong>3rd Priority:</strong> Evaluated last</li>
                 </ul>
               </div>
             </div>

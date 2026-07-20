@@ -3563,7 +3563,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.5`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.6`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
