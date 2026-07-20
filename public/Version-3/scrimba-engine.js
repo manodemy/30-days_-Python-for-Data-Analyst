@@ -5669,7 +5669,7 @@ function createCompletionOverlay() {
     top: `${headerHeight}px`,
     left: '0',
     width: '100vw',
-    height: `calc(100vh - ${headerHeight}px)`,
+    height: `calc(100dvh - ${headerHeight}px)`,
     background: 'radial-gradient(circle at 50% 45%, rgba(15, 23, 42, 0.68) 20%, rgba(8, 12, 22, 0.92) 100%)',
     backdropFilter: 'blur(16px)', webkitBackdropFilter: 'blur(16px)',
     pointerEvents: 'none', opacity: '1', transition: 'opacity 0.5s ease',
@@ -5685,21 +5685,75 @@ function createCompletionOverlay() {
   });
   completionOverlayDiv.appendChild(completionCanvas);
 
+  // Modern Glassmorphic Narration Card (Dynamic & Responsive Legend Container)
   completionCaption = document.createElement('div');
   completionCaption.id = 'completionCaption';
   Object.assign(completionCaption.style, {
-    position: 'absolute', bottom: isMobile ? '20px' : '30px', left: '50%', transform: 'translateX(-50%)',
-    background: 'rgba(15, 23, 42, 0.92)', backdropFilter: 'blur(12px)', webkitBackdropFilter: 'blur(12px)',
-    border: '1px solid rgba(255, 255, 255, 0.18)', borderRadius: '10px',
-    padding: isMobile ? '8px 14px' : '10px 24px', fontFamily: 'var(--mono,"Fira Mono",monospace)',
-    fontSize: isMobile ? '0.8rem' : '0.95rem', fontWeight: '700', color: '#f8fafc',
-    whiteSpace: isMobile ? 'normal' : 'nowrap', textAlign: 'center', maxWidth: isMobile ? '90vw' : 'auto',
-    boxShadow: '0 10px 25px rgba(0,0,0,0.5)', zIndex: '10000',
-    pointerEvents: 'none', opacity: '0', transition: 'opacity 0.4s ease'
+    position: 'absolute',
+    bottom: isMobile ? 'calc(16px + env(safe-area-inset-bottom, 0px))' : '32px',
+    left: '50%',
+    transform: 'translateX(-50%) translateY(12px)',
+    width: '450px',
+    maxWidth: '92vw',
+    background: 'rgba(15, 23, 42, 0.82)',
+    backdropFilter: 'blur(20px)',
+    webkitBackdropFilter: 'blur(20px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '16px',
+    padding: isMobile ? '12px 16px' : '16px 24px',
+    boxShadow: '0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
+    zIndex: '100000',
+    pointerEvents: 'auto',
+    opacity: '0',
+    transition: 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: isMobile ? '6px' : '8px',
+    textAlign: 'center'
   });
-  completionCaption.textContent = '';
-  completionOverlayDiv.appendChild(completionCaption);
 
+  // Action Pill Badge
+  const pillEl = document.createElement('div');
+  pillEl.id = 'cardPill';
+  Object.assign(pillEl.style, {
+    fontSize: isMobile ? '0.62rem' : '0.7rem',
+    fontWeight: '800',
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    padding: '3px 9px',
+    borderRadius: '999px',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
+    display: 'inline-block',
+    transition: 'all 0.3s ease'
+  });
+  completionCaption.appendChild(pillEl);
+
+  // Card Main Title
+  const titleEl = document.createElement('div');
+  titleEl.id = 'cardTitle';
+  Object.assign(titleEl.style, {
+    fontSize: isMobile ? '0.96rem' : '1.18rem',
+    fontWeight: '800',
+    color: '#ffffff',
+    lineHeight: '1.25',
+    transition: 'all 0.3s ease'
+  });
+  completionCaption.appendChild(titleEl);
+
+  // Card Description Subtitle
+  const subEl = document.createElement('div');
+  subEl.id = 'cardSub';
+  Object.assign(subEl.style, {
+    fontSize: isMobile ? '0.76rem' : '0.86rem',
+    fontWeight: '500',
+    color: '#94a3b8',
+    lineHeight: '1.4',
+    transition: 'all 0.3s ease'
+  });
+  completionCaption.appendChild(subEl);
+
+  completionOverlayDiv.appendChild(completionCaption);
   container.appendChild(completionOverlayDiv);
 }
 
@@ -6091,7 +6145,10 @@ function startCompletionAnimation(audioObj, targetTime = 0) {
 
   // Fade in full-screen overlay + controls
   if (completionOverlayDiv) completionOverlayDiv.style.opacity = '1';
-  if (completionCaption) completionCaption.style.opacity = '1';
+  if (completionCaption) {
+    completionCaption.style.opacity = '1';
+    completionCaption.style.transform = 'translateX(-50%) translateY(0)';
+  }
 
   const FADE_IN_MS = 400;
 
@@ -6152,7 +6209,6 @@ function startCompletionAnimation(audioObj, targetTime = 0) {
       completionActiveMomentId = newId;
       if (newId) {
         spawnMomentObject(newId, currentMoment.accent);
-        if (completionCaption) completionCaption.textContent = currentMoment.label;
         updateCompletionLegend(mIdx);
       } else {
         if (completionActiveObj) {
@@ -6161,7 +6217,6 @@ function startCompletionAnimation(audioObj, targetTime = 0) {
           completionOutroObj.__outroStart = performance.now();
           completionActiveObj = null;
         }
-        if (completionCaption) completionCaption.textContent = '';
       }
     }
 
