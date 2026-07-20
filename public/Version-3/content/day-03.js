@@ -140,41 +140,187 @@ FROM   employees
 WHERE  (department_id = 10 OR department_id = 20)
   AND  salary > 60000;</code></pre>
 
-          <!-- Operator Precedence Visual -->
-          <div id="day03PrecWrap" style="width:100%;margin:10px 0 12px">
+          <!-- Operator Precedence & Venn Diagrams Visual -->
+          <div id="day03PrecWrap" style="width:100%;margin:14px 0 16px">
             <style>
-              #day03PrecWrap .prec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
-              #day03PrecWrap .prec-card{background:rgba(9,15,28,0.90);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;animation:precReveal 0.45s ease both}
-              #day03PrecWrap .prec-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.05em}
+              #day03PrecWrap .prec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+              #day03PrecWrap .prec-card{background:rgba(9,15,28,0.92);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;animation:precReveal 0.45s ease both;transition:transform 0.25s ease, border-color 0.25s ease;overflow:hidden;position:relative}
+              #day03PrecWrap .prec-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.12)}
+              
+              #day03PrecWrap .prec-card--not{border-top:3px solid #ef4444}
+              #day03PrecWrap .prec-card--and{border-top:3px solid #f59e0b}
+              #day03PrecWrap .prec-card--or{border-top:3px solid #10b981}
+
+              #day03PrecWrap .prec-badge{display:inline-block;width:fit-content;padding:2px 10px;border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.05em}
               #day03PrecWrap .prec-badge--red{background:rgba(239,68,68,0.18);color:#fca5a5;border:1px solid rgba(239,68,68,0.3)}
               #day03PrecWrap .prec-badge--amber{background:rgba(245,158,11,0.18);color:#fcd34d;border:1px solid rgba(245,158,11,0.3)}
               #day03PrecWrap .prec-badge--emerald{background:rgba(16,185,129,0.18);color:#6ee7b7;border:1px solid rgba(16,185,129,0.3)}
-              #day03PrecWrap .prec-rank{font-size:0.6rem;color:#64748b;font-weight:600;letter-spacing:0.06em;text-transform:uppercase}
-              #day03PrecWrap .prec-desc{font-size:0.66rem;color:#94a3b8;line-height:1.4}
+              
+              #day03PrecWrap .prec-rank{font-size:0.64rem;color:#94a3b8;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+              #day03PrecWrap .prec-desc{font-size:0.72rem;color:#cbd5e1;line-height:1.45;margin-bottom:2px}
+              #day03PrecWrap .prec-venn{width:100%;background:rgba(5, 8, 16, 0.7);border-radius:8px;padding:6px;border:1px solid rgba(255, 255, 255, 0.04);box-sizing:border-box}
+              
+              #day03PrecWrap .prec-table-title{font-size:0.6rem;color:#64748b;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-top:4px}
+              #day03PrecWrap .prec-matrix{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:#94a3b8;background:rgba(0,0,0,0.25);border-radius:6px;padding:8px 10px;margin:0;line-height:1.4;border:1px solid rgba(255,255,255,0.03)}
+              #day03PrecWrap .prec-matrix span.t{color:#34d399}
+              #day03PrecWrap .prec-matrix span.f{color:#f87171}
+              #day03PrecWrap .prec-matrix span.u{color:#fb7185;opacity:0.85}
+
               @keyframes precReveal{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
-              @media(max-width:500px){#day03PrecWrap .prec-grid{grid-template-columns:1fr;gap:8px}}
+              @media(max-width:768px){#day03PrecWrap .prec-grid{grid-template-columns:1fr;gap:12px}}
             </style>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;">
-              <small style="color:#64748b;font-size:0.73rem;">⚡ Operator Precedence — Highest to Lowest</small>
+            
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
+              <small style="color:#94a3b8;font-size:0.75rem;font-weight:600;letter-spacing:0.02em;">⚡ Logical Set Diagrams &amp; Operator Precedence</small>
               <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio08.mp3', this)" title="Play narration" style="flex-shrink:0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
+            
             <div class="prec-grid">
-              <div class="prec-card" style="--d:0.15s;animation-delay:0.15s">
-                <span class="prec-badge prec-badge--red">NOT</span>
-                <span class="prec-rank">Priority 1 — Highest</span>
-                <span class="prec-desc">Negates a single condition immediately. Evaluated before AND or OR.</span>
+              <!-- CARD 1: NOT -->
+              <div class="prec-card prec-card--not" style="--d:0.15s;animation-delay:0.15s">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span class="prec-badge prec-badge--red">NOT</span>
+                  <span class="prec-rank" style="color:#ef4444">1. Highest</span>
+                </div>
+                
+                <!-- Venn SVG -->
+                <div class="prec-venn">
+                  <svg viewBox="0 0 200 110" width="100%" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <radialGradient id="glow-not" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#ef4444" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+                      </radialGradient>
+                      <mask id="not-a-mask">
+                        <rect x="0" y="0" width="200" height="110" fill="#ffffff" />
+                        <circle cx="75" cy="55" r="30" fill="#000000" />
+                      </mask>
+                    </defs>
+                    <pattern id="grid-pattern-1" width="10" height="10" patternUnits="userSpaceOnUse">
+                      <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.06)" />
+                    </pattern>
+                    <rect width="100%" height="100%" fill="url(#grid-pattern-1)" rx="4" />
+                    <!-- Universal Set Glow -->
+                    <rect x="6" y="6" width="188" height="98" rx="4" fill="url(#glow-not)" mask="url(#not-a-mask)" />
+                    <rect x="6" y="6" width="188" height="98" rx="4" fill="rgba(239, 68, 68, 0.05)" mask="url(#not-a-mask)" stroke="rgba(239, 68, 68, 0.3)" stroke-width="1.2" />
+                    
+                    <!-- Circle Wireframes -->
+                    <circle cx="75" cy="55" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-dasharray="2 2" stroke-width="1.2" />
+                    <circle cx="125" cy="55" r="30" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" />
+                    
+                    <!-- Text Labels -->
+                    <text x="75" y="58" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="rgba(255,255,255,0.3)" text-anchor="middle">A</text>
+                    <text x="125" y="58" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="rgba(255,255,255,0.8)" text-anchor="middle">B</text>
+                    <text x="14" y="18" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#fca5a5">U (NOT A)</text>
+                  </svg>
+                </div>
+                
+                <span class="prec-desc">A <strong>unary operator</strong> that negates a condition. In set theory, it represents the <strong>Complement</strong> (everything outside Set A). Evaluated first.</span>
+                
+                <span class="prec-table-title">Truth Matrix (NOT)</span>
+                <pre class="prec-matrix">NOT <span class="t">TRUE</span>    ➔ <span class="f">FALSE</span>
+NOT <span class="f">FALSE</span>   ➔ <span class="t">TRUE</span>
+NOT <span class="u">NULL</span>    ➔ <span class="u">NULL</span></pre>
               </div>
-              <div class="prec-card" style="animation-delay:0.30s">
-                <span class="prec-badge prec-badge--amber">AND</span>
-                <span class="prec-rank">Priority 2 — Middle</span>
-                <span class="prec-desc">Binds its two operands before OR; both sides must be TRUE.</span>
+              
+              <!-- CARD 2: AND -->
+              <div class="prec-card prec-card--and" style="--d:0.3s;animation-delay:0.3s">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span class="prec-badge prec-badge--amber">AND</span>
+                  <span class="prec-rank" style="color:#f59e0b">2. Middle</span>
+                </div>
+                
+                <!-- Venn SVG -->
+                <div class="prec-venn">
+                  <svg viewBox="0 0 200 110" width="100%" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <radialGradient id="glow-and" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.35"/>
+                        <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+                      </radialGradient>
+                      <clipPath id="intersect-clip">
+                        <circle cx="75" cy="55" r="30" />
+                      </clipPath>
+                    </defs>
+                    <pattern id="grid-pattern-2" width="10" height="10" patternUnits="userSpaceOnUse">
+                      <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.06)" />
+                    </pattern>
+                    <rect width="100%" height="100%" fill="url(#grid-pattern-2)" rx="4" />
+                    <rect x="6" y="6" width="188" height="98" rx="4" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" />
+                    
+                    <!-- Highlighted Intersection Area -->
+                    <circle cx="125" cy="55" r="30" fill="url(#glow-and)" clip-path="url(#intersect-clip)" />
+                    <circle cx="125" cy="55" r="30" fill="rgba(245, 158, 11, 0.12)" clip-path="url(#intersect-clip)" />
+                    <circle cx="125" cy="55" r="30" fill="none" stroke="#f59e0b" stroke-width="1.5" clip-path="url(#intersect-clip)" />
+
+                    <!-- Circle Wireframes -->
+                    <circle cx="75" cy="55" r="30" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" />
+                    <circle cx="125" cy="55" r="30" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" />
+                    
+                    <!-- Text Labels -->
+                    <text x="54" y="58" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="rgba(255,255,255,0.8)" text-anchor="middle">A</text>
+                    <text x="146" y="58" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="rgba(255,255,255,0.8)" text-anchor="middle">B</text>
+                    <text x="100" y="58" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#f59e0b" text-anchor="middle">A ∩ B</text>
+                  </svg>
+                </div>
+                
+                <span class="prec-desc">A <strong>binary operator</strong> that returns TRUE if <em>both</em> conditions are TRUE. Represents the <strong>Intersection</strong>. Binds tighter than OR.</span>
+                
+                <span class="prec-table-title">Truth Matrix (AND)</span>
+                <pre class="prec-matrix"><span class="t">T</span> AND <span class="t">T</span>     ➔ <span class="t">TRUE</span>
+<span class="t">T</span> AND <span class="f">F</span>     ➔ <span class="f">FALSE</span>
+<span class="f">F</span> AND <span class="u">NULL</span>  ➔ <span class="f">FALSE</span> <small style="color:#64748b">(short-circuit)</small>
+<span class="t">T</span> AND <span class="u">NULL</span>  ➔ <span class="u">UNKNOWN</span></pre>
               </div>
-              <div class="prec-card" style="animation-delay:0.45s">
-                <span class="prec-badge prec-badge--emerald">OR</span>
-                <span class="prec-rank">Priority 3 — Lowest</span>
-                <span class="prec-desc">Evaluated last; at least one side must be TRUE to pass.</span>
+              
+              <!-- CARD 3: OR -->
+              <div class="prec-card prec-card--or" style="--d:0.45s;animation-delay:0.45s">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span class="prec-badge prec-badge--emerald">OR</span>
+                  <span class="prec-rank" style="color:#10b981">3. Lowest</span>
+                </div>
+                
+                <!-- Venn SVG -->
+                <div class="prec-venn">
+                  <svg viewBox="0 0 200 110" width="100%" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <radialGradient id="glow-or" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+                      </radialGradient>
+                    </defs>
+                    <pattern id="grid-pattern-3" width="10" height="10" patternUnits="userSpaceOnUse">
+                      <circle cx="1" cy="1" r="0.6" fill="rgba(255,255,255,0.06)" />
+                    </pattern>
+                    <rect width="100%" height="100%" fill="url(#grid-pattern-3)" rx="4" />
+                    <rect x="6" y="6" width="188" height="98" rx="4" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" />
+                    
+                    <!-- Highlighted Union Area -->
+                    <circle cx="75" cy="55" r="30" fill="url(#glow-or)" />
+                    <circle cx="125" cy="55" r="30" fill="url(#glow-or)" />
+                    <circle cx="75" cy="55" r="30" fill="rgba(16, 185, 129, 0.08)" />
+                    <circle cx="125" cy="55" r="30" fill="rgba(16, 185, 129, 0.08)" />
+                    
+                    <!-- Circle Wireframes / Borders -->
+                    <circle cx="75" cy="55" r="30" fill="none" stroke="#10b981" stroke-width="1.2" />
+                    <circle cx="125" cy="55" r="30" fill="none" stroke="#10b981" stroke-width="1.2" />
+                    
+                    <!-- Text Labels -->
+                    <text x="60" y="58" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="#ffffff" text-anchor="middle">A</text>
+                    <text x="140" y="58" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold" fill="#ffffff" text-anchor="middle">B</text>
+                    <text x="100" y="58" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#10b981" text-anchor="middle">A ∪ B</text>
+                  </svg>
+                </div>
+                
+                <span class="prec-desc">A <strong>binary operator</strong> that returns TRUE if <em>at least one</em> condition is TRUE. Represents the <strong>Union</strong>. Evaluated last.</span>
+                
+                <span class="prec-table-title">Truth Matrix (OR)</span>
+                <pre class="prec-matrix"><span class="t">T</span> OR <span class="f">F</span>      ➔ <span class="t">TRUE</span>
+<span class="f">F</span> OR <span class="f">F</span>      ➔ <span class="f">FALSE</span>
+<span class="t">T</span> OR <span class="u">NULL</span>     ➔ <span class="t">TRUE</span> <small style="color:#64748b">(short-circuit)</small>
+<span class="f">F</span> OR <span class="u">NULL</span>     ➔ <span class="u">UNKNOWN</span></pre>
               </div>
             </div>
           </div>
