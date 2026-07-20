@@ -4629,10 +4629,11 @@ function create3DStar(THREE, radius, depth, colorHex) {
   shape.closePath();
 
   const extrudeOpts = { depth: depth, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.02, bevelSegments: 3 };
+  const starColor = colorHex !== undefined ? colorHex : 0xfbbf24;
   const mat = cd(new THREE.MeshPhysicalMaterial({
-    color: 0xfbbf24,
-    emissive: 0xfbbf24,
-    emissiveIntensity: 0.9,
+    color: starColor,
+    emissive: starColor,
+    emissiveIntensity: 0.45, // Reduce to 0.45 to prevent blowouts and keep material contrast rich
     metalness: 0.3,
     roughness: 0.08,
     clearcoat: 1.0,
@@ -4902,8 +4903,8 @@ function buildGreatWork(THREE) {
   disc.position.z = -0.05;
   group.add(disc);
 
-  // 3D Star Shield Medallion Base in Center
-  const star = create3DStar(THREE, 0.75, 0.2, 0xf59e0b);
+  // 3D Star Shield Medallion Base in Center (Royal Indigo for maximum complementary contrast with yellow hands)
+  const star = create3DStar(THREE, 0.75, 0.2, 0x6366f1);
   star.position.set(0, 0, 0.05);
   star.userData = { billboard: true };
   group.add(star);
