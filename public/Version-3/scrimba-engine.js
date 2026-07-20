@@ -5060,13 +5060,13 @@ function buildGem(THREE) {
 function buildSortedBars(THREE) {
   const group = new THREE.Group();
   const barHeights = [0.6, 1.1, 1.6, 2.1, 2.7];
-  
+
   // Color Science Progression: Violet ➔ Cobalt ➔ Aqua ➔ Emerald ➔ Imperial Gold
-  const barColors    = [0x8b5cf6, 0x3b82f6, 0x06b6d4, 0x10b981, 0xfbbf24];
+  const barColors = [0x8b5cf6, 0x3b82f6, 0x06b6d4, 0x10b981, 0xfbbf24];
   const emissiveCols = [0x6d28d9, 0x1d4ed8, 0x0e7490, 0x047857, 0xd97706];
-  const labelGlows   = ['#c084fc', '#60a5fa', '#22d3ee', '#34d399', '#fef08a'];
+  const labelGlows = ['#f11aa9ff', '#1f78e5ff', '#5ae9ffff', '#34d399', '#fef08a'];
   const bars = [];
-  
+
   const colSpacing = 0.60; // Slightly widened spacing for perfect, guaranteed non-overlapping layouts
 
   // 1. Premium Brushed Titanium Lower Plinth Base
