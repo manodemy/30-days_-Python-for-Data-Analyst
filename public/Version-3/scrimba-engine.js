@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.21`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.22`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -6734,6 +6734,61 @@ function updateTableHighlights(currentTime, isPlaying) {
   });
 }
 
+function updateLogicalPrecedenceHighlights(currentTime, isPlaying) {
+  const cards = {
+    not: document.querySelector('#day03PrecWrap .prec-card--not'),
+    and: document.querySelector('#day03PrecWrap .prec-card--and'),
+    or: document.querySelector('#day03PrecWrap .prec-card--or')
+  };
+
+  // If not playing, clear all highlights
+  if (!isPlaying || !cards.not) {
+    if (cards.not) cards.not.classList.remove('narration-highlight');
+    if (cards.and) cards.and.classList.remove('narration-highlight');
+    if (cards.or) cards.or.classList.remove('narration-highlight');
+    return;
+  }
+
+  // Determine active card
+  let activeCard = null;
+  
+  // First introduction pass
+  if (currentTime >= 5.68 && currentTime < 11.66) {
+    activeCard = 'not';
+  } else if (currentTime >= 11.66 && currentTime < 16.20) {
+    activeCard = 'and';
+  } else if (currentTime >= 16.20 && currentTime < 20.76) {
+    activeCard = 'or';
+  }
+  // Second precedence order pass (at the end)
+  else if (currentTime >= 25.90 && currentTime < 27.46) {
+    activeCard = 'not';
+  } else if (currentTime >= 27.46 && currentTime < 28.92) {
+    activeCard = 'and';
+  } else if (currentTime >= 28.92 && currentTime < 29.70) {
+    activeCard = 'or';
+  }
+
+  // Apply classes
+  if (activeCard === 'not') {
+    cards.not.classList.add('narration-highlight');
+  } else {
+    cards.not.classList.remove('narration-highlight');
+  }
+
+  if (activeCard === 'and') {
+    cards.and.classList.add('narration-highlight');
+  } else {
+    cards.and.classList.remove('narration-highlight');
+  }
+
+  if (activeCard === 'or') {
+    cards.or.classList.add('narration-highlight');
+  } else {
+    cards.or.classList.remove('narration-highlight');
+  }
+}
+
 // ════════════════════════════════════════════════════════════════════════════════
 
 async function loadAndPlayTrack(index, targetTime = 0) {
@@ -6815,6 +6870,9 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     if (track.src.includes('New_Day3Part1audio05.mp3')) {
       updateTableHighlights(0, false);
     }
+    if (track.src.includes('New_Day3Part1audio07.mp3')) {
+      updateLogicalPrecedenceHighlights(0, false);
+    }
     onNarrationSegmentEnded(index, events);
   });
 
@@ -6823,6 +6881,9 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     if (track.src.includes('New_Day3Part1audio05.mp3')) {
       updateTableHighlights(0, false);
     }
+    if (track.src.includes('New_Day3Part1audio07.mp3')) {
+      updateLogicalPrecedenceHighlights(0, false);
+    }
   });
 
   audio.addEventListener('timeupdate', () => {
@@ -6830,6 +6891,9 @@ async function loadAndPlayTrack(index, targetTime = 0) {
 
     if (track.src.includes('New_Day3Part1audio05.mp3')) {
       updateTableHighlights(audio.currentTime, !audio.paused);
+    }
+    if (track.src.includes('New_Day3Part1audio07.mp3')) {
+      updateLogicalPrecedenceHighlights(audio.currentTime, !audio.paused);
     }
 
     // Calculate cumulative current time

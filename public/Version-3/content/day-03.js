@@ -8,7 +8,7 @@ window.COURSE_CONTENT['day03'] = {
   "slides": [
     {
       "title": "Filtering Data: WHERE, Operators & Pattern Matching",
-      "duration": "2:57",
+      "duration": "4:00",
       "html": `
         <h2>🔍 Filtering Data: WHERE, Operators &amp; Pattern Matching</h2>
 
@@ -337,7 +337,7 @@ WHERE  unit_price <= 1000
         <div class="slide-section">
           <h3 class="heading-with-audio" id="day03LogicOps">
             03. Logical Operators — Combining Conditions
-            <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio06.mp3', this)" title="Play narration">
+            <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio07.mp3', this)" title="Play narration">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
@@ -346,12 +346,19 @@ WHERE  unit_price <= 1000
           <div id="day03PrecWrap" style="width:100%;margin:14px 0 16px">
             <style>
               #day03PrecWrap .prec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
-              #day03PrecWrap .prec-card{background:rgba(9,15,28,0.92);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;animation:precReveal 0.45s ease both;transition:transform 0.25s ease, border-color 0.25s ease;overflow:hidden;position:relative}
+              #day03PrecWrap .prec-card{background:rgba(9,15,28,0.92);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;animation:precReveal 0.45s ease both;transition:transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;overflow:hidden;position:relative}
               #day03PrecWrap .prec-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.12)}
               
-              #day03PrecWrap .prec-card--not{border-top:3px solid #ef4444}
-              #day03PrecWrap .prec-card--and{border-top:3px solid #f59e0b}
-              #day03PrecWrap .prec-card--or{border-top:3px solid #10b981}
+              #day03PrecWrap .prec-card--not{border-top:3px solid #ef4444; --highlight-color: #ef4444; --highlight-color-rgb: 239, 68, 68;}
+              #day03PrecWrap .prec-card--and{border-top:3px solid #f59e0b; --highlight-color: #f59e0b; --highlight-color-rgb: 245, 158, 11;}
+              #day03PrecWrap .prec-card--or{border-top:3px solid #10b981; --highlight-color: #10b981; --highlight-color-rgb: 16, 185, 129;}
+
+              #day03PrecWrap .prec-card.narration-highlight {
+                border-color: var(--highlight-color) !important;
+                box-shadow: 0 0 20px rgba(var(--highlight-color-rgb), 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+                transform: translateY(-4px) scale(1.02);
+                z-index: 10;
+              }
 
               #day03PrecWrap .prec-header {
                 display: flex;
@@ -471,7 +478,7 @@ WHERE  unit_price <= 1000
             
             <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
               <small style="color:#94a3b8;font-size:0.75rem;font-weight:600;letter-spacing:0.02em;">⚡ Logical Set Diagrams &amp; Operator Precedence</small>
-              <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio08.mp3', this)" title="Play narration" style="flex-shrink:0;">
+              <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio07.mp3', this)" title="Play narration" style="flex-shrink:0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
