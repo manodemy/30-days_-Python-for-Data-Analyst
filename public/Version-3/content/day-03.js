@@ -577,6 +577,9 @@ WHERE  unit_price <= 1000
               <div class="prec-card prec-card--and" style="--d:0.3s;animation-delay:0.3s">
                 <div class="prec-header">
                   <div class="prec-op prec-op--and">AND</div>
+                  <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio09.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
                 </div>
                 
                 <!-- Venn SVG -->
@@ -627,6 +630,9 @@ WHERE  unit_price <= 1000
               <div class="prec-card prec-card--or" style="--d:0.45s;animation-delay:0.45s">
                 <div class="prec-header">
                   <div class="prec-op prec-op--or">OR</div>
+                  <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio10.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
                 </div>
                 
                 <!-- Venn SVG -->
@@ -673,8 +679,13 @@ WHERE  unit_price <= 1000
             </div>
 
             <div class="precedence-note" id="day03PrecedenceNote" style="margin-top: 14px; padding: 12px; background: rgba(255,255,255,0.02); border-left: 3px solid #3b82f6; border-top: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); border-radius: 4px 8px 8px 4px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                <span style="color: #60a5fa; font-weight: 700; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 4px;">⚠️ Precedence Rule</span>
+                <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio11.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
               <p style="margin: 0; font-size: 0.72rem; line-height: 1.5; color: #94a3b8;">
-                <span style="color: #60a5fa; font-weight: 700; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 2px;">⚠️ Precedence Rule</span><br>
                 SQL evaluates them in <strong>operator precedence</strong> order: <code>NOT</code> binds tightest → then <code>AND</code> → then <code>OR</code>. Mixing <code>AND</code> and <code>OR</code> without parentheses is a classic bug source — always use brackets to make your intent explicit.
               </p>
             </div>

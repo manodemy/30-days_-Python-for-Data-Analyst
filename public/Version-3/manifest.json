@@ -342,11 +342,26 @@
   "day03_New_Day3Part1audio07": {
     "audioPath": "Day03/New_Day3Part1audio07.mp3",
     "eventsPath": null,
-    "durationMs": 32000
+    "durationMs": 5500
   },
   "day03_New_Day3Part1audio08": {
     "audioPath": "Day03/New_Day3Part1audio08.mp3",
     "eventsPath": null,
     "durationMs": 4500
+  },
+  "day03_New_Day3Part1audio09": {
+    "audioPath": "Day03/New_Day3Part1audio09.mp3",
+    "eventsPath": null,
+    "durationMs": 4000
+  },
+  "day03_New_Day3Part1audio10": {
+    "audioPath": "Day03/New_Day3Part1audio10.mp3",
+    "eventsPath": null,
+    "durationMs": 4000
+  },
+  "day03_New_Day3Part1audio11": {
+    "audioPath": "Day03/New_Day3Part1audio11.mp3",
+    "eventsPath": null,
+    "durationMs": 11000
   }
 }
