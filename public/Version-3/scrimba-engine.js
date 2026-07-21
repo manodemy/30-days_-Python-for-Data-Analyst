@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.32`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.35`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -4370,10 +4370,11 @@ let prefetchFailed = false;
 let hasCompletedFirstGestureBoundPlay = false;
 
 async function loadManifest() {
-  if (Object.keys(manifest).length > 0) return;
   try {
-    const res = await fetch('/Version-3/manifest.json?v=14.33');
-    manifest = await res.json();
+    if (Object.keys(manifest).length === 0) {
+      const res = await fetch('/Version-3/manifest.json?v=14.34');
+      manifest = await res.json();
+    }
     // Re-calculate durations from manifest metadata for all slides
     Object.keys(slideTrackMap).forEach(dayKey => {
       const dayConfig = slideTrackMap[dayKey];
@@ -7473,10 +7474,9 @@ function initSlideNarration() {
   // Eagerly preload Three.js in background so 3D completion narration visuals load instantly
   ensureThreeLoaded(() => { });
 
-  // Populate combinedAudios[] — required by syncCombinedToTrack(), playQuestionAudio()
-  // and playSolutionAudio() which address individual tracks by index.
-  // We check if combinedAudios matches current combinedTracks length to see if we need to rebuild
-  if (combinedAudios && combinedAudios.length === combinedTracks.length) return;
+  if (combinedTrackDurations && combinedTrackDurations.length > 0) {
+    totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
+  }
 
   combinedAudios = combinedTracks.map(track => {
     const filename = track.src.split('/').pop().replace('.mp3', '');
@@ -7489,27 +7489,32 @@ function initSlideNarration() {
   });
 
   const seekBar = document.getElementById('seekBar');
-  if (seekBar && !seekBar.dataset.scrubbingBound) {
-    seekBar.dataset.scrubbingBound = 'true';
-    seekBar.removeAttribute('oninput');
-    seekBar.addEventListener('mousedown', () => { isScrubbing = true; });
-    seekBar.addEventListener('touchstart', () => { isScrubbing = true; });
-    seekBar.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
-      const playbackTime = document.getElementById('playbackTime');
-      if (playbackTime) {
-        playbackTime.textContent = `${formatTime(val)} / ${formatTime(totalCombinedDuration)}`;
-      }
-    });
-    seekBar.addEventListener('change', async (e) => {
-      isScrubbing = false;
-      await seekCombinedPlayback(e.target.value);
-    });
-    seekBar.addEventListener('touchend', async (e) => {
-      isScrubbing = false;
-      await seekCombinedPlayback(e.target.value);
-    });
+  if (seekBar) {
+    seekBar.max = totalCombinedDuration || 100;
+    if (!seekBar.dataset.scrubbingBound) {
+      seekBar.dataset.scrubbingBound = 'true';
+      seekBar.removeAttribute('oninput');
+      seekBar.addEventListener('mousedown', () => { isScrubbing = true; });
+      seekBar.addEventListener('touchstart', () => { isScrubbing = true; });
+      seekBar.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value);
+        const playbackTime = document.getElementById('playbackTime');
+        if (playbackTime) {
+          playbackTime.textContent = `${formatTime(val)} / ${formatTime(totalCombinedDuration)}`;
+        }
+      });
+      seekBar.addEventListener('change', async (e) => {
+        isScrubbing = false;
+        await seekCombinedPlayback(e.target.value);
+      });
+      seekBar.addEventListener('touchend', async (e) => {
+        isScrubbing = false;
+        await seekCombinedPlayback(e.target.value);
+      });
+    }
   }
+
+  updateProgressUI();
 }
 
 function startProgressLoop() {
