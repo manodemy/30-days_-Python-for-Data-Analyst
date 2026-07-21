@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.26`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.27`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -7056,6 +7056,10 @@ async function loadAndPlayTrack(index, targetTime = 0) {
         if (track.target) {
           updateSlidePlaybackVisibility(track.target);
         }
+        // Immediately initialise sequential reveal for audio07
+        if (track.src.includes('New_Day3Part1audio07.mp3')) {
+          updateLogicalPrecedenceHighlights(0, true);
+        }
       }
     })
     .catch((err) => {
@@ -7265,6 +7269,10 @@ async function seekCombinedPlayback(val) {
         if (bar) bar.classList.remove('question-playing');
         scrollToTarget(track.target);
         setMobileTab('theory');
+        // Immediately sync visual reveals on seek
+        if (track.src.includes('New_Day3Part1audio07.mp3')) {
+          updateLogicalPrecedenceHighlights(localOffset, isCombinedPlaying);
+        }
       }
     }
   }
