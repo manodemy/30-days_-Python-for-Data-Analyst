@@ -7913,37 +7913,36 @@ function updateSlidePlaybackVisibility(targetSelector) {
 
     container.classList.add('playback-active');
 
+    // Reset vis-target-active and hidden/dimmed classes on all elements
+    container.querySelectorAll('.vis-target-active, .vis-target-dimmed, .vis-target-hidden, .section-hidden').forEach(el => {
+      el.classList.remove('vis-target-active', 'vis-target-dimmed', 'vis-target-hidden', 'section-hidden');
+      el.style.display = '';
+    });
+
     // Find the target element inside this container
     const targetEl = container.querySelector(targetSelector);
     if (!targetEl) return;
 
-    // Reset visibility classes on all elements
-    container.querySelectorAll('.section-hidden, .vis-target-hidden').forEach(el => {
-      el.classList.remove('section-hidden', 'vis-target-hidden');
-      el.style.display = '';
-    });
+    // Highlight the active target block with cyan focus glow
+    const activeBlock = getVisibilityBlock(targetEl, container);
+    if (activeBlock) {
+      activeBlock.classList.add('vis-target-active');
+    }
 
     // Find the active section wrapper (.slide-section) that contains targetEl
     const activeSection = targetEl.closest('.slide-section');
     if (!activeSection) {
-      container.querySelectorAll('.slide-section').forEach(s => s.classList.remove('section-hidden'));
       return;
     }
 
-    // Hide all other .slide-section wrappers using class, show only the active one
+    // Dim non-active sections
     container.querySelectorAll('.slide-section').forEach(section => {
       if (section !== activeSection) {
-        section.classList.add('section-hidden');
-      } else {
-        section.classList.remove('section-hidden');
+        section.classList.add('vis-target-dimmed');
       }
     });
 
-    // Keep the main heading (H2) at the top of the slide always visible
-    const h2 = container.querySelector('h2');
-    if (h2) h2.classList.remove('section-hidden', 'vis-target-hidden');
-
-    // ── Chronological sub-target filtering ──
+    // Dim future targets within activeSection
     const processedTargets = new Set();
     combinedTracks.forEach((track, idx) => {
       if (!track.target || (!track.target.startsWith('#') && !track.target.startsWith('.'))) return;
@@ -7954,29 +7953,11 @@ function updateSlidePlaybackVisibility(targetSelector) {
       if (!el) return;
 
       if (idx > combinedTrackIndex) {
-        // Walk up to find the logical block
-        const blockToHide = getVisibilityBlock(el, activeSection);
-        blockToHide.classList.add('vis-target-hidden');
-
-        // Also hide preceding <hr> dividers
-        const prev = blockToHide.previousElementSibling;
-        if (prev && prev.tagName === 'HR') {
-          prev.classList.add('vis-target-hidden');
+        const blockToDim = getVisibilityBlock(el, activeSection);
+        if (blockToDim !== activeBlock) {
+          blockToDim.classList.add('vis-target-dimmed');
         }
       }
-    });
-
-    // ── Clean up empty parent containers ──
-    activeSection.querySelectorAll('.vs-block').forEach(block => {
-      const hasVisible = Array.from(block.children).some(c => !c.classList.contains('vis-target-hidden') && c.style.display !== 'none');
-      if (!hasVisible) block.classList.add('vis-target-hidden');
-    });
-
-    activeSection.querySelectorAll('.db-mock-table-wrap').forEach(wrap => {
-      const tbody = wrap.querySelector('tbody');
-      if (!tbody) return;
-      const hasVisibleRow = Array.from(tbody.querySelectorAll('tr')).some(r => !r.classList.contains('vis-target-hidden') && r.style.display !== 'none');
-      if (!hasVisibleRow) wrap.classList.add('vis-target-hidden');
     });
   });
 }

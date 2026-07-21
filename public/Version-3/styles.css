@@ -7305,21 +7305,21 @@ span.sql-identifier {
 
 /* ─── P2 #15: Class-based visibility & active topic focus engine ─── */
 .section-hidden {
-  opacity: 0.0 !important;
-  pointer-events: none;
-  transition: opacity 0.35s ease;
+  opacity: 0.35 !important;
+  pointer-events: auto !important;
+  transition: opacity 0.35s ease !important;
 }
 
 .vis-target-hidden {
-  opacity: 0.0 !important;
-  pointer-events: none;
-  transition: opacity 0.35s ease;
+  opacity: 0.35 !important;
+  pointer-events: auto !important;
+  transition: opacity 0.35s ease !important;
 }
 
 .vis-target-dimmed {
-  opacity: 0.0 !important;
-  pointer-events: none;
-  transition: opacity 0.35s ease;
+  opacity: 0.35 !important;
+  pointer-events: auto !important;
+  transition: opacity 0.35s ease !important;
 }
 
 .vis-target-active {
