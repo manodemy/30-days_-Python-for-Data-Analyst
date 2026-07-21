@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.18`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.19`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -6710,17 +6710,17 @@ function updateTableHighlights(currentTime, isPlaying) {
   }
 
   let activeIndex = -1;
-  if (currentTime >= 0 && currentTime < 9.2) {
+  if (currentTime >= 9.16 && currentTime < 15.68) {
     activeIndex = 0;
-  } else if (currentTime >= 9.2 && currentTime < 18.4) {
+  } else if (currentTime >= 15.68 && currentTime < 21.34) {
     activeIndex = 1;
-  } else if (currentTime >= 18.4 && currentTime < 27.6) {
+  } else if (currentTime >= 21.34 && currentTime < 26.86) {
     activeIndex = 2;
-  } else if (currentTime >= 27.6 && currentTime < 36.8) {
+  } else if (currentTime >= 26.86 && currentTime < 35.80) {
     activeIndex = 3;
-  } else if (currentTime >= 36.8 && currentTime < 46.0) {
+  } else if (currentTime >= 35.80 && currentTime < 42.62) {
     activeIndex = 4;
-  } else if (currentTime >= 46.0) {
+  } else if (currentTime >= 42.62 && currentTime < 51.26) {
     activeIndex = 5;
   }
 
