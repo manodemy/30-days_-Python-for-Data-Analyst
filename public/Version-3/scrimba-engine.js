@@ -7561,6 +7561,21 @@ function initSlideNarration() {
     }
   }
 
+  const timelineRow = document.querySelector('.playback-timeline-row');
+  if (timelineRow && !timelineRow.dataset.clickBound) {
+    timelineRow.dataset.clickBound = 'true';
+    timelineRow.addEventListener('click', async (e) => {
+      const rect = timelineRow.getBoundingClientRect();
+      if (rect.width <= 0) return;
+      const clickX = e.clientX - rect.left;
+      const pct = Math.max(0, Math.min(1, clickX / rect.width));
+      const targetTime = pct * (totalCombinedDuration || 100);
+      const sb = document.getElementById('seekBar');
+      if (sb) sb.value = targetTime;
+      await seekCombinedPlayback(targetTime);
+    });
+  }
+
   updateProgressUI();
 }
 
