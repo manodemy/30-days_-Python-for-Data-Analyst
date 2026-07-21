@@ -341,7 +341,7 @@ WHERE  unit_price <= 1000
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
-          <p>Logical operators let you compose complex filters from simple predicates.</p>
+          <p id="day03LogicIntro">Logical operators let you compose complex filters from simple predicates.</p>
 
           <div id="day03PrecWrap" style="width:100%;margin:14px 0 16px">
             <style>
@@ -373,8 +373,16 @@ WHERE  unit_price <= 1000
                 pointer-events: auto;
               }
 
+              #day03LogicIntro {
+                transition: color 0.3s ease, text-shadow 0.3s ease;
+              }
+              #day03LogicIntro.narration-highlight {
+                color: #f8fafc !important;
+                text-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+              }
+
               #day03PrecWrap .precedence-note {
-                transition: opacity 0.4s ease, transform 0.4s ease;
+                transition: opacity 0.4s ease, transform 0.4s ease, border-left-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
               }
 
               #day03PrecWrap.narration-active .precedence-note {
@@ -385,6 +393,12 @@ WHERE  unit_price <= 1000
               #day03PrecWrap.narration-active .precedence-note.revealed {
                 opacity: 1;
                 transform: translateY(0);
+              }
+
+              #day03PrecedenceNote.narration-highlight {
+                border-left-color: #60a5fa !important;
+                box-shadow: 0 0 20px rgba(96, 165, 250, 0.35) !important;
+                background: rgba(59, 130, 246, 0.1) !important;
               }
 
               #day03PrecWrap .prec-header {

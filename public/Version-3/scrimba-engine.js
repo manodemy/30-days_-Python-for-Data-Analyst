@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.25`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.26`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -6737,6 +6737,7 @@ function updateTableHighlights(currentTime, isPlaying) {
 
 function updateLogicalPrecedenceHighlights(currentTime, isPlaying) {
   const wrap = document.getElementById('day03PrecWrap');
+  const intro = document.getElementById('day03LogicIntro');
   const cards = {
     not: document.querySelector('#day03PrecWrap .prec-card--not'),
     and: document.querySelector('#day03PrecWrap .prec-card--and'),
@@ -6752,7 +6753,8 @@ function updateLogicalPrecedenceHighlights(currentTime, isPlaying) {
     cards.not.classList.remove('narration-highlight', 'revealed');
     cards.and.classList.remove('narration-highlight', 'revealed');
     cards.or.classList.remove('narration-highlight', 'revealed');
-    if (note) note.classList.remove('revealed');
+    if (note) note.classList.remove('narration-highlight', 'revealed');
+    if (intro) intro.classList.remove('narration-highlight');
     return;
   }
 
@@ -6766,23 +6768,35 @@ function updateLogicalPrecedenceHighlights(currentTime, isPlaying) {
   if (currentTime >= 16.20) revealed.or = true;
   if (currentTime >= 20.76) revealed.note = true;
 
-  // Determine active card highlight
-  let activeCard = null;
-  if (currentTime >= 5.68 && currentTime < 11.66) {
-    activeCard = 'not';
+  // Determine active highlight item
+  let activeItem = null;
+  if (currentTime >= 0.00 && currentTime < 5.68) {
+    activeItem = 'intro';
+  } else if (currentTime >= 5.68 && currentTime < 11.66) {
+    activeItem = 'not';
   } else if (currentTime >= 11.66 && currentTime < 16.20) {
-    activeCard = 'and';
+    activeItem = 'and';
   } else if (currentTime >= 16.20 && currentTime < 20.76) {
-    activeCard = 'or';
+    activeItem = 'or';
+  } else if (currentTime >= 20.76 && currentTime < 25.90) {
+    activeItem = 'note';
   } else if (currentTime >= 25.90 && currentTime < 27.46) {
-    activeCard = 'not';
+    activeItem = 'not';
   } else if (currentTime >= 27.46 && currentTime < 28.92) {
-    activeCard = 'and';
+    activeItem = 'and';
   } else if (currentTime >= 28.92 && currentTime < 29.70) {
-    activeCard = 'or';
+    activeItem = 'or';
+  } else if (currentTime >= 29.70) {
+    activeItem = 'note';
   }
 
-  // Apply classes
+  // Highlight intro paragraph
+  if (intro) {
+    if (activeItem === 'intro') intro.classList.add('narration-highlight');
+    else intro.classList.remove('narration-highlight');
+  }
+
+  // Apply classes to cards
   Object.keys(cards).forEach(key => {
     const card = cards[key];
     if (revealed[key]) {
@@ -6791,7 +6805,7 @@ function updateLogicalPrecedenceHighlights(currentTime, isPlaying) {
       card.classList.remove('revealed');
     }
 
-    if (activeCard === key) {
+    if (activeItem === key) {
       card.classList.add('narration-highlight');
     } else {
       card.classList.remove('narration-highlight');
@@ -6804,6 +6818,12 @@ function updateLogicalPrecedenceHighlights(currentTime, isPlaying) {
       note.classList.add('revealed');
     } else {
       note.classList.remove('revealed');
+    }
+
+    if (activeItem === 'note') {
+      note.classList.add('narration-highlight');
+    } else {
+      note.classList.remove('narration-highlight');
     }
   }
 }
