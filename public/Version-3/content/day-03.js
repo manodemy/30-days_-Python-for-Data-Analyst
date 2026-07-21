@@ -679,9 +679,6 @@ WHERE  unit_price <= 1000
 
           <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
             <small style="flex: 1; color: #64748b; font-size: 0.75rem;">AND / OR / NOT Examples</small>
-            <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio07.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
           </div>
           <pre id="day03LogicCode"><code>-- AND: every condition must be TRUE
 SELECT first_name, department_id, salary
@@ -709,9 +706,6 @@ WHERE  (department_id = 10 OR department_id = 20)
           <div class="warn-box" id="day03LogicWarn">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
               <strong style="color: #b91c1c;">⚠️ Precedence Trap:</strong>
-              <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio09.mp3', this)" title="Play narration" style="flex-shrink: 0;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
             </div>
             <p>
               <code>WHERE dept = 10 OR dept = 20 AND salary &gt; 60000</code> is parsed as <code>WHERE dept = 10 OR (dept = 20 AND salary &gt; 60000)</code> — which is very different from filtering both departments! Always wrap <code>OR</code> groups in parentheses: <code>WHERE (dept = 10 OR dept = 20) AND salary &gt; 60000</code>.
