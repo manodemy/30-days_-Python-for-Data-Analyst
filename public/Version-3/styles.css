@@ -5870,6 +5870,21 @@ span.sql-identifier {
   background-color: #f8fafc !important;
 }
 
+/* Narration Highlight row */
+.db-table-mock tr.narration-highlight {
+  background-color: #0f172a !important; /* Dark background */
+  color: #ffffff !important; /* White text */
+}
+.db-table-mock tr.narration-highlight td {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+}
+.db-table-mock tr.narration-highlight code {
+  background-color: #1e293b !important;
+  color: #38bdf8 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
 /* Projected Column Highlight (Clean Blue Border) */
 .db-table-mock th.column-projected-header {
   border-left: 1.5px solid #3b82f6 !important;

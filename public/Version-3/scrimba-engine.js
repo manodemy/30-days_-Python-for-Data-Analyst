@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.15`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.17`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -4316,14 +4316,15 @@ const day02Tracks = [
 ];
 
 const day03Durations = [
-  44.0, 39.0, 19.5, 22.0
+  44.0, 39.0, 19.5, 22.0, 55.4
 ];
 
 const day03Tracks = [
   { src: 'Day03/New_Day3Part1audio01.mp3', target: '#day03Where', title: 'The WHERE Clause' },
   { src: 'Day03/New_Day3Part1audio02.mp3', target: '#day03WhereCode', title: 'WHERE Clause Syntax & Examples' },
   { src: 'Day03/New_Day3Part1audio03.mp3', target: '#day03WhereInfo', title: 'Execution Order' },
-  { src: 'Day03/New_Day3Part1audio04.mp3', target: '#day03CompOps', title: 'Comparison Operators' }
+  { src: 'Day03/New_Day3Part1audio04.mp3', target: '#day03CompOps', title: 'Comparison Operators' },
+  { src: 'Day03/New_Day3Part1audio05.mp3', target: '#day03CompCode', title: 'Comparison Operator Examples' }
 ];
 
 const slideTrackMap = {
@@ -6699,6 +6700,39 @@ function launchCompletionAnimation(audioObj, targetTime = 0) {
   });
 }
 
+function updateTableHighlights(currentTime, isPlaying) {
+  const rows = document.querySelectorAll('#day03OpsTable tbody tr');
+  if (!rows.length) return;
+
+  if (!isPlaying) {
+    rows.forEach(row => row.classList.remove('narration-highlight'));
+    return;
+  }
+
+  let activeIndex = -1;
+  if (currentTime >= 0 && currentTime < 3.8) {
+    activeIndex = 0;
+  } else if (currentTime >= 3.8 && currentTime < 9.2) {
+    activeIndex = 1;
+  } else if (currentTime >= 9.2 && currentTime < 12.0) {
+    activeIndex = 2;
+  } else if (currentTime >= 12.0 && currentTime < 15.0) {
+    activeIndex = 3;
+  } else if (currentTime >= 15.0 && currentTime < 18.0) {
+    activeIndex = 4;
+  } else if (currentTime >= 18.0) {
+    activeIndex = 5;
+  }
+
+  rows.forEach((row, idx) => {
+    if (idx === activeIndex) {
+      row.classList.add('narration-highlight');
+    } else {
+      row.classList.remove('narration-highlight');
+    }
+  });
+}
+
 // ════════════════════════════════════════════════════════════════════════════════
 
 async function loadAndPlayTrack(index, targetTime = 0) {
@@ -6777,11 +6811,25 @@ async function loadAndPlayTrack(index, targetTime = 0) {
 
   audio.addEventListener('ended', () => {
     if (myGeneration !== currentGeneration) return;
+    if (track.src.includes('New_Day3Part1audio04.mp3')) {
+      updateTableHighlights(0, false);
+    }
     onNarrationSegmentEnded(index, events);
+  });
+
+  audio.addEventListener('pause', () => {
+    if (myGeneration !== currentGeneration) return;
+    if (track.src.includes('New_Day3Part1audio04.mp3')) {
+      updateTableHighlights(0, false);
+    }
   });
 
   audio.addEventListener('timeupdate', () => {
     if (myGeneration !== currentGeneration) return;
+
+    if (track.src.includes('New_Day3Part1audio04.mp3')) {
+      updateTableHighlights(audio.currentTime, !audio.paused);
+    }
 
     // Calculate cumulative current time
     let elapsed = 0;
