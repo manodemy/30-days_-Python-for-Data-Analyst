@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.35`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.36`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -6890,7 +6890,7 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     activeAudioInstance = null;
   }
 
-  await loadManifest();
+  loadManifest().catch(() => { });
 
   combinedTrackIndex = index;
   let elapsedBefore = 0;
@@ -6900,6 +6900,7 @@ async function loadAndPlayTrack(index, targetTime = 0) {
   currentCombinedTime = elapsedBefore + targetTime;
   updateProgressUI();
   const track = combinedTracks[index];
+  if (!track) return;
   const filename = track.src.split('/').pop().replace('.mp3', '');
   const trackId = `${currentDay}_${filename}`;
   const entry = manifest[trackId] || { audioPath: track.src };
