@@ -7331,22 +7331,24 @@ async function seekCombinedPlayback(val) {
     elapsed += dur;
     if (i === combinedTrackDurations.length - 1) {
       trackIdx = i;
-      localOffset = dur - 0.1;
+      localOffset = Math.max(0, dur - 0.1);
     }
   }
 
   // Load or seek the track
-  if (combinedTrackIndex !== trackIdx) {
+  if (combinedTrackIndex !== trackIdx || !activeAudioInstance) {
     await loadAndPlayTrack(trackIdx, localOffset);
-  } else if (activeAudioInstance) {
-    activeAudioInstance.currentTime = localOffset;
+  } else {
+    try {
+      activeAudioInstance.currentTime = localOffset;
+    } catch (e) { }
     cancelTypewriter();
 
     const track = combinedTracks[trackIdx];
     if (track) {
       if (track.type === 'question' || track.type === 'solution') {
         teardownCompletionAnimation();
-        const targetQIdx = COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === track.qId);
+        const targetQIdx = COURSE_CONFIG.practiceQuestions ? COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === track.qId) : -1;
         if (targetQIdx !== -1) {
           currentPracticeQ = targetQIdx;
           renderPracticeQuestion();
@@ -7373,12 +7375,22 @@ async function seekCombinedPlayback(val) {
         if (bar) bar.classList.remove('question-playing');
         scrollToTarget(track.target);
         setMobileTab('theory');
+        if (track.target) {
+          updateSlidePlaybackVisibility(track.target);
+        }
       }
+    }
+    if (!isCombinedPlaying) {
+      activeAudioInstance.play().then(() => {
+        isCombinedPlaying = true;
+        updatePlayButtonStates(true);
+      }).catch(() => {});
     }
   }
 
   currentCombinedTime = targetTime;
   updateProgressUI();
+  updateChapterListActive();
 }
 
 function scrollToTarget(selector) {
