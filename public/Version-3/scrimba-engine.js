@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.24`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.25`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -6742,6 +6742,7 @@ function updateLogicalPrecedenceHighlights(currentTime, isPlaying) {
     and: document.querySelector('#day03PrecWrap .prec-card--and'),
     or: document.querySelector('#day03PrecWrap .prec-card--or')
   };
+  const note = document.getElementById('day03PrecedenceNote');
 
   if (!wrap || !cards.not) return;
 
@@ -6751,17 +6752,19 @@ function updateLogicalPrecedenceHighlights(currentTime, isPlaying) {
     cards.not.classList.remove('narration-highlight', 'revealed');
     cards.and.classList.remove('narration-highlight', 'revealed');
     cards.or.classList.remove('narration-highlight', 'revealed');
+    if (note) note.classList.remove('revealed');
     return;
   }
 
   // Active playing state
   wrap.classList.add('narration-active');
 
-  // Determine which cards are revealed
-  let revealed = { not: false, and: false, or: false };
+  // Determine which cards/notes are revealed
+  let revealed = { not: false, and: false, or: false, note: false };
   if (currentTime >= 5.68) revealed.not = true;
   if (currentTime >= 11.66) revealed.and = true;
   if (currentTime >= 16.20) revealed.or = true;
+  if (currentTime >= 20.76) revealed.note = true;
 
   // Determine active card highlight
   let activeCard = null;
@@ -6794,6 +6797,15 @@ function updateLogicalPrecedenceHighlights(currentTime, isPlaying) {
       card.classList.remove('narration-highlight');
     }
   });
+
+  // Apply class to precedence note
+  if (note) {
+    if (revealed.note) {
+      note.classList.add('revealed');
+    } else {
+      note.classList.remove('revealed');
+    }
+  }
 }
 
 // ════════════════════════════════════════════════════════════════════════════════

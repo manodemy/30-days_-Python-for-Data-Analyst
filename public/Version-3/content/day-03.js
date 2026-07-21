@@ -341,7 +341,7 @@ WHERE  unit_price <= 1000
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
-          <p>Logical operators let you compose complex filters from simple predicates. SQL evaluates them in <strong>operator precedence</strong> order: <code>NOT</code> binds tightest → then <code>AND</code> → then <code>OR</code>. Mixing <code>AND</code> and <code>OR</code> without parentheses is a classic bug source — always use brackets to make your intent explicit.</p>
+          <p>Logical operators let you compose complex filters from simple predicates.</p>
 
           <div id="day03PrecWrap" style="width:100%;margin:14px 0 16px">
             <style>
@@ -371,6 +371,20 @@ WHERE  unit_price <= 1000
                 opacity: 1;
                 transform: translateY(0);
                 pointer-events: auto;
+              }
+
+              #day03PrecWrap .precedence-note {
+                transition: opacity 0.4s ease, transform 0.4s ease;
+              }
+
+              #day03PrecWrap.narration-active .precedence-note {
+                opacity: 0;
+                transform: translateY(10px);
+              }
+
+              #day03PrecWrap.narration-active .precedence-note.revealed {
+                opacity: 1;
+                transform: translateY(0);
               }
 
               #day03PrecWrap .prec-header {
@@ -488,13 +502,6 @@ WHERE  unit_price <= 1000
               @keyframes precReveal{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
               @media(max-width:768px){#day03PrecWrap .prec-grid{grid-template-columns:1fr;gap:12px}}
             </style>
-            
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
-              <small style="color:#94a3b8;font-size:0.75rem;font-weight:600;letter-spacing:0.02em;">⚡ Logical Set Diagrams &amp; Operator Precedence</small>
-              <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio07.mp3', this)" title="Play narration" style="flex-shrink:0;">
-                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
             
             <div class="prec-grid">
               <!-- CARD 1: NOT -->
@@ -643,6 +650,13 @@ WHERE  unit_price <= 1000
                   <li><strong>3rd Priority:</strong> Evaluated last</li>
                 </ul>
               </div>
+            </div>
+
+            <div class="precedence-note" id="day03PrecedenceNote" style="margin-top: 14px; padding: 12px; background: rgba(255,255,255,0.02); border-left: 3px solid #3b82f6; border-top: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); border-radius: 4px 8px 8px 4px;">
+              <p style="margin: 0; font-size: 0.72rem; line-height: 1.5; color: #94a3b8;">
+                <span style="color: #60a5fa; font-weight: 700; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 2px;">⚠️ Precedence Rule</span><br>
+                SQL evaluates them in <strong>operator precedence</strong> order: <code>NOT</code> binds tightest → then <code>AND</code> → then <code>OR</code>. Mixing <code>AND</code> and <code>OR</code> without parentheses is a classic bug source — always use brackets to make your intent explicit.
+              </p>
             </div>
           </div>
 
