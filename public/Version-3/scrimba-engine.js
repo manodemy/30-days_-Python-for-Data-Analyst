@@ -7300,6 +7300,11 @@ function onNarrationSegmentEnded(index, events) {
     loadAndPlayTrack(combinedTrackIndex);
   } else {
     // All tracks complete — reset
+    if (activeAudioInstance) {
+      try { activeAudioInstance.pause(); } catch (e) { }
+      activeAudioInstance.src = "";
+      activeAudioInstance = null;
+    }
     isCombinedPlaying = false;
     isNarrationActive = false;
     combinedTrackIndex = 0;
@@ -7341,22 +7346,24 @@ async function seekCombinedPlayback(val) {
     elapsed += dur;
     if (i === combinedTrackDurations.length - 1) {
       trackIdx = i;
-      localOffset = dur - 0.1;
+      localOffset = Math.max(0, dur - 0.1);
     }
   }
 
   // Load or seek the track
-  if (combinedTrackIndex !== trackIdx) {
+  if (combinedTrackIndex !== trackIdx || !activeAudioInstance) {
     await loadAndPlayTrack(trackIdx, localOffset);
-  } else if (activeAudioInstance) {
-    activeAudioInstance.currentTime = localOffset;
+  } else {
+    try {
+      activeAudioInstance.currentTime = localOffset;
+    } catch (e) { }
     cancelTypewriter();
 
     const track = combinedTracks[trackIdx];
     if (track) {
       if (track.type === 'question' || track.type === 'solution') {
         teardownCompletionAnimation();
-        const targetQIdx = COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === track.qId);
+        const targetQIdx = COURSE_CONFIG.practiceQuestions ? COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === track.qId) : -1;
         if (targetQIdx !== -1) {
           currentPracticeQ = targetQIdx;
           renderPracticeQuestion();
@@ -7385,10 +7392,17 @@ async function seekCombinedPlayback(val) {
         setMobileTab('theory');
       }
     }
+    if (!isCombinedPlaying) {
+      activeAudioInstance.play().then(() => {
+        isCombinedPlaying = true;
+        updatePlayButtonStates(true);
+      }).catch(() => {});
+    }
   }
 
   currentCombinedTime = targetTime;
   updateProgressUI();
+  if (typeof updateChapterListActive === 'function') updateChapterListActive();
 }
 
 function scrollToTarget(selector) {
@@ -7525,6 +7539,7 @@ function initSlideNarration() {
     seekBar.max = totalCombinedDuration || 100;
     if (!seekBar.dataset.scrubbingBound) {
       seekBar.dataset.scrubbingBound = 'true';
+      seekBar.oninput = null;
       seekBar.removeAttribute('oninput');
       seekBar.addEventListener('mousedown', () => { isScrubbing = true; });
       seekBar.addEventListener('touchstart', () => { isScrubbing = true; });
