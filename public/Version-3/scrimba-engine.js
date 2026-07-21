@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.22`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.23`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -4316,7 +4316,7 @@ const day02Tracks = [
 ];
 
 const day03Durations = [
-  44.0, 39.0, 19.5, 19.5, 55.4, 30.0
+  44.0, 39.0, 19.5, 19.5, 55.4, 30.0, 32.0
 ];
 
 const day03Tracks = [
@@ -4325,7 +4325,8 @@ const day03Tracks = [
   { src: 'Day03/New_Day3Part1audio03.mp3', target: '#day03WhereInfo', title: 'Execution Order' },
   { src: 'Day03/New_Day3Part1audio04.mp3', target: '#day03CompOps', title: 'Comparison Operators' },
   { src: 'Day03/New_Day3Part1audio05.mp3', target: '#day03OpsTable', title: 'Comparison Operator Reference' },
-  { src: 'Day03/New_Day3Part1audio06.mp3', target: '#day03CompCode', title: 'Comparison Operator Examples' }
+  { src: 'Day03/New_Day3Part1audio06.mp3', target: '#day03CompCode', title: 'Comparison Operator Examples' },
+  { src: 'Day03/New_Day3Part1audio07.mp3', target: '#day03LogicOps', title: 'Logical Operators & Precedence' }
 ];
 
 const slideTrackMap = {
