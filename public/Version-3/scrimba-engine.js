@@ -7949,26 +7949,32 @@ function updateSlidePlaybackVisibility(targetSelector) {
 
       const block = getVisibilityBlock(el, activeSection);
 
-      if (idx <= combinedTrackIndex) {
-        // Current or past track: ensure fully visible
+      if (idx < combinedTrackIndex) {
+        // Past track: fully visible (opacity: 1), no active outline box
+        block.classList.remove('vis-target-hidden', 'vis-target-dimmed', 'vis-target-active', 'section-hidden');
+        el.classList.remove('vis-target-hidden', 'vis-target-dimmed', 'vis-target-active', 'section-hidden');
+      } else if (idx === combinedTrackIndex) {
+        // Current active track: 100% bright with glowing cyan active box!
         block.classList.remove('vis-target-hidden', 'vis-target-dimmed', 'section-hidden');
         block.classList.add('vis-target-active');
         el.classList.remove('vis-target-hidden', 'vis-target-dimmed', 'section-hidden');
         el.classList.add('vis-target-active');
       } else {
-        // Future track: apply soft dimming so there is NO black void, but visually distinct
-        block.classList.remove('section-hidden', 'vis-target-hidden');
+        // Future track: dimmed to 0.18 opacity so attention stays 100% on active topic
+        block.classList.remove('vis-target-active', 'section-hidden', 'vis-target-hidden');
         block.classList.add('vis-target-dimmed');
+        el.classList.remove('vis-target-active', 'section-hidden', 'vis-target-hidden');
+        el.classList.add('vis-target-dimmed');
       }
     });
 
-    // Keep all H1, H2, H3, H4 headings always fully active
+    // Keep all H1, H2, H3, H4 headings always fully visible
     container.querySelectorAll('h1, h2, h3, h4').forEach(h => {
       h.classList.remove('section-hidden', 'vis-target-hidden', 'vis-target-dimmed');
-      h.classList.add('vis-target-active');
     });
   });
 }
+
 
 
 
