@@ -6102,3 +6102,265 @@ span.sql-identifier {
   cursor: default !important;
 }
 
+
+/* ================================================================
+   IMPROVEMENTS BLOCK — v14.38
+   Groups: P0#3, P0#4, P1#6-12, P2#15, P2#21, P2#22
+   ================================================================ */
+
+/* ─── P0 #4: Error toast ─────────────────────────────────────────── */
+@keyframes toastSlideIn {
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes toastFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; pointer-events: none; }
+}
+.audio-error-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #1e1230, #2d1b6e);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  font-family: var(--font);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(239,68,68,0.15);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 360px;
+  animation: toastSlideIn 0.25s ease forwards;
+  pointer-events: none;
+}
+.audio-error-toast.fade-out {
+  animation: toastFadeOut 0.4s ease forwards;
+}
+
+/* ─── P1 #6: Skip ±10s buttons ───────────────────────────────────── */
+.skip-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 3px 5px;
+  border-radius: var(--radius-sm);
+  line-height: 1;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+.skip-btn:hover {
+  color: var(--text);
+  background: rgba(255,255,255,0.07);
+}
+.skip-btn:active { transform: scale(0.92); }
+
+/* ─── P1 #7: Chapter list panel ──────────────────────────────────── */
+.chapters-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s, background 0.15s;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.chapters-btn:hover,
+.chapters-btn.active {
+  color: var(--cyan);
+  background: var(--cyan-dim);
+}
+.chapter-list {
+  max-height: 160px;
+  overflow-y: auto;
+  margin: 0 8px 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+.chapter-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  font-size: 0.7rem;
+  font-family: var(--font);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  border-bottom: 1px solid var(--border);
+  user-select: none;
+}
+.chapter-item:last-child { border-bottom: none; }
+.chapter-item:hover { background: var(--surface-hover); color: var(--text); }
+.chapter-item.active {
+  background: rgba(124,58,237,0.15);
+  color: #a78bfa;
+  font-weight: 600;
+}
+.chapter-item__time {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  min-width: 34px;
+  flex-shrink: 0;
+}
+.chapter-item__icon {
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* ─── P1 #8: Captions button ─────────────────────────────────────── */
+.captions-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  font-weight: 700;
+  font-family: var(--font);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 4px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+.captions-btn:hover {
+  color: var(--text);
+  border-color: var(--border-hover);
+  background: rgba(255,255,255,0.05);
+}
+.captions-btn.active {
+  color: var(--cyan);
+  border-color: rgba(0,230,246,0.4);
+  background: var(--cyan-dim);
+}
+
+/* ─── P1 #10: Loading skeleton ───────────────────────────────────── */
+@keyframes skeletonShimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+.slide-skeleton {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.skeleton-line {
+  height: 12px;
+  border-radius: 6px;
+  width: 80%;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.05) 25%,
+    rgba(255,255,255,0.12) 50%,
+    rgba(255,255,255,0.05) 75%
+  );
+  background-size: 800px 100%;
+  animation: skeletonShimmer 1.4s infinite linear;
+}
+.skeleton-line--title  { height: 20px; width: 55%; }
+.skeleton-line--wide   { width: 90%; }
+.skeleton-line--short  { width: 45%; }
+
+/* ─── P1 #11: Tablet (769–1024px) vertical split ─────────────────── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .workspace {
+    flex-direction: column !important;
+  }
+  .panel-left,
+  .panel-right {
+    width: 100% !important;
+    flex: none !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  .divider {
+    width: 100% !important;
+    height: 8px !important;
+    cursor: row-resize !important;
+    flex-direction: row !important;
+  }
+  #mobileTabsNav { display: flex !important; }
+}
+
+/* ─── P1 #12: Enlarged seekbar thumb (16px, Firefox support) ─────── */
+.seek-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ef4444 !important;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.7);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  margin-top: -6px;
+}
+.seek-bar:hover::-webkit-slider-thumb {
+  transform: scale(1.25);
+  box-shadow: 0 0 12px rgba(239,68,68,0.9);
+}
+.seek-bar::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: none;
+  background: #ef4444;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.7);
+  transition: transform 0.12s ease;
+}
+.seek-bar:hover::-moz-range-thumb {
+  transform: scale(1.25);
+}
+
+/* ─── P2 #15: Class-based visibility helpers ─────────────────────── */
+.section-hidden    { display: none !important; }
+.vis-target-hidden { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.vis-target-dimmed { opacity: 0.25; transition: opacity 0.3s ease; }
+.vis-target-active { opacity: 1; transition: opacity 0.3s ease; }
+
+/* ─── P2 #21: Landscape tablet gap (1025–1100px) ─────────────────── */
+@media (min-width: 1025px) and (max-width: 1100px) {
+  .workspace {
+    gap: 0 !important;
+  }
+  .divider {
+    width: 6px !important;
+  }
+  .panel-left, .panel-right {
+    min-width: 280px !important;
+  }
+}
+
+/* ─── P2 #22: Global focus-visible rings ─────────────────────────── */
+/* Allow browser to handle focus outlines — only suppress on seek-bar (custom styled) */
+button:focus-visible,
+input[type="range"]:not(.seek-bar):focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid rgba(0, 230, 246, 0.8);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* Suppress the legacy :focus ring globally (keep only :focus-visible) */
+button:focus:not(:focus-visible),
+select:focus:not(:focus-visible) {
+  outline: none;
+}
+.seek-bar:focus { outline: none; }
+

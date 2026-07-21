@@ -607,6 +607,9 @@ function renderSideSlide() {
   const slideBodyText = document.getElementById('slideBodyText');
   if (slideBodyText) {
     slideBodyText.innerHTML = bodyHtml;
+    // P1 #10: ensure skeleton is hidden once real content is rendered
+    const skel = document.getElementById('slideSkeleton');
+    if (skel) { skel.style.display = 'none'; skel.setAttribute('aria-hidden', 'true'); }
     formatHeadingBoxes(slideBodyText);
     autoHighlightSql(slideBodyText);
     // Re-execute any <script> tags injected via innerHTML (browser security blocks them)
@@ -619,6 +622,16 @@ function renderSideSlide() {
       oldScript.parentNode.replaceChild(newScript, oldScript);
     });
   }
+
+  // P2 #19: Dynamic document.title per-slide
+  try {
+    const dayNum = String(parseInt((currentDay || 'day01').replace('day', ''), 10)).padStart(2, '0');
+    const slideTitle = slide.title ? slide.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '').trim() : '';
+    document.title = slideTitle
+      ? `Manodemy — Day ${dayNum}: ${slideTitle}`
+      : `Manodemy — Day ${dayNum}`;
+  } catch (e) { /* ignore */ }
+
 
   const slideContent = document.getElementById('slideContent');
   if (slideContent) {
@@ -692,7 +705,7 @@ function renderSideSlide() {
     updatePlayButtonStates(false);
 
     // Re-calculate total duration
-    totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
+    recomputeTotalDuration();
 
     const navBtn = document.getElementById('navPlayBtn');
     if (navBtn) navBtn.style.display = 'inline-flex';
@@ -1859,6 +1872,9 @@ function setPlaybackVolume(value) {
       `;
     }
   }
+
+  // P1 #9: persist volume preference
+  if (typeof ProgressManager !== 'undefined') ProgressManager.savePreference('volume', parseFloat(value));
 }
 
 function selectSpeedOption(speed, labelText) {
@@ -1879,6 +1895,9 @@ function selectSpeedOption(speed, labelText) {
 
   document.getElementById('speedPopover')?.classList.remove('open');
   btn?.classList.remove('active');
+
+  // P1 #9: persist speed preference
+  if (typeof ProgressManager !== 'undefined') ProgressManager.savePreference('speed', speed);
 }
 
 // Global click handler to close popovers when clicking outside
@@ -2885,30 +2904,9 @@ function renderPracticeQuestion() {
   }
 }
 
-// Helper: jump the combined system to a specific track by src filename, returns audio or null
-function syncCombinedToTrack(srcFilename) {
-  initSlideNarration(); // ensure combinedAudios is initialised
-  const idx = combinedTracks.findIndex(t => t.src === srcFilename);
-  if (idx === -1) return null;
+// P2 #14: syncCombinedToTrack() was removed (dead code — use seekCombinedPlayback() instead)
 
-  // Pause currently playing combined track
-  if (isCombinedPlaying) {
-    combinedAudios[combinedTrackIndex].pause();
-    isCombinedPlaying = false;
-  }
-  if (playProgressInterval) clearInterval(playProgressInterval);
 
-  // Rewind old track
-  combinedAudios[combinedTrackIndex].currentTime = 0;
-
-  // Switch to the target track
-  combinedTrackIndex = idx;
-  combinedAudios[idx].currentTime = 0;
-  isCombinedPlaying = true;
-  updatePlayButtonStates(true);
-  startProgressLoop();
-  return combinedAudios[idx];
-}
 
 function playQuestionAudio(btn, audioSrc) {
   const src = audioSrc || 'New_Day1Part1Question01.mp3';
@@ -3585,17 +3583,17 @@ function loadDayContent(dayId) {
   const dayContent = window.COURSE_CONTENT && window.COURSE_CONTENT[dayId];
 
   if (!dayContent) {
-    // Show loading placeholder
+    // P1 #10: Show loading skeleton
+    const skel = document.getElementById('slideSkeleton');
     const slideContent = document.getElementById('slideBodyText');
+    if (skel) { skel.style.display = ''; skel.removeAttribute('aria-hidden'); }
     if (slideContent) {
-      const dayNum = dayId.replace('day', 'Day ');
-      slideContent.innerHTML = `
-        <div style="padding:32px;text-align:center;color:#8c92ac;">
-          <div style="font-size:48px;margin-bottom:16px;">🚧</div>
-          <h3 style="color:#e2e8f0;margin:0 0 8px 0;">${dayNum} Loading…</h3>
-          <p style="margin:0;font-size:0.85rem;">Loading day content module. Please wait or refresh.</p>
-        </div>`;
+      // Remove any previous placeholder content that is NOT the skeleton
+      Array.from(slideContent.children).forEach(child => {
+        if (child.id !== 'slideSkeleton') child.remove();
+      });
     }
+
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
@@ -3622,6 +3620,7 @@ function loadDayContent(dayId) {
   }
 
   try {
+
     // ── Apply content to COURSE_CONFIG ──
     COURSE_CONFIG.dayId = dayId;
     COURSE_CONFIG.title = dayContent.title || COURSE_CONFIG.title;
@@ -3767,6 +3766,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (window.ProgressManager) {
       window.ProgressManager.load();
     }
+
+    // P1 #9: Restore speed/volume preferences
+    restorePlayerPreferences();
 
     await initDatabase();
     initMainEditor();
@@ -4190,6 +4192,13 @@ let combinedAudios = [];
 let playProgressInterval = null;
 let isScrubbing = false;
 
+// P2 #13: Single authoritative duration recomputation — replaces all inline .reduce() calls
+function recomputeTotalDuration() {
+  totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
+  return totalCombinedDuration;
+}
+
+
 const topic01Durations = [23.4, 14.1, 20.4, 11.1, 8.4, 9.5, 12.1, 9.2, 17.9, 22.2, 21.8, 24.7, 13.2, 3.8, 9.5, 5.4, 7.8, 11.4, 12.3, 13.3, 11.3, 25.7, 26.1, 31.8, 20.5, 9.3, 16.6, 21.8];
 const topic01Tracks = [
   { src: 'New_Day1Part1audio01.mp3', target: '#rdbmsIntro', title: 'What is RDBMS?' },
@@ -4359,7 +4368,7 @@ let pendingAudioStartTime = 0;
 
 // Compute totalCombinedDuration immediately from hardcoded fallbacks so the
 // progress bar shows a real duration even before the manifest has loaded.
-totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
+recomputeTotalDuration();
 let activeAudioInstance = null;
 let currentGeneration = 0;
 let nextTrackPrefetch = null;
@@ -4388,12 +4397,12 @@ async function loadManifest() {
         });
       });
     });
-    totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
+    recomputeTotalDuration();
     updateProgressUI();
     initCustomDropdowns();
   } catch (err) {
     console.log('Using default durations fallback:', err);
-    totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
+    recomputeTotalDuration();
     updateProgressUI();
     initCustomDropdowns();
   }
@@ -7181,6 +7190,26 @@ function maybePrefetchNext(audio, currentIndex) {
   }
 }
 
+// P0 #4: Error toast utility
+function showToast(message, type = 'error', durationMs = 4000) {
+  const existing = document.getElementById('audioErrorToast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.id = 'audioErrorToast';
+  toast.className = 'audio-error-toast';
+  toast.setAttribute('role', 'alert');
+  toast.setAttribute('aria-live', 'assertive');
+  const icon = type === 'error' ? '⚠️' : 'ℹ️';
+  toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('fade-out');
+    setTimeout(() => toast.remove(), 450);
+  }, durationMs);
+}
+
 function retryOrShowError(index, generation, reason = 'network', attempt = 1) {
   const MAX_ATTEMPTS = 3;
   if (reason !== 'network' && !hasCompletedFirstGestureBoundPlay) {
@@ -7188,9 +7217,13 @@ function retryOrShowError(index, generation, reason = 'network', attempt = 1) {
     return;
   }
   if (attempt > MAX_ATTEMPTS) {
-    console.log("Audio loading failed after retries.");
+    const track = combinedTracks[index];
+    const name = track ? track.src.split('/').pop() : `track ${index}`;
+    showToast(`Audio failed to load: ${name}. Check your connection.`, 'error');
+    console.warn(`Audio loading failed after ${MAX_ATTEMPTS} retries for track ${index}.`);
     return;
   }
+
   setTimeout(() => {
     if (generation !== currentGeneration) return;
     loadAndPlayTrack(index);
@@ -7448,13 +7481,13 @@ function setMobileTab(tab) {
   if (tab === 'theory') {
     container.classList.remove('mobile-show-practice');
     container.classList.add('mobile-show-theory');
-    if (btnTheory) btnTheory.classList.add('active');
-    if (btnPractice) btnPractice.classList.remove('active');
+    if (btnTheory) { btnTheory.classList.add('active'); btnTheory.setAttribute('aria-selected', 'true'); }
+    if (btnPractice) { btnPractice.classList.remove('active'); btnPractice.setAttribute('aria-selected', 'false'); }
   } else if (tab === 'practice') {
     container.classList.remove('mobile-show-theory');
     container.classList.add('mobile-show-practice');
-    if (btnPractice) btnPractice.classList.add('active');
-    if (btnTheory) btnTheory.classList.remove('active');
+    if (btnPractice) { btnPractice.classList.add('active'); btnPractice.setAttribute('aria-selected', 'true'); }
+    if (btnTheory) { btnTheory.classList.remove('active'); btnTheory.setAttribute('aria-selected', 'false'); }
 
     // Refresh CodeMirror when visual display toggles
     setTimeout(() => {
@@ -7474,7 +7507,7 @@ function initSlideNarration() {
   ensureThreeLoaded(() => { });
 
   if (combinedTrackDurations && combinedTrackDurations.length > 0) {
-    totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
+    recomputeTotalDuration();
   }
 
   combinedAudios = combinedTracks.map(track => {
@@ -7516,6 +7549,105 @@ function initSlideNarration() {
   updateProgressUI();
 }
 
+// ─── P1 #6: Skip ±N seconds ──────────────────────────────────────────────────
+function skipCombined(deltaSecs) {
+  if (!isCombinedPlaying && currentCombinedTime === 0) return;
+  const target = Math.max(0, Math.min(totalCombinedDuration, currentCombinedTime + deltaSecs));
+  seekCombinedPlayback(target);
+}
+
+// ─── P1 #7: Chapter list ─────────────────────────────────────────────────────
+function buildChapterList() {
+  const listEl = document.getElementById('chapterList');
+  if (!listEl) return;
+  const typeIcons = { narration: '📖', question: '❓', solution: '✅', completion: '🏆' };
+  let elapsed = 0;
+  listEl.innerHTML = '';
+  combinedTracks.forEach((track, idx) => {
+    const dur = combinedTrackDurations[idx] || 0;
+    const item = document.createElement('div');
+    item.className = 'chapter-item';
+    item.dataset.idx = idx;
+    item.setAttribute('role', 'option');
+    item.innerHTML = `
+      <span class="chapter-item__icon">${typeIcons[track.type] || '▶'}</span>
+      <span class="chapter-item__time">${formatTime(elapsed)}</span>
+      <span>${track.title || track.src.split('/').pop().replace('.mp3', '')}</span>`;
+    item.addEventListener('click', () => {
+      seekCombinedPlayback(elapsed);
+      if (!isCombinedPlaying) playCombinedPlayback();
+    });
+    listEl.appendChild(item);
+    elapsed += dur;
+  });
+}
+
+function updateChapterListActive() {
+  const listEl = document.getElementById('chapterList');
+  if (!listEl) return;
+  listEl.querySelectorAll('.chapter-item').forEach(item => {
+    item.classList.toggle('active', parseInt(item.dataset.idx, 10) === combinedTrackIndex);
+  });
+}
+
+function toggleChapterList() {
+  const listEl = document.getElementById('chapterList');
+  const btn = document.getElementById('chaptersBtn');
+  if (!listEl) return;
+  const isOpen = listEl.style.display !== 'none';
+  if (isOpen) {
+    listEl.style.display = 'none';
+    if (btn) { btn.classList.remove('active'); btn.setAttribute('aria-expanded', 'false'); }
+  } else {
+    listEl.style.display = 'block';
+    buildChapterList();
+    updateChapterListActive();
+    if (btn) { btn.classList.add('active'); btn.setAttribute('aria-expanded', 'true'); }
+  }
+}
+
+// ─── P1 #8: Captions toggle ──────────────────────────────────────────────────
+let captionsEnabled = false;
+
+function toggleCaptions() {
+  captionsEnabled = !captionsEnabled;
+  const btn = document.getElementById('captionsBtn');
+  const captionEl = document.getElementById('workspaceVpCaption');
+  if (btn) {
+    btn.classList.toggle('active', captionsEnabled);
+    btn.setAttribute('aria-pressed', captionsEnabled ? 'true' : 'false');
+  }
+  if (captionEl) captionEl.style.display = captionsEnabled ? '' : 'none';
+}
+
+// ─── P1 #9: Restore player preferences on load ───────────────────────────────
+function restorePlayerPreferences() {
+  if (typeof ProgressManager === 'undefined') return;
+  ProgressManager.load();
+  const prefs = ProgressManager.getPreferences();
+  if (prefs.speed && prefs.speed !== 1) {
+    const labelMap = { 1: '1.0x', 1.25: '1.25x', 1.5: '1.5x', 1.75: '1.75x', 2: '2.0x' };
+    selectSpeedOption(prefs.speed, labelMap[prefs.speed] || `${prefs.speed}x`);
+  }
+  if (typeof prefs.volume === 'number') {
+    const slider = document.getElementById('volumeSlider');
+    if (slider) slider.value = prefs.volume;
+    setPlaybackVolume(prefs.volume);
+  }
+}
+
+// ─── P2 #16: Pause audio when tab becomes hidden ─────────────────────────────
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && isCombinedPlaying) {
+    pauseCombinedPlayback();
+  }
+});
+
+// ─── P2 #17: getSlideTracks bridge ───────────────────────────────────────────
+function getSlideTracks() {
+  return combinedTracks;
+}
+
 function startProgressLoop() {
   if (playProgressInterval) clearInterval(playProgressInterval);
   playProgressInterval = setInterval(() => {
@@ -7550,22 +7682,30 @@ function updatePlayButtonStates(isPlaying) {
   const navBtn = document.getElementById('navPlayBtn');
   if (navBtn) {
     if (isPlaying) {
-      navBtn.innerHTML = `<span class="btn-icon">⏸</span> <span class="btn-text">Pause Lesson</span>`;
+      navBtn.innerHTML = `<span class="btn-icon" aria-hidden="true">⏸</span> <span class="btn-text">Pause Lesson</span>`;
       navBtn.classList.add('playing');
+      navBtn.setAttribute('aria-label', 'Pause Lesson');
+      navBtn.setAttribute('aria-pressed', 'true');
     } else {
-      navBtn.innerHTML = `<span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>`;
+      navBtn.innerHTML = `<span class="btn-icon" aria-hidden="true">▶</span> <span class="btn-text">Play Lesson</span>`;
       navBtn.classList.remove('playing');
+      navBtn.setAttribute('aria-label', 'Play Lesson');
+      navBtn.setAttribute('aria-pressed', 'false');
     }
   }
 
   const playPauseBtn = document.getElementById('playPauseBtn');
   if (playPauseBtn) {
     if (isPlaying) {
-      playPauseBtn.innerHTML = `<span class="btn-icon">⏸</span> <span class="btn-text">Pause Lesson</span>`;
+      playPauseBtn.innerHTML = `<span class="btn-icon" aria-hidden="true">⏸</span> <span class="btn-text">Pause Lesson</span>`;
       playPauseBtn.classList.add('playing');
+      playPauseBtn.setAttribute('aria-label', 'Pause Lesson');
+      playPauseBtn.setAttribute('aria-pressed', 'true');
     } else {
-      playPauseBtn.innerHTML = `<span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>`;
+      playPauseBtn.innerHTML = `<span class="btn-icon" aria-hidden="true">▶</span> <span class="btn-text">Play Lesson</span>`;
       playPauseBtn.classList.remove('playing');
+      playPauseBtn.setAttribute('aria-label', 'Play Lesson');
+      playPauseBtn.setAttribute('aria-pressed', 'false');
     }
   }
 
@@ -7703,6 +7843,7 @@ function pauseCombinedPlayback() {
   }
 }
 
+// P2 #15: Class-based clearSlidePlaybackVisibility
 function clearSlidePlaybackVisibility() {
   const containers = [
     document.getElementById('slideBodyText'),
@@ -7711,8 +7852,14 @@ function clearSlidePlaybackVisibility() {
 
   containers.forEach(container => {
     container.classList.remove('playback-active');
-    const allElements = container.querySelectorAll('*');
-    allElements.forEach(el => {
+    container.querySelectorAll('.section-hidden, .vis-target-hidden, .vis-target-dimmed').forEach(el => {
+      el.classList.remove('section-hidden', 'vis-target-hidden', 'vis-target-dimmed');
+      // Also clear any legacy inline styles from previous runs
+      el.style.display = '';
+      el.style.opacity = '';
+    });
+    // Sweep remaining inline styles left by older runs
+    container.querySelectorAll('[style]').forEach(el => {
       el.style.display = '';
       el.style.opacity = '';
     });
@@ -7737,6 +7884,7 @@ function getVisibilityBlock(targetElement, sectionBoundary) {
   return targetElement;
 }
 
+// P2 #15: Class-based updateSlidePlaybackVisibility
 function updateSlidePlaybackVisibility(targetSelector) {
   const containers = [
     document.getElementById('slideBodyText'),
@@ -7745,11 +7893,7 @@ function updateSlidePlaybackVisibility(targetSelector) {
 
   containers.forEach(container => {
     if (typeof isCombinedPlaying === 'undefined' || !isCombinedPlaying) {
-      container.classList.remove('playback-active');
-      container.querySelectorAll('*').forEach(el => {
-        el.style.display = '';
-        el.style.opacity = '';
-      });
+      clearSlidePlaybackVisibility();
       return;
     }
 
@@ -7759,31 +7903,33 @@ function updateSlidePlaybackVisibility(targetSelector) {
     const targetEl = container.querySelector(targetSelector);
     if (!targetEl) return;
 
-    // Reset all elements in this container first
-    container.querySelectorAll('*').forEach(el => {
+    // Reset visibility classes on all elements
+    container.querySelectorAll('.section-hidden, .vis-target-hidden').forEach(el => {
+      el.classList.remove('section-hidden', 'vis-target-hidden');
       el.style.display = '';
-      el.style.opacity = '';
     });
 
     // Find the active section wrapper (.slide-section) that contains targetEl
     const activeSection = targetEl.closest('.slide-section');
     if (!activeSection) {
-      container.querySelectorAll('.slide-section').forEach(s => s.style.display = '');
+      container.querySelectorAll('.slide-section').forEach(s => s.classList.remove('section-hidden'));
       return;
     }
 
-    // Hide all other .slide-section wrappers, show only the active one
+    // Hide all other .slide-section wrappers using class, show only the active one
     container.querySelectorAll('.slide-section').forEach(section => {
-      section.style.display = (section === activeSection) ? '' : 'none';
+      if (section !== activeSection) {
+        section.classList.add('section-hidden');
+      } else {
+        section.classList.remove('section-hidden');
+      }
     });
 
     // Keep the main heading (H2) at the top of the slide always visible
     const h2 = container.querySelector('h2');
-    if (h2) h2.style.display = '';
+    if (h2) h2.classList.remove('section-hidden', 'vis-target-hidden');
 
     // ── Chronological sub-target filtering ──
-    // For each unique track target inside this section, if its first
-    // track index is AFTER the current track, hide its visual block.
     const processedTargets = new Set();
     combinedTracks.forEach((track, idx) => {
       if (!track.target || (!track.target.startsWith('#') && !track.target.startsWith('.'))) return;
@@ -7794,49 +7940,77 @@ function updateSlidePlaybackVisibility(targetSelector) {
       if (!el) return;
 
       if (idx > combinedTrackIndex) {
-        // Walk up to find the logical block (tr, .vs-card, or element itself)
+        // Walk up to find the logical block
         const blockToHide = getVisibilityBlock(el, activeSection);
-        blockToHide.style.display = 'none';
+        blockToHide.classList.add('vis-target-hidden');
 
         // Also hide preceding <hr> dividers
         const prev = blockToHide.previousElementSibling;
         if (prev && prev.tagName === 'HR') {
-          prev.style.display = 'none';
+          prev.classList.add('vis-target-hidden');
         }
       }
     });
 
     // ── Clean up empty parent containers ──
-    // If all children of a .vs-block are hidden, hide the .vs-block itself
     activeSection.querySelectorAll('.vs-block').forEach(block => {
-      const hasVisible = Array.from(block.children).some(c => c.style.display !== 'none');
-      if (!hasVisible) block.style.display = 'none';
+      const hasVisible = Array.from(block.children).some(c => !c.classList.contains('vis-target-hidden') && c.style.display !== 'none');
+      if (!hasVisible) block.classList.add('vis-target-hidden');
     });
 
-    // If all <tbody> rows of a table are hidden, hide the table wrapper
     activeSection.querySelectorAll('.db-mock-table-wrap').forEach(wrap => {
       const tbody = wrap.querySelector('tbody');
       if (!tbody) return;
-      const hasVisibleRow = Array.from(tbody.querySelectorAll('tr')).some(r => r.style.display !== 'none');
-      if (!hasVisibleRow) wrap.style.display = 'none';
+      const hasVisibleRow = Array.from(tbody.querySelectorAll('tr')).some(r => !r.classList.contains('vis-target-hidden') && r.style.display !== 'none');
+      if (!hasVisibleRow) wrap.classList.add('vis-target-hidden');
     });
   });
 }
 
-// Global Keyboard Shortcuts for Playback control
+
+// P2 #20: Scoped keyboard shortcuts — Space only fires from player region
 document.addEventListener('keydown', (e) => {
   if (!e.target) return;
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.closest('.CodeMirror')) return;
 
-  if (e.key === ' ' || e.key === 'k') {
+  const inPlayer = e.target.closest('#playbackBar') ||
+                   e.target.closest('#navPlayBtn') ||
+                   e.target.id === 'seekBar' ||
+                   e.target.id === 'playPauseBtn' ||
+                   e.target.id === 'skipBackBtn' ||
+                   e.target.id === 'skipFwdBtn';
+
+  if (e.key === 'k' || (e.key === ' ' && inPlayer)) {
     e.preventDefault();
     toggleCombinedPlayback();
   } else if (e.key === 'ArrowLeft' || e.key === 'j') {
-    e.preventDefault();
-    seekCombinedPlayback(Math.max(0, currentCombinedTime - 5));
+    if (e.target.closest('#playbackBar') || e.target.id === 'seekBar') {
+      e.preventDefault();
+      const target = Math.max(0, currentCombinedTime - 5);
+      seekCombinedPlayback(target);
+      const sb = document.getElementById('seekBar');
+      if (sb) sb.setAttribute('aria-valuenow', Math.round(target));
+    }
   } else if (e.key === 'ArrowRight' || e.key === 'l') {
+    if (e.target.closest('#playbackBar') || e.target.id === 'seekBar') {
+      e.preventDefault();
+      const target = Math.min(totalCombinedDuration, currentCombinedTime + 5);
+      seekCombinedPlayback(target);
+      const sb = document.getElementById('seekBar');
+      if (sb) sb.setAttribute('aria-valuenow', Math.round(target));
+    }
+  } else if (e.key === '[') {
+    // P1 #6: skip back 10s
     e.preventDefault();
-    seekCombinedPlayback(Math.min(totalCombinedDuration, currentCombinedTime + 5));
+    skipCombined(-10);
+  } else if (e.key === ']') {
+    // P1 #6: skip forward 10s
+    e.preventDefault();
+    skipCombined(10);
+  } else if (e.key === 'c' || e.key === 'C') {
+    // P1 #8: toggle captions
+    e.preventDefault();
+    toggleCaptions();
   }
 });
 

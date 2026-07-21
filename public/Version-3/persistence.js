@@ -38,7 +38,13 @@
         currentDay: 'day01',
         streakCount: 0,
         lastActiveDate: null,
-        days: {} // Keyed by day01, day02...
+        days: {},         // Keyed by day01, day02...
+        audioPositions: {}, // Keyed by "dayId_slideIndex" → { trackIndex, combinedTime, audioTime }
+        preferences: {    // Player UI preferences
+          speed: 1,
+          volume: 100,
+          muted: false
+        }
       };
     },
 
@@ -91,12 +97,51 @@
       this.save();
     },
 
+    // ── P1 #5: Audio position persistence ──────────────────────────
+    saveAudioPosition(dayId, slideIndex, trackIndex, combinedTime, audioTime) {
+      if (!this._data) this.load();
+      if (!this._data.audioPositions) this._data.audioPositions = {};
+      this._data.audioPositions[`${dayId}_${slideIndex}`] = { trackIndex, combinedTime, audioTime };
+      this.save();
+    },
+
+    getAudioPosition(dayId, slideIndex) {
+      if (!this._data) this.load();
+      if (!this._data.audioPositions) return null;
+      return this._data.audioPositions[`${dayId}_${slideIndex}`] || null;
+    },
+
+    clearAudioPosition(dayId, slideIndex) {
+      if (!this._data) this.load();
+      if (this._data.audioPositions) {
+        delete this._data.audioPositions[`${dayId}_${slideIndex}`];
+        this.save();
+      }
+    },
+
+    // ── P1 #9: Player preference persistence ────────────────────────
+    getPreferences() {
+      if (!this._data) this.load();
+      if (!this._data.preferences) {
+        this._data.preferences = { speed: 1, volume: 100, muted: false };
+      }
+      return this._data.preferences;
+    },
+
+    savePreference(key, value) {
+      if (!this._data) this.load();
+      if (!this._data.preferences) this._data.preferences = { speed: 1, volume: 100, muted: false };
+      this._data.preferences[key] = value;
+      this.save();
+    },
+
+    // ── Stats ────────────────────────────────────────────────────────
     // Get progress stats for UI display
     getOverallStats() {
       if (!this._data) this.load();
       let completedDays = 0;
       let totalXP = 0;
-      
+
       const dayIds = Object.keys(this._data.days);
       dayIds.forEach(dId => {
         const dp = this._data.days[dId];

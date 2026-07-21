@@ -93,8 +93,10 @@
           </span>
         </div>
 
-        <button class="hdr-btn hdr-btn--autoplay" id="navPlayBtn" onclick="toggleCombinedPlayback()" title="Play lecture narration" style="display: none;">
-          <span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>
+        <button class="hdr-btn hdr-btn--autoplay" id="navPlayBtn" onclick="toggleCombinedPlayback()"
+          title="Play lecture narration" style="display: none;"
+          aria-label="Play Lesson" aria-pressed="false" role="button">
+          <span class="btn-icon" aria-hidden="true">▶</span> <span class="btn-text">Play Lesson</span>
         </button>
       </div>
     </div>
@@ -108,12 +110,14 @@
     </div>
   </header>
 
-  <div class="mobile-tabs-nav" id="mobileTabsNav">
-    <button class="mobile-tab-btn active" id="tabBtnTheory" onclick="setMobileTab('theory')">
-      <span class="tab-emoji">📖</span> Lesson
+  <div class="mobile-tabs-nav" id="mobileTabsNav" role="tablist" aria-label="View Tabs">
+    <button class="mobile-tab-btn active" id="tabBtnTheory" onclick="setMobileTab('theory')"
+      role="tab" aria-selected="true" aria-controls="panelRight">
+      <span class="tab-emoji" aria-hidden="true">📖</span> Lesson
     </button>
-    <button class="mobile-tab-btn" id="tabBtnPractice" onclick="setMobileTab('practice')">
-      <span class="tab-emoji">💻</span> Practice
+    <button class="mobile-tab-btn" id="tabBtnPractice" onclick="setMobileTab('practice')"
+      role="tab" aria-selected="false" aria-controls="panelLeft">
+      <span class="tab-emoji" aria-hidden="true">💻</span> Practice
     </button>
   </div>
 
@@ -165,11 +169,11 @@
     </div>
 
     <!-- ─── DIVIDER ─── -->
-    <div class="divider" id="divider">
+    <div class="divider" id="divider" role="separator" aria-label="Resizable Divider">
       <div class="divider-toggles">
-        <button class="div-toggle-btn div-toggle-btn--left" onclick="toggleLeftPanel(event)" title="Toggle code cell">◀</button>
-        <button class="div-toggle-btn div-toggle-btn--split" onclick="resetSplitScreen(event)" title="Reset split screen">◫</button>
-        <button class="div-toggle-btn div-toggle-btn--right" onclick="toggleRightPanel(event)" title="Toggle notes panel">▶</button>
+        <button class="div-toggle-btn div-toggle-btn--left" onclick="toggleLeftPanel(event)" title="Toggle code cell" aria-label="Toggle code panel">◀</button>
+        <button class="div-toggle-btn div-toggle-btn--split" onclick="resetSplitScreen(event)" title="Reset split screen" aria-label="Reset split screen">◫</button>
+        <button class="div-toggle-btn div-toggle-btn--right" onclick="toggleRightPanel(event)" title="Toggle notes panel" aria-label="Toggle notes panel">▶</button>
       </div>
     </div>
 
@@ -186,7 +190,16 @@
               <!-- Canvas Overlay inside scrollable container -->
               <canvas class="draw-canvas" id="workspaceDrawCanvas" style="position: absolute; top: 0; left: 0; z-index: 10;"></canvas>
               <!-- Content container populated by JS -->
-              <div id="slideBodyText">
+              <div id="slideBodyText" aria-live="polite" aria-label="Lesson Content">
+                <!-- P1 #10: Loading skeleton -->
+                <div class="slide-skeleton" id="slideSkeleton" aria-hidden="true" style="display:none;">
+                  <div class="skeleton-line skeleton-line--title"></div>
+                  <div class="skeleton-line skeleton-line--wide"></div>
+                  <div class="skeleton-line"></div>
+                  <div class="skeleton-line skeleton-line--short"></div>
+                  <div class="skeleton-line skeleton-line--wide"></div>
+                  <div class="skeleton-line"></div>
+                </div>
                 <!-- Populated by JS -->
               </div>
             </div>
@@ -208,7 +221,18 @@
           <div class="playback-row">
             <div class="playback-controls-row">
               <div class="playback-left-controls">
-                <button class="play-btn" id="playPauseBtn" onclick="toggleCombinedPlayback()">▶</button>
+                <!-- P1 #6: Skip back 10s -->
+                <button class="skip-btn skip-btn--back" id="skipBackBtn"
+                  onclick="skipCombined(-10)" title="Skip back 10 seconds"
+                  aria-label="Skip back 10 seconds">⏪</button>
+
+                <button class="play-btn" id="playPauseBtn" onclick="toggleCombinedPlayback()"
+                  aria-label="Play/Pause" aria-pressed="false">▶</button>
+
+                <!-- P1 #6: Skip forward 10s -->
+                <button class="skip-btn skip-btn--fwd" id="skipFwdBtn"
+                  onclick="skipCombined(10)" title="Skip forward 10 seconds"
+                  aria-label="Skip forward 10 seconds">⏩</button>
                 <div class="playback-bar-controls">
                   <!-- Volume Control Wrapper -->
                   <div class="volume-control-wrapper">
@@ -242,11 +266,27 @@
                 </div>
               </div>
               <div class="playback-right-controls">
-                <span class="playback-time" id="playbackTime">0:00 / 0:00</span>
+                <!-- P1 #8: Captions toggle -->
+                <button class="captions-btn" id="captionsBtn" onclick="toggleCaptions()"
+                  title="Toggle captions" aria-label="Toggle captions" aria-pressed="false">CC</button>
+
+                <!-- P1 #7: Chapter list toggle -->
+                <button class="chapters-btn" id="chaptersBtn" onclick="toggleChapterList()"
+                  title="Chapter list" aria-label="Show chapter list" aria-expanded="false">☰</button>
+
+                <span class="playback-time" id="playbackTime"
+                  aria-label="Playback time" aria-live="off">0:00 / 0:00</span>
               </div>
             </div>
             <div class="playback-timeline-row">
-              <input type="range" class="seek-bar" id="seekBar" min="0" max="100" value="0" step="0.1" oninput="seekCombinedPlayback(this.value)">
+              <input type="range" class="seek-bar" id="seekBar" min="0" max="100" value="0" step="0.1"
+                oninput="seekCombinedPlayback(this.value)"
+                aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            </div>
+
+            <!-- P1 #7: Chapter list panel (hidden by default) -->
+            <div class="chapter-list" id="chapterList" aria-label="Chapter List" role="listbox" style="display:none;">
+              <!-- Populated by buildChapterList() -->
             </div>
           </div>
         </div>
@@ -407,8 +447,8 @@
   <script src="/Version-3/content/day-01.js?v=14.8"></script>
   <script src="/Version-3/db-seeds/retail-seed.js?v=14.0"></script>
   <script src="/Version-3/grading-engine.js?v=14.0"></script>
-  <script src="/Version-3/persistence.js?v=14.0"></script>
+  <script src="/Version-3/persistence.js?v=14.38"></script>
   <!-- App JS -->
-  <script src="/Version-3/scrimba-engine.js?v=14.37"></script>
+  <script src="/Version-3/scrimba-engine.js?v=14.38"></script>
 </body>
 </html>
