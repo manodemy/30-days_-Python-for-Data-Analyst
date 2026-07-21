@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.28`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.29`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -4316,7 +4316,7 @@ const day02Tracks = [
 ];
 
 const day03Durations = [
-  44.0, 39.0, 19.5, 19.5, 55.4, 30.0, 32.0
+  44.0, 39.0, 19.5, 19.5, 55.4, 30.0, 32.0, 4.5
 ];
 
 const day03Tracks = [
@@ -4326,7 +4326,8 @@ const day03Tracks = [
   { src: 'Day03/New_Day3Part1audio04.mp3', target: '#day03CompOps', title: 'Comparison Operators' },
   { src: 'Day03/New_Day3Part1audio05.mp3', target: '#day03OpsTable', title: 'Comparison Operator Reference' },
   { src: 'Day03/New_Day3Part1audio06.mp3', target: '#day03CompCode', title: 'Comparison Operator Examples' },
-  { src: 'Day03/New_Day3Part1audio07.mp3', target: '#day03LogicOps', title: 'Logical Operators & Precedence' }
+  { src: 'Day03/New_Day3Part1audio07.mp3', target: '#day03LogicOps', title: 'Logical Operators & Precedence' },
+  { src: 'Day03/New_Day3Part1audio08.mp3', target: '.prec-card--not', title: 'Logical Operator — NOT' }
 ];
 
 const slideTrackMap = {
@@ -6828,6 +6829,16 @@ function updateLogicalPrecedenceHighlights(currentTime, isPlaying) {
   }
 }
 
+function updateNotCardHighlight(currentTime, isPlaying) {
+  const card = document.querySelector('#day03PrecWrap .prec-card--not');
+  if (!card) return;
+  if (!isPlaying) {
+    card.classList.remove('narration-highlight');
+    return;
+  }
+  card.classList.add('narration-highlight');
+}
+
 // ════════════════════════════════════════════════════════════════════════════════
 
 async function loadAndPlayTrack(index, targetTime = 0) {
@@ -6912,6 +6923,9 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     if (track.src.includes('New_Day3Part1audio07.mp3')) {
       updateLogicalPrecedenceHighlights(0, false);
     }
+    if (track.src.includes('New_Day3Part1audio08.mp3')) {
+      updateNotCardHighlight(0, false);
+    }
     onNarrationSegmentEnded(index, events);
   });
 
@@ -6923,6 +6937,9 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     if (track.src.includes('New_Day3Part1audio07.mp3')) {
       updateLogicalPrecedenceHighlights(0, false);
     }
+    if (track.src.includes('New_Day3Part1audio08.mp3')) {
+      updateNotCardHighlight(0, false);
+    }
   });
 
   audio.addEventListener('timeupdate', () => {
@@ -6933,6 +6950,9 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     }
     if (track.src.includes('New_Day3Part1audio07.mp3')) {
       updateLogicalPrecedenceHighlights(audio.currentTime, !audio.paused);
+    }
+    if (track.src.includes('New_Day3Part1audio08.mp3')) {
+      updateNotCardHighlight(audio.currentTime, !audio.paused);
     }
 
     // Calculate cumulative current time

@@ -406,9 +406,9 @@ WHERE  unit_price <= 1000
 
               #day03PrecWrap .prec-header {
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
                 align-items: center;
-                gap: 6px;
+                justify-content: space-between;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
                 padding-bottom: 8px;
                 margin-bottom: 2px;
@@ -525,6 +525,9 @@ WHERE  unit_price <= 1000
               <div class="prec-card prec-card--not" style="--d:0.15s;animation-delay:0.15s">
                 <div class="prec-header">
                   <div class="prec-op prec-op--not">NOT</div>
+                  <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio08.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                    <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
                 </div>
                 
                 <!-- Venn SVG -->
