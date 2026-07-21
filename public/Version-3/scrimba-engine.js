@@ -2913,38 +2913,21 @@ function playQuestionAudio(btn, audioSrc) {
   const bar = document.getElementById('questionBar');
 
   // Stop any OTHER standalone audio playing
-  if (currentPlayingAudio && !combinedAudios.includes(currentPlayingAudio)) {
-    currentPlayingAudio.pause();
+  if (currentPlayingAudio && currentPlayingAudio !== activeAudioInstance) {
+    try { currentPlayingAudio.pause(); } catch(e) {}
     if (currentPlayingBtn && currentPlayingBtn !== btn) {
       currentPlayingBtn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
       currentPlayingBtn.classList.remove('playing');
     }
   }
 
-  // Check if this track is already the active combined track
-  const getFilename = s => s ? s.split('/').pop().replace('.mp3', '').toLowerCase() : '';
-  const targetFilename = getFilename(src);
-  const trackIdx = combinedTracks.findIndex(t => getFilename(t.src) === targetFilename);
-  const combinedAudio = trackIdx !== -1 ? combinedAudios[trackIdx] : null;
-
-  // Toggle pause/resume if already playing this track
-  if (combinedAudio && combinedTrackIndex === trackIdx && currentPlayingBtn === btn) {
-    if (combinedAudio.paused) {
-      combinedAudio.play();
-      isCombinedPlaying = true;
-      btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
-      btn.classList.add('playing');
-      if (bar) bar.classList.add('question-playing');
-      updatePlayButtonStates(true);
-      startProgressLoop();
+  // Check if this track is in combinedTracks using robust filename matching
+  const trackIdx = combinedTracks.findIndex(t => matchTrackFilename(t.src, src));
+  if (trackIdx !== -1) {
+    if (combinedTrackIndex === trackIdx && isCombinedPlaying) {
+      toggleCombinedPlayback();
     } else {
-      combinedAudio.pause();
-      isCombinedPlaying = false;
-      btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
-      btn.classList.remove('playing');
-      if (bar) bar.classList.remove('question-playing');
-      updatePlayButtonStates(false);
-      if (playProgressInterval) clearInterval(playProgressInterval);
+      loadAndPlayTrack(trackIdx);
     }
     return;
   }
@@ -7301,7 +7284,12 @@ function onNarrationSegmentEnded(index, events) {
     combinedTrackIndex++;
     loadAndPlayTrack(combinedTrackIndex);
   } else {
-    // All tracks complete — reset
+    // All tracks complete — reset and destroy audio instance so replay starts cleanly
+    if (activeAudioInstance) {
+      try { activeAudioInstance.pause(); } catch (e) { }
+      activeAudioInstance.src = "";
+      activeAudioInstance = null;
+    }
     isCombinedPlaying = false;
     isNarrationActive = false;
     combinedTrackIndex = 0;
@@ -7766,7 +7754,10 @@ function updatePlayButtonStates(isPlaying) {
 
 function playCombinedPlayback() {
   isCombinedPlaying = true;
-  if (activeAudioInstance && activeAudioInstance.src && activeAudioInstance.src !== window.location.href) {
+  const currentTrack = combinedTracks[combinedTrackIndex];
+  const isCorrectAudio = activeAudioInstance && currentTrack && matchTrackFilename(activeAudioInstance.src, currentTrack.src);
+
+  if (isCorrectAudio) {
     if (activeAudioInstance.ended || activeAudioInstance.currentTime >= (activeAudioInstance.duration || 26) - 0.5) {
       try { activeAudioInstance.currentTime = 0; } catch (e) { }
     }
