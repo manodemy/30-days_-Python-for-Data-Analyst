@@ -8,7 +8,7 @@ window.COURSE_CONTENT['day03'] = {
   "slides": [
     {
       "title": "Filtering Data: WHERE, Operators & Pattern Matching",
-      "duration": "3:00",
+      "duration": "2:57",
       "html": `
         <h2>🔍 Filtering Data: WHERE, Operators &amp; Pattern Matching</h2>
 
@@ -280,13 +280,19 @@ WHERE  salary > 80000;</code></pre>
         <div class="slide-section">
           <h3 class="heading-with-audio" id="day03CompOps">
             02. Comparison Operators — The Building Blocks
-            <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio05.mp3', this)" title="Play narration">
+            <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio04.mp3', this)" title="Play narration">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
           <p>Every <code>WHERE</code> predicate is built from comparison operators. Each one compares a column value to a literal, another column, or an expression and returns <code>TRUE</code>, <code>FALSE</code>, or <code>UNKNOWN</code> (when <code>NULL</code> is involved).</p>
 
           <div class="db-mock-table-wrap" id="day03OpsTable">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; padding: 0 4px;">
+              <small style="flex: 1; color: #64748b; font-size: 0.75rem; font-weight: 600;">Comparison Operator Reference</small>
+              <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio05.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
             <table class="db-table-mock db-table-mock--compact">
               <thead><tr><th>Operator</th><th>Meaning</th><th>Live Example</th></tr></thead>
               <tbody>
@@ -302,7 +308,7 @@ WHERE  salary > 80000;</code></pre>
 
           <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
             <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Comparison Operator Examples</small>
-            <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio04.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+            <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio06.mp3', this)" title="Play narration" style="flex-shrink: 0;">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </div>
