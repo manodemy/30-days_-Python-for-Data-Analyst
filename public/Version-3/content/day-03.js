@@ -360,6 +360,19 @@ WHERE  unit_price <= 1000
                 z-index: 10;
               }
 
+              #day03PrecWrap.narration-active .prec-card {
+                opacity: 0;
+                transform: translateY(10px);
+                pointer-events: none;
+                transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+              }
+
+              #day03PrecWrap.narration-active .prec-card.revealed {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+              }
+
               #day03PrecWrap .prec-header {
                 display: flex;
                 flex-direction: column;
