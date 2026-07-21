@@ -7852,13 +7852,11 @@ function clearSlidePlaybackVisibility() {
 
   containers.forEach(container => {
     container.classList.remove('playback-active');
-    container.querySelectorAll('.section-hidden, .vis-target-hidden, .vis-target-dimmed').forEach(el => {
-      el.classList.remove('section-hidden', 'vis-target-hidden', 'vis-target-dimmed');
-      // Also clear any legacy inline styles from previous runs
+    container.querySelectorAll('.section-hidden, .vis-target-hidden, .vis-target-dimmed, .vis-target-active').forEach(el => {
+      el.classList.remove('section-hidden', 'vis-target-hidden', 'vis-target-dimmed', 'vis-target-active');
       el.style.display = '';
       el.style.opacity = '';
     });
-    // Sweep remaining inline styles left by older runs
     container.querySelectorAll('[style]').forEach(el => {
       el.style.display = '';
       el.style.opacity = '';
@@ -7899,35 +7897,35 @@ function updateSlidePlaybackVisibility(targetSelector) {
 
     container.classList.add('playback-active');
 
-    // Find the target element inside this container
-    const targetEl = container.querySelector(targetSelector);
-    if (!targetEl) return;
-
-    // Reset visibility classes on all elements
-    container.querySelectorAll('.section-hidden, .vis-target-hidden').forEach(el => {
-      el.classList.remove('section-hidden', 'vis-target-hidden');
+    // Reset visibility classes on all elements first
+    container.querySelectorAll('.section-hidden, .vis-target-hidden, .vis-target-dimmed, .vis-target-active').forEach(el => {
+      el.classList.remove('section-hidden', 'vis-target-hidden', 'vis-target-dimmed', 'vis-target-active');
       el.style.display = '';
+      el.style.opacity = '';
     });
 
-    // Find the active section wrapper (.slide-section) that contains targetEl
-    const activeSection = targetEl.closest('.slide-section');
-    if (!activeSection) {
-      container.querySelectorAll('.slide-section').forEach(s => s.classList.remove('section-hidden'));
-      return;
-    }
+    // Ensure all .slide-section wrappers on the slide are visible (never display:none!)
+    container.querySelectorAll('.slide-section').forEach(s => {
+      s.classList.remove('section-hidden', 'vis-target-hidden');
+      s.style.display = '';
+    });
 
-    // Hide all other .slide-section wrappers using class, show only the active one
-    container.querySelectorAll('.slide-section').forEach(section => {
-      if (section !== activeSection) {
-        section.classList.add('section-hidden');
-      } else {
-        section.classList.remove('section-hidden');
+    // Find target element inside container
+    const targetEl = container.querySelector(targetSelector);
+
+    // Active section wrapper
+    const activeSection = targetEl ? (targetEl.closest('.slide-section') || container) : container;
+
+    // Ensure targetEl AND its containing visual block are explicitly ACTIVE (fully bright)
+    if (targetEl) {
+      const activeBlock = getVisibilityBlock(targetEl, activeSection);
+      if (activeBlock) {
+        activeBlock.classList.remove('vis-target-hidden', 'vis-target-dimmed', 'section-hidden');
+        activeBlock.classList.add('vis-target-active');
       }
-    });
-
-    // Keep the main heading (H2) at the top of the slide always visible
-    const h2 = container.querySelector('h2');
-    if (h2) h2.classList.remove('section-hidden', 'vis-target-hidden');
+      targetEl.classList.remove('vis-target-hidden', 'vis-target-dimmed', 'section-hidden');
+      targetEl.classList.add('vis-target-active');
+    }
 
     // ── Chronological sub-target filtering ──
     const processedTargets = new Set();
@@ -7936,36 +7934,32 @@ function updateSlidePlaybackVisibility(targetSelector) {
       if (processedTargets.has(track.target)) return;
       processedTargets.add(track.target);
 
-      const el = activeSection.querySelector(track.target);
+      const el = container.querySelector(track.target);
       if (!el) return;
 
-      if (idx > combinedTrackIndex) {
-        // Walk up to find the logical block
-        const blockToHide = getVisibilityBlock(el, activeSection);
-        blockToHide.classList.add('vis-target-hidden');
+      const block = getVisibilityBlock(el, activeSection);
 
-        // Also hide preceding <hr> dividers
-        const prev = blockToHide.previousElementSibling;
-        if (prev && prev.tagName === 'HR') {
-          prev.classList.add('vis-target-hidden');
-        }
+      if (idx <= combinedTrackIndex) {
+        // Current or past track: ensure fully visible
+        block.classList.remove('vis-target-hidden', 'vis-target-dimmed', 'section-hidden');
+        block.classList.add('vis-target-active');
+        el.classList.remove('vis-target-hidden', 'vis-target-dimmed', 'section-hidden');
+        el.classList.add('vis-target-active');
+      } else {
+        // Future track: apply soft dimming so there is NO black void, but visually distinct
+        block.classList.remove('section-hidden', 'vis-target-hidden');
+        block.classList.add('vis-target-dimmed');
       }
     });
 
-    // ── Clean up empty parent containers ──
-    activeSection.querySelectorAll('.vs-block').forEach(block => {
-      const hasVisible = Array.from(block.children).some(c => !c.classList.contains('vis-target-hidden') && c.style.display !== 'none');
-      if (!hasVisible) block.classList.add('vis-target-hidden');
-    });
-
-    activeSection.querySelectorAll('.db-mock-table-wrap').forEach(wrap => {
-      const tbody = wrap.querySelector('tbody');
-      if (!tbody) return;
-      const hasVisibleRow = Array.from(tbody.querySelectorAll('tr')).some(r => !r.classList.contains('vis-target-hidden') && r.style.display !== 'none');
-      if (!hasVisibleRow) wrap.classList.add('vis-target-hidden');
+    // Keep all H1, H2, H3, H4 headings always fully active
+    container.querySelectorAll('h1, h2, h3, h4').forEach(h => {
+      h.classList.remove('section-hidden', 'vis-target-hidden', 'vis-target-dimmed');
+      h.classList.add('vis-target-active');
     });
   });
 }
+
 
 
 // P2 #20: Scoped keyboard shortcuts — Space only fires from player region
