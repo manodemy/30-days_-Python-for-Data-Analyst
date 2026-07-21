@@ -23,7 +23,7 @@ window.COURSE_CONTENT['day03'] = {
 
           <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
             <small style="flex: 1; color: #64748b; font-size: 0.75rem;">WHERE Clause — Minimal Anatomy</small>
-            <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio02.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+            <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio02.mp3', this)" title="Play narration" style="flex-shrink: 0;">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </div>
@@ -49,6 +49,195 @@ WHERE  salary > 80000;</code></pre>
             <p>
               <code>WHERE</code> is Step 2 in SQL's logical execution order — <em>after</em> <code>FROM</code> but <em>before</em> <code>GROUP BY</code>, <code>HAVING</code>, and <code>SELECT</code>. This means <code>WHERE</code> <strong>cannot reference column aliases</strong> defined in the <code>SELECT</code> list because those aliases don't exist yet at filtering time.
             </p>
+
+            <!-- ALIAS TIMELINE EMBED -->
+            <div class="alias-timeline-wrapper">
+              <style>
+                #day03WhereInfo .alias-timeline-wrapper {
+                  background: #090e1a;
+                  border: 1px solid rgba(255, 255, 255, 0.08);
+                  border-radius: 10px;
+                  padding: 14px 12px;
+                  margin-top: 10px;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 10px;
+                  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+                }
+                #day03WhereInfo .timeline-header-wrap {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  gap: 8px;
+                }
+                #day03WhereInfo .timeline-line-decorator {
+                  flex: 1;
+                  height: 1px;
+                  background: rgba(255, 255, 255, 0.1);
+                }
+                #day03WhereInfo .timeline-header {
+                  font-family: 'Inter', sans-serif;
+                  font-size: 0.62rem;
+                  font-weight: 800;
+                  color: #94a3b8;
+                  letter-spacing: 0.1em;
+                  text-transform: uppercase;
+                  white-space: nowrap;
+                }
+                #day03WhereInfo .timeline-track {
+                  position: relative;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 0 10px;
+                  margin-top: 6px;
+                }
+                #day03WhereInfo .timeline-track::before {
+                  content: '';
+                  position: absolute;
+                  top: 8px;
+                  left: 30px;
+                  right: 30px;
+                  height: 2px;
+                  background: linear-gradient(to right, #3b82f6 0%, #06b6d4 25%, #a855f7 50%, #f97316 75%, #22c55e 100%);
+                  z-index: 1;
+                  opacity: 0.6;
+                }
+                #day03WhereInfo .timeline-step {
+                  position: relative;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  z-index: 2;
+                  flex: 1;
+                }
+                #day03WhereInfo .timeline-dot {
+                  width: 14px;
+                  height: 14px;
+                  border-radius: 50%;
+                  background: #090e1a;
+                  border: 2px solid var(--step-color);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  box-shadow: 0 0 6px var(--step-color);
+                }
+                #day03WhereInfo .timeline-dot::after {
+                  content: '';
+                  width: 6px;
+                  height: 6px;
+                  border-radius: 50%;
+                  background: var(--step-color);
+                }
+                #day03WhereInfo .timeline-label {
+                  font-family: 'JetBrains Mono', monospace;
+                  font-size: 0.58rem;
+                  font-weight: 800;
+                  color: var(--step-color);
+                  margin-top: 5px;
+                  text-align: center;
+                  letter-spacing: 0.01em;
+                }
+                #day03WhereInfo .step-from { --step-color: #3b82f6; }
+                #day03WhereInfo .step-where { --step-color: #06b6d4; }
+                #day03WhereInfo .step-groupby { --step-color: #a855f7; }
+                #day03WhereInfo .step-having { --step-color: #f97316; }
+                #day03WhereInfo .step-select { --step-color: #22c55e; }
+
+                #day03WhereInfo .timeline-brackets {
+                  display: flex;
+                  width: 100%;
+                  margin-top: 4px;
+                }
+                #day03WhereInfo .bracket-box {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  position: relative;
+                }
+                #day03WhereInfo .bracket-box.no-alias {
+                  flex: 4;
+                  --bracket-color: #f87171;
+                }
+                #day03WhereInfo .bracket-box.has-alias {
+                  flex: 1;
+                  --bracket-color: #4ade80;
+                }
+                #day03WhereInfo .bracket-draw {
+                  width: 75%;
+                  height: 8px;
+                  border-left: 1.5px solid var(--bracket-color);
+                  border-right: 1.5px solid var(--bracket-color);
+                  border-bottom: 1.5px solid var(--bracket-color);
+                  border-radius: 0 0 4px 4px;
+                  margin-bottom: 4px;
+                  opacity: 0.85;
+                }
+                #day03WhereInfo .bracket-label {
+                  display: flex;
+                  align-items: center;
+                  gap: 4px;
+                  font-family: 'Inter', sans-serif;
+                  font-size: 0.56rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.03em;
+                  color: var(--bracket-color);
+                }
+                @media(max-width: 480px) {
+                  #day03WhereInfo .timeline-label {
+                    font-size: 0.48rem;
+                  }
+                  #day03WhereInfo .bracket-label {
+                    font-size: 0.48rem;
+                  }
+                }
+              </style>
+              
+              <div class="timeline-header-wrap">
+                <div class="timeline-line-decorator"></div>
+                <div class="timeline-header">ALIAS LIFECYCLE</div>
+                <div class="timeline-line-decorator"></div>
+              </div>
+              
+              <div class="timeline-track">
+                <div class="timeline-step step-from">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-label">FROM</div>
+                </div>
+                <div class="timeline-step step-where">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-label">WHERE</div>
+                </div>
+                <div class="timeline-step step-groupby">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-label">GROUP BY</div>
+                </div>
+                <div class="timeline-step step-having">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-label">HAVING</div>
+                </div>
+                <div class="timeline-step step-select">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-label">SELECT</div>
+                </div>
+              </div>
+              
+              <div class="timeline-brackets">
+                <div class="bracket-box no-alias">
+                  <div class="bracket-draw"></div>
+                  <div class="bracket-label">
+                    <span>❌ ALIAS DOESN'T EXIST</span>
+                  </div>
+                </div>
+                <div class="bracket-box has-alias">
+                  <div class="bracket-draw"></div>
+                  <div class="bracket-label">
+                    <span>✅ ALIAS CREATED</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
