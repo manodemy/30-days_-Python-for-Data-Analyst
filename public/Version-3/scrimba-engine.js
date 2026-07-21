@@ -6974,10 +6974,20 @@ function loadAndPlayTrack(index, targetTime = 0) {
     })
     .catch((err) => {
       console.log('Play rejected:', err);
+      if (err.name === 'AbortError') {
+        // Interrupted by new seek or track swap — normal browser behavior
+        return;
+      }
       if (audio.error) {
         retryOrShowError(index, myGeneration, 'network');
-      } else {
+      } else if (!hasCompletedFirstGestureBoundPlay) {
         showTapToPlayFallback(index);
+      } else {
+        setTimeout(() => {
+          if (myGeneration === currentGeneration && activeAudioInstance) {
+            activeAudioInstance.play().catch(e => console.log('Retry play failed:', e));
+          }
+        }, 150);
       }
     });
 
