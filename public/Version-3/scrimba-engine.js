@@ -658,55 +658,53 @@ function renderSideSlide() {
   }
 
   // Show narration autoplay widget if the slide has tracks defined
-  setTimeout(() => {
-    const dayConfig = (typeof slideTrackMap !== 'undefined') ? slideTrackMap[currentDay] : null;
-    const config = dayConfig ? dayConfig[currentSlide] : null;
-    if (config) {
-      // Swapping track list dynamically
-      combinedTracks = config.tracks;
-      combinedTrackDurations = config.durations;
+  const dayConfig = (typeof slideTrackMap !== 'undefined') ? slideTrackMap[currentDay] : null;
+  const config = dayConfig ? dayConfig[currentSlide] : null;
+  if (config) {
+    // Swapping track list dynamically
+    combinedTracks = config.tracks;
+    combinedTrackDurations = config.durations;
 
-      // Stop currently playing combined narration cleanly if active
-      if (activeAudioInstance) {
-        activeAudioInstance.pause();
-        activeAudioInstance.src = "";
-        activeAudioInstance.load();
-        activeAudioInstance = null;
-      }
-      isCombinedPlaying = false;
-      combinedAudios = [];
-
-      // Restore progress if it exists in history
-      const newKey = `${currentDay}_${currentSlide}`;
-      const saved = slideProgressHistory[newKey];
-      if (saved) {
-        combinedTrackIndex = saved.trackIndex;
-        currentCombinedTime = saved.combinedTime;
-        pendingAudioStartTime = saved.audioTime;
-      } else {
-        currentCombinedTime = 0;
-        combinedTrackIndex = 0;
-        pendingAudioStartTime = 0;
-      }
-
-      // Update UI button states
-      updatePlayButtonStates(false);
-
-      // Re-calculate total duration
-      totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
-
-      const navBtn = document.getElementById('navPlayBtn');
-      if (navBtn) navBtn.style.display = 'inline-flex';
-      document.getElementById('playbackBar')?.classList.add('visible');
-      initSlideNarration();
-      updateProgressUI();
-    } else {
-      const navBtn = document.getElementById('navPlayBtn');
-      if (navBtn) navBtn.style.display = 'none';
-      document.getElementById('playbackBar')?.classList.remove('visible');
-      pauseCombinedPlayback();
+    // Stop currently playing combined narration cleanly if active
+    if (activeAudioInstance) {
+      activeAudioInstance.pause();
+      activeAudioInstance.src = "";
+      activeAudioInstance.load();
+      activeAudioInstance = null;
     }
-  }, 100);
+    isCombinedPlaying = false;
+    combinedAudios = [];
+
+    // Restore progress if it exists in history
+    const newKey = `${currentDay}_${currentSlide}`;
+    const saved = slideProgressHistory[newKey];
+    if (saved) {
+      combinedTrackIndex = saved.trackIndex;
+      currentCombinedTime = saved.combinedTime;
+      pendingAudioStartTime = saved.audioTime;
+    } else {
+      currentCombinedTime = 0;
+      combinedTrackIndex = 0;
+      pendingAudioStartTime = 0;
+    }
+
+    // Update UI button states
+    updatePlayButtonStates(false);
+
+    // Re-calculate total duration
+    totalCombinedDuration = combinedTrackDurations.reduce((a, b) => a + b, 0);
+
+    const navBtn = document.getElementById('navPlayBtn');
+    if (navBtn) navBtn.style.display = 'inline-flex';
+    document.getElementById('playbackBar')?.classList.add('visible');
+    initSlideNarration();
+    updateProgressUI();
+  } else {
+    const navBtn = document.getElementById('navPlayBtn');
+    if (navBtn) navBtn.style.display = 'none';
+    document.getElementById('playbackBar')?.classList.remove('visible');
+    pauseCombinedPlayback();
+  }
 }
 
 function presentKeyHandler(e) {
@@ -3601,7 +3599,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.36`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.37`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -7618,7 +7616,7 @@ function updatePlayButtonStates(isPlaying) {
 
 function playCombinedPlayback() {
   isCombinedPlaying = true;
-  if (activeAudioInstance) {
+  if (activeAudioInstance && activeAudioInstance.src && activeAudioInstance.src !== window.location.href) {
     if (activeAudioInstance.ended || activeAudioInstance.currentTime >= (activeAudioInstance.duration || 26) - 0.5) {
       try { activeAudioInstance.currentTime = 0; } catch (e) { }
     }
@@ -7629,7 +7627,7 @@ function playCombinedPlayback() {
         if (activeTrack) {
           if (activeTrack.type === 'question' || activeTrack.type === 'solution') {
             teardownCompletionAnimation();
-            const targetQIdx = COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === activeTrack.qId);
+            const targetQIdx = COURSE_CONFIG.practiceQuestions ? COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === activeTrack.qId) : -1;
             if (targetQIdx !== -1) {
               currentPracticeQ = targetQIdx;
               renderPracticeQuestion();
@@ -7657,8 +7655,14 @@ function playCombinedPlayback() {
           }
         }
       })
-      .catch(err => console.log('Combined play error:', err));
+      .catch(err => {
+        console.log('Combined play error, re-creating track:', err);
+        activeAudioInstance = null;
+        loadAndPlayTrack(combinedTrackIndex, pendingAudioStartTime);
+        pendingAudioStartTime = 0;
+      });
   } else {
+    activeAudioInstance = null;
     loadAndPlayTrack(combinedTrackIndex, pendingAudioStartTime);
     pendingAudioStartTime = 0;
   }
