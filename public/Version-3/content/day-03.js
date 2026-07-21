@@ -8,7 +8,7 @@ window.COURSE_CONTENT['day03'] = {
   "slides": [
     {
       "title": "Filtering Data: WHERE, Operators & Pattern Matching",
-      "duration": "1:23",
+      "duration": "2:05",
       "html": `
         <h2>🔍 Filtering Data: WHERE, Operators &amp; Pattern Matching</h2>
 
@@ -280,7 +280,7 @@ WHERE  salary > 80000;</code></pre>
         <div class="slide-section">
           <h3 class="heading-with-audio" id="day03CompOps">
             02. Comparison Operators — The Building Blocks
-            <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio04.mp3', this)" title="Play narration">
+            <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio04.mp3', this)" title="Play narration">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>
