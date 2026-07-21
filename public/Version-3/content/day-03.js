@@ -54,78 +54,84 @@ WHERE  salary > 80000;</code></pre>
             <div class="alias-timeline-wrapper">
               <style>
                 #day03WhereInfo .alias-timeline-wrapper {
-                  background: #090e1a;
+                  background: linear-gradient(135deg, #090e1a 0%, #050811 100%);
                   border: 1px solid rgba(255, 255, 255, 0.08);
-                  border-radius: 10px;
-                  padding: 14px 12px;
-                  margin-top: 10px;
-                  display: flex;
-                  flex-direction: column;
-                  gap: 10px;
-                  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+                  border-radius: 12px;
+                  padding: 18px 16px;
+                  margin-top: 12px;
+                  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
                 }
                 #day03WhereInfo .timeline-header-wrap {
                   display: flex;
                   align-items: center;
                   justify-content: center;
-                  gap: 8px;
+                  gap: 12px;
+                  margin-bottom: 6px;
                 }
                 #day03WhereInfo .timeline-line-decorator {
                   flex: 1;
                   height: 1px;
-                  background: rgba(255, 255, 255, 0.1);
+                  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0) 100%);
                 }
                 #day03WhereInfo .timeline-header {
                   font-family: 'Inter', sans-serif;
-                  font-size: 0.62rem;
+                  font-size: 0.65rem;
                   font-weight: 800;
-                  color: #94a3b8;
-                  letter-spacing: 0.1em;
+                  color: #8a99ad;
+                  letter-spacing: 0.15em;
                   text-transform: uppercase;
                   white-space: nowrap;
+                  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
                 }
-                #day03WhereInfo .timeline-track {
+                #day03WhereInfo .alias-timeline-grid {
+                  display: grid;
+                  grid-template-columns: repeat(5, 1fr);
+                  row-gap: 12px;
                   position: relative;
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  padding: 0 10px;
-                  margin-top: 6px;
+                  width: 100%;
+                  margin-top: 8px;
                 }
-                #day03WhereInfo .timeline-track::before {
-                  content: '';
+                #day03WhereInfo .timeline-track-line {
                   position: absolute;
-                  top: 8px;
-                  left: 30px;
-                  right: 30px;
-                  height: 2px;
+                  top: 15px; /* aligns with center of dot wrapper (height 30px) */
+                  left: 10%; /* Center of 1st column */
+                  right: 10%; /* Center of 5th column */
+                  height: 3px;
                   background: linear-gradient(to right, #3b82f6 0%, #06b6d4 25%, #a855f7 50%, #f97316 75%, #22c55e 100%);
                   z-index: 1;
-                  opacity: 0.6;
+                  border-radius: 2px;
+                  opacity: 0.75;
+                  box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
                 }
-                #day03WhereInfo .timeline-step {
-                  position: relative;
+                #day03WhereInfo .timeline-node {
                   display: flex;
                   flex-direction: column;
                   align-items: center;
                   z-index: 2;
-                  flex: 1;
+                  position: relative;
+                }
+                #day03WhereInfo .timeline-dot-wrap {
+                  height: 30px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
                 }
                 #day03WhereInfo .timeline-dot {
                   width: 14px;
                   height: 14px;
                   border-radius: 50%;
-                  background: #090e1a;
-                  border: 2px solid var(--step-color);
+                  background: #050811;
+                  border: 3px solid var(--step-color);
                   display: flex;
                   align-items: center;
                   justify-content: center;
-                  box-shadow: 0 0 6px var(--step-color);
+                  box-shadow: 0 0 10px var(--step-color), inset 0 0 4px var(--step-color);
+                  transition: transform 0.2s ease-in-out;
                 }
                 #day03WhereInfo .timeline-dot::after {
                   content: '';
-                  width: 6px;
-                  height: 6px;
+                  width: 4px;
+                  height: 4px;
                   border-radius: 50%;
                   background: var(--step-color);
                 }
@@ -134,62 +140,94 @@ WHERE  salary > 80000;</code></pre>
                   font-size: 0.58rem;
                   font-weight: 800;
                   color: var(--step-color);
-                  margin-top: 5px;
+                  margin-top: 4px;
                   text-align: center;
                   letter-spacing: 0.01em;
+                  text-shadow: 0 0 8px rgba(var(--step-color-rgb), 0.2);
                 }
-                #day03WhereInfo .step-from { --step-color: #3b82f6; }
-                #day03WhereInfo .step-where { --step-color: #06b6d4; }
-                #day03WhereInfo .step-groupby { --step-color: #a855f7; }
-                #day03WhereInfo .step-having { --step-color: #f97316; }
-                #day03WhereInfo .step-select { --step-color: #22c55e; }
+                #day03WhereInfo .step-from { --step-color: #3b82f6; --step-color-rgb: 59, 130, 246; }
+                #day03WhereInfo .step-where { --step-color: #06b6d4; --step-color-rgb: 6, 182, 212; }
+                #day03WhereInfo .step-groupby { --step-color: #a855f7; --step-color-rgb: 168, 85, 247; }
+                #day03WhereInfo .step-having { --step-color: #f97316; --step-color-rgb: 249, 115, 22; }
+                #day03WhereInfo .step-select { --step-color: #22c55e; --step-color-rgb: 34, 197, 94; }
 
-                #day03WhereInfo .timeline-brackets {
-                  display: flex;
-                  width: 100%;
-                  margin-top: 4px;
-                }
-                #day03WhereInfo .bracket-box {
+                #day03WhereInfo .bracket-item {
+                  position: relative;
                   display: flex;
                   flex-direction: column;
                   align-items: center;
-                  position: relative;
+                  margin-top: 6px;
                 }
-                #day03WhereInfo .bracket-box.no-alias {
-                  flex: 4;
+                #day03WhereInfo .bracket-shape {
+                  height: 10px;
+                  border-left: 2px solid var(--bracket-color);
+                  border-right: 2px solid var(--bracket-color);
+                  border-bottom: 2px solid var(--bracket-color);
+                  border-radius: 0 0 6px 6px;
+                  opacity: 0.8;
+                }
+                #day03WhereInfo .no-alias .bracket-shape {
+                  width: 75%; /* Spans exactly center of col 1 to center of col 4 in 4-column space */
+                  margin-left: 12.5%;
+                  margin-right: 12.5%;
+                }
+                #day03WhereInfo .has-alias .bracket-shape {
+                  width: 50%;
+                  margin-left: 25%;
+                  margin-right: 25%;
+                }
+                #day03WhereInfo .bracket-item.no-alias {
                   --bracket-color: #f87171;
                 }
-                #day03WhereInfo .bracket-box.has-alias {
-                  flex: 1;
+                #day03WhereInfo .bracket-item.has-alias {
                   --bracket-color: #4ade80;
                 }
-                #day03WhereInfo .bracket-draw {
-                  width: 75%;
-                  height: 8px;
-                  border-left: 1.5px solid var(--bracket-color);
-                  border-right: 1.5px solid var(--bracket-color);
-                  border-bottom: 1.5px solid var(--bracket-color);
-                  border-radius: 0 0 4px 4px;
-                  margin-bottom: 4px;
-                  opacity: 0.85;
-                }
-                #day03WhereInfo .bracket-label {
+                #day03WhereInfo .bracket-content {
                   display: flex;
                   align-items: center;
-                  gap: 4px;
+                  justify-content: center;
+                  gap: 5px;
+                  white-space: nowrap;
+                  margin-top: 6px;
+                  position: absolute;
+                  top: 10px;
+                  left: 50%;
+                  transform: translateX(-50%);
+                }
+                #day03WhereInfo .bracket-icon {
+                  font-size: 0.58rem;
+                  display: inline-flex;
+                  align-items: center;
+                  justify-content: center;
+                }
+                #day03WhereInfo .bracket-text {
                   font-family: 'Inter', sans-serif;
                   font-size: 0.56rem;
                   font-weight: 700;
                   text-transform: uppercase;
-                  letter-spacing: 0.03em;
+                  letter-spacing: 0.04em;
                   color: var(--bracket-color);
                 }
-                @media(max-width: 480px) {
+                #day03WhereInfo .has-alias .bracket-text {
+                  text-shadow: 0 0 8px rgba(74, 222, 128, 0.25);
+                }
+                #day03WhereInfo .no-alias .bracket-text {
+                  text-shadow: 0 0 8px rgba(248, 113, 113, 0.25);
+                }
+                @media(max-width: 580px) {
                   #day03WhereInfo .timeline-label {
+                    font-size: 0.5rem;
+                  }
+                  #day03WhereInfo .bracket-text {
                     font-size: 0.48rem;
                   }
-                  #day03WhereInfo .bracket-label {
-                    font-size: 0.48rem;
+                }
+                @media(max-width: 400px) {
+                  #day03WhereInfo .timeline-label {
+                    font-size: 0.45rem;
+                  }
+                  #day03WhereInfo .bracket-text {
+                    font-size: 0.42rem;
                   }
                 }
               </style>
@@ -200,40 +238,42 @@ WHERE  salary > 80000;</code></pre>
                 <div class="timeline-line-decorator"></div>
               </div>
               
-              <div class="timeline-track">
-                <div class="timeline-step step-from">
-                  <div class="timeline-dot"></div>
+              <div class="alias-timeline-grid">
+                <div class="timeline-track-line"></div>
+                
+                <div class="timeline-node step-from" style="grid-column: 1;">
+                  <div class="timeline-dot-wrap"><div class="timeline-dot"></div></div>
                   <div class="timeline-label">FROM</div>
                 </div>
-                <div class="timeline-step step-where">
-                  <div class="timeline-dot"></div>
+                <div class="timeline-node step-where" style="grid-column: 2;">
+                  <div class="timeline-dot-wrap"><div class="timeline-dot"></div></div>
                   <div class="timeline-label">WHERE</div>
                 </div>
-                <div class="timeline-step step-groupby">
-                  <div class="timeline-dot"></div>
+                <div class="timeline-node step-groupby" style="grid-column: 3;">
+                  <div class="timeline-dot-wrap"><div class="timeline-dot"></div></div>
                   <div class="timeline-label">GROUP BY</div>
                 </div>
-                <div class="timeline-step step-having">
-                  <div class="timeline-dot"></div>
+                <div class="timeline-node step-having" style="grid-column: 4;">
+                  <div class="timeline-dot-wrap"><div class="timeline-dot"></div></div>
                   <div class="timeline-label">HAVING</div>
                 </div>
-                <div class="timeline-step step-select">
-                  <div class="timeline-dot"></div>
+                <div class="timeline-node step-select" style="grid-column: 5;">
+                  <div class="timeline-dot-wrap"><div class="timeline-dot"></div></div>
                   <div class="timeline-label">SELECT</div>
                 </div>
-              </div>
-              
-              <div class="timeline-brackets">
-                <div class="bracket-box no-alias">
-                  <div class="bracket-draw"></div>
-                  <div class="bracket-label">
-                    <span>❌ ALIAS DOESN'T EXIST</span>
+                
+                <div class="bracket-item no-alias" style="grid-column: 1 / 5;">
+                  <div class="bracket-shape"></div>
+                  <div class="bracket-content">
+                    <span class="bracket-icon">❌</span>
+                    <span class="bracket-text">ALIAS DOESN'T EXIST</span>
                   </div>
                 </div>
-                <div class="bracket-box has-alias">
-                  <div class="bracket-draw"></div>
-                  <div class="bracket-label">
-                    <span>✅ ALIAS CREATED</span>
+                <div class="bracket-item has-alias" style="grid-column: 5 / 6;">
+                  <div class="bracket-shape"></div>
+                  <div class="bracket-content">
+                    <span class="bracket-icon">✅</span>
+                    <span class="bracket-text">ALIAS CREATED</span>
                   </div>
                 </div>
               </div>
