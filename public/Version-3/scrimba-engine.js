@@ -6887,7 +6887,7 @@ function updatePrecedenceNoteHighlight(currentTime, isPlaying) {
 
 // ════════════════════════════════════════════════════════════════════════════════
 
-async function loadAndPlayTrack(index, targetTime = 0) {
+function loadAndPlayTrack(index, targetTime = 0) {
   const myGeneration = ++currentGeneration;
 
   if (activeAudioInstance) {
@@ -6959,77 +6959,62 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     }
   }
 
-  // Load events lazily
-  const events = await loadTrackEvents(trackId);
+  // Trigger audio.play() synchronously inside gesture stack before async ticks
+  audio.play()
+    .then(() => {
+      hasCompletedFirstGestureBoundPlay = true;
+      isCombinedPlaying = true;
+      updatePlayButtonStates(true);
+      if (track.type !== 'question' && track.type !== 'solution') {
+        isNarrationActive = true;
+        if (track.target) {
+          updateSlidePlaybackVisibility(track.target);
+        }
+      }
+    })
+    .catch((err) => {
+      console.log('Play rejected:', err);
+      if (audio.error) {
+        retryOrShowError(index, myGeneration, 'network');
+      } else {
+        showTapToPlayFallback(index);
+      }
+    });
+
+  // Load events in background without blocking audio.play gesture context
+  let trackEvents = null;
+  loadTrackEvents(trackId).then(ev => { trackEvents = ev; }).catch(() => {});
 
   audio.addEventListener('ended', () => {
     if (myGeneration !== currentGeneration) return;
-    if (track.src.includes('New_Day3Part1audio05.mp3')) {
-      updateTableHighlights(0, false);
-    }
-    if (track.src.includes('New_Day3Part1audio07.mp3')) {
-      updateIntroHighlight(0, false);
-    }
-    if (track.src.includes('New_Day3Part1audio08.mp3')) {
-      updateNotCardHighlight(0, false);
-    }
-    if (track.src.includes('New_Day3Part1audio09.mp3')) {
-      updateAndCardHighlight(0, false);
-    }
-    if (track.src.includes('New_Day3Part1audio10.mp3')) {
-      updateOrCardHighlight(0, false);
-    }
-    if (track.src.includes('New_Day3Part1audio11.mp3')) {
-      updatePrecedenceNoteHighlight(0, false);
-    }
-    onNarrationSegmentEnded(index, events);
+    if (track.src.includes('New_Day3Part1audio05.mp3')) updateTableHighlights(0, false);
+    if (track.src.includes('New_Day3Part1audio07.mp3')) updateIntroHighlight(0, false);
+    if (track.src.includes('New_Day3Part1audio08.mp3')) updateNotCardHighlight(0, false);
+    if (track.src.includes('New_Day3Part1audio09.mp3')) updateAndCardHighlight(0, false);
+    if (track.src.includes('New_Day3Part1audio10.mp3')) updateOrCardHighlight(0, false);
+    if (track.src.includes('New_Day3Part1audio11.mp3')) updatePrecedenceNoteHighlight(0, false);
+    onNarrationSegmentEnded(index, trackEvents);
   });
 
   audio.addEventListener('pause', () => {
     if (myGeneration !== currentGeneration) return;
-    if (track.src.includes('New_Day3Part1audio05.mp3')) {
-      updateTableHighlights(0, false);
-    }
-    if (track.src.includes('New_Day3Part1audio07.mp3')) {
-      updateIntroHighlight(0, false);
-    }
-    if (track.src.includes('New_Day3Part1audio08.mp3')) {
-      updateNotCardHighlight(0, false);
-    }
-    if (track.src.includes('New_Day3Part1audio09.mp3')) {
-      updateAndCardHighlight(0, false);
-    }
-    if (track.src.includes('New_Day3Part1audio10.mp3')) {
-      updateOrCardHighlight(0, false);
-    }
-    if (track.src.includes('New_Day3Part1audio11.mp3')) {
-      updatePrecedenceNoteHighlight(0, false);
-    }
+    if (track.src.includes('New_Day3Part1audio05.mp3')) updateTableHighlights(0, false);
+    if (track.src.includes('New_Day3Part1audio07.mp3')) updateIntroHighlight(0, false);
+    if (track.src.includes('New_Day3Part1audio08.mp3')) updateNotCardHighlight(0, false);
+    if (track.src.includes('New_Day3Part1audio09.mp3')) updateAndCardHighlight(0, false);
+    if (track.src.includes('New_Day3Part1audio10.mp3')) updateOrCardHighlight(0, false);
+    if (track.src.includes('New_Day3Part1audio11.mp3')) updatePrecedenceNoteHighlight(0, false);
   });
 
   audio.addEventListener('timeupdate', () => {
     if (myGeneration !== currentGeneration) return;
+    if (track.src.includes('New_Day3Part1audio05.mp3')) updateTableHighlights(audio.currentTime, !audio.paused);
+    if (track.src.includes('New_Day3Part1audio07.mp3')) updateIntroHighlight(audio.currentTime, !audio.paused);
+    if (track.src.includes('New_Day3Part1audio08.mp3')) updateNotCardHighlight(audio.currentTime, !audio.paused);
+    if (track.src.includes('New_Day3Part1audio09.mp3')) updateAndCardHighlight(audio.currentTime, !audio.paused);
+    if (track.src.includes('New_Day3Part1audio10.mp3')) updateOrCardHighlight(audio.currentTime, !audio.paused);
+    if (track.src.includes('New_Day3Part1audio11.mp3')) updatePrecedenceNoteHighlight(audio.currentTime, !audio.paused);
 
-    if (track.src.includes('New_Day3Part1audio05.mp3')) {
-      updateTableHighlights(audio.currentTime, !audio.paused);
-    }
-    if (track.src.includes('New_Day3Part1audio07.mp3')) {
-      updateIntroHighlight(audio.currentTime, !audio.paused);
-    }
-    if (track.src.includes('New_Day3Part1audio08.mp3')) {
-      updateNotCardHighlight(audio.currentTime, !audio.paused);
-    }
-    if (track.src.includes('New_Day3Part1audio09.mp3')) {
-      updateAndCardHighlight(audio.currentTime, !audio.paused);
-    }
-    if (track.src.includes('New_Day3Part1audio10.mp3')) {
-      updateOrCardHighlight(audio.currentTime, !audio.paused);
-    }
-    if (track.src.includes('New_Day3Part1audio11.mp3')) {
-      updatePrecedenceNoteHighlight(audio.currentTime, !audio.paused);
-    }
-
-    // Calculate cumulative current time
     let elapsed = 0;
     for (let i = 0; i < combinedTrackIndex; i++) {
       elapsed += combinedTrackDurations[i] || 0;
@@ -7046,7 +7031,6 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     retryOrShowError(index, myGeneration, 'network');
   });
 
-  // Slide navigation, typewriter, and output table scrolls trigger JIT at playback start
   cancelTypewriter();
 
   if (track.type === 'question') {
@@ -7063,10 +7047,7 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     if (bar) bar.classList.add('question-playing');
     const slideContent = document.getElementById('slideContent');
     if (slideContent) slideContent.scrollTo({ top: 0, behavior: 'smooth' });
-
-    // Auto switch to SQL Sandbox tab on mobile
     setMobileTab('practice');
-
   } else if (track.type === 'solution') {
     isNarrationActive = false;
     if (typeof clearSlidePlaybackVisibility === 'function') clearSlidePlaybackVisibility();
@@ -7078,34 +7059,24 @@ async function loadAndPlayTrack(index, targetTime = 0) {
     }
     const bar = document.getElementById('questionBar');
     if (bar) bar.classList.add('question-playing');
-
     const solMap = questionSolutionMap[currentDay] || questionSolutionMap['day01'];
     const solEntry = solMap ? solMap[track.qId] : null;
     if (solEntry) {
       startAudioSyncedTypewriter(audio, solEntry);
     }
-
-    // Auto switch to SQL Sandbox tab on mobile
     setMobileTab('practice');
-
   } else if (track.type === 'completion') {
-    // ── Day completion: Three.js narration companion ──────────────────────
     isNarrationActive = false;
     if (typeof clearSlidePlaybackVisibility === 'function') clearSlidePlaybackVisibility();
     const bar = document.getElementById('questionBar');
     if (bar) bar.classList.remove('question-playing');
-    // Switch to theory tab so the lesson area canvas is visible
     setMobileTab('theory');
-    // Launch Three.js scene synced to this audio element
     launchCompletionAnimation(audio, targetTime);
-
   } else {
     isNarrationActive = true;
     const bar = document.getElementById('questionBar');
     if (bar) bar.classList.remove('question-playing');
     scrollToTarget(track.target);
-
-    // Auto switch to Lesson Theory tab on mobile
     setMobileTab('theory');
   }
 
@@ -7327,9 +7298,8 @@ function onNarrationSegmentEnded(index, events) {
   }
 }
 
-async function seekCombinedPlayback(val) {
+function seekCombinedPlayback(val) {
   const targetTime = parseFloat(val);
-  await loadManifest();
 
   // Find which track this targetTime belongs to
   let elapsed = 0;
@@ -7352,7 +7322,7 @@ async function seekCombinedPlayback(val) {
 
   // Load or seek the track
   if (combinedTrackIndex !== trackIdx || !activeAudioInstance) {
-    await loadAndPlayTrack(trackIdx, localOffset);
+    loadAndPlayTrack(trackIdx, localOffset);
   } else {
     try {
       activeAudioInstance.currentTime = localOffset;
@@ -7477,10 +7447,10 @@ function playAudio(src, btn) {
   }
 }
 
-async function syncCombinedToTrack(srcFilename) {
+function syncCombinedToTrack(srcFilename) {
   const idx = combinedTracks.findIndex(t => t.src === srcFilename);
   if (idx === -1) return null;
-  await loadAndPlayTrack(idx);
+  loadAndPlayTrack(idx);
   return activeAudioInstance;
 }
 
