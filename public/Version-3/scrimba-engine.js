@@ -2913,21 +2913,36 @@ function playQuestionAudio(btn, audioSrc) {
   const bar = document.getElementById('questionBar');
 
   // Stop any OTHER standalone audio playing
-  if (currentPlayingAudio && currentPlayingAudio !== activeAudioInstance) {
-    try { currentPlayingAudio.pause(); } catch(e) {}
+  if (currentPlayingAudio && !combinedAudios.includes(currentPlayingAudio)) {
+    currentPlayingAudio.pause();
     if (currentPlayingBtn && currentPlayingBtn !== btn) {
       currentPlayingBtn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
       currentPlayingBtn.classList.remove('playing');
     }
   }
 
-  // Check if this track is in combinedTracks using robust filename matching
-  const trackIdx = combinedTracks.findIndex(t => matchTrackFilename(t.src, src));
-  if (trackIdx !== -1) {
-    if (combinedTrackIndex === trackIdx && isCombinedPlaying) {
-      toggleCombinedPlayback();
+  // Check if this track is already the active combined track
+  const trackIdx = combinedTracks.findIndex(t => t.src === src);
+  const combinedAudio = trackIdx !== -1 ? combinedAudios[trackIdx] : null;
+
+  // Toggle pause/resume if already playing this track
+  if (combinedAudio && combinedTrackIndex === trackIdx && currentPlayingBtn === btn) {
+    if (combinedAudio.paused) {
+      combinedAudio.play();
+      isCombinedPlaying = true;
+      btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+      btn.classList.add('playing');
+      if (bar) bar.classList.add('question-playing');
+      updatePlayButtonStates(true);
+      startProgressLoop();
     } else {
-      loadAndPlayTrack(trackIdx);
+      combinedAudio.pause();
+      isCombinedPlaying = false;
+      btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+      btn.classList.remove('playing');
+      if (bar) bar.classList.remove('question-playing');
+      updatePlayButtonStates(false);
+      if (playProgressInterval) clearInterval(playProgressInterval);
     }
     return;
   }
@@ -7284,12 +7299,7 @@ function onNarrationSegmentEnded(index, events) {
     combinedTrackIndex++;
     loadAndPlayTrack(combinedTrackIndex);
   } else {
-    // All tracks complete — reset and destroy audio instance so replay starts cleanly
-    if (activeAudioInstance) {
-      try { activeAudioInstance.pause(); } catch (e) { }
-      activeAudioInstance.src = "";
-      activeAudioInstance = null;
-    }
+    // All tracks complete — reset
     isCombinedPlaying = false;
     isNarrationActive = false;
     combinedTrackIndex = 0;
@@ -7331,24 +7341,22 @@ async function seekCombinedPlayback(val) {
     elapsed += dur;
     if (i === combinedTrackDurations.length - 1) {
       trackIdx = i;
-      localOffset = Math.max(0, dur - 0.1);
+      localOffset = dur - 0.1;
     }
   }
 
   // Load or seek the track
-  if (combinedTrackIndex !== trackIdx || !activeAudioInstance) {
+  if (combinedTrackIndex !== trackIdx) {
     await loadAndPlayTrack(trackIdx, localOffset);
-  } else {
-    try {
-      activeAudioInstance.currentTime = localOffset;
-    } catch (e) { }
+  } else if (activeAudioInstance) {
+    activeAudioInstance.currentTime = localOffset;
     cancelTypewriter();
 
     const track = combinedTracks[trackIdx];
     if (track) {
       if (track.type === 'question' || track.type === 'solution') {
         teardownCompletionAnimation();
-        const targetQIdx = COURSE_CONFIG.practiceQuestions ? COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === track.qId) : -1;
+        const targetQIdx = COURSE_CONFIG.practiceQuestions.findIndex(q => q.id === track.qId);
         if (targetQIdx !== -1) {
           currentPracticeQ = targetQIdx;
           renderPracticeQuestion();
@@ -7375,22 +7383,12 @@ async function seekCombinedPlayback(val) {
         if (bar) bar.classList.remove('question-playing');
         scrollToTarget(track.target);
         setMobileTab('theory');
-        if (track.target) {
-          updateSlidePlaybackVisibility(track.target);
-        }
       }
-    }
-    if (!isCombinedPlaying) {
-      activeAudioInstance.play().then(() => {
-        isCombinedPlaying = true;
-        updatePlayButtonStates(true);
-      }).catch(() => {});
     }
   }
 
   currentCombinedTime = targetTime;
   updateProgressUI();
-  updateChapterListActive();
 }
 
 function scrollToTarget(selector) {
@@ -7414,17 +7412,9 @@ function scrollToTarget(selector) {
   }
 }
 
-function matchTrackFilename(pathA, pathB) {
-  if (!pathA || !pathB) return false;
-  if (pathA === pathB) return true;
-  const nameA = pathA.split('/').pop().replace('.mp3', '').toLowerCase();
-  const nameB = pathB.split('/').pop().replace('.mp3', '').toLowerCase();
-  return nameA === nameB;
-}
-
 function playAudio(src, btn) {
-  // Find track index using robust filename matching
-  const idx = combinedTracks.findIndex(t => matchTrackFilename(t.src, src));
+  // Find track index
+  const idx = combinedTracks.findIndex(t => t.src === src);
   if (idx === -1) {
     const audioSrc = src.startsWith('http') || src.startsWith('/') ? src : `/Version-3/${src}`;
     if (currentPlayingAudio && currentPlayingAudio.src.endsWith(src)) {
@@ -7466,7 +7456,7 @@ function playAudio(src, btn) {
     return;
   }
 
-  if (combinedTrackIndex === idx && isCombinedPlaying) {
+  if (combinedTrackIndex === idx) {
     toggleCombinedPlayback();
   } else {
     loadAndPlayTrack(idx);
@@ -7474,7 +7464,7 @@ function playAudio(src, btn) {
 }
 
 async function syncCombinedToTrack(srcFilename) {
-  const idx = combinedTracks.findIndex(t => matchTrackFilename(t.src, srcFilename));
+  const idx = combinedTracks.findIndex(t => t.src === srcFilename);
   if (idx === -1) return null;
   await loadAndPlayTrack(idx);
   return activeAudioInstance;
@@ -7535,7 +7525,6 @@ function initSlideNarration() {
     seekBar.max = totalCombinedDuration || 100;
     if (!seekBar.dataset.scrubbingBound) {
       seekBar.dataset.scrubbingBound = 'true';
-      seekBar.oninput = null;
       seekBar.removeAttribute('oninput');
       seekBar.addEventListener('mousedown', () => { isScrubbing = true; });
       seekBar.addEventListener('touchstart', () => { isScrubbing = true; });
@@ -7731,7 +7720,7 @@ function updatePlayButtonStates(isPlaying) {
       const match = onclickStr.match(/playAudio\(['"]([^'"]+)['"]/);
       if (match) {
         const btnSrc = match[1];
-        if (activeSrc && matchTrackFilename(activeSrc, btnSrc) && isPlaying) {
+        if (activeSrc && activeSrc === btnSrc && isPlaying) {
           btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
           btn.classList.add('playing');
         } else {
@@ -7767,10 +7756,7 @@ function updatePlayButtonStates(isPlaying) {
 
 function playCombinedPlayback() {
   isCombinedPlaying = true;
-  const currentTrack = combinedTracks[combinedTrackIndex];
-  const isCorrectAudio = activeAudioInstance && currentTrack && matchTrackFilename(activeAudioInstance.src, currentTrack.src);
-
-  if (isCorrectAudio) {
+  if (activeAudioInstance && activeAudioInstance.src && activeAudioInstance.src !== window.location.href) {
     if (activeAudioInstance.ended || activeAudioInstance.currentTime >= (activeAudioInstance.duration || 26) - 0.5) {
       try { activeAudioInstance.currentTime = 0; } catch (e) { }
     }
@@ -7913,36 +7899,37 @@ function updateSlidePlaybackVisibility(targetSelector) {
 
     container.classList.add('playback-active');
 
-    // Reset vis-target-active and hidden/dimmed classes on all elements
-    container.querySelectorAll('.vis-target-active, .vis-target-dimmed, .vis-target-hidden, .section-hidden').forEach(el => {
-      el.classList.remove('vis-target-active', 'vis-target-dimmed', 'vis-target-hidden', 'section-hidden');
-      el.style.display = '';
-    });
-
     // Find the target element inside this container
     const targetEl = container.querySelector(targetSelector);
     if (!targetEl) return;
 
-    // Highlight the active target block with cyan focus glow
-    const activeBlock = getVisibilityBlock(targetEl, container);
-    if (activeBlock) {
-      activeBlock.classList.add('vis-target-active');
-    }
+    // Reset visibility classes on all elements
+    container.querySelectorAll('.section-hidden, .vis-target-hidden').forEach(el => {
+      el.classList.remove('section-hidden', 'vis-target-hidden');
+      el.style.display = '';
+    });
 
     // Find the active section wrapper (.slide-section) that contains targetEl
     const activeSection = targetEl.closest('.slide-section');
     if (!activeSection) {
+      container.querySelectorAll('.slide-section').forEach(s => s.classList.remove('section-hidden'));
       return;
     }
 
-    // Dim non-active sections
+    // Hide all other .slide-section wrappers using class, show only the active one
     container.querySelectorAll('.slide-section').forEach(section => {
       if (section !== activeSection) {
-        section.classList.add('vis-target-dimmed');
+        section.classList.add('section-hidden');
+      } else {
+        section.classList.remove('section-hidden');
       }
     });
 
-    // Dim future targets within activeSection
+    // Keep the main heading (H2) at the top of the slide always visible
+    const h2 = container.querySelector('h2');
+    if (h2) h2.classList.remove('section-hidden', 'vis-target-hidden');
+
+    // ── Chronological sub-target filtering ──
     const processedTargets = new Set();
     combinedTracks.forEach((track, idx) => {
       if (!track.target || (!track.target.startsWith('#') && !track.target.startsWith('.'))) return;
@@ -7953,11 +7940,29 @@ function updateSlidePlaybackVisibility(targetSelector) {
       if (!el) return;
 
       if (idx > combinedTrackIndex) {
-        const blockToDim = getVisibilityBlock(el, activeSection);
-        if (blockToDim !== activeBlock) {
-          blockToDim.classList.add('vis-target-dimmed');
+        // Walk up to find the logical block
+        const blockToHide = getVisibilityBlock(el, activeSection);
+        blockToHide.classList.add('vis-target-hidden');
+
+        // Also hide preceding <hr> dividers
+        const prev = blockToHide.previousElementSibling;
+        if (prev && prev.tagName === 'HR') {
+          prev.classList.add('vis-target-hidden');
         }
       }
+    });
+
+    // ── Clean up empty parent containers ──
+    activeSection.querySelectorAll('.vs-block').forEach(block => {
+      const hasVisible = Array.from(block.children).some(c => !c.classList.contains('vis-target-hidden') && c.style.display !== 'none');
+      if (!hasVisible) block.classList.add('vis-target-hidden');
+    });
+
+    activeSection.querySelectorAll('.db-mock-table-wrap').forEach(wrap => {
+      const tbody = wrap.querySelector('tbody');
+      if (!tbody) return;
+      const hasVisibleRow = Array.from(tbody.querySelectorAll('tr')).some(r => !r.classList.contains('vis-target-hidden') && r.style.display !== 'none');
+      if (!hasVisibleRow) wrap.classList.add('vis-target-hidden');
     });
   });
 }
