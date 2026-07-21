@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.30`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.31`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -7776,7 +7776,7 @@ function updateSlidePlaybackVisibility(targetSelector) {
     // track index is AFTER the current track, hide its visual block.
     const processedTargets = new Set();
     combinedTracks.forEach((track, idx) => {
-      if (!track.target || !track.target.startsWith('#')) return;
+      if (!track.target || (!track.target.startsWith('#') && !track.target.startsWith('.'))) return;
       if (processedTargets.has(track.target)) return;
       processedTargets.add(track.target);
 
