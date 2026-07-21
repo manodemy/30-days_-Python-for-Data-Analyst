@@ -7535,6 +7535,7 @@ function initSlideNarration() {
     seekBar.max = totalCombinedDuration || 100;
     if (!seekBar.dataset.scrubbingBound) {
       seekBar.dataset.scrubbingBound = 'true';
+      seekBar.oninput = null;
       seekBar.removeAttribute('oninput');
       seekBar.addEventListener('mousedown', () => { isScrubbing = true; });
       seekBar.addEventListener('touchstart', () => { isScrubbing = true; });
