@@ -2922,7 +2922,9 @@ function playQuestionAudio(btn, audioSrc) {
   }
 
   // Check if this track is already the active combined track
-  const trackIdx = combinedTracks.findIndex(t => t.src === src);
+  const getFilename = s => s ? s.split('/').pop().replace('.mp3', '').toLowerCase() : '';
+  const targetFilename = getFilename(src);
+  const trackIdx = combinedTracks.findIndex(t => getFilename(t.src) === targetFilename);
   const combinedAudio = trackIdx !== -1 ? combinedAudios[trackIdx] : null;
 
   // Toggle pause/resume if already playing this track
@@ -7412,9 +7414,17 @@ function scrollToTarget(selector) {
   }
 }
 
+function matchTrackFilename(pathA, pathB) {
+  if (!pathA || !pathB) return false;
+  if (pathA === pathB) return true;
+  const nameA = pathA.split('/').pop().replace('.mp3', '').toLowerCase();
+  const nameB = pathB.split('/').pop().replace('.mp3', '').toLowerCase();
+  return nameA === nameB;
+}
+
 function playAudio(src, btn) {
-  // Find track index
-  const idx = combinedTracks.findIndex(t => t.src === src);
+  // Find track index using robust filename matching
+  const idx = combinedTracks.findIndex(t => matchTrackFilename(t.src, src));
   if (idx === -1) {
     const audioSrc = src.startsWith('http') || src.startsWith('/') ? src : `/Version-3/${src}`;
     if (currentPlayingAudio && currentPlayingAudio.src.endsWith(src)) {
@@ -7456,7 +7466,7 @@ function playAudio(src, btn) {
     return;
   }
 
-  if (combinedTrackIndex === idx) {
+  if (combinedTrackIndex === idx && isCombinedPlaying) {
     toggleCombinedPlayback();
   } else {
     loadAndPlayTrack(idx);
@@ -7464,7 +7474,7 @@ function playAudio(src, btn) {
 }
 
 async function syncCombinedToTrack(srcFilename) {
-  const idx = combinedTracks.findIndex(t => t.src === srcFilename);
+  const idx = combinedTracks.findIndex(t => matchTrackFilename(t.src, srcFilename));
   if (idx === -1) return null;
   await loadAndPlayTrack(idx);
   return activeAudioInstance;
@@ -7720,7 +7730,7 @@ function updatePlayButtonStates(isPlaying) {
       const match = onclickStr.match(/playAudio\(['"]([^'"]+)['"]/);
       if (match) {
         const btnSrc = match[1];
-        if (activeSrc && activeSrc === btnSrc && isPlaying) {
+        if (activeSrc && matchTrackFilename(activeSrc, btnSrc) && isPlaying) {
           btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
           btn.classList.add('playing');
         } else {
