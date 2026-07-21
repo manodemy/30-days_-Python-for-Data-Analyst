@@ -7254,11 +7254,15 @@ function updateProgressUI() {
   const seekBar = document.getElementById('seekBar');
   const playbackTime = document.getElementById('playbackTime');
   const isDragging = typeof isScrubbing !== 'undefined' && isScrubbing;
+  const dur = totalCombinedDuration > 0 ? totalCombinedDuration : 100;
   if (seekBar) {
-    seekBar.max = totalCombinedDuration || 100;
+    seekBar.max = dur;
     if (!isDragging) {
       seekBar.value = currentCombinedTime;
     }
+    const val = isDragging ? parseFloat(seekBar.value) : currentCombinedTime;
+    const fillPct = Math.max(0, Math.min(100, (val / dur) * 100));
+    seekBar.style.background = `linear-gradient(to right, #ef4444 0%, #ff4d4d ${fillPct}%, rgba(255, 255, 255, 0.15) ${fillPct}%)`;
   }
   if (playbackTime && !isDragging) {
     playbackTime.textContent = `${formatTime(currentCombinedTime)} / ${formatTime(totalCombinedDuration)}`;
@@ -7525,6 +7529,9 @@ function initSlideNarration() {
       seekBar.addEventListener('touchstart', () => { isScrubbing = true; });
       seekBar.addEventListener('input', (e) => {
         const val = parseFloat(e.target.value);
+        const dur = totalCombinedDuration > 0 ? totalCombinedDuration : 100;
+        const fillPct = Math.max(0, Math.min(100, (val / dur) * 100));
+        seekBar.style.background = `linear-gradient(to right, #ef4444 0%, #ff4d4d ${fillPct}%, rgba(255, 255, 255, 0.15) ${fillPct}%)`;
         const playbackTime = document.getElementById('playbackTime');
         if (playbackTime) {
           playbackTime.textContent = `${formatTime(val)} / ${formatTime(totalCombinedDuration)}`;
@@ -7544,6 +7551,25 @@ function initSlideNarration() {
   const timelineRow = document.querySelector('.playback-timeline-row');
   if (timelineRow && !timelineRow.dataset.clickBound) {
     timelineRow.dataset.clickBound = 'true';
+    const tooltip = document.getElementById('timelineHoverTooltip');
+
+    timelineRow.addEventListener('mousemove', (e) => {
+      const rect = timelineRow.getBoundingClientRect();
+      if (rect.width <= 0) return;
+      const clickX = e.clientX - rect.left;
+      const pct = Math.max(0, Math.min(1, clickX / rect.width));
+      const hoverTime = pct * (totalCombinedDuration || 100);
+      if (tooltip) {
+        tooltip.textContent = formatTime(hoverTime);
+        tooltip.style.left = `${clickX}px`;
+        tooltip.classList.add('active');
+      }
+    });
+
+    timelineRow.addEventListener('mouseleave', () => {
+      if (tooltip) tooltip.classList.remove('active');
+    });
+
     timelineRow.addEventListener('click', async (e) => {
       const rect = timelineRow.getBoundingClientRect();
       if (rect.width <= 0) return;
@@ -7551,8 +7577,12 @@ function initSlideNarration() {
       const pct = Math.max(0, Math.min(1, clickX / rect.width));
       const targetTime = pct * (totalCombinedDuration || 100);
       const sb = document.getElementById('seekBar');
-      if (sb) sb.value = targetTime;
-      await seekCombinedPlayback(targetTime);
+      if (sb) {
+        sb.value = targetTime;
+        const fillPct = Math.max(0, Math.min(100, pct * 100));
+        sb.style.background = `linear-gradient(to right, #ef4444 0%, #ff4d4d ${fillPct}%, rgba(255, 255, 255, 0.15) ${fillPct}%)`;
+      }
+      seekCombinedPlayback(targetTime);
     });
   }
 
