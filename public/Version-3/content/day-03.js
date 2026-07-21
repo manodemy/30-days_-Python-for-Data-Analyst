@@ -8,14 +8,14 @@ window.COURSE_CONTENT['day03'] = {
   "slides": [
     {
       "title": "Filtering Data: WHERE, Operators & Pattern Matching",
-      "duration": "0:00",
+      "duration": "9:44",
       "html": `
         <h2>🔍 Filtering Data: WHERE, Operators &amp; Pattern Matching</h2>
 
         <div class="slide-section">
           <h3 class="heading-with-audio" id="day03Where">
             01. The WHERE Clause — Row-Level Filtering
-            <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio01.mp3', this)" title="Play narration">
+            <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio01.mp3', this)" title="Play narration">
               <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </h3>

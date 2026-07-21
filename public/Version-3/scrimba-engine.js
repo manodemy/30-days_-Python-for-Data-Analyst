@@ -2560,8 +2560,12 @@ const questionAudioMap = {
     6: 'Day02/New_Day2Question06.mp3'
   },
   'day03': {
-    1: 'Day01topic3/New_Day1Part3Question01.mp3',
-    2: 'Day01topic3/New_Day1Part3Question02.mp3'
+    1: 'Day03/New_Day3Question01.mp3',
+    2: 'Day03/New_Day3Question02.mp3',
+    3: 'Day03/New_Day3Question03.mp3',
+    4: 'Day03/New_Day3Question04.mp3',
+    5: 'Day03/New_Day3Question05.mp3',
+    6: 'Day03/New_Day3Question06.mp3'
   }
 };
 
@@ -2657,8 +2661,42 @@ const questionSolutionMap = {
     }
   },
   'day03': {
-    1: { src: 'Day01topic3/New_Day1Part3Question01_sol.mp3', code: 'SELECT name AS Employee_Name, salary AS Monthly_Salary FROM employees;', startAt: 1.5, charInterval: 110 },
-    2: { src: 'Day01topic3/New_Day1Part3Question02_sol.mp3', code: 'SELECT name, salary * 1.15 AS new_salary FROM employees;', startAt: 1.5, charInterval: 110 }
+    1: {
+      src: 'Day03/New_Day3Question01sol.mp3',
+      code: 'SELECT name,\n       unit_price\nFROM   products\nWHERE  unit_price > 10000\nORDER BY unit_price DESC;',
+      startAt: 1.5,
+      charInterval: 70
+    },
+    2: {
+      src: 'Day03/New_Day3Question02sol.mp3',
+      code: 'SELECT first_name,\n       last_name,\n       region\nFROM   customers\nWHERE  region IN (\'North\', \'East\');',
+      startAt: 1.5,
+      charInterval: 70
+    },
+    3: {
+      src: 'Day03/New_Day3Question03sol.mp3',
+      code: 'SELECT first_name,\n       last_name,\n       salary\nFROM   employees\nWHERE  salary BETWEEN 60000 AND 100000;',
+      startAt: 1.5,
+      charInterval: 70
+    },
+    4: {
+      src: 'Day03/New_Day3Question04sol.mp3',
+      code: 'SELECT first_name,\n       last_name,\n       salary\nFROM   employees\nWHERE  first_name LIKE \'S%\';',
+      startAt: 1.5,
+      charInterval: 70
+    },
+    5: {
+      src: 'Day03/New_Day3Question05sol.mp3',
+      code: 'SELECT first_name,\n       department_id,\n       salary\nFROM   employees\nWHERE  is_active = 1\n  AND  department_id = 20;',
+      startAt: 1.5,
+      charInterval: 70
+    },
+    6: {
+      src: 'Day03/New_Day3Question06sol.mp3',
+      code: 'SELECT first_name,\n       last_name,\n       commission\nFROM   employees\nWHERE  commission IS NULL;',
+      startAt: 1.5,
+      charInterval: 70
+    }
   }
 };
 
@@ -3563,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.9`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.10`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -4277,6 +4315,57 @@ const day02Tracks = [
   { src: 'Day02/Final_Audio.mp3', target: '#day02Completion', title: 'Day 2 Complete! 🎉', type: 'completion' }
 ];
 
+const day03Durations = [
+  44.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0,
+  20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0,
+  20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0,
+  20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0
+];
+
+const day03Tracks = [
+  { src: 'Day03/New_Day3Part1audio01.mp3', target: '#day03Where', title: 'The WHERE Clause' },
+  { src: 'Day03/Day3audio02.mp3', target: '#day03WhereCode', title: 'WHERE Clause Syntax & Examples' },
+  { src: 'Day03/Day3audio03.mp3', target: '#day03WhereInfo', title: 'Execution Order' },
+  { src: 'Day03/Day3audio04.mp3', target: '#day03CompOps', title: 'Comparison Operators' },
+  { src: 'Day03/Day3audio05.mp3', target: '#day03CompCode', title: 'Comparison Operator Examples' },
+  { src: 'Day03/Day3audio06.mp3', target: '#day03Logic', title: 'Logical Operators' },
+  { src: 'Day03/Day3audio08.mp3', target: '#day03PrecWrap', title: 'Operator Precedence' },
+  { src: 'Day03/Day3audio07.mp3', target: '#day03LogicCode', title: 'Logical Operators Examples' },
+  { src: 'Day03/Day3audio09.mp3', target: '#day03LogicWarn', title: 'Precedence Trap' },
+  { src: 'Day03/Day3audio10.mp3', target: '#day03Between', title: 'BETWEEN Operator' },
+  { src: 'Day03/Day3audio11.mp3', target: '#day03BetweenCode', title: 'BETWEEN Range Examples' },
+  { src: 'Day03/Day3audio12.mp3', target: '#day03BetweenOk', title: 'BETWEEN Rules' },
+  { src: 'Day03/Day3audio13.mp3', target: '#day03BetweenDateTip', title: 'Date Precision Gotcha' },
+  { src: 'Day03/Day3audio14.mp3', target: '#day03In', title: 'IN Operator' },
+  { src: 'Day03/Day3audio15.mp3', target: '#day03InCode', title: 'IN List Examples' },
+  { src: 'Day03/Day3audio16.mp3', target: '#day03InWarn', title: 'NOT IN with NULLs' },
+  { src: 'Day03/Day3audio17.mp3', target: '#day03Like', title: 'LIKE Operator' },
+  { src: 'Day03/Day3audio18.mp3', target: '#day03LikePercent', title: 'Percent Wildcard' },
+  { src: 'Day03/Day3audio19.mp3', target: '#day03LikeUnderscore', title: 'Underscore Wildcard' },
+  { src: 'Day03/Day3audio20.mp3', target: '#day03LikeCode', title: 'LIKE Examples' },
+  { src: 'Day03/Day3audio21.mp3', target: '#day03LikeTip', title: 'Case Sensitivity' },
+  { src: 'Day03/Day3audio22.mp3', target: '#day03Null', title: 'IS NULL & IS NOT NULL' },
+  { src: 'Day03/Day3audio23.mp3', target: '#day03NullCode', title: 'NULL Examples' },
+  { src: 'Day03/Day3audio24.mp3', target: '#day03NullWrong', title: 'NULL Wrong Usage' },
+  { src: 'Day03/Day3audio25.mp3', target: '#day03NullRight', title: 'NULL Correct Usage' },
+  { src: 'Day03/Day3audio26.mp3', target: '#day03QANull', title: 'Comparison Q&A' },
+  { src: 'Day03/Day3audio27.mp3', target: '#day03QANotIn', title: 'NOT IN with NULLs Q&A' },
+  { src: 'Day03/Day3audio28.mp3', target: '#day03QALike', title: 'LIKE Performance Q&A' },
+  // Practice Questions
+  { src: 'Day03/New_Day3Question01.mp3', target: '#questionBar', title: 'Q1: High-Value Products', type: 'question', qId: 1 },
+  { src: 'Day03/New_Day3Question01sol.mp3', target: '#questionBar', title: 'Q1 Solution: High-Value Products', type: 'solution', qId: 1 },
+  { src: 'Day03/New_Day3Question02.mp3', target: '#questionBar', title: 'Q2: Regional Customers', type: 'question', qId: 2 },
+  { src: 'Day03/New_Day3Question02sol.mp3', target: '#questionBar', title: 'Q2 Solution: Regional Customers', type: 'solution', qId: 2 },
+  { src: 'Day03/New_Day3Question03.mp3', target: '#questionBar', title: 'Q3: Mid-Range Salary Band', type: 'question', qId: 3 },
+  { src: 'Day03/New_Day3Question03sol.mp3', target: '#questionBar', title: 'Q3 Solution: Mid-Range Salary Band', type: 'solution', qId: 3 },
+  { src: 'Day03/New_Day3Question04.mp3', target: '#questionBar', title: 'Q4: Name Pattern Search', type: 'question', qId: 4 },
+  { src: 'Day03/New_Day3Question04sol.mp3', target: '#questionBar', title: 'Q4 Solution: Name Pattern Search', type: 'solution', qId: 4 },
+  { src: 'Day03/New_Day3Question05.mp3', target: '#questionBar', title: 'Q5: Active Data Science Team', type: 'question', qId: 5 },
+  { src: 'Day03/New_Day3Question05sol.mp3', target: '#questionBar', title: 'Q5 Solution: Active Data Science Team', type: 'solution', qId: 5 },
+  { src: 'Day03/New_Day3Question06.mp3', target: '#questionBar', title: 'Q6: Employees Without Commission', type: 'question', qId: 6 },
+  { src: 'Day03/New_Day3Question06sol.mp3', target: '#questionBar', title: 'Q6 Solution: Employees Without Commission', type: 'solution', qId: 6 }
+];
+
 const slideTrackMap = {
   'day01': {
     0: { tracks: topic01Tracks, durations: topic01Durations },
@@ -4285,6 +4374,9 @@ const slideTrackMap = {
   },
   'day02': {
     0: { tracks: day02Tracks, durations: day02Durations }
+  },
+  'day03': {
+    0: { tracks: day03Tracks, durations: day03Durations }
   }
 };
 

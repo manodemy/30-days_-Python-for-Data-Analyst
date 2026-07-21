@@ -308,5 +308,10 @@
     "audioPath": "Day02/Final_Audio.mp3",
     "eventsPath": null,
     "durationMs": 23014
+  },
+  "day03_New_Day3Part1audio01": {
+    "audioPath": "Day03/New_Day3Part1audio01.mp3",
+    "eventsPath": null,
+    "durationMs": 44000
   }
 }
