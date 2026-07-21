@@ -2922,9 +2922,7 @@ function playQuestionAudio(btn, audioSrc) {
   }
 
   // Check if this track is already the active combined track
-  const getFilename = s => s ? s.split('/').pop().replace('.mp3', '').toLowerCase() : '';
-  const targetFilename = getFilename(src);
-  const trackIdx = combinedTracks.findIndex(t => getFilename(t.src) === targetFilename);
+  const trackIdx = combinedTracks.findIndex(t => t.src === src);
   const combinedAudio = trackIdx !== -1 ? combinedAudios[trackIdx] : null;
 
   // Toggle pause/resume if already playing this track
@@ -7414,17 +7412,9 @@ function scrollToTarget(selector) {
   }
 }
 
-function matchTrackFilename(pathA, pathB) {
-  if (!pathA || !pathB) return false;
-  if (pathA === pathB) return true;
-  const nameA = pathA.split('/').pop().replace('.mp3', '').toLowerCase();
-  const nameB = pathB.split('/').pop().replace('.mp3', '').toLowerCase();
-  return nameA === nameB;
-}
-
 function playAudio(src, btn) {
-  // Find track index using robust filename matching
-  const idx = combinedTracks.findIndex(t => matchTrackFilename(t.src, src));
+  // Find track index
+  const idx = combinedTracks.findIndex(t => t.src === src);
   if (idx === -1) {
     const audioSrc = src.startsWith('http') || src.startsWith('/') ? src : `/Version-3/${src}`;
     if (currentPlayingAudio && currentPlayingAudio.src.endsWith(src)) {
@@ -7466,7 +7456,7 @@ function playAudio(src, btn) {
     return;
   }
 
-  if (combinedTrackIndex === idx && isCombinedPlaying) {
+  if (combinedTrackIndex === idx) {
     toggleCombinedPlayback();
   } else {
     loadAndPlayTrack(idx);
@@ -7474,7 +7464,7 @@ function playAudio(src, btn) {
 }
 
 async function syncCombinedToTrack(srcFilename) {
-  const idx = combinedTracks.findIndex(t => matchTrackFilename(t.src, srcFilename));
+  const idx = combinedTracks.findIndex(t => t.src === srcFilename);
   if (idx === -1) return null;
   await loadAndPlayTrack(idx);
   return activeAudioInstance;
@@ -7730,7 +7720,7 @@ function updatePlayButtonStates(isPlaying) {
       const match = onclickStr.match(/playAudio\(['"]([^'"]+)['"]/);
       if (match) {
         const btnSrc = match[1];
-        if (activeSrc && matchTrackFilename(activeSrc, btnSrc) && isPlaying) {
+        if (activeSrc && activeSrc === btnSrc && isPlaying) {
           btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
           btn.classList.add('playing');
         } else {
@@ -7949,32 +7939,26 @@ function updateSlidePlaybackVisibility(targetSelector) {
 
       const block = getVisibilityBlock(el, activeSection);
 
-      if (idx < combinedTrackIndex) {
-        // Past track: fully visible (opacity: 1), no active outline box
-        block.classList.remove('vis-target-hidden', 'vis-target-dimmed', 'vis-target-active', 'section-hidden');
-        el.classList.remove('vis-target-hidden', 'vis-target-dimmed', 'vis-target-active', 'section-hidden');
-      } else if (idx === combinedTrackIndex) {
-        // Current active track: 100% bright with glowing cyan active box!
+      if (idx <= combinedTrackIndex) {
+        // Current or past track: ensure fully visible
         block.classList.remove('vis-target-hidden', 'vis-target-dimmed', 'section-hidden');
         block.classList.add('vis-target-active');
         el.classList.remove('vis-target-hidden', 'vis-target-dimmed', 'section-hidden');
         el.classList.add('vis-target-active');
       } else {
-        // Future track: dimmed to 0.18 opacity so attention stays 100% on active topic
-        block.classList.remove('vis-target-active', 'section-hidden', 'vis-target-hidden');
+        // Future track: apply soft dimming so there is NO black void, but visually distinct
+        block.classList.remove('section-hidden', 'vis-target-hidden');
         block.classList.add('vis-target-dimmed');
-        el.classList.remove('vis-target-active', 'section-hidden', 'vis-target-hidden');
-        el.classList.add('vis-target-dimmed');
       }
     });
 
-    // Keep all H1, H2, H3, H4 headings always fully visible
+    // Keep all H1, H2, H3, H4 headings always fully active
     container.querySelectorAll('h1, h2, h3, h4').forEach(h => {
       h.classList.remove('section-hidden', 'vis-target-hidden', 'vis-target-dimmed');
+      h.classList.add('vis-target-active');
     });
   });
 }
-
 
 
 
