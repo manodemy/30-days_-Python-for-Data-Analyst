@@ -42,7 +42,7 @@ WHERE  salary > 80000;</code></pre>
           <div class="info-box" id="day03WhereInfo">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
               <strong style="color: #0f766e;">ℹ️ Execution Order:</strong>
-              <button class="audio-play-btn" onclick="playAudio('Day03/Day3audio03.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <button class="audio-play-btn" onclick="playAudio('Day03/New_Day3Part1audio03.mp3', this)" title="Play narration" style="flex-shrink: 0;">
                 <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </button>
             </div>
@@ -57,7 +57,7 @@ WHERE  salary > 80000;</code></pre>
                   background: linear-gradient(135deg, #090e1a 0%, #050811 100%);
                   border: 1px solid rgba(255, 255, 255, 0.08);
                   border-radius: 12px;
-                  padding: 18px 16px;
+                  padding: 18px 16px 22px;
                   margin-top: 12px;
                   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
                 }
@@ -189,10 +189,6 @@ WHERE  salary > 80000;</code></pre>
                   gap: 5px;
                   white-space: nowrap;
                   margin-top: 6px;
-                  position: absolute;
-                  top: 10px;
-                  left: 50%;
-                  transform: translateX(-50%);
                 }
                 #day03WhereInfo .bracket-icon {
                   font-size: 0.58rem;
