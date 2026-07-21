@@ -8,7 +8,7 @@ window.COURSE_CONTENT['day03'] = {
   "slides": [
     {
       "title": "Filtering Data: WHERE, Operators & Pattern Matching",
-      "duration": "9:44",
+      "duration": "1:23",
       "html": `
         <h2>🔍 Filtering Data: WHERE, Operators &amp; Pattern Matching</h2>
 

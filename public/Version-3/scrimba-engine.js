@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.12`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.13`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -4316,54 +4316,12 @@ const day02Tracks = [
 ];
 
 const day03Durations = [
-  44.0, 39.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0,
-  20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0,
-  20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0,
-  20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0
+  44.0, 39.0
 ];
 
 const day03Tracks = [
   { src: 'Day03/New_Day3Part1audio01.mp3', target: '#day03Where', title: 'The WHERE Clause' },
-  { src: 'Day03/New_Day3Part1audio02.mp3', target: '#day03WhereCode', title: 'WHERE Clause Syntax & Examples' },
-  { src: 'Day03/Day3audio03.mp3', target: '#day03WhereInfo', title: 'Execution Order' },
-  { src: 'Day03/Day3audio04.mp3', target: '#day03CompOps', title: 'Comparison Operators' },
-  { src: 'Day03/Day3audio05.mp3', target: '#day03CompCode', title: 'Comparison Operator Examples' },
-  { src: 'Day03/Day3audio06.mp3', target: '#day03Logic', title: 'Logical Operators' },
-  { src: 'Day03/Day3audio08.mp3', target: '#day03PrecWrap', title: 'Operator Precedence' },
-  { src: 'Day03/Day3audio07.mp3', target: '#day03LogicCode', title: 'Logical Operators Examples' },
-  { src: 'Day03/Day3audio09.mp3', target: '#day03LogicWarn', title: 'Precedence Trap' },
-  { src: 'Day03/Day3audio10.mp3', target: '#day03Between', title: 'BETWEEN Operator' },
-  { src: 'Day03/Day3audio11.mp3', target: '#day03BetweenCode', title: 'BETWEEN Range Examples' },
-  { src: 'Day03/Day3audio12.mp3', target: '#day03BetweenOk', title: 'BETWEEN Rules' },
-  { src: 'Day03/Day3audio13.mp3', target: '#day03BetweenDateTip', title: 'Date Precision Gotcha' },
-  { src: 'Day03/Day3audio14.mp3', target: '#day03In', title: 'IN Operator' },
-  { src: 'Day03/Day3audio15.mp3', target: '#day03InCode', title: 'IN List Examples' },
-  { src: 'Day03/Day3audio16.mp3', target: '#day03InWarn', title: 'NOT IN with NULLs' },
-  { src: 'Day03/Day3audio17.mp3', target: '#day03Like', title: 'LIKE Operator' },
-  { src: 'Day03/Day3audio18.mp3', target: '#day03LikePercent', title: 'Percent Wildcard' },
-  { src: 'Day03/Day3audio19.mp3', target: '#day03LikeUnderscore', title: 'Underscore Wildcard' },
-  { src: 'Day03/Day3audio20.mp3', target: '#day03LikeCode', title: 'LIKE Examples' },
-  { src: 'Day03/Day3audio21.mp3', target: '#day03LikeTip', title: 'Case Sensitivity' },
-  { src: 'Day03/Day3audio22.mp3', target: '#day03Null', title: 'IS NULL & IS NOT NULL' },
-  { src: 'Day03/Day3audio23.mp3', target: '#day03NullCode', title: 'NULL Examples' },
-  { src: 'Day03/Day3audio24.mp3', target: '#day03NullWrong', title: 'NULL Wrong Usage' },
-  { src: 'Day03/Day3audio25.mp3', target: '#day03NullRight', title: 'NULL Correct Usage' },
-  { src: 'Day03/Day3audio26.mp3', target: '#day03QANull', title: 'Comparison Q&A' },
-  { src: 'Day03/Day3audio27.mp3', target: '#day03QANotIn', title: 'NOT IN with NULLs Q&A' },
-  { src: 'Day03/Day3audio28.mp3', target: '#day03QALike', title: 'LIKE Performance Q&A' },
-  // Practice Questions
-  { src: 'Day03/New_Day3Question01.mp3', target: '#questionBar', title: 'Q1: High-Value Products', type: 'question', qId: 1 },
-  { src: 'Day03/New_Day3Question01sol.mp3', target: '#questionBar', title: 'Q1 Solution: High-Value Products', type: 'solution', qId: 1 },
-  { src: 'Day03/New_Day3Question02.mp3', target: '#questionBar', title: 'Q2: Regional Customers', type: 'question', qId: 2 },
-  { src: 'Day03/New_Day3Question02sol.mp3', target: '#questionBar', title: 'Q2 Solution: Regional Customers', type: 'solution', qId: 2 },
-  { src: 'Day03/New_Day3Question03.mp3', target: '#questionBar', title: 'Q3: Mid-Range Salary Band', type: 'question', qId: 3 },
-  { src: 'Day03/New_Day3Question03sol.mp3', target: '#questionBar', title: 'Q3 Solution: Mid-Range Salary Band', type: 'solution', qId: 3 },
-  { src: 'Day03/New_Day3Question04.mp3', target: '#questionBar', title: 'Q4: Name Pattern Search', type: 'question', qId: 4 },
-  { src: 'Day03/New_Day3Question04sol.mp3', target: '#questionBar', title: 'Q4 Solution: Name Pattern Search', type: 'solution', qId: 4 },
-  { src: 'Day03/New_Day3Question05.mp3', target: '#questionBar', title: 'Q5: Active Data Science Team', type: 'question', qId: 5 },
-  { src: 'Day03/New_Day3Question05sol.mp3', target: '#questionBar', title: 'Q5 Solution: Active Data Science Team', type: 'solution', qId: 5 },
-  { src: 'Day03/New_Day3Question06.mp3', target: '#questionBar', title: 'Q6: Employees Without Commission', type: 'question', qId: 6 },
-  { src: 'Day03/New_Day3Question06sol.mp3', target: '#questionBar', title: 'Q6 Solution: Employees Without Commission', type: 'solution', qId: 6 }
+  { src: 'Day03/New_Day3Part1audio02.mp3', target: '#day03WhereCode', title: 'WHERE Clause Syntax & Examples' }
 ];
 
 const slideTrackMap = {
