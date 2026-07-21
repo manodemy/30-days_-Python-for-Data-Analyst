@@ -3601,7 +3601,7 @@ function loadDayContent(dayId) {
     // Lazy-load the content script
     const dayNum = parseInt(dayId.replace('day', ''), 10);
     const script = document.createElement('script');
-    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.31`;
+    script.src = `/Version-3/content/day-${String(dayNum).padStart(2, '0')}.js?v=14.32`;
     script.onload = () => {
       // Re-run now that module is loaded
       loadDayContent(dayId);
@@ -4372,7 +4372,7 @@ let hasCompletedFirstGestureBoundPlay = false;
 async function loadManifest() {
   if (Object.keys(manifest).length > 0) return;
   try {
-    const res = await fetch('/Version-3/manifest.json');
+    const res = await fetch('/Version-3/manifest.json?v=14.33');
     manifest = await res.json();
     // Re-calculate durations from manifest metadata for all slides
     Object.keys(slideTrackMap).forEach(dayKey => {
