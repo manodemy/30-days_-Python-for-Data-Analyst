@@ -4323,7 +4323,7 @@ const day02Tracks = [
 ];
 
 const day03Durations = [
-  44.0, 39.0, 19.5, 19.5, 55.4, 30.0, 5.5, 4.5, 4.0, 4.0, 11.0
+  44.0, 39.0, 19.5, 19.5, 55.4, 30.0, 5.5, 4.5, 4.0, 4.0, 11.0, 31.2
 ];
 
 const day03Tracks = [
@@ -4337,7 +4337,8 @@ const day03Tracks = [
   { src: 'Day03/New_Day3Part1audio08.mp3', target: '.prec-card--not', title: 'Logical Operator — NOT' },
   { src: 'Day03/New_Day3Part1audio09.mp3', target: '.prec-card--and', title: 'Logical Operator — AND' },
   { src: 'Day03/New_Day3Part1audio10.mp3', target: '.prec-card--or', title: 'Logical Operator — OR' },
-  { src: 'Day03/New_Day3Part1audio11.mp3', target: '#day03PrecedenceNote', title: 'Operator Precedence Rules' }
+  { src: 'Day03/New_Day3Part1audio11.mp3', target: '#day03PrecedenceNote', title: 'Operator Precedence Rules' },
+  { src: 'Day03/New_Day3Part1audio12.mp3', target: '#day03LogicCode', title: 'AND / OR / NOT Examples' }
 ];
 
 const slideTrackMap = {
