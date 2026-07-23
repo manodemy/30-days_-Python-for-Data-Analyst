@@ -663,10 +663,10 @@ function renderSideSlide() {
   const topicSelect = document.getElementById('topicSelect');
   if (topicSelect) topicSelect.value = currentSlide;
 
-  if (typeof isCombinedPlaying !== 'undefined' && isCombinedPlaying) {
+  if (typeof combinedTracks !== 'undefined' && combinedTracks && combinedTracks[combinedTrackIndex]) {
     const activeTrack = combinedTracks[combinedTrackIndex];
     if (activeTrack && activeTrack.target) {
-      updateSlidePlaybackVisibility(activeTrack.target);
+      updateSlidePlaybackVisibility(activeTrack.target, true);
     }
   } else if (typeof clearSlidePlaybackVisibility === 'function') {
     clearSlidePlaybackVisibility();
@@ -8039,11 +8039,6 @@ function updateSlidePlaybackVisibility(targetSelector, isSeek = false) {
   ].filter(Boolean);
 
   containers.forEach(container => {
-    if (typeof isCombinedPlaying === 'undefined' || !isCombinedPlaying) {
-      clearSlidePlaybackVisibility();
-      return;
-    }
-
     container.classList.add('playback-active');
 
     // Clear previous spotlight & entry animation classes
@@ -8083,8 +8078,8 @@ function updateSlidePlaybackVisibility(targetSelector, isSeek = false) {
       activeBlock = activeBlock.closest('.heading-with-audio, .heading-box-wrap, .warn-box, .info-box, .tip-box, .callout-box, .note-box, .warning-box, h3, h4, [id]') || activeBlock;
     }
 
-    // Highlight active spoken block
-    if (activeBlock) {
+    // Highlight active spoken block if currently playing
+    if (activeBlock && typeof isCombinedPlaying !== 'undefined' && isCombinedPlaying) {
       activeBlock.classList.add('narration-spotlight-active');
     }
 
