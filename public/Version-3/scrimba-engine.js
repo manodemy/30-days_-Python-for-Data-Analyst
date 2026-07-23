@@ -4263,26 +4263,7 @@ const topic02Tracks = [
   { src: 'Day01topic2/New_Day1Part2Question02.mp3', target: '#questionBar', title: 'Q2: Project id, name, salary', type: 'question', qId: 2 }
 ];
 
-const topic03Durations = [25.0, 28.0, 32.0, 22.0, 24.0, 30.0, 35.0, 28.0, 22.0, 30.0, 25.0, 28.0, 20.0, 22.0, 20.0, 24.0];
-const topic03Tracks = [
-  { src: 'Day01topic3/New_Day1Part3audio01.mp3', target: '#columnAliasingIntro', title: 'What is Column Aliasing?' },
-  { src: 'Day01topic3/New_Day1Part3audio02.mp3', target: '#aliasingBenefits', title: 'Why Alias?' },
-  { src: 'Day01topic3/New_Day1Part3audio03.mp3', target: '#aliasingSyntax', title: 'Syntax — Three Valid Forms' },
-  { src: 'Day01topic3/New_Day1Part3audio04.mp3', target: '#aliasingWorksDiagram', title: 'How Aliasing Works' },
-  { src: 'Day01topic3/New_Day1Part3audio05.mp3', target: '#aliasingMockTable', title: 'Result Set Headers' },
-  { src: 'Day01topic3/New_Day1Part3audio06.mp3', target: '#aliasingQuoting', title: 'Quoting Rules' },
-  { src: 'Day01topic3/New_Day1Part3audio07.mp3', target: '#aliasingLogicalOrder', title: 'Logical Execution Order' },
-  { src: 'Day01topic3/New_Day1Part3audio08.mp3', target: '#aliasingWhereVS', title: 'Alias in WHERE Clause' },
-  { src: 'Day01topic3/New_Day1Part3audio09.mp3', target: '#aliasingOrderByTip', title: 'Pro Tip: Aliasing in ORDER BY' },
-  { src: 'Day01topic3/New_Day1Part3audio10.mp3', target: '#iqReferenceAlias', title: 'Interview Q1: Alias in WHERE' },
-  { src: 'Day01topic3/New_Day1Part3audio11.mp3', target: '#iqColumnVsTable', title: 'Interview Q2: Column vs Table' },
-  { src: 'Day01topic3/New_Day1Part3audio12.mp3', target: '#iqLogicalOrderExplanation', title: 'Interview Q3: Execution Order' },
-  // ── Practice Questions & Solutions ──
-  { src: 'Day01topic3/New_Day1Part3Question01.mp3', target: '#questionBar', title: 'Q1: Column Aliasing', type: 'question', qId: 1 },
-  { src: 'Day01topic3/New_Day1Part3Question01_sol.mp3', target: '#questionBar', title: 'Q1 Solution: AS', type: 'solution', qId: 1 },
-  { src: 'Day01topic3/New_Day1Part3Question02.mp3', target: '#questionBar', title: 'Q2: Computed Alias', type: 'question', qId: 2 },
-  { src: 'Day01topic3/New_Day1Part3Question02_sol.mp3', target: '#questionBar', title: 'Q2 Solution: raise', type: 'solution', qId: 2 }
-];
+
 
 const day02Durations = [31.1, 25.9, 22.7, 22.4, 25.9, 22.9, 19.0, 18.8, 21.9, 24.1, 24.2, 30.7, 19.5, 22.8, 25.6, 18.2, 18.3, 37.5, 29.1, 28.7, 24.2, 17.3, 19.2, 14.3, 17.6, 10.4, 17.2, 14.4, 27.5, 16.5, 11.9, 19.5, 24.1, 23.0];
 const day02Tracks = [
@@ -4345,8 +4326,7 @@ const day03Tracks = [
 const slideTrackMap = {
   'day01': {
     0: { tracks: topic01Tracks, durations: topic01Durations },
-    1: { tracks: topic02Tracks, durations: topic02Durations },
-    2: { tracks: topic03Tracks, durations: topic03Durations }
+    1: { tracks: topic02Tracks, durations: topic02Durations }
   },
   'day02': {
     0: { tracks: day02Tracks, durations: day02Durations }
