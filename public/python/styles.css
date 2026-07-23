@@ -487,6 +487,17 @@ a { color: var(--cyan); text-decoration: none; }
 }
 
 /* Header Buttons */
+/* Chronological Visibility Filtering Rules for Narration Playback */
+.vis-target-hidden,
+.section-hidden {
+  display: none !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 .hdr-btn {
   display: inline-flex;
   align-items: center;

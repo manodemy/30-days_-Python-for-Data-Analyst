@@ -1190,6 +1190,128 @@ document.addEventListener('click', () => {
   document.getElementById('speedControlBtn')?.classList.remove('active');
 });
 
+// P2 #15: Class-based clearSlidePlaybackVisibility
+function clearSlidePlaybackVisibility() {
+  const containers = [
+    document.getElementById('slideBodyText'),
+    document.getElementById('presentSlideContent')
+  ].filter(Boolean);
+
+  containers.forEach(container => {
+    container.classList.remove('playback-active');
+    container.querySelectorAll('.section-hidden, .vis-target-hidden, .vis-target-dimmed, .narration-spotlight-active, .stunning-section-entry, .instant-display').forEach(el => {
+      el.classList.remove('section-hidden', 'vis-target-hidden', 'vis-target-dimmed', 'narration-spotlight-active', 'stunning-section-entry', 'instant-display');
+      el.style.display = '';
+      el.style.opacity = '';
+    });
+  });
+}
+
+function getVisibilityBlock(targetElement, sectionBoundary) {
+  const tr = targetElement.closest('tr');
+  if (tr && sectionBoundary.contains(tr)) return tr;
+  const vsCard = targetElement.closest('.vs-card');
+  if (vsCard && sectionBoundary.contains(vsCard)) return vsCard;
+  return targetElement;
+}
+
+function updateSlidePlaybackVisibility(targetSelector, isSeek = false) {
+  const containers = [
+    document.getElementById('slideBodyText'),
+    document.getElementById('presentSlideContent')
+  ].filter(Boolean);
+
+  containers.forEach(container => {
+    if (typeof isCombinedPlaying === 'undefined' || !isCombinedPlaying) {
+      clearSlidePlaybackVisibility();
+      return;
+    }
+
+    container.classList.add('playback-active');
+
+    container.querySelectorAll('.narration-spotlight-active, .stunning-section-entry').forEach(el => {
+      el.classList.remove('narration-spotlight-active', 'stunning-section-entry');
+    });
+
+    const targetEl = container.querySelector(targetSelector);
+    if (!targetEl) return;
+
+    container.querySelectorAll('.section-hidden, .vis-target-hidden').forEach(el => {
+      el.classList.remove('section-hidden', 'vis-target-hidden');
+      el.style.display = '';
+    });
+
+    const activeSection = targetEl.closest('.slide-section');
+    if (!activeSection) {
+      container.querySelectorAll('.slide-section').forEach(s => s.classList.remove('section-hidden'));
+      return;
+    }
+
+    if (isSeek) {
+      activeSection.classList.add('instant-display');
+      activeSection.classList.remove('stunning-section-entry');
+    } else {
+      activeSection.classList.remove('instant-display');
+      activeSection.classList.add('stunning-section-entry');
+    }
+
+    let activeBlock = getVisibilityBlock(targetEl, activeSection) || targetEl;
+    if (activeBlock.classList && activeBlock.classList.contains('audio-play-btn')) {
+      activeBlock = activeBlock.closest('.heading-with-audio, .heading-box-wrap, .warn-box, .info-box, .tip-box, .callout-box, .note-box, .warning-box, h3, h4, [id]') || activeBlock;
+    }
+
+    if (activeBlock) {
+      activeBlock.classList.add('narration-spotlight-active');
+    }
+
+    container.querySelectorAll('.slide-section').forEach(section => {
+      if (section !== activeSection) {
+        section.classList.add('section-hidden');
+        section.classList.remove('stunning-section-entry');
+      } else {
+        section.classList.remove('section-hidden');
+      }
+    });
+
+    const h2 = container.querySelector('h2');
+    if (h2) h2.classList.remove('section-hidden', 'vis-target-hidden');
+
+    const activeTrackElements = new Set();
+    activeTrackElements.add(activeBlock);
+    activeBlock.querySelectorAll('*').forEach(c => activeTrackElements.add(c));
+
+    let sibling = activeBlock.nextElementSibling;
+    while (sibling) {
+      if (sibling.classList.contains('heading-with-audio') ||
+          sibling.classList.contains('heading-box-wrap') ||
+          sibling.classList.contains('warn-box') ||
+          sibling.classList.contains('info-box') ||
+          sibling.classList.contains('tip-box') ||
+          sibling.classList.contains('callout-box') ||
+          sibling.classList.contains('note-box') ||
+          sibling.classList.contains('warning-box') ||
+          sibling.tagName === 'H3' ||
+          sibling.tagName === 'H4' ||
+          sibling.querySelector('.audio-play-btn')) {
+        break;
+      }
+      activeTrackElements.add(sibling);
+      sibling.querySelectorAll('*').forEach(c => activeTrackElements.add(c));
+      sibling = sibling.nextElementSibling;
+    }
+
+    const allChildBlocks = activeSection.querySelectorAll('.heading-with-audio, .heading-box-wrap, h3, h4, p, .warn-box, .info-box, .tip-box, .callout-box, .note-box, .warning-box, .db-mock-table-wrap, table, pre, code, ul, ol, .sql-example, .vs-block, .vs-card, .prec-card, .prec-note, .section-block, [id]');
+    allChildBlocks.forEach(blk => {
+      if (activeTrackElements.has(blk)) {
+        blk.classList.remove('vis-target-hidden');
+        blk.style.display = '';
+      } else {
+        blk.classList.add('vis-target-hidden');
+      }
+    });
+  });
+}
+
 // ── Bootstrap ─────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', init);
