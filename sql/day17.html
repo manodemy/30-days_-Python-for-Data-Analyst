@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
 
   <!-- App CSS -->
-  <link rel="stylesheet" href="/Version-3/styles.css?v=16.0">
+  <link rel="stylesheet" href="/Version-3/styles.css?v=17.0">
 
   <!-- CodeMirror JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
@@ -230,11 +230,24 @@
         <div class="slide-viewer" id="slideViewer">
           <div class="slide-card" style="position: relative;">
             <div class="slide-header" id="slideHeader"></div>
+
+            <!-- Chapter / Topic List Dropdown Popover -->
+            <div class="chapter-list-popover" id="chapterList" aria-label="Topic List" role="listbox" style="display:none;">
+              <!-- Populated by buildChapterList() -->
+            </div>
             <div class="slide-content" id="slideContent" style="position: relative; overflow-y: auto; min-height: 0;">
               <!-- Canvas Overlay inside scrollable container -->
               <canvas class="draw-canvas" id="workspaceDrawCanvas" style="position: absolute; top: 0; left: 0; z-index: 10;"></canvas>
               <!-- Content container populated by JS -->
-              <div id="slideBodyText">
+              <div id="slideBodyText" aria-live="polite" aria-label="Lesson Content">
+                <div class="slide-skeleton" id="slideSkeleton" aria-hidden="true" style="display:none;">
+                  <div class="skeleton-line skeleton-line--title"></div>
+                  <div class="skeleton-line skeleton-line--wide"></div>
+                  <div class="skeleton-line"></div>
+                  <div class="skeleton-line skeleton-line--short"></div>
+                  <div class="skeleton-line skeleton-line--wide"></div>
+                  <div class="skeleton-line"></div>
+                </div>
                 <!-- Populated by JS -->
               </div>
             </div>
@@ -251,52 +264,78 @@
           </div>
         </div>
 
-        <!-- Playback Controls -->
+        <!-- Playback Controls (Market Standard Scrimba Video Player Layout) -->
         <div class="playback-bar" id="playbackBar">
-          <div class="playback-row">
-            <div class="playback-controls-row">
-              <div class="playback-left-controls">
-                <button class="play-btn" id="playPauseBtn" onclick="toggleCombinedPlayback()">▶</button>
-                <div class="playback-bar-controls">
-                  <!-- Volume Control Wrapper -->
-                  <div class="volume-control-wrapper">
-                    <button class="volume-btn" id="volumeBtn" onclick="toggleVolumePopover(event)" title="Adjust Volume">
-                      <svg class="volume-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                      </svg>
-                    </button>
-                    <div class="volume-popover" id="volumePopover">
-                      <input type="range" id="volumeSlider" min="0" max="100" value="100" step="1" oninput="setPlaybackVolume(this.value)">
-                      <span class="volume-value" id="volumeValue">100%</span>
-                    </div>
-                  </div>
+          <!-- TOP ROW: 100% Full-Width Progress Slider -->
+          <div class="playback-timeline-row" id="playbackTimelineRow">
+            <div class="timeline-hover-tooltip" id="timelineHoverTooltip">0:00</div>
+            <input type="range" class="seek-bar" id="seekBar" min="0" max="100" value="0" step="0.1"
+              onchange="seekCombinedPlayback(this.value)"
+              aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          </div>
 
-                  <!-- Speed Control Wrapper -->
-                  <div class="speed-control-wrapper">
-                    <button class="speed-control-btn" id="speedControlBtn" onclick="toggleSpeedPopover(event)" title="Playback Speed">
-                      <svg class="speed-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 15.2a10 10 0 0 0 17.3 3.58 10 10 0 0 0-.27-10.21zM10.85 15.75a1.2 1.2 0 1 0 1.2-1.2 1.2 1.2 0 0 0-1.2 1.2zM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1z"/>
-                      </svg>
-                      <span id="speedValueLabel">1.0x</span>
-                    </button>
-                    <div class="speed-popover" id="speedPopover">
-                      <div class="speed-option active" onclick="selectSpeedOption(1, '1.0x')">1.0x</div>
-                      <div class="speed-option" onclick="selectSpeedOption(1.25, '1.25x')">1.25x</div>
-                      <div class="speed-option" onclick="selectSpeedOption(1.5, '1.5x')">1.5x</div>
-                      <div class="speed-option" onclick="selectSpeedOption(1.75, '1.75x')">1.75x</div>
-                      <div class="speed-option" onclick="selectSpeedOption(2, '2.0x')">2.0x</div>
-                    </div>
-                  </div>
+          <!-- BOTTOM ROW: Controls Bar -->
+          <div class="playback-controls-row">
+            <!-- Left Group: Skip Back, Play Lesson (Red Pill), Skip Forward, Volume -->
+            <div class="playback-left-controls">
+              <!-- Skip Back 10s (<<) -->
+              <button class="skip-btn-icon" id="skipBackBtn"
+                onclick="skipCombined(-10)" title="Skip back 10 seconds" aria-label="Skip back 10 seconds">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/>
+                </svg>
+              </button>
+
+              <!-- Play / Pause Button (Vivid Red Pill) -->
+              <button class="play-btn-red-pill" id="playPauseBtn" onclick="toggleCombinedPlayback()"
+                title="Play/Pause Lesson" aria-label="Play/Pause" aria-pressed="false">
+                <span class="btn-icon" aria-hidden="true">&#9654;</span>
+                <span class="btn-text">Play Lesson</span>
+              </button>
+
+              <!-- Skip Forward 10s (>>) -->
+              <button class="skip-btn-icon" id="skipFwdBtn"
+                onclick="skipCombined(10)" title="Skip forward 10 seconds" aria-label="Skip forward 10 seconds">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 6v12l8.5-6L13 6zm-1 6L3.5 6v12l8.5-6z"/>
+                </svg>
+              </button>
+
+              <!-- Volume Control Wrapper -->
+              <div class="volume-control-wrapper">
+                <button class="volume-btn-icon" id="volumeBtn" onclick="toggleVolumePopover(event)" title="Adjust Volume">
+                  <svg class="volume-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                  </svg>
+                </button>
+                <div class="volume-popover" id="volumePopover">
+                  <input type="range" id="volumeSlider" min="0" max="100" value="100" step="1" oninput="setPlaybackVolume(this.value)">
+                  <span class="volume-value" id="volumeValue">100%</span>
                 </div>
               </div>
-              <div class="playback-right-controls">
-                <span class="playback-time" id="playbackTime">0:00 / 0:00</span>
-              </div>
             </div>
-            <div class="playback-timeline-row">
-              <input type="range" class="seek-bar" id="seekBar" min="0" max="100" value="0" step="0.1" oninput="seekCombinedPlayback(this.value)">
+
+            <!-- Right Group: Speed Control, Time Readout -->
+            <div class="playback-right-controls">
+              <div class="speed-control-wrapper">
+                <button class="speed-control-btn-pill" id="speedControlBtn" onclick="toggleSpeedPopover(event)" title="Playback Speed">
+                  <svg class="speed-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 15.2a10 10 0 0 0 17.3 3.58 10 10 0 0 0-.27-10.21zM10.85 15.75a1.2 1.2 0 1 0 1.2-1.2 1.2 1.2 0 0 0-1.2 1.2zM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1z"/>
+                  </svg>
+                  <span id="speedValueLabel">1.0x</span>
+                </button>
+                <div class="speed-popover" id="speedPopover">
+                  <div class="speed-option active" onclick="selectSpeedOption(1, '1.0x')">1.0x</div>
+                  <div class="speed-option" onclick="selectSpeedOption(1.25, '1.25x')">1.25x</div>
+                  <div class="speed-option" onclick="selectSpeedOption(1.5, '1.5x')">1.5x</div>
+                  <div class="speed-option" onclick="selectSpeedOption(1.75, '1.75x')">1.75x</div>
+                  <div class="speed-option" onclick="selectSpeedOption(2, '2.0x')">2.0x</div>
+                </div>
+              </div>
+              <span class="playback-time" id="playbackTime" aria-label="Playback time" aria-live="off">0:00 / 0:00</span>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -450,12 +489,12 @@
   <!-- Supabase SDK -->
   <script src="/supabase.js" defer></script>
   <!-- Content & Grading modules -->
-  <script src="/Version-3/content/manifest.js?v=16.0"></script>
-  <script src="/Version-3/content/day-17.js?v=16.0"></script>
-  <script src="/Version-3/db-seeds/retail-seed.js?v=14.2"></script>
-  <script src="/Version-3/grading-engine.js?v=16.0"></script>
-  <script src="/Version-3/persistence.js?v=16.0"></script>
+  <script src="/Version-3/content/manifest.js?v=17.0"></script>
+  <script src="/Version-3/content/day-17.js?v=17.0"></script>
+  <script src="/Version-3/db-seeds/retail-seed.js?v=17.0"></script>
+  <script src="/Version-3/grading-engine.js?v=17.0"></script>
+  <script src="/Version-3/persistence.js?v=17.0"></script>
   <!-- App JS -->
-  <script src="/Version-3/scrimba-engine.js?v=16.0"></script>
+  <script src="/Version-3/scrimba-engine.js?v=17.0"></script>
 </body>
 </html>
