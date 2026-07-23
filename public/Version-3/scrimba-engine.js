@@ -602,7 +602,20 @@ function renderSideSlide() {
 
   // Populate elements
   const slideHeader = document.getElementById('slideHeader');
-  if (slideHeader) slideHeader.innerHTML = headerHtml;
+  if (slideHeader) {
+    const activeTitle = (typeof combinedTracks !== 'undefined' && combinedTracks && combinedTracks[combinedTrackIndex]) ? (combinedTracks[combinedTrackIndex].title || 'In this lesson') : 'In this lesson';
+    slideHeader.innerHTML = `
+      <div class="slide-header-content">
+        ${headerHtml}
+        <button class="chapter-pill-btn" id="chapterPillBtn" onclick="toggleChapterList()" title="Jump to Chapter">
+          <span id="activeChapterTitle">${activeTitle}</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+    `;
+  }
 
   const slideBodyText = document.getElementById('slideBodyText');
   if (slideBodyText) {
@@ -2583,6 +2596,20 @@ const questionAudioMap = {
     4: 'Day03/New_Day3Question04.mp3',
     5: 'Day03/New_Day3Question05.mp3',
     6: 'Day03/New_Day3Question06.mp3'
+  },
+  'day04': {
+    1: 'Day04/New_Day4Question01.mp3',
+    2: 'Day04/New_Day4Question02.mp3',
+    3: 'Day04/New_Day4Question03.mp3',
+    4: 'Day04/New_Day4Question04.mp3',
+    5: 'Day04/New_Day4Question05.mp3',
+    6: 'Day04/New_Day4Question06.mp3',
+    7: 'Day04/New_Day4Question07.mp3',
+    8: 'Day04/New_Day4Question08.mp3',
+    9: 'Day04/New_Day4Question09.mp3',
+    10: 'Day04/New_Day4Question10.mp3',
+    11: 'Day04/New_Day4Question11.mp3',
+    12: 'Day04/New_Day4Question12.mp3'
   }
 };
 
@@ -2714,6 +2741,20 @@ const questionSolutionMap = {
       startAt: 1.5,
       charInterval: 70
     }
+  },
+  'day04': {
+    1: { src: 'Day04/New_Day4Question01sol.mp3', code: 'SELECT first_name, salary, salary / 12.0 AS monthly_salary FROM employees;', startAt: 1.5, charInterval: 70 },
+    2: { src: 'Day04/New_Day4Question02sol.mp3', code: 'SELECT name, unit_price, cost_price, unit_price - cost_price AS gross_profit FROM products ORDER BY gross_profit DESC;', startAt: 1.5, charInterval: 70 },
+    3: { src: 'Day04/New_Day4Question03sol.mp3', code: 'SELECT first_name, salary, commission, salary + COALESCE(commission, 0) AS total_comp FROM employees;', startAt: 1.5, charInterval: 70 },
+    4: { src: 'Day04/New_Day4Question04sol.mp3', code: 'SELECT * FROM employees WHERE (department_id = 10 OR department_id = 20) AND salary > 70000;', startAt: 1.5, charInterval: 70 },
+    5: { src: 'Day04/New_Day4Question05sol.mp3', code: 'SELECT first_name, salary FROM employees WHERE salary > (SELECT MAX(salary) FROM employees WHERE department_id = 40);', startAt: 1.5, charInterval: 70 },
+    6: { src: 'Day04/New_Day4Question06sol.mp3', code: 'SELECT name, unit_price * 1.18 AS markup_price FROM products;', startAt: 1.5, charInterval: 70 },
+    7: { src: 'Day04/New_Day4Question07sol.mp3', code: 'SELECT first_name, commission FROM employees WHERE commission > 5000 OR commission IS NULL;', startAt: 1.5, charInterval: 70 },
+    8: { src: 'Day04/New_Day4Question08sol.mp3', code: 'SELECT name, (unit_price - cost_price) * 1.0 / NULLIF(unit_price, 0) AS margin FROM products;', startAt: 1.5, charInterval: 70 },
+    9: { src: 'Day04/New_Day4Question09sol.mp3', code: 'SELECT name, ROUND((unit_price - cost_price) * 100.0 / unit_price, 2) AS profit_pct FROM products;', startAt: 1.5, charInterval: 70 },
+    10: { src: 'Day04/New_Day4Question10sol.mp3', code: 'SELECT first_name, salary FROM employees WHERE salary > (SELECT MIN(salary) FROM employees WHERE department_id = 30);', startAt: 1.5, charInterval: 70 },
+    11: { src: 'Day04/New_Day4Question11sol.mp3', code: 'SELECT product_id, name FROM products WHERE product_id % 2 = 0;', startAt: 1.5, charInterval: 70 },
+    12: { src: 'Day04/New_Day4Question12sol.mp3', code: 'SELECT name, stock_qty * cost_price AS stock_value FROM products WHERE stock_qty * cost_price > 100000;', startAt: 1.5, charInterval: 70 }
   }
 };
 
@@ -2876,8 +2917,8 @@ function renderPracticeQuestion() {
 
     // Update question audio button based on the question id
     const btn = document.getElementById('questionAudioBtn');
-    const audioMap = questionAudioMap[currentDay] || questionAudioMap['day01'];
-    const audioSrc = audioMap ? audioMap[q.id] : null;
+    const audioMap = questionAudioMap[currentDay] || questionAudioMap['day04'] || questionAudioMap['day01'];
+    const audioSrc = q.questionAudio || (audioMap ? audioMap[q.id] : null);
     if (btn) {
       if (audioSrc) {
         btn.style.display = 'inline-flex';
@@ -2890,8 +2931,8 @@ function renderPracticeQuestion() {
     // Show/hide solution audio button based on whether this question has a solution audio
     const solBtn = document.getElementById('solutionAudioBtn');
     if (solBtn) {
-      const solMap = questionSolutionMap[currentDay] || questionSolutionMap['day01'];
-      const hasSolution = solMap && solMap[q.id];
+      const solMap = questionSolutionMap[currentDay] || questionSolutionMap['day04'] || questionSolutionMap['day01'];
+      const hasSolution = q.solutionAudio || (solMap && solMap[q.id]);
       solBtn.style.display = hasSolution ? 'inline-flex' : 'none';
       // Reset icon on question change
       solBtn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
@@ -2979,9 +3020,9 @@ function playQuestionAudio(btn, audioSrc) {
     currentPlayingBtn = null;
 
     // Auto-chain: play the solution audio after question narration ends
-    const solMap = questionSolutionMap[currentDay] || questionSolutionMap['day01'];
+    const solMap = questionSolutionMap[currentDay] || questionSolutionMap['day04'] || questionSolutionMap['day01'];
     const q = COURSE_CONFIG.practiceQuestions[currentPracticeQ];
-    const solEntry = q && solMap ? solMap[q.id] : null;
+    const solEntry = (q && q.solutionAudio) ? { src: q.solutionAudio, code: q.referenceSql, startAt: 1.5, charInterval: 70 } : (q && solMap ? solMap[q.id] : null);
     if (solEntry) {
       setTimeout(() => playSolutionAudio(solEntry), 400);
     }
@@ -4323,6 +4364,61 @@ const day03Tracks = [
   { src: 'Day03/New_Day3Part1audio13.mp3', target: '#day03LogicWarn', title: 'Precedence Trap Warning' }
 ];
 
+const day04Durations = [
+  3.0, 3.0, 3.5, 3.5, 3.0, 4.0, 4.5, 2.5, 2.0, 3.0, 2.8, 3.2, 3.0, 2.5, 2.5, 3.0, 3.0, 2.8, 3.6, 3.4, 3.3, 2.9, 2.8,
+  3.8, 3.4, 4.8, 4.9, 3.9, 4.8, 4.7, 4.9, 4.6, 4.7, 4.6, 4.7, 4.6, 4.7, 4.6, 4.7, 4.6, 4.7, 4.6, 4.7, 4.6, 4.7, 4.6
+];
+
+const day04Tracks = [
+  { src: 'Day04/New_Day4Part1audio01.mp3', target: '#day04Arithmetic', title: '01. Arithmetic Operators' },
+  { src: 'Day04/New_Day4Part1audio02.mp3', target: '#day04ArithmeticTable', title: 'Arithmetic Operator Reference' },
+  { src: 'Day04/New_Day4Part1audio03.mp3', target: '#day04ArithmeticExamples', title: 'Arithmetic Operator Examples' },
+  { src: 'Day04/New_Day4Part1audio04.mp3', target: '#day04IntDivWarn', title: '⚠️ Integer Division' },
+  { src: 'Day04/New_Day4Part1audio05.mp3', target: '#day04Precedence', title: '02. Operator Precedence' },
+  { src: 'Day04/New_Day4Part1audio06.mp3', target: '#day04PrecedenceTable', title: 'Operator Precedence Table' },
+  { src: 'Day04/New_Day4Part1audio07.mp3', target: '#day04PrecedenceExamples', title: 'AND / OR Precedence Examples' },
+  { src: 'Day04/New_Day4Part1audio08.mp3', target: '#day04PrecedenceInfo', title: 'ℹ️ Always parenthesise mixed AND/OR' },
+  { src: 'Day04/New_Day4Part1audio09.mp3', target: '#day04AllAny', title: '03. ALL and ANY' },
+  { src: 'Day04/New_Day4Part1audio10.mp3', target: '#day04AnyCard', title: '> ANY Subquery' },
+  { src: 'Day04/New_Day4Part1audio11.mp3', target: '#day04AllCard', title: '> ALL Subquery' },
+  { src: 'Day04/New_Day4Part1audio12.mp3', target: '#day04AllAnyWarn', title: '⚠️ Engine support' },
+  { src: 'Day04/New_Day4Part1audio13.mp3', target: '#day04AllAnyTip', title: '💡 Equivalences to memorise' },
+  { src: 'Day04/New_Day4Part1audio14.mp3', target: '#day04Escape', title: '04. ESCAPE in LIKE' },
+  { src: 'Day04/New_Day4Part1audio15.mp3', target: '#day04EscapeCode', title: 'ESCAPE Examples' },
+  { src: 'Day04/New_Day4Part1audio16.mp3', target: '#day04EscapeInfo', title: 'ℹ️ Which escape char?' },
+  { src: 'Day04/New_Day4Part1audio17.mp3', target: '#day04NullHandling', title: '05. Handling NULLs' },
+  { src: 'Day04/New_Day4Part1audio18.mp3', target: '#day04NullCode', title: 'NULL Propagation Examples' },
+  { src: 'Day04/New_Day4Part1audio19.mp3', target: '#day04NullInfo', title: 'ℹ️ NULL ≠ 0' },
+  { src: 'Day04/New_Day4Part1audio20.mp3', target: '#day04ThreeVal', title: '06. Three-Valued Logic' },
+  { src: 'Day04/New_Day4Part1audio21.mp3', target: '#day04ThreeValTable', title: 'Three-Valued Logic Truth Table' },
+  { src: 'Day04/New_Day4Part1audio22.mp3', target: '#day04NotInTrapCode', title: 'The NOT IN + NULL Trap' },
+  { src: 'Day04/New_Day4Part1audio23.mp3', target: '#day04NotInTrapWarn', title: '⚠️ The NOT IN NULL trap' },
+  { src: 'Day04/New_Day4Question01.mp3', target: '#questionBar', title: 'Q1: Monthly Pay', type: 'question', qId: 1 },
+  { src: 'Day04/New_Day4Question01sol.mp3', target: '#questionBar', title: 'Q1 Solution: Monthly Pay', type: 'solution', qId: 1 },
+  { src: 'Day04/New_Day4Question02.mp3', target: '#questionBar', title: 'Q2: Gross Profit', type: 'question', qId: 2 },
+  { src: 'Day04/New_Day4Question02sol.mp3', target: '#questionBar', title: 'Q2 Solution: Gross Profit', type: 'solution', qId: 2 },
+  { src: 'Day04/New_Day4Question03.mp3', target: '#questionBar', title: 'Q3: Total Comp', type: 'question', qId: 3 },
+  { src: 'Day04/New_Day4Question03sol.mp3', target: '#questionBar', title: 'Q3 Solution: Total Comp', type: 'solution', qId: 3 },
+  { src: 'Day04/New_Day4Question04.mp3', target: '#questionBar', title: 'Q4: High Earners', type: 'question', qId: 4 },
+  { src: 'Day04/New_Day4Question04sol.mp3', target: '#questionBar', title: 'Q4 Solution: High Earners', type: 'solution', qId: 4 },
+  { src: 'Day04/New_Day4Question05.mp3', target: '#questionBar', title: 'Q5: Earn > Sales', type: 'question', qId: 5 },
+  { src: 'Day04/New_Day4Question05sol.mp3', target: '#questionBar', title: 'Q5 Solution: Earn > Sales', type: 'solution', qId: 5 },
+  { src: 'Day04/New_Day4Question06.mp3', target: '#questionBar', title: 'Q6: Price Markup', type: 'question', qId: 6 },
+  { src: 'Day04/New_Day4Question06sol.mp3', target: '#questionBar', title: 'Q6 Solution: Price Markup', type: 'solution', qId: 6 },
+  { src: 'Day04/New_Day4Question07.mp3', target: '#questionBar', title: 'Q7: Include NULLs', type: 'question', qId: 7 },
+  { src: 'Day04/New_Day4Question07sol.mp3', target: '#questionBar', title: 'Q7 Solution: Include NULLs', type: 'solution', qId: 7 },
+  { src: 'Day04/New_Day4Question08.mp3', target: '#questionBar', title: 'Q8: Safe Ratio', type: 'question', qId: 8 },
+  { src: 'Day04/New_Day4Question08sol.mp3', target: '#questionBar', title: 'Q8 Solution: Safe Ratio', type: 'solution', qId: 8 },
+  { src: 'Day04/New_Day4Question09.mp3', target: '#questionBar', title: 'Q9: Profit Pct', type: 'question', qId: 9 },
+  { src: 'Day04/New_Day4Question09sol.mp3', target: '#questionBar', title: 'Q9 Solution: Profit Pct', type: 'solution', qId: 9 },
+  { src: 'Day04/New_Day4Question10.mp3', target: '#questionBar', title: 'Q10: Earn > Marketing', type: 'question', qId: 10 },
+  { src: 'Day04/New_Day4Question10sol.mp3', target: '#questionBar', title: 'Q10 Solution: Earn > Marketing', type: 'solution', qId: 10 },
+  { src: 'Day04/New_Day4Question11.mp3', target: '#questionBar', title: 'Q11: Parity Check', type: 'question', qId: 11 },
+  { src: 'Day04/New_Day4Question11sol.mp3', target: '#questionBar', title: 'Q11 Solution: Parity Check', type: 'solution', qId: 11 },
+  { src: 'Day04/New_Day4Question12.mp3', target: '#questionBar', title: 'Q12: Stock Value', type: 'question', qId: 12 },
+  { src: 'Day04/New_Day4Question12sol.mp3', target: '#questionBar', title: 'Q12 Solution: Stock Value', type: 'solution', qId: 12 }
+];
+
 const slideTrackMap = {
   'day01': {
     0: { tracks: topic01Tracks, durations: topic01Durations },
@@ -4333,6 +4429,9 @@ const slideTrackMap = {
   },
   'day03': {
     0: { tracks: day03Tracks, durations: day03Durations }
+  },
+  'day04': {
+    0: { tracks: day04Tracks, durations: day04Durations }
   }
 };
 
@@ -7371,9 +7470,9 @@ function seekCombinedPlayback(val) {
   if (typeof updateChapterListActive === 'function') updateChapterListActive();
 }
 
-function scrollToTarget(selector) {
+function scrollToTarget(selector, isSeek = true) {
   if (typeof isCombinedPlaying !== 'undefined' && isCombinedPlaying) {
-    if (typeof updateSlidePlaybackVisibility === 'function') updateSlidePlaybackVisibility(selector);
+    if (typeof updateSlidePlaybackVisibility === 'function') updateSlidePlaybackVisibility(selector, isSeek);
   } else {
     if (typeof clearSlidePlaybackVisibility === 'function') clearSlidePlaybackVisibility();
   }
@@ -7387,7 +7486,7 @@ function scrollToTarget(selector) {
     const relativeTop = targetRect.top - containerRect.top + container.scrollTop;
     container.scrollTo({
       top: relativeTop - 15,
-      behavior: 'smooth'
+      behavior: isSeek ? 'auto' : 'smooth'
     });
   }
 }
@@ -7582,7 +7681,7 @@ function skipCombined(deltaSecs) {
 function buildChapterList() {
   const listEl = document.getElementById('chapterList');
   if (!listEl) return;
-  const typeIcons = { narration: '📖', question: '❓', solution: '✅', completion: '🏆' };
+  const typeIcons = { narration: '▶', question: '❓', solution: '✅', completion: '🏆' };
   let elapsed = 0;
   listEl.innerHTML = '';
   combinedTracks.forEach((track, idx) => {
@@ -7594,10 +7693,12 @@ function buildChapterList() {
     item.innerHTML = `
       <span class="chapter-item__icon">${typeIcons[track.type] || '▶'}</span>
       <span class="chapter-item__time">${formatTime(elapsed)}</span>
-      <span>${track.title || track.src.split('/').pop().replace('.mp3', '')}</span>`;
-    item.addEventListener('click', () => {
+      <span class="chapter-item__title">${track.title || track.src.split('/').pop().replace('.mp3', '')}</span>`;
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
       seekCombinedPlayback(elapsed);
       if (!isCombinedPlaying) playCombinedPlayback();
+      listEl.style.display = 'none';
     });
     listEl.appendChild(item);
     elapsed += dur;
@@ -7606,15 +7707,21 @@ function buildChapterList() {
 
 function updateChapterListActive() {
   const listEl = document.getElementById('chapterList');
-  if (!listEl) return;
-  listEl.querySelectorAll('.chapter-item').forEach(item => {
-    item.classList.toggle('active', parseInt(item.dataset.idx, 10) === combinedTrackIndex);
-  });
+  if (listEl) {
+    listEl.querySelectorAll('.chapter-item').forEach(item => {
+      item.classList.toggle('active', parseInt(item.dataset.idx, 10) === combinedTrackIndex);
+    });
+  }
+  const titleEl = document.getElementById('activeChapterTitle');
+  if (titleEl && typeof combinedTracks !== 'undefined' && combinedTracks[combinedTrackIndex]) {
+    titleEl.textContent = combinedTracks[combinedTrackIndex].title || 'In this lesson';
+  }
 }
 
-function toggleChapterList() {
+function toggleChapterList(e) {
+  if (e && e.stopPropagation) e.stopPropagation();
   const listEl = document.getElementById('chapterList');
-  const btn = document.getElementById('chaptersBtn');
+  const btn = document.getElementById('chapterPillBtn') || document.getElementById('chaptersBtn');
   if (!listEl) return;
   const isOpen = listEl.style.display !== 'none';
   if (isOpen) {
@@ -7627,6 +7734,17 @@ function toggleChapterList() {
     if (btn) { btn.classList.add('active'); btn.setAttribute('aria-expanded', 'true'); }
   }
 }
+
+// Global outside-click listener to close chapter list popover
+document.addEventListener('click', (e) => {
+  const listEl = document.getElementById('chapterList');
+  const pillBtn = document.getElementById('chapterPillBtn');
+  if (listEl && listEl.style.display !== 'none') {
+    if (!listEl.contains(e.target) && (!pillBtn || !pillBtn.contains(e.target))) {
+      listEl.style.display = 'none';
+    }
+  }
+});
 
 // ─── P1 #8: Captions toggle ──────────────────────────────────────────────────
 let captionsEnabled = false;
@@ -7701,10 +7819,12 @@ function toggleBufferingState(isBuffering) {
 }
 
 function updatePlayButtonStates(isPlaying) {
+  const equalizerHtml = `<span class="audio-wave-equalizer" aria-hidden="true"><span></span><span></span><span></span></span>`;
+
   const navBtn = document.getElementById('navPlayBtn');
   if (navBtn) {
     if (isPlaying) {
-      navBtn.innerHTML = `<span class="btn-icon" aria-hidden="true">⏸</span> <span class="btn-text">Pause Lesson</span>`;
+      navBtn.innerHTML = `${equalizerHtml} <span class="btn-icon" aria-hidden="true">⏸</span> <span class="btn-text">Pause Lesson</span>`;
       navBtn.classList.add('playing');
       navBtn.setAttribute('aria-label', 'Pause Lesson');
       navBtn.setAttribute('aria-pressed', 'true');
@@ -7719,7 +7839,7 @@ function updatePlayButtonStates(isPlaying) {
   const playPauseBtn = document.getElementById('playPauseBtn');
   if (playPauseBtn) {
     if (isPlaying) {
-      playPauseBtn.innerHTML = `<span class="btn-icon" aria-hidden="true">⏸</span> <span class="btn-text">Pause Lesson</span>`;
+      playPauseBtn.innerHTML = `${equalizerHtml} <span class="btn-icon" aria-hidden="true">⏸</span> <span class="btn-text">Pause Lesson</span>`;
       playPauseBtn.classList.add('playing');
       playPauseBtn.setAttribute('aria-label', 'Pause Lesson');
       playPauseBtn.setAttribute('aria-pressed', 'true');
@@ -7729,6 +7849,11 @@ function updatePlayButtonStates(isPlaying) {
       playPauseBtn.setAttribute('aria-label', 'Play Lesson');
       playPauseBtn.setAttribute('aria-pressed', 'false');
     }
+  }
+
+  const captionEl = document.getElementById('workspaceVpCaption');
+  if (captionEl) {
+    captionEl.classList.toggle('narration-active', isPlaying);
   }
 
   const activeTrack = combinedTracks[combinedTrackIndex];
@@ -7874,8 +7999,8 @@ function clearSlidePlaybackVisibility() {
 
   containers.forEach(container => {
     container.classList.remove('playback-active');
-    container.querySelectorAll('.section-hidden, .vis-target-hidden, .vis-target-dimmed').forEach(el => {
-      el.classList.remove('section-hidden', 'vis-target-hidden', 'vis-target-dimmed');
+    container.querySelectorAll('.section-hidden, .vis-target-hidden, .vis-target-dimmed, .narration-spotlight-active').forEach(el => {
+      el.classList.remove('section-hidden', 'vis-target-hidden', 'vis-target-dimmed', 'narration-spotlight-active');
       // Also clear any legacy inline styles from previous runs
       el.style.display = '';
       el.style.opacity = '';
@@ -7907,7 +8032,7 @@ function getVisibilityBlock(targetElement, sectionBoundary) {
 }
 
 // P2 #15: Class-based updateSlidePlaybackVisibility
-function updateSlidePlaybackVisibility(targetSelector) {
+function updateSlidePlaybackVisibility(targetSelector, isSeek = false) {
   const containers = [
     document.getElementById('slideBodyText'),
     document.getElementById('presentSlideContent')
@@ -7920,6 +8045,11 @@ function updateSlidePlaybackVisibility(targetSelector) {
     }
 
     container.classList.add('playback-active');
+
+    // Clear previous spotlight & entry animation classes
+    container.querySelectorAll('.narration-spotlight-active, .stunning-section-entry').forEach(el => {
+      el.classList.remove('narration-spotlight-active', 'stunning-section-entry');
+    });
 
     // Find the target element inside this container
     const targetEl = container.querySelector(targetSelector);
@@ -7938,10 +8068,31 @@ function updateSlidePlaybackVisibility(targetSelector) {
       return;
     }
 
-    // Hide all other .slide-section wrappers using class, show only the active one
+    // Handle Entry Animation vs Instant Display on Seeking
+    if (isSeek) {
+      activeSection.classList.add('instant-display');
+      activeSection.classList.remove('stunning-section-entry');
+    } else {
+      activeSection.classList.remove('instant-display');
+      activeSection.classList.add('stunning-section-entry');
+    }
+
+    // Identify active block containing targetEl
+    let activeBlock = getVisibilityBlock(targetEl, activeSection) || targetEl;
+    if (activeBlock.classList && activeBlock.classList.contains('audio-play-btn')) {
+      activeBlock = activeBlock.closest('.heading-with-audio, .heading-box-wrap, .warn-box, .info-box, .tip-box, .callout-box, .note-box, .warning-box, h3, h4, [id]') || activeBlock;
+    }
+
+    // Highlight active spoken block
+    if (activeBlock) {
+      activeBlock.classList.add('narration-spotlight-active');
+    }
+
+    // Hide all non-active slide-section wrappers
     container.querySelectorAll('.slide-section').forEach(section => {
       if (section !== activeSection) {
         section.classList.add('section-hidden');
+        section.classList.remove('stunning-section-entry');
       } else {
         section.classList.remove('section-hidden');
       }
@@ -7951,26 +8102,40 @@ function updateSlidePlaybackVisibility(targetSelector) {
     const h2 = container.querySelector('h2');
     if (h2) h2.classList.remove('section-hidden', 'vis-target-hidden');
 
-    // ── Chronological sub-target filtering ──
-    const processedTargets = new Set();
-    combinedTracks.forEach((track, idx) => {
-      if (!track.target || (!track.target.startsWith('#') && !track.target.startsWith('.'))) return;
-      if (processedTargets.has(track.target)) return;
-      processedTargets.add(track.target);
+    // ── Build active track content set (activeBlock + its immediate paragraph, table, code block) ──
+    const activeTrackElements = new Set();
+    activeTrackElements.add(activeBlock);
+    activeBlock.querySelectorAll('*').forEach(c => activeTrackElements.add(c));
 
-      const el = activeSection.querySelector(track.target);
-      if (!el) return;
+    let sibling = activeBlock.nextElementSibling;
+    while (sibling) {
+      // Stop if sibling is another heading, audio block, or warn/info box belonging to a different track
+      if (sibling.classList.contains('heading-with-audio') ||
+          sibling.classList.contains('heading-box-wrap') ||
+          sibling.classList.contains('warn-box') ||
+          sibling.classList.contains('info-box') ||
+          sibling.classList.contains('tip-box') ||
+          sibling.classList.contains('callout-box') ||
+          sibling.classList.contains('note-box') ||
+          sibling.classList.contains('warning-box') ||
+          sibling.tagName === 'H3' ||
+          sibling.tagName === 'H4' ||
+          sibling.querySelector('.audio-play-btn')) {
+        break;
+      }
+      activeTrackElements.add(sibling);
+      sibling.querySelectorAll('*').forEach(c => activeTrackElements.add(c));
+      sibling = sibling.nextElementSibling;
+    }
 
-      if (idx > combinedTrackIndex) {
-        // Walk up to find the logical block
-        const blockToHide = getVisibilityBlock(el, activeSection);
-        blockToHide.classList.add('vis-target-hidden');
-
-        // Also hide preceding <hr> dividers
-        const prev = blockToHide.previousElementSibling;
-        if (prev && prev.tagName === 'HR') {
-          prev.classList.add('vis-target-hidden');
-        }
+    // ── Strict Topic Isolation: Hide ALL preceding and following blocks in activeSection ──
+    const allChildBlocks = activeSection.querySelectorAll('.heading-with-audio, .heading-box-wrap, h3, h4, p, .warn-box, .info-box, .tip-box, .callout-box, .note-box, .warning-box, .db-mock-table-wrap, table, pre, code, ul, ol, .sql-example, .vs-block, .vs-card, .prec-card, .prec-note, .section-block, [id]');
+    allChildBlocks.forEach(blk => {
+      if (activeTrackElements.has(blk)) {
+        blk.classList.remove('vis-target-hidden');
+        blk.style.display = '';
+      } else {
+        blk.classList.add('vis-target-hidden');
       }
     });
 

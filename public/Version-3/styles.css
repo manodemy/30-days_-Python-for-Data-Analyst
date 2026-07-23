@@ -1020,23 +1020,23 @@ a { color: var(--cyan); text-decoration: none; }
 }
 
 .slide-header {
-  padding: 20px 20px 0 20px;
-  flex: 0 0 auto;
-  background: #fafaf8;
-  z-index: 10;
+  padding: 0 !important;
+  margin: 0 !important;
+  flex: 0 0 auto !important;
+  background: transparent !important;
+  z-index: 10 !important;
 }
 .slide-header h2 {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #12122a !important;
-  margin-bottom: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-bottom: 2px solid #e8e6e1;
-  padding-bottom: 6px;
-  margin-top: 0;
-  letter-spacing: -0.01em;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  border-bottom: none !important;
+  padding: 0 !important;
+  letter-spacing: -0.01em !important;
 }
 
 /* Slide Content */
@@ -6282,46 +6282,82 @@ span.sql-identifier {
   color: var(--cyan);
   background: var(--cyan-dim);
 }
-.chapter-list {
-  max-height: 160px;
-  overflow-y: auto;
-  margin: 0 8px 4px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.1) transparent;
+/* Floating Dropdown Popover (Positioned under [ What is RDBMS? > ] button, does NOT cover left theory content!) */
+.chapter-list-popover, .chapter-list {
+  position: absolute !important;
+  top: 42px !important;
+  right: 12px !important;
+  left: auto !important;
+  width: 330px !important;
+  max-width: calc(100% - 24px) !important;
+  max-height: 260px !important;
+  z-index: 1000 !important;
+  background: #111424 !important; /* Deep dark indigo matching reference image */
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(124, 58, 237, 0.2) !important;
+  overflow-y: auto !important;
+  padding: 6px !important;
+  backdrop-filter: blur(20px) !important;
+  margin: 0 !important;
 }
+
 .chapter-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  font-size: 0.7rem;
-  font-family: var(--font);
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-  border-bottom: 1px solid var(--border);
-  user-select: none;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  color: #94a3b8 !important;
+  font-family: Inter, -apple-system, sans-serif !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
-.chapter-item:last-child { border-bottom: none; }
-.chapter-item:hover { background: var(--surface-hover); color: var(--text); }
+
+.chapter-item:last-child {
+  border-bottom: none !important;
+}
+
+.chapter-item:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #f8fafc !important;
+}
+
 .chapter-item.active {
-  background: rgba(124,58,237,0.15);
-  color: #a78bfa;
-  font-weight: 600;
+  background: #1e1b4b !important;
+  color: #a78bfa !important;
+  font-weight: 700 !important;
 }
+
+.chapter-item__title {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
 .chapter-item__time {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  color: var(--text-dim);
-  min-width: 34px;
-  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.75rem !important;
+  color: #64748b !important;
+  min-width: 34px !important;
+  flex-shrink: 0 !important;
 }
+
+.chapter-item.active .chapter-item__time {
+  color: #818cf8 !important;
+  font-weight: 700 !important;
+}
+
 .chapter-item__icon {
-  font-size: 0.75rem;
-  flex-shrink: 0;
+  font-size: 0.8rem !important;
+  color: #818cf8 !important;
+  flex-shrink: 0 !important;
 }
 
 /* ─── P1 #8: Captions button ─────────────────────────────────────── */
@@ -6438,3 +6474,521 @@ select:focus:not(:focus-visible) {
 }
 .seek-bar:focus { outline: none; }
 
+/* ═══════════════════════════════════════════════════════════════
+   IMAGE 1 YOUTUBE / COURSERA STYLE VIDEO TIMELINE CONTROL BAR
+   ═══════════════════════════════════════════════════════════════ */
+.playback-bar {
+  background: #000000 !important; /* Pitch black video player bar matching Image 1 */
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 0 16px 8px 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  z-index: 100 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* TOP FULL-WIDTH PROGRESS BAR */
+.playback-timeline-row {
+  position: relative !important;
+  width: 100% !important;
+  height: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  cursor: pointer !important;
+  margin-top: -6px !important;
+}
+
+/* Range Input Seek Bar */
+.seek-bar {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  width: 100% !important;
+  height: 4px !important;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 2px !important;
+  outline: none !important;
+  cursor: pointer !important;
+  transition: height 0.15s ease !important;
+  margin: 0 !important;
+}
+
+.playback-timeline-row:hover .seek-bar {
+  height: 6px !important;
+}
+
+/* Scrubber Dot (Thumb) matching Image 1 vivid red handle */
+.seek-bar::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  width: 13px !important;
+  height: 13px !important;
+  border-radius: 50% !important;
+  background: #ff0000 !important; /* Vivid red dot handle */
+  box-shadow: 0 0 6px rgba(255, 0, 0, 0.8) !important;
+  cursor: pointer !important;
+  transition: transform 0.15s ease !important;
+}
+
+.seek-bar::-moz-range-thumb {
+  width: 13px !important;
+  height: 13px !important;
+  border-radius: 50% !important;
+  background: #ff0000 !important;
+  border: none !important;
+  box-shadow: 0 0 6px rgba(255, 0, 0, 0.8) !important;
+  cursor: pointer !important;
+}
+
+.playback-timeline-row:hover .seek-bar::-webkit-slider-thumb {
+  transform: scale(1.25) !important;
+}
+
+/* BOTTOM CONTROLS ROW */
+.playback-controls-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  height: 32px !important;
+  gap: 12px !important;
+  flex-wrap: nowrap !important;
+}
+
+.playback-left-controls {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+.playback-center-controls {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1 !important;
+}
+
+.playback-right-controls {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* Icon Buttons (Play, Skip, Volume, Fullscreen) matching Image 1 minimal transparent icons */
+.play-btn-icon, .skip-btn-icon, .volume-btn-icon, .expand-btn-icon, .center-chevron-btn {
+  background: transparent !important;
+  border: none !important;
+  color: #ffffff !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: opacity 0.15s ease, transform 0.15s ease !important;
+  opacity: 0.85;
+}
+
+.play-btn-icon:hover, .skip-btn-icon:hover, .volume-btn-icon:hover, .expand-btn-icon:hover, .center-chevron-btn:hover {
+  opacity: 1 !important;
+  transform: scale(1.1) !important;
+}
+
+/* Vivid Red Pill Play/Pause Button matching Images 2 & 3 */
+.play-btn-red-pill {
+  background: linear-gradient(135deg, #ff4d4d 0%, #ef4444 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  height: 34px !important;
+  padding: 0 16px !important;
+  border-radius: 9px !important;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  cursor: pointer !important;
+  box-shadow: 0 3px 12px rgba(239, 68, 68, 0.45) !important;
+  transition: all 0.15s ease !important;
+  white-space: nowrap !important;
+  letter-spacing: -0.01em !important;
+}
+
+.play-btn-red-pill:hover {
+  background: linear-gradient(135deg, #ff5c5c 0%, #dc2626 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 5px 16px rgba(239, 68, 68, 0.6) !important;
+}
+
+.play-btn-red-pill:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4) !important;
+}
+
+.play-btn-red-pill .btn-icon {
+  font-size: 0.8rem !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+}
+
+.play-btn-red-pill .btn-text {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* Time readout (1:06 / 4:07) */
+.playback-time {
+  font-family: 'JetBrains Mono', var(--mono), sans-serif !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Active Chapter Pill ("In this lesson >") */
+.chapter-pill-btn {
+  background: transparent !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  cursor: pointer !important;
+  opacity: 0.9;
+  transition: opacity 0.15s ease !important;
+  padding: 0 4px !important;
+}
+
+.chapter-pill-btn:hover {
+  opacity: 1 !important;
+  text-decoration: underline;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SLIDE HEADER TOP FLEX BAR WITH TOPIC PILL ("In this lesson >")
+   ═══════════════════════════════════════════════════════════════ */
+.slide-header-content {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  width: 100% !important;
+  padding: 8px 14px !important;
+  background: #374151 !important; /* Sleek dark Slate Gray matching user image */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+}
+
+.slide-header-content h2 {
+  margin: 0 !important;
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  letter-spacing: -0.01em !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
+
+.slide-header-content .chapter-pill-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 16px !important;
+  padding: 3px 10px !important;
+  color: #ffffff !important;
+  font-family: Inter, -apple-system, sans-serif !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+.slide-header-content .chapter-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Speed Control Button Pill (Image 2 feature replacing CC button) */
+.speed-control-btn-pill {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  color: #94a3b8 !important;
+  height: 28px !important;
+  padding: 0 10px !important;
+  border-radius: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  font-family: 'JetBrains Mono', var(--mono), monospace !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+}
+
+.speed-control-btn-pill:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.speed-control-btn-pill span {
+  color: #e2e8f0 !important;
+  font-weight: 600 !important;
+}
+
+/* Captions Badge Button [CC] matching Image 1 */
+.captions-badge-btn {
+  background: transparent !important;
+  border: 1.5px solid #ffffff !important;
+  color: #ffffff !important;
+  font-size: 0.65rem !important;
+  font-weight: 800 !important;
+  font-family: Inter, sans-serif !important;
+  padding: 1px 4px !important;
+  border-radius: 3px !important;
+  cursor: pointer !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1.2 !important;
+  opacity: 0.85;
+  transition: all 0.15s ease !important;
+}
+
+.captions-badge-btn:hover, .captions-badge-btn.active {
+  opacity: 1 !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* Settings Gear Button */
+.settings-gear-btn {
+  background: transparent !important;
+  border: none !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  cursor: pointer !important;
+  opacity: 0.85;
+  transition: opacity 0.15s ease, transform 0.15s ease !important;
+}
+
+.settings-gear-btn:hover {
+  opacity: 1 !important;
+  transform: rotate(30deg) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROFESSIONAL NARRATION PRESENTATION ANIMATION SUITE
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 1. Animated Equalizer Sound Wave Indicator in Play Button */
+.audio-wave-equalizer {
+  display: inline-flex !important;
+  align-items: flex-end !important;
+  gap: 2px !important;
+  height: 12px !important;
+  margin-right: 4px !important;
+}
+
+.audio-wave-equalizer span {
+  display: block !important;
+  width: 2.5px !important;
+  background: #ffffff !important;
+  border-radius: 2px !important;
+  animation: soundWavePulse 0.8s ease-in-out infinite alternate !important;
+}
+
+.audio-wave-equalizer span:nth-child(1) { height: 40%; animation-delay: 0s !important; }
+.audio-wave-equalizer span:nth-child(2) { height: 100%; animation-delay: 0.2s !important; }
+.audio-wave-equalizer span:nth-child(3) { height: 60%; animation-delay: 0.4s !important; }
+
+@keyframes soundWavePulse {
+  0% { height: 25%; opacity: 0.7; }
+  100% { height: 100%; opacity: 1; }
+}
+
+/* 2. Active Narration Spotlight & Glowing Laser Accent */
+.playback-active .slide-section {
+  transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease !important;
+}
+
+.playback-active .slide-section.section-hidden {
+  opacity: 0.35 !important;
+  filter: blur(0.5px) grayscale(25%) !important;
+}
+
+.narration-spotlight-active {
+  position: relative !important;
+  border-left: 4px solid #818cf8 !important;
+  padding-left: 12px !important;
+  border-radius: 0 8px 8px 0 !important;
+  background: linear-gradient(90deg, rgba(124, 58, 237, 0.12) 0%, rgba(124, 58, 237, 0.02) 100%) !important;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.16), inset 0 0 0 1px rgba(167, 139, 250, 0.25) !important;
+  transform: translateX(3px) scale(1.005) !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* 3. Narration Caption Active Voice Glow */
+.vp-caption.narration-active {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 27, 75, 0.95)) !important;
+  border-top: 1px solid rgba(167, 139, 250, 0.35) !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4) !important;
+  color: #c4b5fd !important;
+}
+
+/* 4. Stunning Section Entry Animation (Fires only on new topic entry!) */
+.stunning-section-entry {
+  animation: stunningSectionPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  will-change: opacity, transform !important;
+}
+
+@keyframes stunningSectionPop {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    filter: blur(3px);
+  }
+  60% {
+    opacity: 0.95;
+    transform: translateY(-2px) scale(1.005);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* Instant Display (Fires when user scrubs/seeks mid-topic for zero lag!) */
+.instant-display {
+  animation: none !important;
+  transition: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* Chronological Visibility Filtering Rules for Narration Playback */
+.vis-target-hidden,
+.section-hidden {
+  display: none !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE PLAYBAR & SLIDE HEADER OPTIMIZATIONS
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Tight Slide Header on Mobile */
+  .slide-header {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .slide-header-content {
+    padding: 6px 10px !important;
+    gap: 8px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .slide-header-content h2 {
+    font-size: 0.82rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 60% !important;
+  }
+
+  .slide-header-content .chapter-pill-btn {
+    padding: 2px 8px !important;
+    font-size: 0.7rem !important;
+    max-width: 40% !important;
+  }
+
+  .slide-header-content .chapter-pill-btn span {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Compact Playback Bar on Mobile */
+  .playback-bar {
+    padding: 0 10px 6px 10px !important;
+    gap: 4px !important;
+  }
+
+  .playback-controls-row {
+    height: 28px !important;
+    gap: 6px !important;
+  }
+
+  .playback-left-controls {
+    gap: 6px !important;
+  }
+
+  .play-btn-red-pill {
+    height: 28px !important;
+    padding: 0 10px !important;
+    font-size: 0.75rem !important;
+    border-radius: 7px !important;
+    gap: 4px !important;
+  }
+
+  .play-btn-red-pill .btn-text {
+    font-size: 0.75rem !important;
+  }
+
+  .skip-btn-icon {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .skip-btn-icon svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .playback-time {
+    font-size: 0.72rem !important;
+  }
+
+  .playback-right-controls {
+    gap: 6px !important;
+  }
+
+  .speed-control-btn-pill {
+    height: 24px !important;
+    padding: 0 6px !important;
+    font-size: 0.7rem !important;
+  }
+}

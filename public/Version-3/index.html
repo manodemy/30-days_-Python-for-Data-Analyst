@@ -185,7 +185,23 @@
         <!-- Slide Viewer -->
         <div class="slide-viewer" id="slideViewer">
           <div class="slide-card" style="position: relative;">
-            <div class="slide-header" id="slideHeader"></div>
+            <div class="slide-header" id="slideHeader">
+              <div class="slide-header-content">
+                <h2>📊 01. Relational Databases & SQL</h2>
+                <button class="chapter-pill-btn" id="chapterPillBtn" onclick="toggleChapterList(event)" title="Jump to Chapter">
+                  <span id="activeChapterTitle">In this lesson</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Chapter / Topic List Dropdown Popover (Positioned below topic pill covering theory panel) -->
+            <div class="chapter-list-popover" id="chapterList" aria-label="Topic List" role="listbox" style="display:none;">
+              <!-- Populated by buildChapterList() -->
+            </div>
+
             <div class="slide-content" id="slideContent" style="position: relative; overflow-y: auto; min-height: 0;">
               <!-- Canvas Overlay inside scrollable container -->
               <canvas class="draw-canvas" id="workspaceDrawCanvas" style="position: absolute; top: 0; left: 0; z-index: 10;"></canvas>
@@ -216,77 +232,78 @@
           </div>
         </div>
 
-        <!-- Playback Controls -->
+        <!-- Playback Controls (Market Standard Scrimba Video Player Layout) -->
         <div class="playback-bar" id="playbackBar">
-          <div class="playback-row">
-            <div class="playback-controls-row">
-              <div class="playback-left-controls">
-                <!-- P1 #6: Skip back 10s -->
-                <button class="skip-btn skip-btn--back" id="skipBackBtn"
-                  onclick="skipCombined(-10)" title="Skip back 10 seconds"
-                  aria-label="Skip back 10 seconds">⏪</button>
+          <!-- TOP ROW: 100% Full-Width Progress Slider -->
+          <div class="playback-timeline-row" id="playbackTimelineRow">
+            <div class="timeline-hover-tooltip" id="timelineHoverTooltip">0:00</div>
+            <input type="range" class="seek-bar" id="seekBar" min="0" max="100" value="0" step="0.1"
+              onchange="seekCombinedPlayback(this.value)"
+              aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          </div>
 
-                <button class="play-btn" id="playPauseBtn" onclick="toggleCombinedPlayback()"
-                  aria-label="Play/Pause" aria-pressed="false">▶</button>
+          <!-- BOTTOM ROW: Controls Bar -->
+          <div class="playback-controls-row">
+            <!-- Left Group: Skip Back, Play Lesson (Red Pill), Skip Forward, Volume -->
+            <div class="playback-left-controls">
+              <!-- Skip Back 10s (<<) -->
+              <button class="skip-btn-icon" id="skipBackBtn"
+                onclick="skipCombined(-10)" title="Skip back 10 seconds" aria-label="Skip back 10 seconds">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/>
+                </svg>
+              </button>
 
-                <!-- P1 #6: Skip forward 10s -->
-                <button class="skip-btn skip-btn--fwd" id="skipFwdBtn"
-                  onclick="skipCombined(10)" title="Skip forward 10 seconds"
-                  aria-label="Skip forward 10 seconds">⏩</button>
-                <div class="playback-bar-controls">
-                  <!-- Volume Control Wrapper -->
-                  <div class="volume-control-wrapper">
-                    <button class="volume-btn" id="volumeBtn" onclick="toggleVolumePopover(event)" title="Adjust Volume">
-                      <svg class="volume-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                      </svg>
-                    </button>
-                    <div class="volume-popover" id="volumePopover">
-                      <input type="range" id="volumeSlider" min="0" max="100" value="100" step="1" oninput="setPlaybackVolume(this.value)">
-                      <span class="volume-value" id="volumeValue">100%</span>
-                    </div>
-                  </div>
+              <!-- Play / Pause Button (Vivid Red Pill matching Image 2 & 3) -->
+              <button class="play-btn-red-pill" id="playPauseBtn" onclick="toggleCombinedPlayback()"
+                title="Play/Pause Lesson" aria-label="Play/Pause" aria-pressed="false">
+                <span class="btn-icon" aria-hidden="true">▶</span>
+                <span class="btn-text">Play Lesson</span>
+              </button>
 
-                  <!-- Speed Control Wrapper -->
-                  <div class="speed-control-wrapper">
-                    <button class="speed-control-btn" id="speedControlBtn" onclick="toggleSpeedPopover(event)" title="Playback Speed">
-                      <svg class="speed-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 15.2a10 10 0 0 0 17.3 3.58 10 10 0 0 0-.27-10.21zM10.85 15.75a1.2 1.2 0 1 0 1.2-1.2 1.2 1.2 0 0 0-1.2 1.2zM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1z"/>
-                      </svg>
-                      <span id="speedValueLabel">1.0x</span>
-                    </button>
-                    <div class="speed-popover" id="speedPopover">
-                      <div class="speed-option active" onclick="selectSpeedOption(1, '1.0x')">1.0x</div>
-                      <div class="speed-option" onclick="selectSpeedOption(1.25, '1.25x')">1.25x</div>
-                      <div class="speed-option" onclick="selectSpeedOption(1.5, '1.5x')">1.5x</div>
-                      <div class="speed-option" onclick="selectSpeedOption(1.75, '1.75x')">1.75x</div>
-                      <div class="speed-option" onclick="selectSpeedOption(2, '2.0x')">2.0x</div>
-                    </div>
-                  </div>
+              <!-- Skip Forward 10s (>>) -->
+              <button class="skip-btn-icon" id="skipFwdBtn"
+                onclick="skipCombined(10)" title="Skip forward 10 seconds" aria-label="Skip forward 10 seconds">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 6v12l8.5-6L13 6zm-1 6L3.5 6v12l8.5-6z"/>
+                </svg>
+              </button>
+
+              <!-- Volume Control Wrapper -->
+              <div class="volume-control-wrapper">
+                <button class="volume-btn-icon" id="volumeBtn" onclick="toggleVolumePopover(event)" title="Adjust Volume">
+                  <svg class="volume-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                  </svg>
+                </button>
+                <div class="volume-popover" id="volumePopover">
+                  <input type="range" id="volumeSlider" min="0" max="100" value="100" step="1" oninput="setPlaybackVolume(this.value)">
+                  <span class="volume-value" id="volumeValue">100%</span>
                 </div>
               </div>
-              <div class="playback-right-controls">
-                <!-- P1 #8: Captions toggle -->
-                <button class="captions-btn" id="captionsBtn" onclick="toggleCaptions()"
-                  title="Toggle captions" aria-label="Toggle captions" aria-pressed="false">CC</button>
-
-                <!-- P1 #7: Chapter list toggle -->
-                <button class="chapters-btn" id="chaptersBtn" onclick="toggleChapterList()"
-                  title="Chapter list" aria-label="Show chapter list" aria-expanded="false">☰</button>
-
-                <span class="playback-time" id="playbackTime"
-                  aria-label="Playback time" aria-live="off">0:00 / 0:00</span>
-              </div>
-            <div class="playback-timeline-row" id="playbackTimelineRow">
-              <div class="timeline-hover-tooltip" id="timelineHoverTooltip">0:00</div>
-              <input type="range" class="seek-bar" id="seekBar" min="0" max="100" value="0" step="0.1"
-                onchange="seekCombinedPlayback(this.value)"
-                aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             </div>
 
-            <!-- P1 #7: Chapter list panel (hidden by default) -->
-            <div class="chapter-list" id="chapterList" aria-label="Chapter List" role="listbox" style="display:none;">
-              <!-- Populated by buildChapterList() -->
+            <!-- Right Group: Speed Control Button, then Time Readout at the END -->
+            <div class="playback-right-controls">
+              <!-- Speed Control Wrapper (Image 2 [ ⏱ 1.0x ]) -->
+              <div class="speed-control-wrapper">
+                <button class="speed-control-btn-pill" id="speedControlBtn" onclick="toggleSpeedPopover(event)" title="Playback Speed">
+                  <svg class="speed-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 15.2a10 10 0 0 0 17.3 3.58 10 10 0 0 0-.27-10.21zM10.85 15.75a1.2 1.2 0 1 0 1.2-1.2 1.2 1.2 0 0 0-1.2 1.2zM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1z"/>
+                  </svg>
+                  <span id="speedValueLabel">1.0x</span>
+                </button>
+                <div class="speed-popover" id="speedPopover">
+                  <div class="speed-option active" onclick="selectSpeedOption(1, '1.0x')">1.0x</div>
+                  <div class="speed-option" onclick="selectSpeedOption(1.25, '1.25x')">1.25x</div>
+                  <div class="speed-option" onclick="selectSpeedOption(1.5, '1.5x')">1.5x</div>
+                  <div class="speed-option" onclick="selectSpeedOption(1.75, '1.75x')">1.75x</div>
+                  <div class="speed-option" onclick="selectSpeedOption(2, '2.0x')">2.0x</div>
+                </div>
+              </div>
+
+              <!-- Time Readout placed at the END -->
+              <span class="playback-time" id="playbackTime" aria-label="Playback time" aria-live="off">0:00 / 0:00</span>
             </div>
           </div>
         </div>

@@ -8,14 +8,25 @@ window.COURSE_CONTENT['day04'] = {
   "slides": [
     {
       "title": "Operators & Expressions in SQL",
-      "duration": "0:00",
+      "duration": "6:15",
       "html": `
-        <h2>⚙️ Operators & Expressions</h2>
+        <h2>⚙️ Operators &amp; Expressions</h2>
 
         <div class="slide-section">
-          <h3>01. Arithmetic Operators</h3>
+          <h3 class="heading-with-audio" id="day04Arithmetic">
+            01. Arithmetic Operators
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio01.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
           <p>SQL supports standard arithmetic operators that can be used in <code>SELECT</code> expressions, <code>WHERE</code> conditions, and <code>ORDER BY</code> clauses. They operate on numeric data types.</p>
 
+          <div class="heading-with-audio" id="day04ArithmeticTable" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Arithmetic Operator Reference</small>
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio02.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
           <div class="db-mock-table-wrap">
             <table class="db-table-mock db-table-mock--compact">
               <thead><tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result (salary=80000)</th></tr></thead>
@@ -29,7 +40,13 @@ window.COURSE_CONTENT['day04'] = {
             </table>
           </div>
 
-          <pre><code>-- Compute monthly salary, annual bonus, and gross profit
+          <div class="heading-with-audio" id="day04ArithmeticExamples" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Arithmetic Operator Examples</small>
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio03.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <pre id="day04ArithmeticCode"><code>-- Compute monthly salary, annual bonus, and gross profit
 SELECT first_name,
        salary,
        salary / 12.0            AS monthly_salary,
@@ -42,15 +59,32 @@ SELECT name,
        unit_price - cost_price  AS gross_profit
 FROM   products;</code></pre>
 
-          <div class="warn-box">
-            ⚠️ <strong>Integer Division:</strong> In some SQL dialects, dividing two integers returns an integer (e.g. <code>7 / 2 = 3</code>, not <code>3.5</code>). Cast one operand to REAL or multiply by <code>1.0</code>: <code>salary * 1.0 / 12</code>. In SQLite, <code>/</code> between integers truncates — always include a decimal when you need precision.
+          <div class="warn-box" id="day04IntDivWarn">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #b91c1c;">⚠️ Integer Division:</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio04.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <p>In some SQL dialects, dividing two integers returns an integer (e.g. <code>7 / 2 = 3</code>, not <code>3.5</code>). Cast one operand to REAL or multiply by <code>1.0</code>: <code>salary * 1.0 / 12</code>. In SQLite, <code>/</code> between integers truncates — always include a decimal when you need precision.</p>
           </div>
         </div>
 
         <div class="slide-section">
-          <h3>02. Operator Precedence — Evaluation Order</h3>
+          <h3 class="heading-with-audio" id="day04Precedence">
+            02. Operator Precedence — Evaluation Order
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio05.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
           <p>SQL evaluates expressions following strict precedence rules. Higher-precedence operators bind tighter. When in doubt, use parentheses — they are always evaluated first and make intent explicit.</p>
 
+          <div class="heading-with-audio" id="day04PrecedenceTable" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Operator Precedence Table</small>
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio06.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
           <div class="db-mock-table-wrap">
             <table class="db-table-mock db-table-mock--compact">
               <thead><tr><th>Precedence</th><th>Operators</th><th>Description</th></tr></thead>
@@ -66,7 +100,13 @@ FROM   products;</code></pre>
             </table>
           </div>
 
-          <pre><code>-- Without parentheses: AND binds tighter than OR
+          <div class="heading-with-audio" id="day04PrecedenceExamples" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">AND / OR Precedence Examples</small>
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio07.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <pre id="day04PrecedenceCode"><code>-- Without parentheses: AND binds tighter than OR
 -- Reads as: dept=10 OR (dept=20 AND salary>60000)
 SELECT * FROM employees
 WHERE department_id = 10 OR department_id = 20 AND salary > 60000;
@@ -75,18 +115,34 @@ WHERE department_id = 10 OR department_id = 20 AND salary > 60000;
 SELECT * FROM employees
 WHERE (department_id = 10 OR department_id = 20) AND salary > 60000;</code></pre>
 
-          <div class="info-box">
-            ℹ️ <strong>Always parenthesise mixed <code>AND</code>/<code>OR</code>.</strong> Relying on implicit precedence is a common source of production bugs. Parentheses are free, they document intent, and they override precedence when you need it.
+          <div class="info-box" id="day04PrecedenceInfo">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #0f766e;">ℹ️ Always parenthesise mixed <code>AND</code>/<code>OR</code>.</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio08.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <p>Relying on implicit precedence is a common source of production bugs. Parentheses are free, they document intent, and they override precedence when you need it.</p>
           </div>
         </div>
 
         <div class="slide-section">
-          <h3>03. ALL and ANY — Subquery Comparison Modifiers</h3>
+          <h3 class="heading-with-audio" id="day04AllAny">
+            03. ALL and ANY — Subquery Comparison Modifiers
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio09.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
           <p><code>ALL</code> and <code>ANY</code> (also written <code>SOME</code>) compare a value against every / any row returned by a subquery. They are part of the SQL standard and appear frequently in interviews.</p>
 
-          <div class="vs-block">
-            <div class="vs-card">
-              <h4>&gt; ANY (…)</h4>
+          <div class="vs-block" id="day04AllAnyCards">
+            <div class="vs-card" id="day04AnyCard">
+              <h4 style="margin: 0 0 6px; display: flex; align-items: center; gap: 8px;">
+                <span>&gt; ANY (…)</span>
+                <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio10.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </h4>
               <p>TRUE if the value is greater than <em>at least one</em> value in the list — i.e. greater than the <strong>minimum</strong>.</p>
               <pre><code>-- Earn more than at least one
 -- Marketing employee
@@ -98,8 +154,13 @@ WHERE salary > ANY (
 );
 -- Equivalent: > (SELECT MIN(salary) ...)</code></pre>
             </div>
-            <div class="vs-card">
-              <h4>&gt; ALL (…)</h4>
+            <div class="vs-card" id="day04AllCard">
+              <h4 style="margin: 0 0 6px; display: flex; align-items: center; gap: 8px;">
+                <span>&gt; ALL (…)</span>
+                <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio11.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                  <svg class="play-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </h4>
               <p>TRUE if the value is greater than <em>every</em> value in the list — i.e. greater than the <strong>maximum</strong>.</p>
               <pre><code>-- Earn more than every
 -- Sales employee
@@ -113,42 +174,82 @@ WHERE salary > ALL (
             </div>
           </div>
 
-          <div class="warn-box">
-            ⚠️ <strong>Engine support:</strong> <code>ALL</code>/<code>ANY</code> are standard SQL but <strong>not implemented in SQLite</strong> (the engine used in this playground). For runnable queries here, rewrite using <code>&gt; (SELECT MIN(...))</code> for <code>ANY</code> and <code>&gt; (SELECT MAX(...))</code> for <code>ALL</code>. MySQL and PostgreSQL support them natively.
+          <div class="warn-box" id="day04AllAnyWarn">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #b91c1c;">⚠️ Engine support:</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio12.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <p><code>ALL</code>/<code>ANY</code> are standard SQL but <strong>not implemented in SQLite</strong> (the engine used in this playground). For runnable queries here, rewrite using <code>&gt; (SELECT MIN(...))</code> for <code>ANY</code> and <code>&gt; (SELECT MAX(...))</code> for <code>ALL</code>. MySQL and PostgreSQL support them natively.</p>
           </div>
 
-          <div class="pro-tip-box">
-            💡 <strong>Equivalences to memorise:</strong> <code>= ANY (...)</code> ≡ <code>IN (...)</code>; <code>&lt;&gt; ALL (...)</code> ≡ <code>NOT IN (...)</code>; <code>&gt; ALL (...)</code> ≡ <code>&gt; (SELECT MAX(...))</code>; <code>&gt; ANY (...)</code> ≡ <code>&gt; (SELECT MIN(...))</code>.
+          <div class="pro-tip-box" id="day04AllAnyTip">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #b45309;">💡 Equivalences to memorise:</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio13.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <p><code>= ANY (...)</code> ≡ <code>IN (...)</code>; <code>&lt;&gt; ALL (...)</code> ≡ <code>NOT IN (...)</code>; <code>&gt; ALL (...)</code> ≡ <code>&gt; (SELECT MAX(...))</code>; <code>&gt; ANY (...)</code> ≡ <code>&gt; (SELECT MIN(...))</code>.</p>
           </div>
         </div>
 
         <div class="slide-section">
-          <h3>04. ESCAPE in LIKE — Searching for Literal Wildcards</h3>
+          <h3 class="heading-with-audio" id="day04Escape">
+            04. ESCAPE in LIKE — Searching for Literal Wildcards
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio14.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
           <p>If your data contains the literal characters <code>%</code> or <code>_</code>, you must <strong>escape</strong> them in a <code>LIKE</code> pattern. The <code>ESCAPE</code> clause declares which character to treat as the escape character.</p>
 
-          <pre><code>-- Find products whose name contains a literal '%' character.
+          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">ESCAPE Examples — Literal Wildcards in Patterns</small>
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio15.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <pre id="day04EscapeCode"><code>-- Find products whose name contains a literal '%' character.
 -- Here '!' is the escape char; '!!' = literal '!', '!%' = literal '%'.
 SELECT name FROM products
 WHERE name LIKE '%50!%%' ESCAPE '!';
 
 -- Find emails containing a literal '_' underscore
 SELECT first_name, email FROM employees
-WHERE email LIKE '%!_%' ESCAPE '!';</code></pre>
+WHERE email LIKE '%!_%' ESCAPE '!';
 
-          <pre><code>-- Practical: rows in raw_customers whose name starts with a space
+-- Practical: rows in raw_customers whose name starts with a space
 SELECT name FROM raw_customers
 WHERE name LIKE ' %';</code></pre>
 
-          <div class="info-box">
-            ℹ️ <strong>Which escape char?</strong> There is no fixed default in standard SQL — always specify <code>ESCAPE '!'</code> (or another chosen char) explicitly. Common choices are <code>\\</code>, <code>!</code>, or <code>#</code>. Once declared, that character escapes itself: <code>!!</code> matches a literal <code>!</code>.
+          <div class="info-box" id="day04EscapeInfo">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #0f766e;">ℹ️ Which escape char?</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio16.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <p>There is no fixed default in standard SQL — always specify <code>ESCAPE '!'</code> (or another chosen char) explicitly. Common choices are <code>\\</code>, <code>!</code>, or <code>#</code>. Once declared, that character escapes itself: <code>!!</code> matches a literal <code>!</code>.</p>
           </div>
         </div>
 
         <div class="slide-section">
-          <h3>05. Handling NULLs in Expressions and Conditions</h3>
+          <h3 class="heading-with-audio" id="day04NullHandling">
+            05. Handling NULLs in Expressions and Conditions
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio17.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
           <p>NULL propagates through arithmetic and produces UNKNOWN in comparisons. Any arithmetic with NULL yields NULL; any comparison with NULL yields UNKNOWN, which <code>WHERE</code> treats the same as FALSE (the row is filtered out). Use <code>COALESCE</code> to substitute a default.</p>
 
-          <pre><code>-- NULL propagation in arithmetic
+          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">NULL Propagation — Safe vs Unsafe Patterns</small>
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio18.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <pre id="day04NullCode"><code>-- NULL propagation in arithmetic
 SELECT first_name,
        commission,
        salary + commission                  AS total_comp,    -- NULL when commission is NULL
@@ -163,16 +264,33 @@ SELECT * FROM employees
 WHERE  commission > 5000
    OR  commission IS NULL;       -- Explicitly include NULLs</code></pre>
 
-          <div class="info-box">
-            ℹ️ <strong>NULL ≠ 0.</strong> NULL means "unknown", not "zero". <code>salary + NULL</code> is NULL (not salary). <code>NULL = NULL</code> is UNKNOWN (not TRUE) — use <code>IS NULL</code> / <code>IS NOT NULL</code> to test for NULL.
+          <div class="info-box" id="day04NullInfo">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #0f766e;">ℹ️ NULL ≠ 0.</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio19.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <p>NULL means "unknown", not "zero". <code>salary + NULL</code> is NULL (not salary). <code>NULL = NULL</code> is UNKNOWN (not TRUE) — use <code>IS NULL</code> / <code>IS NOT NULL</code> to test for NULL.</p>
           </div>
         </div>
 
         <div class="slide-section">
-          <h3>06. Three-Valued Logic (TRUE / FALSE / UNKNOWN)</h3>
+          <h3 class="heading-with-audio" id="day04ThreeVal">
+            06. Three-Valued Logic (TRUE / FALSE / UNKNOWN)
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio20.mp3', this)" title="Play narration">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </h3>
           <p>SQL uses three-valued logic. Every condition evaluates to TRUE, FALSE, or UNKNOWN. <code>WHERE</code> keeps rows only when the predicate is TRUE; both FALSE and UNKNOWN rows are discarded. This is why <code>NOT IN</code> with a NULL in the list returns no rows.</p>
 
-          <div class="db-mock-table-wrap">
+          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">Three-Valued Logic Truth Table</small>
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio21.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <div class="db-mock-table-wrap" id="day04ThreeValTable">
             <table class="db-table-mock db-table-mock--compact">
               <thead><tr><th>Expression</th><th>Result</th><th>Why</th></tr></thead>
               <tbody>
@@ -186,17 +304,30 @@ WHERE  commission > 5000
             </table>
           </div>
 
-          <pre><code>-- The NOT IN + NULL trap
+          <div class="heading-with-audio" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; margin-top: 14px;">
+            <small style="flex: 1; color: #64748b; font-size: 0.75rem;">The NOT IN + NULL Trap</small>
+            <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio22.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+              <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <pre id="day04NotInTrapCode"><code>-- The NOT IN + NULL trap
 SELECT first_name FROM employees
 WHERE salary NOT IN (SELECT commission FROM employees);
 -- If the subquery returns ANY NULL, the whole result is EMPTY,
 -- because salary != UNKNOWN for every row. Safer:</code></pre>
 
-          <div class="warn-box">
-            ⚠️ <strong>The <code>NOT IN</code> NULL trap:</strong> If the right-hand list contains a NULL, <code>x NOT IN (...)</code> evaluates to UNKNOWN for every row, returning <strong>zero rows</strong>. Always filter NULLs out of the subquery, or use <code>NOT EXISTS</code> instead.
+          <div class="warn-box" id="day04NotInTrapWarn">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; width: 100%;">
+              <strong style="color: #b91c1c;">⚠️ The <code>NOT IN</code> NULL trap:</strong>
+              <button class="audio-play-btn" onclick="playAudio('Day04/New_Day4Part1audio23.mp3', this)" title="Play narration" style="flex-shrink: 0;">
+                <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <p>If the right-hand list contains a NULL, <code>x NOT IN (...)</code> evaluates to UNKNOWN for every row, returning <strong>zero rows</strong>. Always filter NULLs out of the subquery, or use <code>NOT EXISTS</code> instead.</p>
           </div>
         </div>
 
+        <!-- ── Interview Q&A ── -->
         <div class="slide-section">
           <div class="interview-box">
             <h4 style="margin: 0; margin-bottom: 12px;">🎯 Interview Q&amp;A — Operators &amp; Expressions</h4>
@@ -284,62 +415,86 @@ WHERE salary NOT IN (SELECT commission FROM employees);
     {
       "id": 1,
       "prompt": "<strong>Task: Monthly Pay</strong><br/>Retrieve <code>first_name</code>, <code>salary</code>, and a computed <code>monthly_salary</code> column (salary divided by 12) for all employees.",
-      "referenceSql": "SELECT first_name, salary, salary / 12.0 AS monthly_salary FROM employees;"
+      "referenceSql": "SELECT first_name, salary, salary / 12.0 AS monthly_salary FROM employees;",
+      "questionAudio": "Day04/New_Day4Question01.mp3",
+      "solutionAudio": "Day04/New_Day4Question01sol.mp3"
     },
     {
       "id": 2,
       "prompt": "<strong>Task: Gross Profit</strong><br/>Retrieve <code>name</code>, <code>unit_price</code>, <code>cost_price</code>, and the gross profit (<code>unit_price - cost_price</code>) from <code>products</code>. Sort by gross profit descending.",
-      "referenceSql": "SELECT name, unit_price, cost_price, unit_price - cost_price AS gross_profit FROM products ORDER BY gross_profit DESC;"
+      "referenceSql": "SELECT name, unit_price, cost_price, unit_price - cost_price AS gross_profit FROM products ORDER BY gross_profit DESC;",
+      "questionAudio": "Day04/New_Day4Question02.mp3",
+      "solutionAudio": "Day04/New_Day4Question02sol.mp3"
     },
     {
       "id": 3,
       "prompt": "<strong>Task: Total Compensation with COALESCE</strong><br/>Retrieve <code>first_name</code>, <code>salary</code>, <code>commission</code>, and a <code>total_comp</code> column that adds salary and commission, treating NULL commission as 0.",
-      "referenceSql": "SELECT first_name, salary, commission, salary + COALESCE(commission, 0) AS total_comp FROM employees;"
+      "referenceSql": "SELECT first_name, salary, commission, salary + COALESCE(commission, 0) AS total_comp FROM employees;",
+      "questionAudio": "Day04/New_Day4Question03.mp3",
+      "solutionAudio": "Day04/New_Day4Question03sol.mp3"
     },
     {
       "id": 4,
       "prompt": "<strong>Task: High Earners (explicit parentheses)</strong><br/>Using explicit parentheses, find employees in department 10 or 20 who earn more than 70000. Return all columns.",
-      "referenceSql": "SELECT * FROM employees WHERE (department_id = 10 OR department_id = 20) AND salary > 70000;"
+      "referenceSql": "SELECT * FROM employees WHERE (department_id = 10 OR department_id = 20) AND salary > 70000;",
+      "questionAudio": "Day04/New_Day4Question04.mp3",
+      "solutionAudio": "Day04/New_Day4Question04sol.mp3"
     },
     {
       "id": 5,
       "prompt": "<strong>Task: Earn more than every Sales employee</strong><br/>Using a <code>MAX</code> subquery, find employees whose <code>salary</code> is greater than every salary in the Sales department (<code>department_id = 40</code>). Return <code>first_name</code> and <code>salary</code>.",
-      "referenceSql": "SELECT first_name, salary FROM employees WHERE salary > (SELECT MAX(salary) FROM employees WHERE department_id = 40);"
+      "referenceSql": "SELECT first_name, salary FROM employees WHERE salary > (SELECT MAX(salary) FROM employees WHERE department_id = 40);",
+      "questionAudio": "Day04/New_Day4Question05.mp3",
+      "solutionAudio": "Day04/New_Day4Question05sol.mp3"
     },
     {
       "id": 6,
       "prompt": "<strong>Task: Price Markup</strong><br/>Retrieve <code>name</code> and a <code>markup_price</code> column representing <code>unit_price * 1.18</code> (price after 18% markup) from <code>products</code>.",
-      "referenceSql": "SELECT name, unit_price * 1.18 AS markup_price FROM products;"
+      "referenceSql": "SELECT name, unit_price * 1.18 AS markup_price FROM products;",
+      "questionAudio": "Day04/New_Day4Question06.mp3",
+      "solutionAudio": "Day04/New_Day4Question06sol.mp3"
     },
     {
       "id": 7,
       "prompt": "<strong>Task: Include NULLs</strong><br/>Find all employees whose <code>commission</code> is greater than 5000 OR whose commission is NULL. Return <code>first_name</code> and <code>commission</code>.",
-      "referenceSql": "SELECT first_name, commission FROM employees WHERE commission > 5000 OR commission IS NULL;"
+      "referenceSql": "SELECT first_name, commission FROM employees WHERE commission > 5000 OR commission IS NULL;",
+      "questionAudio": "Day04/New_Day4Question07.mp3",
+      "solutionAudio": "Day04/New_Day4Question07sol.mp3"
     },
     {
       "id": 8,
       "prompt": "<strong>Task: Safe ratio with NULLIF</strong><br/>For each product, compute the profit margin as <code>(unit_price - cost_price) * 1.0 / NULLIF(unit_price, 0)</code> aliased <code>margin</code>. Return <code>name</code> and <code>margin</code>.",
-      "referenceSql": "SELECT name, (unit_price - cost_price) * 1.0 / NULLIF(unit_price, 0) AS margin FROM products;"
+      "referenceSql": "SELECT name, (unit_price - cost_price) * 1.0 / NULLIF(unit_price, 0) AS margin FROM products;",
+      "questionAudio": "Day04/New_Day4Question08.mp3",
+      "solutionAudio": "Day04/New_Day4Question08sol.mp3"
     },
     {
       "id": 9,
       "prompt": "<strong>Task: Profit percentage</strong><br/>For each product compute <code>profit_pct = (unit_price - cost_price) * 100.0 / unit_price</code>. Return <code>name</code> and <code>profit_pct</code> rounded to 2 decimals.",
-      "referenceSql": "SELECT name, ROUND((unit_price - cost_price) * 100.0 / unit_price, 2) AS profit_pct FROM products;"
+      "referenceSql": "SELECT name, ROUND((unit_price - cost_price) * 100.0 / unit_price, 2) AS profit_pct FROM products;",
+      "questionAudio": "Day04/New_Day4Question09.mp3",
+      "solutionAudio": "Day04/New_Day4Question09sol.mp3"
     },
     {
       "id": 10,
       "prompt": "<strong>Task: Earn more than at least one Marketing employee</strong><br/>Using a <code>MIN</code> subquery (the SQLite-friendly equivalent of <code>&gt; ANY</code>), find employees whose <code>salary</code> is greater than at least one salary in Marketing (<code>department_id = 30</code>). Return <code>first_name</code> and <code>salary</code>.",
-      "referenceSql": "SELECT first_name, salary FROM employees WHERE salary > (SELECT MIN(salary) FROM employees WHERE department_id = 30);"
+      "referenceSql": "SELECT first_name, salary FROM employees WHERE salary > (SELECT MIN(salary) FROM employees WHERE department_id = 30);",
+      "questionAudio": "Day04/New_Day4Question10.mp3",
+      "solutionAudio": "Day04/New_Day4Question10sol.mp3"
     },
     {
       "id": 11,
       "prompt": "<strong>Task: Parity check with modulo</strong><br/>Find all products whose <code>product_id</code> is even (use modulo). Return <code>product_id</code> and <code>name</code>.",
-      "referenceSql": "SELECT product_id, name FROM products WHERE product_id % 2 = 0;"
+      "referenceSql": "SELECT product_id, name FROM products WHERE product_id % 2 = 0;",
+      "questionAudio": "Day04/New_Day4Question11.mp3",
+      "solutionAudio": "Day04/New_Day4Question11sol.mp3"
     },
     {
       "id": 12,
       "prompt": "<strong>Task: Stock value</strong><br/>For each product compute <code>stock_value = stock_qty * cost_price</code>. Return <code>name</code> and <code>stock_value</code> for products whose stock value exceeds 100000.",
-      "referenceSql": "SELECT name, stock_qty * cost_price AS stock_value FROM products WHERE stock_qty * cost_price > 100000;"
+      "referenceSql": "SELECT name, stock_qty * cost_price AS stock_value FROM products WHERE stock_qty * cost_price > 100000;",
+      "questionAudio": "Day04/New_Day4Question12.mp3",
+      "solutionAudio": "Day04/New_Day4Question12sol.mp3"
     }
   ],
   "testQuestions": [
