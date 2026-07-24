@@ -387,227 +387,227 @@
   "day04_New_Day4Part1audio03": {
     "audioPath": "Day04/New_Day4Part1audio03.mp3",
     "eventsPath": null,
-    "durationMs": 4800
+    "durationMs": 16440
   },
   "day04_New_Day4Part1audio04": {
     "audioPath": "Day04/New_Day4Part1audio04.mp3",
     "eventsPath": null,
-    "durationMs": 33792
+    "durationMs": 14040
   },
   "day04_New_Day4Part1audio05": {
     "audioPath": "Day04/New_Day4Part1audio05.mp3",
     "eventsPath": null,
-    "durationMs": 30120
+    "durationMs": 10656
   },
   "day04_New_Day4Part1audio06": {
     "audioPath": "Day04/New_Day4Part1audio06.mp3",
     "eventsPath": null,
-    "durationMs": 41832
+    "durationMs": 13824
   },
   "day04_New_Day4Part1audio07": {
     "audioPath": "Day04/New_Day4Part1audio07.mp3",
     "eventsPath": null,
-    "durationMs": 43536
+    "durationMs": 15288
   },
   "day04_New_Day4Part1audio08": {
     "audioPath": "Day04/New_Day4Part1audio08.mp3",
     "eventsPath": null,
-    "durationMs": 34032
+    "durationMs": 9720
   },
   "day04_New_Day4Part1audio09": {
     "audioPath": "Day04/New_Day4Part1audio09.mp3",
     "eventsPath": null,
-    "durationMs": 28560
+    "durationMs": 7920
   },
   "day04_New_Day4Part1audio10": {
     "audioPath": "Day04/New_Day4Part1audio10.mp3",
     "eventsPath": null,
-    "durationMs": 31560
+    "durationMs": 9360
   },
   "day04_New_Day4Part1audio11": {
     "audioPath": "Day04/New_Day4Part1audio11.mp3",
     "eventsPath": null,
-    "durationMs": 30984
+    "durationMs": 9000
   },
   "day04_New_Day4Part1audio12": {
     "audioPath": "Day04/New_Day4Part1audio12.mp3",
     "eventsPath": null,
-    "durationMs": 31704
+    "durationMs": 13776
   },
   "day04_New_Day4Part1audio13": {
     "audioPath": "Day04/New_Day4Part1audio13.mp3",
     "eventsPath": null,
-    "durationMs": 31080
+    "durationMs": 12072
   },
   "day04_New_Day4Part1audio14": {
     "audioPath": "Day04/New_Day4Part1audio14.mp3",
     "eventsPath": null,
-    "durationMs": 32616
+    "durationMs": 9072
   },
   "day04_New_Day4Part1audio15": {
     "audioPath": "Day04/New_Day4Part1audio15.mp3",
     "eventsPath": null,
-    "durationMs": 37944
+    "durationMs": 11640
   },
   "day04_New_Day4Part1audio16": {
     "audioPath": "Day04/New_Day4Part1audio16.mp3",
     "eventsPath": null,
-    "durationMs": 32688
+    "durationMs": 11328
   },
   "day04_New_Day4Part1audio17": {
     "audioPath": "Day04/New_Day4Part1audio17.mp3",
     "eventsPath": null,
-    "durationMs": 30816
+    "durationMs": 10512
   },
   "day04_New_Day4Part1audio18": {
     "audioPath": "Day04/New_Day4Part1audio18.mp3",
     "eventsPath": null,
-    "durationMs": 48864
+    "durationMs": 14208
   },
   "day04_New_Day4Part1audio19": {
     "audioPath": "Day04/New_Day4Part1audio19.mp3",
     "eventsPath": null,
-    "durationMs": 38208
+    "durationMs": 11952
   },
   "day04_New_Day4Part1audio20": {
     "audioPath": "Day04/New_Day4Part1audio20.mp3",
     "eventsPath": null,
-    "durationMs": 43416
+    "durationMs": 9840
   },
   "day04_New_Day4Part1audio21": {
     "audioPath": "Day04/New_Day4Part1audio21.mp3",
     "eventsPath": null,
-    "durationMs": 40296
+    "durationMs": 11256
   },
   "day04_New_Day4Part1audio22": {
     "audioPath": "Day04/New_Day4Part1audio22.mp3",
     "eventsPath": null,
-    "durationMs": 45000
+    "durationMs": 10968
   },
   "day04_New_Day4Part1audio23": {
     "audioPath": "Day04/New_Day4Part1audio23.mp3",
     "eventsPath": null,
-    "durationMs": 48192
+    "durationMs": 9744
   },
   "day04_New_Day4Question01": {
     "audioPath": "Day04/New_Day4Question01.mp3",
     "eventsPath": null,
-    "durationMs": 17352
+    "durationMs": 9600
   },
   "day04_New_Day4Question01sol": {
     "audioPath": "Day04/New_Day4Question01sol.mp3",
     "eventsPath": null,
-    "durationMs": 20400
+    "durationMs": 11352
   },
   "day04_New_Day4Question02": {
     "audioPath": "Day04/New_Day4Question02.mp3",
     "eventsPath": null,
-    "durationMs": 15816
+    "durationMs": 10656
   },
   "day04_New_Day4Question02sol": {
     "audioPath": "Day04/New_Day4Question02sol.mp3",
     "eventsPath": null,
-    "durationMs": 25800
+    "durationMs": 14520
   },
   "day04_New_Day4Question03": {
     "audioPath": "Day04/New_Day4Question03.mp3",
     "eventsPath": null,
-    "durationMs": 20520
+    "durationMs": 10008
   },
   "day04_New_Day4Question03sol": {
     "audioPath": "Day04/New_Day4Question03sol.mp3",
     "eventsPath": null,
-    "durationMs": 21024
+    "durationMs": 11400
   },
   "day04_New_Day4Question04": {
     "audioPath": "Day04/New_Day4Question04.mp3",
     "eventsPath": null,
-    "durationMs": 18264
+    "durationMs": 10920
   },
   "day04_New_Day4Question04sol": {
     "audioPath": "Day04/New_Day4Question04sol.mp3",
     "eventsPath": null,
-    "durationMs": 21264
+    "durationMs": 13368
   },
   "day04_New_Day4Question05": {
     "audioPath": "Day04/New_Day4Question05.mp3",
     "eventsPath": null,
-    "durationMs": 17016
+    "durationMs": 9792
   },
   "day04_New_Day4Question05sol": {
     "audioPath": "Day04/New_Day4Question05sol.mp3",
     "eventsPath": null,
-    "durationMs": 20904
+    "durationMs": 13800
   },
   "day04_New_Day4Question06": {
     "audioPath": "Day04/New_Day4Question06.mp3",
     "eventsPath": null,
-    "durationMs": 15096
+    "durationMs": 8448
   },
   "day04_New_Day4Question06sol": {
     "audioPath": "Day04/New_Day4Question06sol.mp3",
     "eventsPath": null,
-    "durationMs": 12312
+    "durationMs": 8736
   },
   "day04_New_Day4Question07": {
     "audioPath": "Day04/New_Day4Question07.mp3",
     "eventsPath": null,
-    "durationMs": 15384
+    "durationMs": 7848
   },
   "day04_New_Day4Question07sol": {
     "audioPath": "Day04/New_Day4Question07sol.mp3",
     "eventsPath": null,
-    "durationMs": 17880
+    "durationMs": 10008
   },
   "day04_New_Day4Question08": {
     "audioPath": "Day04/New_Day4Question08.mp3",
     "eventsPath": null,
-    "durationMs": 19488
+    "durationMs": 10992
   },
   "day04_New_Day4Question08sol": {
     "audioPath": "Day04/New_Day4Question08sol.mp3",
     "eventsPath": null,
-    "durationMs": 25392
+    "durationMs": 14232
   },
   "day04_New_Day4Question09": {
     "audioPath": "Day04/New_Day4Question09.mp3",
     "eventsPath": null,
-    "durationMs": 16896
+    "durationMs": 7008
   },
   "day04_New_Day4Question09sol": {
     "audioPath": "Day04/New_Day4Question09sol.mp3",
     "eventsPath": null,
-    "durationMs": 22296
+    "durationMs": 15528
   },
   "day04_New_Day4Question10": {
     "audioPath": "Day04/New_Day4Question10.mp3",
     "eventsPath": null,
-    "durationMs": 17376
+    "durationMs": 9336
   },
   "day04_New_Day4Question10sol": {
     "audioPath": "Day04/New_Day4Question10sol.mp3",
     "eventsPath": null,
-    "durationMs": 22104
+    "durationMs": 14424
   },
   "day04_New_Day4Question11": {
     "audioPath": "Day04/New_Day4Question11.mp3",
     "eventsPath": null,
-    "durationMs": 13080
+    "durationMs": 7128
   },
   "day04_New_Day4Question11sol": {
     "audioPath": "Day04/New_Day4Question11sol.mp3",
     "eventsPath": null,
-    "durationMs": 16344
+    "durationMs": 9312
   },
   "day04_New_Day4Question12": {
     "audioPath": "Day04/New_Day4Question12.mp3",
     "eventsPath": null,
-    "durationMs": 15096
+    "durationMs": 10416
   },
   "day04_New_Day4Question12sol": {
     "audioPath": "Day04/New_Day4Question12sol.mp3",
     "eventsPath": null,
-    "durationMs": 24696
+    "durationMs": 13440
   },
   "day04_test_narration": {
     "audioPath": "Day04/test_narration.mp3",

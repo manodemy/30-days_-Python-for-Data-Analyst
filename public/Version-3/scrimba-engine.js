@@ -4460,7 +4460,7 @@ let hasCompletedFirstGestureBoundPlay = false;
 async function loadManifest() {
   try {
     if (Object.keys(manifest).length === 0) {
-      const res = await fetch('/Version-3/manifest.json?v=18.0');
+      const res = await fetch('/Version-3/manifest.json?v=19.0');
       manifest = await res.json();
     }
     // Re-calculate durations from manifest metadata for all slides
