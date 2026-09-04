@@ -1,0 +1,432 @@
+{
+  "reelNo": "SQL-11-R1",
+  "day": "DAY 11",
+  "badge": "SQL · Manager Salary Trap",
+  "videoFile": "SQL-11-R1.mp4",
+  "videoPath": "D:\\Learn Python in 60days\\Manodemy_Web_V2\\marketing\\output\\video\\SQL-11-R1.mp4",
+  "coverFile": "SQL-11-R1_Cover.png",
+  "coverJpg": "SQL-11-R1_Cover.jpg",
+  "fileSizeMb": 3.86,
+  "resolution": "1080x1920",
+  "fps": 24,
+  "durationSec": 15.34,
+  "caption": "MANAGER SALARY TRAP 💼⚡\n\nWhich query finds employees earning more than their direct manager?\n\nCan you spot which approach correctly links the employee to their manager without subquery scoping bugs?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q18\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, self join sql, leetcode 181, employees earning more than managers, faang sql interview, amazon sql interview, flipkart sql interview, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
+  "pinnedAnswer": "Option A is the Industry Standard ✅ | Option B is the Trap ❌\n\nWhy Option A (Self JOIN) is correct:\nA Self JOIN (`e.manager_id = m.emp_id`) matches each employee row directly with their manager's record in the same table. The `WHERE e.salary > m.salary` filter then accurately isolates employees out-earning their managers.\n\nWhy Option B (Uncorrelated Subquery) fails:\nIn Option B, `WHERE emp_id = manager_id` inside the subquery evaluates against the SAME inner row! It searches for an employee who is their own manager (like a CEO), completely ignoring the outer employee's manager ID!\n\n💡 Rule of thumb: Hierarchical comparisons within the same table (employee ↔ manager) are best solved with an explicit SELF JOIN!\n\nDid you vote A or B? 👇",
+  "simulatorLink": "https://www.manodemy.com/q18",
+  "cues": {
+    "t_hook_start": 0,
+    "t_line2_start": 4440,
+    "t_clock_in": 8400,
+    "t_opta": 9520,
+    "t_optb": 10660,
+    "t_optb_end": 12310,
+    "t_clock_out": 12460,
+    "t_cta_start": 12460,
+    "t_voice_end": 13940,
+    "totalMs": 15340,
+    "clockDurationMs": 4060,
+    "wordCues": [
+      {
+        "word": "Amazon",
+        "startMs": 0,
+        "endMs": 480
+      },
+      {
+        "word": "and",
+        "startMs": 480,
+        "endMs": 780
+      },
+      {
+        "word": "Flipkart",
+        "startMs": 780,
+        "endMs": 1280
+      },
+      {
+        "word": "love",
+        "startMs": 1280,
+        "endMs": 1500
+      },
+      {
+        "word": "asking",
+        "startMs": 1500,
+        "endMs": 2220
+      },
+      {
+        "word": "this",
+        "startMs": 2220,
+        "endMs": 2480
+      },
+      {
+        "word": "Manager",
+        "startMs": 2480,
+        "endMs": 2820
+      },
+      {
+        "word": "Salary",
+        "startMs": 2820,
+        "endMs": 3240
+      },
+      {
+        "word": "S-Q-L",
+        "startMs": 3240,
+        "endMs": 3700
+      },
+      {
+        "word": "question!",
+        "startMs": 3700,
+        "endMs": 4060
+      },
+      {
+        "word": "Which",
+        "startMs": 4440,
+        "endMs": 4780
+      },
+      {
+        "word": "query",
+        "startMs": 4780,
+        "endMs": 5060
+      },
+      {
+        "word": "finds",
+        "startMs": 5060,
+        "endMs": 5400
+      },
+      {
+        "word": "employees",
+        "startMs": 5400,
+        "endMs": 5980
+      },
+      {
+        "word": "earning",
+        "startMs": 5980,
+        "endMs": 6500
+      },
+      {
+        "word": "more",
+        "startMs": 6500,
+        "endMs": 6820
+      },
+      {
+        "word": "than",
+        "startMs": 6820,
+        "endMs": 7000
+      },
+      {
+        "word": "their",
+        "startMs": 7000,
+        "endMs": 7160
+      },
+      {
+        "word": "direct",
+        "startMs": 7160,
+        "endMs": 7440
+      },
+      {
+        "word": "manager?",
+        "startMs": 7440,
+        "endMs": 7900
+      },
+      {
+        "word": "Choose",
+        "startMs": 8400,
+        "endMs": 8660
+      },
+      {
+        "word": "your",
+        "startMs": 8660,
+        "endMs": 8840
+      },
+      {
+        "word": "answer...",
+        "startMs": 8840,
+        "endMs": 9100
+      },
+      {
+        "word": "Option",
+        "startMs": 9520,
+        "endMs": 9880
+      },
+      {
+        "word": "A...",
+        "startMs": 9880,
+        "endMs": 10120
+      },
+      {
+        "word": "or",
+        "startMs": 10660,
+        "endMs": 10980
+      },
+      {
+        "word": "Option",
+        "startMs": 10980,
+        "endMs": 11240
+      },
+      {
+        "word": "B?",
+        "startMs": 11960,
+        "endMs": 12460
+      },
+      {
+        "word": "Drop",
+        "startMs": 12460,
+        "endMs": 12640
+      },
+      {
+        "word": "your",
+        "startMs": 12640,
+        "endMs": 12880
+      },
+      {
+        "word": "vote",
+        "startMs": 12880,
+        "endMs": 13100
+      },
+      {
+        "word": "in",
+        "startMs": 13100,
+        "endMs": 13200
+      },
+      {
+        "word": "the",
+        "startMs": 13200,
+        "endMs": 13500
+      },
+      {
+        "word": "comments",
+        "startMs": 13500,
+        "endMs": 13840
+      },
+      {
+        "word": "below.",
+        "startMs": 13840,
+        "endMs": 13940
+      }
+    ],
+    "phrases": [
+      {
+        "index": 0,
+        "text": "Amazon and Flipkart love asking this Manager Salary S-Q-L question!",
+        "startMs": 0,
+        "endMs": 4440,
+        "words": [
+          {
+            "word": "Amazon",
+            "startMs": 0,
+            "endMs": 480
+          },
+          {
+            "word": "and",
+            "startMs": 480,
+            "endMs": 780
+          },
+          {
+            "word": "Flipkart",
+            "startMs": 780,
+            "endMs": 1280
+          },
+          {
+            "word": "love",
+            "startMs": 1280,
+            "endMs": 1500
+          },
+          {
+            "word": "asking",
+            "startMs": 1500,
+            "endMs": 2220
+          },
+          {
+            "word": "this",
+            "startMs": 2220,
+            "endMs": 2480
+          },
+          {
+            "word": "Manager",
+            "startMs": 2480,
+            "endMs": 2820
+          },
+          {
+            "word": "Salary",
+            "startMs": 2820,
+            "endMs": 3240
+          },
+          {
+            "word": "S-Q-L",
+            "startMs": 3240,
+            "endMs": 3700
+          },
+          {
+            "word": "question!",
+            "startMs": 3700,
+            "endMs": 4060
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "text": "Which query finds employees earning more than their direct manager?",
+        "startMs": 4440,
+        "endMs": 8400,
+        "words": [
+          {
+            "word": "Which",
+            "startMs": 4440,
+            "endMs": 4780
+          },
+          {
+            "word": "query",
+            "startMs": 4780,
+            "endMs": 5060
+          },
+          {
+            "word": "finds",
+            "startMs": 5060,
+            "endMs": 5400
+          },
+          {
+            "word": "employees",
+            "startMs": 5400,
+            "endMs": 5980
+          },
+          {
+            "word": "earning",
+            "startMs": 5980,
+            "endMs": 6500
+          },
+          {
+            "word": "more",
+            "startMs": 6500,
+            "endMs": 6820
+          },
+          {
+            "word": "than",
+            "startMs": 6820,
+            "endMs": 7000
+          },
+          {
+            "word": "their",
+            "startMs": 7000,
+            "endMs": 7160
+          },
+          {
+            "word": "direct",
+            "startMs": 7160,
+            "endMs": 7440
+          },
+          {
+            "word": "manager?",
+            "startMs": 7440,
+            "endMs": 7900
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "text": "Choose your answer...",
+        "startMs": 8400,
+        "endMs": 9520,
+        "words": [
+          {
+            "word": "Choose",
+            "startMs": 8400,
+            "endMs": 8660
+          },
+          {
+            "word": "your",
+            "startMs": 8660,
+            "endMs": 8840
+          },
+          {
+            "word": "answer...",
+            "startMs": 8840,
+            "endMs": 9100
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "text": "Option A...",
+        "startMs": 9520,
+        "endMs": 10660,
+        "words": [
+          {
+            "word": "Option",
+            "startMs": 9520,
+            "endMs": 9880
+          },
+          {
+            "word": "A...",
+            "startMs": 9880,
+            "endMs": 10120
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "text": "or Option B?",
+        "startMs": 10660,
+        "endMs": 12310,
+        "words": [
+          {
+            "word": "or",
+            "startMs": 10660,
+            "endMs": 10980
+          },
+          {
+            "word": "Option",
+            "startMs": 10980,
+            "endMs": 11240
+          },
+          {
+            "word": "B?",
+            "startMs": 11960,
+            "endMs": 12460
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "text": "Drop your vote in the comments below.",
+        "startMs": 12460,
+        "endMs": 13940,
+        "words": [
+          {
+            "word": "Drop",
+            "startMs": 12460,
+            "endMs": 12640
+          },
+          {
+            "word": "your",
+            "startMs": 12640,
+            "endMs": 12880
+          },
+          {
+            "word": "vote",
+            "startMs": 12880,
+            "endMs": 13100
+          },
+          {
+            "word": "in",
+            "startMs": 13100,
+            "endMs": 13200
+          },
+          {
+            "word": "the",
+            "startMs": 13200,
+            "endMs": 13500
+          },
+          {
+            "word": "comments",
+            "startMs": 13500,
+            "endMs": 13840
+          },
+          {
+            "word": "below.",
+            "startMs": 13840,
+            "endMs": 13940
+          }
+        ]
+      }
+    ]
+  },
+  "generatedAt": "2026-09-04 08:25:59"
+}

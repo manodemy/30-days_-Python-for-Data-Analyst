@@ -95,6 +95,8 @@ export async function middleware(request: NextRequest) {
     '/go/q16': '/Version-3/index.html?day=9&challenge=SQL-09-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day09_q16_latest_record',
     '/q17': '/Version-3/index.html?day=10&challenge=SQL-10-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day10_q17_gaps_islands',
     '/go/q17': '/Version-3/index.html?day=10&challenge=SQL-10-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day10_q17_gaps_islands',
+    '/q18': '/Version-3/index.html?day=11&challenge=SQL-11-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day11_q18_manager_salary',
+    '/go/q18': '/Version-3/index.html?day=11&challenge=SQL-11-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day11_q18_manager_salary',
     '/go/fb_ads_1': '/?utm_source=meta&utm_medium=cpc&utm_campaign=fb_ads_1',
     '/fb_ads_1': '/?utm_source=meta&utm_medium=cpc&utm_campaign=fb_ads_1',
     '/go/bio': '/?utm_source=meta&utm_medium=cpc&utm_campaign=insta_bio_link',

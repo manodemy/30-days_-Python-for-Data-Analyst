@@ -3686,6 +3686,21 @@ const REEL_CHALLENGES = {
     correctOption: 'A',
     codeA: "SELECT user_id, login_date,\n       DATE(login_date, '-' || (\n         ROW_NUMBER() OVER (\n           PARTITION BY user_id ORDER BY login_date\n         )\n       ) || ' days') AS streak_grp\nFROM user_logins;",
     codeB: "SELECT user_id, login_date,\n       DENSE_RANK() OVER (\n         PARTITION BY user_id ORDER BY login_date\n       ) AS streak_grp\nFROM user_logins;"
+  },
+  'SQL-11-R1': {
+    day: 'day11',
+    slideIndex: 0,
+    title: 'MANAGER SALARY TRAP 💼⚡',
+    task: 'Self Joins: Finding Employees Earning More Than Their Direct Manager',
+    prompt: `HR needs to find all employees who earn more than their direct manager. Run Option A (Self JOIN) vs Option B (Subquery Trap) to see why Option A is the Flipkart / Amazon standard.<br/>
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-11-R1', 'A')">⚡ Load Option A (Self JOIN Standard)</button>
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-11-R1', 'B')">⚡ Load Option B (Subquery Trap)</button>
+      </div>`,
+    trapExplanation: 'Option B fails because <code>WHERE employee_id = manager_id</code> inside the inner subquery evaluates against the inner row itself (checking if someone is their own manager) rather than joining to the outer employee row! Option A explicitly joins <code>e.manager_id = m.employee_id</code> to compare the direct pair.',
+    correctOption: 'A',
+    codeA: "SELECT e.first_name AS emp_name,\n       e.salary AS emp_salary,\n       m.first_name AS manager_name,\n       m.salary AS mgr_salary\nFROM employees e\nJOIN employees m ON e.manager_id = m.employee_id\nWHERE e.salary > m.salary;",
+    codeB: "SELECT first_name\nFROM employees e\nWHERE salary > (\n  SELECT salary FROM employees\n  WHERE employee_id = manager_id\n);"
   }
 };
 
@@ -3721,6 +3736,7 @@ function getActiveChallengeId() {
   if (camp.includes('reel_day08_q15') || camp.includes('reel_15') || camp.includes('q15') || camp.includes('union_dedup') || camp.includes('union')) return 'SQL-08-R2';
   if (camp.includes('reel_day09_q16') || camp.includes('reel_16') || camp.includes('q16') || camp.includes('latest_record') || camp.includes('row_number')) return 'SQL-09-R1';
   if (camp.includes('reel_day10_q17') || camp.includes('reel_17') || camp.includes('q17') || camp.includes('gaps_islands') || camp.includes('streaks')) return 'SQL-10-R1';
+  if (camp.includes('reel_day11_q18') || camp.includes('reel_18') || camp.includes('q18') || camp.includes('manager_salary') || camp.includes('self_join')) return 'SQL-11-R1';
 
   const dayParam = urlP.get('day');
   const qParam = urlP.get('q') || urlP.get('question');
@@ -3755,12 +3771,16 @@ function getActiveChallengeId() {
   if (dayParam === '10') {
     if (qParam === '1' || qParam === '17') return 'SQL-10-R1';
   }
+  if (dayParam === '11') {
+    if (qParam === '1' || qParam === '18') return 'SQL-11-R1';
+  }
   if (qParam === '12' || qParam === 'q12') return 'SQL-07-R1';
   if (qParam === '13' || qParam === 'q13') return 'SQL-07-R2';
   if (qParam === '14' || qParam === 'q14') return 'SQL-08-R1';
   if (qParam === '15' || qParam === 'q15') return 'SQL-08-R2';
   if (qParam === '16' || qParam === 'q16') return 'SQL-09-R1';
   if (qParam === '17' || qParam === 'q17') return 'SQL-10-R1';
+  if (qParam === '18' || qParam === 'q18') return 'SQL-11-R1';
   return null;
 }
 

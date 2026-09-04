@@ -20,7 +20,8 @@ bridges = {
     'q14': '/Version-3/index.html?day=8&challenge=SQL-08-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day08_q14_like_wildcard',
     'q15': '/Version-3/index.html?day=8&challenge=SQL-08-R2&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day08_q15_union_dedup',
     'q16': '/Version-3/index.html?day=9&challenge=SQL-09-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day09_q16_latest_record',
-    'q17': '/Version-3/index.html?day=10&challenge=SQL-10-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day10_q17_gaps_islands'
+    'q17': '/Version-3/index.html?day=10&challenge=SQL-10-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day10_q17_gaps_islands',
+    'q18': '/Version-3/index.html?day=11&challenge=SQL-11-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day11_q18_manager_salary'
 }
 
 html_template = """<!DOCTYPE html>

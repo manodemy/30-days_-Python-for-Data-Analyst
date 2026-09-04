@@ -611,10 +611,36 @@ REELS_CATALOG = {
         "caption": "GAPS & ISLANDS TRAP 🏝️⚡\n\nWhich query groups consecutive active days into unbroken login streaks?\n\nCan you spot which approach generates a constant grouping key for consecutive days?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q17\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, gaps and islands sql, row_number trick, consecutive streaks, faang sql interview, data analyst interview, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
         "pinnedAnswer": "Option A is the FAANG Standard ✅ | Option B is the Trap ❌\n\nWhy Option A (date - ROW_NUMBER()) works:\nAs long as login dates are consecutive, both `login_date` and `ROW_NUMBER()` increment by +1 each day. Subtracting ROW_NUMBER() from login_date produces a CONSTANT date anchor for the entire unbroken streak!\n\nWhy Option B (DENSE_RANK) fails on gaps:\n`DENSE_RANK()` simply numbers rows sequentially 1, 2, 3... regardless of whether there is a 5-day gap between logins! It fails to detect broken streaks.\n\n💡 Rule of thumb: Subtracting ROW_NUMBER() from dates is the golden trick for Gaps & Islands problems!\n\nDid you vote A or B? 👇",
         "link": "https://www.manodemy.com/q17"
+    },
+    "SQL-11-R1": {
+        "reelNo": "SQL-11-R1",
+        "day": "DAY 11",
+        "badge": "SQL · Manager Salary Trap",
+        "hook": "MANAGER SALARY TRAP 💼\nEmployees earning more than their manager?",
+        "hookLineObjects": [
+            {"text": "MANAGER SALARY TRAP 💼", "font": "Plus Jakarta Sans", "size": 4.8},
+            {"text": "Employees earning more than their manager?", "font": "Outfit", "size": 3.7}
+        ],
+        "hookHighlights": [
+            {"text": "MANAGER SALARY", "color": "#facc15"},
+            {"text": "earning more than", "color": "#00f0ff"}
+        ],
+        "lang": "sql",
+        "codeA": "SELECT e.name AS emp_name\nFROM employees e\nJOIN employees m ON e.manager_id = m.emp_id\nWHERE e.salary > m.salary;",
+        "codeB": "SELECT name\nFROM employees e\nWHERE salary > (\n  SELECT salary FROM employees\n  WHERE emp_id = manager_id\n);",
+        "pollInstr": "DROP YOUR VOTE IN COMMENTS 👇",
+        "clockSfx": "bomb",
+        "ccStyle": "hormozi",
+        "ccEnabled": True,
+        "voice": "en-US-AndrewNeural",
+        "voiceScript": "Amazon and Flipkart love asking this Manager Salary S-Q-L question!\nWhich query finds employees earning more than their direct manager?\nChoose your answer.\nOption A...\nor Option B?\nDrop your vote in the comments below.",
+        "caption": "MANAGER SALARY TRAP 💼⚡\n\nWhich query finds employees earning more than their direct manager?\n\nCan you spot which approach correctly links the employee to their manager without subquery scoping bugs?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q18\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, self join sql, leetcode 181, employees earning more than managers, faang sql interview, amazon sql interview, flipkart sql interview, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
+        "pinnedAnswer": "Option A is the Industry Standard ✅ | Option B is the Trap ❌\n\nWhy Option A (Self JOIN) is correct:\nA Self JOIN (`e.manager_id = m.emp_id`) matches each employee row directly with their manager's record in the same table. The `WHERE e.salary > m.salary` filter then accurately isolates employees out-earning their managers.\n\nWhy Option B (Uncorrelated Subquery) fails:\nIn Option B, `WHERE emp_id = manager_id` inside the subquery evaluates against the SAME inner row! It searches for an employee who is their own manager (like a CEO), completely ignoring the outer employee's manager ID!\n\n💡 Rule of thumb: Hierarchical comparisons within the same table (employee ↔ manager) are best solved with an explicit SELF JOIN!\n\nDid you vote A or B? 👇",
+        "link": "https://www.manodemy.com/q18"
     }
 }
 
-DEFAULT_REEL = REELS_CATALOG["SQL-07-R1"]
+DEFAULT_REEL = REELS_CATALOG["SQL-11-R1"]
 
 async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
     start_total = time.time()
@@ -718,6 +744,8 @@ async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
                         "endMs": round(w_tok['end'] * 1000)
                     })
         return extracted
+
+    all_raw_words = extract_words_from_segs(w_segs)
 
     if len(w_segs) == 6:
         seg_words = [extract_words_from_segs([s]) for s in w_segs]

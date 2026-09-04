@@ -560,6 +560,16 @@
       "permanent": false
     },
     {
+      "source": "/q18",
+      "destination": "/Version-3/index.html?day=11&challenge=SQL-11-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day11_q18_manager_salary",
+      "permanent": false
+    },
+    {
+      "source": "/go/q18",
+      "destination": "/Version-3/index.html?day=11&challenge=SQL-11-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day11_q18_manager_salary",
+      "permanent": false
+    },
+    {
       "source": "/day:day(0[3-9]|[12][0-9]|30).html",
       "destination": "/notebook/day:day",
       "permanent": true
