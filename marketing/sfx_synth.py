@@ -182,6 +182,64 @@ def synth_timpani():
     
     return sub_boom + riser + chime1 + chime2
 
+# 7. Authentic Hollywood Vintage Mechanical Camera Shutter Snap & Flash Bulb Pop
+def synth_vintage_camera_shutter():
+    dur = 0.48
+    t = np.linspace(0, dur, int(SAMPLE_RATE * dur), False)
+    
+    # Layer A: Mirror Latch Pre-Trip Click (t=0ms to 20ms)
+    env_pre = exp_envelope(t, 0.002, 140.0, 0.5)
+    click_pre = triangle_wave(2 * np.pi * 3200 * t) * env_pre
+    
+    # Layer B: Main Mechanical Shutter Curtain Slap 1 ("KA-") at t=18ms
+    t_slap1 = t - 0.018
+    slap1 = np.zeros_like(t)
+    mask1 = t >= 0.018
+    if np.any(mask1):
+        f1 = 1850 * np.exp(-22.0 * t_slap1[mask1]) + 620
+        phase1 = 2 * np.pi * np.cumsum(f1) / SAMPLE_RATE
+        env1 = exp_envelope(t_slap1[mask1], 0.003, 55.0, 0.85)
+        slap1[mask1] = triangle_wave(phase1) * env1
+        
+    # Layer C: Heavy Mirror Return & Second Blade Slam ("-CHIK!") at t=42ms
+    t_slap2 = t - 0.042
+    slap2 = np.zeros_like(t)
+    mask2 = t >= 0.042
+    if np.any(mask2):
+        f2 = 1250 * np.exp(-18.0 * t_slap2[mask2]) + 380
+        phase2 = 2 * np.pi * np.cumsum(f2) / SAMPLE_RATE
+        env2 = exp_envelope(t_slap2[mask2], 0.004, 42.0, 0.95)
+        slap2[mask2] = (0.6 * triangle_wave(phase2) + 0.4 * np.sin(phase2)) * env2
+
+    # Layer D: Vintage Flash Bulb Tungsten Pop + Deep Acoustic Chamber Thump
+    # Low sub chamber impact (120Hz -> 30Hz)
+    t_pop = t - 0.020
+    sub_pop = np.zeros_like(t)
+    mask_pop = t >= 0.020
+    if np.any(mask_pop):
+        f_sub = 115 * np.exp(-8.5 * t_pop[mask_pop]) + 30
+        phase_sub = 2 * np.pi * np.cumsum(f_sub) / SAMPLE_RATE
+        env_sub = exp_envelope(t_pop[mask_pop], 0.008, 12.0, 0.85)
+        sub_pop[mask_pop] = np.sin(phase_sub) * env_sub
+        
+    # Metallic spring rattle & mechanical body resonance (shutter release ring)
+    noise = np.random.uniform(-1.0, 1.0, len(t))
+    kernel = np.ones(8) / 8.0
+    smooth_noise = np.convolve(noise, kernel, mode='same')
+    env_mech = exp_envelope(t, 0.025, 24.0, 0.35)
+    mech_rattle = smooth_noise * env_mech
+
+    # Tiny spring ratchet micro-clicks (film winder tension) at 85ms and 140ms
+    ratchet = np.zeros_like(t)
+    for t_click, amp in [(0.085, 0.25), (0.135, 0.2)]:
+        tc = t - t_click
+        m_c = t >= t_click
+        if np.any(m_c):
+            env_c = exp_envelope(tc[m_c], 0.002, 110.0, amp)
+            ratchet[m_c] += triangle_wave(2 * np.pi * 2600 * tc[m_c]) * env_c
+            
+    return click_pre + slap1 + slap2 + sub_pop + mech_rattle + ratchet
+
 def build_sfx_audio_segment(cues, total_ms=15500):
     total_samples = int(SAMPLE_RATE * (total_ms / 1000.0))
     buffer = np.zeros(total_samples, dtype=np.float32)
@@ -195,6 +253,14 @@ def build_sfx_audio_segment(cues, total_ms=15500):
 
     # 1. Hook Impact (0ms)
     mix_at(synth_taiko(), 0)
+
+    # 1.1 Opening Poster Vintage Hollywood Camera Shutter Snap & Flash Pop
+    has_poster = cues.get('hasOpeningPoster', False) or cues.get('openingPosterDuration', 0) > 0
+    if has_poster:
+        poster_dur = cues.get('openingPosterDuration', cues.get('t_line2_start', 1800))
+        # Exact sync: Shutter snaps 220ms before line 2 when flash curtain bursts
+        snap_ms = max(0, poster_dur - 220)
+        mix_at(synth_vintage_camera_shutter(), snap_ms)
 
     # 2. Line 2 Impact
     mix_at(synth_marimba(), cues.get('t_line2_start', 2470))

@@ -3701,6 +3701,21 @@ const REEL_CHALLENGES = {
     correctOption: 'A',
     codeA: "SELECT e.first_name AS emp_name,\n       e.salary AS emp_salary,\n       m.first_name AS manager_name,\n       m.salary AS mgr_salary\nFROM employees e\nJOIN employees m ON e.manager_id = m.employee_id\nWHERE e.salary > m.salary;",
     codeB: "SELECT first_name\nFROM employees e\nWHERE salary > (\n  SELECT salary FROM employees\n  WHERE employee_id = manager_id\n);"
+  },
+  'SQL-12-R1': {
+    day: 'day12',
+    slideIndex: 0,
+    title: 'GHOST EMPLOYEE PAYROLL TRAP 👻💸',
+    task: 'Date Filtering vs Status Flags: Detecting Salaries Credited After Resignation',
+    prompt: `HR Audit discovered an ex-employee who resigned 3 months ago is still receiving salary credits! Run Option A (Date Check) vs Option B (Status Trap) to see why Option A is the real-world audit standard.<br/>
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-12-R1', 'A')">⚡ Load Option A (Date Check Standard)</button>
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-12-R1', 'B')">⚡ Load Option B (Status Trap)</button>
+      </div>`,
+    trapExplanation: 'Option B simply checks <code>WHERE status = \'Resigned\'</code>, which flags every historical legitimate salary ever paid while the employee was actively working! Option A correctly checks <code>WHERE pay_date > exit_date</code> to catch only unauthorized payments after resignation.',
+    correctOption: 'A',
+    codeA: "SELECT p.emp_id, p.amount, p.pay_date\nFROM payroll p JOIN employees e\n  ON p.emp_id = e.emp_id\nWHERE p.pay_date > e.exit_date;",
+    codeB: "SELECT p.emp_id, p.amount, p.pay_date\nFROM payroll p JOIN employees e\n  ON p.emp_id = e.emp_id\nWHERE e.status = 'Resigned';"
   }
 };
 
@@ -3737,6 +3752,7 @@ function getActiveChallengeId() {
   if (camp.includes('reel_day09_q16') || camp.includes('reel_16') || camp.includes('q16') || camp.includes('latest_record') || camp.includes('row_number')) return 'SQL-09-R1';
   if (camp.includes('reel_day10_q17') || camp.includes('reel_17') || camp.includes('q17') || camp.includes('gaps_islands') || camp.includes('streaks')) return 'SQL-10-R1';
   if (camp.includes('reel_day11_q18') || camp.includes('reel_18') || camp.includes('q18') || camp.includes('manager_salary') || camp.includes('self_join')) return 'SQL-11-R1';
+  if (camp.includes('reel_day12_q19') || camp.includes('reel_19') || camp.includes('q19') || camp.includes('ghost_employee') || camp.includes('payroll_leak')) return 'SQL-12-R1';
 
   const dayParam = urlP.get('day');
   const qParam = urlP.get('q') || urlP.get('question');
@@ -3774,6 +3790,9 @@ function getActiveChallengeId() {
   if (dayParam === '11') {
     if (qParam === '1' || qParam === '18') return 'SQL-11-R1';
   }
+  if (dayParam === '12') {
+    if (qParam === '1' || qParam === '19') return 'SQL-12-R1';
+  }
   if (qParam === '12' || qParam === 'q12') return 'SQL-07-R1';
   if (qParam === '13' || qParam === 'q13') return 'SQL-07-R2';
   if (qParam === '14' || qParam === 'q14') return 'SQL-08-R1';
@@ -3781,6 +3800,7 @@ function getActiveChallengeId() {
   if (qParam === '16' || qParam === 'q16') return 'SQL-09-R1';
   if (qParam === '17' || qParam === 'q17') return 'SQL-10-R1';
   if (qParam === '18' || qParam === 'q18') return 'SQL-11-R1';
+  if (qParam === '19' || qParam === 'q19') return 'SQL-12-R1';
   return null;
 }
 

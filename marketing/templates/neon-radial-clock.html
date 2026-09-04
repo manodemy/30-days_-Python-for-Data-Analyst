@@ -882,6 +882,23 @@
 
 <div class="reel-stage" id="stage">
 
+  <!-- DYNAMIC OPENING POSTER / COVER HOOK LAYER -->
+  <div id="openingPosterLayer" style="position:absolute; inset:0; z-index:9990; display:none; pointer-events:none; background:#030611; transform-origin:50% 46%; overflow:hidden;">
+    <img id="openingPosterImg" src="" style="width:100%; height:100%; object-fit:contain; display:block; transform-origin:50% 46%;" />
+  </div>
+
+  <!-- HYPERSONIC QUANTUM WARP & SHOCKWAVE VFX OVERLAY (z-index: 9999, renders over stage & poster) -->
+  <div id="posterVfxLayer" style="position:absolute; inset:0; z-index:9999; display:none; pointer-events:none; overflow:hidden;">
+    <!-- Anamorphic Sci-Fi Lens Flare Streak -->
+    <div id="posterFlareStreak" style="position:absolute; top:46%; left:0; right:0; height:10px; background:linear-gradient(90deg, transparent 0%, rgba(0,240,255,0.7) 25%, #ffffff 50%, rgba(250,204,21,0.7) 75%, transparent 100%); opacity:0; transform:scaleY(0); filter:blur(1px) drop-shadow(0 0 30px #00f0ff); pointer-events:none;"></div>
+
+    <!-- Supersonic Neon Shockwave Ring -->
+    <div id="posterShockwaveRing" style="position:absolute; top:46%; left:50%; width:340px; height:340px; margin-left:-170px; margin-top:-170px; border-radius:50%; border:9px solid #00f0ff; box-shadow:0 0 95px #00f0ff, inset 0 0 50px #facc15; opacity:0; transform:scale(0); pointer-events:none;"></div>
+    
+    <!-- White-Hot Quantum Flash Curtain -->
+    <div id="posterFlashCurtain" style="position:absolute; inset:0; background:radial-gradient(circle at 50% 46%, rgba(255,255,255,0.96) 0%, rgba(0,240,255,0.55) 45%, transparent 80%); opacity:0; pointer-events:none;"></div>
+  </div>
+
   <!-- STANDALONE BGM AUDIO ELEMENT -->
   <audio id="templateBgmAudio" src="/marketing/assets/audio/quiz_night_anthem_reel_16s.mp3" preload="auto"></audio>
 
@@ -2186,6 +2203,103 @@ function renderTimelineState(elapsedMs){
   computeOptionsAndClockStage(elapsedMs, cues);
   computeCardSpotlights(elapsedMs, cues);
 
+  // 1.1 Ultra-Advanced Hypersonic Quantum Warp & Shockwave Transition
+  const posterLayer = document.getElementById('openingPosterLayer');
+  const posterVfxLayer = document.getElementById('posterVfxLayer');
+  const posterImg = document.getElementById('openingPosterImg');
+  const flareStreak = document.getElementById('posterFlareStreak');
+  const shockwaveRing = document.getElementById('posterShockwaveRing');
+  const flashCurtain = document.getElementById('posterFlashCurtain');
+
+  if(posterLayer) {
+    if(!currentData.openingPoster) {
+      posterLayer.style.display = 'none';
+      if(posterVfxLayer) posterVfxLayer.style.display = 'none';
+    } else {
+      const posterDur = currentData.openingPosterDuration || cues.t_line2_start || 1800;
+      const blastDur = 220; // explosive zoom & shockwave window
+      const preGlitchDur = 240; // chromatic rumble window
+      const tBlast = posterDur - blastDur;
+      const tGlitch = tBlast - preGlitchDur;
+
+      if(elapsedMs < posterDur) {
+        posterLayer.style.display = 'block';
+        if(posterVfxLayer) posterVfxLayer.style.display = 'block';
+
+        if(elapsedMs < tGlitch) {
+          // --- STAGE 1: Cinematic Hollywood Slow Push-In (0ms -> tGlitch) ---
+          const t1 = elapsedMs / Math.max(1, tGlitch);
+          const ease1 = Math.sin((t1 * Math.PI) / 2);
+          const s = (1.0000 + 0.0500 * ease1).toFixed(4);
+          if(posterImg) {
+            posterImg.style.transform = `scale(${s})`;
+            posterImg.style.filter = 'none';
+          }
+          posterLayer.style.opacity = '1';
+          if(flareStreak) flareStreak.style.opacity = '0';
+          if(shockwaveRing) shockwaveRing.style.opacity = '0';
+          if(flashCurtain) flashCurtain.style.opacity = '0';
+        } else if(elapsedMs < tBlast) {
+          // --- STAGE 2: Seismic Pre-Shock Rumble & RGB Glitch (tGlitch -> tBlast) ---
+          const p2 = (elapsedMs - tGlitch) / preGlitchDur;
+          // High-frequency tremor
+          const jx = (Math.sin(p2 * 35) * 3.5).toFixed(1);
+          const jy = (Math.cos(p2 * 28) * 2.0).toFixed(1);
+          // Snap recoil
+          const s2 = (1.0500 - 0.0250 * Math.sin(p2 * Math.PI)).toFixed(4);
+          if(posterImg) {
+            posterImg.style.transform = `scale(${s2}) translate(${jx}px, ${jy}px)`;
+            // Chromatic Aberration RGB split + energy hum
+            posterImg.style.filter = `drop-shadow(-4px 0 0 rgba(0,240,255,0.75)) drop-shadow(4px 0 0 rgba(255,0,90,0.65)) contrast(125%) brightness(${1.0 + 0.3 * p2})`;
+          }
+          posterLayer.style.opacity = '1';
+          if(flareStreak) {
+            flareStreak.style.opacity = (p2 * 0.4).toFixed(3);
+            flareStreak.style.transform = `scaleY(${p2 * 0.6}) scaleX(${p2})`;
+          }
+          if(shockwaveRing) shockwaveRing.style.opacity = '0';
+          if(flashCurtain) flashCurtain.style.opacity = (p2 * 0.15).toFixed(3);
+        } else {
+          // --- STAGE 3: THE HYPERSONIC SUPERNOVA BLAST & EXPANDING SHOCKWAVE (tBlast -> posterDur) ---
+          const p3 = (elapsedMs - tBlast) / blastDur;
+          // Exponential Warp Zoom (1.025 -> 1.420!)
+          const s3 = (1.0250 + 0.3950 * Math.pow(p3, 2.2)).toFixed(4);
+          const blurPx = (p3 * 22).toFixed(1);
+          const imgOp = Math.max(0, 1.0 - p3 * 1.35).toFixed(3);
+          if(posterImg) {
+            posterImg.style.transform = `scale(${s3})`;
+            posterImg.style.filter = `blur(${blurPx}px) brightness(${1.0 + 1.2 * (1 - p3)}) contrast(140%)`;
+          }
+          posterLayer.style.opacity = imgOp;
+
+          // White-Hot Quantum Flash Curtain (peaks at 20% into blast, then dissolves)
+          if(flashCurtain) {
+            const flashOp = p3 < 0.25 ? (p3 / 0.25 * 0.95) : Math.max(0, 0.95 * (1 - (p3 - 0.25) / 0.75));
+            flashCurtain.style.opacity = flashOp.toFixed(3);
+          }
+
+          // Anamorphic Sci-Fi Lens Flare Streak (horizontal laser blast)
+          if(flareStreak) {
+            const flOp = Math.max(0, 1.0 - p3 * 1.5).toFixed(3);
+            flareStreak.style.opacity = flOp;
+            flareStreak.style.transform = `scaleY(${Math.max(0.1, 1 - p3)}) scaleX(${1 + p3 * 2.5})`;
+          }
+
+          // Supersonic Neon Cyan Shockwave Ring (expands from scale 0.1 to 3.6)
+          if(shockwaveRing) {
+            const ringScale = (0.1 + 3.5 * Math.pow(p3, 0.65)).toFixed(3);
+            const ringOp = Math.max(0, (1.0 - p3 * 1.05)).toFixed(3);
+            shockwaveRing.style.transform = `scale(${ringScale})`;
+            shockwaveRing.style.opacity = ringOp;
+          }
+        }
+      } else {
+        posterLayer.style.display = 'none';
+        if(posterVfxLayer) posterVfxLayer.style.display = 'none';
+      }
+    }
+  }
+
   // ==========================================
   // PHASE 1: 0ms -> t_line2_start (Hook & Complete Question Card Entry)
   // ==========================================
@@ -2441,6 +2555,13 @@ function applyData(d){
   }
   if(d.ccEnabled !== undefined) currentData.ccEnabled = d.ccEnabled;
   if(d.ccStyle !== undefined) currentData.ccStyle = d.ccStyle;
+  
+  if(d.openingPoster !== undefined) {
+    currentData.openingPoster = d.openingPoster;
+    currentData.openingPosterDuration = d.openingPosterDuration || 1800;
+    const pImg = document.getElementById('openingPosterImg');
+    if(pImg) pImg.src = d.openingPoster;
+  }
   
   if(d.link !== undefined || d.simulatorLink !== undefined || d.reelNo !== undefined) {
     const rawLink = d.link || d.simulatorLink || '';

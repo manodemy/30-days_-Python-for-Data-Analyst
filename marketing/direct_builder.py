@@ -637,10 +637,37 @@ REELS_CATALOG = {
         "caption": "MANAGER SALARY TRAP 💼⚡\n\nWhich query finds employees earning more than their direct manager?\n\nCan you spot which approach correctly links the employee to their manager without subquery scoping bugs?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q18\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, self join sql, leetcode 181, employees earning more than managers, faang sql interview, amazon sql interview, flipkart sql interview, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
         "pinnedAnswer": "Option A is the Industry Standard ✅ | Option B is the Trap ❌\n\nWhy Option A (Self JOIN) is correct:\nA Self JOIN (`e.manager_id = m.emp_id`) matches each employee row directly with their manager's record in the same table. The `WHERE e.salary > m.salary` filter then accurately isolates employees out-earning their managers.\n\nWhy Option B (Uncorrelated Subquery) fails:\nIn Option B, `WHERE emp_id = manager_id` inside the subquery evaluates against the SAME inner row! It searches for an employee who is their own manager (like a CEO), completely ignoring the outer employee's manager ID!\n\n💡 Rule of thumb: Hierarchical comparisons within the same table (employee ↔ manager) are best solved with an explicit SELF JOIN!\n\nDid you vote A or B? 👇",
         "link": "https://www.manodemy.com/q18"
+    },
+    "SQL-12-R1": {
+        "reelNo": "SQL-12-R1",
+        "day": "DAY 12",
+        "badge": "SQL · Ghost Employee Trap",
+        "hook": "WHO STILL GOT PAID? 👻💸\nEx-employee resigned 3 months ago!",
+        "hookLineObjects": [
+            {"text": "WHO STILL GOT PAID? 👻💸", "font": "Montserrat", "size": 4.6},
+            {"text": "Ex-employee resigned 3 months ago!", "font": "Outfit", "size": 3.7}
+        ],
+        "hookHighlights": [
+            {"text": "WHO STILL GOT PAID?", "color": "#facc15"},
+            {"text": "resigned 3 months ago!", "color": "#00f0ff"}
+        ],
+        "lang": "sql",
+        "codeA": "SELECT p.emp_id, p.amount, p.pay_date\nFROM payroll p JOIN employees e\n  ON p.emp_id = e.emp_id\nWHERE p.pay_date > e.exit_date;",
+        "codeB": "SELECT p.emp_id, p.amount, p.pay_date\nFROM payroll p JOIN employees e\n  ON p.emp_id = e.emp_id\nWHERE e.status = 'Resigned';",
+        "pollInstr": "DROP YOUR VOTE IN COMMENTS 👇",
+        "clockSfx": "bomb",
+        "ccStyle": "hormozi",
+        "ccEnabled": True,
+        "voice": "en-US-AndrewNeural",
+        "voiceScript": "Top tech companies love asking this Ghost Payroll S-Q-L trap!\nWhich query catches salary payments credited after an employee resigned?\nChoose your answer.\nOption A...\nor Option B?\nDrop your vote in the comments below.",
+        "caption": "WHO STILL GOT PAID? 👻💸\n\nWhich query catches salary payments credited after an employee resigned?\n\nCan you spot which approach checks transaction dates instead of historical status flags?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q19\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, date filtering sql, ghost employees, payroll fraud audit, leetcode sql, data analyst interview, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
+        "pinnedAnswer": "Option A is the Real-World Audit Standard ✅ | Option B is the Trap ❌\n\nWhy Option A (pay_date > exit_date) works:\nAn employee who resigned 3 months ago has a valid historical employment record. To catch post-resignation unauthorized payments, you MUST compare transaction timestamps (`p.pay_date > e.exit_date`).\n\nWhy Option B (status = 'Resigned') fails:\nOption B simply checks if status is 'Resigned'. This catastrophically flags EVERY single legitimate monthly salary ever paid to that employee while they were working full-time!\n\n💡 Rule of thumb: Never rely on static status flags for temporal audit checks — always filter against transactional timestamp boundaries!\n\nDid you vote A or B? 👇",
+        "link": "https://www.manodemy.com/q19",
+        "openingPoster": str(PROJECT_ROOT / "marketing" / "output" / "video" / "SQL-12-R1_Opening_Poster_1080x1920.jpg")
     }
 }
 
-DEFAULT_REEL = REELS_CATALOG["SQL-11-R1"]
+DEFAULT_REEL = REELS_CATALOG["SQL-12-R1"]
 
 async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
     start_total = time.time()
@@ -857,7 +884,9 @@ async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
         "totalMs": total_ms,
         "clockDurationMs": (t_clock_out - t_clock_in),
         "wordCues": all_words,
-        "phrases": phrases
+        "phrases": phrases,
+        "hasOpeningPoster": bool(reel.get("openingPoster")),
+        "openingPosterDuration": t_line2_start if reel.get("openingPoster") else 0
     }
 
     # -------------------------------------------------------------
@@ -949,6 +978,17 @@ async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
             # Inject Reel Data and Cues into Template
             load_payload = dict(reel)
             load_payload["cues"] = cues_data
+
+            # If opening poster exists, encode as Base64 so it renders with 0ms delay at Frame 0
+            if "openingPoster" in reel and reel["openingPoster"]:
+                poster_path = Path(reel["openingPoster"])
+                if poster_path.exists():
+                    import base64
+                    mime = "image/png" if poster_path.suffix.lower() == ".png" else "image/jpeg"
+                    poster_b64 = f"data:{mime};base64," + base64.b64encode(poster_path.read_bytes()).decode('utf-8')
+                    load_payload["openingPoster"] = poster_b64
+                    load_payload["openingPosterDuration"] = cues_data.get("t_line2_start", 1800)
+
             await page.evaluate(f"window.ReelEngine.load({json.dumps(load_payload)});")
             await page.wait_for_timeout(500)
 
@@ -983,8 +1023,9 @@ async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
     # -------------------------------------------------------------
     print("\n📦 [STEP 5/5] Generating 1-Click Publishing Pack & Cover Thumbnail...", flush=True)
     try:
-        from marketing.cover_generator import generate_cover
-        await generate_cover(reel_no)
+        if reel_no != "SQL-12-R1":
+            from marketing.cover_generator import generate_cover
+            await generate_cover(reel_no)
     except Exception as e:
         print(f"   ⚠️ Cover generation note: {e}")
 
