@@ -3683,6 +3683,7 @@ const REEL_CHALLENGES = {
         <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-10-R1', 'B')">⚡ Load Option B (DENSE_RANK Trap)</button>
       </div>`,
     trapExplanation: 'Option B uses plain <code>DENSE_RANK()</code>, which simply counts 1, 2, 3... ignoring multi-day gaps! Option A subtracts <code>ROW_NUMBER()</code> from consecutive dates to form a constant date anchor for each unbroken streak.',
+    successExplanation: 'Option A uses the Date - ROW_NUMBER trick to generate a constant date anchor for each unbroken streak!',
     correctOption: 'A',
     codeA: "SELECT user_id, login_date,\n       DATE(login_date, '-' || (\n         ROW_NUMBER() OVER (\n           PARTITION BY user_id ORDER BY login_date\n         )\n       ) || ' days') AS streak_grp\nFROM user_logins;",
     codeB: "SELECT user_id, login_date,\n       DENSE_RANK() OVER (\n         PARTITION BY user_id ORDER BY login_date\n       ) AS streak_grp\nFROM user_logins;"
@@ -3698,6 +3699,7 @@ const REEL_CHALLENGES = {
         <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-11-R1', 'B')">⚡ Load Option B (Subquery Trap)</button>
       </div>`,
     trapExplanation: 'Option B fails because <code>WHERE employee_id = manager_id</code> inside the inner subquery evaluates against the inner row itself (checking if someone is their own manager) rather than joining to the outer employee row! Option A explicitly joins <code>e.manager_id = m.employee_id</code> to compare the direct pair.',
+    successExplanation: 'Option A uses Self JOIN to explicitly compare each employee with their direct manager!',
     correctOption: 'A',
     codeA: "SELECT e.first_name AS emp_name,\n       e.salary AS emp_salary,\n       m.first_name AS manager_name,\n       m.salary AS mgr_salary\nFROM employees e\nJOIN employees m ON e.manager_id = m.employee_id\nWHERE e.salary > m.salary;",
     codeB: "SELECT first_name\nFROM employees e\nWHERE salary > (\n  SELECT salary FROM employees\n  WHERE employee_id = manager_id\n);"
@@ -3713,6 +3715,7 @@ const REEL_CHALLENGES = {
         <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-12-R1', 'B')">⚡ Load Option B (Status Trap)</button>
       </div>`,
     trapExplanation: 'Option B simply checks <code>WHERE status = \'Resigned\'</code>, which flags every historical legitimate salary ever paid while the employee was actively working! Option A correctly checks <code>WHERE pay_date > exit_date</code> to catch only unauthorized payments after resignation.',
+    successExplanation: 'Option A correctly filters <code>pay_date > exit_date</code> to catch only unauthorized payments made after resignation!',
     correctOption: 'A',
     codeA: "SELECT p.emp_id, p.amount, p.pay_date\nFROM payroll p JOIN employees e\n  ON p.emp_id = e.emp_id\nWHERE p.pay_date > e.exit_date;",
     codeB: "SELECT p.emp_id, p.amount, p.pay_date\nFROM payroll p JOIN employees e\n  ON p.emp_id = e.emp_id\nWHERE e.status = 'Resigned';"
@@ -5300,9 +5303,8 @@ function runCurrentQuery() {
         successBanner.className = 'output-success';
         successBanner.style.marginTop = '10px';
         if (q.isChallenge && chal) {
-          const successDetail = chal.correctOption === 'A' 
-            ? 'Option A uses the Date - ROW_NUMBER trick to generate a constant date anchor for each unbroken streak!'
-            : (chal.task || 'You successfully solved the challenge!');
+          const successDetail = chal.successExplanation 
+            || (chal.task ? `${chal.task} solved cleanly!` : 'You successfully solved the challenge!');
           successBanner.innerHTML = `🎉 <strong>BOOM! Perfect Query!</strong><br/>${successDetail}`;
         } else {
           successBanner.innerHTML = '🎉 Correct Answer! Good job.';
@@ -5319,8 +5321,8 @@ function runCurrentQuery() {
         const diffDiv = document.createElement('div');
         if (q.isChallenge && chal) {
           const trapDetail = chal.trapExplanation || 'This query demonstrates the common SQL trap shown in our Reel. Notice the output produced unexpected values!';
-          const fixOpt = (q && q.correctOption) || 'B';
-          const fixLabel = fixOpt === 'A' ? '⚡ Load Option A (Date - ROW_NUMBER Trick)' : '⚡ Load Option B (Fix)';
+          const fixOpt = (q && q.correctOption) || 'A';
+          const fixLabel = `⚡ Load Option ${fixOpt} (${fixOpt === 'A' ? 'Correct Standard' : 'Fix'})`;
           diffDiv.innerHTML = `
             <div style="margin-top: 10px; padding: 12px 14px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; font-size: 0.8rem; line-height: 1.5; color: #fca5a5;">
               <div style="font-weight: 800; color: #ef4444; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">💀 Trap Caught!</div>
