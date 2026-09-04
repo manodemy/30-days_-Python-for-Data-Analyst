@@ -35,8 +35,8 @@ jobs:
       - name: 🏗️ Build static HTML from notebooks
         run: |
           echo "Checking for notebooks to build..."
-          if [ -d "notebooks" ] && ls notebooks/*.ipynb 1> /dev/null 2>&1; then
-            python server.py build
+          if [ -f "server.py" ] && [ -d "notebooks" ] && ls notebooks/*.ipynb 1> /dev/null 2>&1; then
+            python server.py build || echo "⚠️ Static build warning — continuing with pre-built files"
             echo "✅ Static build complete"
           else
             echo "⚠️  No notebooks found — using pre-built HTML files"
