@@ -691,10 +691,37 @@ REELS_CATALOG = {
         "pinnedAnswer": "Option B is the FAANG Standard ✅ | Option A is the Crash Trap ❌\n\nWhy Option B (Delta Event Counter +1 / -1) works:\nBy tagging each stream start as +1 and each stream end as -1, `SUM(delta) OVER (ORDER BY t)` computes the exact running concurrent viewers in O(N log N) time without storing redundant combinations!\n\nWhy Option A (Self-Join BETWEEN) fails:\nOption A compares every stream against every other overlapping stream using an O(N²) quadratic Self-Join. On 10 million concurrent streams, this generates 100 trillion row comparisons, causing catastrophic database memory exhaustion!\n\n💡 Rule of thumb: When tracking concurrent active sessions, convert starts and ends into +1 / -1 delta events instead of writing quadratic self-joins!\n\nDid you vote A or B? 👇",
         "link": "https://www.manodemy.com/q20",
         "openingPoster": str(PROJECT_ROOT / "marketing" / "output" / "video" / "SQL-13-R1_Opening_Poster_1080x1920.jpg")
+    },
+    "SQL-14-R1": {
+        "reelNo": "SQL-14-R1",
+        "day": "DAY 14",
+        "badge": "SQL · Session Timeout Trap",
+        "hook": "SESSION TIMEOUT? ⏱️📱\n30 minutes of inactivity triggers a new session!",
+        "hookLineObjects": [
+            {"text": "SESSION TIMEOUT? ⏱️📱", "font": "Montserrat", "size": 4.6},
+            {"text": "30 mins inactivity = new session!", "font": "Outfit", "size": 3.7}
+        ],
+        "hookHighlights": [
+            {"text": "SESSION TIMEOUT?", "color": "#facc15"},
+            {"text": "new session!", "color": "#00f0ff"}
+        ],
+        "lang": "sql",
+        "codeA": "WITH flagged AS (\n  SELECT click_time,\n    CASE WHEN click_time - LAG(click_time)\n      OVER (ORDER BY click_time) > 30 THEN 1 ELSE 0 END AS is_new\n  FROM clicks\n)\nSELECT click_time,\n  SUM(is_new) OVER (ORDER BY click_time) AS session_id\nFROM flagged;",
+        "codeB": "SELECT click_time,\n       DENSE_RANK() OVER (ORDER BY DATE(click_time)) AS session_id\nFROM clicks;",
+        "pollInstr": "DROP YOUR VOTE IN COMMENTS 👇",
+        "clockSfx": "bomb",
+        "ccStyle": "hormozi",
+        "ccEnabled": True,
+        "voice": "en-US-AndrewNeural",
+        "voiceScript": "Swiggy and Uber love asking this User Sessionization S-Q-L challenge!\nWhich query tracks dynamic sessions when thirty minutes of inactivity triggers a timeout?\nChoose your answer.\nOption A...\nor Option B?\nDrop your vote in the comments below.",
+        "caption": "SESSION TIMEOUT? ⏱️📱\n\nWhich query tracks dynamic user sessions when 30 minutes of inactivity triggers a new session?\n\nCan you spot which approach computes event inactivity gaps instead of merely ranking calendar dates?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q21\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, sessionization sql, swiggy sql interview, uber data analyst, lag function sql, running total session id, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
+        "pinnedAnswer": "Option A is the FAANG Standard ✅ | Option B is the Trap ❌\n\nWhy Option A (LAG Time-Delta + Cumulative Sum) works:\nOption A calculates the time elapsed since the user's previous click using `LAG(click_time)`. When that inactivity gap exceeds 30 minutes, it flags a new session (`is_new = 1`). A running cumulative `SUM(is_new) OVER (ORDER BY click_time)` then cleanly generates distinct, sequential session IDs across any time boundary!\n\nWhy Option B (DENSE_RANK on DATE) fails:\nOption B merely truncates click timestamps to calendar days (`DATE(click_time)`). If a user visits the app at 9:00 AM, closes it, and returns 12 hours later at 9:00 PM, Option B assigns BOTH visits the exact same session ID! Furthermore, sessions crossing midnight are incorrectly fragmented.\n\n💡 Rule of thumb: Real-world sessionization always depends on inactivity gaps between consecutive events — never rely on arbitrary midnight calendar boundaries!\n\nDid you vote A or B? 👇",
+        "link": "https://www.manodemy.com/q21",
+        "openingPoster": str(PROJECT_ROOT / "marketing" / "output" / "video" / "SQL-14-R1_Opening_Poster_1080x1920.jpg")
     }
 }
 
-DEFAULT_REEL = REELS_CATALOG["SQL-13-R1"]
+DEFAULT_REEL = REELS_CATALOG["SQL-14-R1"]
 
 async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
     start_total = time.time()
@@ -1050,7 +1077,7 @@ async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
     # -------------------------------------------------------------
     print("\n📦 [STEP 5/5] Generating 1-Click Publishing Pack & Cover Thumbnail...", flush=True)
     try:
-        if reel_no not in ["SQL-12-R1", "SQL-13-R1"]:
+        if reel_no not in ["SQL-12-R1", "SQL-13-R1", "SQL-14-R1"]:
             from marketing.cover_generator import generate_cover
             await generate_cover(reel_no)
     except Exception as e:

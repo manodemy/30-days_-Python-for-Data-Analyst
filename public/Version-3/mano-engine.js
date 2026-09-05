@@ -3735,6 +3735,22 @@ const REEL_CHALLENGES = {
     correctOption: 'B',
     codeA: "SELECT s1.start_time AS t,\n       COUNT(*) AS concurrent_users\nFROM streams s1\nJOIN streams s2\n  ON s1.start_time BETWEEN s2.start_time AND s2.end_time\nGROUP BY s1.stream_id;",
     codeB: "WITH events AS (\n  SELECT start_time AS t, 1 AS delta FROM streams\n  UNION ALL\n  SELECT end_time AS t, -1 AS delta FROM streams\n)\nSELECT t, SUM(delta) OVER (ORDER BY t) AS concurrent_users\nFROM events;"
+  },
+  'SQL-14-R1': {
+    day: 'day14',
+    slideIndex: 0,
+    title: 'SESSION TIMEOUT CHALLENGE ⏱️📱',
+    task: 'Dynamic Sessionization: Flagging Inactivity Gaps vs Calendar Date Ranks',
+    prompt: `Swiggy, Uber, and Amazon track user sessions by inactivity timeouts (e.g. 30 minutes of silence triggers a new session). Run Option A (Lag Delta + Cumulative Sum) vs Option B (Calendar Date Rank) to see how dynamic sessionization works.<br/>
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-14-R1', 'A')">⚡ Load Option A (Lag + Running Sum Standard)</button>
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-14-R1', 'B')">⚡ Load Option B (Date Rank Trap)</button>
+      </div>`,
+    trapExplanation: 'Option B merely groups clicks by calendar date using DENSE_RANK(DATE). If a user visits in the morning and returns 10 hours later at night, Option B merges them into the same session! Furthermore, sessions crossing midnight break entirely.',
+    successExplanation: 'Option A uses the industry standard Sessionization algorithm: LAG() checks if inactivity > 30 mins to flag new sessions, and SUM() OVER computes the incremental dynamic session IDs perfectly!',
+    correctOption: 'A',
+    codeA: "WITH flagged AS (\n  SELECT click_time,\n    CASE WHEN click_time - LAG(click_time)\n      OVER (ORDER BY click_time) > 30 THEN 1 ELSE 0 END AS is_new\n  FROM clicks\n)\nSELECT click_time,\n  SUM(is_new) OVER (ORDER BY click_time) AS session_id\nFROM flagged;",
+    codeB: "SELECT click_time,\n       DENSE_RANK() OVER (ORDER BY DATE(click_time)) AS session_id\nFROM clicks;"
   }
 };
 
@@ -3773,6 +3789,7 @@ function getActiveChallengeId() {
   if (camp.includes('reel_day11_q18') || camp.includes('reel_18') || camp.includes('q18') || camp.includes('manager_salary') || camp.includes('self_join')) return 'SQL-11-R1';
   if (camp.includes('reel_day12_q19') || camp.includes('reel_19') || camp.includes('q19') || camp.includes('ghost_employee') || camp.includes('payroll_leak')) return 'SQL-12-R1';
   if (camp.includes('reel_day13_q20') || camp.includes('reel_20') || camp.includes('q20') || camp.includes('peak_streamers') || camp.includes('concurrency')) return 'SQL-13-R1';
+  if (camp.includes('reel_day14_q21') || camp.includes('reel_21') || camp.includes('q21') || camp.includes('session') || camp.includes('timeout')) return 'SQL-14-R1';
 
   const dayParam = urlP.get('day');
   const qParam = urlP.get('q') || urlP.get('question');
@@ -3816,6 +3833,9 @@ function getActiveChallengeId() {
   if (dayParam === '13') {
     if (qParam === '1' || qParam === '20') return 'SQL-13-R1';
   }
+  if (dayParam === '14') {
+    if (qParam === '1' || qParam === '21') return 'SQL-14-R1';
+  }
   if (qParam === '12' || qParam === 'q12') return 'SQL-07-R1';
   if (qParam === '13' || qParam === 'q13') return 'SQL-07-R2';
   if (qParam === '14' || qParam === 'q14') return 'SQL-08-R1';
@@ -3825,6 +3845,7 @@ function getActiveChallengeId() {
   if (qParam === '18' || qParam === 'q18') return 'SQL-11-R1';
   if (qParam === '19' || qParam === 'q19') return 'SQL-12-R1';
   if (qParam === '20' || qParam === 'q20') return 'SQL-13-R1';
+  if (qParam === '21' || qParam === 'q21') return 'SQL-14-R1';
   return null;
 }
 

@@ -20,8 +20,10 @@ bridges = {
     'q14': '/Version-3/index.html?day=8&challenge=SQL-08-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day08_q14_like_wildcard',
     'q15': '/Version-3/index.html?day=8&challenge=SQL-08-R2&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day08_q15_union_dedup',
     'q16': '/Version-3/index.html?day=9&challenge=SQL-09-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day09_q16_latest_record',
-    'q17': '/Version-3/index.html?day=10&challenge=SQL-10-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day10_q17_gaps_islands',
-    'q18': '/Version-3/index.html?day=11&challenge=SQL-11-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day11_q18_manager_salary'
+    'q18': '/Version-3/index.html?day=11&challenge=SQL-11-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day11_q18_manager_salary',
+    'q19': '/Version-3/index.html?day=12&challenge=SQL-12-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day12_q19_ghost_employee',
+    'q20': '/Version-3/index.html?day=13&challenge=SQL-13-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day13_q20_peak_streamers',
+    'q21': '/Version-3/index.html?day=14&challenge=SQL-14-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day14_q21_session_timeout'
 }
 
 html_template = """<!DOCTYPE html>
