@@ -1,0 +1,464 @@
+{
+  "reelNo": "SQL-14-R1",
+  "day": "DAY 14",
+  "badge": "SQL · Session Timeout Trap",
+  "videoFile": "SQL-14-R1.mp4",
+  "videoPath": "D:\\Learn Python in 60days\\Manodemy_Web_V2\\marketing\\output\\video\\SQL-14-R1.mp4",
+  "coverFile": "SQL-14-R1_Cover.png",
+  "coverJpg": "SQL-14-R1_Cover.jpg",
+  "fileSizeMb": 14.13,
+  "resolution": "1080x1920",
+  "fps": 24,
+  "durationSec": 17.26,
+  "caption": "SESSION TIMEOUT? ⏱️📱\n\nWhich query tracks dynamic user sessions when 30 minutes of inactivity triggers a new session?\n\nCan you spot the dangerous difference between SUM() and COUNT() in running window functions?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q21\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, sessionization sql, sum vs count sql, swiggy sql interview, uber data analyst, lag function sql, running total session id, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
+  "pinnedAnswer": "Option A is the FAANG Standard ✅ | Option B is the Trap ❌\n\nWhy Option A (SUM of is_new) works:\nWhen inactivity exceeds 30 minutes, `is_new` flags 1; otherwise it flags 0. `SUM(is_new) OVER (ORDER BY click_time)` adds 0 on ordinary clicks (preserving the current session ID) and adds 1 only when a new session starts (1, 1, 1, 2, 2, 3...)!\n\nWhy Option B (COUNT of is_new) fails:\nIn SQL, `0` is a valid, populated integer value — it is NOT NULL! `COUNT(is_new)` counts every single 0 as a row, incrementing the session ID on EVERY SINGLE CLICK (1, 2, 3, 4, 5...)! It completely destroys session grouping!\n\n💡 Rule of thumb: To accumulate binary flags (0 and 1) in SQL, always use SUM() — COUNT() counts both 0 and 1!\n\nDid you vote A or B? 👇",
+  "simulatorLink": "https://www.manodemy.com/q21",
+  "cues": {
+    "t_hook_start": 0,
+    "t_line2_start": 5000,
+    "t_clock_in": 10400,
+    "t_opta": 11500,
+    "t_optb": 12600,
+    "t_optb_end": 13910,
+    "t_clock_out": 14060,
+    "t_cta_start": 14060,
+    "t_voice_end": 15860,
+    "totalMs": 17260,
+    "clockDurationMs": 3660,
+    "wordCues": [
+      {
+        "word": "Swiggy",
+        "startMs": 0,
+        "endMs": 560
+      },
+      {
+        "word": "and",
+        "startMs": 560,
+        "endMs": 860
+      },
+      {
+        "word": "Uber",
+        "startMs": 860,
+        "endMs": 1140
+      },
+      {
+        "word": "love",
+        "startMs": 1140,
+        "endMs": 1380
+      },
+      {
+        "word": "asking",
+        "startMs": 1380,
+        "endMs": 1940
+      },
+      {
+        "word": "this",
+        "startMs": 1940,
+        "endMs": 2200
+      },
+      {
+        "word": "User",
+        "startMs": 2200,
+        "endMs": 2620
+      },
+      {
+        "word": "Sessionization",
+        "startMs": 2620,
+        "endMs": 3560
+      },
+      {
+        "word": "S-Q-L",
+        "startMs": 3560,
+        "endMs": 4080
+      },
+      {
+        "word": "challenge!",
+        "startMs": 4080,
+        "endMs": 4560
+      },
+      {
+        "word": "Which",
+        "startMs": 5000,
+        "endMs": 5420
+      },
+      {
+        "word": "query",
+        "startMs": 5420,
+        "endMs": 5780
+      },
+      {
+        "word": "tracks",
+        "startMs": 5780,
+        "endMs": 6160
+      },
+      {
+        "word": "dynamic",
+        "startMs": 6160,
+        "endMs": 6600
+      },
+      {
+        "word": "sessions",
+        "startMs": 6600,
+        "endMs": 7060
+      },
+      {
+        "word": "when",
+        "startMs": 7060,
+        "endMs": 7340
+      },
+      {
+        "word": "thirty",
+        "startMs": 7340,
+        "endMs": 7740
+      },
+      {
+        "word": "minutes",
+        "startMs": 7740,
+        "endMs": 8020
+      },
+      {
+        "word": "of",
+        "startMs": 8020,
+        "endMs": 8200
+      },
+      {
+        "word": "inactivity",
+        "startMs": 8200,
+        "endMs": 8860
+      },
+      {
+        "word": "triggers",
+        "startMs": 8860,
+        "endMs": 9220
+      },
+      {
+        "word": "a",
+        "startMs": 9220,
+        "endMs": 9400
+      },
+      {
+        "word": "timeout?",
+        "startMs": 9400,
+        "endMs": 9860
+      },
+      {
+        "word": "Choose",
+        "startMs": 10400,
+        "endMs": 10580
+      },
+      {
+        "word": "your",
+        "startMs": 10580,
+        "endMs": 10760
+      },
+      {
+        "word": "answer...",
+        "startMs": 10760,
+        "endMs": 11020
+      },
+      {
+        "word": "Option",
+        "startMs": 11500,
+        "endMs": 11800
+      },
+      {
+        "word": "A...",
+        "startMs": 11800,
+        "endMs": 12020
+      },
+      {
+        "word": "or",
+        "startMs": 12600,
+        "endMs": 12900
+      },
+      {
+        "word": "Option",
+        "startMs": 12900,
+        "endMs": 13140
+      },
+      {
+        "word": "B?",
+        "startMs": 13140,
+        "endMs": 13910
+      },
+      {
+        "word": "Drop",
+        "startMs": 14060,
+        "endMs": 14380
+      },
+      {
+        "word": "your",
+        "startMs": 14380,
+        "endMs": 14560
+      },
+      {
+        "word": "vote",
+        "startMs": 14560,
+        "endMs": 14800
+      },
+      {
+        "word": "in",
+        "startMs": 14800,
+        "endMs": 15020
+      },
+      {
+        "word": "the",
+        "startMs": 15020,
+        "endMs": 15120
+      },
+      {
+        "word": "comments",
+        "startMs": 15120,
+        "endMs": 15420
+      },
+      {
+        "word": "below.",
+        "startMs": 15420,
+        "endMs": 15760
+      }
+    ],
+    "phrases": [
+      {
+        "index": 0,
+        "text": "Swiggy and Uber love asking this User Sessionization S-Q-L challenge!",
+        "startMs": 0,
+        "endMs": 5000,
+        "words": [
+          {
+            "word": "Swiggy",
+            "startMs": 0,
+            "endMs": 560
+          },
+          {
+            "word": "and",
+            "startMs": 560,
+            "endMs": 860
+          },
+          {
+            "word": "Uber",
+            "startMs": 860,
+            "endMs": 1140
+          },
+          {
+            "word": "love",
+            "startMs": 1140,
+            "endMs": 1380
+          },
+          {
+            "word": "asking",
+            "startMs": 1380,
+            "endMs": 1940
+          },
+          {
+            "word": "this",
+            "startMs": 1940,
+            "endMs": 2200
+          },
+          {
+            "word": "User",
+            "startMs": 2200,
+            "endMs": 2620
+          },
+          {
+            "word": "Sessionization",
+            "startMs": 2620,
+            "endMs": 3560
+          },
+          {
+            "word": "S-Q-L",
+            "startMs": 3560,
+            "endMs": 4080
+          },
+          {
+            "word": "challenge!",
+            "startMs": 4080,
+            "endMs": 4560
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "text": "Which query tracks dynamic sessions when thirty minutes of inactivity triggers a timeout?",
+        "startMs": 5000,
+        "endMs": 10400,
+        "words": [
+          {
+            "word": "Which",
+            "startMs": 5000,
+            "endMs": 5420
+          },
+          {
+            "word": "query",
+            "startMs": 5420,
+            "endMs": 5780
+          },
+          {
+            "word": "tracks",
+            "startMs": 5780,
+            "endMs": 6160
+          },
+          {
+            "word": "dynamic",
+            "startMs": 6160,
+            "endMs": 6600
+          },
+          {
+            "word": "sessions",
+            "startMs": 6600,
+            "endMs": 7060
+          },
+          {
+            "word": "when",
+            "startMs": 7060,
+            "endMs": 7340
+          },
+          {
+            "word": "thirty",
+            "startMs": 7340,
+            "endMs": 7740
+          },
+          {
+            "word": "minutes",
+            "startMs": 7740,
+            "endMs": 8020
+          },
+          {
+            "word": "of",
+            "startMs": 8020,
+            "endMs": 8200
+          },
+          {
+            "word": "inactivity",
+            "startMs": 8200,
+            "endMs": 8860
+          },
+          {
+            "word": "triggers",
+            "startMs": 8860,
+            "endMs": 9220
+          },
+          {
+            "word": "a",
+            "startMs": 9220,
+            "endMs": 9400
+          },
+          {
+            "word": "timeout?",
+            "startMs": 9400,
+            "endMs": 9860
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "text": "Choose your answer...",
+        "startMs": 10400,
+        "endMs": 11500,
+        "words": [
+          {
+            "word": "Choose",
+            "startMs": 10400,
+            "endMs": 10580
+          },
+          {
+            "word": "your",
+            "startMs": 10580,
+            "endMs": 10760
+          },
+          {
+            "word": "answer...",
+            "startMs": 10760,
+            "endMs": 11020
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "text": "Option A...",
+        "startMs": 11500,
+        "endMs": 12600,
+        "words": [
+          {
+            "word": "Option",
+            "startMs": 11500,
+            "endMs": 11800
+          },
+          {
+            "word": "A...",
+            "startMs": 11800,
+            "endMs": 12020
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "text": "or Option B?",
+        "startMs": 12600,
+        "endMs": 13910,
+        "words": [
+          {
+            "word": "or",
+            "startMs": 12600,
+            "endMs": 12900
+          },
+          {
+            "word": "Option",
+            "startMs": 12900,
+            "endMs": 13140
+          },
+          {
+            "word": "B?",
+            "startMs": 13140,
+            "endMs": 13910
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "text": "Drop your vote in the comments below.",
+        "startMs": 14060,
+        "endMs": 15860,
+        "words": [
+          {
+            "word": "Drop",
+            "startMs": 14060,
+            "endMs": 14380
+          },
+          {
+            "word": "your",
+            "startMs": 14380,
+            "endMs": 14560
+          },
+          {
+            "word": "vote",
+            "startMs": 14560,
+            "endMs": 14800
+          },
+          {
+            "word": "in",
+            "startMs": 14800,
+            "endMs": 15020
+          },
+          {
+            "word": "the",
+            "startMs": 15020,
+            "endMs": 15120
+          },
+          {
+            "word": "comments",
+            "startMs": 15120,
+            "endMs": 15420
+          },
+          {
+            "word": "below.",
+            "startMs": 15420,
+            "endMs": 15760
+          }
+        ]
+      }
+    ],
+    "hasOpeningPoster": true,
+    "openingPosterDuration": 5000
+  },
+  "generatedAt": "2026-09-05 16:37:53"
+}

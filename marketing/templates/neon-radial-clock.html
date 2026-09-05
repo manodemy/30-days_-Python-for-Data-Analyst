@@ -2227,10 +2227,10 @@ function renderTimelineState(elapsedMs){
         if(posterVfxLayer) posterVfxLayer.style.display = 'block';
 
         if(elapsedMs < tGlitch) {
-          // --- STAGE 1: Cinematic Hollywood Slow Push-In (0ms -> tGlitch) ---
+          // --- STAGE 1: Cinematic Hollywood Push-In to Full Screen Width (0ms -> tGlitch) ---
           const t1 = elapsedMs / Math.max(1, tGlitch);
           const ease1 = Math.sin((t1 * Math.PI) / 2);
-          const s = (1.0000 + 0.0500 * ease1).toFixed(4);
+          const s = (1.0000 + 0.2200 * ease1).toFixed(4);
           if(posterImg) {
             posterImg.style.transform = `scale(${s})`;
             posterImg.style.filter = 'none';
@@ -2246,7 +2246,7 @@ function renderTimelineState(elapsedMs){
           const jx = (Math.sin(p2 * 35) * 3.5).toFixed(1);
           const jy = (Math.cos(p2 * 28) * 2.0).toFixed(1);
           // Snap recoil
-          const s2 = (1.0500 - 0.0250 * Math.sin(p2 * Math.PI)).toFixed(4);
+          const s2 = (1.2200 - 0.0350 * Math.sin(p2 * Math.PI)).toFixed(4);
           if(posterImg) {
             posterImg.style.transform = `scale(${s2}) translate(${jx}px, ${jy}px)`;
             // Chromatic Aberration RGB split + energy hum
@@ -2262,8 +2262,8 @@ function renderTimelineState(elapsedMs){
         } else {
           // --- STAGE 3: THE HYPERSONIC SUPERNOVA BLAST & EXPANDING SHOCKWAVE (tBlast -> posterDur) ---
           const p3 = (elapsedMs - tBlast) / blastDur;
-          // Exponential Warp Zoom (1.025 -> 1.420!)
-          const s3 = (1.0250 + 0.3950 * Math.pow(p3, 2.2)).toFixed(4);
+          // Exponential Warp Zoom (1.20 -> 1.66!)
+          const s3 = (1.2000 + 0.4600 * Math.pow(p3, 2.2)).toFixed(4);
           const blurPx = (p3 * 22).toFixed(1);
           const imgOp = Math.max(0, 1.0 - p3 * 1.35).toFixed(3);
           if(posterImg) {

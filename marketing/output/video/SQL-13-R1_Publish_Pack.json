@@ -1,0 +1,424 @@
+{
+  "reelNo": "SQL-13-R1",
+  "day": "DAY 13",
+  "badge": "SQL · Peak Concurrency Trap",
+  "videoFile": "SQL-13-R1.mp4",
+  "videoPath": "D:\\Learn Python in 60days\\Manodemy_Web_V2\\marketing\\output\\video\\SQL-13-R1.mp4",
+  "coverFile": "SQL-13-R1_Cover.png",
+  "coverJpg": "SQL-13-R1_Cover.jpg",
+  "fileSizeMb": 13.23,
+  "resolution": "1080x1920",
+  "fps": 24,
+  "durationSec": 15.58,
+  "caption": "PEAK STREAMERS? 🎬🍿\n\nWhich query finds concurrent viewers watching at the exact same second?\n\nCan you spot which approach scales to millions of streams without quadratic join crashes?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q20\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, peak concurrency sql, netflix sql interview, hotstar live streams, running total sql, window functions, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
+  "pinnedAnswer": "Option B is the FAANG Standard ✅ | Option A is the Crash Trap ❌\n\nWhy Option B (Delta Event Counter +1 / -1) works:\nBy tagging each stream start as +1 and each stream end as -1, `SUM(delta) OVER (ORDER BY t)` computes the exact running concurrent viewers in O(N log N) time without storing redundant combinations!\n\nWhy Option A (Self-Join BETWEEN) fails:\nOption A compares every stream against every other overlapping stream using an O(N²) quadratic Self-Join. On 10 million concurrent streams, this generates 100 trillion row comparisons, causing catastrophic database memory exhaustion!\n\n💡 Rule of thumb: When tracking concurrent active sessions, convert starts and ends into +1 / -1 delta events instead of writing quadratic self-joins!\n\nDid you vote A or B? 👇",
+  "simulatorLink": "https://www.manodemy.com/q20",
+  "cues": {
+    "t_hook_start": 0,
+    "t_line2_start": 5120,
+    "t_clock_in": 8720,
+    "t_opta": 9860,
+    "t_optb": 10920,
+    "t_optb_end": 12130,
+    "t_clock_out": 12280,
+    "t_cta_start": 12280,
+    "t_voice_end": 14180,
+    "totalMs": 15580,
+    "clockDurationMs": 3560,
+    "wordCues": [
+      {
+        "word": "Netflix",
+        "startMs": 0,
+        "endMs": 460
+      },
+      {
+        "word": "and",
+        "startMs": 460,
+        "endMs": 820
+      },
+      {
+        "word": "Hotstar",
+        "startMs": 820,
+        "endMs": 1260
+      },
+      {
+        "word": "love",
+        "startMs": 1260,
+        "endMs": 1520
+      },
+      {
+        "word": "asking",
+        "startMs": 1520,
+        "endMs": 2060
+      },
+      {
+        "word": "this",
+        "startMs": 2060,
+        "endMs": 2320
+      },
+      {
+        "word": "Peak",
+        "startMs": 2320,
+        "endMs": 2540
+      },
+      {
+        "word": "Concurrency",
+        "startMs": 2540,
+        "endMs": 3300
+      },
+      {
+        "word": "S-Q-L",
+        "startMs": 3300,
+        "endMs": 3840
+      },
+      {
+        "word": "challenge!",
+        "startMs": 3840,
+        "endMs": 4340
+      },
+      {
+        "word": "Which",
+        "startMs": 5120,
+        "endMs": 5440
+      },
+      {
+        "word": "query",
+        "startMs": 5440,
+        "endMs": 5800
+      },
+      {
+        "word": "counts",
+        "startMs": 5800,
+        "endMs": 6060
+      },
+      {
+        "word": "live",
+        "startMs": 6060,
+        "endMs": 6620
+      },
+      {
+        "word": "streamers",
+        "startMs": 6620,
+        "endMs": 6980
+      },
+      {
+        "word": "without",
+        "startMs": 6980,
+        "endMs": 7460
+      },
+      {
+        "word": "crashing",
+        "startMs": 7460,
+        "endMs": 7620
+      },
+      {
+        "word": "the",
+        "startMs": 7620,
+        "endMs": 8000
+      },
+      {
+        "word": "database?",
+        "startMs": 8000,
+        "endMs": 8720
+      },
+      {
+        "word": "Choose",
+        "startMs": 8720,
+        "endMs": 8900
+      },
+      {
+        "word": "your",
+        "startMs": 8900,
+        "endMs": 9080
+      },
+      {
+        "word": "answer...",
+        "startMs": 9080,
+        "endMs": 9340
+      },
+      {
+        "word": "Option",
+        "startMs": 9860,
+        "endMs": 10120
+      },
+      {
+        "word": "A...",
+        "startMs": 10120,
+        "endMs": 10360
+      },
+      {
+        "word": "or",
+        "startMs": 10920,
+        "endMs": 11220
+      },
+      {
+        "word": "Option",
+        "startMs": 11220,
+        "endMs": 11500
+      },
+      {
+        "word": "B?",
+        "startMs": 11500,
+        "endMs": 12130
+      },
+      {
+        "word": "Drop",
+        "startMs": 12280,
+        "endMs": 12680
+      },
+      {
+        "word": "your",
+        "startMs": 12680,
+        "endMs": 12880
+      },
+      {
+        "word": "vote",
+        "startMs": 12880,
+        "endMs": 13120
+      },
+      {
+        "word": "in",
+        "startMs": 13120,
+        "endMs": 13340
+      },
+      {
+        "word": "the",
+        "startMs": 13340,
+        "endMs": 13440
+      },
+      {
+        "word": "comments",
+        "startMs": 13440,
+        "endMs": 13740
+      },
+      {
+        "word": "below.",
+        "startMs": 13740,
+        "endMs": 14080
+      }
+    ],
+    "phrases": [
+      {
+        "index": 0,
+        "text": "Netflix and Hotstar love asking this Peak Concurrency S-Q-L challenge!",
+        "startMs": 0,
+        "endMs": 5120,
+        "words": [
+          {
+            "word": "Netflix",
+            "startMs": 0,
+            "endMs": 460
+          },
+          {
+            "word": "and",
+            "startMs": 460,
+            "endMs": 820
+          },
+          {
+            "word": "Hotstar",
+            "startMs": 820,
+            "endMs": 1260
+          },
+          {
+            "word": "love",
+            "startMs": 1260,
+            "endMs": 1520
+          },
+          {
+            "word": "asking",
+            "startMs": 1520,
+            "endMs": 2060
+          },
+          {
+            "word": "this",
+            "startMs": 2060,
+            "endMs": 2320
+          },
+          {
+            "word": "Peak",
+            "startMs": 2320,
+            "endMs": 2540
+          },
+          {
+            "word": "Concurrency",
+            "startMs": 2540,
+            "endMs": 3300
+          },
+          {
+            "word": "S-Q-L",
+            "startMs": 3300,
+            "endMs": 3840
+          },
+          {
+            "word": "challenge!",
+            "startMs": 3840,
+            "endMs": 4340
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "text": "Which query counts live streamers without crashing the database?",
+        "startMs": 5120,
+        "endMs": 8720,
+        "words": [
+          {
+            "word": "Which",
+            "startMs": 5120,
+            "endMs": 5440
+          },
+          {
+            "word": "query",
+            "startMs": 5440,
+            "endMs": 5800
+          },
+          {
+            "word": "counts",
+            "startMs": 5800,
+            "endMs": 6060
+          },
+          {
+            "word": "live",
+            "startMs": 6060,
+            "endMs": 6620
+          },
+          {
+            "word": "streamers",
+            "startMs": 6620,
+            "endMs": 6980
+          },
+          {
+            "word": "without",
+            "startMs": 6980,
+            "endMs": 7460
+          },
+          {
+            "word": "crashing",
+            "startMs": 7460,
+            "endMs": 7620
+          },
+          {
+            "word": "the",
+            "startMs": 7620,
+            "endMs": 8000
+          },
+          {
+            "word": "database?",
+            "startMs": 8000,
+            "endMs": 8720
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "text": "Choose your answer...",
+        "startMs": 8720,
+        "endMs": 9860,
+        "words": [
+          {
+            "word": "Choose",
+            "startMs": 8720,
+            "endMs": 8900
+          },
+          {
+            "word": "your",
+            "startMs": 8900,
+            "endMs": 9080
+          },
+          {
+            "word": "answer...",
+            "startMs": 9080,
+            "endMs": 9340
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "text": "Option A...",
+        "startMs": 9860,
+        "endMs": 10920,
+        "words": [
+          {
+            "word": "Option",
+            "startMs": 9860,
+            "endMs": 10120
+          },
+          {
+            "word": "A...",
+            "startMs": 10120,
+            "endMs": 10360
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "text": "or Option B?",
+        "startMs": 10920,
+        "endMs": 12130,
+        "words": [
+          {
+            "word": "or",
+            "startMs": 10920,
+            "endMs": 11220
+          },
+          {
+            "word": "Option",
+            "startMs": 11220,
+            "endMs": 11500
+          },
+          {
+            "word": "B?",
+            "startMs": 11500,
+            "endMs": 12130
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "text": "Drop your vote in the comments below.",
+        "startMs": 12280,
+        "endMs": 14180,
+        "words": [
+          {
+            "word": "Drop",
+            "startMs": 12280,
+            "endMs": 12680
+          },
+          {
+            "word": "your",
+            "startMs": 12680,
+            "endMs": 12880
+          },
+          {
+            "word": "vote",
+            "startMs": 12880,
+            "endMs": 13120
+          },
+          {
+            "word": "in",
+            "startMs": 13120,
+            "endMs": 13340
+          },
+          {
+            "word": "the",
+            "startMs": 13340,
+            "endMs": 13440
+          },
+          {
+            "word": "comments",
+            "startMs": 13440,
+            "endMs": 13740
+          },
+          {
+            "word": "below.",
+            "startMs": 13740,
+            "endMs": 14080
+          }
+        ]
+      }
+    ],
+    "hasOpeningPoster": true,
+    "openingPosterDuration": 5120
+  },
+  "generatedAt": "2026-09-05 16:36:16"
+}
