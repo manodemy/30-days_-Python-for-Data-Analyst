@@ -1070,33 +1070,6 @@ async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
                     load_payload["openingPoster"] = poster_b64
                     load_payload["openingPosterDuration"] = cues_data.get("t_line2_start", 1800)
 
-            # If 7-layer kinetic component suite exists, load it into template
-            parts = reel_no.lower().split("-")
-            candidates = [
-                PROJECT_ROOT / "marketing" / "assets" / f"{parts[0]}{parts[1]}_layers",
-                PROJECT_ROOT / "marketing" / "assets" / f"{reel_no.lower().replace('-', '')}_layers",
-                PROJECT_ROOT / "marketing" / "assets" / f"{reel_no.lower()}_layers"
-            ]
-            layers_dir = next((c for c in candidates if c.exists()), None)
-            if layers_dir:
-                print(f"   ✨ Loading 7 Kinetic Native Layers from: {layers_dir.name}", flush=True)
-                import base64
-                layers_payload = {}
-                layer_files = {
-                    "bg": "0_background.png",
-                    "title": "1_title.png",
-                    "tape": "2_tape.png",
-                    "cardLeft": "3_card_left.png",
-                    "cardRight": "4_card_right.png",
-                    "vsLightning": "5_vs_lightning.png",
-                    "bottom": "6_bottom.png"
-                }
-                for key, fname in layer_files.items():
-                    fpath = layers_dir / fname
-                    if fpath.exists():
-                        layers_payload[key] = "data:image/png;base64," + base64.b64encode(fpath.read_bytes()).decode('utf-8')
-                load_payload["openingPosterLayers"] = layers_payload
-
             await page.evaluate(f"window.ReelEngine.load({json.dumps(load_payload)});")
             await page.wait_for_timeout(500)
 
