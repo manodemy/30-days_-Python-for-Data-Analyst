@@ -360,6 +360,17 @@ window.DB_SEEDS['retail'] = {
         { name: "amount", type: "REAL", pk: false },
         { name: "pay_date", type: "DATE", pk: false }
       ]
+    },
+    {
+      name: "streams",
+      createSQL: "CREATE TABLE streams (\n        stream_id INTEGER PRIMARY KEY,\n        user_id INTEGER NOT NULL,\n        start_time TEXT NOT NULL,\n        end_time TEXT NOT NULL\n      )",
+      seedSQL: "INSERT INTO streams VALUES\n        (1, 101, '2026-06-01 10:00:00', '2026-06-01 10:30:00'),\n        (2, 102, '2026-06-01 10:15:00', '2026-06-01 10:45:00'),\n        (3, 103, '2026-06-01 10:20:00', '2026-06-01 10:50:00'),\n        (4, 104, '2026-06-01 10:25:00', '2026-06-01 10:35:00'),\n        (5, 105, '2026-06-01 10:40:00', '2026-06-01 11:00:00');",
+      columns: [
+        { name: "stream_id", type: "INTEGER", pk: true },
+        { name: "user_id", type: "INTEGER", pk: false },
+        { name: "start_time", type: "TEXT", pk: false },
+        { name: "end_time", type: "TEXT", pk: false }
+      ]
     }
   ]
 };

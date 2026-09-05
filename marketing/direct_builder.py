@@ -664,10 +664,37 @@ REELS_CATALOG = {
         "pinnedAnswer": "Option A is the Real-World Audit Standard ✅ | Option B is the Trap ❌\n\nWhy Option A (pay_date > exit_date) works:\nAn employee who resigned 3 months ago has a valid historical employment record. To catch post-resignation unauthorized payments, you MUST compare transaction timestamps (`p.pay_date > e.exit_date`).\n\nWhy Option B (status = 'Resigned') fails:\nOption B simply checks if status is 'Resigned'. This catastrophically flags EVERY single legitimate monthly salary ever paid to that employee while they were working full-time!\n\n💡 Rule of thumb: Never rely on static status flags for temporal audit checks — always filter against transactional timestamp boundaries!\n\nDid you vote A or B? 👇",
         "link": "https://www.manodemy.com/q19",
         "openingPoster": str(PROJECT_ROOT / "marketing" / "output" / "video" / "SQL-12-R1_Opening_Poster_1080x1920.jpg")
+    },
+    "SQL-13-R1": {
+        "reelNo": "SQL-13-R1",
+        "day": "DAY 13",
+        "badge": "SQL · Peak Concurrency Trap",
+        "hook": "PEAK STREAMERS? 🎬🍿\n10 Million users watching at the same second!",
+        "hookLineObjects": [
+            {"text": "PEAK STREAMERS? 🎬🍿", "font": "Montserrat", "size": 4.6},
+            {"text": "10M users at the exact same second!", "font": "Outfit", "size": 3.7}
+        ],
+        "hookHighlights": [
+            {"text": "PEAK STREAMERS?", "color": "#facc15"},
+            {"text": "exact same second!", "color": "#00f0ff"}
+        ],
+        "lang": "sql",
+        "codeA": "WITH events AS (\n  SELECT start_time AS t, 1 AS delta FROM streams\n  UNION ALL\n  SELECT end_time AS t, -1 AS delta FROM streams\n)\nSELECT t, SUM(delta) OVER (ORDER BY t) AS concurrent_users\nFROM events;",
+        "codeB": "SELECT s1.start_time AS t,\n       COUNT(*) AS concurrent_users\nFROM streams s1\nJOIN streams s2\n  ON s1.start_time BETWEEN s2.start_time AND s2.end_time\nGROUP BY s1.stream_id;",
+        "pollInstr": "DROP YOUR VOTE IN COMMENTS 👇",
+        "clockSfx": "bomb",
+        "ccStyle": "hormozi",
+        "ccEnabled": True,
+        "voice": "en-US-AndrewNeural",
+        "voiceScript": "Netflix and Hotstar love asking this Peak Concurrency S-Q-L challenge!\nWhich query counts live streamers without crashing the database?\nChoose your answer.\nOption A...\nor Option B?\nDrop your vote in the comments below.",
+        "caption": "PEAK STREAMERS? 🎬🍿\n\nWhich query finds concurrent viewers watching at the exact same second?\n\nCan you spot which approach scales to millions of streams without quadratic join crashes?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q20\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, peak concurrency sql, netflix sql interview, hotstar live streams, running total sql, window functions, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
+        "pinnedAnswer": "Option A is the FAANG Standard ✅ | Option B is the Crash Trap ❌\n\nWhy Option A (Delta Event Counter +1 / -1) works:\nBy tagging each stream start as +1 and each stream end as -1, `SUM(delta) OVER (ORDER BY t)` computes the exact running concurrent viewers in O(N log N) time without storing redundant combinations!\n\nWhy Option B (Self-Join BETWEEN) fails:\nOption B compares every stream against every other overlapping stream using an O(N²) quadratic Self-Join. On 10 million concurrent streams, this generates 100 trillion row comparisons, causing catastrophic database memory exhaustion!\n\n💡 Rule of thumb: When tracking concurrent active sessions, convert starts and ends into +1 / -1 delta events instead of writing quadratic self-joins!\n\nDid you vote A or B? 👇",
+        "link": "https://www.manodemy.com/q20",
+        "openingPoster": str(PROJECT_ROOT / "marketing" / "output" / "video" / "SQL-13-R1_Opening_Poster_1080x1920.jpg")
     }
 }
 
-DEFAULT_REEL = REELS_CATALOG["SQL-12-R1"]
+DEFAULT_REEL = REELS_CATALOG["SQL-13-R1"]
 
 async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
     start_total = time.time()
@@ -1023,7 +1050,7 @@ async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
     # -------------------------------------------------------------
     print("\n📦 [STEP 5/5] Generating 1-Click Publishing Pack & Cover Thumbnail...", flush=True)
     try:
-        if reel_no != "SQL-12-R1":
+        if reel_no not in ["SQL-12-R1", "SQL-13-R1"]:
             from marketing.cover_generator import generate_cover
             await generate_cover(reel_no)
     except Exception as e:
@@ -1062,7 +1089,7 @@ async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
 
 if __name__ == "__main__":
     is_4k = "--4k" in sys.argv
-    reel_arg = next((arg for arg in sys.argv[1:] if not arg.startswith("--")), "SQL-03-R1")
+    reel_arg = next((arg for arg in sys.argv[1:] if not arg.startswith("--")), "SQL-13-R1")
     if reel_arg.lower() == "all":
         for k, r in REELS_CATALOG.items():
             asyncio.run(build_direct_video(r, is_4k=is_4k, fps=24))

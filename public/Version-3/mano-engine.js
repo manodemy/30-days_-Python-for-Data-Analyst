@@ -3719,6 +3719,22 @@ const REEL_CHALLENGES = {
     correctOption: 'A',
     codeA: "SELECT p.emp_id, p.amount, p.pay_date\nFROM payroll p JOIN employees e\n  ON p.emp_id = e.emp_id\nWHERE p.pay_date > e.exit_date;",
     codeB: "SELECT p.emp_id, p.amount, p.pay_date\nFROM payroll p JOIN employees e\n  ON p.emp_id = e.emp_id\nWHERE e.status = 'Resigned';"
+  },
+  'SQL-13-R1': {
+    day: 'day13',
+    slideIndex: 0,
+    title: 'PEAK CONCURRENCY TRAP 🎬🍿',
+    task: 'Event Delta Counters vs Quadratic Self-Joins: Tracking Peak Concurrent Streamers',
+    prompt: `Netflix and Hotstar need to calculate peak concurrent viewers during live streaming. Run Option A (Event Delta Trick) vs Option B (Quadratic Join Trap) to see why Option A is the O(N log N) FAANG standard.<br/>
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-13-R1', 'A')">⚡ Load Option A (Delta Event Standard)</button>
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-13-R1', 'B')">⚡ Load Option B (Self-Join Trap)</button>
+      </div>`,
+    trapExplanation: 'Option B runs an O(N²) quadratic Self-Join between every single stream start and end time! On millions of live streams, this crashes with catastrophic memory exhaustion. Option A tags starts as +1 and ends as -1, running in O(N log N) time.',
+    successExplanation: 'Option A uses the genius Event Delta (+1 on start, -1 on end) counter to track live concurrent viewership cleanly in O(N log N) time!',
+    correctOption: 'A',
+    codeA: "WITH events AS (\n  SELECT start_time AS t, 1 AS delta FROM streams\n  UNION ALL\n  SELECT end_time AS t, -1 AS delta FROM streams\n)\nSELECT t, SUM(delta) OVER (ORDER BY t) AS concurrent_users\nFROM events;",
+    codeB: "SELECT s1.start_time AS t,\n       COUNT(*) AS concurrent_users\nFROM streams s1\nJOIN streams s2\n  ON s1.start_time BETWEEN s2.start_time AND s2.end_time\nGROUP BY s1.stream_id;"
   }
 };
 
@@ -3756,6 +3772,7 @@ function getActiveChallengeId() {
   if (camp.includes('reel_day10_q17') || camp.includes('reel_17') || camp.includes('q17') || camp.includes('gaps_islands') || camp.includes('streaks')) return 'SQL-10-R1';
   if (camp.includes('reel_day11_q18') || camp.includes('reel_18') || camp.includes('q18') || camp.includes('manager_salary') || camp.includes('self_join')) return 'SQL-11-R1';
   if (camp.includes('reel_day12_q19') || camp.includes('reel_19') || camp.includes('q19') || camp.includes('ghost_employee') || camp.includes('payroll_leak')) return 'SQL-12-R1';
+  if (camp.includes('reel_day13_q20') || camp.includes('reel_20') || camp.includes('q20') || camp.includes('peak_streamers') || camp.includes('concurrency')) return 'SQL-13-R1';
 
   const dayParam = urlP.get('day');
   const qParam = urlP.get('q') || urlP.get('question');
@@ -3796,6 +3813,9 @@ function getActiveChallengeId() {
   if (dayParam === '12') {
     if (qParam === '1' || qParam === '19') return 'SQL-12-R1';
   }
+  if (dayParam === '13') {
+    if (qParam === '1' || qParam === '20') return 'SQL-13-R1';
+  }
   if (qParam === '12' || qParam === 'q12') return 'SQL-07-R1';
   if (qParam === '13' || qParam === 'q13') return 'SQL-07-R2';
   if (qParam === '14' || qParam === 'q14') return 'SQL-08-R1';
@@ -3804,6 +3824,7 @@ function getActiveChallengeId() {
   if (qParam === '17' || qParam === 'q17') return 'SQL-10-R1';
   if (qParam === '18' || qParam === 'q18') return 'SQL-11-R1';
   if (qParam === '19' || qParam === 'q19') return 'SQL-12-R1';
+  if (qParam === '20' || qParam === 'q20') return 'SQL-13-R1';
   return null;
 }
 
