@@ -3725,16 +3725,16 @@ const REEL_CHALLENGES = {
     slideIndex: 0,
     title: 'PEAK CONCURRENCY TRAP 🎬🍿',
     task: 'Event Delta Counters vs Quadratic Self-Joins: Tracking Peak Concurrent Streamers',
-    prompt: `Netflix and Hotstar need to calculate peak concurrent viewers during live streaming. Run Option A (Event Delta Trick) vs Option B (Quadratic Join Trap) to see why Option A is the O(N log N) FAANG standard.<br/>
+    prompt: `Netflix and Hotstar need to calculate peak concurrent viewers during live streaming. Run Option A (Quadratic Join Trap) vs Option B (Event Delta Trick) to see why Option B is the O(N log N) FAANG standard.<br/>
       <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-13-R1', 'A')">⚡ Load Option A (Delta Event Standard)</button>
-        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-13-R1', 'B')">⚡ Load Option B (Self-Join Trap)</button>
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-13-R1', 'A')">⚡ Load Option A (Self-Join Trap)</button>
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-13-R1', 'B')">⚡ Load Option B (Delta Event Standard)</button>
       </div>`,
-    trapExplanation: 'Option B runs an O(N²) quadratic Self-Join between every single stream start and end time! On millions of live streams, this crashes with catastrophic memory exhaustion. Option A tags starts as +1 and ends as -1, running in O(N log N) time.',
-    successExplanation: 'Option A uses the genius Event Delta (+1 on start, -1 on end) counter to track live concurrent viewership cleanly in O(N log N) time!',
-    correctOption: 'A',
-    codeA: "WITH events AS (\n  SELECT start_time AS t, 1 AS delta FROM streams\n  UNION ALL\n  SELECT end_time AS t, -1 AS delta FROM streams\n)\nSELECT t, SUM(delta) OVER (ORDER BY t) AS concurrent_users\nFROM events;",
-    codeB: "SELECT s1.start_time AS t,\n       COUNT(*) AS concurrent_users\nFROM streams s1\nJOIN streams s2\n  ON s1.start_time BETWEEN s2.start_time AND s2.end_time\nGROUP BY s1.stream_id;"
+    trapExplanation: 'Option A runs an O(N²) quadratic Self-Join between every single stream start and end time! On millions of live streams, this crashes with catastrophic memory exhaustion. Option B tags starts as +1 and ends as -1, running in O(N log N) time.',
+    successExplanation: 'Option B uses the genius Event Delta (+1 on start, -1 on end) counter to track live concurrent viewership cleanly in O(N log N) time!',
+    correctOption: 'B',
+    codeA: "SELECT s1.start_time AS t,\n       COUNT(*) AS concurrent_users\nFROM streams s1\nJOIN streams s2\n  ON s1.start_time BETWEEN s2.start_time AND s2.end_time\nGROUP BY s1.stream_id;",
+    codeB: "WITH events AS (\n  SELECT start_time AS t, 1 AS delta FROM streams\n  UNION ALL\n  SELECT end_time AS t, -1 AS delta FROM streams\n)\nSELECT t, SUM(delta) OVER (ORDER BY t) AS concurrent_users\nFROM events;"
   }
 };
 

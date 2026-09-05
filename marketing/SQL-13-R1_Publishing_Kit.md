@@ -43,13 +43,13 @@ Drop your choice in the comments before checking the answer!
 *(Post this immediately after sharing the reel, then tap **Pin comment**)*
 
 ```text
-Option A is the FAANG Standard ✅ | Option B is the Crash Trap ❌
+Option B is the FAANG Standard ✅ | Option A is the Crash Trap ❌
 
-Why Option A (Delta Event Counter +1 / -1) works:
+Why Option B (Delta Event Counter +1 / -1) works:
 By tagging each stream start as +1 and each stream end as -1, `SUM(delta) OVER (ORDER BY t)` computes the exact running concurrent viewers in O(N log N) time without storing redundant combinations!
 
-Why Option B (Self-Join BETWEEN) fails:
-Option B compares every stream against every other overlapping stream using an O(N²) quadratic Self-Join. On 10 million concurrent streams, this generates 100 trillion row comparisons, causing catastrophic database memory exhaustion!
+Why Option A (Self-Join BETWEEN) fails:
+Option A compares every stream against every other overlapping stream using an O(N²) quadratic Self-Join. On 10 million concurrent streams, this generates 100 trillion row comparisons, causing catastrophic database memory exhaustion!
 
 💡 Rule of thumb: When tracking concurrent active sessions, convert starts and ends into +1 / -1 delta events instead of writing quadratic self-joins!
 
