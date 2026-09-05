@@ -45,13 +45,13 @@ Drop your choice in the comments before checking the answer!
 ```text
 Option A is the FAANG Standard ✅ | Option B is the Trap ❌
 
-Why Option A (LAG Time-Delta + Cumulative Sum) works:
-Option A calculates the time elapsed since the user's previous click using `LAG(click_time)`. When that inactivity gap exceeds 30 minutes, it flags a new session (`is_new = 1`). A running cumulative `SUM(is_new) OVER (ORDER BY click_time)` then cleanly generates distinct, sequential session IDs across any time boundary!
+Why Option A (SUM of is_new) works:
+When inactivity exceeds 30 minutes, `is_new` flags 1; otherwise it flags 0. `SUM(is_new) OVER (ORDER BY click_time)` adds 0 on ordinary clicks (preserving the current session ID) and adds 1 only when a new session starts (1, 1, 1, 2, 2, 3...)!
 
-Why Option B (DENSE_RANK on DATE) fails:
-Option B merely truncates click timestamps to calendar days (`DATE(click_time)`). If a user visits the app at 9:00 AM, closes it, and returns 12 hours later at 9:00 PM, Option B assigns BOTH visits the exact same session ID! Furthermore, sessions crossing midnight are incorrectly fragmented.
+Why Option B (COUNT of is_new) fails:
+In SQL, `0` is a valid, populated integer value — it is NOT NULL! `COUNT(is_new)` counts every single 0 as a row, incrementing the session ID on EVERY SINGLE CLICK (1, 2, 3, 4, 5...)! It completely destroys session grouping!
 
-💡 Rule of thumb: Real-world sessionization always depends on inactivity gaps between consecutive events — never rely on arbitrary midnight calendar boundaries!
+💡 Rule of thumb: To accumulate binary flags (0 and 1) in SQL, always use SUM() — COUNT() counts both 0 and 1!
 
 Did you vote A or B? 👇
 ```

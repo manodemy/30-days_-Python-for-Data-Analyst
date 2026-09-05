@@ -40,6 +40,8 @@ demo.txt
 video_pipeline/
 Instagram Ads/
 scratch/
+.whisper_cache/
+marketing/output/audio/.whisper_cache/
 
 # Node / Next.js
 node_modules/
