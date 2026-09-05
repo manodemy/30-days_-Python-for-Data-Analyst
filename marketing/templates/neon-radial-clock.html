@@ -2223,56 +2223,60 @@ function computeLayeredPosterAnim(elapsedMs, posterDur, tGlitch) {
     return;
   }
 
-  // --- KINETIC ENTRANCE CHOREOGRAPHY (0ms -> 340ms) ---
+  // --- CINEMATIC OFF-SCREEN ENTRANCE CHOREOGRAPHY (0ms -> 340ms) ---
   if(elapsedMs < 340) {
-    // 1. Title Drop (0 -> 240ms) - Subtle, punchy 35px drop
-    const tProg = Math.min(1.0, elapsedMs / 240);
-    const easeTitle = 1 - Math.pow(1 - tProg, 3);
-    const tyTitle = -35 * (1 - easeTitle);
+    // 1. Title Drop from above the screen (-850px -> 0)
+    const tProg = Math.min(1.0, elapsedMs / 250);
+    const easeTitle = 1 - Math.pow(1 - tProg, 4);
+    const tyTitle = -850 * (1 - easeTitle);
     pTitle.style.transform = `translateY(${tyTitle.toFixed(1)}px)`;
     pTitle.style.opacity = '1';
 
-    // 2. Left and Right Fighter Cards - Tight 40px Impact Snap (0 -> 220ms)
-    const cProg = Math.min(1.0, elapsedMs / 220);
-    const easeCard = 1 - Math.pow(1 - cProg, 3);
-    const txLeft = -40 * (1 - easeCard);
-    const txRight = 40 * (1 - easeCard);
+    // 2. Caution Tape Whip from outside screen left (-1150px -> 0)
+    const tapeProg = Math.min(1.0, elapsedMs / 260);
+    const easeTape = 1 - Math.pow(1 - tapeProg, 4);
+    const txTape = -1150 * (1 - easeTape);
+    pTape.style.transform = `translateX(${txTape.toFixed(1)}px)`;
+    pTape.style.opacity = '1';
+
+    // 3. Left and Right Fighter Cards - Clash from completely outside screen (-1150px / +1150px -> 0)
+    const cProg = Math.min(1.0, elapsedMs / 240);
+    const easeCard = 1 - Math.pow(1 - cProg, 4);
+    const txLeft = -1150 * (1 - easeCard);
+    const txRight = 1150 * (1 - easeCard);
     pCardLeft.style.transform = `translateX(${txLeft.toFixed(1)}px)`;
     pCardLeft.style.opacity = '1';
     pCardRight.style.transform = `translateX(${txRight.toFixed(1)}px)`;
     pCardRight.style.opacity = '1';
 
-    // 3. Center VS & Lightning High-Voltage Electric Thunder Strike (ZERO Scaling!)
+    // 4. Center VS & Lightning - High-Voltage Thunder Zap right when cards clash at 230ms!
     pVs.style.transform = 'none';
-    if(elapsedMs < 180) {
+    if(elapsedMs < 220) {
+      // Hidden while cards are flying in from outside
       pVs.style.opacity = '0';
       pVs.style.filter = 'none';
-    } else if(elapsedMs < 230) {
-      // White-Hot Initial Lightning Strike Spark
+    } else if(elapsedMs < 265) {
+      // Instant of collision: White-Hot High-Voltage Thunder Flash!
       pVs.style.opacity = '1';
-      pVs.style.filter = 'brightness(320%) contrast(140%) drop-shadow(0 0 50px #ffffff) drop-shadow(0 0 80px #00f0ff)';
-    } else if(elapsedMs < 270) {
+      pVs.style.filter = 'brightness(320%) contrast(140%) drop-shadow(0 0 45px #ffffff) drop-shadow(0 0 75px #00f0ff)';
+    } else if(elapsedMs < 300) {
       // Rapid Electrical Arc Flicker
-      pVs.style.opacity = '0.75';
-      pVs.style.filter = 'brightness(180%) drop-shadow(0 0 25px #facc15)';
-    } else if(elapsedMs < 310) {
-      // Secondary Re-strike Flash
+      pVs.style.opacity = '0.85';
+      pVs.style.filter = 'brightness(170%) drop-shadow(0 0 25px #facc15)';
+    } else if(elapsedMs < 335) {
+      // Secondary Arc Re-strike Flash
       pVs.style.opacity = '1';
-      pVs.style.filter = 'brightness(240%) drop-shadow(0 0 40px #ffffff)';
+      pVs.style.filter = 'brightness(220%) drop-shadow(0 0 35px #ffffff)';
     } else {
-      // Settled Crisp
+      // Settled rock-solid and crisp
       pVs.style.opacity = '1';
       pVs.style.filter = 'none';
     }
 
-    // 4. Caution Tape - Stable, Crisp
-    pTape.style.transform = 'none';
-    pTape.style.opacity = '1';
-
-    // 5. Bottom Question Card - Clean 35px Rise (0ms -> 240ms)
-    const bProg = Math.min(1.0, elapsedMs / 240);
-    const easeBot = 1 - Math.pow(1 - bProg, 3);
-    const tyBot = 35 * (1 - easeBot);
+    // 5. Bottom Question Card - Rises into place from below the screen (+850px -> 0)
+    const bProg = Math.min(1.0, elapsedMs / 250);
+    const easeBot = 1 - Math.pow(1 - bProg, 4);
+    const tyBot = 850 * (1 - easeBot);
     pBottom.style.transform = `translateY(${tyBot.toFixed(1)}px)`;
     pBottom.style.opacity = '1';
   } else {
