@@ -718,10 +718,37 @@ REELS_CATALOG = {
         "pinnedAnswer": "Option A is the FAANG Standard ✅ | Option B is the Trap ❌\n\nWhy Option A (SUM of is_new) works:\nWhen inactivity exceeds 30 minutes, `is_new` flags 1; otherwise it flags 0. `SUM(is_new) OVER (ORDER BY click_time)` adds 0 on ordinary clicks (preserving the current session ID) and adds 1 only when a new session starts (1, 1, 1, 2, 2, 3...)!\n\nWhy Option B (COUNT of is_new) fails:\nIn SQL, `0` is a valid, populated integer value — it is NOT NULL! `COUNT(is_new)` counts every single 0 as a row, incrementing the session ID on EVERY SINGLE CLICK (1, 2, 3, 4, 5...)! It completely destroys session grouping!\n\n💡 Rule of thumb: To accumulate binary flags (0 and 1) in SQL, always use SUM() — COUNT() counts both 0 and 1!\n\nDid you vote A or B? 👇",
         "link": "https://www.manodemy.com/q21",
         "openingPoster": str(PROJECT_ROOT / "marketing" / "output" / "video" / "SQL-14-R1_Opening_Poster_1080x1920.jpg")
+    },
+    "SQL-15-R1": {
+        "reelNo": "SQL-15-R1",
+        "day": "DAY 15",
+        "badge": "FINTECH · RUNNING BALANCE TRAP",
+        "hook": "RUNNING BALANCE BUG? 💳⚡\n2 transactions on the exact same date!",
+        "hookLineObjects": [
+            {"text": "RUNNING BALANCE BUG? 💳⚡", "font": "Montserrat", "size": 4.6},
+            {"text": "2 txns on the exact same date!", "font": "Outfit", "size": 3.7}
+        ],
+        "hookHighlights": [
+            {"text": "RUNNING BALANCE BUG?", "color": "#facc15"},
+            {"text": "exact same date!", "color": "#00f0ff"}
+        ],
+        "lang": "sql",
+        "codeA": "SELECT txn_date, amount,\n  SUM(amount) OVER (\n    ORDER BY txn_date\n  ) AS running_balance\nFROM bank_ledger;",
+        "codeB": "SELECT txn_date, amount,\n  SUM(amount) OVER (\n    ORDER BY txn_date\n    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n  ) AS running_balance\nFROM bank_ledger;",
+        "pollInstr": "DROP YOUR VOTE IN COMMENTS 👇",
+        "clockSfx": "bomb",
+        "ccStyle": "hormozi",
+        "ccEnabled": True,
+        "voice": "en-US-AndrewNeural",
+        "voiceScript": "Google Pay and Stripe love asking this Running Balance S-Q-L challenge!\nWhich query calculates daily ledger totals when multiple transactions occur on the same day?\nChoose your answer.\nOption A...\nor Option B?\nDrop your vote in the comments below.",
+        "caption": "RUNNING BALANCE BUG? 💳⚡\n\nWhich query calculates daily ledger totals when multiple transactions occur on the same day?\n\nCan you spot the dangerous silent trap between default RANGE and explicit ROWS in window functions?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q22\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, running balance sql, window functions, google pay sql, stripe sql interview, range vs rows, bank ledger audit, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
+        "pinnedAnswer": "Option B is the Fintech Production Standard ✅ | Option A is the Ledger Bug Trap ❌\n\nWhy Option A (Default RANGE) fails in bank ledgers:\nWhen you write `OVER (ORDER BY txn_date)` without specifying a frame, SQL defaults to `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`!\nIf two transactions happen on the SAME day (e.g., ₹500 coffee and ₹500 lunch on Jan 15), `RANGE` treats identical dates as a tie and adds BOTH amounts at once (₹1,000 for both rows) instead of progressive step-by-step running totals!\n\nWhy Option B (Explicit ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) works:\n`ROWS` forces SQL to accumulate row-by-row regardless of duplicate timestamps, giving true progressive ledger accounting!\n\n💡 Rule of thumb: Never trust default window frames on date columns — always specify explicit `ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`!\n\nDid you vote A or B? 👇",
+        "link": "https://www.manodemy.com/q22",
+        "openingPoster": str(PROJECT_ROOT / "marketing" / "output" / "video" / "SQL-15-R1_Opening_Poster_1080x1920.jpg")
     }
 }
 
-DEFAULT_REEL = REELS_CATALOG["SQL-14-R1"]
+DEFAULT_REEL = REELS_CATALOG["SQL-15-R1"]
 
 async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
     start_total = time.time()
@@ -1044,8 +1071,15 @@ async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
                     load_payload["openingPosterDuration"] = cues_data.get("t_line2_start", 1800)
 
             # If 7-layer kinetic component suite exists, load it into template
-            layers_dir = PROJECT_ROOT / "marketing" / "assets" / "sql13_layers"
-            if reel_no == "SQL-13-R1" and layers_dir.exists():
+            parts = reel_no.lower().split("-")
+            candidates = [
+                PROJECT_ROOT / "marketing" / "assets" / f"{parts[0]}{parts[1]}_layers",
+                PROJECT_ROOT / "marketing" / "assets" / f"{reel_no.lower().replace('-', '')}_layers",
+                PROJECT_ROOT / "marketing" / "assets" / f"{reel_no.lower()}_layers"
+            ]
+            layers_dir = next((c for c in candidates if c.exists()), None)
+            if layers_dir:
+                print(f"   ✨ Loading 7 Kinetic Native Layers from: {layers_dir.name}", flush=True)
                 import base64
                 layers_payload = {}
                 layer_files = {
@@ -1097,7 +1131,7 @@ async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
     # -------------------------------------------------------------
     print("\n📦 [STEP 5/5] Generating 1-Click Publishing Pack & Cover Thumbnail...", flush=True)
     try:
-        if reel_no not in ["SQL-12-R1", "SQL-13-R1", "SQL-14-R1"]:
+        if reel_no not in ["SQL-12-R1", "SQL-13-R1", "SQL-14-R1", "SQL-15-R1"]:
             from marketing.cover_generator import generate_cover
             await generate_cover(reel_no)
     except Exception as e:

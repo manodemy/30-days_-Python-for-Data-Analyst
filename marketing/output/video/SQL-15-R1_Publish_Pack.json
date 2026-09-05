@@ -1,0 +1,484 @@
+{
+  "reelNo": "SQL-15-R1",
+  "day": "DAY 15",
+  "badge": "FINTECH · RUNNING BALANCE TRAP",
+  "videoFile": "SQL-15-R1.mp4",
+  "videoPath": "D:\\Learn Python in 60days\\Manodemy_Web_V2\\marketing\\output\\video\\SQL-15-R1.mp4",
+  "coverFile": "SQL-15-R1_Cover.png",
+  "coverJpg": "SQL-15-R1_Cover.jpg",
+  "fileSizeMb": 9.7,
+  "resolution": "1080x1920",
+  "fps": 24,
+  "durationSec": 17.3,
+  "caption": "RUNNING BALANCE BUG? 💳⚡\n\nWhich query calculates daily ledger totals when multiple transactions occur on the same day?\n\nCan you spot the dangerous silent trap between default RANGE and explicit ROWS in window functions?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q22\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, running balance sql, window functions, google pay sql, stripe sql interview, range vs rows, bank ledger audit, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
+  "pinnedAnswer": "Option B is the Fintech Production Standard ✅ | Option A is the Ledger Bug Trap ❌\n\nWhy Option A (Default RANGE) fails in bank ledgers:\nWhen you write `OVER (ORDER BY txn_date)` without specifying a frame, SQL defaults to `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`!\nIf two transactions happen on the SAME day (e.g., ₹500 coffee and ₹500 lunch on Jan 15), `RANGE` treats identical dates as a tie and adds BOTH amounts at once (₹1,000 for both rows) instead of progressive step-by-step running totals!\n\nWhy Option B (Explicit ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) works:\n`ROWS` forces SQL to accumulate row-by-row regardless of duplicate timestamps, giving true progressive ledger accounting!\n\n💡 Rule of thumb: Never trust default window frames on date columns — always specify explicit `ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`!\n\nDid you vote A or B? 👇",
+  "simulatorLink": "https://www.manodemy.com/q22",
+  "cues": {
+    "t_hook_start": 0,
+    "t_line2_start": 4680,
+    "t_clock_in": 10480,
+    "t_opta": 11560,
+    "t_optb": 12640,
+    "t_optb_end": 14090,
+    "t_clock_out": 14240,
+    "t_cta_start": 14240,
+    "t_voice_end": 15900,
+    "totalMs": 17300,
+    "clockDurationMs": 3760,
+    "wordCues": [
+      {
+        "word": "Google",
+        "startMs": 0,
+        "endMs": 340
+      },
+      {
+        "word": "Pay",
+        "startMs": 340,
+        "endMs": 640
+      },
+      {
+        "word": "and",
+        "startMs": 640,
+        "endMs": 920
+      },
+      {
+        "word": "Stripe",
+        "startMs": 920,
+        "endMs": 1340
+      },
+      {
+        "word": "love",
+        "startMs": 1340,
+        "endMs": 1520
+      },
+      {
+        "word": "asking",
+        "startMs": 1520,
+        "endMs": 2180
+      },
+      {
+        "word": "this",
+        "startMs": 2180,
+        "endMs": 2380
+      },
+      {
+        "word": "Running",
+        "startMs": 2380,
+        "endMs": 2660
+      },
+      {
+        "word": "Balance",
+        "startMs": 2660,
+        "endMs": 3080
+      },
+      {
+        "word": "S-Q-L",
+        "startMs": 3080,
+        "endMs": 3640
+      },
+      {
+        "word": "challenge!",
+        "startMs": 3640,
+        "endMs": 4160
+      },
+      {
+        "word": "Which",
+        "startMs": 4680,
+        "endMs": 5020
+      },
+      {
+        "word": "query",
+        "startMs": 5020,
+        "endMs": 5340
+      },
+      {
+        "word": "calculates",
+        "startMs": 5340,
+        "endMs": 6040
+      },
+      {
+        "word": "daily",
+        "startMs": 6040,
+        "endMs": 6300
+      },
+      {
+        "word": "ledger",
+        "startMs": 6300,
+        "endMs": 6680
+      },
+      {
+        "word": "totals",
+        "startMs": 6680,
+        "endMs": 7140
+      },
+      {
+        "word": "when",
+        "startMs": 7140,
+        "endMs": 7480
+      },
+      {
+        "word": "multiple",
+        "startMs": 7480,
+        "endMs": 7920
+      },
+      {
+        "word": "transactions",
+        "startMs": 7920,
+        "endMs": 8480
+      },
+      {
+        "word": "occur",
+        "startMs": 8480,
+        "endMs": 9000
+      },
+      {
+        "word": "on",
+        "startMs": 9000,
+        "endMs": 9360
+      },
+      {
+        "word": "the",
+        "startMs": 9360,
+        "endMs": 9480
+      },
+      {
+        "word": "same",
+        "startMs": 9480,
+        "endMs": 9720
+      },
+      {
+        "word": "day?",
+        "startMs": 9720,
+        "endMs": 9920
+      },
+      {
+        "word": "Choose",
+        "startMs": 10480,
+        "endMs": 10620
+      },
+      {
+        "word": "your",
+        "startMs": 10620,
+        "endMs": 10800
+      },
+      {
+        "word": "answer...",
+        "startMs": 10800,
+        "endMs": 11060
+      },
+      {
+        "word": "Option",
+        "startMs": 11560,
+        "endMs": 11840
+      },
+      {
+        "word": "A...",
+        "startMs": 11840,
+        "endMs": 12060
+      },
+      {
+        "word": "or",
+        "startMs": 12640,
+        "endMs": 12940
+      },
+      {
+        "word": "Option",
+        "startMs": 12940,
+        "endMs": 13200
+      },
+      {
+        "word": "B?",
+        "startMs": 13200,
+        "endMs": 14090
+      },
+      {
+        "word": "Drop",
+        "startMs": 14240,
+        "endMs": 14420
+      },
+      {
+        "word": "your",
+        "startMs": 14420,
+        "endMs": 14600
+      },
+      {
+        "word": "vote",
+        "startMs": 14600,
+        "endMs": 14860
+      },
+      {
+        "word": "in",
+        "startMs": 14860,
+        "endMs": 15080
+      },
+      {
+        "word": "the",
+        "startMs": 15080,
+        "endMs": 15160
+      },
+      {
+        "word": "comments",
+        "startMs": 15160,
+        "endMs": 15460
+      },
+      {
+        "word": "below.",
+        "startMs": 15460,
+        "endMs": 15800
+      }
+    ],
+    "phrases": [
+      {
+        "index": 0,
+        "text": "Google Pay and Stripe love asking this Running Balance S-Q-L challenge!",
+        "startMs": 0,
+        "endMs": 4680,
+        "words": [
+          {
+            "word": "Google",
+            "startMs": 0,
+            "endMs": 340
+          },
+          {
+            "word": "Pay",
+            "startMs": 340,
+            "endMs": 640
+          },
+          {
+            "word": "and",
+            "startMs": 640,
+            "endMs": 920
+          },
+          {
+            "word": "Stripe",
+            "startMs": 920,
+            "endMs": 1340
+          },
+          {
+            "word": "love",
+            "startMs": 1340,
+            "endMs": 1520
+          },
+          {
+            "word": "asking",
+            "startMs": 1520,
+            "endMs": 2180
+          },
+          {
+            "word": "this",
+            "startMs": 2180,
+            "endMs": 2380
+          },
+          {
+            "word": "Running",
+            "startMs": 2380,
+            "endMs": 2660
+          },
+          {
+            "word": "Balance",
+            "startMs": 2660,
+            "endMs": 3080
+          },
+          {
+            "word": "S-Q-L",
+            "startMs": 3080,
+            "endMs": 3640
+          },
+          {
+            "word": "challenge!",
+            "startMs": 3640,
+            "endMs": 4160
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "text": "Which query calculates daily ledger totals when multiple transactions occur on the same day?",
+        "startMs": 4680,
+        "endMs": 10480,
+        "words": [
+          {
+            "word": "Which",
+            "startMs": 4680,
+            "endMs": 5020
+          },
+          {
+            "word": "query",
+            "startMs": 5020,
+            "endMs": 5340
+          },
+          {
+            "word": "calculates",
+            "startMs": 5340,
+            "endMs": 6040
+          },
+          {
+            "word": "daily",
+            "startMs": 6040,
+            "endMs": 6300
+          },
+          {
+            "word": "ledger",
+            "startMs": 6300,
+            "endMs": 6680
+          },
+          {
+            "word": "totals",
+            "startMs": 6680,
+            "endMs": 7140
+          },
+          {
+            "word": "when",
+            "startMs": 7140,
+            "endMs": 7480
+          },
+          {
+            "word": "multiple",
+            "startMs": 7480,
+            "endMs": 7920
+          },
+          {
+            "word": "transactions",
+            "startMs": 7920,
+            "endMs": 8480
+          },
+          {
+            "word": "occur",
+            "startMs": 8480,
+            "endMs": 9000
+          },
+          {
+            "word": "on",
+            "startMs": 9000,
+            "endMs": 9360
+          },
+          {
+            "word": "the",
+            "startMs": 9360,
+            "endMs": 9480
+          },
+          {
+            "word": "same",
+            "startMs": 9480,
+            "endMs": 9720
+          },
+          {
+            "word": "day?",
+            "startMs": 9720,
+            "endMs": 9920
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "text": "Choose your answer...",
+        "startMs": 10480,
+        "endMs": 11560,
+        "words": [
+          {
+            "word": "Choose",
+            "startMs": 10480,
+            "endMs": 10620
+          },
+          {
+            "word": "your",
+            "startMs": 10620,
+            "endMs": 10800
+          },
+          {
+            "word": "answer...",
+            "startMs": 10800,
+            "endMs": 11060
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "text": "Option A...",
+        "startMs": 11560,
+        "endMs": 12640,
+        "words": [
+          {
+            "word": "Option",
+            "startMs": 11560,
+            "endMs": 11840
+          },
+          {
+            "word": "A...",
+            "startMs": 11840,
+            "endMs": 12060
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "text": "or Option B?",
+        "startMs": 12640,
+        "endMs": 14090,
+        "words": [
+          {
+            "word": "or",
+            "startMs": 12640,
+            "endMs": 12940
+          },
+          {
+            "word": "Option",
+            "startMs": 12940,
+            "endMs": 13200
+          },
+          {
+            "word": "B?",
+            "startMs": 13200,
+            "endMs": 14090
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "text": "Drop your vote in the comments below.",
+        "startMs": 14240,
+        "endMs": 15900,
+        "words": [
+          {
+            "word": "Drop",
+            "startMs": 14240,
+            "endMs": 14420
+          },
+          {
+            "word": "your",
+            "startMs": 14420,
+            "endMs": 14600
+          },
+          {
+            "word": "vote",
+            "startMs": 14600,
+            "endMs": 14860
+          },
+          {
+            "word": "in",
+            "startMs": 14860,
+            "endMs": 15080
+          },
+          {
+            "word": "the",
+            "startMs": 15080,
+            "endMs": 15160
+          },
+          {
+            "word": "comments",
+            "startMs": 15160,
+            "endMs": 15460
+          },
+          {
+            "word": "below.",
+            "startMs": 15460,
+            "endMs": 15800
+          }
+        ]
+      }
+    ],
+    "hasOpeningPoster": true,
+    "openingPosterDuration": 4680
+  },
+  "generatedAt": "2026-09-05 18:27:46"
+}
