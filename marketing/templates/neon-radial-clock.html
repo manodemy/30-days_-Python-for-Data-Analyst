@@ -1295,49 +1295,63 @@ function playHookImpact(){
     const c = getAudioCtx();
     const now = c.currentTime;
     
-    // If Opening Poster is active: Play Hollywood Cyber Shutter Slam + Sub-Bass Earthquake Drop
+    // If Opening Poster is active: Play Explosive Kinetic Pop-Up & 808 Sub-Bass Impact
     if(currentData.openingPoster || currentData.openingPosterLayers){
-      // Layer 1: Visceral 808 Sub-Bass Earthquake Drop (145Hz -> 28Hz)
+      // Layer 0: Hypersonic Emergence Riser Whoosh (0ms -> 160ms)
+      const oscRise = c.createOscillator();
+      const gainRise = c.createGain();
+      oscRise.type = 'sine';
+      oscRise.frequency.setValueAtTime(160, now);
+      oscRise.frequency.exponentialRampToValueAtTime(820, now + 0.160);
+      gainRise.gain.setValueAtTime(0.0001, now);
+      gainRise.gain.exponentialRampToValueAtTime(0.40, now + 0.140);
+      gainRise.gain.exponentialRampToValueAtTime(0.0001, now + 0.170);
+      oscRise.connect(gainRise);
+      gainRise.connect(c.destination);
+      oscRise.start(now);
+      oscRise.stop(now + 0.175);
+
+      // Layer 1: Visceral 808 Sub-Bass Earthquake Drop (hits at t=160ms)
       const oscSub = c.createOscillator();
       const gainSub = c.createGain();
       oscSub.type = 'sine';
-      oscSub.frequency.setValueAtTime(145, now);
-      oscSub.frequency.exponentialRampToValueAtTime(28, now + 0.65);
-      gainSub.gain.setValueAtTime(0.0001, now);
-      gainSub.gain.exponentialRampToValueAtTime(0.95, now + 0.006);
-      gainSub.gain.exponentialRampToValueAtTime(0.0001, now + 0.75);
+      oscSub.frequency.setValueAtTime(155, now + 0.160);
+      oscSub.frequency.exponentialRampToValueAtTime(28, now + 0.75);
+      gainSub.gain.setValueAtTime(0.0001, now + 0.160);
+      gainSub.gain.exponentialRampToValueAtTime(0.98, now + 0.166);
+      gainSub.gain.exponentialRampToValueAtTime(0.0001, now + 0.82);
       oscSub.connect(gainSub);
       gainSub.connect(c.destination);
-      oscSub.start(now);
-      oscSub.stop(now + 0.78);
+      oscSub.start(now + 0.160);
+      oscSub.stop(now + 0.85);
 
-      // Layer 2: Metallic Camera Shutter / Mechanical Snap (4200Hz -> 1600Hz at t=15ms)
+      // Layer 2: Metallic Camera Shutter / Mechanical Snap (hits at t=160ms)
       const oscSnap = c.createOscillator();
       const gainSnap = c.createGain();
       oscSnap.type = 'triangle';
-      oscSnap.frequency.setValueAtTime(4200, now + 0.015);
-      oscSnap.frequency.exponentialRampToValueAtTime(1600, now + 0.065);
-      gainSnap.gain.setValueAtTime(0.0001, now + 0.015);
-      gainSnap.gain.exponentialRampToValueAtTime(0.75, now + 0.018);
-      gainSnap.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+      oscSnap.frequency.setValueAtTime(4200, now + 0.160);
+      oscSnap.frequency.exponentialRampToValueAtTime(1400, now + 0.210);
+      gainSnap.gain.setValueAtTime(0.0001, now + 0.160);
+      gainSnap.gain.exponentialRampToValueAtTime(0.85, now + 0.163);
+      gainSnap.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
       oscSnap.connect(gainSnap);
       gainSnap.connect(c.destination);
-      oscSnap.start(now + 0.015);
-      oscSnap.stop(now + 0.085);
+      oscSnap.start(now + 0.160);
+      oscSnap.stop(now + 0.25);
 
-      // Layer 3: High-Voltage Shockwave Arc Sizzle at t=120ms (with slam impact)
+      // Layer 3: High-Voltage Shockwave Arc Sizzle (t=160ms -> 340ms)
       const oscArc = c.createOscillator();
       const gainArc = c.createGain();
       oscArc.type = 'sine';
-      oscArc.frequency.setValueAtTime(850, now + 0.120);
-      oscArc.frequency.exponentialRampToValueAtTime(240, now + 0.280);
-      gainArc.gain.setValueAtTime(0.0001, now + 0.120);
-      gainArc.gain.exponentialRampToValueAtTime(0.45, now + 0.125);
-      gainArc.gain.exponentialRampToValueAtTime(0.0001, now + 0.320);
+      oscArc.frequency.setValueAtTime(850, now + 0.160);
+      oscArc.frequency.exponentialRampToValueAtTime(220, now + 0.340);
+      gainArc.gain.setValueAtTime(0.0001, now + 0.160);
+      gainArc.gain.exponentialRampToValueAtTime(0.50, now + 0.170);
+      gainArc.gain.exponentialRampToValueAtTime(0.0001, now + 0.360);
       oscArc.connect(gainArc);
       gainArc.connect(c.destination);
-      oscArc.start(now + 0.120);
-      oscArc.stop(now + 0.330);
+      oscArc.start(now + 0.160);
+      oscArc.stop(now + 0.370);
       return;
     }
 
@@ -2381,51 +2395,53 @@ function renderTimelineState(elapsedMs){
         }
 
         if(elapsedMs < tGlitch) {
-          // Frame 0 safety guarantee: 100% clean, unclipped resting thumbnail
-          if(elapsedMs <= 0) {
-            if(posterImg) {
-              posterImg.style.transform = 'scale(1.0000)';
-              posterImg.style.filter = 'none';
-            }
-            if(posterGroup) {
-              posterGroup.style.transform = 'scale(1.0000)';
-              posterGroup.style.filter = 'none';
-            }
-            posterLayer.style.opacity = '1';
-            if(flareStreak) flareStreak.style.opacity = '0';
-            if(shockwaveRing) shockwaveRing.style.opacity = '0';
-            if(flashCurtain) flashCurtain.style.opacity = '0';
-          }
-          // --- STAGE 1A: Attention-Grabbing Hypersonic Shutter Slam & Screen Rumble (0ms -> 340ms) ---
-          else if(elapsedMs < 340) {
-            let sSnap, jx = 0, jy = 0, filterStr = 'none';
-            if(elapsedMs < 120) {
-              // 0ms -> 120ms: Ultra-fast punch-in snap from 1.09x -> 1.00x
-              const tSnap = elapsedMs / 120;
-              const easeSnap = 1 - Math.pow(1 - tSnap, 3);
-              sSnap = (1.088 - 0.088 * easeSnap).toFixed(4);
-              const flashBright = 1.0 + 0.38 * Math.sin(tSnap * Math.PI);
-              filterStr = `brightness(${flashBright.toFixed(2)}) contrast(115%) drop-shadow(0 0 35px rgba(0,240,255,0.65))`;
+          // --- STAGE 1A: Explosive Kinetic Pop-Up & Shockwave Emergence (0ms -> 320ms) ---
+          if(elapsedMs < 320) {
+            const tPop = 190.0;    // Time to reach overshoot peak (1.085)
+            const tSettle = 130.0; // Time from 190ms to 320ms to settle smoothly to 1.000
+            let sSnap, jx = 0, jy = 0, op = 1.0, filterStr = 'none';
 
-              if(flareStreak) {
-                flareStreak.style.opacity = (0.85 * Math.sin(tSnap * Math.PI)).toFixed(3);
-                flareStreak.style.transform = `scaleY(0.4) scaleX(${1.0 + tSnap * 1.8})`;
+            if(elapsedMs <= tPop) {
+              const p = Math.max(0, elapsedMs) / tPop;
+              op = Math.min(1.0, elapsedMs / 65.0);
+              
+              if(p > 0.6) {
+                sSnap = (0.85 + (1.085 - 0.85) * Math.sin(((p - 0.6) / 0.4) * (Math.PI / 2))).toFixed(4);
+              } else {
+                sSnap = (0.20 + 0.65 * Math.pow(p / 0.6, 1.25)).toFixed(4);
               }
-              if(shockwaveRing) shockwaveRing.style.opacity = '0';
+              
+              const flashBright = 1.0 + 0.45 * Math.sin(p * Math.PI);
+              filterStr = `brightness(${flashBright.toFixed(2)}) contrast(115%) drop-shadow(0 0 ${(42 * p).toFixed(0)}px rgba(0,240,255,0.85))`;
+
+              if(elapsedMs >= 130) {
+                const pBlast = (elapsedMs - 130) / 60.0;
+                if(flareStreak) {
+                  flareStreak.style.opacity = (0.95 * Math.sin(pBlast * Math.PI)).toFixed(3);
+                  flareStreak.style.transform = `scaleY(0.5) scaleX(${1.0 + pBlast * 2.2})`;
+                }
+                if(shockwaveRing) {
+                  const pRing = Math.min(1.0, (elapsedMs - 130) / 180.0);
+                  shockwaveRing.style.transform = `scale(${(0.2 + 2.8 * Math.pow(pRing, 0.6)).toFixed(3)})`;
+                  shockwaveRing.style.opacity = (Math.max(0, 1.0 - pRing * 1.15)).toFixed(3);
+                }
+              } else {
+                if(flareStreak) flareStreak.style.opacity = '0';
+                if(shockwaveRing) shockwaveRing.style.opacity = '0';
+              }
             } else {
-              // 120ms -> 340ms: Ground Impact Slam & Seismic Camera Shudder
-              sSnap = '1.0000';
-              const pShake = Math.max(0, 1 - (elapsedMs - 120) / 200);
-              jx = (Math.sin((elapsedMs - 120) * 0.22) * 3.6 * pShake).toFixed(1);
-              jy = (Math.cos((elapsedMs - 120) * 0.17) * 2.4 * pShake).toFixed(1);
-              filterStr = pShake > 0.4 ? 'drop-shadow(0 0 22px rgba(0,240,255,0.45)) contrast(108%)' : 'none';
+              // Settle & Seismic Camera Shudder (1.085 -> 1.000)
+              const p2 = (elapsedMs - tPop) / tSettle;
+              sSnap = (1.085 - 0.085 * Math.sin(p2 * (Math.PI / 2))).toFixed(4);
+              op = 1.0;
+              jx = (Math.sin(p2 * 18.0) * 3.5 * (1.0 - p2)).toFixed(1);
+              jy = (Math.cos(p2 * 14.0) * 2.2 * (1.0 - p2)).toFixed(1);
+              filterStr = p2 < 0.6 ? 'drop-shadow(0 0 24px rgba(0,240,255,0.50)) contrast(110%)' : 'none';
 
-              if(flareStreak) flareStreak.style.opacity = '0';
-
-              // Supersonic Neon Shockwave Ring expanding from center
-              const pRing = Math.min(1.0, (elapsedMs - 120) / 200);
+              if(flareStreak) flareStreak.style.opacity = (Math.max(0, 1.0 - p2 * 2.5) * 0.5).toFixed(3);
               if(shockwaveRing) {
-                shockwaveRing.style.transform = `scale(${(0.1 + 2.5 * Math.pow(pRing, 0.6)).toFixed(3)})`;
+                const pRing = Math.min(1.0, (elapsedMs - 130.0) / 180.0);
+                shockwaveRing.style.transform = `scale(${(0.2 + 2.8 * Math.pow(pRing, 0.6)).toFixed(3)})`;
                 shockwaveRing.style.opacity = (Math.max(0, 1.0 - pRing * 1.15)).toFixed(3);
               }
             }
@@ -2438,12 +2454,12 @@ function renderTimelineState(elapsedMs){
               posterGroup.style.transform = `scale(${sSnap}) translate(${jx}px, ${jy}px)`;
               posterGroup.style.filter = filterStr;
             }
-            posterLayer.style.opacity = '1';
+            posterLayer.style.opacity = op.toFixed(3);
             if(flashCurtain) flashCurtain.style.opacity = '0';
           }
-          // --- STAGE 1B: Hollywood Hypnotic Push-In Zoom (340ms -> tGlitch) ---
+          // --- STAGE 1B: Hollywood Hypnotic Push-In Zoom (320ms -> tGlitch) ---
           else {
-            const tZoom = (elapsedMs - 340) / Math.max(1, tGlitch - 340);
+            const tZoom = (elapsedMs - 320) / Math.max(1, tGlitch - 320);
             const easeZoom = Math.sin((tZoom * Math.PI) / 2);
             const s = (1.0000 + 0.2200 * easeZoom).toFixed(4);
             if(posterImg) {

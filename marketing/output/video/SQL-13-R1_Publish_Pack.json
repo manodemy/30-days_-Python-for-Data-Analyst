@@ -6,7 +6,7 @@
   "videoPath": "D:\\Learn Python in 60days\\Manodemy_Web_V2\\marketing\\output\\video\\SQL-13-R1.mp4",
   "coverFile": "SQL-13-R1_Cover.png",
   "coverJpg": "SQL-13-R1_Cover.jpg",
-  "fileSizeMb": 13.11,
+  "fileSizeMb": 13.4,
   "resolution": "1080x1920",
   "fps": 24,
   "durationSec": 15.6,
@@ -420,5 +420,5 @@
     "hasOpeningPoster": true,
     "openingPosterDuration": 5120
   },
-  "generatedAt": "2026-09-05 20:07:46"
+  "generatedAt": "2026-09-06 00:00:38"
 }

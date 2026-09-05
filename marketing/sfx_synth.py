@@ -24,36 +24,47 @@ def triangle_wave(phase):
     p = (phase / (2 * np.pi)) % 1.0
     return 2.0 * np.abs(2.0 * (p - np.floor(p + 0.5))) - 1.0
 
-# 0. Cinematic Cyber Shutter Slam & Sub-Bass Earthquake Drop (0.0s for Opening Poster)
+# 0. Cinematic Cyber Shutter Slam & Sub-Bass Earthquake Drop (for Explosive Kinetic Pop-Up)
 def synth_cyber_poster_slam():
-    dur = 0.75
+    dur = 0.85
     t = np.linspace(0, dur, int(SAMPLE_RATE * dur), False)
     
-    # Layer 1: Sub-Bass 808 Visceral Drop (145Hz -> 28Hz)
-    freq_sub = 145 * np.exp(-7.2 * t) + 28
-    phase_sub = 2 * np.pi * np.cumsum(freq_sub) / SAMPLE_RATE
-    env_sub = exp_envelope(t, 0.006, 5.2, 0.95)
-    layer_sub = np.sin(phase_sub) * env_sub
+    # Layer 0: Hypersonic Emergence Riser Whoosh (0ms -> 160ms)
+    t_rise = np.clip(t / 0.160, 0, 1)
+    freq_rise = 160 + (820 - 160) * (t_rise**2)
+    phase_rise = 2 * np.pi * np.cumsum(freq_rise) / SAMPLE_RATE
+    env_rise = exp_envelope(t, 0.13, 22.0, 0.45) * (t < 0.170)
+    layer_rise = np.sin(phase_rise) * env_rise
     
-    # Layer 2: Metallic Mechanical Shutter Snap (Triangle 4200Hz -> 1600Hz at t=15ms)
-    t_snap = t - 0.015
+    # Layer 1: Sub-Bass 808 Visceral Drop (155Hz -> 28Hz, hits at t=160ms)
+    t_sub = t - 0.160
+    layer_sub = np.zeros_like(t)
+    mask_sub = t >= 0.160
+    if np.any(mask_sub):
+        freq_sub = 155 * np.exp(-7.2 * t_sub[mask_sub]) + 28
+        phase_sub = 2 * np.pi * np.cumsum(freq_sub) / SAMPLE_RATE
+        env_sub = exp_envelope(t_sub[mask_sub], 0.006, 5.2, 0.98)
+        layer_sub[mask_sub] = np.sin(phase_sub) * env_sub
+    
+    # Layer 2: Metallic Mechanical Shutter Snap (Triangle 4200Hz -> 1400Hz at t=160ms)
+    t_snap = t - 0.160
     layer_snap = np.zeros_like(t)
-    mask_snap = t >= 0.015
+    mask_snap = t >= 0.160
     if np.any(mask_snap):
-        freq_snap = 4200 * np.exp(-35.0 * t_snap[mask_snap]) + 1600
+        freq_snap = 4200 * np.exp(-35.0 * t_snap[mask_snap]) + 1400
         phase_snap = 2 * np.pi * np.cumsum(freq_snap) / SAMPLE_RATE
-        env_snap = exp_envelope(t_snap[mask_snap], 0.002, 55.0, 0.75)
-        noise_burst = (np.random.rand(np.count_nonzero(mask_snap)) * 2 - 1) * exp_envelope(t_snap[mask_snap], 0.001, 85.0, 0.35)
+        env_snap = exp_envelope(t_snap[mask_snap], 0.002, 55.0, 0.85)
+        noise_burst = (np.random.rand(np.count_nonzero(mask_snap)) * 2 - 1) * exp_envelope(t_snap[mask_snap], 0.001, 85.0, 0.40)
         layer_snap[mask_snap] = triangle_wave(phase_snap) * env_snap + noise_burst
         
-    # Layer 3: High-Voltage Shockwave Arc Sizzle (starts at t=120ms with slam impact)
-    t_arc = t - 0.120
+    # Layer 3: High-Voltage Shockwave Arc Sizzle (starts at t=160ms with slam impact)
+    t_arc = t - 0.160
     layer_arc = np.zeros_like(t)
-    mask_arc = t >= 0.120
+    mask_arc = t >= 0.160
     if np.any(mask_arc):
-        freq_arc = 850 * np.exp(-12.0 * t_arc[mask_arc]) + 240
+        freq_arc = 850 * np.exp(-12.0 * t_arc[mask_arc]) + 220
         phase_arc = 2 * np.pi * np.cumsum(freq_arc) / SAMPLE_RATE
-        env_arc = exp_envelope(t_arc[mask_arc], 0.005, 18.0, 0.45)
+        env_arc = exp_envelope(t_arc[mask_arc], 0.005, 16.0, 0.50)
         layer_arc[mask_arc] = np.sin(phase_arc) * env_arc
         
     # Layer 4: Cinematic Subwoofer Rumble Resonance
@@ -62,7 +73,7 @@ def synth_cyber_poster_slam():
     env_rumble = exp_envelope(t, 0.03, 3.8, 0.4)
     layer_rumble = np.sin(phase_rumble) * env_rumble
 
-    return layer_sub + layer_snap + layer_arc + layer_rumble
+    return layer_rise + layer_sub + layer_snap + layer_arc + layer_rumble
 
 # 1. Japanese Taiko Drum Membrane & Mallet Slam (0.0s)
 def synth_taiko():
