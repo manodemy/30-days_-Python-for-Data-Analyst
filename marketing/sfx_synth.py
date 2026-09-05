@@ -24,6 +24,46 @@ def triangle_wave(phase):
     p = (phase / (2 * np.pi)) % 1.0
     return 2.0 * np.abs(2.0 * (p - np.floor(p + 0.5))) - 1.0
 
+# 0. Cinematic Cyber Shutter Slam & Sub-Bass Earthquake Drop (0.0s for Opening Poster)
+def synth_cyber_poster_slam():
+    dur = 0.75
+    t = np.linspace(0, dur, int(SAMPLE_RATE * dur), False)
+    
+    # Layer 1: Sub-Bass 808 Visceral Drop (145Hz -> 28Hz)
+    freq_sub = 145 * np.exp(-7.2 * t) + 28
+    phase_sub = 2 * np.pi * np.cumsum(freq_sub) / SAMPLE_RATE
+    env_sub = exp_envelope(t, 0.006, 5.2, 0.95)
+    layer_sub = np.sin(phase_sub) * env_sub
+    
+    # Layer 2: Metallic Mechanical Shutter Snap (Triangle 4200Hz -> 1600Hz at t=15ms)
+    t_snap = t - 0.015
+    layer_snap = np.zeros_like(t)
+    mask_snap = t >= 0.015
+    if np.any(mask_snap):
+        freq_snap = 4200 * np.exp(-35.0 * t_snap[mask_snap]) + 1600
+        phase_snap = 2 * np.pi * np.cumsum(freq_snap) / SAMPLE_RATE
+        env_snap = exp_envelope(t_snap[mask_snap], 0.002, 55.0, 0.75)
+        noise_burst = (np.random.rand(np.count_nonzero(mask_snap)) * 2 - 1) * exp_envelope(t_snap[mask_snap], 0.001, 85.0, 0.35)
+        layer_snap[mask_snap] = triangle_wave(phase_snap) * env_snap + noise_burst
+        
+    # Layer 3: High-Voltage Shockwave Arc Sizzle (starts at t=120ms with slam impact)
+    t_arc = t - 0.120
+    layer_arc = np.zeros_like(t)
+    mask_arc = t >= 0.120
+    if np.any(mask_arc):
+        freq_arc = 850 * np.exp(-12.0 * t_arc[mask_arc]) + 240
+        phase_arc = 2 * np.pi * np.cumsum(freq_arc) / SAMPLE_RATE
+        env_arc = exp_envelope(t_arc[mask_arc], 0.005, 18.0, 0.45)
+        layer_arc[mask_arc] = np.sin(phase_arc) * env_arc
+        
+    # Layer 4: Cinematic Subwoofer Rumble Resonance
+    freq_rumble = 55 * np.exp(-1.5 * t) + 32
+    phase_rumble = 2 * np.pi * np.cumsum(freq_rumble) / SAMPLE_RATE
+    env_rumble = exp_envelope(t, 0.03, 3.8, 0.4)
+    layer_rumble = np.sin(phase_rumble) * env_rumble
+
+    return layer_sub + layer_snap + layer_arc + layer_rumble
+
 # 1. Japanese Taiko Drum Membrane & Mallet Slam (0.0s)
 def synth_taiko():
     dur = 0.65
@@ -252,15 +292,16 @@ def build_sfx_audio_segment(cues, total_ms=15500):
             buffer[start_idx:end_idx] += sample_array[:chunk_len]
 
     # 1. Hook Impact (0ms)
-    mix_at(synth_taiko(), 0)
-
-    # 1.1 Opening Poster Vintage Hollywood Camera Shutter Snap & Flash Pop
     has_poster = cues.get('hasOpeningPoster', False) or cues.get('openingPosterDuration', 0) > 0
     if has_poster:
+        # High-Impact Cyber Shutter Slam + Sub-Bass Earthquake Drop (0ms)
+        mix_at(synth_cyber_poster_slam(), 0)
+        # 1.1 Opening Poster Vintage Hollywood Camera Shutter Snap & Flash Pop
         poster_dur = cues.get('openingPosterDuration', cues.get('t_line2_start', 1800))
-        # Exact sync: Shutter snaps 220ms before line 2 when flash curtain bursts
         snap_ms = max(0, poster_dur - 220)
         mix_at(synth_vintage_camera_shutter(), snap_ms)
+    else:
+        mix_at(synth_taiko(), 0)
 
     # 2. Line 2 Impact
     mix_at(synth_marimba(), cues.get('t_line2_start', 2470))

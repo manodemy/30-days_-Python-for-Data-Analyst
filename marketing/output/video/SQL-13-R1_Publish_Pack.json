@@ -6,10 +6,10 @@
   "videoPath": "D:\\Learn Python in 60days\\Manodemy_Web_V2\\marketing\\output\\video\\SQL-13-R1.mp4",
   "coverFile": "SQL-13-R1_Cover.png",
   "coverJpg": "SQL-13-R1_Cover.jpg",
-  "fileSizeMb": 13.07,
+  "fileSizeMb": 13.11,
   "resolution": "1080x1920",
   "fps": 24,
-  "durationSec": 15.58,
+  "durationSec": 15.6,
   "caption": "PEAK STREAMERS? 🎬🍿\n\nWhich query finds concurrent viewers watching at the exact same second?\n\nCan you spot which approach scales to millions of streams without quadratic join crashes?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q20\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, peak concurrency sql, netflix sql interview, hotstar live streams, running total sql, window functions, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
   "pinnedAnswer": "Option B is the FAANG Standard ✅ | Option A is the Crash Trap ❌\n\nWhy Option B (Delta Event Counter +1 / -1) works:\nBy tagging each stream start as +1 and each stream end as -1, `SUM(delta) OVER (ORDER BY t)` computes the exact running concurrent viewers in O(N log N) time without storing redundant combinations!\n\nWhy Option A (Self-Join BETWEEN) fails:\nOption A compares every stream against every other overlapping stream using an O(N²) quadratic Self-Join. On 10 million concurrent streams, this generates 100 trillion row comparisons, causing catastrophic database memory exhaustion!\n\n💡 Rule of thumb: When tracking concurrent active sessions, convert starts and ends into +1 / -1 delta events instead of writing quadratic self-joins!\n\nDid you vote A or B? 👇",
   "simulatorLink": "https://www.manodemy.com/q20",
@@ -22,8 +22,8 @@
     "t_optb_end": 12130,
     "t_clock_out": 12280,
     "t_cta_start": 12280,
-    "t_voice_end": 14180,
-    "totalMs": 15580,
+    "t_voice_end": 14200,
+    "totalMs": 15600,
     "clockDurationMs": 3560,
     "wordCues": [
       {
@@ -194,7 +194,7 @@
       {
         "word": "below.",
         "startMs": 13740,
-        "endMs": 14080
+        "endMs": 14100
       }
     ],
     "phrases": [
@@ -377,7 +377,7 @@
         "index": 5,
         "text": "Drop your vote in the comments below.",
         "startMs": 12280,
-        "endMs": 14180,
+        "endMs": 14200,
         "words": [
           {
             "word": "Drop",
@@ -412,7 +412,7 @@
           {
             "word": "below.",
             "startMs": 13740,
-            "endMs": 14080
+            "endMs": 14100
           }
         ]
       }
@@ -420,5 +420,5 @@
     "hasOpeningPoster": true,
     "openingPosterDuration": 5120
   },
-  "generatedAt": "2026-09-05 19:54:32"
+  "generatedAt": "2026-09-05 20:07:46"
 }
