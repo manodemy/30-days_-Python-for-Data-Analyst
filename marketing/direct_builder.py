@@ -707,15 +707,15 @@ REELS_CATALOG = {
         ],
         "lang": "sql",
         "codeA": "WITH flagged AS (\n  SELECT click_time,\n    CASE WHEN click_time - LAG(click_time)\n      OVER (ORDER BY click_time) > 30 THEN 1 ELSE 0 END AS is_new\n  FROM clicks\n)\nSELECT click_time,\n  SUM(is_new) OVER (ORDER BY click_time) AS session_id\nFROM flagged;",
-        "codeB": "SELECT click_time,\n       DENSE_RANK() OVER (ORDER BY DATE(click_time)) AS session_id\nFROM clicks;",
+        "codeB": "WITH flagged AS (\n  SELECT click_time,\n    CASE WHEN click_time - LAG(click_time)\n      OVER (ORDER BY click_time) > 30 THEN 1 ELSE 0 END AS is_new\n  FROM clicks\n)\nSELECT click_time,\n  COUNT(is_new) OVER (ORDER BY click_time) AS session_id\nFROM flagged;",
         "pollInstr": "DROP YOUR VOTE IN COMMENTS 👇",
         "clockSfx": "bomb",
         "ccStyle": "hormozi",
         "ccEnabled": True,
         "voice": "en-US-AndrewNeural",
         "voiceScript": "Swiggy and Uber love asking this User Sessionization S-Q-L challenge!\nWhich query tracks dynamic sessions when thirty minutes of inactivity triggers a timeout?\nChoose your answer.\nOption A...\nor Option B?\nDrop your vote in the comments below.",
-        "caption": "SESSION TIMEOUT? ⏱️📱\n\nWhich query tracks dynamic user sessions when 30 minutes of inactivity triggers a new session?\n\nCan you spot which approach computes event inactivity gaps instead of merely ranking calendar dates?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q21\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, sessionization sql, swiggy sql interview, uber data analyst, lag function sql, running total session id, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
-        "pinnedAnswer": "Option A is the FAANG Standard ✅ | Option B is the Trap ❌\n\nWhy Option A (LAG Time-Delta + Cumulative Sum) works:\nOption A calculates the time elapsed since the user's previous click using `LAG(click_time)`. When that inactivity gap exceeds 30 minutes, it flags a new session (`is_new = 1`). A running cumulative `SUM(is_new) OVER (ORDER BY click_time)` then cleanly generates distinct, sequential session IDs across any time boundary!\n\nWhy Option B (DENSE_RANK on DATE) fails:\nOption B merely truncates click timestamps to calendar days (`DATE(click_time)`). If a user visits the app at 9:00 AM, closes it, and returns 12 hours later at 9:00 PM, Option B assigns BOTH visits the exact same session ID! Furthermore, sessions crossing midnight are incorrectly fragmented.\n\n💡 Rule of thumb: Real-world sessionization always depends on inactivity gaps between consecutive events — never rely on arbitrary midnight calendar boundaries!\n\nDid you vote A or B? 👇",
+        "caption": "SESSION TIMEOUT? ⏱️📱\n\nWhich query tracks dynamic user sessions when 30 minutes of inactivity triggers a new session?\n\nCan you spot the dangerous difference between SUM() and COUNT() in running window functions?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q21\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, sessionization sql, sum vs count sql, swiggy sql interview, uber data analyst, lag function sql, running total session id, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
+        "pinnedAnswer": "Option A is the FAANG Standard ✅ | Option B is the Trap ❌\n\nWhy Option A (SUM of is_new) works:\nWhen inactivity exceeds 30 minutes, `is_new` flags 1; otherwise it flags 0. `SUM(is_new) OVER (ORDER BY click_time)` adds 0 on ordinary clicks (preserving the current session ID) and adds 1 only when a new session starts (1, 1, 1, 2, 2, 3...)!\n\nWhy Option B (COUNT of is_new) fails:\nIn SQL, `0` is a valid, populated integer value — it is NOT NULL! `COUNT(is_new)` counts every single 0 as a row, incrementing the session ID on EVERY SINGLE CLICK (1, 2, 3, 4, 5...)! It completely destroys session grouping!\n\n💡 Rule of thumb: To accumulate binary flags (0 and 1) in SQL, always use SUM() — COUNT() counts both 0 and 1!\n\nDid you vote A or B? 👇",
         "link": "https://www.manodemy.com/q21",
         "openingPoster": str(PROJECT_ROOT / "marketing" / "output" / "video" / "SQL-14-R1_Opening_Poster_1080x1920.jpg")
     }
@@ -1042,6 +1042,26 @@ async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
                     poster_b64 = f"data:{mime};base64," + base64.b64encode(poster_path.read_bytes()).decode('utf-8')
                     load_payload["openingPoster"] = poster_b64
                     load_payload["openingPosterDuration"] = cues_data.get("t_line2_start", 1800)
+
+            # If 7-layer kinetic component suite exists, load it into template
+            layers_dir = PROJECT_ROOT / "marketing" / "assets" / "sql13_layers"
+            if reel_no == "SQL-13-R1" and layers_dir.exists():
+                import base64
+                layers_payload = {}
+                layer_files = {
+                    "bg": "0_background.png",
+                    "title": "1_title.png",
+                    "tape": "2_tape.png",
+                    "cardLeft": "3_card_left.png",
+                    "cardRight": "4_card_right.png",
+                    "vsLightning": "5_vs_lightning.png",
+                    "bottom": "6_bottom.png"
+                }
+                for key, fname in layer_files.items():
+                    fpath = layers_dir / fname
+                    if fpath.exists():
+                        layers_payload[key] = "data:image/png;base64," + base64.b64encode(fpath.read_bytes()).decode('utf-8')
+                load_payload["openingPosterLayers"] = layers_payload
 
             await page.evaluate(f"window.ReelEngine.load({json.dumps(load_payload)});")
             await page.wait_for_timeout(500)
