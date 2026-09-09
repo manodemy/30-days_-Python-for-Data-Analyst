@@ -371,6 +371,17 @@ window.DB_SEEDS['retail'] = {
         { name: "start_time", type: "TEXT", pk: false },
         { name: "end_time", type: "TEXT", pk: false }
       ]
+    },
+    {
+      name: "stock_feed",
+      createSQL: "CREATE TABLE stock_feed (\n        id INTEGER PRIMARY KEY,\n        trade_time TEXT NOT NULL,\n        price REAL,\n        grp INTEGER\n      )",
+      seedSQL: "INSERT INTO stock_feed VALUES\n        (1, '10:00:00', 450.50, 1),\n        (2, '10:00:01', NULL, 1),\n        (3, '10:00:02', NULL, 1),\n        (4, '10:00:03', 452.00, 2),\n        (5, '10:00:04', NULL, 2);",
+      columns: [
+        { name: "id", type: "INTEGER", pk: true },
+        { name: "trade_time", type: "TEXT", pk: false },
+        { name: "price", type: "REAL", pk: false },
+        { name: "grp", type: "INTEGER", pk: false }
+      ]
     }
   ]
 };

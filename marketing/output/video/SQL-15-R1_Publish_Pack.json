@@ -6,7 +6,7 @@
   "videoPath": "D:\\Learn Python in 60days\\Manodemy_Web_V2\\marketing\\output\\video\\SQL-15-R1.mp4",
   "coverFile": "SQL-15-R1_Cover.png",
   "coverJpg": "SQL-15-R1_Cover.jpg",
-  "fileSizeMb": 9.7,
+  "fileSizeMb": 13.23,
   "resolution": "1080x1920",
   "fps": 24,
   "durationSec": 17.3,
@@ -19,12 +19,12 @@
     "t_clock_in": 10480,
     "t_opta": 11560,
     "t_optb": 12640,
-    "t_optb_end": 14090,
-    "t_clock_out": 14240,
-    "t_cta_start": 14240,
+    "t_optb_end": 14110,
+    "t_clock_out": 14260,
+    "t_cta_start": 14260,
     "t_voice_end": 15900,
     "totalMs": 17300,
-    "clockDurationMs": 3760,
+    "clockDurationMs": 3780,
     "wordCues": [
       {
         "word": "Google",
@@ -189,11 +189,11 @@
       {
         "word": "B?",
         "startMs": 13200,
-        "endMs": 14090
+        "endMs": 14110
       },
       {
         "word": "Drop",
-        "startMs": 14240,
+        "startMs": 14260,
         "endMs": 14420
       },
       {
@@ -219,11 +219,11 @@
       {
         "word": "comments",
         "startMs": 15160,
-        "endMs": 15460
+        "endMs": 15480
       },
       {
         "word": "below.",
-        "startMs": 15460,
+        "startMs": 15480,
         "endMs": 15800
       }
     ],
@@ -414,7 +414,7 @@
         "index": 4,
         "text": "or Option B?",
         "startMs": 12640,
-        "endMs": 14090,
+        "endMs": 14110,
         "words": [
           {
             "word": "or",
@@ -429,19 +429,19 @@
           {
             "word": "B?",
             "startMs": 13200,
-            "endMs": 14090
+            "endMs": 14110
           }
         ]
       },
       {
         "index": 5,
         "text": "Drop your vote in the comments below.",
-        "startMs": 14240,
+        "startMs": 14260,
         "endMs": 15900,
         "words": [
           {
             "word": "Drop",
-            "startMs": 14240,
+            "startMs": 14260,
             "endMs": 14420
           },
           {
@@ -467,11 +467,11 @@
           {
             "word": "comments",
             "startMs": 15160,
-            "endMs": 15460
+            "endMs": 15480
           },
           {
             "word": "below.",
-            "startMs": 15460,
+            "startMs": 15480,
             "endMs": 15800
           }
         ]
@@ -480,5 +480,5 @@
     "hasOpeningPoster": true,
     "openingPosterDuration": 4680
   },
-  "generatedAt": "2026-09-05 18:27:46"
+  "generatedAt": "2026-09-09 21:17:49"
 }

@@ -600,6 +600,16 @@
       "permanent": false
     },
     {
+      "source": "/q22",
+      "destination": "/Version-3/index.html?day=15&challenge=SQL-15-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day15_q22_running_balance",
+      "permanent": false
+    },
+    {
+      "source": "/go/q22",
+      "destination": "/Version-3/index.html?day=15&challenge=SQL-15-R1&guest=true&tab=practice&utm_source=instagram&utm_medium=reels&utm_campaign=reel_day15_q22_running_balance",
+      "permanent": false
+    },
+    {
       "source": "/day:day(0[3-9]|[12][0-9]|30).html",
       "destination": "/notebook/day:day",
       "permanent": true

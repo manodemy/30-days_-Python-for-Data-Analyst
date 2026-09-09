@@ -3740,17 +3740,33 @@ const REEL_CHALLENGES = {
     day: 'day14',
     slideIndex: 0,
     title: 'SESSION TIMEOUT CHALLENGE ⏱️📱',
-    task: 'Dynamic Sessionization: Flagging Inactivity Gaps vs Calendar Date Ranks',
-    prompt: `Swiggy, Uber, and Amazon track user sessions by inactivity timeouts (e.g. 30 minutes of silence triggers a new session). Run Option A (Lag Delta + Cumulative Sum) vs Option B (Calendar Date Rank) to see how dynamic sessionization works.<br/>
+    task: 'Dynamic Sessionization: SUM() vs COUNT() Accumulator Trap',
+    prompt: `Swiggy, Uber, and Amazon track user sessions by inactivity timeouts (e.g. 30 minutes of silence triggers a new session). Run Option A (SUM Accumulator) vs Option B (COUNT Accumulator) to spot the dangerous SQL trap.<br/>
       <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-14-R1', 'A')">⚡ Load Option A (Lag + Running Sum Standard)</button>
-        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-14-R1', 'B')">⚡ Load Option B (Date Rank Trap)</button>
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-14-R1', 'A')">⚡ Load Option A (SUM Standard)</button>
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-14-R1', 'B')">⚡ Load Option B (COUNT Trap)</button>
       </div>`,
-    trapExplanation: 'Option B merely groups clicks by calendar date using DENSE_RANK(DATE). If a user visits in the morning and returns 10 hours later at night, Option B merges them into the same session! Furthermore, sessions crossing midnight break entirely.',
-    successExplanation: 'Option A uses the industry standard Sessionization algorithm: LAG() checks if inactivity > 30 mins to flag new sessions, and SUM() OVER computes the incremental dynamic session IDs perfectly!',
+    trapExplanation: 'Option B uses COUNT(is_new). In SQL, 0 is NOT NULL! COUNT(0) counts the row, causing session_id to increment on EVERY SINGLE CLICK (1, 2, 3, 4, 5...)! It completely corrupts user sessionization.',
+    successExplanation: 'Option A uses SUM(is_new) OVER. It adds 0 on ordinary clicks (preserving current session) and adds 1 only when gap > 30 mins, generating perfect incremental session IDs (1, 1, 2, 2, 3...)!',
     correctOption: 'A',
     codeA: "WITH flagged AS (\n  SELECT click_time,\n    CASE WHEN click_time - LAG(click_time)\n      OVER (ORDER BY click_time) > 30 THEN 1 ELSE 0 END AS is_new\n  FROM clicks\n)\nSELECT click_time,\n  SUM(is_new) OVER (ORDER BY click_time) AS session_id\nFROM flagged;",
-    codeB: "SELECT click_time,\n       DENSE_RANK() OVER (ORDER BY DATE(click_time)) AS session_id\nFROM clicks;"
+    codeB: "WITH flagged AS (\n  SELECT click_time,\n    CASE WHEN click_time - LAG(click_time)\n      OVER (ORDER BY click_time) > 30 THEN 1 ELSE 0 END AS is_new\n  FROM clicks\n)\nSELECT click_time,\n  COUNT(is_new) OVER (ORDER BY click_time) AS session_id\nFROM flagged;"
+  },
+  'SQL-15-R1': {
+    day: 'day15',
+    slideIndex: 0,
+    title: 'RUNNING BALANCE CHALLENGE 💳⚡',
+    task: 'Fintech Daily Ledger: RANGE vs ROWS Tie Breaker Trap',
+    prompt: `Google Pay, Stripe, and modern banks calculate progressive running balances. Run Option A (Default RANGE Trap) vs Option B (Explicit ROWS Standard) to see why multiple transactions on the same date cause severe ledger bugs.<br/>
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-15-R1', 'A')">⚡ Load Option A (RANGE Tie Bug Trap)</button>
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-15-R1', 'B')">⚡ Load Option B (ROWS Fintech Standard)</button>
+      </div>`,
+    trapExplanation: 'Option A defaults to RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW. When two transactions happen on the exact same day, RANGE treats them as tied values and sums BOTH transactions together, jumping ahead and displaying incorrect duplicate balances!',
+    successExplanation: 'Option B explicitly specifies ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW. ROWS forces physical row-by-row accumulation, correctly calculating continuous progressive totals even with identical timestamps!',
+    correctOption: 'B',
+    codeA: "SELECT txn_date, amount,\n  SUM(amount) OVER (\n    ORDER BY txn_date\n  ) AS running_balance\nFROM bank_ledger;",
+    codeB: "SELECT txn_date, amount,\n  SUM(amount) OVER (\n    ORDER BY txn_date\n    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n  ) AS running_balance\nFROM bank_ledger;"
   }
 };
 
@@ -3790,6 +3806,7 @@ function getActiveChallengeId() {
   if (camp.includes('reel_day12_q19') || camp.includes('reel_19') || camp.includes('q19') || camp.includes('ghost_employee') || camp.includes('payroll_leak')) return 'SQL-12-R1';
   if (camp.includes('reel_day13_q20') || camp.includes('reel_20') || camp.includes('q20') || camp.includes('peak_streamers') || camp.includes('concurrency')) return 'SQL-13-R1';
   if (camp.includes('reel_day14_q21') || camp.includes('reel_21') || camp.includes('q21') || camp.includes('session') || camp.includes('timeout')) return 'SQL-14-R1';
+  if (camp.includes('reel_day15_q22') || camp.includes('reel_22') || camp.includes('q22') || camp.includes('running_balance') || camp.includes('ledger')) return 'SQL-15-R1';
 
   const dayParam = urlP.get('day');
   const qParam = urlP.get('q') || urlP.get('question');
@@ -3836,6 +3853,9 @@ function getActiveChallengeId() {
   if (dayParam === '14') {
     if (qParam === '1' || qParam === '21') return 'SQL-14-R1';
   }
+  if (dayParam === '15') {
+    if (qParam === '1' || qParam === '22') return 'SQL-15-R1';
+  }
   if (qParam === '12' || qParam === 'q12') return 'SQL-07-R1';
   if (qParam === '13' || qParam === 'q13') return 'SQL-07-R2';
   if (qParam === '14' || qParam === 'q14') return 'SQL-08-R1';
@@ -3846,6 +3866,7 @@ function getActiveChallengeId() {
   if (qParam === '19' || qParam === 'q19') return 'SQL-12-R1';
   if (qParam === '20' || qParam === 'q20') return 'SQL-13-R1';
   if (qParam === '21' || qParam === 'q21') return 'SQL-14-R1';
+  if (qParam === '22' || qParam === 'q22') return 'SQL-15-R1';
   return null;
 }
 
