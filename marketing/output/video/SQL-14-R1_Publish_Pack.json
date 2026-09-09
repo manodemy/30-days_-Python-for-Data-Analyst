@@ -6,7 +6,7 @@
   "videoPath": "D:\\Learn Python in 60days\\Manodemy_Web_V2\\marketing\\output\\video\\SQL-14-R1.mp4",
   "coverFile": "SQL-14-R1_Cover.png",
   "coverJpg": "SQL-14-R1_Cover.jpg",
-  "fileSizeMb": 14.13,
+  "fileSizeMb": 14.59,
   "resolution": "1080x1920",
   "fps": 24,
   "durationSec": 17.26,
@@ -16,7 +16,7 @@
   "cues": {
     "t_hook_start": 0,
     "t_line2_start": 5000,
-    "t_clock_in": 10400,
+    "t_clock_in": 10420,
     "t_opta": 11500,
     "t_optb": 12600,
     "t_optb_end": 13910,
@@ -24,7 +24,7 @@
     "t_cta_start": 14060,
     "t_voice_end": 15860,
     "totalMs": 17260,
-    "clockDurationMs": 3660,
+    "clockDurationMs": 3640,
     "wordCues": [
       {
         "word": "Swiggy",
@@ -44,11 +44,11 @@
       {
         "word": "love",
         "startMs": 1140,
-        "endMs": 1380
+        "endMs": 1360
       },
       {
         "word": "asking",
-        "startMs": 1380,
+        "startMs": 1360,
         "endMs": 1940
       },
       {
@@ -79,21 +79,21 @@
       {
         "word": "Which",
         "startMs": 5000,
-        "endMs": 5420
+        "endMs": 5400
       },
       {
         "word": "query",
-        "startMs": 5420,
+        "startMs": 5400,
         "endMs": 5780
       },
       {
         "word": "tracks",
         "startMs": 5780,
-        "endMs": 6160
+        "endMs": 6120
       },
       {
         "word": "dynamic",
-        "startMs": 6160,
+        "startMs": 6120,
         "endMs": 6600
       },
       {
@@ -143,7 +143,7 @@
       },
       {
         "word": "Choose",
-        "startMs": 10400,
+        "startMs": 10420,
         "endMs": 10580
       },
       {
@@ -242,11 +242,11 @@
           {
             "word": "love",
             "startMs": 1140,
-            "endMs": 1380
+            "endMs": 1360
           },
           {
             "word": "asking",
-            "startMs": 1380,
+            "startMs": 1360,
             "endMs": 1940
           },
           {
@@ -280,26 +280,26 @@
         "index": 1,
         "text": "Which query tracks dynamic sessions when thirty minutes of inactivity triggers a timeout?",
         "startMs": 5000,
-        "endMs": 10400,
+        "endMs": 10420,
         "words": [
           {
             "word": "Which",
             "startMs": 5000,
-            "endMs": 5420
+            "endMs": 5400
           },
           {
             "word": "query",
-            "startMs": 5420,
+            "startMs": 5400,
             "endMs": 5780
           },
           {
             "word": "tracks",
             "startMs": 5780,
-            "endMs": 6160
+            "endMs": 6120
           },
           {
             "word": "dynamic",
-            "startMs": 6160,
+            "startMs": 6120,
             "endMs": 6600
           },
           {
@@ -352,12 +352,12 @@
       {
         "index": 2,
         "text": "Choose your answer...",
-        "startMs": 10400,
+        "startMs": 10420,
         "endMs": 11500,
         "words": [
           {
             "word": "Choose",
-            "startMs": 10400,
+            "startMs": 10420,
             "endMs": 10580
           },
           {
@@ -460,5 +460,5 @@
     "hasOpeningPoster": true,
     "openingPosterDuration": 5000
   },
-  "generatedAt": "2026-09-05 16:37:53"
+  "generatedAt": "2026-09-09 20:28:33"
 }
