@@ -6,7 +6,7 @@
   "videoPath": "D:\\Learn Python in 60days\\Manodemy_Web_V2\\marketing\\output\\video\\SQL-15-R1.mp4",
   "coverFile": "SQL-15-R1_Cover.png",
   "coverJpg": "SQL-15-R1_Cover.jpg",
-  "fileSizeMb": 13.23,
+  "fileSizeMb": 13.28,
   "resolution": "1080x1920",
   "fps": 24,
   "durationSec": 17.3,
@@ -219,11 +219,11 @@
       {
         "word": "comments",
         "startMs": 15160,
-        "endMs": 15480
+        "endMs": 15460
       },
       {
         "word": "below.",
-        "startMs": 15480,
+        "startMs": 15460,
         "endMs": 15800
       }
     ],
@@ -467,11 +467,11 @@
           {
             "word": "comments",
             "startMs": 15160,
-            "endMs": 15480
+            "endMs": 15460
           },
           {
             "word": "below.",
-            "startMs": 15480,
+            "startMs": 15460,
             "endMs": 15800
           }
         ]
@@ -480,5 +480,5 @@
     "hasOpeningPoster": true,
     "openingPosterDuration": 4680
   },
-  "generatedAt": "2026-09-09 21:17:49"
+  "generatedAt": "2026-09-09 22:33:38"
 }
