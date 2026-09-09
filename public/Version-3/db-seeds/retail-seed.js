@@ -382,6 +382,37 @@ window.DB_SEEDS['retail'] = {
         { name: "price", type: "REAL", pk: false },
         { name: "grp", type: "INTEGER", pk: false }
       ]
+    },
+    {
+      name: "payments",
+      createSQL: "CREATE TABLE payments (\n        txn_id INTEGER PRIMARY KEY,\n        card_id TEXT NOT NULL,\n        amount REAL NOT NULL,\n        txn_time INTEGER NOT NULL\n      )",
+      seedSQL: "INSERT INTO payments VALUES\n        (1, 'CARD_4291', 850.0, 100),\n        (2, 'CARD_4291', 850.0, 104),\n        (3, 'CARD_4291', 850.0, 250),\n        (4, 'CARD_8820', 1200.0, 300),\n        (5, 'CARD_8820', 1200.0, 305);",
+      columns: [
+        { name: "txn_id", type: "INTEGER", pk: true },
+        { name: "card_id", type: "TEXT", pk: false },
+        { name: "amount", type: "REAL", pk: false },
+        { name: "txn_time", type: "INTEGER", pk: false }
+      ]
+    },
+    {
+      name: "bank_ledger",
+      createSQL: "CREATE TABLE bank_ledger (\n        txn_id INTEGER PRIMARY KEY,\n        txn_date TEXT NOT NULL,\n        amount REAL NOT NULL\n      )",
+      seedSQL: "INSERT INTO bank_ledger VALUES\n        (1, '2026-10-15', 500.0),\n        (2, '2026-10-15', 500.0),\n        (3, '2026-10-16', 300.0),\n        (4, '2026-10-17', 200.0);",
+      columns: [
+        { name: "txn_id", type: "INTEGER", pk: true },
+        { name: "txn_date", type: "TEXT", pk: false },
+        { name: "amount", type: "REAL", pk: false }
+      ]
+    },
+    {
+      name: "clicks",
+      createSQL: "CREATE TABLE clicks (\n        click_id INTEGER PRIMARY KEY,\n        user_id INTEGER NOT NULL,\n        click_time INTEGER NOT NULL\n      )",
+      seedSQL: "INSERT INTO clicks VALUES\n        (1, 101, 10),\n        (2, 101, 25),\n        (3, 101, 65),\n        (4, 101, 75),\n        (5, 101, 120);",
+      columns: [
+        { name: "click_id", type: "INTEGER", pk: true },
+        { name: "user_id", type: "INTEGER", pk: false },
+        { name: "click_time", type: "INTEGER", pk: false }
+      ]
     }
   ]
 };

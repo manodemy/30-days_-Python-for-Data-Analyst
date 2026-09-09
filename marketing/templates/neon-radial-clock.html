@@ -895,7 +895,7 @@
       <img id="posterBottom" src="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block; transform-origin:50% 84%;" />
     </div>
     <!-- Fallback Single Poster for other reels -->
-    <img id="openingPosterImg" src="" style="width:100%; height:100%; object-fit:contain; display:block; transform-origin:50% 46%;" />
+    <img id="openingPosterImg" src="" style="width:100%; height:100%; object-fit:cover; display:block; transform-origin:50% 46%;" />
   </div>
 
   <!-- HYPERSONIC QUANTUM WARP & SHOCKWAVE VFX OVERLAY (z-index: 9999, renders over stage & poster) -->
@@ -2403,16 +2403,9 @@ function renderTimelineState(elapsedMs){
 
             if(elapsedMs <= tPop) {
               const p = Math.max(0, elapsedMs) / tPop;
-              op = Math.min(1.0, elapsedMs / 65.0);
-              
-              if(p > 0.6) {
-                sSnap = (0.85 + (1.085 - 0.85) * Math.sin(((p - 0.6) / 0.4) * (Math.PI / 2))).toFixed(4);
-              } else {
-                sSnap = (0.20 + 0.65 * Math.pow(p / 0.6, 1.25)).toFixed(4);
-              }
-              
-              const flashBright = 1.0 + 0.45 * Math.sin(p * Math.PI);
-              filterStr = `brightness(${flashBright.toFixed(2)}) contrast(115%) drop-shadow(0 0 ${(42 * p).toFixed(0)}px rgba(0,240,255,0.85))`;
+              op = 1.0; // 100% solid on Frame 0 for instant thumbnail and cover
+              sSnap = 1.0; // Full-bleed 1.0 scale on Frame 0 for zero letterboxing
+              filterStr = 'none';
 
               if(elapsedMs >= 130) {
                 const pBlast = (elapsedMs - 130) / 60.0;

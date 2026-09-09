@@ -745,10 +745,37 @@ REELS_CATALOG = {
         "pinnedAnswer": "Option B is the Fintech Production Standard ✅ | Option A is the Ledger Bug Trap ❌\n\nWhy Option A (Default RANGE) fails in bank ledgers:\nWhen you write `OVER (ORDER BY txn_date)` without specifying a frame, SQL defaults to `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`!\nIf two transactions happen on the SAME day (e.g., ₹500 coffee and ₹500 lunch on Jan 15), `RANGE` treats identical dates as a tie and adds BOTH amounts at once (₹1,000 for both rows) instead of progressive step-by-step running totals!\n\nWhy Option B (Explicit ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) works:\n`ROWS` forces SQL to accumulate row-by-row regardless of duplicate timestamps, giving true progressive ledger accounting!\n\n💡 Rule of thumb: Never trust default window frames on date columns — always specify explicit `ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`!\n\nDid you vote A or B? 👇",
         "link": "https://www.manodemy.com/q22",
         "openingPoster": str(PROJECT_ROOT / "marketing" / "output" / "video" / "SQL-15-R1_Opening_Poster_1080x1920.jpg")
+    },
+    "SQL-16-R1": {
+        "reelNo": "SQL-16-R1",
+        "day": "DAY 16",
+        "badge": "FINTECH · DOUBLE CHARGE TRAP",
+        "hook": "DOUBLE CHARGE? 💳🚨\n₹850 debited twice in 4 seconds!",
+        "hookLineObjects": [
+            {"text": "DOUBLE CHARGE? 💳🚨", "font": "Montserrat", "size": 4.6},
+            {"text": "₹850 debited twice in 4s!", "font": "Outfit", "size": 3.7}
+        ],
+        "hookHighlights": [
+            {"text": "DOUBLE CHARGE?", "color": "#facc15"},
+            {"text": "twice in 4s!", "color": "#00f0ff"}
+        ],
+        "lang": "sql",
+        "codeA": "SELECT card_id, amount, txn_time,\n  CASE WHEN txn_time - LAG(txn_time) OVER (\n    PARTITION BY card_id, amount\n    ORDER BY txn_time\n  ) <= 10 THEN 'DUPLICATE'\n  ELSE 'GENUINE' END AS status\nFROM payments;",
+        "codeB": "SELECT p1.card_id, p1.amount, p1.txn_time,\n  CASE WHEN COUNT(p2.txn_id) > 0 THEN 'DUPLICATE'\n  ELSE 'GENUINE' END AS status\nFROM payments p1\nLEFT JOIN payments p2\n  ON p1.card_id = p2.card_id\n  AND p1.amount = p2.amount\n  AND (p1.txn_time - p2.txn_time) BETWEEN 0 AND 10\nGROUP BY p1.txn_id;",
+        "pollInstr": "DROP YOUR VOTE IN COMMENTS 👇",
+        "clockSfx": "bomb",
+        "ccStyle": "hormozi",
+        "ccEnabled": True,
+        "voice": "en-US-AndrewNeural",
+        "voiceScript": "Zomato and Swiggy love asking this duplicate payment S-Q-L challenge!\nWhich query flags accidental double-swipes within ten seconds without corrupting genuine orders?\nChoose your answer.\nOption A...\nor Option B?\nDrop your vote in the comments below.",
+        "caption": "DOUBLE CHARGE? 💳🚨\n\nWhich query flags accidental double-swipes within 10 seconds without corrupting genuine orders?\n\nCan you spot why Option B's time-window self-join flags 100% of all orders as fraud?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q23\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, duplicate payment detection, lag function sql, self join trap, zomato sql interview, swiggy data analyst, fintech fraud detection, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
+        "pinnedAnswer": "Option A is the Production Standard ✅ | Option B is the Self-Match Trap ❌\n\nWhy Option A (LAG Window Time-Delta) works:\nBy partitioning by card_id and amount and ordering by txn_time, `LAG(txn_time)` looks strictly at the immediately preceding swipe for the same card and amount. If the delta is within 10 seconds, it flags only the second accidental swipe (4s later) while preserving all genuine orders!\n\nWhy Option B (Time-Window Self-Join) fails catastrophically:\nBecause the join condition includes `(p1.txn_time - p2.txn_time) BETWEEN 0 AND 10`, every single row joins against ITSELF! `p1.txn_time - p1.txn_time = 0`, which satisfies `0 <= 10`!\nAs a result, `COUNT(p2.txn_id)` is greater than 0 for EVERY order in the database, flagging 100% of innocent customer transactions as fraudulent duplicates!\n\n💡 Rule of thumb: Never use self-joins for time-delta threshold checks — always use window LAG() to compare strictly against the prior chronological event!\n\nDid you vote A or B? 👇",
+        "link": "https://www.manodemy.com/q23",
+        "openingPoster": str(PROJECT_ROOT / "marketing" / "output" / "video" / "SQL-16-R1_Opening_Poster_1080x1920.jpg")
     }
 }
 
-DEFAULT_REEL = REELS_CATALOG["SQL-15-R1"]
+DEFAULT_REEL = REELS_CATALOG["SQL-16-R1"]
 
 async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
     start_total = time.time()
@@ -1104,7 +1131,7 @@ async def build_direct_video(reel=DEFAULT_REEL, is_4k=False, fps=30):
     # -------------------------------------------------------------
     print("\n📦 [STEP 5/5] Generating 1-Click Publishing Pack & Cover Thumbnail...", flush=True)
     try:
-        if reel_no not in ["SQL-12-R1", "SQL-13-R1", "SQL-14-R1", "SQL-15-R1"]:
+        if reel_no not in ["SQL-12-R1", "SQL-13-R1", "SQL-14-R1", "SQL-15-R1", "SQL-16-R1"]:
             from marketing.cover_generator import generate_cover
             await generate_cover(reel_no)
     except Exception as e:

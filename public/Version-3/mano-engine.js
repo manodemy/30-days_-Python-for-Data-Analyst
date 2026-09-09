@@ -3767,6 +3767,22 @@ const REEL_CHALLENGES = {
     correctOption: 'B',
     codeA: "SELECT txn_date, amount,\n  SUM(amount) OVER (\n    ORDER BY txn_date\n  ) AS running_balance\nFROM bank_ledger;",
     codeB: "SELECT txn_date, amount,\n  SUM(amount) OVER (\n    ORDER BY txn_date\n    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n  ) AS running_balance\nFROM bank_ledger;"
+  },
+  'SQL-16-R1': {
+    day: 'day16',
+    slideIndex: 0,
+    title: 'DOUBLE-SWIPE FRAUD CHALLENGE 💳🚨',
+    task: 'Zomato & Swiggy Payments: LAG Delta vs Self-Join Trap',
+    prompt: `Food delivery apps like Zomato and Swiggy must detect accidental double-swipes (₹850 debited twice in 4 seconds) without corrupting genuine separate orders. Run Option A (LAG Time-Delta) vs Option B (Time-Window Join) to see why Option B catastrophically fails.<br/>
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#6ee7b7; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-16-R1', 'A')">⚡ Load Option A (LAG Time-Delta Standard)</button>
+        <button type="button" class="btn-sec" style="font-size:0.75rem; padding:5px 12px; border-radius:6px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-weight:700; cursor:pointer;" onclick="loadReelCode('SQL-16-R1', 'B')">⚡ Load Option B (Self-Join Trap)</button>
+      </div>`,
+    trapExplanation: 'Option B runs a Time-Window Self-Join without filtering out the row itself! Because p1.txn_time - p2.txn_time <= 10, EVERY transaction matches ITSELF (0s <= 10s)! It flags 100% of genuine orders as duplicate fraud, corrupting the entire ledger.',
+    successExplanation: 'Option A uses LAG(txn_time) partitioned by card_id and amount. It compares each transaction ONLY to the immediately preceding swipe, correctly flagging only the 2nd swipe 4 seconds later while preserving genuine orders!',
+    correctOption: 'A',
+    codeA: "SELECT card_id, amount, txn_time,\n  CASE WHEN txn_time - LAG(txn_time) OVER (\n    PARTITION BY card_id, amount\n    ORDER BY txn_time\n  ) <= 10 THEN 'DUPLICATE'\n  ELSE 'GENUINE' END AS status\nFROM payments;",
+    codeB: "SELECT p1.card_id, p1.amount, p1.txn_time,\n  CASE WHEN COUNT(p2.txn_id) > 0 THEN 'DUPLICATE'\n  ELSE 'GENUINE' END AS status\nFROM payments p1\nLEFT JOIN payments p2\n  ON p1.card_id = p2.card_id\n  AND p1.amount = p2.amount\n  AND (p1.txn_time - p2.txn_time) BETWEEN 0 AND 10\nGROUP BY p1.txn_id;"
   }
 };
 
@@ -3807,6 +3823,7 @@ function getActiveChallengeId() {
   if (camp.includes('reel_day13_q20') || camp.includes('reel_20') || camp.includes('q20') || camp.includes('peak_streamers') || camp.includes('concurrency')) return 'SQL-13-R1';
   if (camp.includes('reel_day14_q21') || camp.includes('reel_21') || camp.includes('q21') || camp.includes('session') || camp.includes('timeout')) return 'SQL-14-R1';
   if (camp.includes('reel_day15_q22') || camp.includes('reel_22') || camp.includes('q22') || camp.includes('running_balance') || camp.includes('ledger')) return 'SQL-15-R1';
+  if (camp.includes('reel_day16_q23') || camp.includes('reel_23') || camp.includes('q23') || camp.includes('double_swipe') || camp.includes('duplicate_payment')) return 'SQL-16-R1';
 
   const dayParam = urlP.get('day');
   const qParam = urlP.get('q') || urlP.get('question');

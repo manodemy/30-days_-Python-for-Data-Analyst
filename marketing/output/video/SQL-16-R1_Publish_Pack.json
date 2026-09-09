@@ -1,0 +1,454 @@
+{
+  "reelNo": "SQL-16-R1",
+  "day": "DAY 16",
+  "badge": "FINTECH · DOUBLE CHARGE TRAP",
+  "videoFile": "SQL-16-R1.mp4",
+  "videoPath": "D:\\Learn Python in 60days\\Manodemy_Web_V2\\marketing\\output\\video\\SQL-16-R1.mp4",
+  "coverFile": "SQL-16-R1_Cover.png",
+  "coverJpg": "SQL-16-R1_Cover.jpg",
+  "fileSizeMb": 13.68,
+  "resolution": "1080x1920",
+  "fps": 24,
+  "durationSec": 17.46,
+  "caption": "DOUBLE CHARGE? 💳🚨\n\nWhich query flags accidental double-swipes within 10 seconds without corrupting genuine orders?\n\nCan you spot why Option B's time-window self-join flags 100% of all orders as fraud?\n\nWhat’s your answer — A or B? 👇\nDrop your choice in the comments before checking the answer!\n\n🧠 Test this SQL interview question live:\n👉 manodemy.com/q23\n\n📊 Practice Data Skills with Manodemy\n🎁 Day 1 & Day 2 are 100% FREE\n\n🔗 Link in bio\n\n[sql interview questions, duplicate payment detection, lag function sql, self join trap, zomato sql interview, swiggy data analyst, fintech fraud detection, advanced sql, learn sql]\n\n#SQL #SQLInterview #SQLQuestions #SQLTips #DataAnalyst #DataAnalytics #LearnSQL #Manodemy",
+  "pinnedAnswer": "Option A is the Production Standard ✅ | Option B is the Self-Match Trap ❌\n\nWhy Option A (LAG Window Time-Delta) works:\nBy partitioning by card_id and amount and ordering by txn_time, `LAG(txn_time)` looks strictly at the immediately preceding swipe for the same card and amount. If the delta is within 10 seconds, it flags only the second accidental swipe (4s later) while preserving all genuine orders!\n\nWhy Option B (Time-Window Self-Join) fails catastrophically:\nBecause the join condition includes `(p1.txn_time - p2.txn_time) BETWEEN 0 AND 10`, every single row joins against ITSELF! `p1.txn_time - p1.txn_time = 0`, which satisfies `0 <= 10`!\nAs a result, `COUNT(p2.txn_id)` is greater than 0 for EVERY order in the database, flagging 100% of innocent customer transactions as fraudulent duplicates!\n\n💡 Rule of thumb: Never use self-joins for time-delta threshold checks — always use window LAG() to compare strictly against the prior chronological event!\n\nDid you vote A or B? 👇",
+  "simulatorLink": "https://www.manodemy.com/q23",
+  "cues": {
+    "t_hook_start": 0,
+    "t_line2_start": 4520,
+    "t_clock_in": 10600,
+    "t_opta": 11700,
+    "t_optb": 12780,
+    "t_optb_end": 14250,
+    "t_clock_out": 14400,
+    "t_cta_start": 14400,
+    "t_voice_end": 16060,
+    "totalMs": 17460,
+    "clockDurationMs": 3800,
+    "wordCues": [
+      {
+        "word": "Zomato",
+        "startMs": 0,
+        "endMs": 520
+      },
+      {
+        "word": "and",
+        "startMs": 520,
+        "endMs": 760
+      },
+      {
+        "word": "Swiggy",
+        "startMs": 760,
+        "endMs": 1160
+      },
+      {
+        "word": "love",
+        "startMs": 1160,
+        "endMs": 1380
+      },
+      {
+        "word": "asking",
+        "startMs": 1380,
+        "endMs": 2060
+      },
+      {
+        "word": "this",
+        "startMs": 2060,
+        "endMs": 2320
+      },
+      {
+        "word": "duplicate",
+        "startMs": 2320,
+        "endMs": 2680
+      },
+      {
+        "word": "payment",
+        "startMs": 2680,
+        "endMs": 3100
+      },
+      {
+        "word": "S-Q-L",
+        "startMs": 3100,
+        "endMs": 3540
+      },
+      {
+        "word": "challenge!",
+        "startMs": 3540,
+        "endMs": 4040
+      },
+      {
+        "word": "Which",
+        "startMs": 4520,
+        "endMs": 4880
+      },
+      {
+        "word": "query",
+        "startMs": 4880,
+        "endMs": 5220
+      },
+      {
+        "word": "flags",
+        "startMs": 5220,
+        "endMs": 5660
+      },
+      {
+        "word": "accidental",
+        "startMs": 5660,
+        "endMs": 6300
+      },
+      {
+        "word": "double-swipes",
+        "startMs": 6300,
+        "endMs": 6660
+      },
+      {
+        "word": "within",
+        "startMs": 7080,
+        "endMs": 7360
+      },
+      {
+        "word": "ten",
+        "startMs": 7360,
+        "endMs": 7700
+      },
+      {
+        "word": "seconds",
+        "startMs": 7700,
+        "endMs": 8240
+      },
+      {
+        "word": "without",
+        "startMs": 8240,
+        "endMs": 8620
+      },
+      {
+        "word": "corrupting",
+        "startMs": 8620,
+        "endMs": 9200
+      },
+      {
+        "word": "genuine",
+        "startMs": 9200,
+        "endMs": 9580
+      },
+      {
+        "word": "orders?",
+        "startMs": 9580,
+        "endMs": 9900
+      },
+      {
+        "word": "Choose",
+        "startMs": 10600,
+        "endMs": 10760
+      },
+      {
+        "word": "your",
+        "startMs": 10760,
+        "endMs": 10940
+      },
+      {
+        "word": "answer...",
+        "startMs": 10940,
+        "endMs": 11200
+      },
+      {
+        "word": "Option",
+        "startMs": 11700,
+        "endMs": 12000
+      },
+      {
+        "word": "A...",
+        "startMs": 12000,
+        "endMs": 12220
+      },
+      {
+        "word": "or",
+        "startMs": 12780,
+        "endMs": 13080
+      },
+      {
+        "word": "Option",
+        "startMs": 13080,
+        "endMs": 13340
+      },
+      {
+        "word": "B?",
+        "startMs": 13340,
+        "endMs": 14250
+      },
+      {
+        "word": "Drop",
+        "startMs": 14400,
+        "endMs": 14560
+      },
+      {
+        "word": "your",
+        "startMs": 14560,
+        "endMs": 14760
+      },
+      {
+        "word": "vote",
+        "startMs": 14760,
+        "endMs": 15000
+      },
+      {
+        "word": "in",
+        "startMs": 15000,
+        "endMs": 15220
+      },
+      {
+        "word": "the",
+        "startMs": 15220,
+        "endMs": 15320
+      },
+      {
+        "word": "comments",
+        "startMs": 15320,
+        "endMs": 15620
+      },
+      {
+        "word": "below.",
+        "startMs": 15620,
+        "endMs": 15960
+      }
+    ],
+    "phrases": [
+      {
+        "index": 0,
+        "text": "Zomato and Swiggy love asking this duplicate payment S-Q-L challenge!",
+        "startMs": 0,
+        "endMs": 4520,
+        "words": [
+          {
+            "word": "Zomato",
+            "startMs": 0,
+            "endMs": 520
+          },
+          {
+            "word": "and",
+            "startMs": 520,
+            "endMs": 760
+          },
+          {
+            "word": "Swiggy",
+            "startMs": 760,
+            "endMs": 1160
+          },
+          {
+            "word": "love",
+            "startMs": 1160,
+            "endMs": 1380
+          },
+          {
+            "word": "asking",
+            "startMs": 1380,
+            "endMs": 2060
+          },
+          {
+            "word": "this",
+            "startMs": 2060,
+            "endMs": 2320
+          },
+          {
+            "word": "duplicate",
+            "startMs": 2320,
+            "endMs": 2680
+          },
+          {
+            "word": "payment",
+            "startMs": 2680,
+            "endMs": 3100
+          },
+          {
+            "word": "S-Q-L",
+            "startMs": 3100,
+            "endMs": 3540
+          },
+          {
+            "word": "challenge!",
+            "startMs": 3540,
+            "endMs": 4040
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "text": "Which query flags accidental double-swipes within ten seconds without corrupting genuine orders?",
+        "startMs": 4520,
+        "endMs": 10600,
+        "words": [
+          {
+            "word": "Which",
+            "startMs": 4520,
+            "endMs": 4880
+          },
+          {
+            "word": "query",
+            "startMs": 4880,
+            "endMs": 5220
+          },
+          {
+            "word": "flags",
+            "startMs": 5220,
+            "endMs": 5660
+          },
+          {
+            "word": "accidental",
+            "startMs": 5660,
+            "endMs": 6300
+          },
+          {
+            "word": "double-swipes",
+            "startMs": 6300,
+            "endMs": 6660
+          },
+          {
+            "word": "within",
+            "startMs": 7080,
+            "endMs": 7360
+          },
+          {
+            "word": "ten",
+            "startMs": 7360,
+            "endMs": 7700
+          },
+          {
+            "word": "seconds",
+            "startMs": 7700,
+            "endMs": 8240
+          },
+          {
+            "word": "without",
+            "startMs": 8240,
+            "endMs": 8620
+          },
+          {
+            "word": "corrupting",
+            "startMs": 8620,
+            "endMs": 9200
+          },
+          {
+            "word": "genuine",
+            "startMs": 9200,
+            "endMs": 9580
+          },
+          {
+            "word": "orders?",
+            "startMs": 9580,
+            "endMs": 9900
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "text": "Choose your answer...",
+        "startMs": 10600,
+        "endMs": 11700,
+        "words": [
+          {
+            "word": "Choose",
+            "startMs": 10600,
+            "endMs": 10760
+          },
+          {
+            "word": "your",
+            "startMs": 10760,
+            "endMs": 10940
+          },
+          {
+            "word": "answer...",
+            "startMs": 10940,
+            "endMs": 11200
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "text": "Option A...",
+        "startMs": 11700,
+        "endMs": 12780,
+        "words": [
+          {
+            "word": "Option",
+            "startMs": 11700,
+            "endMs": 12000
+          },
+          {
+            "word": "A...",
+            "startMs": 12000,
+            "endMs": 12220
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "text": "or Option B?",
+        "startMs": 12780,
+        "endMs": 14250,
+        "words": [
+          {
+            "word": "or",
+            "startMs": 12780,
+            "endMs": 13080
+          },
+          {
+            "word": "Option",
+            "startMs": 13080,
+            "endMs": 13340
+          },
+          {
+            "word": "B?",
+            "startMs": 13340,
+            "endMs": 14250
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "text": "Drop your vote in the comments below.",
+        "startMs": 14400,
+        "endMs": 16060,
+        "words": [
+          {
+            "word": "Drop",
+            "startMs": 14400,
+            "endMs": 14560
+          },
+          {
+            "word": "your",
+            "startMs": 14560,
+            "endMs": 14760
+          },
+          {
+            "word": "vote",
+            "startMs": 14760,
+            "endMs": 15000
+          },
+          {
+            "word": "in",
+            "startMs": 15000,
+            "endMs": 15220
+          },
+          {
+            "word": "the",
+            "startMs": 15220,
+            "endMs": 15320
+          },
+          {
+            "word": "comments",
+            "startMs": 15320,
+            "endMs": 15620
+          },
+          {
+            "word": "below.",
+            "startMs": 15620,
+            "endMs": 15960
+          }
+        ]
+      }
+    ],
+    "hasOpeningPoster": true,
+    "openingPosterDuration": 4520
+  },
+  "generatedAt": "2026-09-09 23:41:35"
+}
