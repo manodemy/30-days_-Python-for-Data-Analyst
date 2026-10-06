@@ -14,7 +14,7 @@
       "name": "Practice Question Audio Sync",
       "status": "active",
       "path": ".agents/skills/practice-question-audio-sync/SKILL.md",
-      "description": "Extracts Whisper ASR word timestamps, syncs code typewriter animations, handles timeline continuation and SQL layout formatting."
+      "description": "Extracts Whisper ASR word timestamps, syncs code typewriter animations, handles timeline continuation and SQL layout formatting. Python section documents the spoken-phrase segments model (v5) and supersedes the SQL engine's even-cadence startAt/endAt approach."
     },
     {
       "id": "reddit-growth-copilot",
@@ -45,11 +45,20 @@
       "description": "Elite 30-day AI Engineering Mentor and Career Architect with persistent memory. Guides the user step-by-step from 6 LPA Data Analyst to 50 LPA AI Systems Engineer."
     },
     {
+      "id": "course-design",
+      "name": "Course Design",
+      "status": "active",
+      "path": ".agents/skills/course-design/SKILL.md",
+      "version": "1.0",
+      "description": "Lesson presentation, reusable styling, continuity briefs and confusion-driven teaching patterns. Routes through Architect, Frontend and QA; v1 is a candidate baseline with initial Python Day03 adoption, rendered theme/responsive checks and scoped feedback."
+    },
+    {
       "id": "python-day-orchestration",
       "name": "Python Day Orchestration Protocol",
       "status": "active",
       "path": ".agents/skills/python-day-orchestration/SKILL.md",
-      "description": "Multi-agent orchestration protocol and quality gate specification (Maestro v4.0) for producing, synchronizing, and validating Days 01 through 30 in the Python learning engine with Pyodide execution, theory spotlights, and universal access."
+      "version": "5.0",
+      "description": "Multi-agent orchestration protocol and quality gate specification (Maestro v5.0) for producing, synchronizing, and validating Days 01 through 30 in the Python learning engine. Encodes the measured-timeline pipeline, word-anchored narration cues, the narration-must-describe-code rule, progressive reveal choreography, and caption coverage for every track kind. Hardened against Python Day 01 production."
     }
   ]
 }

@@ -16,5 +16,13 @@ window.COURSE_MANIFEST = [
     "emoji": "⚙️",
     "status": "live",
     "prepared": true
+  },
+  {
+    "day": 3,
+    "id": "pyDay03",
+    "title": "Strings & Text Processing",
+    "emoji": "🔤",
+    "status": "live",
+    "prepared": true
   }
 ];

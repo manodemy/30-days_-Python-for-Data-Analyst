@@ -1,1558 +1,1020 @@
-// Python Day 02 — Operators, Precedence & Expressions (Unified Single-Document Architecture)
-if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
-window.COURSE_CONTENT['pyDay02'] = {
-  day: 2,
-  title: "Operators, Precedence & Expressions",
-  emoji: "⚙️",
-  topics: [
-    { id: 'day02ArithSection', label: 'Operators, Precedence & Expressions', duration: '18:30' }
-  ],
-
-  slides: [
+window.COURSE_CONTENT = window.COURSE_CONTENT || {};
+window.COURSE_CONTENT.pyDay02 = {
+  "day": 2,
+  "title": "Operators, Precedence & Expressions",
+  "emoji": "⚡",
+  "topics": [
     {
-      title: "Operators, Precedence & Expressions",
-      duration: "18:30",
-      html: `
-<h2>⚙️ Operators, Precedence &amp; Expressions</h2>
-
-<!-- ═══ EMBEDDED PYTHON FLAGSHIP VISUAL DESIGN STYLES ═══ -->
-<style>
-  .py-infographic-card {
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(8, 14, 28, 0.98) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 16px 18px;
-    margin: 14px 0;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  }
-  .py-info-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  }
-  .py-info-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #38bdf8;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .py-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 4px;
-    background: rgba(56, 189, 248, 0.12);
-    border: 1px solid rgba(56, 189, 248, 0.28);
-    color: #38bdf8;
-  }
-  .py-badge-gold {
-    background: rgba(245, 158, 11, 0.12);
-    border-color: rgba(245, 158, 11, 0.28);
-    color: #fbbf24;
-  }
-  .py-badge-green {
-    background: rgba(34, 197, 94, 0.12);
-    border-color: rgba(34, 197, 94, 0.28);
-    color: #4ade80;
-  }
-  .py-badge-purple {
-    background: rgba(168, 85, 247, 0.12);
-    border-color: rgba(168, 85, 247, 0.28);
-    color: #c084fc;
-  }
-  .py-badge-rose {
-    background: rgba(244, 63, 94, 0.12);
-    border-color: rgba(244, 63, 94, 0.28);
-    color: #fb7185;
-  }
-
-  /* Precedence Pyramid Hierarchy */
-  .precedence-pyramid {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin: 12px 0;
-  }
-  .pyr-level {
-    display: flex;
-    align-items: center;
-    border-radius: 6px;
-    padding: 7px 12px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    font-weight: 700;
-    transition: all 0.2s ease;
-  }
-  .pyr-level:hover {
-    transform: translateX(4px);
-  }
-  .pyr-label {
-    width: 140px;
-    color: #94a3b8;
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .pyr-ops {
-    flex: 1;
-    font-size: 0.78rem;
-  }
-  .pyr-assoc {
-    font-size: 0.62rem;
-    color: #64748b;
-  }
-
-  /* Bitmask RBAC Card */
-  .bitmask-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-top: 8px;
-  }
-  @media (max-width: 640px) {
-    .bitmask-grid { grid-template-columns: 1fr; }
-  }
-  .bitmask-cell {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 8px;
-    padding: 10px;
-    text-align: center;
-  }
-
-  /* Topic Subcard */
-  .topic-subcard {
-    margin-top: 18px;
-    padding-top: 14px;
-    border-top: 1px dashed rgba(255, 255, 255, 0.08);
-  }
-</style>
-
-<!-- ═══ SECTION 1: 01. Arithmetic & Division Mechanics ═══ -->
-<div class="slide-section" id="day02ArithSection">
-  <div class="heading-with-audio" style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-    <h3 style="margin:0;font-size:1.15rem;font-weight:800;letter-spacing:-0.02em;flex:1;">01. Numeric Operations &amp; In-Place Mutation</h3>
-    <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio01.mp3', this)" title="Play narration">
-      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-  </div>
-  <p>Python provides standard arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>//</code>, <code>%</code>, <code>**</code>) alongside augmented assignment operators (<code>+=</code>, <code>-=</code>, <code>*=</code>, etc.). Crucially, augmented assignment behaves differently depending on mutability: on <strong>immutable objects</strong> (numbers, strings, tuples), <code>a += b</code> rebinds a new object to variable <code>a</code>. On <strong>mutable objects</strong> (lists, bytearrays), <code>a += b</code> mutates the existing object in-place (calling <code>__iadd__</code>), impacting all variables referencing that container.</p>
-
-  <!-- Infographic: In-Place Mutation vs Rebinding -->
-  <div class="py-infographic-card">
-    <div class="py-info-header">
-      <div class="py-info-title">
-        <span>🔬 Memory Architecture: In-Place Mutation vs Variable Rebinding</span>
-      </div>
-      <span class="py-badge py-badge-purple">Pointer Analysis</span>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:12px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <strong style="color:#f59e0b;font-size:0.82rem;">Immutable: x = 10; x += 1</strong>
-          <span class="py-badge py-badge-gold">Rebinding</span>
-        </div>
-        <div style="font-family:'JetBrains Mono';font-size:0.72rem;color:#94a3b8;line-height:1.5;">
-          • Address changes: <code>id(x) != id(x_new)</code><br/>
-          • Old integer <code>10</code> remains unchanged in RAM<br/>
-          • Other references to <code>10</code> are unaffected
-        </div>
-      </div>
-      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:12px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <strong style="color:#22c55e;font-size:0.82rem;">Mutable: a = [1, 2]; a += [3]</strong>
-          <span class="py-badge py-badge-green">In-Place Mutation</span>
-        </div>
-        <div style="font-family:'JetBrains Mono';font-size:0.72rem;color:#94a3b8;line-height:1.5;">
-          • Address is identical: <code>id(a) == id(a_after)</code><br/>
-          • Appends elements directly to internal buffer<br/>
-          • If <code>b = a</code>, then <code>b</code> also sees <code>[1, 2, 3]</code>!
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Arithmetic Table Subcard -->
-  <div class="topic-subcard" id="day02ArithTableSection">
-    <div class="db-mock-table-wrap">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;padding:0 4px;">
-        <h4 style="margin:0;font-size:0.95rem;font-weight:800;letter-spacing:-0.01em;flex:1;">Arithmetic &amp; Assignment Operator Reference</h4>
-        <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio02.mp3', this)" title="Play narration">
-          <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-      </div>
-      <table class="db-table-mock db-table-mock--compact">
-        <thead><tr><th>Operator</th><th>Name</th><th>Example</th><th>Behavior / Result</th></tr></thead>
-        <tbody>
-          <tr><td><code>/</code></td><td>True Division</td><td><code>7 / 2</code></td><td>Always returns <code>float</code> (<code>3.5</code>)</td></tr>
-          <tr><td><code>//</code></td><td>Floor Division</td><td><code>7 // 2</code> vs <code>-7 // 2</code></td><td><code>3</code> vs <code>-4</code> (floors towards -&infin;)</td></tr>
-          <tr><td><code>%</code></td><td>Modulo</td><td><code>17 % 5</code></td><td>Remainder: <code>2</code> (preserves sign of divisor)</td></tr>
-          <tr><td><code>**</code></td><td>Exponentiation</td><td><code>2 ** 3 ** 2</code></td><td><code>512</code> (Right-associative: evaluated as <code>2**(3**2)</code>)</td></tr>
-          <tr><td><code>+=</code></td><td>In-Place Add</td><td><code>lst += [4]</code></td><td>Mutates list in-place (calls <code>__iadd__</code>)</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Compound Interest Code Subcard -->
-  <div class="topic-subcard" id="day02ArithCodeSection">
-    <div class="heading-with-audio" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-      <h4 style="margin:0;font-size:0.95rem;font-weight:800;flex:1;">Compound Interest &amp; Mutability Nuance</h4>
-      <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio03.mp3', this)" title="Play narration">
-        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-    </div>
-    <div class="code-block-container">
-      <div class="code-subblock">
-        <pre><code>principal = 10000.0
-rate = 0.07
-years = 5
-
-<span class="code-comment"># Compound interest formula: A = P * (1 + r)**t</span>
-future_val = principal * ((1 + rate) ** years)
-print(f"Investment Value: \${future_val:,.2f}")
-
-<span class="code-comment"># In-place list mutation vs reassignment:</span>
-a = [1, 2]
-b = a
-a += [3]  <span class="code-comment"># Mutates original list in-place!</span>
-print(f"a: {a} | b: {b}") <span class="code-comment"># Both are [1, 2, 3]!</span></code></pre>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ SECTION 2: 02. Comparison Operators & Chaining ═══ -->
-<div class="slide-section" id="day02CompSection">
-  <div class="heading-with-audio" style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-    <h3 style="margin:0;font-size:1.15rem;font-weight:800;letter-spacing:-0.02em;flex:1;">02. Relational Logic &amp; Chained Comparisons</h3>
-    <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio04.mp3', this)" title="Play narration">
-      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-  </div>
-  <p>Python comparison operators (<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>) evaluate truth values across all types. Uniquely, Python supports <strong>chained comparisons</strong>: an expression like <code>18 &lt;= age &lt; 65</code> is synthesized by the bytecode compiler into <code>(18 &lt;= age) and (age &lt; 65)</code>, with the middle operand <code>age</code> evaluated <strong>only once</strong>! This prevents unintended double-execution of costly functions or database queries.</p>
-
-  <!-- Infographic: Chained Comparison Execution -->
-  <div class="py-infographic-card">
-    <div class="py-info-header">
-      <div class="py-info-title">
-        <span>⚡ Chained Comparison Architecture (Single Evaluation Rule)</span>
-      </div>
-      <span class="py-badge py-badge-green">Bytecode Optimized</span>
-    </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;font-family:'JetBrains Mono';font-size:0.75rem;margin-top:6px;overflow-x:auto;">
-      <span style="color:#38bdf8;">Expression: 18 &lt;= get_age() &lt; 65</span>
-      <span style="color:#64748b;">&rarr;</span>
-      <span style="color:#a855f7;">t = get_age() (Called ONCE)</span>
-      <span style="color:#64748b;">&rarr;</span>
-      <span style="color:#f59e0b;">(18 &lt;= t) and (t &lt; 65)</span>
-      <span style="color:#64748b;">&rarr;</span>
-      <span style="color:#22c55e;">Boolean Result</span>
-    </div>
-    <div style="font-size:0.75rem;color:#94a3b8;margin-top:8px;line-height:1.5;">
-      In C/Java, <code>18 &lt;= age &lt; 65</code> fails because <code>18 &lt;= age</code> evaluates to boolean <code>1</code>, and <code>1 &lt; 65</code> is always <code>True</code>! Python's mathematical chaining prevents this logic bug.
-    </div>
-  </div>
-
-  <!-- Comparison Patterns Table Subcard -->
-  <div class="topic-subcard" id="day02CompTableSection">
-    <div class="db-mock-table-wrap">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;padding:0 4px;">
-        <h4 style="margin:0;font-size:0.95rem;font-weight:800;letter-spacing:-0.01em;flex:1;">Comparison Patterns &amp; Chaining Mechanics</h4>
-        <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio05.mp3', this)" title="Play narration">
-          <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-      </div>
-      <table class="db-table-mock db-table-mock--compact">
-        <thead><tr><th>Pattern</th><th>Syntax</th><th>Evaluates As</th><th>Analyst Use Case</th></tr></thead>
-        <tbody>
-          <tr><td>Bounded Range</td><td><code>0 &lt;= score &lt;= 100</code></td><td><code>(0 &lt;= score) and (score &lt;= 100)</code></td><td>Validation of test marks / KPI percentages</td></tr>
-          <tr><td>Multiple Equality</td><td><code>a == b == c</code></td><td><code>(a == b) and (b == c)</code></td><td>Verifying consensus across 3 data sources</td></tr>
-          <tr><td>String Lexicographical</td><td><code>"2026-01" &lt;= dt &lt; "2026-06"</code></td><td>Alphabetical ASCII character comparison</td><td>Filtering ISO-8601 string timestamps</td></tr>
-          <tr><td>Identity Chaining</td><td><code>a is b is not None</code></td><td><code>(a is b) and (b is not None)</code></td><td>Checking shared non-null references</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Code Container Subcard -->
-  <div class="topic-subcard" id="day02CompCodeSection">
-    <div class="heading-with-audio" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-      <h4 style="margin:0;font-size:0.95rem;font-weight:800;flex:1;">Data Quality Validation with Chained Checks</h4>
-      <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio06.mp3', this)" title="Play narration">
-        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-    </div>
-    <div class="code-block-container">
-      <div class="code-subblock">
-        <pre><code><span class="code-comment"># Data Quality ETL Rule: Validate patient temperature and blood pressure:</span>
-temp_celsius = 37.2
-is_normal_temp = 36.5 &lt;= temp_celsius &lt;= 37.5
-
-<span class="code-comment"># Validate HTTP response status window:</span>
-status_code = 204
-is_success = 200 &lt;= status_code &lt; 300
-
-print(f"Normal Temp: {is_normal_temp} | Success Code: {is_success}")</code></pre>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ SECTION 3: 03. Logical & Short-Circuit Evaluation ═══ -->
-<div class="slide-section" id="day02LogSection">
-  <div class="heading-with-audio" style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-    <h3 style="margin:0;font-size:1.15rem;font-weight:800;letter-spacing:-0.02em;flex:1;">03. Logical Operators &amp; Short-Circuit Evaluation</h3>
-    <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio07.mp3', this)" title="Play narration">
-      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-  </div>
-  <p>Python's boolean operators (<code>and</code>, <code>or</code>, <code>not</code>) use <strong>short-circuit evaluation</strong>: they evaluate operands from left to right and stop the instant the outcome is determined. Crucially, <code>and</code> and <code>or</code> <strong>do not return booleans</strong>; they return the <strong>exact operand</strong> that decided the outcome. This property enables expressive fallback defaults and defensive guard patterns.</p>
-
-  <!-- Infographic: Short-Circuit Flowchart -->
-  <div class="py-infographic-card">
-    <div class="py-info-header">
-      <div class="py-info-title">
-        <span>⚡ Short-Circuit Operand Return Rules</span>
-      </div>
-      <span class="py-badge py-badge-gold">Operand Passthrough</span>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;">
-      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:12px;">
-        <div style="font-family:'JetBrains Mono';font-size:0.75rem;font-weight:700;color:#38bdf8;margin-bottom:4px;">A or B</div>
-        <div style="font-family:'JetBrains Mono';font-size:0.75rem;color:#cbd5e1;line-height:1.6;">
-          • If <code>A</code> is <strong>Truthy</strong>: returns <code>A</code> immediately (never evaluates <code>B</code>).<br/>
-          • If <code>A</code> is <strong>Falsy</strong>: evaluates &amp; returns <code>B</code>.<br/>
-          • E.g.: <code>"" or "default" &rarr; "default"</code>
-        </div>
-      </div>
-      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:12px;">
-        <div style="font-family:'JetBrains Mono';font-size:0.75rem;font-weight:700;color:#22c55e;margin-bottom:4px;">A and B</div>
-        <div style="font-family:'JetBrains Mono';font-size:0.75rem;color:#cbd5e1;line-height:1.6;">
-          • If <code>A</code> is <strong>Falsy</strong>: returns <code>A</code> immediately (never evaluates <code>B</code>).<br/>
-          • If <code>A</code> is <strong>Truthy</strong>: evaluates &amp; returns <code>B</code>.<br/>
-          • E.g.: <code>count != 0 and total / count</code>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Short-Circuit Table Subcard -->
-  <div class="topic-subcard" id="day02LogTableSection">
-    <div class="db-mock-table-wrap">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;padding:0 4px;">
-        <h4 style="margin:0;font-size:0.95rem;font-weight:800;letter-spacing:-0.01em;flex:1;">Short-Circuit Evaluation Matrix</h4>
-        <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio08.mp3', this)" title="Play narration">
-          <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-      </div>
-      <table class="db-table-mock db-table-mock--compact">
-        <thead><tr><th>Expression</th><th>Result</th><th>Why / Deciding Factor</th></tr></thead>
-        <tbody>
-          <tr><td><code>"admin" or "guest"</code></td><td><code>"admin"</code></td><td>First operand is truthy; returned immediately</td></tr>
-          <tr><td><code>"" or "fallback"</code></td><td><code>"fallback"</code></td><td>First operand is falsy; second operand returned</td></tr>
-          <tr><td><code>0 and 42</code></td><td><code>0</code></td><td>First operand is falsy; returned immediately</td></tr>
-          <tr><td><code>[1, 2] and "data"</code></td><td><code>"data"</code></td><td>First is truthy; second operand decides outcome</td></tr>
-          <tr><td><code>None or [] or {} or "done"</code></td><td><code>"done"</code></td><td>Short-circuits at the first truthy value</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Defensive Division Code Subcard -->
-  <div class="topic-subcard" id="day02LogCodeSection">
-    <div class="heading-with-audio" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-      <h4 style="margin:0;font-size:0.95rem;font-weight:800;flex:1;">Defensive Division Guard &amp; Fallbacks</h4>
-      <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio09.mp3', this)" title="Play narration">
-        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-    </div>
-    <div class="code-block-container">
-      <div class="code-subblock">
-        <pre><code>total_revenue = 450000
-num_orders = 0
-
-<span class="code-comment"># Short-circuit 'and' guards against ZeroDivisionError:</span>
-avg_order_val = num_orders != 0 and (total_revenue / num_orders)
-print(f"Safe AOV: {avg_order_val}") <span class="code-comment"># Output: False (Zero crash avoided!)</span>
-
-<span class="code-comment"># Short-circuit 'or' for fallback defaults:</span>
-db_host = os.environ.get("DB_HOST") or "localhost"
-print(f"Host: {db_host}")</code></pre>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ SECTION 4: 04. Identity vs Membership (is vs in) ═══ -->
-<div class="slide-section" id="day02IdSection">
-  <div class="heading-with-audio" style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-    <h3 style="margin:0;font-size:1.15rem;font-weight:800;letter-spacing:-0.02em;flex:1;">04. Identity (is) vs Membership (in)</h3>
-    <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio10.mp3', this)" title="Play narration">
-      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-  </div>
-  <p>The <code>is</code> operator tests <strong>object identity</strong> (comparing 64-bit RAM pointer addresses via <code>id(a) == id(b)</code> in $O(1)$ time). The <code>in</code> operator tests <strong>collection membership</strong>: on sequential collections (lists, tuples, strings) it performs a linear $O(N)$ scan; on hash tables (sets, dicts) it executes in average $O(1)$ constant time.</p>
-
-  <!-- Infographic: Pointer Address vs Hash Lookup -->
-  <div class="py-infographic-card">
-    <div class="py-info-header">
-      <div class="py-info-title">
-        <span>⚡ Complexity Architecture: is vs in (List) vs in (Set)</span>
-      </div>
-      <span class="py-badge py-badge-purple">Algorithmic Scaling</span>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;margin-top:6px;">
-      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px;text-align:center;">
-        <div style="font-family:'JetBrains Mono';font-size:0.68rem;color:#94a3b8;">a is b</div>
-        <div style="font-family:'JetBrains Mono';font-size:0.85rem;font-weight:800;color:#38bdf8;margin:4px 0;">O(1)</div>
-        <div style="font-size:0.68rem;color:#64748b;">Direct CPU pointer comparison</div>
-      </div>
-      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px;text-align:center;">
-        <div style="font-family:'JetBrains Mono';font-size:0.68rem;color:#94a3b8;">x in my_list</div>
-        <div style="font-family:'JetBrains Mono';font-size:0.85rem;font-weight:800;color:#f43f5e;margin:4px 0;">O(N)</div>
-        <div style="font-size:0.68rem;color:#64748b;">Linear element-by-element scan</div>
-      </div>
-      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px;text-align:center;">
-        <div style="font-family:'JetBrains Mono';font-size:0.68rem;color:#94a3b8;">x in my_set</div>
-        <div style="font-family:'JetBrains Mono';font-size:0.85rem;font-weight:800;color:#22c55e;margin:4px 0;">O(1)</div>
-        <div style="font-size:0.68rem;color:#64748b;">Direct hash bucket index probe</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Identity vs Membership Table Subcard -->
-  <div class="topic-subcard" id="day02IdTableSection">
-    <div class="db-mock-table-wrap">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;padding:0 4px;">
-        <h4 style="margin:0;font-size:0.95rem;font-weight:800;letter-spacing:-0.01em;flex:1;">Identity vs Membership Comparison Table</h4>
-        <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio11.mp3', this)" title="Play narration">
-          <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-      </div>
-      <table class="db-table-mock db-table-mock--compact">
-        <thead><tr><th>Operator</th><th>Under the Hood</th><th>Time Complexity</th><th>Best Practice</th></tr></thead>
-        <tbody>
-          <tr><td><code>is</code></td><td><code>id(a) == id(b)</code></td><td>$O(1)$</td><td>Use exclusively for singletons (<code>x is None</code>)</td></tr>
-          <tr><td><code>is not</code></td><td><code>id(a) != id(b)</code></td><td>$O(1)$</td><td>Preferred over <code>not (a is b)</code></td></tr>
-          <tr><td><code>in (list)</code></td><td>Sequential <code>__eq__</code> loop</td><td>$O(N)$</td><td>Slow for large collections (&gt; 1,000 items)</td></tr>
-          <tr><td><code>in (set)</code></td><td>Computes <code>hash(x)</code></td><td>Average $O(1)$</td><td>Always convert lookup tables to sets</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Stop-Word Filtering Code Subcard -->
-  <div class="topic-subcard" id="day02IdCodeSection">
-    <div class="heading-with-audio" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-      <h4 style="margin:0;font-size:0.95rem;font-weight:800;flex:1;">High-Speed Stop-Word Filter with Sets</h4>
-      <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio12.mp3', this)" title="Play narration">
-        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-    </div>
-    <div class="code-block-container">
-      <div class="code-subblock">
-        <pre><code>tokens = ["sql", "and", "python", "are", "essential", "for", "data", "science"]
-stop_words = {"and", "are", "for", "the", "in", "to"} <span class="code-comment"># Set: O(1) membership</span>
-
-<span class="code-comment"># Filter tokens at high speed:</span>
-meaningful = [t <span class="kw">for</span> t <span class="kw">in</span> tokens <span class="kw">if</span> t <span class="kw">not in</span> stop_words]
-print(f"Filtered: {meaningful}") <span class="code-comment"># ['sql', 'python', 'essential', 'data', 'science']</span></code></pre>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ SECTION 5: 05. Bitwise Operators & Binary Masking ═══ -->
-<div class="slide-section" id="day02BitSection">
-  <div class="heading-with-audio" style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-    <h3 style="margin:0;font-size:1.15rem;font-weight:800;letter-spacing:-0.02em;flex:1;">05. Bitwise Operators &amp; Binary Masks</h3>
-    <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio13.mp3', this)" title="Play narration">
-      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-  </div>
-  <p>Bitwise operators manipulate integers at the binary bit level (<code>&amp;</code> AND, <code>|</code> OR, <code>^</code> XOR, <code>~</code> NOT, <code>&lt;&lt;</code> left shift, <code>&gt;&gt;</code> right shift). In data platforms and analytics engineering, bitmasking provides ultra-fast, compact representations for <strong>Role-Based Access Control (RBAC)</strong>, feature flags, and multi-state tracking in a single integer column.</p>
-
-  <!-- Infographic: RBAC Bitmasking Architecture -->
-  <div class="py-infographic-card">
-    <div class="py-info-header">
-      <div class="py-info-title">
-        <span>⚡ RBAC Permission Bitmasking Architecture</span>
-      </div>
-      <span class="py-badge py-badge-green">1-Cycle CPU Operations</span>
-    </div>
-    <div class="bitmask-grid">
-      <div class="bitmask-cell">
-        <div style="font-family:'JetBrains Mono';font-size:0.75rem;font-weight:800;color:#38bdf8;">READ = 1 (0b001)</div>
-        <div style="font-size:0.68rem;color:#94a3b8;margin-top:2px;">Query / View data</div>
-      </div>
-      <div class="bitmask-cell">
-        <div style="font-family:'JetBrains Mono';font-size:0.75rem;font-weight:800;color:#a855f7;">WRITE = 2 (0b010)</div>
-        <div style="font-size:0.68rem;color:#94a3b8;margin-top:2px;">Insert / Update records</div>
-      </div>
-      <div class="bitmask-cell">
-        <div style="font-family:'JetBrains Mono';font-size:0.75rem;font-weight:800;color:#f59e0b;">EXECUTE = 4 (0b100)</div>
-        <div style="font-size:0.68rem;color:#94a3b8;margin-top:2px;">Run ETL pipeline / procedures</div>
-      </div>
-    </div>
-    <div style="font-size:0.75rem;color:#94a3b8;margin-top:10px;line-height:1.5;">
-      • <strong>Combine:</strong> <code>perms = READ | WRITE</code> &rarr; <code>3 (0b011)</code><br/>
-      • <strong>Check:</strong> <code>has_write = bool(perms &amp; WRITE)</code> &rarr; <code>True</code><br/>
-      • <strong>Revoke:</strong> <code>perms = perms &amp; ~WRITE</code> &rarr; <code>1 (0b001)</code>
-    </div>
-  </div>
-
-  <!-- Bitwise Reference Table Subcard -->
-  <div class="topic-subcard" id="day02BitTableSection">
-    <div class="db-mock-table-wrap">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;padding:0 4px;">
-        <h4 style="margin:0;font-size:0.95rem;font-weight:800;letter-spacing:-0.01em;flex:1;">Bitwise Operator Reference Table</h4>
-        <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio14.mp3', this)" title="Play narration">
-          <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-      </div>
-      <table class="db-table-mock db-table-mock--compact">
-        <thead><tr><th>Operator</th><th>Name</th><th>Example</th><th>Bitwise Transformation</th></tr></thead>
-        <tbody>
-          <tr><td><code>&amp;</code></td><td>Bitwise AND</td><td><code>12 &amp; 10</code> &rarr; <code>8</code></td><td><code>1100 &amp; 1010 = 1000</code></td></tr>
-          <tr><td><code>|</code></td><td>Bitwise OR</td><td><code>12 | 10</code> &rarr; <code>14</code></td><td><code>1100 | 1010 = 1110</code></td></tr>
-          <tr><td><code>^</code></td><td>Bitwise XOR</td><td><code>12 ^ 10</code> &rarr; <code>6</code></td><td><code>1100 ^ 1010 = 0110</code></td></tr>
-          <tr><td><code>~</code></td><td>Bitwise NOT</td><td><code>~5</code> &rarr; <code>-6</code></td><td>Two's complement: <code>-(x + 1)</code></td></tr>
-          <tr><td><code>&lt;&lt;</code></td><td>Left Shift</td><td><code>3 &lt;&lt; 2</code> &rarr; <code>12</code></td><td>Multiplies by $2^2$: <code>3 &times; 4</code></td></tr>
-          <tr><td><code>&gt;&gt;</code></td><td>Right Shift</td><td><code>16 &gt;&gt; 2</code> &rarr; <code>4</code></td><td>Divides by $2^2$: <code>16 // 4</code></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- RBAC Bitmask Code Subcard -->
-  <div class="topic-subcard" id="day02BitCodeSection">
-    <div class="heading-with-audio" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-      <h4 style="margin:0;font-size:0.95rem;font-weight:800;flex:1;">Role-Based Access Control (RBAC) Bitmask</h4>
-      <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio15.mp3', this)" title="Play narration">
-        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-    </div>
-    <div class="code-block-container">
-      <div class="code-subblock">
-        <pre><code>READ, WRITE, EXECUTE = 1, 2, 4
-
-<span class="code-comment"># Analyst permissions: Read + Execute</span>
-analyst_perms = READ | EXECUTE  <span class="code-comment"># 5 (0b101)</span>
-
-can_write = bool(analyst_perms & WRITE)    <span class="code-comment"># False</span>
-can_execute = bool(analyst_perms & EXECUTE) <span class="code-comment"># True</span>
-print(f"Can Write: {can_write} | Can Exec: {can_execute}")
-
-<span class="code-comment"># Ultra-fast parity check (1 CPU cycle vs modulo):</span>
-is_even = (42 & 1) == 0  <span class="code-comment"># True (Note parentheses required due to precedence!)</span></code></pre>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ SECTION 6: 06. Ternary & Walrus Operator ═══ -->
-<div class="slide-section" id="day02WalrusSection">
-  <div class="heading-with-audio" style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-    <h3 style="margin:0;font-size:1.15rem;font-weight:800;letter-spacing:-0.02em;flex:1;">06. Ternary &amp; The Walrus Operator (:=)</h3>
-    <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio16.mp3', this)" title="Play narration">
-      <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-  </div>
-  <p>Python's <strong>conditional expression</strong> (ternary: <code>x if condition else y</code>) evaluates inline with short-circuit behavior. Introduced in Python 3.8 (PEP 572), the <strong>Walrus operator</strong> (<code>:=</code>, formally named assignment expression) assigns values to variables inside an expression while simultaneously returning the value. This eliminates duplicate computations in list comprehensions and stream-reading loops.</p>
-
-  <!-- Precedence Hierarchy Table Subcard -->
-  <div class="topic-subcard" id="day02WalrusTableSection">
-    <div class="db-mock-table-wrap">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;padding:0 4px;">
-        <h4 style="margin:0;font-size:0.95rem;font-weight:800;letter-spacing:-0.01em;flex:1;">Operator Precedence Hierarchy Table</h4>
-        <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio17.mp3', this)" title="Play narration">
-          <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-      </div>
-      <table class="db-table-mock db-table-mock--compact">
-        <thead><tr><th>Precedence Level</th><th>Operators</th><th>Associativity</th><th>Description</th></tr></thead>
-        <tbody>
-          <tr><td>1 (Highest)</td><td><code>()</code>, <code>[]</code>, <code>{}</code></td><td>Left-to-right</td><td>Grouping, indexing, slicing, calls</td></tr>
-          <tr><td>2</td><td><code>**</code></td><td><strong>Right-to-left</strong></td><td>Exponentiation (<code>2**3**2 = 512</code>)</td></tr>
-          <tr><td>3</td><td><code>+x</code>, <code>-x</code>, <code>~x</code></td><td>Right-to-left</td><td>Unary positive, negation, bitwise NOT</td></tr>
-          <tr><td>4</td><td><code>*</code>, <code>/</code>, <code>//</code>, <code>%</code></td><td>Left-to-right</td><td>Multiplication, division, modulo</td></tr>
-          <tr><td>5</td><td><code>+</code>, <code>-</code></td><td>Left-to-right</td><td>Addition and subtraction</td></tr>
-          <tr><td>6</td><td><code>&lt;&lt;</code>, <code>&gt;&gt;</code></td><td>Left-to-right</td><td>Bitwise shifts</td></tr>
-          <tr><td>7</td><td><code>&amp;</code></td><td>Left-to-right</td><td>Bitwise AND</td></tr>
-          <tr><td>8</td><td><code>^</code></td><td>Left-to-right</td><td>Bitwise XOR</td></tr>
-          <tr><td>9</td><td><code>|</code></td><td>Left-to-right</td><td>Bitwise OR</td></tr>
-          <tr><td>10</td><td><code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>is</code>, <code>in</code></td><td>Left-to-right</td><td>Comparisons &amp; memberships</td></tr>
-          <tr><td>11</td><td><code>not</code></td><td>Right-to-left</td><td>Boolean NOT</td></tr>
-          <tr><td>12</td><td><code>and</code></td><td>Left-to-right</td><td>Boolean AND (short-circuit)</td></tr>
-          <tr><td>13</td><td><code>or</code></td><td>Left-to-right</td><td>Boolean OR (short-circuit)</td></tr>
-          <tr><td>14 (Lowest)</td><td><code>:=</code></td><td>Right-to-left</td><td>Walrus assignment expression</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Walrus Code Subcard -->
-  <div class="topic-subcard" id="day02WalrusCodeSection">
-    <div class="heading-with-audio" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-      <h4 style="margin:0;font-size:0.95rem;font-weight:800;flex:1;">Walrus in List Comprehensions &amp; While Loops</h4>
-      <button class="audio-play-btn" onclick="playAudio('Day02/New_PyDay02Audio18.mp3', this)" title="Play narration">
-        <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      </button>
-    </div>
-    <div class="code-block-container">
-      <div class="code-subblock">
-        <pre><code>raw_records = ["  apple ", "   ", "BANANA", "  cherry  "]
-
-<span class="code-comment"># Strip, filter non-empty, and lower-case WITHOUT recomputing:</span>
-cleaned = [clean <span class="kw">for</span> item <span class="kw">in</span> raw_records <span class="kw">if</span> (clean := item.strip().lower())]
-print("Cleaned:", cleaned) <span class="code-comment"># ['apple', 'banana', 'cherry']</span>
-
-<span class="code-comment"># Inline ternary classification:</span>
-risk_level = "High" <span class="kw">if</span> len(cleaned) &lt; 5 <span class="kw">else</span> "Normal"
-print(f"Risk: {risk_level}")</code></pre>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ═══ SECTION 7: 07. Precedence Hierarchy & Top 25 Q&As ═══ -->
-<div class="slide-section" id="day02PrecedenceSection">
-  <div class="heading-with-audio" style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-    <h3 style="margin:0;font-size:1.15rem;font-weight:800;letter-spacing:-0.02em;flex:1;">07. Precedence Hierarchy &amp; Top 25 Interview Q&amp;As</h3>
-  </div>
-
-  <!-- Infographic: Precedence Pyramid -->
-  <div class="py-infographic-card">
-    <div class="py-info-header">
-      <div class="py-info-title">
-        <span>🔺 Python Operator Precedence Pyramid</span>
-      </div>
-      <span class="py-badge py-badge-rose">Defensive Parentheses Rule</span>
-    </div>
-    <div class="precedence-pyramid">
-      <div class="pyr-level" style="background:rgba(244,63,94,0.15);border:1px solid rgba(244,63,94,0.3);">
-        <span class="pyr-label" style="color:#fb7185;">TIER 1 (TOP)</span>
-        <span class="pyr-ops" style="color:#fff;">( ) &nbsp; [ ] &nbsp; { } &nbsp; f(x) &nbsp; x[i]</span>
-        <span class="pyr-assoc">Grouping &amp; Access</span>
-      </div>
-      <div class="pyr-level" style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.25);">
-        <span class="pyr-label" style="color:#fbbf24;">TIER 2 (RIGHT&rarr;LEFT)</span>
-        <span class="pyr-ops" style="color:#fff;">**</span>
-        <span class="pyr-assoc">Exponentiation (3**2 = 9)</span>
-      </div>
-      <div class="pyr-level" style="background:rgba(56,189,248,0.10);border:1px solid rgba(56,189,248,0.2);">
-        <span class="pyr-label" style="color:#38bdf8;">TIER 3 (ARITHMETIC)</span>
-        <span class="pyr-ops" style="color:#fff;">* &nbsp; / &nbsp; // &nbsp; % &nbsp; &rarr; &nbsp; + &nbsp; -</span>
-        <span class="pyr-assoc">Multiplicative then Additive</span>
-      </div>
-      <div class="pyr-level" style="background:rgba(168,85,247,0.10);border:1px solid rgba(168,85,247,0.2);">
-        <span class="pyr-label" style="color:#c084fc;">TIER 4 (BITWISE)</span>
-        <span class="pyr-ops" style="color:#fff;">&lt;&lt; &nbsp; &gt;&gt; &nbsp; &rarr; &nbsp; &amp; &nbsp; ^ &nbsp; |</span>
-        <span class="pyr-assoc">Shifts then Logic</span>
-      </div>
-      <div class="pyr-level" style="background:rgba(34,197,94,0.10);border:1px solid rgba(34,197,94,0.2);">
-        <span class="pyr-label" style="color:#4ade80;">TIER 5 (RELATIONAL)</span>
-        <span class="pyr-ops" style="color:#fff;">&lt; &nbsp; &lt;= &nbsp; &gt; &nbsp; &gt;= &nbsp; == &nbsp; != &nbsp; is &nbsp; in</span>
-        <span class="pyr-assoc">Chained Comparisons</span>
-      </div>
-      <div class="pyr-level" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);">
-        <span class="pyr-label" style="color:#94a3b8;">TIER 6 (LOGICAL / BASE)</span>
-        <span class="pyr-ops" style="color:#fff;">not &nbsp; &rarr; &nbsp; and &nbsp; &rarr; &nbsp; or &nbsp; &rarr; &nbsp; :=</span>
-        <span class="pyr-assoc">Boolean &amp; Walrus</span>
-      </div>
-    </div>
-    <div style="font-size:0.75rem;color:#94a3b8;margin-top:6px;">
-      💡 <strong>Senior Developer Rule:</strong> When mixing bitwise operators with comparisons (e.g. <code>x &amp; 1 == 0</code>), comparison binds FIRST. Always write <code>(x &amp; 1) == 0</code> with explicit parentheses!
-    </div>
-  </div>
-
-  <div class="topic-subcard" id="day02InterviewIntroSection" style="margin-top:0;padding-top:0;border-top:none;">
-    <p>These 25 questions test deep understanding of Python operators, precedence traps, bitwise optimization, and short-circuit evaluation frequently probed in high-level coding interviews.</p>
-  </div>
-
-  <div class="topic-subcard" id="day02InterviewCardsSection">
-    <div class="interview-box">
-      <h4 style="color:#38bdf8;font-size:1rem;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
-        <span>🎯</span> Python Operators, Precedence &amp; Evaluation Rules
-      </h4>
-
-      <div id="pyDay02IQ1">
-        <p><strong>Q1: Why does <code>2 ** 3 ** 2</code> evaluate to 512 instead of 64?</strong></p>
-        <p><em>A: The exponentiation operator (<code>**</code>) is <strong>right-associative</strong>. The rightmost exponent is computed first: <code>3 ** 2 = 9</code>, then <code>2 ** 9 = 512</code>. To compute <code>(2**3)**2 = 64</code>, explicit parentheses must be used.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ2">
-        <p><strong>Q2: Why does <code>not False == False</code> evaluate to <code>False</code>?</strong></p>
-        <p><em>A: Comparison operators (<code>==</code>) have higher precedence than <code>not</code>. Thus, Python parses the expression as <code>not (False == False)</code> &rarr; <code>not True</code> &rarr; <code>False</code>. If you intend <code>(not False) == False</code>, you must use parentheses.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ3">
-        <p><strong>Q3: How does short-circuit evaluation work with <code>and</code> and <code>or</code>?</strong></p>
-        <p><em>A: <code>a and b</code> evaluates <code>a</code>; if falsy, it immediately returns <code>a</code> without evaluating <code>b</code>. If truthy, it returns <code>b</code>. <code>a or b</code> evaluates <code>a</code>; if truthy, it immediately returns <code>a</code>. If falsy, it returns <code>b</code>. Neither operator coerces the result to a strict boolean.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ4">
-        <p><strong>Q4: How do chained comparisons like <code>10 &lt; x &lt; 20</code> work under the hood?</strong></p>
-        <p><em>A: Python translates <code>10 &lt; x &lt; 20</code> to <code>10 &lt; x and x &lt; 20</code>, but evaluates the middle operand <code>x</code> only once. If <code>x</code> is an expensive function call, chained comparison ensures optimal single execution.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ5">
-        <p><strong>Q5: What is the Walrus operator (<code>:=</code>), and where is it most useful?</strong></p>
-        <p><em>A: Introduced in Python 3.8 (PEP 572), <code>:=</code> assigns a value to a variable within an expression while returning the value. It prevents duplicate computation in <code>while ((chunk := file.read(1024))):</code> and avoids duplicate filtering in list comprehensions.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ6">
-        <p><strong>Q6: Why is <code>x &amp; 1 == 0</code> a syntax / precedence trap?</strong></p>
-        <p><em>A: Comparison operators (<code>==</code>) have higher precedence than bitwise AND (<code>&amp;</code>). Python parses this as <code>x &amp; (1 == 0)</code> &rarr; <code>x &amp; False</code> &rarr; <code>0</code>. You must write <code>(x &amp; 1) == 0</code> with parentheses.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ7">
-        <p><strong>Q7: What is the difference between <code>a = a + [1]</code> and <code>a += [1]</code> on a list?</strong></p>
-        <p><em>A: <code>a = a + [1]</code> creates a brand new list in memory and rebinds the variable <code>a</code>. <code>a += [1]</code> calls <code>list.__iadd__()</code>, which extends the existing list in-place without creating a new object.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ8">
-        <p><strong>Q8: What does <code>~x</code> (bitwise NOT) do in Python?</strong></p>
-        <p><em>A: Python integers use two's complement representation. Bitwise NOT flips all bits, which is mathematically equivalent to <code>-(x + 1)</code>. E.g., <code>~5 == -6</code> and <code>~0 == -1</code>. In sequences, <code>~i</code> is conveniently used to index from the end: <code>a[~i] == a[-1 - i]</code>.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ9">
-        <p><strong>Q9: How do you swap two variables without a temporary variable in Python?</strong></p>
-        <p><em>A: Use tuple packing and unpacking: <code>a, b = b, a</code>. Python creates a 2-tuple <code>(b, a)</code> on the right-hand side and unpacks it into <code>a</code> and <code>b</code> safely without collision.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ10">
-        <p><strong>Q10: What is the difference between <code>and</code> / <code>or</code> and <code>&amp;</code> / <code>|</code>?</strong></p>
-        <p><em>A: <code>and</code> and <code>or</code> are logical operators that evaluate truthiness and support short-circuiting. <code>&amp;</code> and <code>|</code> are bitwise operators that operate on integer bits eagerly without short-circuiting.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ11">
-        <p><strong>Q11: Why does <code>True in [1, 2]</code> return <code>True</code>?</strong></p>
-        <p><em>A: Because <code>bool</code> is a subclass of <code>int</code>, and <code>True == 1</code> is <code>True</code>. The <code>in</code> operator tests equality across elements, and since <code>1 == True</code>, Python matches the first element.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ12">
-        <p><strong>Q12: How do you test if a number is a power of 2 using bitwise operators?</strong></p>
-        <p><em>A: Use <code>(n &gt; 0) and ((n &amp; (n - 1)) == 0)</code>. A power of 2 has exactly one binary bit set (e.g. <code>8 = 1000_2</code>), and <code>n - 1</code> flips all bits below it (<code>7 = 0111_2</code>). Their bitwise AND is always 0.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ13">
-        <p><strong>Q13: What does the ternary operator look like in Python?</strong></p>
-        <p><em>A: <code>result = true_value if condition else false_value</code>. Unlike C's <code>cond ? a : b</code>, Python places the truth value first. It also short-circuits: only the branch corresponding to the condition is evaluated.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ14">
-        <p><strong>Q14: Why can <code>None == None</code> be <code>True</code>, but <code>is</code> is still preferred?</strong></p>
-        <p><em>A: <code>None == None</code> evaluates to <code>True</code>, but <code>==</code> invokes <code>__eq__()</code> on the left operand. If a custom class or library (such as a NumPy array) overrides <code>__eq__</code>, it may return an array of booleans instead of a single boolean, raising an exception in an <code>if</code> check. <code>is None</code> checks pointer identity directly.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ15">
-        <p><strong>Q15: What is the result of <code>bool([] or () or {} or 0 or "Python")</code>?</strong></p>
-        <p><em>A: The chained <code>or</code> operators evaluate sequentially. All operands up to <code>0</code> are falsy. <code>"Python"</code> is the first truthy value, so the expression evaluates to <code>"Python"</code>. Passing it to <code>bool("Python")</code> yields <code>True</code>.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ16">
-        <p><strong>Q16: Can you assign to a slice of a list with an iterable of different length?</strong></p>
-        <p><em>A: Yes, if the slice is non-extended (i.e. step is 1): <code>a = [1, 2, 3]; a[1:2] = [8, 9, 10] &rarr; [1, 8, 9, 10, 3]</code>. If the slice has an extended step like <code>a[::2]</code>, the replacement iterable must match the exact number of replaced elements.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ17">
-        <p><strong>Q17: Why does <code>(1,)</code> create a tuple but <code>(1)</code> creates an integer?</strong></p>
-        <p><em>A: In Python, parentheses around an expression denote mathematical grouping. The comma (<code>,</code>) is the actual tuple constructor operator. Thus, <code>(1)</code> is simply the integer <code>1</code> in parentheses, whereas <code>(1,)</code> or <code>1,</code> creates a 1-tuple.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ18">
-        <p><strong>Q18: What is the difference between <code>pass</code>, <code>continue</code>, and <code>break</code>?</strong></p>
-        <p><em>A: <code>pass</code> is a null statement (no-op) used as a placeholder. <code>continue</code> immediately skips the rest of the current loop iteration and advances to the next. <code>break</code> completely terminates the nearest enclosing loop.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ19">
-        <p><strong>Q19: How do you safely get a value from a dictionary with a fallback without raising KeyError?</strong></p>
-        <p><em>A: Use <code>d.get(key, default)</code>. If the key exists, it returns its value; otherwise, it returns the default (or <code>None</code> if default is omitted), avoiding runtime <code>KeyError</code> exceptions.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ20">
-        <p><strong>Q20: What is the difference between <code>round()</code> and <code>math.floor()</code> / <code>math.ceil()</code>?</strong></p>
-        <p><em>A: <code>round()</code> performs Banker's rounding (half to even). <code>math.floor()</code> always rounds downward towards negative infinity. <code>math.ceil()</code> always rounds upward towards positive infinity.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ21">
-        <p><strong>Q21: Why does <code>[[]] * 3</code> produce a dangerous nested list bug?</strong></p>
-        <p><em>A: List multiplication replicates object references, not deep clones. <code>[[]] * 3</code> creates a list containing three references to the exact same inner list. Mutating one mutates all three! Use <code>[[] for _ in range(3)]</code> instead.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ22">
-        <p><strong>Q22: How does Python evaluate <code>x = y = z = 0</code>?</strong></p>
-        <p><em>A: Python evaluates the right-hand expression <code>0</code> once, then assigns the resulting object reference to each variable from left to right: <code>x</code>, <code>y</code>, and <code>z</code> all reference the same integer <code>0</code>.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ23">
-        <p><strong>Q23: How does the bitwise XOR operator (<code>^</code>) enable in-place number swapping?</strong></p>
-        <p><em>A: <code>a = a ^ b; b = a ^ b; a = a ^ b</code> swaps two integers without extra memory because $x \oplus x = 0$ and $x \oplus 0 = x$. In idiomatic Python, however, <code>a, b = b, a</code> is preferred for readability.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ24">
-        <p><strong>Q24: What is the difference between <code>math.isclose()</code> and <code>np.isclose()</code>?</strong></p>
-        <p><em>A: <code>math.isclose()</code> operates on scalar floating-point values in Python's standard library. <code>numpy.isclose()</code> operates on multi-dimensional NumPy arrays and Series with vectorised SIMD acceleration.</em></p>
-      </div>
-      <hr style="border:none;border-top:1px dashed rgba(255,255,255,0.1);margin:10px 0;" />
-
-      <div id="pyDay02IQ25">
-        <p><strong>Q25: Why does <code>assert 1 == 2, "Failed"</code> work, but <code>assert(1 == 2, "Failed")</code> fails unexpectedly?</strong></p>
-        <p><em>A: <code>assert</code> is a keyword statement, not a function call. Writing <code>assert(1 == 2, "Failed")</code> passes a non-empty 2-tuple <code>(False, "Failed")</code> to assert. Because any non-empty tuple evaluates to truthy, the assertion NEVER triggers!</em></p>
-      </div>
-    </div>
-  </div>
-</div>
-`
+      "id": "day02FundamentalsSection",
+      "label": "Operator Fundamentals",
+      "duration": "2:30"
+    },
+    {
+      "id": "day02ArithSection",
+      "label": "Arithmetic Operators",
+      "duration": "3:20"
+    },
+    {
+      "id": "day02CompSection",
+      "label": "Comparison Operators",
+      "duration": "2:45"
+    },
+    {
+      "id": "day02LogSection",
+      "label": "Logical Operators",
+      "duration": "2:50"
+    },
+    {
+      "id": "day02IdSection",
+      "label": "Identity & Membership",
+      "duration": "2:30"
+    },
+    {
+      "id": "day02BitSection",
+      "label": "Bitwise Operators",
+      "duration": "2:40"
+    },
+    {
+      "id": "day02WalrusSection",
+      "label": "Walrus & Conditional Expressions",
+      "duration": "2:20"
+    },
+    {
+      "id": "day02PrecedenceSection",
+      "label": "Operator Precedence",
+      "duration": "2:00"
+    },
+    {
+      "id": "day02MistakesSection",
+      "label": "Common Mistakes",
+      "duration": "1:50"
+    },
+    {
+      "id": "day02InterviewSection",
+      "label": "Interview Questions",
+      "duration": "3:30"
     }
   ],
-
-  practiceQuestions: [
+  "slides": [
     {
-        "id": 1,
-        "prompt": "<strong>[Easy] BMI Metric Calculator & In-Place Assignment</strong><br/>Given weight in kilograms (<code>weight_kg = 78.5</code>) and height in meters (<code>height_m = 1.78</code>), compute Body Mass Index: <code>bmi = weight_kg / (height_m ** 2)</code>. Round to 2 decimal places and store in <code>bmi</code>.",
-        "starterCode": "# Q1: Compute BMI metric\nweight_kg = 78.5\nheight_m = 1.78\n\n# TODO: Compute BMI rounded to 2 decimal places\nbmi = None\n\nprint(f\"BMI: {bmi}\")\n",
-        "ref": "weight_kg = 78.5\nheight_m = 1.78\nbmi = round(weight_kg / (height_m ** 2), 2)\nprint(f\"BMI: {bmi}\")\n",
-        "questionAudio": "Day02/New_PyDay02Question01.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question01sol.mp3"
-    },
-    {
-        "id": 2,
-        "prompt": "<strong>[Easy] Circular Array Indexing with Modulo</strong><br/>In streaming analytics, a rolling buffer of size <code>BUFFER_SIZE = 8</code> receives events with sequence numbers from 0 to 25. For event sequence <code>seq_num = 19</code>, compute its circular buffer slot index using modulo (<code>slot_idx</code>).",
-        "starterCode": "# Q2: Compute circular buffer index\nBUFFER_SIZE = 8\nseq_num = 19\n\n# TODO: Calculate circular slot index\nslot_idx = None\n\nprint(f\"Seq {seq_num} maps to buffer slot {slot_idx}\")\n",
-        "ref": "BUFFER_SIZE = 8\nseq_num = 19\nslot_idx = seq_num % BUFFER_SIZE\nprint(f\"Seq {seq_num} maps to buffer slot {slot_idx}\")\n",
-        "questionAudio": "Day02/New_PyDay02Question02.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question02sol.mp3"
-    },
-    {
-        "id": 3,
-        "prompt": "<strong>[Easy] Sensor Range Validator with Chained Comparisons</strong><br/>A data pipeline receives temperature sensor reading <code>temp = 23.4</code> and humidity reading <code>humidity = 45.0</code>. Using chained comparisons, check that temperature is within <code>18.0 &lt;= temp &lt;= 26.0</code> and humidity is within <code>30.0 &lt;= humidity &lt;= 60.0</code>. Store the combined boolean result in <code>is_optimal</code>.",
-        "starterCode": "# Q3: Validate sensor ranges with chained comparisons\ntemp = 23.4\nhumidity = 45.0\n\n# TODO: Check both conditions using chained comparisons\nis_optimal = None\n\nprint(f\"Environment optimal: {is_optimal}\")\n",
-        "ref": "temp = 23.4\nhumidity = 45.0\nis_optimal = (18.0 <= temp <= 26.0) and (30.0 <= humidity <= 60.0)\nprint(f\"Environment optimal: {is_optimal}\")\n",
-        "questionAudio": "Day02/New_PyDay02Question03.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question03sol.mp3"
-    },
-    {
-        "id": 4,
-        "prompt": "<strong>[Easy] Default Value Fallback via Short-Circuit OR</strong><br/>Given user input <code>provided_currency = ''</code> and system default <code>DEFAULT_CURRENCY = 'USD'</code>, use the short-circuit <code>or</code> operator to assign <code>currency = provided_currency.strip() or DEFAULT_CURRENCY</code>. Test with empty string and <code>'EUR'</code>.",
-        "starterCode": "# Q4: Short-circuit fallback assignment\nDEFAULT_CURRENCY = 'USD'\n\nuser_input_1 = ''\nuser_input_2 = 'EUR'\n\n# TODO: Assign using short-circuit 'or'\ncurrency_1 = None\ncurrency_2 = None\n\nprint(f\"Currency 1: {currency_1} | Currency 2: {currency_2}\")\n",
-        "ref": "DEFAULT_CURRENCY = 'USD'\nuser_input_1 = ''\nuser_input_2 = 'EUR'\n\ncurrency_1 = user_input_1.strip() or DEFAULT_CURRENCY\ncurrency_2 = user_input_2.strip() or DEFAULT_CURRENCY\n\nprint(f\"Currency 1: {currency_1} | Currency 2: {currency_2}\")\n",
-        "questionAudio": "Day02/New_PyDay02Question04.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question04sol.mp3"
-    },
-    {
-        "id": 5,
-        "prompt": "<strong>[Easy] Safe Division Guard using Short-Circuit AND</strong><br/>Write an expression that safely computes average transaction value: <code>avg_val = (tx_count != 0) and (total_revenue / tx_count)</code>. For <code>tx_count = 0</code> and <code>total_revenue = 50000.0</code>, verify that the expression returns <code>False</code> (or 0) without raising a <code>ZeroDivisionError</code>.",
-        "starterCode": "# Q5: Defensive division guard\ntx_count = 0\ntotal_revenue = 50000.0\n\n# TODO: Safe division using short-circuit 'and'\navg_val = None\n\nprint(f\"Safe Avg: {avg_val}\")\n",
-        "ref": "tx_count = 0\ntotal_revenue = 50000.0\navg_val = (tx_count != 0) and (total_revenue / tx_count)\nprint(f\"Safe Avg: {avg_val}\")\n",
-        "questionAudio": "Day02/New_PyDay02Question05.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question05sol.mp3"
-    },
-    {
-        "id": 6,
-        "prompt": "<strong>[Medium] Exponentiation Associativity & Precedence</strong><br/>Demonstrate the right-associativity of <code>**</code>. Compute <code>res_default = 2 ** 3 ** 2</code> and <code>res_grouped = (2 ** 3) ** 2</code>. Store their difference (<code>res_default - res_grouped</code>) in <code>diff</code>.",
-        "starterCode": "# Q6: Test exponentiation associativity\n# TODO: Calculate res_default (2**3**2) and res_grouped ((2**3)**2)\nres_default = None\nres_grouped = None\ndiff = None\n\nprint(f\"Default: {res_default} | Grouped: {res_grouped} | Diff: {diff}\")\n",
-        "ref": "res_default = 2 ** 3 ** 2\nres_grouped = (2 ** 3) ** 2\ndiff = res_default - res_grouped\nprint(f\"Default: {res_default} | Grouped: {res_grouped} | Diff: {diff}\")\n",
-        "questionAudio": "Day02/New_PyDay02Question06.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question06sol.mp3"
-    },
-    {
-        "id": 7,
-        "prompt": "<strong>[Medium] Fast Even/Odd & Power-of-Two Detection</strong><br/>Using bitwise operations only: (1) check if integer <code>n = 64</code> is even using <code>(n & 1) == 0</code>, storing in <code>is_even</code>; (2) check if <code>n</code> is a power of 2 using <code>(n > 0) and ((n & (n - 1)) == 0)</code>, storing in <code>is_power_of_two</code>.",
-        "starterCode": "# Q7: Fast bitwise checks\nn = 64\n\n# TODO: Check is_even and is_power_of_two using bitwise operations\nis_even = None\nis_power_of_two = None\n\nprint(f\"{n} is even: {is_even} | power of 2: {is_power_of_two}\")\n",
-        "ref": "n = 64\nis_even = ((n & 1) == 0)\nis_power_of_two = (n > 0) and ((n & (n - 1)) == 0)\nprint(f\"{n} is even: {is_even} | power of 2: {is_power_of_two}\")\n",
-        "questionAudio": "Day02/New_PyDay02Question07.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question07sol.mp3"
-    },
-    {
-        "id": 8,
-        "prompt": "<strong>[Medium] Role-Based Permission Bitmask Checking</strong><br/>Given permission flags <code>READ = 1 << 0</code> (1), <code>WRITE = 1 << 1</code> (2), <code>DELETE = 1 << 2</code> (4), and <code>ADMIN = 1 << 3</code> (8). A user has <code>role_mask = READ | WRITE</code>. Verify if the user has <code>WRITE</code> permission (store in <code>can_write</code>) and if they have <code>DELETE</code> permission (store in <code>can_delete</code>).",
-        "starterCode": "# Q8: Permission bitmask checking\nREAD   = 1 << 0\nWRITE  = 1 << 1\nDELETE = 1 << 2\nADMIN  = 1 << 3\n\nrole_mask = READ | WRITE\n\n# TODO: Check can_write and can_delete booleans\ncan_write = None\ncan_delete = None\n\nprint(f\"Can write: {can_write} | Can delete: {can_delete}\")\n",
-        "ref": "READ   = 1 << 0\nWRITE  = 1 << 1\nDELETE = 1 << 2\nADMIN  = 1 << 3\n\nrole_mask = READ | WRITE\ncan_write = bool(role_mask & WRITE)\ncan_delete = bool(role_mask & DELETE)\nprint(f\"Can write: {can_write} | Can delete: {can_delete}\")\n",
-        "questionAudio": "Day02/New_PyDay02Question08.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question08sol.mp3"
-    },
-    {
-        "id": 9,
-        "prompt": "<strong>[Medium] Customer Tier Classifier with Ternary Expressions</strong><br/>Given a list of customer annual spend amounts: <code>spends = [1500, 12000, 4500, 25000, 800]</code>, classify each into a tier using an inline ternary expression: <code>'Platinum' if s >= 10000 else ('Gold' if s >= 3000 else 'Silver')</code>. Store the result list in <code>tiers</code>.",
-        "starterCode": "# Q9: Multi-tier ternary classification\nspends = [1500, 12000, 4500, 25000, 800]\n\n# TODO: Build tiers list using ternary expressions\ntiers = []\n\nprint(\"Customer Tiers:\", tiers)\n",
-        "ref": "spends = [1500, 12000, 4500, 25000, 800]\ntiers = ['Platinum' if s >= 10000 else ('Gold' if s >= 3000 else 'Silver') for s in spends]\nprint(\"Customer Tiers:\", tiers)\n",
-        "questionAudio": "Day02/New_PyDay02Question09.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question09sol.mp3"
-    },
-    {
-        "id": 10,
-        "prompt": "<strong>[Medium] Singleton State Check: is None vs == None</strong><br/>A data cleaning function inspects missing values. Given <code>val = None</code>, compare <code>val is None</code> (store in <code>identity_check</code>) and <code>val == None</code> (store in <code>equality_check</code>). Write a comment explaining why <code>is None</code> is always preferred in production data pipelines.",
-        "starterCode": "# Q10: Test None identity vs equality\nval = None\n\n# TODO: Store identity_check and equality_check booleans\nidentity_check = None\nequality_check = None\n\nprint(f\"is None: {identity_check} | == None: {equality_check}\")\n",
-        "ref": "val = None\nidentity_check = (val is None)\nequality_check = (val == None)\nprint(f\"is None: {identity_check} | == None: {equality_check}\")\n",
-        "questionAudio": "Day02/New_PyDay02Question10.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question10sol.mp3"
-    },
-    {
-        "id": 11,
-        "prompt": "<strong>[Medium] Stop-Word Query Filter with Membership Operator</strong><br/>Given user search query <code>query = 'best python course for data analysts in 2026'</code> and stop-word set <code>stop_words = {'for', 'in', 'the', 'a', 'of'}</code>, tokenize the query and filter out all words present in <code>stop_words</code> using the <code>not in</code> operator. Store the remaining tokens in <code>keywords</code>.",
-        "starterCode": "# Q11: Filter keywords with 'not in'\nquery = 'best python course for data analysts in 2026'\nstop_words = {'for', 'in', 'the', 'a', 'of'}\n\n# TODO: Tokenize and filter stop-words\nkeywords = []\n\nprint(\"Keywords:\", keywords)\n",
-        "ref": "query = 'best python course for data analysts in 2026'\nstop_words = {'for', 'in', 'the', 'a', 'of'}\ntokens = query.lower().split()\nkeywords = [t for t in tokens if t not in stop_words]\nprint(\"Keywords:\", keywords)\n",
-        "questionAudio": "Day02/New_PyDay02Question11.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question11sol.mp3"
-    },
-    {
-        "id": 12,
-        "prompt": "<strong>[Medium] Walrus Operator Stream Consumer & Length Filter</strong><br/>Using the walrus operator (<code>:=</code>) inside a list comprehension, process a list of dirty strings: <code>lines = ['  hello  ', '   ', 'world of python', '  data  ']</code>. Strip each item and keep only those whose stripped length exceeds 4 characters. Store in <code>long_words</code>.",
-        "starterCode": "# Q12: Walrus operator list comprehension\nlines = ['  hello  ', '   ', 'world of python', '  data  ']\n\n# TODO: Strip and filter len > 4 in a single pass using :=\nlong_words = []\n\nprint(\"Long words:\", long_words)\n",
-        "ref": "lines = ['  hello  ', '   ', 'world of python', '  data  ']\nlong_words = [cleaned for item in lines if len(cleaned := item.strip()) > 4]\nprint(\"Long words:\", long_words)\n",
-        "questionAudio": "Day02/New_PyDay02Question12.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question12sol.mp3"
-    },
-    {
-        "id": 13,
-        "prompt": "<strong>[Hard] Multi-Condition Credit Risk Scoring Engine</strong><br/>Evaluate loan applicants against strict credit criteria. An applicant qualifies for an automatic approval if: (1) <code>credit_score &gt;= 720</code> AND <code>debt_to_income &lt; 0.35</code>; OR (2) <code>credit_score &gt;= 680</code> AND <code>debt_to_income &lt; 0.25</code> AND <code>annual_income &gt;= 80000</code>. Evaluate for <code>applicant = {'credit_score': 690, 'debt_to_income': 0.22, 'annual_income': 95000}</code> and store the approval boolean in <code>is_approved</code>.",
-        "starterCode": "# Q13: Multi-condition credit risk engine\napplicant = {'credit_score': 690, 'debt_to_income': 0.22, 'annual_income': 95000}\n\n# TODO: Formulate boolean expression with proper operator precedence & grouping\nis_approved = None\n\nprint(f\"Loan Approved: {is_approved}\")\n",
-        "ref": "applicant = {'credit_score': 690, 'debt_to_income': 0.22, 'annual_income': 95000}\nc = applicant['credit_score']\nd = applicant['debt_to_income']\ni = applicant['annual_income']\n\nis_approved = (c >= 720 and d < 0.35) or (c >= 680 and d < 0.25 and i >= 80000)\nprint(f\"Loan Approved: {is_approved}\")\n",
-        "questionAudio": "Day02/New_PyDay02Question13.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question13sol.mp3"
-    },
-    {
-        "id": 14,
-        "prompt": "<strong>[Hard] Bitwise Flag Aggregator for User Access Matrix</strong><br/>Given a stream of user audit log events with bitwise flags: <code>LOG_LOGIN = 1</code>, <code>LOG_VIEW = 2</code>, <code>LOG_EDIT = 4</code>, <code>LOG_EXPORT = 8</code>. A session log records the sequence of actions: <code>actions = [LOG_LOGIN, LOG_VIEW, LOG_EDIT, LOG_EXPORT]</code>. Aggregate all actions into a single <code>session_mask</code> using the bitwise OR operator. Then verify whether <code>LOG_EXPORT</code> was triggered.",
-        "starterCode": "LOG_LOGIN  = 1\nLOG_VIEW   = 2\nLOG_EDIT   = 4\nLOG_EXPORT = 8\n\nactions = [LOG_LOGIN, LOG_VIEW, LOG_EDIT, LOG_EXPORT]\n\n# TODO: Aggregate actions into session_mask and verify did_export boolean\nsession_mask = 0\ndid_export = None\n\nprint(f\"Session Mask: {bin(session_mask)} | Exported: {did_export}\")\n",
-        "ref": "LOG_LOGIN  = 1\nLOG_VIEW   = 2\nLOG_EDIT   = 4\nLOG_EXPORT = 8\n\nactions = [LOG_LOGIN, LOG_VIEW, LOG_EDIT, LOG_EXPORT]\nsession_mask = 0\nfor act in actions:\n    session_mask |= act\n\ndid_export = bool(session_mask & LOG_EXPORT)\nprint(f\"Session Mask: {bin(session_mask)} | Exported: {did_export}\")\n",
-        "questionAudio": "Day02/New_PyDay02Question14.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question14sol.mp3"
-    },
-    {
-        "id": 15,
-        "prompt": "<strong>[Hard] Walrus-Optimized High-Performance Aggregator</strong><br/>Given an iterator/stream of numbers: <code>data = [12, -4, 25, 0, 8, -15, 33]</code>, compute both the running count of positive numbers and their running sum in a single pass using the walrus operator inside a list comprehension. Produce a list of <code>(number, cumulative_positive_sum)</code> tuples for all positive entries. Store in <code>positive_cumulative</code>.",
-        "starterCode": "data = [12, -4, 25, 0, 8, -15, 33]\n\n# TODO: Build positive_cumulative list of (num, running_sum) tuples using :=\nrunning_sum = 0\npositive_cumulative = []\n\nprint(\"Positive Running Cumulative:\", positive_cumulative)\n",
-        "ref": "data = [12, -4, 25, 0, 8, -15, 33]\nrunning_sum = 0\npositive_cumulative = [(x, running_sum := running_sum + x) for x in data if x > 0]\nprint(\"Positive Running Cumulative:\", positive_cumulative)\n",
-        "questionAudio": "Day02/New_PyDay02Question15.mp3",
-        "solutionAudio": "Day02/New_PyDay02Question15sol.mp3"
+      "id": "slide-1",
+      "title": "Python Operators, Expressions & Precedence",
+      "html": "<style>\n\n  /* ══════════════════════════════════════════════════════════\n     BASE & DARK THEME (DEFAULT)\n     ══════════════════════════════════════════════════════════ */\n\n  /* ── Flagship Dual-Box Heading Architecture (SQL Day 01 Parity) ── */\n  .heading-box-wrap,\n  .slide-section-title.heading-box-wrap {\n    display: flex !important;\n    align-items: stretch !important;\n    gap: 0 !important;\n    background: transparent !important;\n    border: none !important;\n    padding: 0 !important;\n    margin: 24px 0 14px 0 !important;\n    filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.35)) !important;\n  }\n  .slide-section:first-child .heading-box-wrap,\n  #day01WhyPythonSection .heading-box-wrap {\n    margin-top: 4px !important;\n  }\n\n  /* Left Box: Monospace Number Badge (Exact SQL Day 01 Parity from 2nd Image) */\n  .heading-num-box {\n    display: inline-flex !important;\n    align-items: center !important;\n    justify-content: center !important;\n    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;\n    color: #ffffff !important;\n    font-family: 'JetBrains Mono', var(--mono, monospace) !important;\n    font-size: 0.88rem !important;\n    font-weight: 800 !important;\n    letter-spacing: 0.05em !important;\n    padding: 8px 14px !important;\n    border-radius: 8px 0 0 8px !important;\n    border: 1px solid rgba(139, 92, 246, 0.6) !important;\n    border-right: none !important;\n    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;\n    flex-shrink: 0 !important;\n    min-width: 44px !important;\n    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;\n  }\n\n  /* Right Box: Matte Title Box (Always Deep Obsidian Dark — Exact 2nd Image Parity) */\n  .heading-title-box {\n    display: flex !important;\n    align-items: center !important;\n    justify-content: space-between !important;\n    flex: 1 !important;\n    background: #0f172a !important; /* Deep obsidian matte from SQL Day 01 */\n    border: 1px solid rgba(255, 255, 255, 0.08) !important;\n    border-left: 1px solid rgba(139, 92, 246, 0.4) !important;\n    border-radius: 0 8px 8px 0 !important;\n    padding: 8px 16px !important;\n    color: #f8fafc !important;\n    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;\n  }\n\n  .heading-title-text {\n    flex: 1 !important;\n    color: #f8fafc !important;\n    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif !important;\n    font-size: 1.05rem !important;\n    font-weight: 800 !important;\n    letter-spacing: -0.015em !important;\n    line-height: 1.35 !important;\n    display: flex !important;\n    align-items: center !important;\n    gap: 10px !important;\n  }\n\n  .heading-icon {\n    font-size: 1.15rem !important;\n    display: inline-flex !important;\n    align-items: center !important;\n    line-height: 1 !important;\n  }\n\n  /* Audio Play Button in Heading */\n  .heading-title-box .audio-play-btn,\n  .heading-with-audio .audio-play-btn {\n    width: 26px !important;\n    height: 26px !important;\n    min-width: 26px !important;\n    min-height: 26px !important;\n    max-width: 26px !important;\n    max-height: 26px !important;\n    border-radius: 6px !important;\n    border: 1px solid rgba(255, 255, 255, 0.14) !important;\n    background: rgba(255, 255, 255, 0.08) !important;\n    color: #94a3b8 !important;\n    cursor: pointer !important;\n    display: inline-flex !important;\n    align-items: center !important;\n    justify-content: center !important;\n    padding: 0 !important;\n    margin: 0 !important;\n    flex-shrink: 0 !important;\n    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease !important;\n  }\n\n  .heading-title-box .audio-play-btn:hover,\n  .heading-with-audio .audio-play-btn:hover {\n    background: #ef4444 !important;\n    border-color: #ef4444 !important;\n    color: #ffffff !important;\n    box-shadow: 0 0 10px rgba(239, 68, 68, 0.45) !important;\n    transform: scale(1.05) !important;\n  }\n\n  .heading-title-box .audio-play-btn.playing,\n  .heading-with-audio .audio-play-btn.playing {\n    background: #ef4444 !important;\n    border-color: #ef4444 !important;\n    color: #ffffff !important;\n    box-shadow: 0 0 12px rgba(239, 68, 68, 0.5) !important;\n  }\n\n  /* General Typography & Heading Hierarchy (Dark Mode) */\n  .slide-section h1,\n  .slide-section h2,\n  .slide-section h3,\n  .slide-section h4 {\n    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif !important;\n    color: #f8fafc !important;\n    letter-spacing: -0.015em !important;\n  }\n\n  @media (max-width: 640px) {\n    .heading-num-box {\n      font-size: 0.80rem !important;\n      padding: 7px 10px !important;\n      min-width: 40px !important;\n    }\n    .heading-title-box {\n      padding: 7px 12px !important;\n    }\n    .heading-title-text {\n      font-size: 0.88rem !important;\n      gap: 6px !important;\n    }\n    .heading-icon {\n      font-size: 1rem !important;\n    }\n    .heading-title-box .audio-play-btn {\n      width: 24px !important;\n      height: 24px !important;\n      min-width: 24px !important;\n      min-height: 24px !important;\n    }\n  }\n\n  .py-infographic-card {\n    background: linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(8, 14, 28, 0.98) 100%);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 12px;\n    padding: 16px 18px;\n    margin: 14px 0;\n    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);\n    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;\n  }\n  .py-info-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 10px;\n    margin-bottom: 12px;\n    padding-bottom: 8px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n  }\n  .py-info-title {\n    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;\n    font-size: 0.82rem;\n    font-weight: 800;\n    text-transform: uppercase;\n    letter-spacing: 0.08em;\n    color: #38bdf8;\n    display: flex;\n    align-items: center;\n    gap: 8px;\n  }\n  .py-badge {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.68rem;\n    font-weight: 700;\n    padding: 2px 8px;\n    border-radius: 4px;\n    background: rgba(56, 189, 248, 0.12);\n    border: 1px solid rgba(56, 189, 248, 0.28);\n    color: #38bdf8;\n  }\n  .py-badge-gold {\n    background: rgba(245, 158, 11, 0.12);\n    border-color: rgba(245, 158, 11, 0.28);\n    color: #fbbf24;\n  }\n  .py-badge-green {\n    background: rgba(34, 197, 94, 0.12);\n    border-color: rgba(34, 197, 94, 0.28);\n    color: #4ade80;\n  }\n  .py-badge-purple {\n    background: rgba(168, 85, 247, 0.12);\n    border-color: rgba(168, 85, 247, 0.28);\n    color: #c084fc;\n  }\n  .py-badge-rose {\n    background: rgba(244, 63, 94, 0.12);\n    border-color: rgba(244, 63, 94, 0.28);\n    color: #fb7185;\n  }\n\n  /* CPython Object Header Grid */\n  .cpython-grid {\n    display: grid;\n    grid-template-columns: repeat(4, 1fr);\n    gap: 8px;\n    margin-top: 10px;\n  }\n  @media (max-width: 640px) {\n    .cpython-grid { grid-template-columns: 1fr 1fr; }\n  }\n  .cpython-cell {\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.07);\n    border-radius: 8px;\n    padding: 10px;\n    text-align: center;\n    transition: all 0.2s ease;\n  }\n  .cpython-cell:hover {\n    background: rgba(56, 189, 248, 0.06);\n    border-color: rgba(56, 189, 248, 0.3);\n  }\n  .cpython-cell-size {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.65rem;\n    font-weight: 700;\n    color: #94a3b8;\n    margin-bottom: 4px;\n  }\n  .cpython-cell-name {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.78rem;\n    font-weight: 800;\n    color: #f8fafc;\n  }\n  .cpython-cell-desc {\n    font-size: 0.70rem;\n    color: #64748b;\n    margin-top: 4px;\n    line-height: 1.3;\n  }\n\n  /* Mutability Cards Base */\n  .py-mut-card {\n    border-radius: 8px;\n    padding: 12px;\n    transition: all 0.2s ease;\n  }\n  .py-mut-card.mut-green {\n    background: rgba(16, 185, 129, 0.06);\n    border: 1px solid rgba(16, 185, 129, 0.25);\n  }\n  .py-mut-card.mut-rose {\n    background: rgba(244, 63, 94, 0.06);\n    border: 1px solid rgba(244, 63, 94, 0.25);\n  }\n  .py-mut-card p {\n    font-size: 0.75rem;\n    color: #cbd5e1;\n    margin: 0 0 8px;\n    line-height: 1.45;\n  }\n  .py-mut-card .mut-ex {\n    font-size: 0.70rem;\n    color: #94a3b8;\n    margin-bottom: 6px;\n  }\n\n  /* Memory Cards Base */\n  .py-mem-card {\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.07);\n    border-radius: 8px;\n    padding: 12px;\n    transition: all 0.2s ease;\n  }\n  .py-mem-card-title {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.80rem;\n    font-weight: 800;\n    margin-bottom: 4px;\n  }\n  .py-mem-blue { color: #38bdf8; }\n  .py-mem-green { color: #4ade80; }\n  .py-mem-amber { color: #fbbf24; }\n  .py-mem-purple { color: #c084fc; }\n  .py-mem-card .py-mem-desc {\n    font-size: 0.75rem;\n    color: #cbd5e1;\n    line-height: 1.5;\n  }\n\n  /* Code Block Box */\n  .py-code-box {\n    margin: 0;\n    padding: 8px 10px;\n    background: rgba(0, 0, 0, 0.45);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 6px;\n    font-size: 0.74rem;\n    color: #f8fafc;\n    font-family: 'JetBrains Mono', monospace;\n  }\n\n  /* ══════════════════════════════════════════════════════════\n     SUPERPOWERS FLAGSHIP SHOWCASE DESIGN (DARK THEME)\n     ══════════════════════════════════════════════════════════ */\n  .py-sp-showcase {\n    background: linear-gradient(145deg, rgba(15, 23, 42, 0.96) 0%, rgba(10, 16, 31, 0.98) 100%);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 14px;\n    padding: 20px 22px;\n    margin: 16px 0;\n    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);\n    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;\n  }\n  .py-sp-header {\n    margin-bottom: 18px;\n    padding-bottom: 14px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  }\n  .py-sp-title-row {\n    display: flex;\n    align-items: center;\n    gap: 14px;\n    flex-wrap: wrap;\n  }\n  .py-sp-header-icon {\n    width: 42px;\n    height: 42px;\n    border-radius: 12px;\n    background: linear-gradient(135deg, rgba(56, 189, 248, 0.16) 0%, rgba(99, 102, 241, 0.22) 100%);\n    border: 1px solid rgba(56, 189, 248, 0.35);\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 1.25rem;\n    flex-shrink: 0;\n    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.1);\n  }\n  .py-sp-header-text {\n    display: flex;\n    flex-direction: column;\n    gap: 2px;\n    flex: 1;\n  }\n  .py-sp-title {\n    margin: 0;\n    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;\n    font-size: 1.12rem;\n    font-weight: 800;\n    letter-spacing: -0.015em;\n    color: #f8fafc !important;\n    line-height: 1.3;\n  }\n  .py-sp-subtitle {\n    margin: 3px 0 0 0;\n    font-size: 0.82rem;\n    color: #94a3b8 !important;\n    font-weight: 500;\n    letter-spacing: 0.01em;\n    line-height: 1.4;\n  }\n  .py-sp-grid {\n    display: grid;\n    grid-template-columns: repeat(2, 1fr);\n    gap: 12px;\n  }\n  @media (max-width: 680px) {\n    .py-sp-grid { grid-template-columns: 1fr; }\n  }\n  .py-sp-card {\n    background: rgba(255, 255, 255, 0.025);\n    border: 1px solid rgba(255, 255, 255, 0.07);\n    border-radius: 12px;\n    padding: 14px 16px;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);\n    position: relative;\n    overflow: hidden;\n  }\n  .py-sp-card:hover {\n    transform: translateY(-2px);\n    background: rgba(255, 255, 255, 0.04);\n    box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.4);\n  }\n  .py-sp-card::before {\n    content: '';\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    height: 2px;\n    opacity: 0.85;\n  }\n  .py-sp-card.sp-blue::before { background: linear-gradient(90deg, #38bdf8, transparent); }\n  .py-sp-card.sp-blue:hover { border-color: rgba(56, 189, 248, 0.4); }\n  .py-sp-card.sp-green::before { background: linear-gradient(90deg, #34d399, transparent); }\n  .py-sp-card.sp-green:hover { border-color: rgba(52, 211, 153, 0.4); }\n  .py-sp-card.sp-amber::before { background: linear-gradient(90deg, #fbbf24, transparent); }\n  .py-sp-card.sp-amber:hover { border-color: rgba(251, 191, 36, 0.4); }\n  .py-sp-card.sp-purple::before { background: linear-gradient(90deg, #c084fc, transparent); }\n  .py-sp-card.sp-purple:hover { border-color: rgba(192, 132, 252, 0.4); }\n\n  .py-sp-card-top {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    margin-bottom: 10px;\n  }\n  .py-sp-card-header {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n  }\n  .py-sp-icon {\n    width: 32px;\n    height: 32px;\n    border-radius: 8px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 1rem;\n    flex-shrink: 0;\n  }\n  .sp-blue .py-sp-icon { background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.25); }\n  .sp-green .py-sp-icon { background: rgba(52, 211, 153, 0.12); border: 1px solid rgba(52, 211, 153, 0.25); }\n  .sp-amber .py-sp-icon { background: rgba(251, 191, 36, 0.12); border: 1px solid rgba(251, 191, 36, 0.25); }\n  .sp-purple .py-sp-icon { background: rgba(192, 132, 252, 0.12); border: 1px solid rgba(192, 132, 252, 0.25); }\n\n  .py-sp-card-title {\n    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;\n    font-size: 0.88rem;\n    font-weight: 700;\n    color: #f8fafc !important;\n  }\n  .py-sp-num {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.68rem;\n    font-weight: 800;\n    padding: 2px 7px;\n    border-radius: 4px;\n  }\n  .sp-blue .py-sp-num { color: #38bdf8; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); }\n  .sp-green .py-sp-num { color: #34d399; background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.2); }\n  .sp-amber .py-sp-num { color: #fbbf24; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.2); }\n  .sp-purple .py-sp-num { color: #c084fc; background: rgba(192, 132, 252, 0.1); border: 1px solid rgba(192, 132, 252, 0.2); }\n\n  .py-sp-desc {\n    font-size: 0.77rem;\n    line-height: 1.55;\n    color: #cbd5e1 !important;\n    margin: 0 0 10px 0;\n  }\n  .py-sp-tag {\n    display: inline-flex;\n    align-items: center;\n    gap: 5px;\n    font-size: 0.70rem;\n    font-weight: 600;\n    padding: 3px 8px;\n    border-radius: 6px;\n    background: rgba(255, 255, 255, 0.04);\n    border: 1px solid rgba(255, 255, 255, 0.07);\n    color: #e2e8f0;\n    align-self: flex-start;\n  }\n\n  /* 05 AI Flagship Banner */\n  .py-sp-ai-banner {\n    margin-top: 12px;\n    background: linear-gradient(135deg, rgba(147, 51, 234, 0.15) 0%, rgba(79, 70, 229, 0.12) 50%, rgba(15, 23, 42, 0.85) 100%);\n    border: 1px solid rgba(168, 85, 247, 0.35);\n    border-radius: 12px;\n    padding: 16px 18px;\n    display: flex;\n    align-items: center;\n    gap: 16px;\n    box-shadow: 0 10px 28px -6px rgba(147, 51, 234, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);\n    transition: all 0.22s ease;\n  }\n  .py-sp-ai-banner:hover {\n    border-color: rgba(168, 85, 247, 0.55);\n    box-shadow: 0 12px 32px -4px rgba(147, 51, 234, 0.35);\n  }\n  .py-sp-ai-icon {\n    width: 42px;\n    height: 42px;\n    border-radius: 10px;\n    background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 1.25rem;\n    flex-shrink: 0;\n    box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4);\n  }\n  .py-sp-ai-body { flex: 1; }\n  .py-sp-ai-title-row {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    margin-bottom: 4px;\n    flex-wrap: wrap;\n  }\n  .py-sp-ai-title {\n    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;\n    font-size: 0.92rem;\n    font-weight: 800;\n    color: #fdf4ff !important;\n    letter-spacing: -0.01em;\n  }\n  .py-sp-ai-pill {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.65rem;\n    font-weight: 700;\n    padding: 2px 7px;\n    border-radius: 4px;\n    background: rgba(236, 72, 153, 0.16);\n    border: 1px solid rgba(236, 72, 153, 0.38);\n    color: #f472b6;\n  }\n  .py-sp-ai-text {\n    font-size: 0.78rem;\n    color: #e2e8f0 !important;\n    line-height: 1.55;\n    margin: 0;\n  }\n  .py-sp-code-pill {\n    display: inline-block;\n    background: rgba(168, 85, 247, 0.22) !important;\n    color: #f5d0fe !important;\n    border: 1px solid rgba(168, 85, 247, 0.45) !important;\n    padding: 1px 7px !important;\n    border-radius: 5px !important;\n    font-family: 'JetBrains Mono', monospace !important;\n    font-size: 0.73rem !important;\n    font-weight: 600 !important;\n    vertical-align: middle;\n  }\n\n  /* ══════════════════════════════════════════════════════════\n     LIGHT MODE THEME ADAPTATIONS ([data-theme=\"light\"])\n     ══════════════════════════════════════════════════════════ */\n\n  /* ── Keep Heading Box Dark in Light Mode (Exactly Like 2nd Image) ── */\n  [data-theme=\"light\"] .heading-box-wrap,\n  [data-theme=\"light\"] .slide-section-title.heading-box-wrap {\n    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.16)) !important;\n  }\n  [data-theme=\"light\"] .heading-num-box {\n    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;\n    color: #ffffff !important;\n    border: 1px solid rgba(139, 92, 246, 0.6) !important;\n    border-right: none !important;\n    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;\n    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;\n  }\n  [data-theme=\"light\"] .heading-title-box {\n    background: #0f172a !important; /* Retain deep obsidian matte in light mode */\n    border: 1px solid rgba(255, 255, 255, 0.08) !important;\n    border-left: 1px solid rgba(139, 92, 246, 0.4) !important;\n    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 3px 10px rgba(0, 0, 0, 0.12) !important;\n  }\n  [data-theme=\"light\"] .heading-title-text {\n    color: #f8fafc !important; /* Crisp white text inside dark box */\n  }\n  [data-theme=\"light\"] .heading-title-box .audio-play-btn {\n    background: rgba(255, 255, 255, 0.08) !important;\n    border: 1px solid rgba(255, 255, 255, 0.12) !important;\n    color: #94a3b8 !important;\n  }\n  [data-theme=\"light\"] .heading-title-box .audio-play-btn:hover {\n    background: #ef4444 !important;\n    border-color: #ef4444 !important;\n    color: #ffffff !important;\n    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4) !important;\n  }\n  [data-theme=\"light\"] .heading-title-box .audio-play-btn.playing {\n    background: #ef4444 !important;\n    border-color: #ef4444 !important;\n    color: #ffffff !important;\n    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4) !important;\n  }\n  [data-theme=\"light\"] .slide-section h1,\n  [data-theme=\"light\"] .slide-section h2,\n  [data-theme=\"light\"] .slide-section h3,\n  [data-theme=\"light\"] .slide-section h4 {\n    color: #0f172a !important;\n  }\n\n  [data-theme=\"light\"] .py-sp-showcase {\n    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);\n    border: 1px solid #e2e8f0;\n    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), inset 0 1px 0 #ffffff;\n  }\n  [data-theme=\"light\"] .py-sp-header {\n    border-bottom: 1.5px solid #e2e8f0;\n    padding-bottom: 14px;\n    margin-bottom: 18px;\n  }\n  [data-theme=\"light\"] .py-sp-header-icon {\n    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);\n    border: 1.5px solid #38bdf8;\n    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.15);\n    width: 44px;\n    height: 44px;\n    border-radius: 12px;\n  }\n  [data-theme=\"light\"] .py-sp-title {\n    color: #0f172a !important;\n    font-size: 1.25rem !important;\n    font-weight: 800 !important;\n    letter-spacing: -0.02em !important;\n  }\n  [data-theme=\"light\"] .py-sp-subtitle {\n    color: #334155 !important;\n    font-size: 0.88rem !important;\n    font-weight: 500 !important;\n  }\n\n  /* Light Mode 4 Cards */\n  [data-theme=\"light\"] .py-sp-card {\n    background: #ffffff;\n    border: 1px solid #e2e8f0;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);\n  }\n  [data-theme=\"light\"] .py-sp-card:hover {\n    background: #ffffff;\n    transform: translateY(-2px);\n    box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.08);\n  }\n  [data-theme=\"light\"] .py-sp-card.sp-blue:hover { border-color: #38bdf8; }\n  [data-theme=\"light\"] .py-sp-card.sp-green:hover { border-color: #34d399; }\n  [data-theme=\"light\"] .py-sp-card.sp-amber:hover { border-color: #fbbf24; }\n  [data-theme=\"light\"] .py-sp-card.sp-purple:hover { border-color: #c084fc; }\n\n  [data-theme=\"light\"] .py-sp-card-title {\n    color: #0f172a !important;\n  }\n  [data-theme=\"light\"] .py-sp-desc { color: #1e293b !important; font-weight: 500; }\n  [data-theme=\"light\"] .sp-blue .py-sp-icon {\n    background: #f0f9ff;\n    border: 1px solid #bae6fd;\n  }\n  [data-theme=\"light\"] .sp-green .py-sp-icon {\n    background: #f0fdf4;\n    border: 1px solid #bbf7d0;\n  }\n  [data-theme=\"light\"] .sp-amber .py-sp-icon {\n    background: #fffbeb;\n    border: 1px solid #fde68a;\n  }\n  [data-theme=\"light\"] .sp-purple .py-sp-icon {\n    background: #faf5ff;\n    border: 1px solid #ddd6fe;\n  }\n  [data-theme=\"light\"] .sp-blue .py-sp-num {\n    color: #0284c7;\n    background: #e0f2fe;\n    border: 1px solid #bae6fd;\n  }\n  [data-theme=\"light\"] .sp-green .py-sp-num {\n    color: #16a34a;\n    background: #dcfce7;\n    border: 1px solid #bbf7d0;\n  }\n  [data-theme=\"light\"] .sp-amber .py-sp-num {\n    color: #d97706;\n    background: #fef3c7;\n    border: 1px solid #fde68a;\n  }\n  [data-theme=\"light\"] .sp-purple .py-sp-num {\n    color: #7c3aed;\n    background: #f3e8ff;\n    border: 1px solid #ddd6fe;\n  }\n  [data-theme=\"light\"] .py-sp-tag {\n    background: #f8fafc;\n    border: 1px solid #e2e8f0;\n    color: #334155;\n    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);\n  }\n\n  /* Light Mode 05 AI Banner */\n  [data-theme=\"light\"] .py-sp-ai-banner {\n    background: linear-gradient(135deg, #faf5ff 0%, #f5f3ff 50%, #ffffff 100%);\n    border: 1px solid #d8b4fe;\n    box-shadow: 0 8px 24px -4px rgba(124, 58, 237, 0.08), inset 0 1px 0 #ffffff;\n  }\n  [data-theme=\"light\"] .py-sp-ai-banner:hover {\n    border-color: #c084fc;\n    box-shadow: 0 12px 28px -4px rgba(124, 58, 237, 0.14);\n  }\n  [data-theme=\"light\"] .py-sp-ai-icon {\n    background: linear-gradient(135deg, #9333ea 0%, #db2777 100%);\n    box-shadow: 0 4px 12px rgba(147, 51, 234, 0.25);\n    color: #ffffff;\n  }\n  [data-theme=\"light\"] .py-sp-ai-title {\n    color: #581c87 !important;\n  }\n  [data-theme=\"light\"] .py-sp-ai-pill {\n    background: #fdf2f8;\n    border: 1px solid #fbcfe8;\n    color: #be185d;\n  }\n  [data-theme=\"light\"] .py-sp-ai-text {\n    color: #334155 !important;\n  }\n  [data-theme=\"light\"] .py-sp-code-pill {\n    background: #ede9fe !important;\n    color: #6d28d9 !important;\n    border: 1px solid #c4b5fd !important;\n  }\n\n  /* Other Cards Light Mode Adaptations */\n  [data-theme=\"light\"] .py-infographic-card {\n    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);\n    border: 1px solid #e2e8f0;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04), inset 0 1px 0 #ffffff;\n  }\n  [data-theme=\"light\"] .py-info-header {\n    border-bottom: 1px solid #e2e8f0;\n  }\n  [data-theme=\"light\"] .py-info-title {\n    color: #0284c7;\n  }\n  [data-theme=\"light\"] .py-badge-gold {\n    background: #fef3c7;\n    border-color: #fde68a;\n    color: #b45309;\n  }\n  [data-theme=\"light\"] .py-badge-green {\n    background: #dcfce7;\n    border-color: #bbf7d0;\n    color: #15803d;\n  }\n  [data-theme=\"light\"] .py-badge-purple {\n    background: #f3e8ff;\n    border-color: #ddd6fe;\n    color: #6d28d9;\n  }\n  [data-theme=\"light\"] .py-badge-rose {\n    background: #ffe4e6;\n    border-color: #fecdd3;\n    color: #e11d48;\n  }\n  [data-theme=\"light\"] .cpython-cell {\n    background: #ffffff;\n    border: 1px solid #e2e8f0;\n  }\n  [data-theme=\"light\"] .cpython-cell:hover {\n    background: #f0f9ff;\n    border-color: #38bdf8;\n  }\n  [data-theme=\"light\"] .cpython-cell-size { color: #0284c7; font-weight: 700; }\n  [data-theme=\"light\"] .cpython-cell-name {\n    color: #0f172a;\n  }\n  [data-theme=\"light\"] .cpython-cell-desc { color: #1e293b; font-weight: 500; }\n\n  /* Mutability & Memory Light Mode */\n  [data-theme=\"light\"] .py-mut-card.mut-green {\n    background: #f0fdf4;\n    border: 1px solid #86efac;\n  }\n  [data-theme=\"light\"] .py-mut-card.mut-rose {\n    background: #fff1f2;\n    border: 1px solid #fecdd3;\n  }\n  [data-theme=\"light\"] .py-mut-card p {\n    color: #334155 !important;\n  }\n  [data-theme=\"light\"] .py-mut-card .mut-ex { color: #1e293b !important; font-weight: 600; }\n  [data-theme=\"light\"] .py-mem-card {\n    background: #ffffff;\n    border: 1px solid #e2e8f0;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);\n  }\n  [data-theme=\"light\"] .py-mem-card .py-mem-desc { color: #1e293b !important; font-weight: 500; }\n  [data-theme=\"light\"] .py-code-box {\n    background: #f8fafc;\n    border: 1px solid #e2e8f0;\n    color: #0f172a;\n  }\n  [data-theme=\"light\"] .py-code-box .code-comment { color: #047857; font-weight: 600; font-style: italic; }\n\n  /* ══════════════════════════════════════════════════════════\n     MUTABILITY ARCHITECTURE SHOWCASE (LIGHT & DARK DUAL THEME)\n     ══════════════════════════════════════════════════════════ */\n  .py-mut-showcase {\n    background: linear-gradient(145deg, rgba(15, 23, 42, 0.96) 0%, rgba(10, 16, 31, 0.98) 100%);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 14px;\n    padding: 20px 22px;\n    margin: 16px 0;\n    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);\n    transition: all 0.3s ease;\n  }\n  .py-mut-header {\n    margin-bottom: 18px;\n    padding-bottom: 14px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  }\n  .py-mut-title-row {\n    display: flex;\n    align-items: center;\n    gap: 14px;\n    flex-wrap: wrap;\n  }\n  .py-mut-header-icon {\n    width: 42px;\n    height: 42px;\n    border-radius: 12px;\n    background: linear-gradient(135deg, rgba(168, 85, 247, 0.18) 0%, rgba(99, 102, 241, 0.22) 100%);\n    border: 1px solid rgba(168, 85, 247, 0.35);\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 1.25rem;\n    flex-shrink: 0;\n    box-shadow: 0 4px 14px rgba(168, 85, 247, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);\n  }\n  .py-mut-title {\n    margin: 0;\n    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;\n    font-size: 1.12rem;\n    font-weight: 800;\n    letter-spacing: -0.015em;\n    color: #f8fafc !important;\n    line-height: 1.3;\n  }\n  .py-mut-subtitle {\n    margin: 6px 0 0 56px;\n    font-size: 0.88rem;\n    color: #94a3b8 !important;\n    font-weight: 500;\n    letter-spacing: 0.01em;\n    line-height: 1.4;\n  }\n  @media (max-width: 640px) {\n    .py-mut-subtitle {\n      margin-left: 0;\n    }\n  }\n\n  /* Dual Comparison Columns Grid */\n  .py-mut-grid {\n    display: grid;\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n    gap: 14px;\n  }\n  @media (max-width: 768px) {\n    .py-mut-grid { grid-template-columns: 1fr; }\n  }\n\n  .py-mut-panel {\n    border-radius: 12px;\n    padding: 16px;\n    display: flex;\n    flex-direction: column;\n    justify-content: flex-start;\n    transition: all 0.25s ease;\n    position: relative;\n    overflow: hidden;\n  }\n  .py-mut-panel::before {\n    content: '';\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    height: 3px;\n  }\n\n  /* Mutable (Green) */\n  .py-mut-panel.panel-mutable {\n    background: rgba(16, 185, 129, 0.04);\n    border: 1px solid rgba(16, 185, 129, 0.22);\n  }\n  .py-mut-panel.panel-mutable::before {\n    background: linear-gradient(90deg, #10b981 0%, #34d399 100%);\n  }\n  .py-mut-panel.panel-mutable:hover {\n    border-color: rgba(16, 185, 129, 0.45);\n    box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.15);\n  }\n\n  /* Immutable (Rose) */\n  .py-mut-panel.panel-immutable {\n    background: rgba(244, 63, 94, 0.04);\n    border: 1px solid rgba(244, 63, 94, 0.22);\n  }\n  .py-mut-panel.panel-immutable::before {\n    background: linear-gradient(90deg, #f43f5e 0%, #fb7185 100%);\n  }\n  .py-mut-panel.panel-immutable:hover {\n    border-color: rgba(244, 63, 94, 0.45);\n    box-shadow: 0 10px 25px -5px rgba(244, 63, 94, 0.15);\n  }\n\n  /* Distinct Box for Headings */\n  .py-mut-header-box {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 10px;\n    padding: 10px 14px;\n    border-radius: 10px;\n    margin-bottom: 12px;\n    min-height: 64px;\n    box-sizing: border-box;\n    transition: all 0.2s ease;\n  }\n  .mut-header-green {\n    background: rgba(16, 185, 129, 0.08);\n    border: 1px solid rgba(16, 185, 129, 0.28);\n    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);\n  }\n  .mut-header-rose {\n    background: rgba(244, 63, 94, 0.08);\n    border: 1px solid rgba(244, 63, 94, 0.28);\n    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);\n  }\n\n  [data-theme=\"light\"] .mut-header-green {\n    background: #f0fdf4;\n    border: 1px solid #86efac;\n    box-shadow: 0 1px 4px rgba(16, 185, 129, 0.08);\n  }\n  [data-theme=\"light\"] .mut-header-rose {\n    background: #fff1f2;\n    border: 1px solid #fecdd3;\n    box-shadow: 0 1px 4px rgba(244, 63, 94, 0.08);\n  }\n\n  .py-mut-panel-title-wrap {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n  }\n  .py-mut-panel-icon {\n    width: 36px;\n    height: 36px;\n    border-radius: 8px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 1.15rem;\n    flex-shrink: 0;\n  }\n  .mut-header-green .py-mut-panel-icon {\n    background: rgba(16, 185, 129, 0.16);\n    border: 1px solid rgba(16, 185, 129, 0.32);\n  }\n  [data-theme=\"light\"] .mut-header-green .py-mut-panel-icon {\n    background: #ffffff;\n    border: 1px solid #86efac;\n    box-shadow: 0 1px 2px rgba(16, 185, 129, 0.1);\n  }\n  .mut-header-rose .py-mut-panel-icon {\n    background: rgba(244, 63, 94, 0.16);\n    border: 1px solid rgba(244, 63, 94, 0.32);\n  }\n  [data-theme=\"light\"] .mut-header-rose .py-mut-panel-icon {\n    background: #ffffff;\n    border: 1px solid #fecdd3;\n    box-shadow: 0 1px 2px rgba(244, 63, 94, 0.1);\n  }\n\n  .py-mut-panel-name {\n    margin: 0;\n    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;\n    font-size: 0.98rem;\n    font-weight: 800;\n    letter-spacing: -0.01em;\n  }\n  .mut-header-green .py-mut-panel-name { color: #4ade80 !important; }\n  [data-theme=\"light\"] .mut-header-green .py-mut-panel-name { color: #15803d !important; }\n  .mut-header-rose .py-mut-panel-name { color: #fb7185 !important; }\n  [data-theme=\"light\"] .mut-header-rose .py-mut-panel-name { color: #be123c !important; }\n\n  .py-mut-panel-sub {\n    display: block;\n    font-size: 0.68rem;\n    font-weight: 500;\n    color: #94a3b8;\n    white-space: nowrap;\n  }\n  [data-theme=\"light\"] .py-mut-panel-sub { display: block; font-size: 0.68rem; font-weight: 700; color: #1e293b; white-space: nowrap; }\n\n  /* Vertical Stacked Pill: \"Cannot\" / \"Change\" */\n  .py-mut-status-pill {\n    display: inline-flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n    line-height: 1.15;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.62rem;\n    font-weight: 800;\n    padding: 4px 8px;\n    border-radius: 6px;\n    white-space: nowrap;\n    flex-shrink: 0;\n    letter-spacing: 0.03em;\n    text-transform: uppercase;\n  }\n  .py-mut-status-pill span {\n    display: block;\n    line-height: 1.15;\n  }\n  .pill-mutable {\n    background: rgba(16, 185, 129, 0.18);\n    border: 1px solid rgba(16, 185, 129, 0.38);\n    color: #34d399;\n  }\n  [data-theme=\"light\"] .pill-mutable {\n    background: #dcfce7;\n    border: 1px solid #86efac;\n    color: #15803d;\n    box-shadow: 0 1px 2px rgba(16, 185, 129, 0.1);\n  }\n  .pill-immutable {\n    background: rgba(244, 63, 94, 0.18);\n    border: 1px solid rgba(244, 63, 94, 0.38);\n    color: #fb7185;\n  }\n  [data-theme=\"light\"] .pill-immutable {\n    background: #ffe4e6;\n    border: 1px solid #fecdd3;\n    color: #be123c;\n    box-shadow: 0 1px 2px rgba(244, 63, 94, 0.1);\n  }\n\n  .py-mut-desc {\n    font-size: 0.78rem;\n    line-height: 1.55;\n    color: #cbd5e1 !important;\n    margin: 0 0 12px 0;\n    min-height: 72px;\n    box-sizing: border-box;\n  }\n\n  .py-mut-types-row {\n    display: flex;\n    align-items: center;\n    gap: 6px;\n    margin-bottom: 12px;\n    min-height: 30px;\n    box-sizing: border-box;\n    flex-wrap: wrap;\n  }\n  .py-mut-types-label {\n    font-size: 0.70rem;\n    color: #94a3b8;\n    font-weight: 600;\n    text-transform: uppercase;\n    letter-spacing: 0.04em;\n  }\n  .py-mut-type-tag {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.70rem;\n    font-weight: 700;\n    padding: 1px 7px;\n    border-radius: 4px;\n  }\n  .panel-mutable .py-mut-type-tag {\n    background: rgba(16, 185, 129, 0.15);\n    border: 1px solid rgba(16, 185, 129, 0.3);\n    color: #6ee7b7;\n  }\n  .panel-immutable .py-mut-type-tag {\n    background: rgba(244, 63, 94, 0.15);\n    border: 1px solid rgba(244, 63, 94, 0.3);\n    color: #fca5a5;\n  }\n\n  /* Sleek Visual Code Card Inside Panel */\n  .py-mut-code-wrap {\n    background: rgba(0, 0, 0, 0.45);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 8px;\n    overflow: hidden;\n    min-height: 122px;\n    box-sizing: border-box;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n    margin-bottom: 10px;\n  }\n  .py-mut-code-topbar {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    padding: 6px 10px;\n    background: rgba(255, 255, 255, 0.03);\n    border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.68rem;\n  }\n  .panel-mutable .py-mut-code-topbar { color: #34d399; }\n  .panel-immutable .py-mut-code-topbar { color: #fb7185; }\n\n  .py-mut-code-wrap pre {\n    margin: 0;\n    padding: 10px 12px;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.74rem;\n    color: #f8fafc;\n    line-height: 1.6;\n    overflow-x: auto;\n  }\n\n  .py-mut-takeaway {\n    margin-top: 0;\n    font-size: 0.72rem;\n    padding: 8px 12px;\n    border-radius: 6px;\n    line-height: 1.45;\n    min-height: 60px;\n    box-sizing: border-box;\n    display: flex;\n    align-items: center;\n  }\n  .panel-mutable .py-mut-takeaway {\n    margin-top: 0;\n    font-size: 0.72rem;\n    padding: 8px 12px;\n    border-radius: 6px;\n    line-height: 1.45;\n    min-height: 60px;\n    box-sizing: border-box;\n    display: flex;\n    align-items: center;\n  }\n  .panel-immutable .py-mut-takeaway {\n    margin-top: 0;\n    font-size: 0.72rem;\n    padding: 8px 12px;\n    border-radius: 6px;\n    line-height: 1.45;\n    min-height: 60px;\n    box-sizing: border-box;\n    display: flex;\n    align-items: center;\n  }\n\n  /* ══════════════════════════════════════════════════════════\n     LIGHT MODE OVERRIDES FOR MUTABILITY SHOWCASE\n     ══════════════════════════════════════════════════════════ */\n  [data-theme=\"light\"] .py-mut-showcase {\n    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);\n    border: 1px solid #e2e8f0;\n    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), inset 0 1px 0 #ffffff;\n  }\n  [data-theme=\"light\"] .py-mut-header {\n    border-bottom: 1.5px solid #e2e8f0;\n    padding-bottom: 14px;\n    margin-bottom: 18px;\n  }\n  [data-theme=\"light\"] .py-mut-header-icon {\n    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);\n    border: 1.5px solid #c084fc;\n    box-shadow: 0 4px 14px rgba(168, 85, 247, 0.15);\n    width: 44px;\n    height: 44px;\n    border-radius: 12px;\n  }\n  [data-theme=\"light\"] .py-mut-title {\n    color: #0f172a !important;\n    font-size: 1.25rem !important;\n    font-weight: 800 !important;\n    letter-spacing: -0.02em !important;\n  }\n  [data-theme=\"light\"] .py-mut-subtitle {\n    color: #334155 !important;\n    font-size: 0.88rem !important;\n    font-weight: 500 !important;\n  }\n\n  /* Light Mode Panels */\n  [data-theme=\"light\"] .py-mut-panel.panel-mutable {\n    background: #ffffff;\n    border: 1px solid #d1fae5;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);\n  }\n  [data-theme=\"light\"] .py-mut-panel.panel-mutable:hover {\n    border-color: #86efac;\n    box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.12);\n  }\n  [data-theme=\"light\"] .panel-mutable .py-mut-panel-title {\n    color: #15803d !important;\n  }\n  [data-theme=\"light\"] .panel-mutable .py-mut-meta-pill {\n    background: #dcfce7;\n    color: #166534;\n    border: 1px solid #86efac;\n  }\n  [data-theme=\"light\"] .panel-mutable .py-mut-type-tag {\n    background: #dcfce7;\n    border: 1px solid #86efac;\n    color: #15803d;\n  }\n  [data-theme=\"light\"] .panel-mutable .py-mut-takeaway {\n    margin-top: 0;\n    font-size: 0.72rem;\n    padding: 8px 12px;\n    border-radius: 6px;\n    line-height: 1.45;\n    min-height: 60px;\n    box-sizing: border-box;\n    display: flex;\n    align-items: center;\n  }\n\n  [data-theme=\"light\"] .py-mut-panel.panel-immutable {\n    background: #ffffff;\n    border: 1px solid #ffe4e6;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);\n  }\n  [data-theme=\"light\"] .py-mut-panel.panel-immutable:hover {\n    border-color: #fda4af;\n    box-shadow: 0 8px 20px -4px rgba(244, 63, 94, 0.12);\n  }\n  [data-theme=\"light\"] .panel-immutable .py-mut-panel-title {\n    color: #be123c !important;\n  }\n  [data-theme=\"light\"] .panel-immutable .py-mut-meta-pill {\n    background: #ffe4e6;\n    color: #9f1239;\n    border: 1px solid #fecdd3;\n  }\n  [data-theme=\"light\"] .panel-immutable .py-mut-type-tag {\n    background: #ffe4e6;\n    border: 1px solid #fecdd3;\n    color: #be123c;\n  }\n  [data-theme=\"light\"] .panel-immutable .py-mut-takeaway {\n    margin-top: 0;\n    font-size: 0.72rem;\n    padding: 8px 12px;\n    border-radius: 6px;\n    line-height: 1.45;\n    min-height: 60px;\n    box-sizing: border-box;\n    display: flex;\n    align-items: center;\n  }\n\n  [data-theme=\"light\"] .py-mut-desc {\n    font-size: 0.78rem;\n    line-height: 1.55;\n    color: #1e293b !important;\n    margin: 0 0 12px 0;\n    min-height: 72px;\n    box-sizing: border-box;\n    font-weight: 500;\n  }\n  [data-theme=\"light\"] .py-mut-analogy-badge { color: #1e293b !important; font-weight: 700; }\n  [data-theme=\"light\"] .py-mut-types-label { color: #0f172a !important; font-weight: 800; }\n\n  [data-theme=\"light\"] .py-mut-code-wrap {\n    background: #f8fafc !important;\n    border: 1.5px solid #cbd5e1 !important;\n    border-radius: 8px;\n    overflow: hidden;\n    min-height: 122px;\n    box-sizing: border-box;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n    margin-bottom: 10px;\n  }\n  [data-theme=\"light\"] .py-mut-code-topbar {\n    background: #f8fafc;\n    border-bottom: 1px solid #e2e8f0;\n  }\n  [data-theme=\"light\"] .panel-mutable .py-mut-code-topbar { color: #15803d; }\n  [data-theme=\"light\"] .panel-immutable .py-mut-code-topbar { color: #be123c; }\n  [data-theme=\"light\"] .py-mut-code-wrap pre {\n    color: #0f172a;\n  }\n  [data-theme=\"light\"] .py-mut-code-wrap pre .code-comment { color: #047857 !important; font-weight: 600 !important; font-style: italic !important; }\n\n\n  /* ══════════════════════════════════════════════════════════\n     ANTI-SQUEEZE & RESPONSIVE SPLIT-PANE STYLING\n     ══════════════════════════════════════════════════════════ */\n  /* Prevent table squeezing and word splitting */\n  .db-mock-table-wrap {\n    width: 100% !important;\n    overflow-x: auto !important;\n    -webkit-overflow-scrolling: touch;\n    margin: 14px 0;\n    border-radius: 10px;\n  }\n  .db-mock-table-wrap .db-table-mock {\n    min-width: 650px !important;\n    width: 100%;\n    border-collapse: collapse;\n  }\n  .db-mock-table-wrap .db-table-mock th,\n  .db-mock-table-wrap .db-table-mock td {\n    padding: 8px 12px !important;\n    vertical-align: middle;\n  }\n  /* Code & Syntax pills NEVER break into multiple lines when squeezed */\n  .db-mock-table-wrap code,\n  .db-mock-table-wrap .db-table-mock code {\n    white-space: nowrap !important;\n    display: inline-block !important;\n    word-break: normal !important;\n    overflow-wrap: normal !important;\n    hyphens: none !important;\n  }\n  /* Prevent Category, Type, Keyword, Syntax, and Mutability columns from line-breaking */\n  .db-mock-table-wrap .db-table-mock th:nth-child(1),\n  .db-mock-table-wrap .db-table-mock td:nth-child(1),\n  .db-mock-table-wrap .db-table-mock th:nth-child(2),\n  .db-mock-table-wrap .db-table-mock td:nth-child(2),\n  .db-mock-table-wrap .db-table-mock th:nth-child(3),\n  .db-mock-table-wrap .db-table-mock td:nth-child(3),\n  .db-mock-table-wrap .db-table-mock th:nth-child(4),\n  .db-mock-table-wrap .db-table-mock td:nth-child(4),\n  .db-mock-table-wrap .db-table-mock th:nth-child(6),\n  .db-mock-table-wrap .db-table-mock td:nth-child(6) {\n    white-space: nowrap !important;\n  }\n  /* Description column wraps naturally with legible line height */\n  .db-mock-table-wrap .db-table-mock td:nth-child(5) {\n    white-space: normal !important;\n    min-width: 180px;\n    line-height: 1.45;\n  }\n  .db-mock-table-wrap .py-badge {\n    white-space: nowrap !important;\n    display: inline-block;\n  }\n\n  /* ══════════════════════════════════════════════════════════\n     TOOL MATRIX: FLAGSHIP COMPARISON SHOWCASE\n     ══════════════════════════════════════════════════════════ */\n  .py-matrix-showcase {\n    background: linear-gradient(145deg, #0d1527 0%, #080d1a 100%);\n    border: 1px solid rgba(56, 189, 248, 0.22);\n    border-radius: 12px;\n    padding: 16px;\n    margin: 16px 0;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);\n    position: relative;\n    overflow: hidden;\n  }\n  .py-matrix-header {\n    margin-bottom: 18px;\n    padding-bottom: 14px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  }\n  .py-matrix-title-row {\n    display: flex;\n    align-items: center;\n    gap: 14px;\n    flex-wrap: wrap;\n  }\n  .py-matrix-header-icon {\n    font-size: 1.25rem;\n    line-height: 1;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    width: 42px;\n    height: 42px;\n    border-radius: 12px;\n    background: linear-gradient(135deg, rgba(16, 185, 129, 0.16) 0%, rgba(56, 189, 248, 0.22) 100%);\n    border: 1px solid rgba(56, 189, 248, 0.35);\n    flex-shrink: 0;\n    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.1);\n  }\n  .py-matrix-header-text {\n    display: flex;\n    flex-direction: column;\n    gap: 2px;\n    flex: 1;\n  }\n  .py-matrix-title-row {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    flex-wrap: wrap;\n  }\n  .py-matrix-title {\n    margin: 0;\n    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;\n    font-size: 1.12rem;\n    font-weight: 800;\n    letter-spacing: -0.015em;\n    color: #f8fafc;\n    line-height: 1.3;\n  }\n  .py-matrix-subtitle {\n    margin: 3px 0 0 0;\n    font-size: 0.82rem;\n    color: #94a3b8;\n    font-weight: 500;\n    letter-spacing: 0.01em;\n    line-height: 1.4;\n  }\n\n  /* Matrix Table Container */\n  .py-matrix-table-wrap {\n    width: 100%;\n    overflow-x: auto;\n    -webkit-overflow-scrolling: touch;\n    border-radius: 8px;\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    background: rgba(11, 17, 32, 0.6);\n  }\n  .py-matrix-table {\n    width: 100%;\n    border-collapse: separate;\n    border-spacing: 0;\n    min-width: 620px;\n    font-family: inherit;\n  }\n  .py-matrix-table th {\n    background: #0f172a;\n    color: #94a3b8;\n    font-size: 0.72rem;\n    font-weight: 700;\n    text-transform: uppercase;\n    letter-spacing: 0.06em;\n    padding: 10px 14px;\n    text-align: left;\n    border-bottom: 2px solid rgba(255, 255, 255, 0.1);\n    white-space: nowrap;\n  }\n  .py-matrix-table td {\n    padding: 12px 14px;\n    font-size: 0.82rem;\n    line-height: 1.45;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n    color: #e2e8f0;\n    vertical-align: middle;\n  }\n  .py-matrix-table tr:last-child td {\n    border-bottom: none;\n  }\n  .py-matrix-table tbody tr {\n    transition: background-color 0.2s ease;\n  }\n  .py-matrix-table tbody tr:hover {\n    background: rgba(255, 255, 255, 0.03);\n  }\n\n  /* Tool Identity Pills */\n  .py-tool-pill {\n    display: inline-flex;\n    align-items: center;\n    gap: 8px;\n    padding: 6px 12px;\n    border-radius: 8px;\n    font-weight: 700;\n    font-size: 0.84rem;\n    letter-spacing: -0.01em;\n    white-space: nowrap;\n  }\n  .py-tool-pill.tool-sql {\n    background: rgba(56, 189, 248, 0.12);\n    color: #38bdf8;\n    border: 1px solid rgba(56, 189, 248, 0.3);\n  }\n  .py-tool-pill.tool-excel {\n    background: rgba(34, 197, 94, 0.12);\n    color: #4ade80;\n    border: 1px solid rgba(34, 197, 94, 0.3);\n  }\n  .py-tool-pill.tool-python {\n    background: rgba(245, 158, 11, 0.15);\n    color: #fbbf24;\n    border: 1px solid rgba(245, 158, 11, 0.38);\n    box-shadow: 0 0 10px rgba(245, 158, 11, 0.12);\n  }\n  .py-tool-flag {\n    font-size: 0.65rem;\n    font-weight: 800;\n    padding: 1px 5px;\n    border-radius: 4px;\n    background: #fbbf24;\n    color: #0b1120;\n    text-transform: uppercase;\n    letter-spacing: 0.04em;\n    margin-left: 2px;\n  }\n  .py-matrix-highlight-row {\n    background: rgba(245, 158, 11, 0.04) !important;\n  }\n  .py-matrix-highlight-row:hover {\n    background: rgba(245, 158, 11, 0.08) !important;\n  }\n\n  /* Role & Advantage Content */\n  .py-matrix-role {\n    font-weight: 500;\n    color: #cbd5e1;\n  }\n  .py-matrix-adv {\n    color: #e2e8f0;\n  }\n\n  /* Capacity / Limits Badges */\n  .py-matrix-limit {\n    display: inline-flex;\n    align-items: center;\n    gap: 5px;\n    padding: 4px 10px;\n    border-radius: 6px;\n    font-size: 0.74rem;\n    font-weight: 600;\n    white-space: nowrap;\n  }\n  .py-matrix-limit.limit-massive {\n    background: rgba(56, 189, 248, 0.1);\n    color: #38bdf8;\n    border: 1px solid rgba(56, 189, 248, 0.25);\n  }\n  .py-matrix-limit.limit-small {\n    background: rgba(244, 63, 94, 0.1);\n    color: #fb7185;\n    border: 1px solid rgba(244, 63, 94, 0.25);\n  }\n  .py-matrix-limit.limit-large {\n    background: rgba(168, 85, 247, 0.12);\n    color: #c084fc;\n    border: 1px solid rgba(168, 85, 247, 0.28);\n  }\n\n  /* ══════ LIGHT MODE THEME ADAPTATION ══════ */\n  [data-theme=\"light\"] .py-matrix-showcase {\n    background: #ffffff;\n    border: 1px solid #e2e8f0;\n    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);\n  }\n  [data-theme=\"light\"] .py-matrix-header {\n    border-bottom: 1.5px solid #e2e8f0;\n    padding-bottom: 14px;\n    margin-bottom: 18px;\n  }\n  [data-theme=\"light\"] .py-matrix-header-icon {\n    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);\n    border: 1.5px solid #34d399;\n    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.15);\n    width: 44px;\n    height: 44px;\n    border-radius: 12px;\n  }\n  [data-theme=\"light\"] .py-matrix-title {\n    color: #0f172a !important;\n    font-size: 1.25rem !important;\n    font-weight: 800 !important;\n    letter-spacing: -0.02em !important;\n  }\n  [data-theme=\"light\"] .py-matrix-subtitle {\n    color: #334155 !important;\n    font-size: 0.88rem !important;\n    font-weight: 500 !important;\n  }\n  [data-theme=\"light\"] .py-matrix-table-wrap {\n    border-color: #e2e8f0;\n    background: #ffffff;\n  }\n  [data-theme=\"light\"] .py-matrix-table th { background: #f1f5f9; color: #0f172a; font-weight: 800; border-bottom: 2px solid #cbd5e1; }\n  [data-theme=\"light\"] .py-matrix-table td {\n    color: #334155;\n    border-bottom: 1px solid #f1f5f9;\n  }\n  [data-theme=\"light\"] .py-matrix-table tbody tr:hover {\n    background: #f8fafc;\n  }\n  [data-theme=\"light\"] .py-tool-pill.tool-sql {\n    background: #e0f2fe;\n    color: #0369a1;\n    border-color: #bae6fd;\n  }\n  [data-theme=\"light\"] .py-tool-pill.tool-excel {\n    background: #dcfce7;\n    color: #15803d;\n    border-color: #bbf7d0;\n  }\n  [data-theme=\"light\"] .py-tool-pill.tool-python {\n    background: #fef3c7;\n    color: #b45309;\n    border-color: #fde68a;\n    box-shadow: 0 0 10px rgba(245, 158, 11, 0.1);\n  }\n  [data-theme=\"light\"] .py-tool-flag {\n    background: #d97706;\n    color: #ffffff;\n  }\n  [data-theme=\"light\"] .py-matrix-highlight-row {\n    background: #fffbeb !important;\n  }\n  [data-theme=\"light\"] .py-matrix-highlight-row:hover {\n    background: #fef3c7 !important;\n  }\n  [data-theme=\"light\"] .py-matrix-role { color: #0f172a; font-weight: 700; }\n  [data-theme=\"light\"] .py-matrix-adv {\n    color: #1e293b;\n  }\n  [data-theme=\"light\"] .py-matrix-limit.limit-massive {\n    background: #e0f2fe;\n    color: #0369a1;\n    border-color: #bae6fd;\n  }\n  [data-theme=\"light\"] .py-matrix-limit.limit-small {\n    background: #ffe4e6;\n    color: #e11d48;\n    border-color: #fecdd3;\n  }\n  [data-theme=\"light\"] .py-matrix-limit.limit-large {\n    background: #f3e8ff;\n    color: #7e22ce;\n    border-color: #e9d5ff;\n  }\n\n  /* Flexible auto-fit for cards when theory pane is squeezed by split-resizer */\n  .py-sp-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;\n    gap: 12px;\n  }\n  .py-mut-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;\n    gap: 14px;\n  }\n\n  /* ══════════════════════════════════════════════════════════\n     FROZEN (STICKY) COLUMNS FOR MASTER REFERENCE TABLE\n     ══════════════════════════════════════════════════════════ */\n  .slide-card,\n  .slide-content,\n  #slideBodyText,\n  .slide-section {\n    overflow-x: clip !important;\n    max-width: 100% !important;\n    box-sizing: border-box !important;\n  }\n\n  .db-mock-table-wrap {\n    width: 100% !important;\n    max-width: 100% !important;\n    overflow-x: auto !important;\n    overflow-y: hidden !important;\n    overscroll-behavior-x: contain !important;\n    overscroll-behavior-y: auto !important;\n    -webkit-overflow-scrolling: touch !important;\n    position: relative !important;\n    display: block !important;\n    border-radius: 10px !important;\n    border: 1px solid rgba(255, 255, 255, 0.1) !important;\n    background: #0c0e14 !important;\n    box-sizing: border-box !important;\n  }\n\n  /* Fixed table layout for mathematical pixel alignment */\n  .db-mock-table-wrap .db-table-mock.py-master-ref-table {\n    table-layout: fixed !important;\n    overflow: visible !important;\n    border-radius: 0 !important;\n    border-collapse: separate !important;\n    border-spacing: 0 !important;\n    width: 780px !important;\n    min-width: 780px !important;\n    max-width: 780px !important;\n    background: #0c0e14 !important;\n    margin: 0 !important;\n  }\n\n  /* Explicit column widths for fixed table layout */\n  .py-master-ref-table th:nth-child(1),\n  .py-master-ref-table td:nth-child(1) {\n    width: 110px !important;\n    min-width: 110px !important;\n    max-width: 110px !important;\n    box-sizing: border-box !important;\n  }\n  .py-master-ref-table th:nth-child(2),\n  .py-master-ref-table td:nth-child(2) {\n    width: 110px !important;\n    min-width: 110px !important;\n    max-width: 110px !important;\n    box-sizing: border-box !important;\n  }\n  .py-master-ref-table th:nth-child(3),\n  .py-master-ref-table td:nth-child(3) {\n    width: 95px !important;\n    min-width: 95px !important;\n    max-width: 95px !important;\n    box-sizing: border-box !important;\n  }\n  .py-master-ref-table th:nth-child(4),\n  .py-master-ref-table td:nth-child(4) {\n    width: 155px !important;\n    min-width: 155px !important;\n    max-width: 155px !important;\n    box-sizing: border-box !important;\n  }\n  .py-master-ref-table th:nth-child(5),\n  .py-master-ref-table td:nth-child(5) {\n    width: 195px !important;\n    min-width: 195px !important;\n    max-width: 195px !important;\n    box-sizing: border-box !important;\n  }\n  .py-master-ref-table th:nth-child(6),\n  .py-master-ref-table td:nth-child(6) {\n    width: 115px !important;\n    min-width: 115px !important;\n    max-width: 115px !important;\n    box-sizing: border-box !important;\n  }\n\n  /* Prevent child elements in non-sticky cells from creating higher stacking contexts */\n  .py-master-ref-table code,\n  .py-master-ref-table .py-badge {\n    position: static !important;\n    z-index: 0 !important;\n  }\n\n  /* Non-sticky cells: solid background & lower z-index so they slide cleanly behind */\n  .py-master-ref-table th:nth-child(n+3),\n  .py-master-ref-table td:nth-child(n+3) {\n    position: relative !important;\n    z-index: 1 !important;\n    background: #0c0e14 !important;\n  }\n\n  /* Column 1: Category (Sticky at Left 0) */\n  .py-master-ref-table th:nth-child(1),\n  .py-master-ref-table td:nth-child(1) {\n    position: -webkit-sticky !important;\n    position: sticky !important;\n    left: 0 !important;\n    z-index: 20 !important;\n    white-space: nowrap !important;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;\n    background: #0f1422 !important;\n  }\n\n  /* Column 2: Data Type (Sticky at Left 110px) */\n  .py-master-ref-table th:nth-child(2),\n  .py-master-ref-table td:nth-child(2) {\n    position: -webkit-sticky !important;\n    position: sticky !important;\n    left: 110px !important;\n    z-index: 20 !important;\n    white-space: nowrap !important;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;\n    border-right: 2px solid rgba(56, 189, 248, 0.45) !important;\n    box-shadow: 6px 0 16px rgba(0, 0, 0, 0.65) !important;\n    background: #0f1422 !important;\n  }\n\n  /* Sticky headers (z-index: 25) */\n  .py-master-ref-table th:nth-child(1),\n  .py-master-ref-table th:nth-child(2) {\n    z-index: 25 !important;\n    background: #141b2d !important;\n    border-bottom: 2px solid rgba(255, 255, 255, 0.15) !important;\n  }\n\n  /* Row Hover Highlighting */\n  .py-master-ref-table tbody tr:hover td:nth-child(1),\n  .py-master-ref-table tbody tr:hover td:nth-child(2) {\n    background: #182238 !important;\n  }\n  .py-master-ref-table tbody tr:hover td:nth-child(n+3) {\n    background: #121622 !important;\n  }\n\n  /* ══════ LIGHT MODE THEME ADAPTATION ══════ */\n  [data-theme=\"light\"] .db-mock-table-wrap {\n    border: 1px solid #e2e8f0 !important;\n    background: #ffffff !important;\n  }\n  [data-theme=\"light\"] .db-mock-table-wrap .db-table-mock.py-master-ref-table {\n    background: #ffffff !important;\n  }\n  [data-theme=\"light\"] .py-master-ref-table th:nth-child(n+3),\n  [data-theme=\"light\"] .py-master-ref-table td:nth-child(n+3) {\n    background: #ffffff !important;\n  }\n  [data-theme=\"light\"] .py-master-ref-table th:nth-child(1),\n  [data-theme=\"light\"] .py-master-ref-table th:nth-child(2) {\n    background: #f1f5f9 !important;\n    color: #0f172a !important;\n    font-weight: 900 !important;\n    border-bottom: 2px solid #cbd5e1 !important;\n  }\n  [data-theme=\"light\"] .py-master-ref-table td:nth-child(1),\n  [data-theme=\"light\"] .py-master-ref-table td:nth-child(2) {\n    background: #ffffff !important;\n    color: #0f172a !important;\n    font-weight: 800 !important;\n    border-bottom: 1px solid #e2e8f0 !important;\n  }\n  [data-theme=\"light\"] .py-master-ref-table th:nth-child(2),\n  [data-theme=\"light\"] .py-master-ref-table td:nth-child(2) {\n    border-right: 2px solid #cbd5e1 !important;\n    box-shadow: 6px 0 14px rgba(0, 0, 0, 0.08) !important;\n  }\n  [data-theme=\"light\"] .py-master-ref-table tbody tr:hover td:nth-child(1),\n  [data-theme=\"light\"] .py-master-ref-table tbody tr:hover td:nth-child(2) {\n    background: #f8fafc !important;\n  }\n  [data-theme=\"light\"] .py-master-ref-table tbody tr:hover td:nth-child(n+3) {\n    background: #f1f5f9 !important;\n  }\n\n  /* ══════════════════════════════════════════════════════════\n     HOW PYTHON MANAGES MEMORY (UNDER THE HOOD) — VERTICAL FLOWCHART\n     ACADEMIC TEXTBOOK COLOR SCIENCE ARCHITECTURE (LIGHT & DARK THEMES)\n     ══════════════════════════════════════════════════════════ */\n  .py-vfc-canvas {\n    background: #090e1c;\n    background-image: radial-gradient(circle, rgba(99, 102, 241, 0.16) 1.2px, transparent 1.2px);\n    background-size: 20px 20px;\n    border: 1.5px solid rgba(99, 102, 241, 0.3);\n    border-radius: 18px;\n    padding: 28px 24px;\n    margin: 24px 0 16px 0;\n    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.05);\n    position: relative;\n    overflow: hidden;\n  }\n\n  /* Flowchart Header */\n  .py-vfc-header {\n    text-align: center;\n    margin-bottom: 24px;\n    padding-bottom: 20px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n    position: relative;\n  }\n  .py-vfc-title-wrap {\n    display: inline-flex;\n    align-items: center;\n    gap: 12px;\n    margin-bottom: 6px;\n  }\n  .py-vfc-logo {\n    width: 36px;\n    height: 36px;\n    filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.45));\n  }\n  .py-vfc-main-title {\n    margin: 0;\n    font-size: 1.45rem;\n    font-weight: 900;\n    letter-spacing: -0.02em;\n    color: #f8fafc;\n    text-transform: uppercase;\n  }\n  .py-vfc-sub-title {\n    margin: 0 0 14px 0;\n    font-size: 0.88rem;\n    font-weight: 700;\n    color: #38bdf8;\n    letter-spacing: 0.06em;\n    text-transform: uppercase;\n  }\n\n  /* Header Meta: Breadcrumb + Sticky Note */\n  .py-vfc-header-meta {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 16px;\n    flex-wrap: wrap;\n    margin-top: 12px;\n  }\n  .py-vfc-pipeline-stepper,\n  .py-vfc-breadcrumb {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    gap: 8px;\n    padding: 6px 12px;\n    background: rgba(15, 23, 42, 0.85);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 12px;\n    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);\n    max-width: 100%;\n    overflow-x: auto;\n    scrollbar-width: none;\n    -webkit-overflow-scrolling: touch;\n  }\n  .py-vfc-pipeline-stepper::-webkit-scrollbar,\n  .py-vfc-breadcrumb::-webkit-scrollbar {\n    display: none;\n  }\n  .py-vfc-step {\n    display: inline-flex;\n    align-items: center;\n    gap: 8px;\n    padding: 6px 12px;\n    border-radius: 8px;\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.06);\n    font-size: 0.78rem;\n    font-weight: 700;\n    color: #cbd5e1;\n    white-space: nowrap;\n    transition: all 0.2s ease;\n  }\n  .py-vfc-step:hover {\n    background: rgba(255, 255, 255, 0.06);\n    border-color: rgba(255, 255, 255, 0.12);\n  }\n  .py-vfc-step-idx {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.68rem;\n    font-weight: 800;\n    padding: 1px 5px;\n    border-radius: 4px;\n    background: rgba(99, 102, 241, 0.18);\n    border: 1px solid rgba(99, 102, 241, 0.3);\n    color: #818cf8;\n    line-height: 1.2;\n  }\n  .py-vfc-step-arrow {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    color: #6366f1;\n    opacity: 0.8;\n    flex-shrink: 0;\n  }\n  .py-vfc-step-arrow svg {\n    display: block;\n  }\n  .py-vfc-step.step-active {\n    background: linear-gradient(135deg, rgba(56, 189, 248, 0.16) 0%, rgba(99, 102, 241, 0.2) 100%);\n    border: 1px solid rgba(56, 189, 248, 0.45);\n    color: #38bdf8;\n    box-shadow: 0 2px 10px rgba(56, 189, 248, 0.15);\n  }\n  .py-vfc-step.step-active .py-vfc-step-idx {\n    background: rgba(56, 189, 248, 0.2);\n    border-color: rgba(56, 189, 248, 0.45);\n    color: #38bdf8;\n  }\n  .py-vfc-breadcrumb-sep {\n    color: #818cf8;\n    font-weight: 900;\n  }\n  .py-vfc-breadcrumb span.highlight {\n    color: #38bdf8;\n    font-weight: 800;\n  }\n  \n  \n\n  /* ══════ VERTICAL FLOWCHART PIPELINE & CONNECTORS ══════ */\n  .py-vfc-pipeline {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    max-width: 780px;\n    margin: 0 auto;\n    width: 100%;\n  }\n\n  /* Vertical Flow Connector with Stem and Arrow Badge */\n  .py-vfc-connector {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    margin: -1px 0;\n    position: relative;\n    z-index: 1;\n  }\n  .py-vfc-stem {\n    width: 2px;\n    height: 14px;\n    background: linear-gradient(180deg, rgba(99, 102, 241, 0.7), rgba(56, 189, 248, 0.85));\n  }\n  .py-vfc-arrow-badge {\n    width: 32px;\n    height: 32px;\n    border-radius: 50%;\n    background: #0d1527;\n    border: 1.5px solid #38bdf8;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);\n    transition: transform 0.2s ease, box-shadow 0.2s ease;\n  }\n  .py-vfc-arrow-badge:hover {\n    transform: scale(1.1);\n    box-shadow: 0 0 20px rgba(56, 189, 248, 0.6);\n  }\n  .py-vfc-arrow-badge svg {\n    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.6));\n  }\n\n  /* Base Vertical Flowchart Node */\n  .py-vfc-node {\n    width: 100%;\n    box-sizing: border-box;\n    background: #0d1527;\n    border: 1.5px solid rgba(255, 255, 255, 0.1);\n    border-radius: 14px;\n    padding: 16px 18px;\n    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.38);\n    transition: border-color 0.2s ease, box-shadow 0.2s ease;\n    position: relative;\n    z-index: 2;\n  }\n  .py-vfc-node:hover {\n    box-shadow: 0 10px 28px rgba(99, 102, 241, 0.22);\n  }\n\n  /* Distinct Accent Borders per Node */\n  .vnode-code { border-color: rgba(99, 102, 241, 0.5); }\n  .vnode-objects { border-color: rgba(168, 85, 247, 0.5); }\n  .vnode-ram { border-color: rgba(34, 197, 94, 0.55); }\n  .vnode-pointers { border-color: rgba(56, 189, 248, 0.55); }\n  .vnode-reuse { border-color: rgba(56, 189, 248, 0.45); }\n  .vnode-mutable { border-color: rgba(34, 197, 94, 0.45); }\n  .vnode-immutable { border-color: rgba(244, 63, 94, 0.45); }\n  .vnode-mgmt { border-color: rgba(99, 102, 241, 0.45); }\n  .vnode-summary { border-color: rgba(250, 204, 21, 0.5); }\n\n  /* Node Header */\n  .py-vfc-node-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 12px;\n    margin-bottom: 12px;\n    padding-bottom: 10px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n  }\n  .py-vfc-node-title-group {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n  }\n  .py-vfc-step-num {\n    width: 26px;\n    height: 26px;\n    border-radius: 50%;\n    background: #6366f1;\n    color: #ffffff;\n    font-size: 0.78rem;\n    font-weight: 900;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    flex-shrink: 0;\n    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);\n  }\n  .py-vfc-node-title {\n    font-size: 0.95rem;\n    font-weight: 800;\n    color: #f1f5f9;\n    letter-spacing: -0.01em;\n  }\n  .py-vfc-stage-pill {\n    font-size: 0.68rem;\n    font-weight: 700;\n    text-transform: uppercase;\n    letter-spacing: 0.05em;\n    padding: 3px 10px;\n    border-radius: 9999px;\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #94a3b8;\n  }\n\n  /* Node Inner Canvas Box (Dynamic Auto Height) */\n  .py-vfc-canvas-box {\n    background: #060a14;\n    border: 1px solid rgba(255, 255, 255, 0.06);\n    border-radius: 10px;\n    padding: 12px 14px;\n    margin-bottom: 10px;\n  }\n\n  /* Node 1: Code Window */\n  .py-vfc-code-block {\n    font-family: var(--font-mono, monospace);\n    font-size: 0.82rem;\n    color: #e2e8f0;\n    line-height: 1.6;\n    background: transparent;\n    margin: 0;\n  }\n  .py-vfc-code-line {\n    display: flex;\n    gap: 12px;\n  }\n  .py-vfc-line-num {\n    color: #475569;\n    user-select: none;\n    font-size: 0.74rem;\n    width: 16px;\n    text-align: right;\n  }\n  .code-kw { color: #f472b6; }\n  .code-str { color: #facc15; }\n  .code-num { color: #4ade80; }\n  .code-var { color: #38bdf8; }\n\n  /* Node 2: Object Stack (Grid) */\n  .py-vfc-obj-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n    gap: 10px;\n  }\n  .py-vfc-obj-item {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 8px;\n    background: rgba(15, 23, 42, 0.75);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 8px;\n    padding: 8px 12px;\n  }\n  .py-vfc-val-pill {\n    font-family: var(--font-mono, monospace);\n    font-size: 0.78rem;\n    font-weight: 700;\n    padding: 3px 10px;\n    border-radius: 5px;\n    letter-spacing: 0.02em;\n  }\n  .pill-green {\n    background: rgba(34, 197, 94, 0.18);\n    border: 1px solid #22c55e;\n    color: #4ade80;\n  }\n  .pill-amber {\n    background: rgba(245, 158, 11, 0.18);\n    border: 1px solid #f59e0b;\n    color: #fbbf24;\n  }\n  .pill-purple {\n    background: rgba(168, 85, 247, 0.18);\n    border: 1px solid #a855f7;\n    color: #c084fc;\n  }\n  .py-vfc-obj-label {\n    font-size: 0.72rem;\n    color: #94a3b8;\n    font-weight: 600;\n  }\n\n  /* Node 3: System RAM Architecture */\n  .py-vfc-ram-wrap {\n    border: 1.5px solid #22c55e;\n    border-radius: 10px;\n    background: rgba(34, 197, 94, 0.03);\n    padding: 10px 12px;\n  }\n  .py-vfc-ram-tag {\n    font-size: 0.72rem;\n    font-weight: 800;\n    color: #22c55e;\n    text-transform: uppercase;\n    letter-spacing: 0.05em;\n    margin-bottom: 8px;\n    display: flex;\n    align-items: center;\n    gap: 6px;\n  }\n  .py-vfc-ram-sections {\n    display: flex;\n    flex-direction: column;\n    gap: 8px;\n  }\n  .py-vfc-code-area {\n    background: rgba(15, 23, 42, 0.85);\n    border: 1px dashed rgba(255, 255, 255, 0.15);\n    border-radius: 6px;\n    padding: 6px 10px;\n    font-size: 0.72rem;\n    color: #94a3b8;\n  }\n  .py-vfc-heap-area {\n    background: rgba(15, 23, 42, 0.95);\n    border: 1px solid rgba(34, 197, 94, 0.35);\n    border-radius: 6px;\n    padding: 8px 10px;\n  }\n  .py-vfc-heap-title {\n    font-size: 0.72rem;\n    font-weight: 800;\n    color: #86efac;\n    margin-bottom: 6px;\n    display: flex;\n    justify-content: space-between;\n  }\n  .py-vfc-heap-table {\n    width: 100%;\n    border-collapse: collapse;\n    font-size: 0.72rem;\n  }\n  .py-vfc-heap-table th {\n    text-align: left;\n    color: #64748b;\n    font-weight: 700;\n    font-size: 0.65rem;\n    text-transform: uppercase;\n    padding: 3px 6px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  }\n  .py-vfc-heap-table td {\n    padding: 5px 6px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.04);\n  }\n  .py-vfc-heap-table tr:last-child td {\n    border-bottom: none;\n  }\n  .py-vfc-hex {\n    font-family: var(--font-mono, monospace);\n    font-size: 0.72rem;\n    color: #38bdf8;\n    background: rgba(56, 189, 248, 0.1);\n    padding: 2px 6px;\n    border-radius: 4px;\n    display: inline-block;\n  }\n  .py-vfc-type-dim {\n    font-size: 0.68rem;\n    color: #64748b;\n  }\n\n  /* Node 4: Pointer List */\n  .py-vfc-pointer-list {\n    display: flex;\n    flex-direction: column;\n    gap: 7px;\n  }\n  .py-vfc-ptr-row {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 8px;\n    background: rgba(15, 23, 42, 0.75);\n    border: 1px solid rgba(255, 255, 255, 0.06);\n    border-radius: 8px;\n    padding: 6px 12px;\n  }\n  .py-vfc-var-label {\n    font-family: var(--font-mono, monospace);\n    font-size: 0.78rem;\n    font-weight: 800;\n    color: #38bdf8;\n    background: rgba(56, 189, 248, 0.12);\n    border: 1px solid rgba(56, 189, 248, 0.3);\n    padding: 2px 8px;\n    border-radius: 4px;\n  }\n  .py-vfc-ptr-arrow {\n    color: #818cf8;\n    font-weight: 900;\n    font-size: 0.78rem;\n  }\n\n  /* Node Footer Text */\n  .py-vfc-node-footer {\n    font-size: 0.76rem;\n    color: #94a3b8;\n    line-height: 1.45;\n  }\n  .py-vfc-node-footer strong {\n    color: #e2e8f0;\n  }\n\n  /* ══════ FLOWCHART TRANSITION BRIDGE BANNER ══════ */\n  .py-vfc-bridge {\n    width: 100%;\n    box-sizing: border-box;\n    text-align: center;\n    margin: 0;\n    padding: 14px 18px;\n    background: #0f172a;\n    border: 1px solid rgba(99, 102, 241, 0.35);\n    border-radius: 14px;\n    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);\n    position: relative;\n    z-index: 2;\n  }\n  .py-vfc-bridge-title {\n    font-size: 0.82rem;\n    font-weight: 800;\n    color: #a5b4fc;\n    letter-spacing: 0.06em;\n    text-transform: uppercase;\n    margin-bottom: 8px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 8px;\n  }\n  .py-vfc-bridge-pills {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 12px;\n    flex-wrap: wrap;\n    font-size: 0.76rem;\n    font-weight: 700;\n  }\n  .bridge-pill {\n    padding: 4px 12px;\n    border-radius: 9999px;\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #e2e8f0;\n  }\n  .bridge-sep {\n    color: #6366f1;\n    font-weight: 900;\n  }\n\n  /* Node 5: Fork Diagram */\n  .py-vfc-fork-diagram {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 12px;\n    width: 100%;\n    padding: 8px 0;\n  }\n  .py-vfc-fork-vars {\n    display: flex;\n    flex-direction: column;\n    gap: 8px;\n  }\n  .py-vfc-fork-arrows {\n    font-size: 1.3rem;\n    color: #818cf8;\n    font-weight: 900;\n    line-height: 1;\n  }\n\n  /* Node 8: Memory Management 3-Card Grid */\n  .py-vfc-cycle-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));\n    gap: 10px;\n  }\n  .py-vfc-cycle-item {\n    display: flex;\n    align-items: flex-start;\n    gap: 10px;\n    background: rgba(15, 23, 42, 0.75);\n    border: 1px solid rgba(255, 255, 255, 0.06);\n    border-radius: 8px;\n    padding: 10px 12px;\n  }\n  .py-vfc-cycle-icon {\n    font-size: 1.15rem;\n    flex-shrink: 0;\n    margin-top: 1px;\n  }\n  .py-vfc-cycle-text {\n    font-size: 0.72rem;\n    line-height: 1.4;\n    color: #cbd5e1;\n  }\n  .py-vfc-cycle-text strong {\n    color: #f8fafc;\n    font-size: 0.76rem;\n  }\n\n  /* Node 9: Summary & Gold Card */\n  .py-vfc-legend-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));\n    gap: 8px;\n    margin-bottom: 12px;\n  }\n  .py-vfc-legend-item {\n    font-size: 0.74rem;\n    color: #cbd5e1;\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    background: rgba(15, 23, 42, 0.75);\n    padding: 6px 10px;\n    border-radius: 6px;\n    border: 1px solid rgba(255, 255, 255, 0.06);\n  }\n  .py-vfc-gold-card {\n    background: linear-gradient(135deg, #fef08a 0%, #facc15 100%);\n    border: 1px solid #eab308;\n    border-radius: 10px;\n    padding: 12px 16px;\n    text-align: center;\n    color: #713f12;\n    font-size: 0.84rem;\n    font-weight: 800;\n    box-shadow: 0 4px 16px rgba(250, 204, 21, 0.25);\n  }\n  .py-vfc-footer-ribbon {\n    margin-top: 10px;\n    text-align: center;\n    font-size: 0.78rem;\n    font-weight: 700;\n    color: #94a3b8;\n    letter-spacing: 0.02em;\n  }\n\n  /* ══════════════════════════════════════════════════════════\n     LIGHT MODE THEME ADAPTATION — ACADEMIC TEXTBOOK COLOR SCIENCE\n     BRIGHT, HIGH-VISIBILITY, SATURATED JEWEL TONES (100% CLEAN CONTRAST)\n     ══════════════════════════════════════════════════════════ */\n  [data-theme=\"light\"] .py-vfc-canvas {\n    background: #ffffff !important;\n    background-image: radial-gradient(circle, rgba(37, 99, 235, 0.1) 1.2px, transparent 1.2px) !important;\n    border: 2px solid #cbd5e1 !important;\n    box-shadow: 0 10px 32px rgba(15, 23, 42, 0.06) !important;\n  }\n  [data-theme=\"light\"] .py-vfc-header {\n    border-bottom: 1.5px solid #e2e8f0 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-main-title {\n    color: #0f172a !important;\n  }\n  [data-theme=\"light\"] .py-vfc-sub-title {\n    color: #1d4ed8 !important;\n    font-weight: 800 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-pipeline-stepper,\n  [data-theme=\"light\"] .py-vfc-breadcrumb {\n    background: #ffffff !important;\n    border: 1px solid #e2e8f0 !important;\n    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.05) !important;\n  }\n  [data-theme=\"light\"] .py-vfc-step {\n    background: #f8fafc;\n    border: 1px solid #e2e8f0;\n    color: #334155;\n  }\n  [data-theme=\"light\"] .py-vfc-step:hover {\n    background: #f1f5f9;\n    border-color: #cbd5e1;\n  }\n  [data-theme=\"light\"] .py-vfc-step-idx {\n    background: #e0e7ff;\n    border-color: #c7d2fe;\n    color: #4338ca;\n  }\n  [data-theme=\"light\"] .py-vfc-step-arrow {\n    color: #3b82f6;\n    opacity: 0.9;\n  }\n  [data-theme=\"light\"] .py-vfc-step.step-active {\n    background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);\n    border: 1px solid #93c5fd;\n    color: #1d4ed8;\n    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);\n  }\n  [data-theme=\"light\"] .py-vfc-step.step-active .py-vfc-step-idx {\n    background: #dbeafe;\n    border-color: #93c5fd;\n    color: #1d4ed8;\n  }\n  [data-theme=\"light\"] .py-vfc-breadcrumb-sep {\n    color: #2563eb !important;\n    font-weight: 900 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-breadcrumb span.highlight {\n    color: #1d4ed8 !important;\n    font-weight: 900 !important;\n  }\n  \n\n  /* Nodes in Light Mode */\n  [data-theme=\"light\"] .py-vfc-node {\n    background: #ffffff !important;\n    border: 1.5px solid #cbd5e1 !important;\n    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;\n    position: relative !important;\n    z-index: 2 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-node:hover {\n    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12) !important;\n  }\n  [data-theme=\"light\"] .vnode-code { border-color: #3b82f6 !important; }\n  [data-theme=\"light\"] .vnode-objects { border-color: #a855f7 !important; }\n  [data-theme=\"light\"] .vnode-ram { border-color: #16a34a !important; }\n  [data-theme=\"light\"] .vnode-pointers { border-color: #0284c7 !important; }\n  [data-theme=\"light\"] .vnode-reuse { border-color: #0284c7 !important; }\n  [data-theme=\"light\"] .vnode-mutable { border-color: #16a34a !important; }\n  [data-theme=\"light\"] .vnode-immutable { border-color: #e11d48 !important; }\n  [data-theme=\"light\"] .vnode-mgmt { border-color: #6366f1 !important; }\n  [data-theme=\"light\"] .vnode-summary { border-color: #ca8a04 !important; }\n\n  [data-theme=\"light\"] .py-vfc-node-header {\n    border-bottom: 1.5px solid #f1f5f9 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-node-title {\n    color: #0f172a !important;\n    font-weight: 900 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-stage-pill {\n    background: #eff6ff !important;\n    border: 1.5px solid #bfdbfe !important;\n    color: #1d4ed8 !important;\n    font-weight: 800 !important;\n  }\n\n  /* Flowchart Arrow Connectors in Light Mode */\n  [data-theme=\"light\"] .py-vfc-stem {\n    background: linear-gradient(180deg, #60a5fa, #1d4ed8) !important;\n    width: 2px !important;\n  }\n  [data-theme=\"light\"] .py-vfc-arrow-badge {\n    background: #ffffff !important;\n    border: 2px solid #2563eb !important;\n    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25) !important;\n  }\n  [data-theme=\"light\"] .py-vfc-arrow-badge svg path {\n    stroke: #1d4ed8 !important;\n    stroke-width: 3 !important;\n  }\n\n  /* Inner Canvas Box in Light Mode */\n  [data-theme=\"light\"] .py-vfc-canvas-box {\n    background: #f8fafc !important;\n    border: 1.5px solid #e2e8f0 !important;\n  }\n\n  /* Syntax Highlighting in Light Mode — Bright & High Contrast */\n  [data-theme=\"light\"] .py-vfc-code-block {\n    color: #0f172a !important;\n    font-weight: 600 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-code-block .code-var {\n    color: #0284c7 !important;\n    font-weight: 700 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-code-block .code-num {\n    color: #15803d !important;\n    font-weight: 800 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-code-block .code-str {\n    color: #c2410c !important;\n    font-weight: 700 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-code-block .code-kw {\n    color: #be123c !important;\n    font-weight: 800 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-line-num {\n    color: #64748b !important;\n    font-weight: 700 !important;\n  }\n\n  /* Object Pills in Light Mode — Saturated High Visibility */\n  [data-theme=\"light\"] .py-vfc-obj-item {\n    background: #ffffff !important;\n    border: 1.5px solid #cbd5e1 !important;\n    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;\n  }\n  [data-theme=\"light\"] .pill-green {\n    background: #f0fdf4 !important;\n    border: 1.5px solid #86efac !important;\n    color: #15803d !important;\n    font-weight: 800 !important;\n  }\n  [data-theme=\"light\"] .pill-amber {\n    background: #fefce8 !important;\n    border: 1.5px solid #fde047 !important;\n    color: #b45309 !important;\n    font-weight: 800 !important;\n  }\n  [data-theme=\"light\"] .pill-purple {\n    background: #faf5ff !important;\n    border: 1.5px solid #d8b4fe !important;\n    color: #7e22ce !important;\n    font-weight: 800 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-obj-label {\n    color: #0f172a !important;\n    font-weight: 700 !important;\n  }\n\n  /* System RAM in Light Mode */\n  [data-theme=\"light\"] .py-vfc-ram-wrap {\n    background: #f0fdf4 !important;\n    border: 2px solid #22c55e !important;\n  }\n  [data-theme=\"light\"] .py-vfc-ram-tag {\n    color: #15803d !important;\n    font-weight: 900 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-code-area {\n    background: #ffffff !important;\n    border: 1.5px dashed #cbd5e1 !important;\n    color: #0f172a !important;\n    font-weight: 600 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-heap-area {\n    background: #ffffff !important;\n    border: 1.5px solid #86efac !important;\n  }\n  [data-theme=\"light\"] .py-vfc-heap-title {\n    color: #15803d !important;\n    font-weight: 900 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-heap-table th {\n    color: #0f172a !important;\n    font-weight: 800 !important;\n    border-bottom: 2px solid #cbd5e1 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-heap-table td {\n    color: #0f172a !important;\n    border-bottom: 1px solid #e2e8f0 !important;\n  }\n\n  /* Monospace Hex Address Pills in Light Mode — Bright Cobalt */\n  [data-theme=\"light\"] .py-vfc-hex {\n    background: #eff6ff !important;\n    border: 1.5px solid #93c5fd !important;\n    color: #1d4ed8 !important;\n    font-weight: 800 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-type-dim {\n    color: #334155 !important;\n    font-weight: 700 !important;\n  }\n\n  /* Pointer Rows in Light Mode */\n  [data-theme=\"light\"] .py-vfc-ptr-row {\n    background: #ffffff !important;\n    border: 1.5px solid #cbd5e1 !important;\n    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;\n  }\n  [data-theme=\"light\"] .py-vfc-var-label {\n    background: #eff6ff !important;\n    border: 1.5px solid #93c5fd !important;\n    color: #1d4ed8 !important;\n    font-weight: 800 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-ptr-arrow {\n    color: #2563eb !important;\n    font-weight: 900 !important;\n  }\n\n  /* Flowchart Milestone Bridge in Light Mode */\n  [data-theme=\"light\"] .py-vfc-bridge {\n    background: #f8fafc !important;\n    border: 2px solid #6366f1 !important;\n    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.12) !important;\n    position: relative !important;\n    z-index: 2 !important;\n    margin: 0 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-bridge-title {\n    color: #4338ca !important;\n    font-weight: 900 !important;\n  }\n  [data-theme=\"light\"] .bridge-pill {\n    background: #ffffff !important;\n    border: 1.5px solid #cbd5e1 !important;\n    color: #0f172a !important;\n    font-weight: 800 !important;\n  }\n  [data-theme=\"light\"] .bridge-sep {\n    color: #4f46e5 !important;\n    font-weight: 900 !important;\n  }\n\n  /* Fork Diagram in Light Mode */\n  [data-theme=\"light\"] .py-vfc-fork-arrows {\n    color: #2563eb !important;\n  }\n\n  /* Memory Management 3-Card Grid in Light Mode */\n  [data-theme=\"light\"] .py-vfc-cycle-item {\n    background: #ffffff !important;\n    border: 1.5px solid #cbd5e1 !important;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;\n  }\n  [data-theme=\"light\"] .py-vfc-cycle-text {\n    color: #1e293b !important;\n    font-size: 0.74rem !important;\n    font-weight: 500 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-cycle-text strong {\n    color: #0f172a !important;\n    font-weight: 900 !important;\n    font-size: 0.80rem !important;\n  }\n\n  /* Summary Legend in Light Mode */\n  [data-theme=\"light\"] .py-vfc-legend-item {\n    background: #ffffff !important;\n    border: 1.5px solid #cbd5e1 !important;\n    color: #0f172a !important;\n    font-weight: 700 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-gold-card {\n    background: linear-gradient(135deg, #fef08a 0%, #facc15 100%) !important;\n    border: 2px solid #ca8a04 !important;\n    color: #713f12 !important;\n    font-weight: 900 !important;\n    font-size: 0.88rem !important;\n    box-shadow: 0 4px 16px rgba(202, 138, 4, 0.25) !important;\n  }\n  [data-theme=\"light\"] .py-vfc-footer-ribbon {\n    color: #1e293b !important;\n    font-weight: 800 !important;\n  }\n\n  /* Node Footers in Light Mode — Crisp High Legibility */\n  [data-theme=\"light\"] .py-vfc-node-footer {\n    color: #1e293b !important;\n    font-weight: 500 !important;\n    line-height: 1.55 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-node-footer strong {\n    color: #0f172a !important;\n    font-weight: 900 !important;\n  }\n  [data-theme=\"light\"] .py-vfc-node-footer code {\n    background: #eff6ff !important;\n    color: #1d4ed8 !important;\n    border: 1px solid #bfdbfe !important;\n    padding: 1px 6px !important;\n    border-radius: 4px !important;\n    font-weight: 800 !important;\n  }\n\n\n\n\n  /* ══════════════════════════════════════════════════════════\n     PRODUCTION DATA TRAP CARD (SHARED MUTABLE REFERENCES)\n     ══════════════════════════════════════════════════════════ */\n  .py-analyst-trap-card {\n    background: linear-gradient(145deg, rgba(20, 27, 45, 0.95) 0%, rgba(13, 19, 33, 0.98) 100%);\n    border: 1.5px solid rgba(244, 63, 94, 0.4);\n    border-radius: 12px;\n    padding: 16px 18px;\n    margin-top: 14px;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);\n    width: 100%;\n    box-sizing: border-box;\n  }\n  .py-trap-header {\n    display: flex;\n    align-items: center;\n    gap: 12px;\n    margin-bottom: 10px;\n    flex-wrap: wrap;\n  }\n  .py-trap-badge {\n    background: rgba(244, 63, 94, 0.2);\n    border: 1px solid #f43f5e;\n    color: #fb7185;\n    font-family: var(--font-mono, monospace);\n    font-size: 0.68rem;\n    font-weight: 800;\n    padding: 2px 8px;\n    border-radius: 4px;\n    letter-spacing: 0.05em;\n  }\n  .py-trap-title {\n    margin: 0;\n    font-size: 0.88rem;\n    font-weight: 800;\n    color: #f1f5f9;\n    letter-spacing: -0.01em;\n  }\n  .py-trap-text {\n    font-size: 0.76rem;\n    color: #cbd5e1;\n    line-height: 1.5;\n    margin: 0 0 12px 0;\n  }\n  .py-trap-text strong {\n    color: #f8fafc;\n  }\n  .py-trap-code-grid {\n    display: grid;\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n    gap: 14px;\n  }\n  @media (max-width: 640px) {\n    .py-trap-code-grid {\n      grid-template-columns: 1fr;\n    }\n  }\n  .py-trap-box {\n    border-radius: 8px;\n    padding: 10px 12px;\n  }\n  .trap-danger {\n    background: rgba(244, 63, 94, 0.08);\n    border: 1px solid rgba(244, 63, 94, 0.35);\n  }\n  .trap-solution {\n    background: rgba(34, 197, 94, 0.08);\n    border: 1px solid rgba(34, 197, 94, 0.35);\n  }\n  .py-trap-box-label {\n    font-size: 0.72rem;\n    font-weight: 800;\n    margin-bottom: 6px;\n  }\n  .trap-danger .py-trap-box-label { color: #fb7185; }\n  .trap-solution .py-trap-box-label { color: #4ade80; }\n  .py-trap-box pre {\n    margin: 0;\n    background: transparent;\n    font-family: var(--font-mono, monospace);\n    font-size: 0.76rem;\n    color: #e2e8f0;\n    line-height: 1.5;\n  }\n\n  /* Live Terminal Tip in Flowchart */\n  .py-fc-live-tip {\n    margin-top: 10px;\n    background: rgba(56, 189, 248, 0.08);\n    border: 1px dashed rgba(56, 189, 248, 0.4);\n    border-radius: 8px;\n    padding: 8px 12px;\n    display: flex;\n    align-items: flex-start;\n    gap: 8px;\n  }\n  .py-fc-tip-icon {\n    font-size: 1rem;\n    flex-shrink: 0;\n    margin-top: 1px;\n  }\n  .py-fc-tip-text {\n    font-size: 0.72rem;\n    line-height: 1.45;\n    color: #cbd5e1;\n  }\n  .py-fc-tip-text strong {\n    color: #38bdf8;\n  }\n  .py-fc-tip-text code {\n    font-family: var(--font-mono, monospace);\n    background: rgba(0, 0, 0, 0.4);\n    color: #4ade80;\n    padding: 1px 5px;\n    border-radius: 4px;\n    font-size: 0.70rem;\n  }\n\n  /* Mobile Swipe Pill for Master Reference Table */\n  .py-table-mobile-hint {\n    display: none;\n    align-items: center;\n    justify-content: flex-end;\n    gap: 6px;\n    font-size: 0.70rem;\n    font-weight: 700;\n    color: #38bdf8;\n    margin-bottom: 6px;\n  }\n  @media (max-width: 768px) {\n    .py-table-mobile-hint {\n      display: flex;\n    }\n  }\n\n  /* Interactive Hover Linkage for Pointer Rows */\n  .py-vfc-ptr-row {\n    transition: all 0.2s ease !important;\n    cursor: default;\n  }\n  .py-vfc-ptr-row:hover {\n    transform: translateX(4px);\n    border-color: rgba(56, 189, 248, 0.5) !important;\n    background: rgba(15, 23, 42, 0.95) !important;\n    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.15) !important;\n  }\n  .py-vfc-ptr-row:hover .py-vfc-ptr-arrow {\n    transform: scale(1.15);\n    color: #38bdf8 !important;\n  }\n\n  /* ═══ LIGHT MODE THEME ADAPTATION FOR NEW ELEMENTS ═══ */\n  [data-theme=\"light\"] .py-analyst-trap-card {\n    background: #ffffff !important;\n    border: 1.5px solid #fecdd3 !important;\n    box-shadow: 0 4px 16px rgba(225, 29, 72, 0.06) !important;\n    width: 100% !important;\n    box-sizing: border-box !important;\n  }\n  [data-theme=\"light\"] .py-trap-badge {\n    background: #ffe4e6 !important;\n    border-color: #fda4af !important;\n    color: #be123c !important;\n  }\n  [data-theme=\"light\"] .py-trap-title {\n    color: #0f172a !important;\n  }\n  [data-theme=\"light\"] .py-trap-text {\n    color: #1e293b !important;\n  }\n  [data-theme=\"light\"] .py-trap-text strong {\n    color: #0f172a !important;\n  }\n  [data-theme=\"light\"] .trap-danger {\n    background: #fff1f2 !important;\n    border-color: #fecdd3 !important;\n  }\n  [data-theme=\"light\"] .trap-danger .py-trap-box-label {\n    color: #be123c !important;\n  }\n  [data-theme=\"light\"] .trap-solution {\n    background: #f0fdf4 !important;\n    border-color: #bbf7d0 !important;\n  }\n  [data-theme=\"light\"] .trap-solution .py-trap-box-label {\n    color: #15803d !important;\n  }\n  [data-theme=\"light\"] .py-trap-box pre {\n    color: #0f172a !important;\n  }\n  [data-theme=\"light\"] .py-trap-box pre .code-comment {\n    color: #047857 !important;\n  }\n  [data-theme=\"light\"] .py-fc-live-tip {\n    background: #f0f9ff !important;\n    border-color: #93c5fd !important;\n  }\n  [data-theme=\"light\"] .py-fc-tip-text {\n    color: #1e293b !important;\n  }\n  [data-theme=\"light\"] .py-fc-tip-text strong {\n    color: #0284c7 !important;\n  }\n  [data-theme=\"light\"] .py-fc-tip-text code {\n    background: #e0f2fe !important;\n    color: #0369a1 !important;\n    border: 1px solid #bae6fd !important;\n  }\n  [data-theme=\"light\"] .py-table-mobile-hint {\n    color: #0284c7;\n  }\n  [data-theme=\"light\"] .py-vfc-ptr-row:hover {\n    background: #f0f9ff !important;\n    border-color: #38bdf8 !important;\n    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.12) !important;\n  }\n  [data-theme=\"light\"] .py-vfc-ptr-row:hover .py-vfc-ptr-arrow {\n    color: #0284c7 !important;\n  }\n\n  /* ═══════════════════════════════════════════════════════════════\n     THEORY NARRATION PLAYBACK ISOLATION & SPOTLIGHTS (SQL Day 02 Parity)\n     ═══════════════════════════════════════════════════════════════ */\n  .stunning-section-entry {\n    animation: stunningSectionPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;\n    will-change: opacity, transform !important;\n  }\n  @keyframes stunningSectionPop {\n    0% {\n      opacity: 0;\n      transform: translateY(16px) scale(0.98);\n      filter: blur(3px);\n    }\n    60% {\n      opacity: 0.95;\n      transform: translateY(-2px) scale(1.005);\n      filter: blur(0px);\n    }\n    100% {\n      opacity: 1;\n      transform: translateY(0) scale(1);\n      filter: blur(0px);\n    }\n  }\n  .instant-display {\n    animation: none !important;\n    transition: none !important;\n    opacity: 1 !important;\n    transform: none !important;\n    filter: none !important;\n  }\n\n  /* Playback Active: Inactive sections are dimmed and non-distracting */\n  .playback-active .slide-section.section-hidden {\n    opacity: 0.18 !important;\n    filter: blur(0.4px) !important;\n    pointer-events: none !important;\n    transition: opacity 0.35s ease, filter 0.35s ease !important;\n  }\n\n  /* Card Spotlight Glow */\n  .py-sp-card.card-active-spotlight,\n  .py-sp-ai-banner.card-active-spotlight,\n  .py-mut-panel.card-active-spotlight,\n  .py-analyst-trap-card.card-active-spotlight,\n  .py-vfc-node.card-active-spotlight,\n  .card-active-spotlight {\n    transform: scale(1.025) translateY(-3px) !important;\n    border-color: #38bdf8 !important;\n    background: rgba(14, 165, 233, 0.12) !important;\n    box-shadow: 0 10px 28px -4px rgba(56, 189, 248, 0.35), 0 0 0 2px rgba(56, 189, 248, 0.7) !important;\n    z-index: 5 !important;\n    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;\n  }\n\n  [data-theme=\"light\"] .py-sp-card.card-active-spotlight,\n  [data-theme=\"light\"] .py-sp-ai-banner.card-active-spotlight,\n  [data-theme=\"light\"] .py-mut-panel.card-active-spotlight,\n  [data-theme=\"light\"] .py-analyst-trap-card.card-active-spotlight,\n  [data-theme=\"light\"] .py-vfc-node.card-active-spotlight,\n  [data-theme=\"light\"] .card-active-spotlight {\n    border-color: #0284c7 !important;\n    background: #f0f9ff !important;\n    box-shadow: 0 10px 24px -4px rgba(2, 132, 199, 0.28), 0 0 0 2px #0284c7 !important;\n  }\n\n  /* Table Row Active Spotlight */\n  .py-matrix-table tr.row-active-spotlight,\n  .py-master-ref-table tr.row-active-spotlight,\n  table tr.row-active-spotlight {\n    background: rgba(59, 130, 246, 0.18) !important;\n    border-left: 4px solid #38bdf8 !important;\n    box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.15) !important;\n    transition: background 0.25s ease, border-color 0.25s ease !important;\n  }\n  .py-matrix-table tr.row-active-spotlight td,\n  .py-master-ref-table tr.row-active-spotlight td,\n  table tr.row-active-spotlight td {\n    color: #f8fafc !important;\n    font-weight: 600 !important;\n  }\n\n  [data-theme=\"light\"] .py-matrix-table tr.row-active-spotlight,\n  [data-theme=\"light\"] .py-master-ref-table tr.row-active-spotlight,\n  [data-theme=\"light\"] table tr.row-active-spotlight {\n    background: rgba(2, 132, 199, 0.12) !important;\n    border-left: 4px solid #0284c7 !important;\n  }\n  [data-theme=\"light\"] .py-matrix-table tr.row-active-spotlight td,\n  [data-theme=\"light\"] .py-master-ref-table tr.row-active-spotlight td,\n  [data-theme=\"light\"] table tr.row-active-spotlight td {\n    color: #0f172a !important;\n  }\n\n  /* ══════════════════════════════════════════════════════════\n     WORLD-CLASS INTERACTIVE & VISUAL ENHANCEMENTS (10/10 UX)\n     ══════════════════════════════════════════════════════════ */\n\n  /* 1. Dynamic Table Row Spotlight & Hover FX */\n  .py-master-ref-table tbody tr,\n  .py-matrix-table tbody tr {\n    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;\n    cursor: pointer;\n  }\n  .py-master-ref-table tbody tr:hover,\n  .py-matrix-table tbody tr:hover {\n    background: rgba(56, 189, 248, 0.08) !important;\n    transform: translateX(4px);\n    box-shadow: inset 3px 0 0 #38bdf8 !important;\n  }\n  [data-theme=\"light\"] .py-master-ref-table tbody tr:hover,\n  [data-theme=\"light\"] .py-matrix-table tbody tr:hover {\n    background: #f0f9ff !important;\n    box-shadow: inset 3px 0 0 #0284c7 !important;\n  }\n\n  /* 2. Top Gradient Accent Lines & Hover Micro-Elevation */\n  .py-sp-card,\n  .py-mut-showcase,\n  .py-matrix-showcase,\n  .py-analyst-trap-card,\n  .py-vfc-canvas {\n    position: relative !important;\n    overflow: hidden !important;\n    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease !important;\n  }\n  .py-sp-card::before,\n  .py-mut-showcase::before,\n  .py-matrix-showcase::before,\n  .py-analyst-trap-card::before,\n  .py-vfc-canvas::before {\n    content: '';\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    height: 3px;\n    background: linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #34d399 100%);\n    opacity: 0.85;\n    z-index: 2;\n  }\n  .py-sp-card:hover {\n    transform: translateY(-3px) !important;\n    box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.4), 0 0 16px rgba(56, 189, 248, 0.15) !important;\n    border-color: rgba(56, 189, 248, 0.4) !important;\n  }\n  [data-theme=\"light\"] .py-sp-card:hover {\n    transform: translateY(-3px) !important;\n    box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08), 0 0 12px rgba(2, 132, 199, 0.12) !important;\n    border-color: #0284c7 !important;\n  }\n\n  /* 3. Code Card Micro-Glow & Typography Polish */\n  .py-trap-box pre,\n  .py-code-box {\n    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;\n  }\n  .py-trap-box pre:hover,\n  .py-code-box:hover {\n    border-color: rgba(56, 189, 248, 0.4) !important;\n    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.12) !important;\n  }\n  [data-theme=\"light\"] .py-trap-box pre:hover,\n  [data-theme=\"light\"] .py-code-box:hover {\n    border-color: #0284c7 !important;\n    box-shadow: 0 4px 16px rgba(2, 132, 199, 0.12) !important;\n  }\n\n  /* Heading & Block Active Spotlight */\n  .heading-box-wrap.narration-spotlight-active,\n  .narration-spotlight-active {\n    border-color: #38bdf8 !important;\n    box-shadow: 0 0 16px rgba(56, 189, 248, 0.3) !important;\n    transition: all 0.3s ease !important;\n  }\n\n\n\n  /* ═════════════════════════════════════════════════════════════════════\n     UNIFORM VERTICAL RHYTHM & SPACING SYSTEM (100% Consistent Across Day 02)\n     ═════════════════════════════════════════════════════════════════════ */\n  .slide-section {\n    margin-top: 36px !important;\n    margin-bottom: 0 !important;\n  }\n  .slide-section:first-child {\n    margin-top: 8px !important;\n  }\n  .slide-section-title.heading-box-wrap {\n    margin: 0 0 14px 0 !important;\n  }\n  .section-intro-text {\n    margin: 0 0 14px 0 !important;\n    font-size: 0.92rem !important;\n    line-height: 1.6 !important;\n  }\n  .topic-subcard {\n    margin: 14px 0 0 0 !important;\n    position: relative !important;\n  }\n  .topic-subcard + .topic-subcard {\n    margin-top: 16px !important;\n  }\n  .subcard-header-with-audio {\n    display: flex !important;\n    align-items: center !important;\n    gap: 8px !important;\n    margin: 0 0 10px 0 !important;\n    padding: 0 !important;\n  }\n  .subcard-header-title {\n    margin: 0 !important;\n    font-size: 0.92rem !important;\n    font-weight: 700 !important;\n    color: #38bdf8 !important;\n    letter-spacing: -0.01em !important;\n  }\n  [data-theme=\"light\"] .subcard-header-title {\n    color: #0284c7 !important;\n  }\n  .code-block-container {\n    margin: 0 !important;\n    padding: 0 !important;\n    display: flex !important;\n    flex-direction: column !important;\n    gap: 12px !important;\n  }\n  .code-subblock {\n    margin: 0 !important;\n  }\n  .interview-box {\n    margin-top: 14px !important;\n    margin-bottom: 0 !important;\n  }\n\n  /* Table Card Header: Clean non-floating header that stays attached to its card */\n  .table-header-wrap {\n    position: relative !important;\n    top: auto !important;\n    left: auto !important;\n    z-index: 1 !important;\n    background-color: #0d1527 !important;\n    display: flex !important;\n    justify-content: space-between !important;\n    align-items: center !important;\n    padding: 10px 14px !important;\n    margin: 0 !important;\n    border-radius: 8px 8px 0 0 !important;\n    border: 1px solid rgba(255, 255, 255, 0.08) !important;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;\n  }\n  /* Explicitly prevent any vertical floating or sticking for headers during scroll */\n  .table-header-wrap,\n  .arith-sticky-table thead,\n  .arith-sticky-table th,\n  .precedence-table thead,\n  .precedence-table th,\n  .anti-pattern-table thead,\n  .anti-pattern-table th {\n    top: auto !important;\n  }\n  .table-header-title {\n    margin: 0 !important;\n    font-size: 0.92rem !important;\n    font-weight: 700 !important;\n    color: #f8fafc !important;\n    letter-spacing: -0.01em !important;\n  }\n  [data-theme=\"light\"] .table-header-wrap {\n    background-color: #ffffff !important;\n    border-color: #e2e8f0 !important;\n  }\n  [data-theme=\"light\"] .table-header-title {\n    color: #0f172a !important;\n  }\n  .db-mock-table-wrap {\n    margin-top: 0 !important;\n    border-top-left-radius: 0 !important;\n    border-top-right-radius: 0 !important;\n    position: relative !important;\n    overflow-x: auto !important;\n    -webkit-overflow-scrolling: touch !important;\n  }\n  .db-table-mock.arith-sticky-table {\n    border-collapse: separate !important;\n    border-spacing: 0 !important;\n    min-width: 680px !important;\n    width: 100% !important;\n    overflow: visible !important;\n    margin: 0 !important;\n  }\n  .arith-sticky-table,\n  .arith-sticky-table th,\n  .arith-sticky-table td {\n    box-sizing: border-box !important;\n  }\n  /* Column 1: Operator - Frozen Horizontally ONLY (NO vertical float) */\n  .arith-sticky-table th:nth-child(1),\n  .arith-sticky-table td:nth-child(1) {\n    position: sticky !important;\n    left: 0 !important;\n    top: auto !important;\n    z-index: 10 !important;\n    width: 80px !important;\n    min-width: 80px !important;\n    max-width: 80px !important;\n    box-sizing: border-box !important;\n    background-color: #0d1527 !important;\n    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;\n    text-align: center !important;\n    padding: 8px 6px !important;\n  }\n  .arith-sticky-table th:nth-child(1) {\n    background-color: #131d35 !important;\n    z-index: 11 !important;\n  }\n  .arith-sticky-table td:nth-child(1) code {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    min-width: 36px;\n    height: 28px;\n    padding: 0 8px;\n    font-family: 'JetBrains Mono', monospace;\n    font-weight: 700;\n    font-size: 0.85rem;\n    background: rgba(56, 189, 248, 0.12);\n    border: 1px solid rgba(56, 189, 248, 0.3);\n    border-radius: 6px;\n    color: #38bdf8;\n  }\n  /* Column 2: Name - Frozen Horizontally ONLY (NO vertical float) */\n  .arith-sticky-table th:nth-child(2),\n  .arith-sticky-table td:nth-child(2) {\n    position: sticky !important;\n    left: 80px !important;\n    top: auto !important;\n    z-index: 10 !important;\n    width: 140px !important;\n    min-width: 140px !important;\n    max-width: 140px !important;\n    box-sizing: border-box !important;\n    background-color: #0d1527 !important;\n    border-right: 2px solid rgba(56, 189, 248, 0.35) !important;\n    box-shadow: 4px 0 10px -2px rgba(0, 0, 0, 0.45) !important;\n    font-weight: 600 !important;\n    padding: 8px 12px !important;\n  }\n  .arith-sticky-table th:nth-child(2) {\n    background-color: #131d35 !important;\n    z-index: 11 !important;\n  }\n  .arith-sticky-table tbody tr:hover td:nth-child(1),\n  .arith-sticky-table tbody tr:hover td:nth-child(2) {\n    background-color: #162038 !important;\n  }\n  /* Light mode for sticky table */\n  [data-theme=\"light\"] .arith-sticky-table th:nth-child(1),\n  [data-theme=\"light\"] .arith-sticky-table th:nth-child(2) {\n    background-color: #f1f5f9 !important;\n    border-right-color: #cbd5e1 !important;\n  }\n  [data-theme=\"light\"] .arith-sticky-table td:nth-child(1),\n  [data-theme=\"light\"] .arith-sticky-table td:nth-child(2) {\n    background-color: #ffffff !important;\n    border-right-color: #e2e8f0 !important;\n  }\n  [data-theme=\"light\"] .arith-sticky-table td:nth-child(1) code {\n    background: #e0f2fe;\n    border-color: #7dd3fc;\n    color: #0284c7;\n  }\n  [data-theme=\"light\"] .arith-sticky-table td:nth-child(2) {\n    border-right: 2px solid rgba(14, 165, 233, 0.4) !important;\n    box-shadow: 4px 0 10px -2px rgba(0, 0, 0, 0.08) !important;\n  }\n  [data-theme=\"light\"] .arith-sticky-table tbody tr:hover td:nth-child(1),\n  [data-theme=\"light\"] .arith-sticky-table tbody tr:hover td:nth-child(2) {\n    background-color: #f8fafc !important;\n  }\n\n  /* ═════════════════════════════════════════════════════════════════════\n     SECTION 08: OPERATOR PRECEDENCE HIERARCHY TABLE (Frozen Col 1 & 2 - Zero Overlap)\n     ═════════════════════════════════════════════════════════════════════ */\n  .db-table-mock.arith-sticky-table.precedence-table,\n  .db-mock-table-wrap .db-table-mock.precedence-table {\n    border-collapse: separate !important;\n    border-spacing: 0 !important;\n    min-width: 920px !important;\n    width: 100% !important;\n    overflow: visible !important;\n    margin: 0 !important;\n  }\n  .precedence-table,\n  .precedence-table th,\n  .precedence-table td {\n    box-sizing: border-box !important;\n  }\n  .precedence-table th,\n  .precedence-table td {\n    padding: 10px 14px !important;\n    vertical-align: middle !important;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;\n    font-size: 0.84rem !important;\n    line-height: 1.45 !important;\n    box-sizing: border-box !important;\n  }\n  .precedence-table th {\n    background-color: #131d35 !important;\n    color: #94a3b8 !important;\n    font-weight: 700 !important;\n    text-transform: uppercase !important;\n    letter-spacing: 0.04em !important;\n    font-size: 0.74rem !important;\n    border-bottom: 2px solid rgba(56, 189, 248, 0.35) !important;\n    white-space: nowrap !important;\n  }\n  /* Precedence Column 1: Precedence Level - Frozen horizontally at left 0 */\n  .precedence-table th:nth-child(1),\n  .precedence-table td:nth-child(1),\n  .arith-sticky-table.precedence-table th:nth-child(1),\n  .arith-sticky-table.precedence-table td:nth-child(1) {\n    position: -webkit-sticky !important;\n    position: sticky !important;\n    left: 0 !important;\n    top: auto !important;\n    z-index: 10 !important;\n    width: 160px !important;\n    min-width: 160px !important;\n    max-width: 160px !important;\n    box-sizing: border-box !important;\n    background-color: #0d1527 !important;\n    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;\n    text-align: left !important;\n    padding: 10px 14px !important;\n  }\n  .precedence-table th:nth-child(1),\n  .arith-sticky-table.precedence-table th:nth-child(1) {\n    background-color: #131d35 !important;\n    z-index: 12 !important;\n  }\n  /* Precedence Column 2: Operators - Frozen horizontally at left 160px */\n  .precedence-table th:nth-child(2),\n  .precedence-table td:nth-child(2),\n  .arith-sticky-table.precedence-table th:nth-child(2),\n  .arith-sticky-table.precedence-table td:nth-child(2) {\n    position: -webkit-sticky !important;\n    position: sticky !important;\n    left: 160px !important;\n    top: auto !important;\n    z-index: 10 !important;\n    width: 200px !important;\n    min-width: 200px !important;\n    max-width: 200px !important;\n    box-sizing: border-box !important;\n    background-color: #0d1527 !important;\n    border-right: 2px solid rgba(56, 189, 248, 0.35) !important;\n    box-shadow: 4px 0 10px -2px rgba(0, 0, 0, 0.45) !important;\n    padding: 10px 14px !important;\n  }\n  .precedence-table th:nth-child(2),\n  .arith-sticky-table.precedence-table th:nth-child(2) {\n    background-color: #131d35 !important;\n    z-index: 12 !important;\n  }\n  .precedence-table th:nth-child(3),\n  .precedence-table td:nth-child(3),\n  .arith-sticky-table.precedence-table th:nth-child(3),\n  .arith-sticky-table.precedence-table td:nth-child(3) {\n    width: 150px !important;\n    min-width: 140px !important;\n    text-align: center !important;\n    position: relative !important;\n    z-index: 1 !important;\n  }\n  .precedence-table th:nth-child(4),\n  .precedence-table td:nth-child(4),\n  .arith-sticky-table.precedence-table th:nth-child(4),\n  .arith-sticky-table.precedence-table td:nth-child(4) {\n    min-width: 320px !important;\n    position: relative !important;\n    z-index: 1 !important;\n  }\n  .precedence-table tbody tr:hover td,\n  .arith-sticky-table.precedence-table tbody tr:hover td {\n    background-color: rgba(56, 189, 248, 0.05) !important;\n  }\n  .precedence-table tbody tr:hover td:nth-child(1),\n  .precedence-table tbody tr:hover td:nth-child(2),\n  .arith-sticky-table.precedence-table tbody tr:hover td:nth-child(1),\n  .arith-sticky-table.precedence-table tbody tr:hover td:nth-child(2) {\n    background-color: #162038 !important;\n  }\n  .prec-tier-badge {\n    display: inline-block;\n    padding: 3px 8px;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.75rem;\n    font-weight: 700;\n    border-radius: 5px;\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #f1f5f9;\n    white-space: nowrap;\n  }\n  .prec-tier-1 {\n    background: rgba(244, 63, 94, 0.15);\n    border-color: rgba(244, 63, 94, 0.35);\n    color: #fb7185;\n  }\n  .prec-tier-2 {\n    background: rgba(245, 158, 11, 0.18);\n    border-color: rgba(245, 158, 11, 0.4);\n    color: #fbbf24;\n  }\n  .prec-tier-15 {\n    background: rgba(148, 163, 184, 0.12);\n    border-color: rgba(148, 163, 184, 0.3);\n    color: #94a3b8;\n  }\n  .prec-ops-wrap {\n    display: flex;\n    flex-wrap: wrap;\n    gap: 4px;\n    align-items: center;\n  }\n  .prec-ops-wrap code {\n    display: inline-flex;\n    align-items: center;\n    padding: 2px 7px;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.8rem;\n    font-weight: 600;\n    border-radius: 4px;\n    background: rgba(56, 189, 248, 0.1);\n    border: 1px solid rgba(56, 189, 248, 0.25);\n    color: #38bdf8;\n  }\n  .prec-op-highlight {\n    background: rgba(245, 158, 11, 0.2) !important;\n    border-color: rgba(245, 158, 11, 0.45) !important;\n    color: #fcd34d !important;\n    font-weight: 800 !important;\n  }\n  .prec-assoc-tag {\n    display: inline-block;\n    padding: 3px 9px;\n    border-radius: 5px;\n    font-size: 0.72rem;\n    font-weight: 700;\n    white-space: nowrap;\n  }\n  .prec-assoc-ltr {\n    background: rgba(56, 189, 248, 0.1);\n    color: #7dd3fc;\n    border: 1px solid rgba(56, 189, 248, 0.25);\n  }\n  .prec-assoc-rtl {\n    background: rgba(245, 158, 11, 0.15);\n    color: #fbbf24;\n    border: 1px solid rgba(245, 158, 11, 0.35);\n  }\n\n  /* Light mode for Precedence Table */\n  [data-theme=\"light\"] .precedence-table th,\n  [data-theme=\"light\"] .arith-sticky-table.precedence-table th {\n    background-color: #f1f5f9 !important;\n    color: #475569 !important;\n    border-bottom-color: #cbd5e1 !important;\n  }\n  [data-theme=\"light\"] .precedence-table td,\n  [data-theme=\"light\"] .arith-sticky-table.precedence-table td {\n    border-bottom-color: #f1f5f9 !important;\n    color: #1e293b !important;\n  }\n  [data-theme=\"light\"] .precedence-table tbody tr:hover td,\n  [data-theme=\"light\"] .arith-sticky-table.precedence-table tbody tr:hover td {\n    background-color: #f8fafc !important;\n  }\n  [data-theme=\"light\"] .precedence-table th:nth-child(1),\n  [data-theme=\"light\"] .precedence-table th:nth-child(2),\n  [data-theme=\"light\"] .arith-sticky-table.precedence-table th:nth-child(1),\n  [data-theme=\"light\"] .arith-sticky-table.precedence-table th:nth-child(2) {\n    background-color: #f1f5f9 !important;\n    border-right-color: #cbd5e1 !important;\n  }\n  [data-theme=\"light\"] .precedence-table td:nth-child(1),\n  [data-theme=\"light\"] .precedence-table td:nth-child(2),\n  [data-theme=\"light\"] .arith-sticky-table.precedence-table td:nth-child(1),\n  [data-theme=\"light\"] .arith-sticky-table.precedence-table td:nth-child(2) {\n    background-color: #ffffff !important;\n    border-right-color: #e2e8f0 !important;\n  }\n  [data-theme=\"light\"] .precedence-table td:nth-child(2),\n  [data-theme=\"light\"] .arith-sticky-table.precedence-table td:nth-child(2) {\n    border-right: 2px solid rgba(14, 165, 233, 0.4) !important;\n    box-shadow: 4px 0 10px -2px rgba(0, 0, 0, 0.08) !important;\n  }\n  [data-theme=\"light\"] .precedence-table tbody tr:hover td:nth-child(1),\n  [data-theme=\"light\"] .precedence-table tbody tr:hover td:nth-child(2),\n  [data-theme=\"light\"] .arith-sticky-table.precedence-table tbody tr:hover td:nth-child(1),\n  [data-theme=\"light\"] .arith-sticky-table.precedence-table tbody tr:hover td:nth-child(2) {\n    background-color: #f8fafc !important;\n  }\n  [data-theme=\"light\"] .prec-tier-badge {\n    background: #f1f5f9;\n    border-color: #cbd5e1;\n    color: #0f172a;\n  }\n  [data-theme=\"light\"] .prec-tier-1 {\n    background: #ffe4e6;\n    border-color: #fecdd3;\n    color: #e11d48;\n  }\n  [data-theme=\"light\"] .prec-tier-2 {\n    background: #fef3c7;\n    border-color: #fde68a;\n    color: #d97706;\n  }\n  [data-theme=\"light\"] .prec-ops-wrap code {\n    background: #e0f2fe;\n    border-color: #bae6fd;\n    color: #0284c7;\n  }\n  [data-theme=\"light\"] .prec-assoc-ltr {\n    background: #f0fdf4;\n    color: #16a34a;\n    border-color: #bbf7d0;\n  }\n  [data-theme=\"light\"] .prec-assoc-rtl {\n    background: #fffbeb;\n    color: #b45309;\n    border-color: #fde68a;\n  }\n\n  /* ═════════════════════════════════════════════════════════════════════\n     SECTION 09: MASTER ANTI-PATTERN REVIEW TABLE (Frozen Col 1 & 2 - Zero Overlap)\n     ═════════════════════════════════════════════════════════════════════ */\n  .db-table-mock.arith-sticky-table.anti-pattern-table,\n  .db-mock-table-wrap .db-table-mock.anti-pattern-table {\n    border-collapse: separate !important;\n    border-spacing: 0 !important;\n    min-width: 960px !important;\n    width: 100% !important;\n    overflow: visible !important;\n    margin: 0 !important;\n  }\n  .anti-pattern-table,\n  .anti-pattern-table th,\n  .anti-pattern-table td {\n    box-sizing: border-box !important;\n  }\n  .anti-pattern-table th,\n  .anti-pattern-table td {\n    padding: 10px 14px !important;\n    vertical-align: middle !important;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;\n    font-size: 0.84rem !important;\n    line-height: 1.45 !important;\n    box-sizing: border-box !important;\n  }\n  .anti-pattern-table th {\n    background-color: #131d35 !important;\n    color: #94a3b8 !important;\n    font-weight: 700 !important;\n    text-transform: uppercase !important;\n    letter-spacing: 0.04em !important;\n    font-size: 0.74rem !important;\n    border-bottom: 2px solid rgba(244, 63, 94, 0.35) !important;\n    white-space: nowrap !important;\n  }\n  /* Anti-Pattern Column 1: Buggy Code Pattern - Frozen horizontally at left 0 */\n  .anti-pattern-table th:nth-child(1),\n  .anti-pattern-table td:nth-child(1),\n  .arith-sticky-table.anti-pattern-table th:nth-child(1),\n  .arith-sticky-table.anti-pattern-table td:nth-child(1) {\n    position: -webkit-sticky !important;\n    position: sticky !important;\n    left: 0 !important;\n    top: auto !important;\n    z-index: 10 !important;\n    width: 220px !important;\n    min-width: 220px !important;\n    max-width: 220px !important;\n    box-sizing: border-box !important;\n    background-color: #0d1527 !important;\n    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;\n    text-align: left !important;\n    padding: 10px 14px !important;\n  }\n  .anti-pattern-table th:nth-child(1),\n  .arith-sticky-table.anti-pattern-table th:nth-child(1) {\n    background-color: #131d35 !important;\n    z-index: 12 !important;\n  }\n  /* Override code block styling inside column 1 */\n  .anti-pattern-table td:nth-child(1) code,\n  .arith-sticky-table.anti-pattern-table td:nth-child(1) code {\n    display: inline-block !important;\n    min-width: 0 !important;\n    height: auto !important;\n    padding: 3px 8px !important;\n    background: rgba(244, 63, 94, 0.12) !important;\n    border: 1px solid rgba(244, 63, 94, 0.3) !important;\n    color: #fca5a5 !important;\n    white-space: normal !important;\n  }\n  /* Anti-Pattern Column 2: Runtime Result - Frozen horizontally at left 220px */\n  .anti-pattern-table th:nth-child(2),\n  .anti-pattern-table td:nth-child(2),\n  .arith-sticky-table.anti-pattern-table th:nth-child(2),\n  .arith-sticky-table.anti-pattern-table td:nth-child(2) {\n    position: -webkit-sticky !important;\n    position: sticky !important;\n    left: 220px !important;\n    top: auto !important;\n    z-index: 10 !important;\n    width: 190px !important;\n    min-width: 190px !important;\n    max-width: 190px !important;\n    box-sizing: border-box !important;\n    background-color: #0d1527 !important;\n    border-right: 2px solid rgba(244, 63, 94, 0.35) !important;\n    box-shadow: 4px 0 10px -2px rgba(0, 0, 0, 0.45) !important;\n    padding: 10px 14px !important;\n  }\n  .anti-pattern-table th:nth-child(2),\n  .arith-sticky-table.anti-pattern-table th:nth-child(2) {\n    background-color: #131d35 !important;\n    z-index: 12 !important;\n  }\n  .anti-pattern-table th:nth-child(3),\n  .anti-pattern-table td:nth-child(3),\n  .arith-sticky-table.anti-pattern-table th:nth-child(3),\n  .arith-sticky-table.anti-pattern-table td:nth-child(3) {\n    min-width: 260px !important;\n    position: relative !important;\n    z-index: 1 !important;\n  }\n  .anti-pattern-table th:nth-child(4),\n  .anti-pattern-table td:nth-child(4),\n  .arith-sticky-table.anti-pattern-table th:nth-child(4),\n  .arith-sticky-table.anti-pattern-table td:nth-child(4) {\n    width: 230px !important;\n    min-width: 210px !important;\n    position: relative !important;\n    z-index: 1 !important;\n  }\n  .anti-pattern-table tbody tr:hover td,\n  .arith-sticky-table.anti-pattern-table tbody tr:hover td {\n    background-color: rgba(244, 63, 94, 0.04) !important;\n  }\n  .anti-pattern-table tbody tr:hover td:nth-child(1),\n  .anti-pattern-table tbody tr:hover td:nth-child(2),\n  .arith-sticky-table.anti-pattern-table tbody tr:hover td:nth-child(1),\n  .arith-sticky-table.anti-pattern-table tbody tr:hover td:nth-child(2) {\n    background-color: #162038 !important;\n  }\n  .ap-code-bug {\n    display: inline-block;\n    padding: 3px 8px;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.8rem;\n    font-weight: 600;\n    border-radius: 5px;\n    background: rgba(244, 63, 94, 0.12);\n    border: 1px solid rgba(244, 63, 94, 0.3);\n    color: #fca5a5;\n    word-break: break-word;\n  }\n  .ap-result-bad {\n    color: #f87171;\n    font-weight: 600;\n  }\n  .ap-code-fix {\n    display: inline-block;\n    padding: 3px 8px;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.8rem;\n    font-weight: 600;\n    border-radius: 5px;\n    background: rgba(16, 185, 129, 0.12);\n    border: 1px solid rgba(16, 185, 129, 0.32);\n    color: #6ee7b7;\n    word-break: break-word;\n  }\n\n  /* Light mode for Anti-Pattern Table */\n  [data-theme=\"light\"] .anti-pattern-table th,\n  [data-theme=\"light\"] .arith-sticky-table.anti-pattern-table th {\n    background-color: #f1f5f9 !important;\n    color: #475569 !important;\n    border-bottom-color: #cbd5e1 !important;\n  }\n  [data-theme=\"light\"] .anti-pattern-table td,\n  [data-theme=\"light\"] .arith-sticky-table.anti-pattern-table td {\n    border-bottom-color: #f1f5f9 !important;\n    color: #1e293b !important;\n  }\n  [data-theme=\"light\"] .anti-pattern-table tbody tr:hover td,\n  [data-theme=\"light\"] .arith-sticky-table.anti-pattern-table tbody tr:hover td {\n    background-color: #fef2f2 !important;\n  }\n  [data-theme=\"light\"] .anti-pattern-table th:nth-child(1),\n  [data-theme=\"light\"] .anti-pattern-table th:nth-child(2),\n  [data-theme=\"light\"] .arith-sticky-table.anti-pattern-table th:nth-child(1),\n  [data-theme=\"light\"] .arith-sticky-table.anti-pattern-table th:nth-child(2) {\n    background-color: #f1f5f9 !important;\n    border-right-color: #cbd5e1 !important;\n  }\n  [data-theme=\"light\"] .anti-pattern-table td:nth-child(1),\n  [data-theme=\"light\"] .anti-pattern-table td:nth-child(2),\n  [data-theme=\"light\"] .arith-sticky-table.anti-pattern-table td:nth-child(1),\n  [data-theme=\"light\"] .arith-sticky-table.anti-pattern-table td:nth-child(2) {\n    background-color: #ffffff !important;\n    border-right-color: #e2e8f0 !important;\n  }\n  [data-theme=\"light\"] .anti-pattern-table td:nth-child(2),\n  [data-theme=\"light\"] .arith-sticky-table.anti-pattern-table td:nth-child(2) {\n    border-right: 2px solid rgba(244, 63, 94, 0.4) !important;\n    box-shadow: 4px 0 10px -2px rgba(0, 0, 0, 0.08) !important;\n  }\n  [data-theme=\"light\"] .anti-pattern-table tbody tr:hover td:nth-child(1),\n  [data-theme=\"light\"] .anti-pattern-table tbody tr:hover td:nth-child(2),\n  [data-theme=\"light\"] .arith-sticky-table.anti-pattern-table tbody tr:hover td:nth-child(1),\n  [data-theme=\"light\"] .arith-sticky-table.anti-pattern-table tbody tr:hover td:nth-child(2) {\n    background-color: #fef2f2 !important;\n  }\n  [data-theme=\"light\"] .anti-pattern-table td:nth-child(1) code,\n  [data-theme=\"light\"] .arith-sticky-table.anti-pattern-table td:nth-child(1) code {\n    background: #fee2e2 !important;\n    border-color: #fca5a5 !important;\n    color: #b91c1c !important;\n  }\n\n  /* ═════════════════════════════════════════════════════════════════════\n     STUNNING KEY NOTES CARD DESIGN SYSTEM (Inherited Body Font + Glassmorphism)\n     ═════════════════════════════════════════════════════════════════════ */\n  .py-keynotes-card {\n    background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.65) 100%) !important;\n    backdrop-filter: blur(12px);\n    -webkit-backdrop-filter: blur(12px);\n    border: 1px solid rgba(56, 189, 248, 0.28) !important;\n    border-left: 4px solid #38bdf8 !important;\n    border-radius: 12px !important;\n    padding: 16px 20px !important;\n    margin: 18px 0 10px 0 !important;\n    display: flex;\n    gap: 14px;\n    align-items: flex-start;\n    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;\n    font-family: inherit !important;\n  }\n  .py-keynotes-icon-wrap {\n    width: 34px;\n    height: 34px;\n    border-radius: 9px;\n    background: rgba(56, 189, 248, 0.12);\n    border: 1px solid rgba(56, 189, 248, 0.28);\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 1.15rem;\n    flex-shrink: 0;\n    box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);\n  }\n  .py-keynotes-body {\n    flex: 1;\n    min-width: 0;\n  }\n  .py-keynotes-header {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    margin-bottom: 8px;\n  }\n  .py-keynotes-title {\n    font-size: 0.76rem !important;\n    font-weight: 800 !important;\n    text-transform: uppercase;\n    letter-spacing: 0.08em;\n    color: #38bdf8 !important;\n    font-family: inherit !important;\n  }\n  .py-keynotes-tag {\n    font-size: 0.66rem !important;\n    padding: 2px 8px !important;\n    border-radius: 12px !important;\n    background: rgba(56, 189, 248, 0.14) !important;\n    border: 1px solid rgba(56, 189, 248, 0.28) !important;\n    color: #7dd3fc !important;\n    font-weight: 700 !important;\n    font-family: inherit !important;\n  }\n  .py-keynotes-list {\n    margin: 0 !important;\n    padding: 0 !important;\n    list-style: none !important;\n    font-family: inherit !important;\n  }\n  .py-keynotes-list li {\n    position: relative !important;\n    padding-left: 22px !important;\n    margin-bottom: 10px !important;\n    font-size: 0.85rem !important;\n    line-height: 1.65 !important;\n    color: #e2e8f0 !important;\n    font-family: inherit !important;\n  }\n  .py-keynotes-list li:last-child {\n    margin-bottom: 0 !important;\n  }\n  .py-keynotes-list li::before {\n    content: \"\" !important;\n    position: absolute !important;\n    left: 1px !important;\n    top: 10px !important;\n    width: 6px !important;\n    height: 6px !important;\n    border-radius: 50% !important;\n    background: #38bdf8 !important;\n    box-shadow: 0 0 8px rgba(56, 189, 248, 0.8) !important;\n  }\n  .py-keynotes-list li strong {\n    color: #f8fafc !important;\n    font-weight: 700 !important;\n  }\n  .py-keynotes-list li code {\n    font-family: 'JetBrains Mono', monospace !important;\n    background: rgba(56, 189, 248, 0.12) !important;\n    border: 1px solid rgba(56, 189, 248, 0.25) !important;\n    padding: 2px 6px !important;\n    border-radius: 5px !important;\n    color: #38bdf8 !important;\n    font-size: 0.8rem !important;\n    font-weight: 600 !important;\n  }\n  /* Light Theme for Keynotes */\n  [data-theme=\"light\"] .py-keynotes-card {\n    background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%) !important;\n    border: 1px solid rgba(14, 165, 233, 0.3) !important;\n    border-left: 4px solid #0284c7 !important;\n    box-shadow: 0 8px 24px -4px rgba(14, 165, 233, 0.12), inset 0 1px 0 #ffffff !important;\n  }\n  [data-theme=\"light\"] .py-keynotes-icon-wrap {\n    background: #e0f2fe !important;\n    border-color: #bae6fd !important;\n    box-shadow: 0 0 12px rgba(14, 165, 233, 0.18) !important;\n  }\n  [data-theme=\"light\"] .py-keynotes-title {\n    color: #0284c7 !important;\n  }\n  [data-theme=\"light\"] .py-keynotes-tag {\n    background: #e0f2fe !important;\n    border-color: #bae6fd !important;\n    color: #0369a1 !important;\n  }\n  [data-theme=\"light\"] .py-keynotes-list li {\n    color: #334155 !important;\n  }\n  [data-theme=\"light\"] .py-keynotes-list li::before {\n    background: #0284c7 !important;\n    box-shadow: 0 0 6px rgba(2, 132, 199, 0.5) !important;\n  }\n  [data-theme=\"light\"] .py-keynotes-list li strong {\n    color: #0f172a !important;\n  }\n  [data-theme=\"light\"] .py-keynotes-list li code {\n    background: #e0f2fe !important;\n    border-color: #7dd3fc !important;\n    color: #0369a1 !important;\n  }\n\n  /* ═════════════════════════════════════════════════════════════════════\n     COGNITIVE LEARNING & SCIENTIFIC VISUAL MODELS DESIGN SYSTEM\n     ═════════════════════════════════════════════════════════════════════ */\n\n  /* 🧠 10-Second Recall Hook (Mnemonic / Interview Anchor) */\n  .py-recall-hook {\n    background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);\n    border: 1px solid rgba(56, 189, 248, 0.25);\n    border-left: 4px solid #38bdf8;\n    border-radius: 10px;\n    padding: 14px 18px;\n    margin: 20px 0 10px 0;\n    display: flex;\n    gap: 14px;\n    align-items: flex-start;\n    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);\n  }\n  .py-recall-icon {\n    font-size: 1.4rem;\n    line-height: 1;\n    flex-shrink: 0;\n  }\n  .py-recall-body {\n    flex: 1;\n  }\n  .py-recall-header {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    margin-bottom: 4px;\n  }\n  .py-recall-title {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.72rem;\n    font-weight: 800;\n    text-transform: uppercase;\n    letter-spacing: 0.08em;\n    color: #38bdf8;\n  }\n  .py-recall-tag {\n    font-size: 0.65rem;\n    padding: 1px 6px;\n    border-radius: 4px;\n    background: rgba(56, 189, 248, 0.15);\n    color: #bae6fd;\n    font-weight: 600;\n  }\n  .py-recall-list {\n    margin: 0;\n    padding-left: 1.5rem;\n    list-style-type: disc;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.82rem;\n    color: #e2e8f0;\n    line-height: 1.6;\n  }\n  .py-recall-list li {\n    margin-bottom: 6px;\n  }\n  [data-theme=\"light\"] .py-recall-list { color: #334155; }\n  .py-recall-text {\n    font-size: 0.82rem;\n    line-height: 1.55;\n    color: #e2e8f0;\n    margin: 0;\n  }\n  .py-recall-text code {\n    font-family: 'JetBrains Mono', monospace;\n    background: rgba(0, 0, 0, 0.35);\n    padding: 2px 5px;\n    border-radius: 4px;\n    color: #38bdf8;\n    font-size: 0.78rem;\n  }\n\n  /* 💡 Visual Cognitive Model Container */\n  .cog-model-card {\n    background: rgba(15, 23, 42, 0.65);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 12px;\n    padding: 18px;\n    margin: 18px 0;\n    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);\n  }\n  .cog-model-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    margin-bottom: 14px;\n    padding-bottom: 10px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n  }\n  .cog-model-title-wrap {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n  }\n  .cog-model-badge {\n    background: rgba(56, 189, 248, 0.15);\n    border: 1px solid rgba(56, 189, 248, 0.3);\n    color: #38bdf8;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.68rem;\n    font-weight: 800;\n    padding: 3px 8px;\n    border-radius: 5px;\n    text-transform: uppercase;\n  }\n  .cog-model-title {\n    font-size: 0.92rem;\n    font-weight: 800;\n    color: #f8fafc;\n    margin: 0;\n  }\n  .cog-model-subtitle {\n    font-size: 0.72rem;\n    color: #94a3b8;\n  }\n\n  /* Diagram 1: Number Line Euclidean Floor Division */\n  .numline-wrap {\n    position: relative;\n    padding: 30px 14px 16px 14px;\n    background: rgba(0, 0, 0, 0.25);\n    border-radius: 8px;\n    border: 1px solid rgba(255, 255, 255, 0.05);\n  }\n  .numline-axis {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    position: relative;\n    margin: 30px 10px 10px 10px;\n    height: 4px;\n    background: linear-gradient(90deg, #f43f5e 0%, #38bdf8 50%, #22c55e 100%);\n    border-radius: 2px;\n  }\n  .numline-tick {\n    position: relative;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n  }\n  .numline-dot {\n    width: 12px;\n    height: 12px;\n    border-radius: 50%;\n    background: #0f172a;\n    border: 2px solid #94a3b8;\n    z-index: 2;\n  }\n  .numline-val {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.75rem;\n    font-weight: 700;\n    color: #94a3b8;\n    margin-top: 6px;\n  }\n  .numline-pointer-left {\n    position: absolute;\n    top: -46px;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    transform: translateX(-50%);\n  }\n  .numline-pill {\n    padding: 3px 8px;\n    border-radius: 5px;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.70rem;\n    font-weight: 800;\n    white-space: nowrap;\n  }\n  .pill-danger {\n    background: rgba(244, 63, 94, 0.25);\n    border: 1px solid #f43f5e;\n    color: #fca5a5;\n  }\n  .pill-success {\n    background: rgba(34, 197, 94, 0.25);\n    border: 1px solid #22c55e;\n    color: #86efac;\n  }\n  .pill-info {\n    background: rgba(56, 189, 248, 0.25);\n    border: 1px solid #38bdf8;\n    color: #bae6fd;\n  }\n  .numline-arrow-down {\n    width: 0;\n    height: 0;\n    border-left: 5px solid transparent;\n    border-right: 5px solid transparent;\n    border-top: 6px solid #38bdf8;\n  }\n  .arrow-rose { border-top-color: #f43f5e; }\n  .arrow-green { border-top-color: #22c55e; }\n  .numline-legend {\n    display: flex;\n    flex-wrap: wrap;\n    gap: 16px;\n    margin-top: 14px;\n    padding-top: 12px;\n    border-top: 1px dashed rgba(255, 255, 255, 0.08);\n    font-size: 0.74rem;\n    color: #cbd5e1;\n  }\n  .numline-legend-item {\n    display: flex;\n    align-items: center;\n    gap: 6px;\n  }\n\n  /* Diagram 2: RAM Memory Pointer Architecture */\n  .ram-schematic-grid {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 14px;\n  }\n  @media (max-width: 768px) {\n    .ram-schematic-grid { grid-template-columns: 1fr; }\n  }\n  .ram-schematic-box {\n    background: rgba(0, 0, 0, 0.25);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 8px;\n    padding: 14px;\n  }\n  .ram-schematic-head {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 10px;\n    padding-bottom: 8px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.06);\n  }\n  .ram-head-title {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.76rem;\n    font-weight: 800;\n  }\n  .ram-node-row {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    margin: 8px 0;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.75rem;\n  }\n  .ram-var-tag {\n    background: rgba(56, 189, 248, 0.15);\n    border: 1px solid rgba(56, 189, 248, 0.3);\n    color: #38bdf8;\n    padding: 4px 10px;\n    border-radius: 6px;\n    font-weight: 700;\n    width: 60px;\n    text-align: center;\n  }\n  .ram-arrow-connector {\n    color: #64748b;\n    font-weight: 700;\n  }\n  .ram-address-block {\n    flex: 1;\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    border-radius: 6px;\n    padding: 6px 12px;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n  }\n  .ram-addr-label {\n    font-size: 0.65rem;\n    color: #94a3b8;\n  }\n  .ram-addr-val {\n    color: #fbbf24;\n    font-weight: 700;\n  }\n  .ram-content-val {\n    color: #f8fafc;\n    font-weight: 700;\n  }\n\n  /* Diagram 3: Circuit Breaker Flowchart */\n  .circuit-grid {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 14px;\n  }\n  @media (max-width: 768px) {\n    .circuit-grid { grid-template-columns: 1fr; }\n  }\n  .circuit-box {\n    background: rgba(0, 0, 0, 0.25);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 8px;\n    padding: 14px;\n  }\n  .circuit-step-list {\n    display: flex;\n    flex-direction: column;\n    gap: 8px;\n    margin-top: 8px;\n  }\n  .circuit-step-node {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    padding: 8px 12px;\n    border-radius: 6px;\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.06);\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.74rem;\n  }\n  .circuit-badge {\n    padding: 2px 7px;\n    border-radius: 4px;\n    font-size: 0.65rem;\n    font-weight: 800;\n    text-transform: uppercase;\n  }\n  .circuit-badge--halt {\n    background: rgba(244, 63, 94, 0.2);\n    color: #f43f5e;\n    border: 1px solid rgba(244, 63, 94, 0.4);\n  }\n  .circuit-badge--pass {\n    background: rgba(34, 197, 94, 0.2);\n    color: #22c55e;\n    border: 1px solid rgba(34, 197, 94, 0.4);\n  }\n\n  /* Diagram 4: Twin House Identity vs Equality */\n  .twin-house-grid {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 14px;\n    margin-top: 10px;\n  }\n  @media (max-width: 640px) {\n    .twin-house-grid { grid-template-columns: 1fr; }\n  }\n  .twin-card {\n    background: rgba(0, 0, 0, 0.25);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 8px;\n    padding: 14px;\n    text-align: center;\n  }\n  .twin-house-icon {\n    font-size: 2rem;\n    margin-bottom: 4px;\n  }\n  .twin-house-title {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.84rem;\n    font-weight: 800;\n    color: #f8fafc;\n  }\n  .twin-house-addr {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.70rem;\n    color: #fbbf24;\n    margin-bottom: 8px;\n  }\n  .twin-furniture-box {\n    background: rgba(255, 255, 255, 0.04);\n    border: 1px dashed rgba(255, 255, 255, 0.15);\n    border-radius: 6px;\n    padding: 8px;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.76rem;\n    color: #38bdf8;\n    margin-bottom: 8px;\n  }\n  .twin-verdict-row {\n    display: flex;\n    justify-content: space-around;\n    padding-top: 8px;\n    border-top: 1px solid rgba(255, 255, 255, 0.08);\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.74rem;\n  }\n\n  /* Diagram 5: 8-Bit Hardware Register & RBAC Switchboard */\n  .dip-register-grid {\n    display: grid;\n    grid-template-columns: repeat(8, 1fr);\n    gap: 6px;\n    margin: 12px 0;\n  }\n  @media (max-width: 640px) {\n    .dip-register-grid { grid-template-columns: repeat(4, 1fr); }\n  }\n  .dip-cell {\n    background: rgba(0, 0, 0, 0.35);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 6px;\n    padding: 8px 4px;\n    text-align: center;\n    font-family: 'JetBrains Mono', monospace;\n  }\n  .dip-bit-idx {\n    font-size: 0.62rem;\n    color: #64748b;\n    margin-bottom: 2px;\n  }\n  .dip-bit-power {\n    font-size: 0.72rem;\n    font-weight: 800;\n    color: #94a3b8;\n  }\n  .dip-bit-flag {\n    font-size: 0.62rem;\n    font-weight: 700;\n    margin: 4px 0;\n    height: 16px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n  .dip-switch-indicator {\n    width: 14px;\n    height: 14px;\n    border-radius: 50%;\n    margin: 4px auto 0 auto;\n    border: 2px solid #64748b;\n  }\n  .switch-on {\n    background: #22c55e;\n    border-color: #4ade80;\n    box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);\n  }\n  .switch-off {\n    background: #1e293b;\n    border-color: #475569;\n  }\n\n  /* Diagram 6: Walrus Stream Pipeline */\n  .walrus-flow-wrap {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 8px;\n    background: rgba(0, 0, 0, 0.25);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 8px;\n    padding: 14px;\n    margin-top: 10px;\n    overflow-x: auto;\n  }\n  .walrus-flow-step {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    text-align: center;\n    min-width: 120px;\n  }\n  .walrus-step-badge {\n    background: rgba(168, 85, 247, 0.15);\n    border: 1px solid rgba(168, 85, 247, 0.3);\n    color: #c084fc;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.68rem;\n    font-weight: 800;\n    padding: 2px 8px;\n    border-radius: 4px;\n    margin-bottom: 6px;\n  }\n  .walrus-step-desc {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.72rem;\n    color: #cbd5e1;\n  }\n\n  /* Diagram 7: PEUMASCILA Mnemonic Ladder */\n  .ladder-container {\n    display: flex;\n    flex-direction: column;\n    gap: 6px;\n    margin: 14px 0;\n  }\n  .ladder-rung {\n    display: flex;\n    align-items: center;\n    gap: 12px;\n    padding: 8px 14px;\n    border-radius: 8px;\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.07);\n    font-family: 'JetBrains Mono', monospace;\n    transition: transform 0.2s ease;\n  }\n  .ladder-rung:hover {\n    transform: translateX(4px);\n  }\n  .ladder-letter {\n    width: 24px;\n    height: 24px;\n    border-radius: 6px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 0.82rem;\n    font-weight: 900;\n  }\n  .rung-rose { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); }\n  .rung-gold { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }\n  .rung-purple { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }\n  .rung-blue { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }\n  .rung-green { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }\n  .rung-muted { background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1); }\n  .ladder-title {\n    font-size: 0.80rem;\n    font-weight: 800;\n    color: #f8fafc;\n    width: 140px;\n  }\n  .ladder-ops {\n    flex: 1;\n    font-size: 0.74rem;\n    color: #94a3b8;\n  }\n  .ladder-priority {\n    font-size: 0.65rem;\n    padding: 2px 7px;\n    border-radius: 4px;\n    background: rgba(255, 255, 255, 0.05);\n    color: #cbd5e1;\n  }\n\n  /* Light mode adaptations for all cognitive learning components */\n  [data-theme=\"light\"] .py-recall-hook {\n    background: linear-gradient(135deg, rgba(2, 132, 199, 0.08) 0%, rgba(147, 51, 234, 0.08) 100%);\n    border-color: rgba(2, 132, 199, 0.3);\n    border-left-color: #0284c7;\n    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);\n  }\n  [data-theme=\"light\"] .py-recall-title { color: #0284c7; }\n  [data-theme=\"light\"] .py-recall-text { color: #1e293b; }\n  [data-theme=\"light\"] .py-recall-text code {\n    background: #f1f5f9;\n    color: #0369a1;\n    border: 1px solid #cbd5e1;\n  }\n  [data-theme=\"light\"] .cog-model-card {\n    background: #ffffff;\n    border-color: #e2e8f0;\n    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);\n  }\n\n  /* Bitmask RBAC Card */\n  .bitmask-grid {\n    display: grid;\n    grid-template-columns: repeat(4, 1fr);\n    gap: 10px;\n    margin-top: 12px;\n  }\n  @media (max-width: 768px) {\n    .bitmask-grid { grid-template-columns: repeat(2, 1fr); }\n  }\n  @media (max-width: 480px) {\n    .bitmask-grid { grid-template-columns: 1fr; }\n  }\n  .bitmask-cell {\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.07);\n    border-radius: 8px;\n    padding: 12px;\n    text-align: center;\n  }\n  .bitmask-cell-title {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.78rem;\n    font-weight: 800;\n  }\n  .bitmask-cell-title--blue { color: #38bdf8; }\n  .bitmask-cell-title--green { color: #34d399; }\n  .bitmask-cell-title--amber { color: #fbbf24; }\n  .bitmask-cell-title--purple { color: #c084fc; }\n\n  .bitmask-cell-sub {\n    font-size: 0.68rem;\n    color: #94a3b8;\n    margin-top: 4px;\n  }\n  .bitmask-actions {\n    display: flex;\n    justify-content: space-around;\n    margin-top: 10px;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.72rem;\n    color: #cbd5e1;\n  }\n\n  /* Arity Grid */\n  .arity-grid {\n    display: grid;\n    grid-template-columns: repeat(3, 1fr);\n    gap: 12px;\n    margin: 16px 0;\n  }\n  @media (max-width: 640px) {\n    .arity-grid { grid-template-columns: 1fr; }\n  }\n  .arity-card {\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 10px;\n    padding: 14px;\n    display: flex;\n    flex-direction: column;\n    gap: 8px;\n  }\n  .arity-head {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n  }\n  .arity-badge {\n    background: rgba(56, 189, 248, 0.15);\n    border: 1px solid rgba(56, 189, 248, 0.3);\n    color: #38bdf8;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.72rem;\n    font-weight: 800;\n    width: 22px;\n    height: 22px;\n    border-radius: 6px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n  .arity-name {\n    font-weight: 700;\n    font-size: 0.88rem;\n    color: #f8fafc;\n  }\n  .arity-desc {\n    font-size: 0.75rem;\n    color: #94a3b8;\n    margin: 0;\n    line-height: 1.4;\n  }\n  .arity-chips {\n    display: flex;\n    flex-wrap: wrap;\n    gap: 6px;\n    margin-top: 4px;\n  }\n  .arity-chip {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.72rem;\n    background: rgba(0, 0, 0, 0.3);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    border-radius: 4px;\n    padding: 2px 7px;\n    color: #e2e8f0;\n  }\n\n\n  /* Operator Classification Grid */\n  .op-matrix-list {\n    display: flex;\n    flex-direction: column;\n    gap: 12px;\n    margin-top: 14px;\n  }\n  .op-family-card {\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    border-radius: 8px;\n    padding: 14px;\n  }\n  .op-family-header {\n    display: flex;\n    align-items: center;\n    gap: 12px;\n    margin-bottom: 12px;\n  }\n  @media (max-width: 640px) {\n    .op-family-header { flex-direction: column; align-items: flex-start; gap: 6px; }\n  }\n  .op-family-desc {\n    font-size: 0.75rem;\n    color: #94a3b8;\n    line-height: 1.4;\n  }\n  .op-symbols-grid {\n    display: flex;\n    flex-wrap: wrap;\n    gap: 8px;\n  }\n  .op-symbol-box {\n    background: rgba(0, 0, 0, 0.3);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    border-radius: 6px;\n    padding: 6px 12px;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.85rem;\n    color: #f8fafc;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    min-width: 40px;\n    transition: all 0.2s ease;\n  }\n  .op-symbol-box:hover {\n    background: rgba(56, 189, 248, 0.1);\n    border-color: rgba(56, 189, 248, 0.4);\n    color: #38bdf8;\n    transform: translateY(-2px);\n  }\n  [data-theme=\"light\"] .op-family-card {\n    background: #f8fafc;\n    border-color: #e2e8f0;\n  }\n  [data-theme=\"light\"] .op-family-desc {\n    color: #475569;\n  }\n  [data-theme=\"light\"] .op-symbol-box {\n    background: #ffffff;\n    border-color: #cbd5e1;\n    color: #0f172a;\n  }\n  [data-theme=\"light\"] .op-symbol-box:hover {\n    background: #f0f9ff;\n    border-color: #38bdf8;\n    color: #0284c7;\n  }\n\n  /* Category pills */\n  .fam-chip {\n    display: inline-block;\n    padding: 2px 8px;\n    border-radius: 4px;\n    font-size: 0.72rem;\n    font-weight: 700;\n    font-family: 'Outfit', sans-serif;\n  }\n  .fam-chip--arith { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }\n  .fam-chip--assign { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }\n  .fam-chip--compare { background: rgba(52, 211, 153, 0.15); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); }\n  .fam-chip--logic { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }\n  .fam-chip--ident { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }\n  .fam-chip--member { background: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); }\n  .fam-chip--bitwise { background: rgba(234, 88, 12, 0.15); color: #fb923c; border: 1px solid rgba(234, 88, 12, 0.3); }\n  .fam-chip--cond { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }\n\n  /* Subcards with divider */\n  .topic-subcard {\n    margin-top: 22px;\n    padding-top: 16px;\n    border-top: 1px dashed rgba(255, 255, 255, 0.1);\n  }\n\n  /* Table and Section Header Utilities (100% Class-Driven, 0 Inline Styles) */\n  .table-header-wrap {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 8px;\n    margin-bottom: 8px;\n    padding: 0 4px;\n  }\n  .table-header-title {\n    margin: 0;\n    font-size: 0.95rem;\n    font-weight: 800;\n    letter-spacing: -0.01em;\n    flex: 1;\n  }\n  .subcard-header-with-audio {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    margin-bottom: 8px;\n  }\n  .subcard-header-title {\n    margin: 0;\n    font-size: 0.95rem;\n    font-weight: 800;\n    flex: 1;\n  }\n  .pipeline-flow-box {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    padding: 12px 16px;\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px solid rgba(255, 255, 255, 0.06);\n    border-radius: 8px;\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.75rem;\n    margin-top: 6px;\n    overflow-x: auto;\n  }\n  .pipeline-flow-tip {\n    font-size: 0.75rem;\n    color: #94a3b8;\n    margin-top: 8px;\n    line-height: 1.5;\n  }\n  .tok-blue { color: #38bdf8; }\n  .tok-green { color: #34d399; }\n  .tok-amber { color: #fbbf24; }\n  .tok-purple { color: #a855f7; }\n  .tok-rose { color: #f43f5e; }\n  .tok-muted { color: #64748b; }\n\n  /* 3-Column Complexity Grid */\n  .complexity-grid {\n    display: grid;\n    grid-template-columns: repeat(3, 1fr);\n    gap: 10px;\n    margin-top: 6px;\n  }\n  @media (max-width: 640px) {\n    .complexity-grid { grid-template-columns: 1fr; }\n  }\n  .complexity-cell {\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.07);\n    border-radius: 8px;\n    padding: 12px;\n    text-align: center;\n  }\n  .complexity-expr {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.70rem;\n    color: #94a3b8;\n  }\n  .complexity-val {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.95rem;\n    font-weight: 800;\n    margin: 6px 0;\n  }\n  .complexity-desc {\n    font-size: 0.70rem;\n    color: #64748b;\n  }\n\n  /* Dual Short-Circuit Rule Grid */\n  .dual-rule-grid {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 12px;\n    margin-top: 6px;\n  }\n  @media (max-width: 640px) {\n    .dual-rule-grid { grid-template-columns: 1fr; }\n  }\n  .dual-rule-box {\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.07);\n    border-radius: 8px;\n    padding: 12px;\n  }\n  .dual-rule-title {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.78rem;\n    font-weight: 700;\n    margin-bottom: 6px;\n  }\n  .dual-rule-text {\n    font-family: 'JetBrains Mono', monospace;\n    font-size: 0.75rem;\n    color: #cbd5e1;\n    line-height: 1.6;\n  }\n\n  /* Interview Q&A Layout */\n  .interview-header-title {\n    color: #38bdf8;\n    font-size: 1rem;\n    margin-bottom: 14px;\n    display: flex;\n    align-items: center;\n    gap: 8px;\n  }\n  .interview-divider {\n    border: none;\n    border-top: 1px dashed rgba(255, 255, 255, 0.1);\n    margin: 12px 0;\n  }\n\n</style>\n\n<!-- ═══ SECTION 01: Operator Superpowers & Architecture ═══ -->\n<div class=\"slide-section\" id=\"day02FundamentalsSection\">\n  <h2 class=\"slide-section-title heading-box-wrap heading-with-audio\" id=\"headingFundamentals\">\n    <span class=\"heading-num-box\">01</span>\n    <span class=\"heading-title-box\">\n      <span class=\"heading-title-text\"><span class=\"heading-icon\">🧱</span> Python Operators: Foundation &amp; Core Architecture</span>\n    </span>\n  </h2>\n\n  <!-- Master Classification Table -->\n  <div class=\"db-mock-table-wrap\">\n    <div class=\"table-header-wrap\">\n      <h4 class=\"table-header-title\">Complete Python Operator Classification Matrix</h4>\n    </div>\n    <div class=\"op-matrix-list\">\n      \n      <div class=\"op-family-card\">\n        <div class=\"op-family-header\">\n          <span class=\"fam-chip fam-chip--arith\">Arithmetic</span>\n          <span class=\"op-family-desc\">Executes mathematical calculations to transform numeric values.</span>\n        </div>\n        <div class=\"op-symbols-grid\">\n          <div class=\"op-symbol-box\"><code>+</code></div>\n          <div class=\"op-symbol-box\"><code>-</code></div>\n          <div class=\"op-symbol-box\"><code>*</code></div>\n          <div class=\"op-symbol-box\"><code>/</code></div>\n          <div class=\"op-symbol-box\"><code>//</code></div>\n          <div class=\"op-symbol-box\"><code>%</code></div>\n          <div class=\"op-symbol-box\"><code>**</code></div>\n          <div class=\"op-symbol-box\"><code>@</code></div>\n        </div>\n      </div>\n\n      <div class=\"op-family-card\">\n        <div class=\"op-family-header\">\n          <span class=\"fam-chip fam-chip--assign\">Augmented Assignment</span>\n          <span class=\"op-family-desc\">Performs an operation and updates the variable's value simultaneously.</span>\n        </div>\n        <div class=\"op-symbols-grid\">\n          <div class=\"op-symbol-box\"><code>=</code></div>\n          <div class=\"op-symbol-box\"><code>+=</code></div>\n          <div class=\"op-symbol-box\"><code>-=</code></div>\n          <div class=\"op-symbol-box\"><code>*=</code></div>\n          <div class=\"op-symbol-box\"><code>/=</code></div>\n          <div class=\"op-symbol-box\"><code>//=</code></div>\n          <div class=\"op-symbol-box\"><code>%=</code></div>\n          <div class=\"op-symbol-box\"><code>**=</code></div>\n          <div class=\"op-symbol-box\"><code>:=</code></div>\n        </div>\n      </div>\n\n      <div class=\"op-family-card\">\n        <div class=\"op-family-header\">\n          <span class=\"fam-chip fam-chip--compare\">Relational Comparison</span>\n          <span class=\"op-family-desc\">Evaluates the relationship between values to return a True or False verdict.</span>\n        </div>\n        <div class=\"op-symbols-grid\">\n          <div class=\"op-symbol-box\"><code>==</code></div>\n          <div class=\"op-symbol-box\"><code>!=</code></div>\n          <div class=\"op-symbol-box\"><code>&lt;</code></div>\n          <div class=\"op-symbol-box\"><code>&lt;=</code></div>\n          <div class=\"op-symbol-box\"><code>&gt;</code></div>\n          <div class=\"op-symbol-box\"><code>&gt;=</code></div>\n        </div>\n      </div>\n\n      <div class=\"op-family-card\">\n        <div class=\"op-family-header\">\n          <span class=\"fam-chip fam-chip--logic\">Boolean Logic</span>\n          <span class=\"op-family-desc\">Combines multiple truth conditions using intelligent short-circuit evaluation.</span>\n        </div>\n        <div class=\"op-symbols-grid\">\n          <div class=\"op-symbol-box\"><code>and</code></div>\n          <div class=\"op-symbol-box\"><code>or</code></div>\n          <div class=\"op-symbol-box\"><code>not</code></div>\n        </div>\n      </div>\n\n      <div class=\"op-family-card\">\n        <div class=\"op-family-header\">\n          <span class=\"fam-chip fam-chip--ident\">Object Identity</span>\n          <span class=\"op-family-desc\">Verifies if two variables point to the exact same physical RAM address.</span>\n        </div>\n        <div class=\"op-symbols-grid\">\n          <div class=\"op-symbol-box\"><code>is</code></div>\n          <div class=\"op-symbol-box\"><code>is not</code></div>\n        </div>\n      </div>\n\n      <div class=\"op-family-card\">\n        <div class=\"op-family-header\">\n          <span class=\"fam-chip fam-chip--member\">Collection Membership</span>\n          <span class=\"op-family-desc\">Checks whether a specific item exists inside a given data container.</span>\n        </div>\n        <div class=\"op-symbols-grid\">\n          <div class=\"op-symbol-box\"><code>in</code></div>\n          <div class=\"op-symbol-box\"><code>not in</code></div>\n        </div>\n      </div>\n\n      <div class=\"op-family-card\">\n        <div class=\"op-family-header\">\n          <span class=\"fam-chip fam-chip--bitwise\">Bitwise Systems</span>\n          <span class=\"op-family-desc\">Manipulates data at the lowest level by altering individual binary bits.</span>\n        </div>\n        <div class=\"op-symbols-grid\">\n          <div class=\"op-symbol-box\"><code>&amp;</code></div>\n          <div class=\"op-symbol-box\"><code>|</code></div>\n          <div class=\"op-symbol-box\"><code>^</code></div>\n          <div class=\"op-symbol-box\"><code>~</code></div>\n          <div class=\"op-symbol-box\"><code>&lt;&lt;</code></div>\n          <div class=\"op-symbol-box\"><code>&gt;&gt;</code></div>\n        </div>\n      </div>\n\n      <div class=\"op-family-card\">\n        <div class=\"op-family-header\">\n          <span class=\"fam-chip fam-chip--cond\">Conditional Ternary</span>\n          <span class=\"op-family-desc\">Evaluates a quick if/else decision on a single line of code.</span>\n        </div>\n        <div class=\"op-symbols-grid\">\n          <div class=\"op-symbol-box\"><code>x if c else y</code></div>\n        </div>\n      </div>\n\n    </div>\n  </div>\n</div>\n\n\n\n\n</div>\n\n\n<!-- ═══ SECTION 02: Arithmetic Operators ═══ -->\n<div class=\"slide-section\" id=\"day02ArithSection\">\n  <h2 class=\"slide-section-title heading-box-wrap heading-with-audio\" id=\"headingArith\">\n    <span class=\"heading-num-box\">02</span>\n    <span class=\"heading-title-box\">\n      <span class=\"heading-title-text\"><span class=\"heading-icon\">➗</span> Arithmetic Operators</span>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio01.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </span>\n  </h2>\n  <p class=\"section-intro-text\">Python provides a powerful suite of arithmetic operators designed to perform standard mathematical calculations effortlessly. These core operators form the bedrock of numerical processing, scientific computing, and financial modeling, allowing you to manipulate numeric values intuitively and elegantly within your code.</p>\n\n  <!-- Arithmetic Table Subcard -->\n  <div class=\"topic-subcard\" id=\"day02ArithTableSection\">\n    <div class=\"table-header-wrap\">\n      <h4 class=\"table-header-title\">Arithmetic &amp; Division Operator Reference</h4>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio02.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </div>\n    <div class=\"db-mock-table-wrap\">\n      <table class=\"db-table-mock db-table-mock--compact arith-sticky-table\">\n        <thead><tr><th>Operator</th><th>Name</th><th>Syntax Example</th><th>Behavior / Type Rule</th></tr></thead>\n        <tbody>\n          <tr><td><code>+</code></td><td>Addition</td><td><code>10 + 5 &rarr; 15</code></td><td>Adds numeric values together; cleanly concatenates sequences</td></tr>\n          <tr><td><code>-</code></td><td>Subtraction</td><td><code>10 - 5 &rarr; 5</code></td><td>Subtracts the right operand from the left operand</td></tr>\n          <tr><td><code>*</code></td><td>Multiplication</td><td><code>10 * 5 &rarr; 50</code></td><td>Multiplies values; can also be used to repeat sequences</td></tr>\n          <tr><td><code>/</code></td><td>True Division</td><td><code>7 / 2 &rarr; 3.5</code></td><td>Always returns a <code>float</code>, even if dividing evenly (<code>4 / 2 &rarr; 2.0</code>)</td></tr>\n          <tr><td><code>//</code></td><td>Floor Division</td><td><code>7 // 2 &rarr; 3</code> vs <code>-7 // 2 &rarr; -4</code></td><td>Floors towards -&infin;; returns an int if both operands are ints</td></tr>\n          <tr><td><code>%</code></td><td>Modulo</td><td><code>17 % 5 &rarr; 2</code></td><td>Returns the remainder of a division preserving the sign of divisor</td></tr>\n          <tr><td><code>**</code></td><td>Exponentiation</td><td><code>2 ** 3 &rarr; 8</code></td><td><strong>Right-associative</strong> power operator (e.g. 2 to the power of 3)</td></tr>\n          <tr><td><code>@</code></td><td>Matrix Multiply</td><td><code>A @ B</code></td><td>Invokes <code>__matmul__</code>; standard across NumPy, Pandas, PyTorch</td></tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <!-- Code Container Subcard -->\n  <div class=\"topic-subcard\" id=\"day02ArithCodeSection\">\n    <div class=\"subcard-header-with-audio\">\n      <h4 class=\"subcard-header-title\">Arithmetic Operations in Python</h4>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio03.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </div>\n    <div class=\"code-block-container\">\n      <div class=\"code-subblock\">\n        <pre><code><span class=\"code-comment\"># Fundamental Arithmetic Operations</span>\nprint(f\"Addition:       10 + 3  = {10 + 3}\")      <span class=\"code-comment\"># Output: 13</span>\nprint(f\"Subtraction:    10 - 3  = {10 - 3}\")      <span class=\"code-comment\"># Output: 7</span>\nprint(f\"Multiplication: 10 * 3  = {10 * 3}\")      <span class=\"code-comment\"># Output: 30</span>\n\n<span class=\"code-comment\"># Division Mechanics (Note the float vs int outcomes)</span>\nprint(f\"True Division:  10 / 3  = {10 / 3:.2f}\")  <span class=\"code-comment\"># Output: 3.33 (float)</span>\nprint(f\"Floor Division: 10 // 3 = {10 // 3}\")     <span class=\"code-comment\"># Output: 3    (truncated int)</span>\n\n<span class=\"code-comment\"># Modulo and Exponents</span>\nprint(f\"Modulo:         10 % 3  = {10 % 3}\")      <span class=\"code-comment\"># Output: 1    (remainder)</span>\nprint(f\"Exponentiation: 10 ** 3 = {10 ** 3}\")     <span class=\"code-comment\"># Output: 1000 (10^3)</span></code></pre>\n      </div>\n    </div>\n  </div>\n\n  <!-- 💡 Key Notes -->\n  <div class=\"py-recall-hook py-keynotes-card\">\n    <div class=\"py-keynotes-icon-wrap\">💡</div>\n    <div class=\"py-recall-body py-keynotes-body\">\n      <div class=\"py-recall-header py-keynotes-header\">\n        <span class=\"py-recall-title py-keynotes-title\">Key Notes</span>\n        <span class=\"py-recall-tag py-keynotes-tag\">Arithmetic Rules</span>\n      </div>\n      <ul class=\"py-keynotes-list\">\n        <li><strong>True division</strong> (<code>/</code>) ALWAYS returns a float, even if the division is perfect (e.g., <code>4 / 2 == 2.0</code>).</li>\n        <li><strong>Floor division</strong> (<code>//</code>) rounds DOWN towards negative infinity (e.g., <code>-7 // 2 == -4</code>, NOT <code>-3</code>).</li>\n        <li><strong>Modulo</strong> (<code>%</code>) in Python ALWAYS takes the SAME SIGN as the divisor.</li>\n      </ul>\n    </div>\n  </div>\n</div>\n\n\n<!-- ═══ SECTION 03: Relational Comparisons & Chained Evaluation ═══ -->\n<div class=\"slide-section\" id=\"day02CompSection\">\n  <h2 class=\"slide-section-title heading-box-wrap heading-with-audio\" id=\"headingComp\">\n    <span class=\"heading-num-box\">03</span>\n    <span class=\"heading-title-box\">\n      <span class=\"heading-title-text\"><span class=\"heading-icon\">⚖️</span> Comparison (Relational) Operators</span>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio04.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </span>\n  </h2>\n  <p class=\"section-intro-text\">Comparison operators evaluate relationships between two values and return a boolean result (<code>True</code> or <code>False</code>). Python uniquely optimizes <strong>chained comparisons</strong> (e.g. <code>18 &lt;= age &lt; 65</code>), evaluating operands with mathematical continuity and evaluating intermediate expressions exactly once.</p>\n\n  <!-- Comparison Table Subcard -->\n  <div class=\"topic-subcard\" id=\"day02CompTableSection\">\n    <div class=\"table-header-wrap\">\n      <h4 class=\"table-header-title\">Comparison &amp; Relational Operator Reference</h4>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio05.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </div>\n    <div class=\"db-mock-table-wrap\">\n      <table class=\"db-table-mock db-table-mock--compact arith-sticky-table\">\n        <thead><tr><th>Operator</th><th>Name</th><th>Syntax Example</th><th>Behavior / Type Rule</th></tr></thead>\n        <tbody>\n          <tr><td><code>==</code></td><td>Equal To</td><td><code>10 == 10 &rarr; True</code></td><td>Compares value equality by invoking <code>__eq__()</code></td></tr>\n          <tr><td><code>!=</code></td><td>Not Equal To</td><td><code>10 != 5 &rarr; True</code></td><td>Returns <code>True</code> if values are not equal (<code>__ne__()</code>)</td></tr>\n          <tr><td><code>&lt;</code></td><td>Less Than</td><td><code>5 &lt; 10 &rarr; True</code></td><td>Checks if left operand is strictly less than right (<code>__lt__()</code>)</td></tr>\n          <tr><td><code>&lt;=</code></td><td>Less Than or Equal</td><td><code>10 &lt;= 10 &rarr; True</code></td><td>Checks if left operand is less than or equal to right (<code>__le__()</code>)</td></tr>\n          <tr><td><code>&gt;</code></td><td>Greater Than</td><td><code>15 &gt; 10 &rarr; True</code></td><td>Checks if left operand is strictly greater than right (<code>__gt__()</code>)</td></tr>\n          <tr><td><code>&gt;=</code></td><td>Greater Than or Equal</td><td><code>10 &gt;= 10 &rarr; True</code></td><td>Checks if left operand is greater than or equal to right (<code>__ge__()</code>)</td></tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <!-- Comparison Code Subcard -->\n  <div class=\"topic-subcard\" id=\"day02CompCodeSection\">\n    <div class=\"subcard-header-with-audio\">\n      <h4 class=\"subcard-header-title\">Comparison &amp; Chaining Operations in Python</h4>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio06.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </div>\n    <div class=\"code-block-container\">\n      <div class=\"code-subblock\">\n        <pre><code><span class=\"code-comment\"># Standard Comparison Operations</span>\nscore = 85\nprint(f\"Passing Grade: {score &gt;= 60}\")         <span class=\"code-comment\"># Output: True</span>\nprint(f\"Perfect Score: {score == 100}\")        <span class=\"code-comment\"># Output: False</span>\nprint(f\"Needs Retest:  {score != 100}\")        <span class=\"code-comment\"># Output: True</span>\n\n<span class=\"code-comment\"># Python Chained Comparisons (Evaluates middle operand once)</span>\nage = 28\nis_working_age = 18 &lt;= age &lt; 65               <span class=\"code-comment\"># (18 &lt;= age) and (age &lt; 65)</span>\nprint(f\"Working Age Window: {is_working_age}\") <span class=\"code-comment\"># Output: True</span>\n\n<span class=\"code-comment\"># Lexicographical String Comparisons</span>\nprint(f\"Alphabetical:  'apple' &lt; 'banana'\")    <span class=\"code-comment\"># Output: True (Unicode order)</span></code></pre>\n      </div>\n    </div>\n  </div>\n\n  <!-- 💡 Key Notes -->\n  <div class=\"py-recall-hook py-keynotes-card\">\n    <div class=\"py-keynotes-icon-wrap\">💡</div>\n    <div class=\"py-recall-body py-keynotes-body\">\n      <div class=\"py-recall-header py-keynotes-header\">\n        <span class=\"py-recall-title py-keynotes-title\">Key Notes</span>\n        <span class=\"py-recall-tag py-keynotes-tag\">Comparison Rules</span>\n      </div>\n      <ul class=\"py-keynotes-list\">\n        <li><strong>Chained comparisons</strong> (<code>a &lt; b &lt; c</code>) evaluate mathematically as <code>(a &lt; b) and (b &lt; c)</code>, executing the middle expression <code>b</code> <strong>exactly once</strong>.</li>\n        <li><strong>Value equality</strong> (<code>==</code>) checks whether contents match by invoking <code>__eq__()</code>, whereas <code>is</code> tests physical RAM address.</li>\n        <li><strong>Lexicographical order</strong>: Strings are compared character-by-character based on their underlying Unicode code points.</li>\n      </ul>\n    </div>\n  </div>\n</div>\n\n\n<!-- ═══ SECTION 04: Logical & Short-Circuit Evaluation ═══ -->\n<div class=\"slide-section\" id=\"day02LogSection\">\n  <h2 class=\"slide-section-title heading-box-wrap heading-with-audio\" id=\"headingLog\">\n    <span class=\"heading-num-box\">04</span>\n    <span class=\"heading-title-box\">\n      <span class=\"heading-title-text\"><span class=\"heading-icon\">🔀</span> Logical Operators &amp; Short-Circuit Evaluation</span>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio07.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </span>\n  </h2>\n  <p class=\"section-intro-text\">Logical operators combine boolean expressions and determine execution paths using short-circuit evaluation. Rather than converting values strictly to booleans, Python's <code>and</code> and <code>or</code> operators return the actual operand that determined the outcome, enabling powerful fallback and gating patterns.</p>\n\n  <!-- Logical Table Subcard -->\n  <div class=\"topic-subcard\" id=\"day02LogTableSection\">\n    <div class=\"table-header-wrap\">\n      <h4 class=\"table-header-title\">Logical Operator Reference</h4>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio08.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </div>\n    <div class=\"db-mock-table-wrap\">\n      <table class=\"db-table-mock db-table-mock--compact arith-sticky-table\">\n        <thead><tr><th>Operator</th><th>Name</th><th>Syntax Example</th><th>Behavior / Type Rule</th></tr></thead>\n        <tbody>\n          <tr><td><code>and</code></td><td>Logical AND</td><td><code>True and False &rarr; False</code></td><td>Returns first falsy operand, or the last operand if all are truthy</td></tr>\n          <tr><td><code>or</code></td><td>Logical OR</td><td><code>False or True &rarr; True</code></td><td>Returns first truthy operand, or the last operand if all are falsy</td></tr>\n          <tr><td><code>not</code></td><td>Logical NOT</td><td><code>not True &rarr; False</code></td><td>Inverts boolean truth value; always returns a strict <code>bool</code></td></tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <!-- Logical Code Subcard -->\n  <div class=\"topic-subcard\" id=\"day02LogCodeSection\">\n    <div class=\"subcard-header-with-audio\">\n      <h4 class=\"subcard-header-title\">Logical &amp; Short-Circuit Operations in Python</h4>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio09.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </div>\n    <div class=\"code-block-container\">\n      <div class=\"code-subblock\">\n        <pre><code><span class=\"code-comment\"># Short-Circuit Fallback with 'or'</span>\nusername = \"\"\ndisplay_name = username <span class=\"kw\">or</span> \"Anonymous User\"\nprint(f\"Active User:  {display_name}\")          <span class=\"code-comment\"># Output: 'Anonymous User'</span>\n\n<span class=\"code-comment\"># Short-Circuit Guard with 'and'</span>\nuser_config = {\"tier\": \"pro\"}\ntier = user_config <span class=\"kw\">and</span> user_config[\"tier\"]\nprint(f\"User Tier:    {tier}\")                  <span class=\"code-comment\"># Output: 'pro'</span>\n\n<span class=\"code-comment\"># Logical Inversion with 'not'</span>\nis_locked = False\nprint(f\"Can Access:   {not is_locked}\")         <span class=\"code-comment\"># Output: True</span></code></pre>\n      </div>\n    </div>\n  </div>\n\n  <!-- 💡 Key Notes -->\n  <div class=\"py-recall-hook py-keynotes-card\">\n    <div class=\"py-keynotes-icon-wrap\">💡</div>\n    <div class=\"py-recall-body py-keynotes-body\">\n      <div class=\"py-recall-header py-keynotes-header\">\n        <span class=\"py-recall-title py-keynotes-title\">Key Notes</span>\n        <span class=\"py-recall-tag py-keynotes-tag\">Logical Rules</span>\n      </div>\n      <ul class=\"py-keynotes-list\">\n        <li><strong>Short-circuiting</strong> terminates evaluation the instant the outcome is guaranteed (<code>or</code> stops at first truthy; <code>and</code> stops at first falsy).</li>\n        <li><strong>Operand return</strong>: <code>and</code> and <code>or</code> return the <strong>actual operand object</strong>, not a converted boolean.</li>\n        <li><strong>Precedence hierarchy</strong>: <code>not</code> has higher precedence than <code>and</code>, which in turn has higher precedence than <code>or</code>.</li>\n      </ul>\n    </div>\n  </div>\n</div>\n\n\n<!-- ═══ SECTION 05: Identity vs Equality & Membership Testing ═══ -->\n<div class=\"slide-section\" id=\"day02IdSection\">\n  <h2 class=\"slide-section-title heading-box-wrap heading-with-audio\" id=\"headingId\">\n    <span class=\"heading-num-box\">05</span>\n    <span class=\"heading-title-box\">\n      <span class=\"heading-title-text\"><span class=\"heading-icon\">🔍</span> Identity &amp; Membership Operators</span>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio10.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </span>\n  </h2>\n  <p class=\"section-intro-text\">Identity operators check whether two variables point to the exact same object in physical RAM, while membership operators test whether a specified element exists inside a collection. Understanding the distinction between identity and equality is critical for preventing memory alias bugs and performance bottlenecks.</p>\n\n  <!-- Identity Table Subcard -->\n  <div class=\"topic-subcard\" id=\"day02IdTableSection\">\n    <div class=\"table-header-wrap\">\n      <h4 class=\"table-header-title\">Identity &amp; Membership Operator Reference</h4>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio11.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </div>\n    <div class=\"db-mock-table-wrap\">\n      <table class=\"db-table-mock db-table-mock--compact arith-sticky-table\">\n        <thead><tr><th>Operator</th><th>Name</th><th>Syntax Example</th><th>Behavior / Type Rule</th></tr></thead>\n        <tbody>\n          <tr><td><code>is</code></td><td>Identity Test</td><td><code>a is b &rarr; True/False</code></td><td><code>True</code> if operands share the identical RAM memory address (<code>id(a) == id(b)</code>)</td></tr>\n          <tr><td><code>is not</code></td><td>Negated Identity</td><td><code>a is not None &rarr; True</code></td><td><code>True</code> if operands reference different memory locations</td></tr>\n          <tr><td><code>in</code></td><td>Membership Test</td><td><code>'py' in 'python' &rarr; True</code></td><td><code>True</code> if element is found in sequence or collection</td></tr>\n          <tr><td><code>not in</code></td><td>Negated Membership</td><td><code>10 not in [1, 2] &rarr; True</code></td><td><code>True</code> if element is not present in collection</td></tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <!-- Identity Code Subcard -->\n  <div class=\"topic-subcard\" id=\"day02IdCodeSection\">\n    <div class=\"subcard-header-with-audio\">\n      <h4 class=\"subcard-header-title\">Identity &amp; Membership Operations in Python</h4>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio12.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </div>\n    <div class=\"code-block-container\">\n      <div class=\"code-subblock\">\n        <pre><code><span class=\"code-comment\"># Value Equality (==) vs Memory Identity (is)</span>\nlist_a = [1, 2, 3]\nlist_b = [1, 2, 3]\nlist_c = list_a  <span class=\"code-comment\"># Memory alias referencing same object</span>\n\nprint(f\"Value Equality:  {list_a == list_b}\")    <span class=\"code-comment\"># Output: True (same values)</span>\nprint(f\"RAM Identity:    {list_a is list_b}\")    <span class=\"code-comment\"># Output: False (different memory buffers)</span>\nprint(f\"Shared Alias:    {list_a is list_c}\")    <span class=\"code-comment\"># Output: True (exact same address)</span>\n\n<span class=\"code-comment\"># PEP 8 Standard: Singleton Check</span>\npayload = None\nprint(f\"Is Unset:        {payload is None}\")     <span class=\"code-comment\"># Output: True (always use 'is None')</span>\n\n<span class=\"code-comment\"># Fast Membership Testing (O(1) Hash Set vs O(N) List)</span>\nvalid_roles = {\"admin\", \"editor\", \"moderator\"}\nprint(f\"Has Access:      {'editor' in valid_roles}\") <span class=\"code-comment\"># Output: True (Instant O(1))</span></code></pre>\n      </div>\n    </div>\n  </div>\n\n  <!-- 💡 Key Notes -->\n  <div class=\"py-recall-hook py-keynotes-card\">\n    <div class=\"py-keynotes-icon-wrap\">💡</div>\n    <div class=\"py-recall-body py-keynotes-body\">\n      <div class=\"py-recall-header py-keynotes-header\">\n        <span class=\"py-recall-title py-keynotes-title\">Key Notes</span>\n        <span class=\"py-recall-tag py-keynotes-tag\">Identity &amp; Membership</span>\n      </div>\n      <ul class=\"py-keynotes-list\">\n        <li><strong>Always use <code>is None</code></strong>: PEP 8 mandates <code>is None</code> instead of <code>== None</code> because classes can overload <code>__eq__()</code>.</li>\n        <li><strong>Identity vs Equality</strong>: <code>is</code> tests memory identity (<code>id(a) == id(b)</code>), while <code>==</code> evaluates value content.</li>\n        <li><strong>Membership speed</strong>: <code>x in set</code> is <strong>$O(1)$ constant time</strong>, whereas <code>x in list</code> is <strong>$O(N)$ linear time</strong>.</li>\n      </ul>\n    </div>\n  </div>\n</div>\n\n\n<!-- ═══ SECTION 06: Bitwise Operators & Binary Masking ═══ -->\n<div class=\"slide-section\" id=\"day02BitSection\">\n  <h2 class=\"slide-section-title heading-box-wrap heading-with-audio\" id=\"headingBit\">\n    <span class=\"heading-num-box\">06</span>\n    <span class=\"heading-title-box\">\n      <span class=\"heading-title-text\"><span class=\"heading-icon\">🧮</span> Bitwise Operators &amp; Binary Masking</span>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio13.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </span>\n  </h2>\n  <p class=\"section-intro-text\">Bitwise operators perform atomic operations directly on the individual binary bits of integer data. In database internals, systems programming, and high-throughput data pipelines, bitmasking provides ultra-compact, high-speed representations for permission flags, feature toggles, and state machines.</p>\n\n  <!-- Bitwise Table Subcard -->\n  <div class=\"topic-subcard\" id=\"day02BitTableSection\">\n    <div class=\"table-header-wrap\">\n      <h4 class=\"table-header-title\">Bitwise Operator Reference</h4>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio14.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </div>\n    <div class=\"db-mock-table-wrap\">\n      <table class=\"db-table-mock db-table-mock--compact arith-sticky-table\">\n        <thead><tr><th>Operator</th><th>Name</th><th>Syntax Example</th><th>Behavior / Type Rule</th></tr></thead>\n        <tbody>\n          <tr><td><code>&amp;</code></td><td>Bitwise AND</td><td><code>5 &amp; 3 &rarr; 1</code></td><td>Sets bit to 1 if both corresponding bits are 1 (<code>0101 &amp; 0011 = 0001</code>)</td></tr>\n          <tr><td><code>|</code></td><td>Bitwise OR</td><td><code>5 | 3 &rarr; 7</code></td><td>Sets bit to 1 if at least one corresponding bit is 1 (<code>0101 | 0011 = 0111</code>)</td></tr>\n          <tr><td><code>^</code></td><td>Bitwise XOR</td><td><code>5 ^ 3 &rarr; 6</code></td><td>Sets bit to 1 if bits are different (<code>0101 ^ 0011 = 0110</code>)</td></tr>\n          <tr><td><code>~</code></td><td>Bitwise NOT</td><td><code>~5 &rarr; -6</code></td><td>Inverts all bits using two's complement formula: <code>-(x + 1)</code></td></tr>\n          <tr><td><code>&lt;&lt;</code></td><td>Left Shift</td><td><code>3 &lt;&lt; 2 &rarr; 12</code></td><td>Shifts bits left, multiplying integer by $2^n$ (<code>0011 &lt;&lt; 2 = 1100</code>)</td></tr>\n          <tr><td><code>&gt;&gt;</code></td><td>Right Shift</td><td><code>16 &gt;&gt; 2 &rarr; 4</code></td><td>Shifts bits right, floor-dividing integer by $2^n$ (<code>10000 &gt;&gt; 2 = 00100</code>)</td></tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <!-- Bitwise Code Subcard -->\n  <div class=\"topic-subcard\" id=\"day02BitCodeSection\">\n    <div class=\"subcard-header-with-audio\">\n      <h4 class=\"subcard-header-title\">Bitwise Masking Operations in Python</h4>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio15.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </div>\n    <div class=\"code-block-container\">\n      <div class=\"code-subblock\">\n        <pre><code><span class=\"code-comment\"># Permission Bitmasking (RBAC Pattern)</span>\nREAD    = 0b001  <span class=\"code-comment\"># 1</span>\nWRITE   = 0b010  <span class=\"code-comment\"># 2</span>\nEXECUTE = 0b100  <span class=\"code-comment\"># 4</span>\n\n<span class=\"code-comment\"># Combine Permissions with Bitwise OR (|)</span>\nuser_perms = READ | WRITE  <span class=\"code-comment\"># 0b011 (3)</span>\n\n<span class=\"code-comment\"># Inspect Permissions with Bitwise AND (&amp;)</span>\ncan_read = bool(user_perms &amp; READ)\ncan_exec = bool(user_perms &amp; EXECUTE)\nprint(f\"Can Read:    {can_read}\")                 <span class=\"code-comment\"># Output: True</span>\nprint(f\"Can Execute: {can_exec}\")                 <span class=\"code-comment\"># Output: False</span>\n\n<span class=\"code-comment\"># Fast Parity Check (Parentheses Required!)</span>\nnum = 14\nis_even = (num &amp; 1) == 0\nprint(f\"Is Even:     {is_even}\")                  <span class=\"code-comment\"># Output: True</span></code></pre>\n      </div>\n    </div>\n  </div>\n\n  <!-- 💡 Key Notes -->\n  <div class=\"py-recall-hook py-keynotes-card\">\n    <div class=\"py-keynotes-icon-wrap\">💡</div>\n    <div class=\"py-recall-body py-keynotes-body\">\n      <div class=\"py-recall-header py-keynotes-header\">\n        <span class=\"py-recall-title py-keynotes-title\">Key Notes</span>\n        <span class=\"py-recall-tag py-keynotes-tag\">Bitwise Rules</span>\n      </div>\n      <ul class=\"py-keynotes-list\">\n        <li><strong>Precedence trap</strong>: Comparisons (<code>==</code>) bind tighter than bitwise operators (<code>&amp;</code>, <code>|</code>, <code>^</code>) — always parenthesize: <code>(x &amp; 1) == 0</code>.</li>\n        <li><strong>Two's complement</strong>: Bitwise NOT (<code>~x</code>) inverts bits, yielding mathematically <code>-(x + 1)</code> (e.g. <code>~0 == -1</code> and <code>~5 == -6</code>).</li>\n        <li><strong>Hardware speed</strong>: Left shift (<code>&lt;&lt;</code>) and right shift (<code>&gt;&gt;</code>) multiply and divide by powers of 2 at single-cycle CPU speed.</li>\n      </ul>\n    </div>\n  </div>\n</div>\n\n\n<!-- ═══ SECTION 07: Walrus & Augmented Assignment Operators ═══ -->\n<div class=\"slide-section\" id=\"day02WalrusSection\">\n  <h2 class=\"slide-section-title heading-box-wrap heading-with-audio\" id=\"headingWalrus\">\n    <span class=\"heading-num-box\">07</span>\n    <span class=\"heading-title-box\">\n      <span class=\"heading-title-text\"><span class=\"heading-icon\">🦭</span> Assignment &amp; Walrus (:=) Operators</span>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio16.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </span>\n  </h2>\n  <p class=\"section-intro-text\">Assignment operators store values into variables, with augmented variants (<code>+=</code>, <code>-=</code>, etc.) combining computation and storage in one step. Introduced in Python 3.8 (PEP 572), the Walrus operator (<code>:=</code>) enables assignment expressions directly within conditional checks and comprehensions.</p>\n\n  <!-- Walrus Table Subcard -->\n  <div class=\"topic-subcard\" id=\"day02WalrusTableSection\">\n    <div class=\"table-header-wrap\">\n      <h4 class=\"table-header-title\">Assignment &amp; Walrus Operator Reference</h4>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio17.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </div>\n    <div class=\"db-mock-table-wrap\">\n      <table class=\"db-table-mock db-table-mock--compact arith-sticky-table\">\n        <thead><tr><th>Operator</th><th>Name</th><th>Syntax Example</th><th>Behavior / Type Rule</th></tr></thead>\n        <tbody>\n          <tr><td><code>=</code></td><td>Simple Assignment</td><td><code>x = 10</code></td><td>Binds a value or object to a variable name</td></tr>\n          <tr><td><code>+=</code></td><td>Add &amp; Assign</td><td><code>x += 5 &rarr; 15</code></td><td>Adds and rebinds; in-place buffer mutation on lists</td></tr>\n          <tr><td><code>-=</code></td><td>Subtract &amp; Assign</td><td><code>x -= 3 &rarr; 12</code></td><td>Subtracts right operand from left and assigns</td></tr>\n          <tr><td><code>*=</code></td><td>Multiply &amp; Assign</td><td><code>x *= 2 &rarr; 24</code></td><td>Multiplies and assigns result</td></tr>\n          <tr><td><code>/=</code></td><td>True Divide &amp; Assign</td><td><code>x /= 4 &rarr; 6.0</code></td><td>Divides and assigns floating-point result</td></tr>\n          <tr><td><code>//=</code></td><td>Floor Divide &amp; Assign</td><td><code>x //= 2 &rarr; 3.0</code></td><td>Floor divides and assigns integer/float result</td></tr>\n          <tr><td><code>%=</code></td><td>Modulo &amp; Assign</td><td><code>x %= 2 &rarr; 1.0</code></td><td>Calculates modulo and assigns remainder</td></tr>\n          <tr><td><code>**=</code></td><td>Exponent &amp; Assign</td><td><code>x **= 3 &rarr; 1.0</code></td><td>Raises to power and assigns result</td></tr>\n          <tr><td><code>:=</code></td><td>Walrus Assignment</td><td><code>(n := len(s)) &gt; 0</code></td><td>Assigns and returns value inside an expression</td></tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <!-- Walrus Code Subcard -->\n  <div class=\"topic-subcard\" id=\"day02WalrusCodeSection\">\n    <div class=\"subcard-header-with-audio\">\n      <h4 class=\"subcard-header-title\">Walrus &amp; Assignment Operations in Python</h4>\n      <button class=\"audio-play-btn\" onclick=\"playAudio('Day02/New_PyDay02Audio18.mp3', this)\" title=\"Play narration\">\n        <svg class=\"play-icon\" width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M8 5v14l11-7z\"/></svg>\n      </button>\n    </div>\n    <div class=\"code-block-container\">\n      <div class=\"code-subblock\">\n        <pre><code><span class=\"code-comment\"># Augmented Assignment</span>\ntotal = 100\ntotal += 25\ntotal -= 10\nprint(f\"Running Total: {total}\")                  <span class=\"code-comment\"># Output: 115</span>\n\n<span class=\"code-comment\"># Walrus Operator (:=) in List Comprehension</span>\ndata_stream = [\"  alpha \", \"   \", \"BETA\", \"  gamma  \"]\nfiltered = [clean <span class=\"kw\">for</span> item <span class=\"kw\">in</span> data_stream <span class=\"kw\">if</span> (clean := item.strip().lower())]\nprint(f\"Cleaned Stream: {filtered}\")              <span class=\"code-comment\"># Output: ['alpha', 'beta', 'gamma']</span>\n\n<span class=\"code-comment\"># Inline Ternary Conditional Expression</span>\nstatus = \"Active\" <span class=\"kw\">if</span> len(filtered) &gt; 0 <span class=\"kw\">else</span> \"Inactive\"\nprint(f\"System Status:  {status}\")                <span class=\"code-comment\"># Output: 'Active'</span></code></pre>\n      </div>\n    </div>\n  </div>\n\n  <!-- 💡 Key Notes -->\n  <div class=\"py-recall-hook py-keynotes-card\">\n    <div class=\"py-keynotes-icon-wrap\">💡</div>\n    <div class=\"py-recall-body py-keynotes-body\">\n      <div class=\"py-recall-header py-keynotes-header\">\n        <span class=\"py-recall-title py-keynotes-title\">Key Notes</span>\n        <span class=\"py-recall-tag py-keynotes-tag\">Assignment Rules</span>\n      </div>\n      <ul class=\"py-keynotes-list\">\n        <li><strong>Walrus expression</strong>: <code>:=</code> assigns and immediately returns the value, avoiding redundant evaluations in loops and comprehensions.</li>\n        <li><strong>Parentheses required</strong>: Walrus has the lowest binding precedence; always wrap in parentheses <code>(val := expr)</code> inside conditions.</li>\n        <li><strong>Ternary execution</strong>: Python ternary <code>x if cond else y</code> evaluates lazily, evaluating only the branch that matches the condition.</li>\n      </ul>\n    </div>\n  </div>\n</div>\n\n\n<!-- ═══ SECTION 08: Operator Precedence Hierarchy Table & Examples ═══ -->\n<div class=\"slide-section\" id=\"day02PrecedenceSection\">\n  <h2 class=\"slide-section-title heading-box-wrap heading-with-audio\" id=\"headingPrecedence\">\n    <span class=\"heading-num-box\">08</span>\n    <span class=\"heading-title-box\">\n      <span class=\"heading-title-text\"><span class=\"heading-icon\">🔺</span> Operator Precedence Hierarchy Table &amp; Rules</span>\n    </span>\n  </h2>\n  <p class=\"section-intro-text\">When an expression contains multiple operators, Python applies strict precedence rules to determine which operations are evaluated first. Operators at higher levels bind tighter than those below them. When in doubt, defensive parentheses eliminate ambiguity and make code immediately understandable.</p>\n\n  <!-- Precedence Hierarchy Table Subcard -->\n  <div class=\"topic-subcard\" id=\"day02PrecedenceTableSection\">\n    <div class=\"table-header-wrap\">\n      <h4 class=\"table-header-title\">Operator Precedence Hierarchy Table</h4>\n    </div>\n    <div class=\"db-mock-table-wrap\">\n      <table class=\"db-table-mock db-table-mock--compact arith-sticky-table precedence-table\">\n        <thead>\n          <tr>\n            <th>Precedence Level</th>\n            <th>Operators</th>\n            <th>Associativity</th>\n            <th>Description &amp; Behavior Rules</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-1\">Level 1 (Highest)</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>()</code> <code>[]</code> <code>{}</code> <code>f()</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-ltr\">Left-to-Right</span></td>\n            <td>Grouping parentheses, list/dict/set literals, slicing &amp; indexing, function calls</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-2\">Level 2</span></td>\n            <td><div class=\"prec-ops-wrap\"><code class=\"prec-op-highlight\">**</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-rtl\">Right-to-Left ⚠️</span></td>\n            <td>Exponentiation (evaluated right-to-left: <code>2 ** 3 ** 2 = 512</code>, not 64)</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-3\">Level 3</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>+x</code> <code>-x</code> <code>~x</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-rtl\">Right-to-Left</span></td>\n            <td>Unary plus, unary minus (negation), bitwise inversion (NOT)</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-4\">Level 4</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>*</code> <code>/</code> <code>//</code> <code>%</code> <code>@</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-ltr\">Left-to-Right</span></td>\n            <td>Multiplication, true float division, floor division, modulo, matrix multiplication</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-5\">Level 5</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>+</code> <code>-</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-ltr\">Left-to-Right</span></td>\n            <td>Addition and subtraction</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-6\">Level 6</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>&lt;&lt;</code> <code>&gt;&gt;</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-ltr\">Left-to-Right</span></td>\n            <td>Bitwise left shift and right shift</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-7\">Level 7</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>&amp;</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-ltr\">Left-to-Right</span></td>\n            <td>Bitwise AND</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-8\">Level 8</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>^</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-ltr\">Left-to-Right</span></td>\n            <td>Bitwise XOR (exclusive OR)</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-9\">Level 9</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>|</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-ltr\">Left-to-Right</span></td>\n            <td>Bitwise OR</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-10\">Level 10</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>==</code> <code>!=</code> <code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code> <code>is</code> <code>in</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-ltr\">Left-to-Right (Chained)</span></td>\n            <td>Comparisons, equality, identity tests, membership tests (evaluated with short-circuit chaining)</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-11\">Level 11</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>not</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-rtl\">Right-to-Left</span></td>\n            <td>Boolean logical NOT (inverts truth value)</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-12\">Level 12</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>and</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-ltr\">Left-to-Right</span></td>\n            <td>Boolean logical AND (short-circuits at first falsy value)</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-13\">Level 13</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>or</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-ltr\">Left-to-Right</span></td>\n            <td>Boolean logical OR (short-circuits at first truthy value)</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-14\">Level 14</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>if - else</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-rtl\">Right-to-Left</span></td>\n            <td>Conditional expression (ternary operator: <code>x if c else y</code>)</td>\n          </tr>\n          <tr>\n            <td><span class=\"prec-tier-badge prec-tier-15\">Level 15 (Lowest)</span></td>\n            <td><div class=\"prec-ops-wrap\"><code>:=</code> <code>=</code> <code>+=</code> <code>-=</code> <code>*=</code></div></td>\n            <td><span class=\"prec-assoc-tag prec-assoc-rtl\">Right-to-Left</span></td>\n            <td>Walrus assignment expression (<code>:=</code>) and assignment operators</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <!-- Precedence Code Examples Subcard -->\n  <div class=\"topic-subcard\" id=\"day02PrecedenceCodeSection\">\n    <div class=\"subcard-header-with-audio\">\n      <h4 class=\"subcard-header-title\">Operator Precedence in Action: Key Examples</h4>\n    </div>\n    <div class=\"code-block-container\">\n      <div class=\"code-subblock\">\n        <pre><code><span class=\"code-comment\"># 1. Arithmetic Precedence: Multiplication before Addition</span>\ncalc = 10 + 5 * 2 ** 2          <span class=\"code-comment\"># 2**2=4 -&gt; 5*4=20 -&gt; 10+20=30</span>\nprint(f\"Arithmetic Order:    {calc}\")              <span class=\"code-comment\"># Output: 30</span>\n\n<span class=\"code-comment\"># 2. Exponentiation Right-Associativity</span>\nexp = 2 ** 3 ** 2               <span class=\"code-comment\"># 3**2=9 -&gt; 2**9=512 (NOT 64!)</span>\nprint(f\"Right-Associative:   {exp}\")               <span class=\"code-comment\"># Output: 512</span>\n\n<span class=\"code-comment\"># 3. Bitwise vs Comparison Precedence Trap</span>\n<span class=\"code-comment\"># '==' binds higher than '&': (val & 1) == 0 requires parentheses!</span>\nval = 8\ncorrect_even = (val &amp; 1) == 0\nprint(f\"Safe Bitwise Check:  {correct_even}\")      <span class=\"code-comment\"># Output: True</span>\n\n<span class=\"code-comment\"># 4. Logical Precedence: 'not' &gt; 'and' &gt; 'or'</span>\n# Evaluates as: (True and False) or True -&gt; False or True -&gt; True\nlogic_eval = True <span class=\"kw\">and</span> False <span class=\"kw\">or</span> True\nprint(f\"Logical Evaluation:  {logic_eval}\")        <span class=\"code-comment\"># Output: True</span></code></pre>\n      </div>\n    </div>\n  </div>\n\n  <!-- 💡 Key Notes -->\n  <div class=\"py-recall-hook py-keynotes-card\">\n    <div class=\"py-keynotes-icon-wrap\">💡</div>\n    <div class=\"py-recall-body py-keynotes-body\">\n      <div class=\"py-recall-header py-keynotes-header\">\n        <span class=\"py-recall-title py-keynotes-title\">Key Notes</span>\n        <span class=\"py-recall-tag py-keynotes-tag\">Precedence Rules</span>\n      </div>\n      <ul class=\"py-keynotes-list\">\n        <li><strong>Defensive parentheses</strong>: Explicit parentheses cost 0 nanoseconds of runtime and completely eliminate bugs between bitwise, comparison, and boolean operations.</li>\n        <li><strong>Right-associativity</strong>: Exponentiation (<code>**</code>), unary operations (<code>~</code>, <code>-</code>), and assignments (<code>=</code>, <code>:=</code>) evaluate from right to left.</li>\n        <li><strong>Precedence tiers</strong>: Parentheses &gt; Exponents &gt; Unary &gt; Multiplicative &gt; Additive &gt; Bitwise &gt; Comparisons &gt; Logical &gt; Assignment.</li>\n      </ul>\n    </div>\n  </div>\n</div>\n\n\n<!-- ═══ SECTION 09: 14 Critical Production Operator Anti-Patterns ═══ -->\n<div class=\"slide-section\" id=\"day02MistakesSection\">\n  <h2 class=\"slide-section-title heading-box-wrap heading-with-audio\" id=\"headingMistakes\">\n    <span class=\"heading-num-box\">09</span>\n    <span class=\"heading-title-box\">\n      <span class=\"heading-title-text\"><span class=\"heading-icon\">⚠️</span> 14 Critical Operator Anti-Patterns in Production</span>\n    </span>\n  </h2>\n  \n  <div class=\"topic-subcard\" id=\"day02MistakesTableSection\">\n    <div class=\"table-header-wrap\">\n      <h4 class=\"table-header-title\">Master Anti-Pattern Review Table</h4>\n    </div>\n    <div class=\"db-mock-table-wrap\">\n      <table class=\"db-table-mock db-table-mock--compact arith-sticky-table anti-pattern-table\">\n        <thead>\n          <tr>\n            <th>Buggy Code Pattern</th>\n            <th>Runtime Result</th>\n            <th>Root Cause / Python Mechanism</th>\n            <th>Recommended Production Fix</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td><code class=\"ap-code-bug\">2 ** 3 ** 2</code></td>\n            <td><span class=\"ap-result-bad\">512</span> (expected 64)</td>\n            <td><code>**</code> associates right-to-left: evaluated as <code>2 ** (3 ** 2)</code></td>\n            <td><code class=\"ap-code-fix\">(2 ** 3) ** 2</code></td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">not False == False</code></td>\n            <td><span class=\"ap-result-bad\">False</span></td>\n            <td><code>==</code> has higher precedence than <code>not</code>: <code>not (False == False)</code></td>\n            <td><code class=\"ap-code-fix\">(not False) == False</code></td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">-7 // 2</code></td>\n            <td><span class=\"ap-result-bad\">-4</span> (not -3)</td>\n            <td>Floor division rounds down toward $-infty$, not toward zero</td>\n            <td><code class=\"ap-code-fix\">int(-7 / 2)</code> or <code>math.trunc()</code></td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">-17 % 5</code></td>\n            <td><span class=\"ap-result-bad\">3</span> (not -2)</td>\n            <td>Python modulo takes the sign of divisor: $-17 = (-4 \times 5) + 3$</td>\n            <td><code class=\"ap-code-fix\">math.fmod(-17, 5)</code></td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">x &amp; 1 == 0</code></td>\n            <td><span class=\"ap-result-bad\">x &amp; False &rarr; 0</span></td>\n            <td>Comparison <code>==</code> binds tighter than bitwise <code>&amp;</code></td>\n            <td><code class=\"ap-code-fix\">(x &amp; 1) == 0</code></td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">df[18 &lt;= df.age &lt;= 65]</code></td>\n            <td><span class=\"ap-result-bad\">ValueError: ambiguous truth</span></td>\n            <td>Chained comparison expands to scalar boolean <code>and</code>, incompatible with Series</td>\n            <td><code class=\"ap-code-fix\">df.age.between(18, 65)</code></td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">a = a + [1]</code></td>\n            <td><span class=\"ap-result-bad\">Aliases do not update</span></td>\n            <td><code>+</code> allocates a new list object; <code>+=</code> mutates existing list in-place</td>\n            <td><code class=\"ap-code-fix\">a += [1]</code> or <code>a.append(1)</code></td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">x is y (when x=1000)</code></td>\n            <td><span class=\"ap-result-bad\">False</span></td>\n            <td>Python only caches small integer singletons from -5 to 256 in memory</td>\n            <td><code class=\"ap-code-fix\">x == y</code> (for value equality)</td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">val == None</code></td>\n            <td><span class=\"ap-result-bad\">Breaks on NumPy/Pandas</span></td>\n            <td><code>__eq__</code> can be overloaded to return array of booleans instead of bool</td>\n            <td><code class=\"ap-code-fix\">val is None</code> (PEP 8 standard)</td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">discount = val or 0.10</code></td>\n            <td><span class=\"ap-result-bad\">0 overwritten to 0.10</span></td>\n            <td><code>0</code> is falsy; <code>or</code> falls back to default even for valid 0% discount</td>\n            <td><code class=\"ap-code-fix\">val if val is not None else 0.10</code></td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">x in large_list</code></td>\n            <td><span class=\"ap-result-bad\">Slow $O(N)$ linear time</span></td>\n            <td>Lists require linear scan through every element</td>\n            <td><code class=\"ap-code-fix\">x in set(large_list)</code> ($O(1)$)</td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">True in [1, 2]</code></td>\n            <td><span class=\"ap-result-bad\">Returns True</span></td>\n            <td>In Python, <code>bool</code> is a subclass of <code>int</code> and <code>True == 1</code></td>\n            <td><code class=\"ap-code-fix\">type(x) is bool and x in [...]</code></td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">~5</code></td>\n            <td><span class=\"ap-result-bad\">-6</span> (not -5)</td>\n            <td>Two's complement bitwise NOT computes $-(x + 1)$</td>\n            <td>Understand two's complement inversion</td>\n          </tr>\n          <tr>\n            <td><code class=\"ap-code-bug\">a = b; b = a + b</code></td>\n            <td><span class=\"ap-result-bad\">Overwrites a prematurely</span></td>\n            <td>Sequential statements mutate <code>a</code> before <code>b</code> calculates the sum</td>\n            <td><code class=\"ap-code-fix\">a, b = b, a + b</code> (atomic tuple unpack)</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n\n  <!-- 💡 Key Notes -->\n  <div class=\"py-recall-hook py-keynotes-card\">\n    <div class=\"py-keynotes-icon-wrap\">💡</div>\n    <div class=\"py-recall-body py-keynotes-body\">\n      <div class=\"py-recall-header py-keynotes-header\">\n        <span class=\"py-recall-title py-keynotes-title\">Key Notes</span>\n        <span class=\"py-recall-tag py-keynotes-tag\">Production Best Practices</span>\n      </div>\n      <ul class=\"py-keynotes-list\">\n        <li><strong>Singletons</strong>: Always compare <code>is None</code> rather than <code>== None</code>.</li>\n        <li><strong>Falsy defaults</strong>: Avoid <code>val or default</code> if <code>0</code> or <code>False</code> are valid values; use <code>val if val is not None else default</code>.</li>\n        <li><strong>Fast lookups</strong>: Always use hash sets or dictionaries for large collection membership testing.</li>\n      </ul>\n    </div>\n  </div>\n</div>\n\n\n<!-- ═══ SECTION 10: Top 25 FAANG Interview Questions ═══ -->\n<div class=\"slide-section\" id=\"day02InterviewSection\">\n  <h2 class=\"slide-section-title heading-box-wrap heading-with-audio\" id=\"headingInterview\">\n    <span class=\"heading-num-box\">10</span>\n    <span class=\"heading-title-box\">\n      <span class=\"heading-title-text\"><span class=\"heading-icon\">🎯</span> Top 25 FAANG Interview Questions: Python Operators &amp; Precedence</span>\n    </span>\n  </h2>\n\n  <div class=\"interview-box\">\n    <h4 class=\"interview-header-title\">\n      <span>🎯</span> Python Operators, Precedence &amp; Memory Mechanics\n    </h4>\n\n    <div id=\"pyDay02IQ1\">\n      <p><strong>Q1: Why does <code>2 ** 3 ** 2</code> evaluate to 512 instead of 64?</strong></p>\n      <p><em>A: The exponentiation operator (<code>**</code>) is <strong>right-associative</strong>. The rightmost exponent is computed first: <code>3 ** 2 = 9</code>, then <code>2 ** 9 = 512</code>. To compute <code>(2**3)**2 = 64</code>, explicit parentheses must be used.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ2\">\n      <p><strong>Q2: Why does <code>not False == False</code> evaluate to <code>False</code>?</strong></p>\n      <p><em>A: Comparison operators (<code>==</code>) have higher precedence than <code>not</code>. Thus, Python parses the expression as <code>not (False == False)</code> &rarr; <code>not True</code> &rarr; <code>False</code>. If you intend <code>(not False) == False</code>, you must use parentheses.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ3\">\n      <p><strong>Q3: How does short-circuit evaluation work with <code>and</code> and <code>or</code>?</strong></p>\n      <p><em>A: <code>a and b</code> evaluates <code>a</code>; if falsy, it immediately returns <code>a</code> without evaluating <code>b</code>. If truthy, it returns <code>b</code>. <code>a or b</code> evaluates <code>a</code>; if truthy, it immediately returns <code>a</code>. If falsy, it returns <code>b</code>. Neither operator coerces the result to a strict boolean.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ4\">\n      <p><strong>Q4: How do chained comparisons like <code>10 &lt; x &lt; 20</code> work under the hood?</strong></p>\n      <p><em>A: Python translates <code>10 &lt; x &lt; 20</code> to <code>10 &lt; x and x &lt; 20</code>, but evaluates the middle operand <code>x</code> only once. If <code>x</code> is an expensive function call, chained comparison ensures optimal single execution.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ5\">\n      <p><strong>Q5: What is the Walrus operator (<code>:=</code>), and where is it most useful?</strong></p>\n      <p><em>A: Introduced in Python 3.8 (PEP 572), <code>:=</code> assigns a value to a variable within an expression while returning the value. It prevents duplicate computation in <code>while ((chunk := file.read(1024))):</code> and avoids duplicate filtering in list comprehensions.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ6\">\n      <p><strong>Q6: Why is <code>x &amp; 1 == 0</code> a syntax / precedence trap?</strong></p>\n      <p><em>A: Comparison operators (<code>==</code>) have higher precedence than bitwise AND (<code>&amp;</code>). Python parses this as <code>x &amp; (1 == 0)</code> &rarr; <code>x &amp; False</code> &rarr; <code>0</code>. You must write <code>(x &amp; 1) == 0</code> with parentheses.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ7\">\n      <p><strong>Q7: What is the difference between <code>a = a + [1]</code> and <code>a += [1]</code> on a list?</strong></p>\n      <p><em>A: <code>a = a + [1]</code> creates a brand new list in memory and rebinds the variable <code>a</code>. <code>a += [1]</code> calls <code>list.__iadd__()</code>, which extends the existing list in-place without creating a new object.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ8\">\n      <p><strong>Q8: What does <code>~x</code> (bitwise NOT) do in Python?</strong></p>\n      <p><em>A: Python integers use two's complement representation. Bitwise NOT flips all bits, which is mathematically equivalent to <code>-(x + 1)</code>. E.g., <code>~5 == -6</code> and <code>~0 == -1</code>. In sequences, <code>~i</code> is conveniently used to index from the end: <code>a[~i] == a[-1 - i]</code>.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ9\">\n      <p><strong>Q9: How do you swap two variables without a temporary variable in Python?</strong></p>\n      <p><em>A: Use tuple packing and unpacking: <code>a, b = b, a</code>. Python creates a 2-tuple <code>(b, a)</code> on the right-hand side and unpacks it into <code>a</code> and <code>b</code> safely without collision.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ10\">\n      <p><strong>Q10: What is the difference between <code>and</code> / <code>or</code> and <code>&amp;</code> / <code>|</code>?</strong></p>\n      <p><em>A: <code>and</code> and <code>or</code> are logical operators that evaluate truthiness and support short-circuiting. <code>&amp;</code> and <code>|</code> are bitwise operators that operate on integer bits eagerly without short-circuiting.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ11\">\n      <p><strong>Q11: Why does <code>True in [1, 2]</code> return <code>True</code>?</strong></p>\n      <p><em>A: Because <code>bool</code> is a subclass of <code>int</code>, and <code>True == 1</code> is <code>True</code>. The <code>in</code> operator tests equality across elements, and since <code>1 == True</code>, Python matches the first element.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ12\">\n      <p><strong>Q12: How do you test if a number is a power of 2 using bitwise operators?</strong></p>\n      <p><em>A: Use <code>(n &gt; 0) and ((n &amp; (n - 1)) == 0)</code>. A power of 2 has exactly one binary bit set (e.g. <code>8 = 1000_2</code>), and <code>n - 1</code> flips all bits below it (<code>7 = 0111_2</code>). Their bitwise AND is always 0.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ13\">\n      <p><strong>Q13: What does the ternary operator look like in Python?</strong></p>\n      <p><em>A: <code>result = true_value if condition else false_value</code>. Unlike C's <code>cond ? a : b</code>, Python places the truth value first. It also short-circuits: only the branch corresponding to the condition is evaluated.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ14\">\n      <p><strong>Q14: Why does <code>-7 // 2</code> evaluate to <code>-4</code> instead of <code>-3</code>?</strong></p>\n      <p><em>A: Python's floor division rounds down toward negative infinity (<code>-&infin;</code>), not toward zero. <code>-7 / 2 = -3.5</code>, and the floor of <code>-3.5</code> is <code>-4</code>. In C or Java, integer division truncates towards zero, yielding <code>-3</code>.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ15\">\n      <p><strong>Q15: What is the matrix multiplication operator in Python?</strong></p>\n      <p><em>A: The <code>@</code> operator (PEP 465, introduced in Python 3.5). It invokes the <code>__matmul__</code> magic method, heavily utilized by NumPy, SciPy, and PyTorch for tensor and matrix operations.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ16\">\n      <p><strong>Q16: Why is <code>is</code> not recommended for comparing numbers or strings?</strong></p>\n      <p><em>A: <code>is</code> checks object identity (memory address), not value equality. While Python caches small integers (-5 to 256) and interned strings, larger numbers or dynamic strings allocate separate objects, making <code>x is y</code> unreliable for value comparisons.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ17\">\n      <p><strong>Q17: What is the result of <code>bool([] or () or {} or 0 or \"hello\")</code>?</strong></p>\n      <p><em>A: <code>True</code>. The <code>or</code> chain short-circuits at the first truthy value, which is <code>\"hello\"</code>. <code>bool(\"hello\")</code> is <code>True</code>.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ18\">\n      <p><strong>Q18: What is operator overloading, and how is it implemented?</strong></p>\n      <p><em>A: Operator overloading allows custom classes to define how built-in operators behave by implementing \"dunder\" (magic) methods, such as <code>__add__</code> for <code>+</code>, <code>__eq__</code> for <code>==</code>, and <code>__getitem__</code> for <code>[]</code>.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ19\">\n      <p><strong>Q19: How do left shift (<code>&lt;&lt;</code>) and right shift (<code>&gt;&gt;</code>) relate to arithmetic?</strong></p>\n      <p><em>A: <code>x &lt;&lt; n</code> multiplies <code>x</code> by $2^n$ (e.g. <code>3 &lt;&lt; 2 = 12</code>). <code>x &gt;&gt; n</code> performs floor division of <code>x</code> by $2^n$ (e.g. <code>16 &gt;&gt; 2 = 4</code>). Shifts are extremely fast at the hardware CPU level.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ20\">\n      <p><strong>Q20: What is the difference between <code>==</code> and <code>is</code> when comparing <code>[1, 2]</code> and <code>[1, 2]</code>?</strong></p>\n      <p><em>A: <code>[1, 2] == [1, 2]</code> is <code>True</code> because their contents are equal. <code>[1, 2] is [1, 2]</code> is <code>False</code> because list literals allocate two distinct list objects at different RAM addresses.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ21\">\n      <p><strong>Q21: Why does <code>[0] * 3</code> produce <code>[0, 0, 0]</code>, but <code>[[0]] * 3</code> creates a trap?</strong></p>\n      <p><em>A: <code>*</code> creates shallow copies of references. <code>[0] * 3</code> copies immutable integers. But <code>[[0]] * 3</code> duplicates the outer reference to the SAME inner list. Modifying <code>m[0][0] = 99</code> modifies all 3 sublists simultaneously.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ22\">\n      <p><strong>Q22: Can the Walrus operator be used in an arbitrary statement like <code>x := 5</code>?</strong></p>\n      <p><em>A: No. <code>:=</code> cannot be used as a standalone statement; it must be an expression, typically wrapped in parentheses or nested inside a condition/comprehension. Standalone assignment uses standard <code>=</code>.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ23\">\n      <p><strong>Q23: How do bitwise XOR (<code>^</code>) operations help find a non-duplicated element?</strong></p>\n      <p><em>A: Because <code>x ^ x = 0</code> and <code>x ^ 0 = x</code>, XOR is commutative and associative. If an array has every element duplicated except one, XORing all elements cancels all pairs, leaving exactly the unique single element in $O(N)$ time and $O(1)$ space.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ24\">\n      <p><strong>Q24: What is the time complexity of the <code>in</code> operator across different data structures?</strong></p>\n      <p><em>A: $O(N)$ for <code>list</code>, <code>tuple</code>, and <code>str</code> (requires linear scanning). Average $O(1)$ for <code>set</code> and <code>dict</code> (uses hash-table lookup). In large collections, testing membership in a set is orders of magnitude faster.</em></p>\n    </div>\n    <hr class=\"interview-divider\" />\n\n    <div id=\"pyDay02IQ25\">\n      <p><strong>Q25: Why does <code>0.1 + 0.2 == 0.3</code> evaluate to <code>False</code> in Python?</strong></p>\n      <p><em>A: Python uses IEEE-754 double-precision floating-point format. In base 2, fractions like 0.1 and 0.2 cannot be represented with finite binary digits, leading to tiny rounding errors: <code>0.1 + 0.2 = 0.30000000000000004</code>. To compare floats safely, use <code>math.isclose(a, b)</code> or the <code>decimal.Decimal</code> module.</em></p>\n    </div>\n  \n  <!-- 🧠 10-Second Recall Hook 10 -->\n  <div class=\"py-recall-hook\">\n    <div class=\"py-recall-icon\">🧠</div>\n    <div class=\"py-recall-body\">\n      <div class=\"py-recall-header\">\n        <span class=\"py-recall-title\">10-Second Recall Hook</span>\n        <span class=\"py-recall-tag\">Interview Mastery</span>\n      </div>\n      <p class=\"py-recall-text\">\n        FAANG interviewers test operator internals to distinguish prompt engineers from foundational systems thinkers. Master the memory pointers behind <code>is</code> vs <code>==</code>, in-place list mutation vs rebinding, and short-circuit operand passthrough.\n      </p>\n    </div>\n  </div>\n</div>\n</div>\n</div>\n"
     }
-],
-
-  testQuestions: [
+  ],
+  "practiceQuestions": [
     {
-      id: 1,
-      prompt: "Compute BMI: <code>weight_kg / (height_m ** 2)</code>, round to 2 decimals, store in <code>bmi</code>. Classify as <code>\"Underweight\"</code>/<code>\"Normal\"</code>/<code>\"Overweight\"</code> using a <strong>ternary expression</strong>; store in <code>category</code>. Use <code>weight_kg=70, height_m=1.75</code>.",
-      starterCode: `# Q1: BMI + ternary classification
-weight_kg = 70
-height_m  = 1.75
-
-bmi = round(weight_kg / (height_m ** 2), 2)
-category = "Underweight" if bmi < 18.5 else ("Normal" if bmi < 25 else "Overweight")
-
-print(f"BMI      : {bmi}")
-print(f"Category : {category}")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "bmi",      type: "float",  value: 22.86, tolerance: 0.01 },
-          { name: "category", type: "string", value: "Normal" }
+      "id": 1,
+      "prompt": "<strong>[Easy] BMI Metric Calculator & In-Place Assignment</strong><br/>Given weight in kilograms (<code>weight_kg = 78.5</code>) and height in meters (<code>height_m = 1.78</code>), compute Body Mass Index: <code>bmi = weight_kg / (height_m ** 2)</code>. Round to 2 decimal places and store in <code>bmi</code>.",
+      "starterCode": "",
+      "ref": "weight_kg = 78.5\nheight_m = 1.78\nbmi = round(weight_kg / (height_m ** 2), 2)\nprint(f\"BMI: {bmi}\")\n",
+      "questionAudio": "Day02/New_PyDay02Question01.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question01sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "bmi",
+            "type": "float",
+            "value": 24.78,
+            "tolerance": 0.01
+          }
         ]
       }
     },
     {
-      id: 2,
-      prompt: "Apply <code>**=</code> five times starting from <code>base = 2</code>; store each intermediate value in a list <code>steps</code>. Expected: <code>[4, 16, 256, 65536, 4294967296]</code>.",
-      starterCode: `# Q2: Augmented assignment **=
-base  = 2
-steps = []
-for _ in range(5):
-    base **= 2
-    steps.append(base)
-
-print(f"Steps: {steps}")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "steps", type: "list", value: [4, 16, 256, 65536, 4294967296] }
+      "id": 2,
+      "prompt": "<strong>[Easy] Circular Array Indexing with Modulo</strong><br/>In streaming analytics, a rolling buffer of size <code>BUFFER_SIZE = 8</code> receives events with sequence numbers from 0 to 25. For event sequence <code>seq_num = 19</code>, compute its circular buffer slot index using modulo (<code>slot_idx</code>).",
+      "starterCode": "",
+      "ref": "BUFFER_SIZE = 8\nseq_num = 19\nslot_idx = seq_num % BUFFER_SIZE\nprint(f\"Seq {seq_num} maps to buffer slot {slot_idx}\")\n",
+      "questionAudio": "Day02/New_PyDay02Question02.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question02sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "slot_idx",
+            "type": "int",
+            "value": 3
+          }
         ]
       }
     },
     {
-      id: 3,
-      prompt: "Floor division with negatives: compute <code>-7 // 2</code>, store in <code>result</code> (expect <code>-4</code>). Explain in a comment why Python rounds toward negative infinity rather than toward zero.",
-      starterCode: `# Q3: Floor division semantics with negatives
-result = -7 // 2    # rounds toward -inf → -4  (not -3 like C/Java!)
-result_c_style = int(-7 / 2)   # C-style: truncation toward zero → -3
-
-print(f"-7 // 2 (Python floor) : {result}")
-print(f"int(-7/2) (C-style truncation): {result_c_style}")
-# WHY -4?  Floor div always rounds DOWN (toward -infinity).
-# For positive numbers floor and truncation agree.
-# For negatives they diverge: floor(-3.5) = -4, trunc(-3.5) = -3.
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "int", value: -4 }
+      "id": 3,
+      "prompt": "<strong>[Easy] Sensor Range Validator with Chained Comparisons</strong><br/>A data pipeline receives temperature sensor reading <code>temp = 23.4</code> and humidity reading <code>humidity = 45.0</code>. Using chained comparisons, check that temperature is within <code>18.0 &lt;= temp &lt;= 26.0</code> and humidity is within <code>30.0 &lt;= humidity &lt;= 60.0</code>. Store the combined boolean result in <code>is_optimal</code>.",
+      "starterCode": "",
+      "ref": "temp = 23.4\nhumidity = 45.0\nis_optimal = (18.0 <= temp <= 26.0) and (30.0 <= humidity <= 60.0)\nprint(f\"Environment optimal: {is_optimal}\")\n",
+      "questionAudio": "Day02/New_PyDay02Question03.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question03sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "is_optimal",
+            "type": "bool",
+            "value": true
+          }
         ]
       }
     },
     {
-      id: 4,
-      prompt: "The precedence trap: for <code>x = 5</code>, evaluate <code>x &amp; 1 == 1</code> and store in <code>trapped_result</code>. Separately compute the <em>intended</em> check <code>(x &amp; 1) == 1</code> and store in <code>intended_result</code>.",
-      starterCode: `# Q4: Bitwise vs comparison operator precedence bug
-# Python precedence: == binds tighter than &
-# So: x & 1 == 1  is parsed as  x & (1 == 1)  which is  x & True  which is  x & 1
-x = 5  # binary: 101
-
-# Without parentheses — may work accidentally for some values but is WRONG logic:
-trapped_result  = x & 1 == 1   # Parsed as: x & (1 == 1) → x & True → 1 & True → 1 → truthy
-
-# Correct — explicit parentheses:
-intended_result = (x & 1) == 1  # (5 & 1) == 1 → 1 == 1 → True
-
-# Test where they diverge:
-x2 = 4  # binary: 100 (even number)
-trapped2  = x2 & 1 == 1    # x2 & (1==1) → 4 & True → 0 → False (accidentally correct)
-intended2 = (x2 & 1) == 1  # (4 & 1) == 1 → 0 == 1 → False
-
-print(f"x=5  trapped : {trapped_result},  intended : {intended_result}")
-print(f"x=4  trapped : {trapped2},  intended : {intended2}")
-print("Always parenthesize flag checks!")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "intended_result", type: "bool", value: true }
+      "id": 4,
+      "prompt": "<strong>[Easy] Default Value Fallback via Short-Circuit OR</strong><br/>Given user input <code>provided_currency = ''</code> and system default <code>DEFAULT_CURRENCY = 'USD'</code>, use the short-circuit <code>or</code> operator to assign <code>currency = provided_currency.strip() or DEFAULT_CURRENCY</code>. Test with empty string and <code>'EUR'</code>.",
+      "starterCode": "",
+      "ref": "DEFAULT_CURRENCY = 'USD'\nuser_input_1 = ''\nuser_input_2 = 'EUR'\n\ncurrency_1 = user_input_1.strip() or DEFAULT_CURRENCY\ncurrency_2 = user_input_2.strip() or DEFAULT_CURRENCY\n\nprint(f\"Currency 1: {currency_1} | Currency 2: {currency_2}\")\n",
+      "questionAudio": "Day02/New_PyDay02Question04.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question04sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "currency_1",
+            "type": "string",
+            "value": "USD"
+          },
+          {
+            "name": "currency_2",
+            "type": "string",
+            "value": "EUR"
+          }
         ]
       }
     },
     {
-      id: 5,
-      prompt: "Safe division using short-circuit: <code>safe_div = lambda a, b: b != 0 and a / b</code>. Test with <code>b=0</code> (store in <code>zero_case</code>) and <code>b=2</code> (store in <code>normal_case</code>).",
-      starterCode: `# Q5: Short-circuit guard pattern
-safe_div = lambda a, b: b != 0 and a / b
-
-zero_case   = safe_div(10, 0)    # b==0 is falsy, short-circuits → False (not ZeroDivisionError!)
-normal_case = safe_div(10, 2)    # b!=0 is truthy → evaluates and returns 5.0
-
-print(f"safe_div(10, 0) → {zero_case}    (short-circuited)")
-print(f"safe_div(10, 2) → {normal_case}  (evaluated)")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "zero_case",   type: "falsy" },
-          { name: "normal_case", type: "float", value: 5.0, tolerance: 0.001 }
+      "id": 5,
+      "prompt": "<strong>[Easy] Safe Division Guard using Short-Circuit AND</strong><br/>Write an expression that safely computes average transaction value: <code>avg_val = (tx_count != 0) and (total_revenue / tx_count)</code>. For <code>tx_count = 0</code> and <code>total_revenue = 50000.0</code>, verify that the expression returns <code>False</code> (or 0) without raising a <code>ZeroDivisionError</code>.",
+      "starterCode": "",
+      "ref": "tx_count = 0\ntotal_revenue = 50000.0\navg_val = (tx_count != 0) and (total_revenue / tx_count)\nprint(f\"Safe Avg: {avg_val}\")\n",
+      "questionAudio": "Day02/New_PyDay02Question05.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question05sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "avg_val",
+            "type": "bool",
+            "value": false
+          }
         ]
       }
     },
     {
-      id: 6,
-      prompt: "Walrus in a list: given <code>f(x) = x*2</code>, build <code>[y := f(x), y**2, y**3]</code> for <code>x = 3</code>, computing <code>f(x)</code> only once; store the list in <code>result</code>. Expected: <code>[6, 36, 216]</code>.",
-      starterCode: `# Q6: Walrus operator := avoids recomputation
-f = lambda x: x * 2
-
-x = 3
-result = [y := f(x), y**2, y**3]  # f(x) called ONCE; y is reused
-
-print(f"f(3)  = y   = {result[0]}")
-print(f"y**2       = {result[1]}")
-print(f"y**3       = {result[2]}")
-print(f"Full list  = {result}")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "list", value: [6, 36, 216] }
+      "id": 6,
+      "prompt": "<strong>[Medium] Exponentiation Associativity & Precedence</strong><br/>Demonstrate the right-associativity of <code>**</code>. Compute <code>res_default = 2 ** 3 ** 2</code> and <code>res_grouped = (2 ** 3) ** 2</code>. Store their difference (<code>res_default - res_grouped</code>) in <code>diff</code>.",
+      "starterCode": "",
+      "ref": "res_default = 2 ** 3 ** 2\nres_grouped = (2 ** 3) ** 2\ndiff = res_default - res_grouped\nprint(f\"Default: {res_default} | Grouped: {res_grouped} | Diff: {diff}\")\n",
+      "questionAudio": "Day02/New_PyDay02Question06.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question06sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "res_default",
+            "type": "int",
+            "value": 512
+          },
+          {
+            "name": "res_grouped",
+            "type": "int",
+            "value": 64
+          },
+          {
+            "name": "diff",
+            "type": "int",
+            "value": 448
+          }
         ]
       }
     },
     {
-      id: 7,
-      prompt: "Chained comparison: evaluate <code>0 &lt; score &lt; 100 and score != 50</code> for <code>score = 50</code> and <code>score = 75</code>. Store booleans in <code>result_50</code>, <code>result_75</code>.",
-      starterCode: `# Q7: Python chained comparison
-score = 50
-result_50 = 0 < score < 100 and score != 50   # True AND False → False
-
-score = 75
-result_75 = 0 < score < 100 and score != 50   # True AND True  → True
-
-print(f"score=50: {result_50}")
-print(f"score=75: {result_75}")
-# Python chaining: 0 < 50 < 100 evaluates as (0 < 50) and (50 < 100)
-# Each operand evaluated ONCE — more efficient and readable than C-style
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result_50", type: "bool", value: false },
-          { name: "result_75", type: "bool", value: true }
+      "id": 7,
+      "prompt": "<strong>[Medium] Fast Even/Odd & Power-of-Two Detection</strong><br/>Using bitwise operations only: (1) check if integer <code>n = 64</code> is even using <code>(n & 1) == 0</code>, storing in <code>is_even</code>; (2) check if <code>n</code> is a power of 2 using <code>(n > 0) and ((n & (n - 1)) == 0)</code>, storing in <code>is_power_of_two</code>.",
+      "starterCode": "",
+      "ref": "n = 64\nis_even = ((n & 1) == 0)\nis_power_of_two = (n > 0) and ((n & (n - 1)) == 0)\nprint(f\"{n} is even: {is_even} | power of 2: {is_power_of_two}\")\n",
+      "questionAudio": "Day02/New_PyDay02Question07.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question07sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "is_even",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "name": "is_power_of_two",
+            "type": "bool",
+            "value": true
+          }
         ]
       }
     },
     {
-      id: 8,
-      prompt: "Even/odd check using bitwise: <code>(n &amp; 1) == 0</code> for even. Apply to the first 10 integers; store the boolean list in <code>result</code>.",
-      starterCode: `# Q8: Bitwise AND even/odd check
-result = [(n & 1) == 0 for n in range(10)]
-labels = ["even" if v else "odd" for v in result]
-
-for n, label in zip(range(10), labels):
-    print(f"{n}: {label}  ({bin(n)} & 1 = {n & 1})")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "list", value: [true, false, true, false, true, false, true, false, true, false] }
+      "id": 8,
+      "prompt": "<strong>[Medium] Role-Based Permission Bitmask Checking</strong><br/>Given permission flags <code>READ = 1 << 0</code> (1), <code>WRITE = 1 << 1</code> (2), <code>DELETE = 1 << 2</code> (4), and <code>ADMIN = 1 << 3</code> (8). A user has <code>role_mask = READ | WRITE</code>. Verify if the user has <code>WRITE</code> permission (store in <code>can_write</code>) and if they have <code>DELETE</code> permission (store in <code>can_delete</code>).",
+      "starterCode": "",
+      "ref": "READ   = 1 << 0\nWRITE  = 1 << 1\nDELETE = 1 << 2\nADMIN  = 1 << 3\n\nrole_mask = READ | WRITE\ncan_write = bool(role_mask & WRITE)\ncan_delete = bool(role_mask & DELETE)\nprint(f\"Can write: {can_write} | Can delete: {can_delete}\")\n",
+      "questionAudio": "Day02/New_PyDay02Question08.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question08sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "role_mask",
+            "type": "int",
+            "value": 3
+          },
+          {
+            "name": "can_write",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "name": "can_delete",
+            "type": "bool",
+            "value": false
+          }
         ]
       }
     },
     {
-      id: 9,
-      prompt: "Variable swap without a temp: <code>a, b = b, a</code>. Store both before/after states. Use <code>a=10, b=20</code>.",
-      starterCode: `# Q9: Pythonic tuple-packing swap
-a, b = 10, 20
-before = (a, b)
-
-a, b = b, a   # Python packs right side as (20,10) then unpacks left to left
-
-after = (a, b)
-
-print(f"Before: a={before[0]}, b={before[1]}")
-print(f"After : a={after[0]},  b={after[1]}")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "after", type: "list", value: [20, 10] }
+      "id": 9,
+      "prompt": "<strong>[Medium] Customer Tier Classifier with Ternary Expressions</strong><br/>Given a list of customer annual spend amounts: <code>spends = [1500, 12000, 4500, 25000, 800]</code>, classify each into a tier using an inline ternary expression: <code>'Platinum' if s >= 10000 else ('Gold' if s >= 3000 else 'Silver')</code>. Store the result list in <code>tiers</code>.",
+      "starterCode": "",
+      "ref": "spends = [1500, 12000, 4500, 25000, 800]\ntiers = ['Platinum' if s >= 10000 else ('Gold' if s >= 3000 else 'Silver') for s in spends]\nprint(\"Customer Tiers:\", tiers)\n",
+      "questionAudio": "Day02/New_PyDay02Question09.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question09sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "tiers",
+            "type": "list",
+            "length": 5,
+            "value": [
+              "Silver",
+              "Platinum",
+              "Gold",
+              "Platinum",
+              "Silver"
+            ]
+          }
         ]
       }
     },
     {
-      id: 10,
-      prompt: "Stop-word filter: <code>[w for w in text if w not in stop_words]</code> where <code>stop_words</code> is a <code>set</code>. Store in <code>result</code>. Add a comment explaining why <code>stop_words</code> should be a set, not a list.",
-      starterCode: `# Q10: Membership test + complexity lesson
-text = ["the", "cat", "sat", "on", "the", "mat"]
-stop_words = {"the", "on"}   # Set: O(1) lookup per word
-
-result = [w for w in text if w not in stop_words]
-print(f"Filtered: {result}")
-# WHY set, not list?
-# list: 'w not in stop_words' → O(k) per word → O(n*k) total
-# set:  'w not in stop_words' → O(1) per word → O(n) total
-# For 10M words and 1000 stop words: list=10B ops vs set=10M ops!
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "list", value: ["cat","sat","mat"] }
+      "id": 10,
+      "prompt": "<strong>[Medium] Singleton State Check: is None vs == None</strong><br/>A data cleaning function inspects missing values. Given <code>val = None</code>, compare <code>val is None</code> (store in <code>identity_check</code>) and <code>val == None</code> (store in <code>equality_check</code>). Write a comment explaining why <code>is None</code> is always preferred in production data pipelines.",
+      "starterCode": "",
+      "ref": "val = None\nidentity_check = (val is None)\nequality_check = (val == None)\nprint(f\"is None: {identity_check} | == None: {equality_check}\")\n",
+      "questionAudio": "Day02/New_PyDay02Question10.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question10sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "identity_check",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "name": "equality_check",
+            "type": "bool",
+            "value": true
+          }
         ]
       }
     },
     {
-      id: 11,
-      prompt: "Precedence trap: evaluate <code>not False == False</code>; store in <code>result</code>. Explain step-by-step in a comment why <code>==</code> binds tighter than <code>not</code>.",
-      starterCode: `# Q11: not vs == operator precedence
-# Python precedence: '==' > 'not'
-# So: not False == False  is parsed as  not (False == False)  = not True = False
-result = not False == False
-
-# Step by step:
-step1 = False == False   # True  (== first)
-step2 = not step1        # False (not second)
-print(f"not False == False → {result}")
-print(f"  1. False == False → {step1}")
-print(f"  2. not True      → {step2}")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "bool", value: false }
+      "id": 11,
+      "prompt": "<strong>[Medium] Stop-Word Query Filter with Membership Operator</strong><br/>Given user search query <code>query = 'best python course for data analysts in 2026'</code> and stop-word set <code>stop_words = {'for', 'in', 'the', 'a', 'of'}</code>, tokenize the query and filter out all words present in <code>stop_words</code> using the <code>not in</code> operator. Store the remaining tokens in <code>keywords</code>.",
+      "starterCode": "",
+      "ref": "query = 'best python course for data analysts in 2026'\nstop_words = {'for', 'in', 'the', 'a', 'of'}\ntokens = query.lower().split()\nkeywords = [t for t in tokens if t not in stop_words]\nprint(\"Keywords:\", keywords)\n",
+      "questionAudio": "Day02/New_PyDay02Question11.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question11sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "keywords",
+            "type": "list",
+            "length": 6,
+            "value": [
+              "best",
+              "python",
+              "course",
+              "data",
+              "analysts",
+              "2026"
+            ]
+          },
+          {
+            "name": "stop_words",
+            "type": "set",
+            "value": [
+              "a",
+              "of",
+              "in",
+              "for",
+              "the"
+            ]
+          }
         ]
       }
     },
     {
-      id: 12,
-      prompt: "Leap year check: <code>(year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)</code>. Test years <code>2000</code>, <code>1900</code>, <code>2024</code>. Store results in a dict <code>result</code>.",
-      starterCode: `# Q12: Compound boolean — leap year
-def is_leap(year):
-    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
-
-result = {2000: is_leap(2000), 1900: is_leap(1900), 2024: is_leap(2024)}
-
-for y, v in result.items():
-    print(f"{y}: {'Leap' if v else 'Not leap'}")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "dict", keys: [2000, 1900, 2024] }
+      "id": 12,
+      "prompt": "<strong>[Medium] Walrus Operator Stream Consumer & Length Filter</strong><br/>Using the walrus operator (<code>:=</code>) inside a list comprehension, process a list of dirty strings: <code>lines = ['  hello  ', '   ', 'world of python', '  data  ']</code>. Strip each item and keep only those whose stripped length exceeds 4 characters. Store in <code>long_words</code>.",
+      "starterCode": "",
+      "ref": "lines = ['  hello  ', '   ', 'world of python', '  data  ']\nlong_words = [cleaned for item in lines if len(cleaned := item.strip()) > 4]\nprint(\"Long words:\", long_words)\n",
+      "questionAudio": "Day02/New_PyDay02Question12.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question12sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "long_words",
+            "type": "list",
+            "length": 2,
+            "value": [
+              "hello",
+              "world of python"
+            ]
+          }
         ]
       }
     },
     {
-      id: 13,
-      prompt: "Default value with <code>or</code>: test with <code>user_input = \"\"</code> (store <code>empty_case</code>) and <code>user_input = \"custom\"</code> (store <code>custom_case</code>). Explain in a comment one dangerous case.",
-      starterCode: `# Q13: Short-circuit default pattern + its failure case
-user_input = ""
-empty_case = user_input or "default_value"   # "" is falsy → "default_value"
-
-user_input = "custom"
-custom_case = user_input or "default_value"   # "custom" is truthy → "custom"
-
-print(f"empty  → '{empty_case}'")
-print(f"custom → '{custom_case}'")
-
-# DANGER CASE: What if the valid input IS falsy?
-user_age = 0   # Valid! User is 0 years old
-result = user_age or 18   # Returns 18 — WRONG! 0 is a valid age.
-# FIX:
-safe_result = user_age if user_age is not None else 18
-print(f"or default(0): {result}  ← WRONG")
-print(f"is None check: {safe_result}  ← Correct")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "empty_case",  type: "string", value: "default_value" },
-          { name: "custom_case", type: "string", value: "custom" }
+      "id": 13,
+      "prompt": "<strong>[Hard] Multi-Condition Credit Risk Scoring Engine</strong><br/>Evaluate loan applicants against strict credit criteria. An applicant qualifies for an automatic approval if: (1) <code>credit_score &gt;= 720</code> AND <code>debt_to_income &lt; 0.35</code>; OR (2) <code>credit_score &gt;= 680</code> AND <code>debt_to_income &lt; 0.25</code> AND <code>annual_income &gt;= 80000</code>. Evaluate for <code>applicant = {'credit_score': 690, 'debt_to_income': 0.22, 'annual_income': 95000}</code> and store the approval boolean in <code>is_approved</code>.",
+      "starterCode": "",
+      "ref": "applicant = {'credit_score': 690, 'debt_to_income': 0.22, 'annual_income': 95000}\nc = applicant['credit_score']\nd = applicant['debt_to_income']\ni = applicant['annual_income']\n\nis_approved = (c >= 720 and d < 0.35) or (c >= 680 and d < 0.25 and i >= 80000)\nprint(f\"Loan Approved: {is_approved}\")\n",
+      "questionAudio": "Day02/New_PyDay02Question13.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question13sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "is_approved",
+            "type": "bool",
+            "value": true
+          }
         ]
       }
     },
     {
-      id: 14,
-      prompt: "Bit shifting: compute powers of 2 up to <code>2**16</code> using <code>&lt;&lt;</code> (left shift). Store the list in <code>result</code>.",
-      starterCode: `# Q14: Powers of 2 via left bit shift
-# 1 << n  is equivalent to  2**n
-result = [1 << n for n in range(17)]   # 2^0 through 2^16
-
-for i, v in enumerate(result):
-    print(f"1 << {i:2d} = 2^{i:2d} = {v:>8,}")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "list", length: 17 }
+      "id": 14,
+      "prompt": "<strong>[Hard] Bitwise Flag Aggregator for User Access Matrix</strong><br/>Given a stream of user audit log events with bitwise flags: <code>LOG_LOGIN = 1</code>, <code>LOG_VIEW = 2</code>, <code>LOG_EDIT = 4</code>, <code>LOG_EXPORT = 8</code>. A session log records the sequence of actions: <code>actions = [LOG_LOGIN, LOG_VIEW, LOG_EDIT, LOG_EXPORT]</code>. Aggregate all actions into a single <code>session_mask</code> using the bitwise OR operator. Then verify whether <code>LOG_EXPORT</code> was triggered.",
+      "starterCode": "",
+      "ref": "LOG_LOGIN  = 1\nLOG_VIEW   = 2\nLOG_EDIT   = 4\nLOG_EXPORT = 8\n\nactions = [LOG_LOGIN, LOG_VIEW, LOG_EDIT, LOG_EXPORT]\nsession_mask = 0\nfor act in actions:\n    session_mask |= act\n\ndid_export = bool(session_mask & LOG_EXPORT)\nprint(f\"Session Mask: {bin(session_mask)} | Exported: {did_export}\")\n",
+      "questionAudio": "Day02/New_PyDay02Question14.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question14sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "session_mask",
+            "type": "int",
+            "value": 15
+          },
+          {
+            "name": "did_export",
+            "type": "bool",
+            "value": true
+          }
         ]
       }
     },
     {
-      id: 15,
-      prompt: "<code>is None</code> vs <code>== None</code>: define a class with <code>__eq__</code> always returning <code>True</code>. Show <code>instance == None</code> returns <code>True</code> while <code>instance is None</code> returns <code>False</code>. Store both in <code>result_eq</code>, <code>result_is</code>.",
-      starterCode: `# Q15: is None vs == None — why 'is None' is the safe choice
-class TruthyEverything:
-    def __eq__(self, other):
-        return True   # Everything "equals" everything in this class
-
-obj = TruthyEverything()
-result_eq = (obj == None)   # True — because __eq__ returns True for everything
-result_is = (obj is None)   # False — obj is clearly not the None singleton
-
-print(f"obj == None : {result_eq}  (dangerous if checking for None!)")
-print(f"obj is None : {result_is}  (correct — identity check)")
-# LESSON: Always use 'is None' for None checks.
-# PEP 8 requires it. It's the one time Python style is strict about operator choice.
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result_eq", type: "bool", value: true },
-          { name: "result_is", type: "bool", value: false }
+      "id": 15,
+      "prompt": "<strong>[Hard] Walrus-Optimized High-Performance Aggregator</strong><br/>Given an iterator/stream of numbers: <code>data = [12, -4, 25, 0, 8, -15, 33]</code>, compute both the running count of positive numbers and their running sum in a single pass using the walrus operator inside a list comprehension. Produce a list of <code>(number, cumulative_positive_sum)</code> tuples for all positive entries. Store in <code>positive_cumulative</code>.",
+      "starterCode": "",
+      "ref": "data = [12, -4, 25, 0, 8, -15, 33]\nrunning_sum = 0\npositive_cumulative = [(x, running_sum := running_sum + x) for x in data if x > 0]\nprint(\"Positive Running Cumulative:\", positive_cumulative)\n",
+      "questionAudio": "Day02/New_PyDay02Question15.mp3",
+      "solutionAudio": "Day02/New_PyDay02Question15sol.mp3",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "positive_cumulative",
+            "type": "list",
+            "length": 4
+          },
+          {
+            "name": "running_sum",
+            "type": "int",
+            "value": 78
+          }
         ]
       }
     },
     {
-      id: 16,
-      prompt: "Safe attribute access via short-circuit: given <code>user = None</code>, evaluate <code>user and user.get(\"email\")</code> without raising <code>AttributeError</code>. Store in <code>result</code>.",
-      starterCode: `# Q16: Short-circuit guard for nullable objects
-user = None
-result = user and user.get("email")   # None is falsy → short-circuits, no AttributeError
-
-print(f"result: {result}   (falsy, not an exception)")
-print(f"type  : {type(result).__name__}")
-
-# Compare: what happens without the guard:
-try:
-    _ = user.get("email")   # AttributeError: 'NoneType' has no attribute 'get'
-except AttributeError as e:
-    print(f"Without guard → {type(e).__name__}: {e}")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "falsy" }
+      "id": 16,
+      "prompt": "<strong>[Hard] Gregorian Leap Year Algorithm &amp; Precedence</strong><br/>Write a boolean expression that determines if a given year is a leap year: <code>(year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)</code>. Test for <code>year_1 = 2024</code> (store boolean in <code>is_leap_1</code>) and <code>year_2 = 1900</code> (store boolean in <code>is_leap_2</code>).",
+      "starterCode": "",
+      "ref": "year_1 = 2024\nyear_2 = 1900\n\nis_leap_1 = (year_1 % 4 == 0 and year_1 % 100 != 0) or (year_1 % 400 == 0)\nis_leap_2 = (year_2 % 4 == 0 and year_2 % 100 != 0) or (year_2 % 400 == 0)\nprint(f\"2024: {is_leap_1} | 1900: {is_leap_2}\")\n",
+      "questionAudio": "",
+      "solutionAudio": "",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "is_leap_1",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "name": "is_leap_2",
+            "type": "bool",
+            "value": false
+          }
         ]
       }
     },
     {
-      id: 17,
-      prompt: "Compound interest: <code>P * (1 + r/n) ** (n*t)</code> for <code>P=10000, r=0.08, n=12, t=5</code>. Round to 2 decimals, store in <code>result</code>.",
-      starterCode: `# Q17: Compound interest — multi-operator precedence
-P = 10000   # Principal
-r = 0.08    # Annual rate
-n = 12      # Compounding periods per year
-t = 5       # Time in years
-
-result = round(P * (1 + r/n) ** (n*t), 2)
-
-print(f"Principal     : \\\${P:,}")
-print(f"Rate          : {r*100}% annually")
-print(f"Compounded    : {n}× per year for {t} years")
-print(f"Final amount  : \\\${result:,}")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "float", value: 14898.46, tolerance: 0.05 }
+      "id": 17,
+      "prompt": "<strong>[Hard] Safe Float Equality via Epsilon Tolerance</strong><br/>Due to IEEE-754 precision, <code>0.1 + 0.2 == 0.3</code> is <code>False</code>. Given <code>a = 0.1 + 0.2</code> and <code>b = 0.3</code>, compute raw equality in <code>is_raw_equal</code>, and safe equality using an epsilon threshold (<code>abs(a - b) &lt; 1e-9</code>) in <code>is_safe_equal</code>.",
+      "starterCode": "",
+      "ref": "a = 0.1 + 0.2\nb = 0.3\n\nis_raw_equal = (a == b)\nis_safe_equal = abs(a - b) < 1e-9\nprint(f\"Raw: {is_raw_equal} | Safe: {is_safe_equal}\")\n",
+      "questionAudio": "",
+      "solutionAudio": "",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "is_raw_equal",
+            "type": "bool",
+            "value": false
+          },
+          {
+            "name": "is_safe_equal",
+            "type": "bool",
+            "value": true
+          }
         ]
       }
     },
     {
-      id: 18,
-      prompt: "Input validation via set membership: check <code>response in {\"yes\",\"no\",\"maybe\"}</code> for several inputs. Store results in <code>result</code> as a dict. Explain the complexity benefit.",
-      starterCode: `# Q18: Membership validation with set
-valid_choices = {"yes", "no", "maybe"}
-inputs = ["yes", "no", "yep", "maybe", "YES", ""]
-
-result = {inp: inp in valid_choices for inp in inputs}
-
-for inp, valid in result.items():
-    print(f"'{inp:6s}' → {'✅ valid' if valid else '❌ invalid'}")
-
-# O(1) per check with set vs O(k) with list where k=len(choices)
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "dict", keys: ["yes", "no", "maybe"] }
+      "id": 18,
+      "prompt": "<strong>[Hard] Falsy Fallback Guard &amp; Legitimate Zero Preservation</strong><br/>When a legitimate payload is <code>0</code> or <code>0.0</code>, naive <code>val or default</code> corrupts the data. Given <code>user_discount = 0.0</code> and <code>DEFAULT_DISCOUNT = 0.15</code>, compute naive fallback in <code>naive_discount</code>, and safe fallback using ternary checking <code>is not None</code> in <code>safe_discount</code>.",
+      "starterCode": "",
+      "ref": "user_discount = 0.0\nDEFAULT_DISCOUNT = 0.15\n\nnaive_discount = user_discount or DEFAULT_DISCOUNT\nsafe_discount = user_discount if user_discount is not None else DEFAULT_DISCOUNT\nprint(f\"Naive: {naive_discount} | Safe: {safe_discount}\")\n",
+      "questionAudio": "",
+      "solutionAudio": "",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "naive_discount",
+            "type": "float",
+            "value": 0.15,
+            "tolerance": 0.001
+          },
+          {
+            "name": "safe_discount",
+            "type": "float",
+            "value": 0,
+            "tolerance": 0.001
+          }
         ]
       }
     },
     {
-      id: 19,
-      prompt: "Bitwise NOT: compute <code>~5</code>, store in <code>result</code> (expect <code>-6</code>). Explain in a comment using two's complement (<code>~n == -(n+1)</code>).",
-      starterCode: `# Q19: Bitwise NOT ~ and two's complement
-result = ~5   # Expected: -6
-
-print(f"~5 = {result}")
-print(f"~0 = {~0}")    # -1
-print(f"~(-1) = {~(-1)}")  # 0
-
-# WHY ~5 == -6?
-# In two's complement: ~n = -(n+1)
-# Bit flip of 0b00000101 (5) = 0b11111010
-# In two's complement this represents -6
-# Formula: ~n = -(n+1) for all integers
-for n in range(-3, 4):
-    print(f"~{n:2d} = {~n:3d}  (= -({n}+1) = {-(n+1)})")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "int", value: -6 }
+      "id": 19,
+      "prompt": "<strong>[Hard] Negative Floor Division &amp; Modulo Euclidean Invariant</strong><br/>Demonstrate Python's Euclidean division identity: <code>dividend == (dividend // divisor) * divisor + (dividend % divisor)</code>. For <code>dividend = -17</code> and <code>divisor = 5</code>, calculate <code>q = dividend // divisor</code>, <code>r = dividend % divisor</code>, and store whether the invariant holds in <code>is_identity_valid</code>.",
+      "starterCode": "",
+      "ref": "dividend = -17\ndivisor = 5\n\nq = dividend // divisor\nr = dividend % divisor\nis_identity_valid = (dividend == q * divisor + r)\nprint(f\"q: {q}, r: {r}, valid: {is_identity_valid}\")\n",
+      "questionAudio": "",
+      "solutionAudio": "",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "q",
+            "type": "int",
+            "value": -4
+          },
+          {
+            "name": "r",
+            "type": "int",
+            "value": 3
+          },
+          {
+            "name": "is_identity_valid",
+            "type": "bool",
+            "value": true
+          }
         ]
       }
     },
     {
-      id: 20,
-      prompt: "Use <code>any()</code> and <code>all()</code> with a generator: <code>x &gt; 0 for x in [-1,-2,3]</code>. Store <code>any_result</code>, <code>all_result</code>. Explain in a comment why a generator avoids unnecessary evaluations.",
-      starterCode: `# Q20: any() and all() with lazy generators
-data = [-1, -2, 3]
-
-any_result = any(x > 0 for x in data)   # Stops at first True (x=3)
-all_result = all(x > 0 for x in data)   # Stops at first False (x=-1)
-
-print(f"any(x>0): {any_result}")   # True  (3 > 0)
-print(f"all(x>0): {all_result}")   # False (-1 is not > 0)
-
-# WHY generator, not list?
-# any([x>0 for x in data])   → evaluates ALL elements first, THEN checks
-# any(x>0 for x in data)     → stops as soon as one True is found (lazy)
-# For 10M elements, stopping early saves massive computation!
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "any_result", type: "bool", value: true },
-          { name: "all_result", type: "bool", value: false }
+      "id": 20,
+      "prompt": "<strong>[Hard] Bitmask Clear &amp; Toggle Mutation Pipeline</strong><br/>Given permission mask <code>perm = 7</code> (binary <code>0111</code>: READ=1, WRITE=2, EXEC=4). Using bitwise operators: (1) clear the <code>WRITE = 2</code> permission using <code>perm &amp; ~WRITE</code> and store in <code>perm_cleared</code>; (2) toggle the <code>EXEC = 4</code> permission on <code>perm_cleared</code> using <code>perm_cleared ^ EXEC</code> and store in <code>perm_final</code>.",
+      "starterCode": "",
+      "ref": "READ  = 1\nWRITE = 2\nEXEC  = 4\nperm = 7\n\nperm_cleared = perm & ~WRITE\nperm_final = perm_cleared ^ EXEC\nprint(f\"Cleared: {bin(perm_cleared)} ({perm_cleared}) | Final: {bin(perm_final)} ({perm_final})\")\n",
+      "questionAudio": "",
+      "solutionAudio": "",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "perm_cleared",
+            "type": "int",
+            "value": 5
+          },
+          {
+            "name": "perm_final",
+            "type": "int",
+            "value": 1
+          }
+        ]
+      }
+    }
+  ],
+  "testQuestions": [
+    {
+      "id": 1,
+      "prompt": "Compute BMI: <code>weight_kg / (height_m ** 2)</code>, round to 2 decimals, store in <code>bmi</code>. Classify as <code>\"Underweight\"</code>/<code>\"Normal\"</code>/<code>\"Overweight\"</code> using a <strong>ternary expression</strong>; store in <code>category</code>. Use <code>weight_kg=70, height_m=1.75</code>.",
+      "starterCode": "",
+      "ref": "weight_kg = 70\nheight_m  = 1.75\n\nbmi = round(weight_kg / (height_m ** 2), 2)\ncategory = \"Underweight\" if bmi < 18.5 else (\"Normal\" if bmi < 25 else \"Overweight\")\nprint(f\"BMI: {bmi} | Category: {category}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "bmi",
+            "type": "float",
+            "value": 22.86,
+            "tolerance": 0.01
+          },
+          {
+            "name": "category",
+            "type": "string",
+            "value": "Normal"
+          }
         ]
       }
     },
     {
-      id: 21,
-      prompt: "XOR trick: given <code>[3,5,3,7,5,9,9]</code> (every element paired except one), use <code>functools.reduce</code> with XOR to find the unique element. Store in <code>result</code>.",
-      starterCode: `# Q21: XOR to find the lone element
-import functools
-
-lst = [3, 5, 3, 7, 5, 9, 9]
-result = functools.reduce(lambda a, b: a ^ b, lst)
-
-print(f"List    : {lst}")
-print(f"Unique  : {result}")
-# WHY? XOR properties:
-# a ^ a = 0  (same values cancel out)
-# a ^ 0 = a  (XOR with 0 leaves value unchanged)
-# So: 3^5^3^7^5^9^9 = (3^3)^(5^5)^(9^9)^7 = 0^0^0^7 = 7
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "int", value: 7 }
+      "id": 2,
+      "prompt": "Apply <code>**=</code> five times starting from <code>base = 2</code>; store each intermediate value in a list <code>steps</code>. Expected: <code>[4, 16, 256, 65536, 4294967296]</code>.",
+      "starterCode": "",
+      "ref": "base  = 2\nsteps = []\nfor _ in range(5):\n    base **= 2\n    steps.append(base)\nprint(f\"Steps: {steps}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "steps",
+            "type": "list",
+            "value": [
+              4,
+              16,
+              256,
+              65536,
+              4294967296
+            ]
+          }
         ]
       }
     },
     {
-      id: 22,
-      prompt: "Ternary refactoring: rewrite a 4-line <code>if/else</code> discount-tier block as a single nested ternary. Store the result in <code>result</code> for <code>purchase_amount = 150</code>.",
-      starterCode: `# Q22: Ternary expression refactoring
-purchase_amount = 150
-
-# Original if/else block:
-if purchase_amount >= 500:
-    tier = "Platinum"
-elif purchase_amount >= 200:
-    tier = "Gold"
-elif purchase_amount >= 100:
-    tier = "Silver"
-else:
-    tier = "Standard"
-
-# Refactored to single ternary expression:
-result = ("Platinum" if purchase_amount >= 500 else
-          "Gold"     if purchase_amount >= 200 else
-          "Silver"   if purchase_amount >= 100 else
-          "Standard")
-
-print(f"Amount : \\\${purchase_amount}")
-print(f"Tier   : {result}")
-print(f"Match  : {tier == result}")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "result", type: "string", value: "Silver" }
+      "id": 3,
+      "prompt": "Floor division with negatives: compute <code>-7 // 2</code>, store in <code>result</code> (expect <code>-4</code>). Explain in a comment why Python rounds toward negative infinity rather than toward zero.",
+      "starterCode": "",
+      "ref": "result = -7 // 2\nresult_c_style = int(-7 / 2)\nprint(f\"-7 // 2: {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "int",
+            "value": -4
+          }
         ]
       }
     },
     {
-      id: 23,
-      prompt: "Unpacking merge: merge <code>defaults = {\"a\":1,\"b\":2}</code> and <code>overrides = {\"b\":99,\"c\":3}</code> two ways — using <code>{**defaults, **overrides}</code> and the <code>|</code> merge operator (Python 3.9+). Store both in <code>merged_unpack</code>, <code>merged_pipe</code>.",
-      starterCode: `# Q23: Dict merge — two modern approaches
-defaults  = {"a": 1, "b": 2}
-overrides = {"b": 99, "c": 3}
-
-# Method 1: Unpacking merge (Python 3.5+)
-merged_unpack = {**defaults, **overrides}
-
-# Method 2: | merge operator (Python 3.9+)
-merged_pipe = defaults | overrides
-
-print(f"Unpack merge : {merged_unpack}")
-print(f"Pipe merge   : {merged_pipe}")
-print(f"Same result  : {merged_unpack == merged_pipe}")
-# In both cases, 'overrides' wins for key "b" → 99
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "merged_unpack", type: "dict", keys: ["a", "b", "c"] },
-          { name: "merged_pipe",   type: "dict", keys: ["a", "b", "c"] }
+      "id": 4,
+      "prompt": "The precedence trap: for <code>x = 5</code>, evaluate <code>x &amp; 1 == 1</code> and store in <code>trapped_result</code>. Separately compute the <em>intended</em> check <code>(x &amp; 1) == 1</code> and store in <code>intended_result</code>.",
+      "starterCode": "",
+      "ref": "x = 5\ntrapped_result  = x & 1 == 1\nintended_result = (x & 1) == 1\nprint(f\"intended: {intended_result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "intended_result",
+            "type": "bool",
+            "value": true
+          }
         ]
       }
     },
     {
-      id: 24,
-      prompt: "String formatting comparison: given <code>value = 1234.5</code>, produce <code>\"1,234.50\"</code> three ways — <code>%</code>-style, <code>.format()</code>, and f-string format spec. Store all three in <code>pct_style</code>, <code>format_style</code>, <code>fstring_style</code>.",
-      starterCode: `# Q24: Three string formatting approaches
-value = 1234.5
-
-# %-style (old Python 2 style — % is BOTH modulo AND format operator!)
-pct_style    = "{:,.2f}".format(value)   # Using .format for comma support
-# True %-style comma formatting requires locale or manual: "%.2f" % value
-
-# .format() style
-format_style = "{:,.2f}".format(value)
-
-# f-string (preferred modern Python)
-fstring_style = f"{value:,.2f}"
-
-print(f"%-style    : {pct_style}")
-print(f".format()  : {format_style}")
-print(f"f-string   : {fstring_style}")
-print(f"All same?  : {pct_style == format_style == fstring_style}")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "fstring_style", type: "string", value: "1,234.50" }
+      "id": 5,
+      "prompt": "Safe division using short-circuit: <code>safe_div = lambda a, b: b != 0 and a / b</code>. Test with <code>b=0</code> (store in <code>zero_case</code>) and <code>b=2</code> (store in <code>normal_case</code>).",
+      "starterCode": "",
+      "ref": "safe_div = lambda a, b: b != 0 and a / b\nzero_case   = safe_div(10, 0)\nnormal_case = safe_div(10, 2)\nprint(f\"zero: {zero_case}, normal: {normal_case}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "zero_case",
+            "type": "falsy"
+          },
+          {
+            "name": "normal_case",
+            "type": "float",
+            "value": 5,
+            "tolerance": 0.001
+          }
         ]
       }
     },
     {
-      id: 25,
-      prompt: "Permission flags: define <code>READ=1, WRITE=2, EXEC=4</code>. Combine <code>READ | WRITE</code> into <code>perms</code>. Check <code>EXEC</code> with <code>&amp;</code> (store <code>has_exec</code>, expect <code>False</code>). Toggle <code>EXEC</code> on with <code>^</code> (store <code>toggled</code>).",
-      starterCode: `# Q25: Unix-style permission flags — tying together bitwise operators
-READ  = 1   # binary: 001
-WRITE = 2   # binary: 010
-EXEC  = 4   # binary: 100
-
-# Combine READ + WRITE using |
-perms = READ | WRITE   # 011 = 3
-
-# Check if EXEC is set using &
-has_exec = bool(perms & EXEC)   # 011 & 100 = 000 → False
-
-# Toggle EXEC on using ^ (XOR flips the bit)
-toggled = perms ^ EXEC          # 011 ^ 100 = 111 = 7 (READ+WRITE+EXEC)
-
-print(f"perms     = {perms}  = {bin(perms)}  (READ+WRITE)")
-print(f"has_exec  = {has_exec}")
-print(f"toggled   = {toggled}  = {bin(toggled)} (READ+WRITE+EXEC)")
-
-# Verify individual permissions in toggled:
-print(f"After toggle — READ: {bool(toggled & READ)}, WRITE: {bool(toggled & WRITE)}, EXEC: {bool(toggled & EXEC)}")
-`,
-      validation: {
-        mode: "variable_check",
-        checkVars: [
-          { name: "has_exec", type: "bool",  value: false },
-          { name: "toggled",  type: "int",   value: 7 }
+      "id": 6,
+      "prompt": "Walrus in a list: given <code>f(x) = x*2</code>, build <code>[y := f(x), y**2, y**3]</code> for <code>x = 3</code>, computing <code>f(x)</code> only once; store the list in <code>result</code>. Expected: <code>[6, 36, 216]</code>.",
+      "starterCode": "",
+      "ref": "f = lambda x: x * 2\nx = 3\nresult = [y := f(x), y**2, y**3]\nprint(f\"Result: {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "list",
+            "value": [
+              6,
+              36,
+              216
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "prompt": "Chained comparison: evaluate <code>0 &lt; score &lt; 100 and score != 50</code> for <code>score = 50</code> and <code>score = 75</code>. Store booleans in <code>result_50</code>, <code>result_75</code>.",
+      "starterCode": "",
+      "ref": "score = 50\nresult_50 = 0 < score < 100 and score != 50\nscore = 75\nresult_75 = 0 < score < 100 and score != 50\nprint(f\"50: {result_50}, 75: {result_75}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result_50",
+            "type": "bool",
+            "value": false
+          },
+          {
+            "name": "result_75",
+            "type": "bool",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "prompt": "Even/odd check using bitwise: <code>(n &amp; 1) == 0</code> for even. Apply to the first 10 integers; store the boolean list in <code>result</code>.",
+      "starterCode": "",
+      "ref": "result = [(n & 1) == 0 for n in range(10)]\nprint(f\"Result: {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "list",
+            "value": [
+              true,
+              false,
+              true,
+              false,
+              true,
+              false,
+              true,
+              false,
+              true,
+              false
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "prompt": "Variable swap without a temp: <code>a, b = b, a</code>. Store both before/after states. Use <code>a=10, b=20</code>.",
+      "starterCode": "",
+      "ref": "a, b = 10, 20\nbefore = (a, b)\na, b = b, a\nafter = (a, b)\nprint(f\"After: {after}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "after",
+            "type": "list",
+            "value": [
+              20,
+              10
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "prompt": "Stop-word filter: <code>[w for w in text if w not in stop_words]</code> where <code>stop_words</code> is a <code>set</code>. Store in <code>result</code>. Add a comment explaining why <code>stop_words</code> should be a set, not a list.",
+      "starterCode": "",
+      "ref": "text = [\"the\", \"cat\", \"sat\", \"on\", \"the\", \"mat\"]\nstop_words = {\"the\", \"on\"}\nresult = [w for w in text if w not in stop_words]\nprint(f\"Filtered: {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "list",
+            "value": [
+              "cat",
+              "sat",
+              "mat"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "prompt": "Precedence trap: evaluate <code>not False == False</code>; store in <code>result</code>. Explain step-by-step in a comment why <code>==</code> binds tighter than <code>not</code>.",
+      "starterCode": "",
+      "ref": "result = not False == False\nprint(f\"result: {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "bool",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "prompt": "Leap year check: <code>(year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)</code>. Test years <code>2000</code>, <code>1900</code>, <code>2024</code>. Store results in a dict <code>result</code>.",
+      "starterCode": "",
+      "ref": "def is_leap(year):\n    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)\nresult = {2000: is_leap(2000), 1900: is_leap(1900), 2024: is_leap(2024)}\nprint(f\"Leap dict: {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "dict",
+            "keys": [
+              2000,
+              1900,
+              2024
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "prompt": "Default value with <code>or</code>: test with <code>user_input = \"\"</code> (store <code>empty_case</code>) and <code>user_input = \"custom\"</code> (store <code>custom_case</code>). Explain in a comment one dangerous case.",
+      "starterCode": "",
+      "ref": "user_input = \"\"\nempty_case = user_input or \"default_value\"\nuser_input = \"custom\"\ncustom_case = user_input or \"default_value\"\nprint(f\"empty: {empty_case}, custom: {custom_case}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "empty_case",
+            "type": "string",
+            "value": "default_value"
+          },
+          {
+            "name": "custom_case",
+            "type": "string",
+            "value": "custom"
+          }
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "prompt": "Bit shifting: compute powers of 2 up to <code>2**16</code> using <code>&lt;&lt;</code> (left shift). Store the list in <code>result</code>.",
+      "starterCode": "",
+      "ref": "result = [1 << n for n in range(17)]\nprint(f\"Powers of 2: {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "list",
+            "length": 17
+          }
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "prompt": "<code>is None</code> vs <code>== None</code>: define a class with <code>__eq__</code> always returning <code>True</code>. Show <code>instance == None</code> returns <code>True</code> while <code>instance is None</code> returns <code>False</code>. Store both in <code>result_eq</code>, <code>result_is</code>.",
+      "starterCode": "",
+      "ref": "class TruthyEverything:\n    def __eq__(self, other):\n        return True\nobj = TruthyEverything()\nresult_eq = (obj == None)\nresult_is = (obj is None)\nprint(f\"eq: {result_eq}, is: {result_is}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result_eq",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "name": "result_is",
+            "type": "bool",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "prompt": "Safe attribute access via short-circuit: given <code>user = None</code>, evaluate <code>user and user.get(\"email\")</code> without raising <code>AttributeError</code>. Store in <code>result</code>.",
+      "starterCode": "",
+      "ref": "user = None\nresult = user and user.get(\"email\")\nprint(f\"result: {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "falsy"
+          }
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "prompt": "Compound interest: <code>P * (1 + r/n) ** (n*t)</code> for <code>P=10000, r=0.08, n=12, t=5</code>. Round to 2 decimals, store in <code>result</code>.",
+      "starterCode": "",
+      "ref": "P = 10000\nr = 0.08\nn = 12\nt = 5\nresult = round(P * (1 + r/n) ** (n*t), 2)\nprint(f\"Compound: {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "float",
+            "value": 14898.46,
+            "tolerance": 0.05
+          }
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "prompt": "Input validation via set membership: check <code>response in {\"yes\",\"no\",\"maybe\"}</code> for several inputs. Store results in <code>result</code> as a dict. Explain the complexity benefit.",
+      "starterCode": "",
+      "ref": "valid_choices = {\"yes\", \"no\", \"maybe\"}\ninputs = [\"yes\", \"no\", \"yep\", \"maybe\", \"YES\", \"\"]\nresult = {inp: inp in valid_choices for inp in inputs}\nprint(f\"Result: {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "dict",
+            "keys": [
+              "yes",
+              "no",
+              "maybe"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "prompt": "Bitwise NOT: compute <code>~5</code>, store in <code>result</code> (expect <code>-6</code>). Explain in a comment using two's complement (<code>~n == -(n+1)</code>).",
+      "starterCode": "",
+      "ref": "result = ~5\nprint(f\"~5 = {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "int",
+            "value": -6
+          }
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "prompt": "Use <code>any()</code> and <code>all()</code> with a generator: <code>x &gt; 0 for x in [-1,-2,3]</code>. Store <code>any_result</code>, <code>all_result</code>. Explain in a comment why a generator avoids unnecessary evaluations.",
+      "starterCode": "",
+      "ref": "data = [-1, -2, 3]\nany_result = any(x > 0 for x in data)\nall_result = all(x > 0 for x in data)\nprint(f\"any: {any_result}, all: {all_result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "any_result",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "name": "all_result",
+            "type": "bool",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "prompt": "XOR trick: given <code>[3,5,3,7,5,9,9]</code> (every element paired except one), use <code>functools.reduce</code> with XOR to find the unique element. Store in <code>result</code>.",
+      "starterCode": "",
+      "ref": "import functools\nlst = [3, 5, 3, 7, 5, 9, 9]\nresult = functools.reduce(lambda a, b: a ^ b, lst)\nprint(f\"Unique: {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "int",
+            "value": 7
+          }
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "prompt": "Ternary refactoring: rewrite a 4-line <code>if/else</code> discount-tier block as a single nested ternary. Store the result in <code>result</code> for <code>purchase_amount = 150</code>.",
+      "starterCode": "",
+      "ref": "purchase_amount = 150\nresult = (\"Platinum\" if purchase_amount >= 500 else\n          \"Gold\"     if purchase_amount >= 200 else\n          \"Silver\"   if purchase_amount >= 100 else\n          \"Standard\")\nprint(f\"Tier: {result}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "result",
+            "type": "string",
+            "value": "Silver"
+          }
+        ]
+      }
+    },
+    {
+      "id": 23,
+      "prompt": "Unpacking merge: merge <code>defaults = {\"a\":1,\"b\":2}</code> and <code>overrides = {\"b\":99,\"c\":3}</code> two ways — using <code>{**defaults, **overrides}</code> and the <code>|</code> merge operator (Python 3.9+). Store both in <code>merged_unpack</code>, <code>merged_pipe</code>.",
+      "starterCode": "",
+      "ref": "defaults  = {\"a\": 1, \"b\": 2}\noverrides = {\"b\": 99, \"c\": 3}\nmerged_unpack = {**defaults, **overrides}\nmerged_pipe = defaults | overrides\nprint(f\"Unpack: {merged_unpack} | Pipe: {merged_pipe}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "merged_unpack",
+            "type": "dict",
+            "keys": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          {
+            "name": "merged_pipe",
+            "type": "dict",
+            "keys": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 24,
+      "prompt": "String formatting comparison: given <code>value = 1234.5</code>, produce <code>\"1,234.50\"</code> three ways — <code>%</code>-style, <code>.format()</code>, and f-string format spec. Store all three in <code>pct_style</code>, <code>format_style</code>, <code>fstring_style</code>.",
+      "starterCode": "",
+      "ref": "value = 1234.5\npct_style    = \"{:,.2f}\".format(value)\nformat_style = \"{:,.2f}\".format(value)\nfstring_style = f\"{value:,.2f}\"\nprint(f\"fstring: {fstring_style}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "fstring_style",
+            "type": "string",
+            "value": "1,234.50"
+          }
+        ]
+      }
+    },
+    {
+      "id": 25,
+      "prompt": "Permission flags: define <code>READ=1, WRITE=2, EXEC=4</code>. Combine <code>READ | WRITE</code> into <code>perms</code>. Check <code>EXEC</code> with <code>&amp;</code> (store <code>has_exec</code>, expect <code>False</code>). Toggle <code>EXEC</code> on with <code>^</code> (store <code>toggled</code>).",
+      "starterCode": "",
+      "ref": "READ  = 1\nWRITE = 2\nEXEC  = 4\nperms = READ | WRITE\nhas_exec = bool(perms & EXEC)\ntoggled = perms ^ EXEC\nprint(f\"has_exec: {has_exec}, toggled: {toggled}\")\n",
+      "validation": {
+        "mode": "variable_check",
+        "checkVars": [
+          {
+            "name": "has_exec",
+            "type": "bool",
+            "value": false
+          },
+          {
+            "name": "toggled",
+            "type": "int",
+            "value": 7
+          }
         ]
       }
     }

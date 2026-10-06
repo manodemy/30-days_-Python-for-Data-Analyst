@@ -6788,7 +6788,7 @@
         if (num <= 2) return `/excel/day${formatted}.html`;
         return isNextJS ? `/notebook/excel-day${formatted}` : `/excel/day${formatted}.html`;
       } else {
-        if (num <= 2) return `/python/day${formatted}.html`;
+        if (num <= 3) return `/python/day${formatted}.html`;   // Python days 01-03 are free
         return isNextJS ? `/notebook/day${formatted}` : `/python/day${formatted}.html`;
       }
     };

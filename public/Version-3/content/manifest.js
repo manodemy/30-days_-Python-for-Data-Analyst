@@ -46,8 +46,8 @@
     // 🐍 Python Track (Days 31–60 / Python Days 01–30) — Days 31 & 32 Live & Ready
     { globalDay: 31, track: 'python', id: 'pyDay01', trackDay: 1, title: 'Python Data Types, Dynamic Typing & Memory Allocation', emoji: '🔢', url: '/python/day01.html', free: true, prepared: true, comingSoon: false },
     { globalDay: 32, track: 'python', id: 'pyDay02', trackDay: 2, title: 'Operators, Expressions & Precedence', emoji: '➕', url: '/python/day02.html', free: true, prepared: true, comingSoon: false },
-    { globalDay: 33, track: 'python', id: 'pyDay03', trackDay: 3, title: 'Control Flow: if / elif / else Branching', emoji: '🔀', url: '/python/index.html?day=pyDay03', free: false, prepared: false, comingSoon: true },
-    { globalDay: 34, track: 'python', id: 'pyDay04', trackDay: 4, title: 'Loops & Comprehensions: for, while, list comprehensions', emoji: '🔄', url: '/python/index.html?day=pyDay04', free: false, prepared: false, comingSoon: true },
+    { globalDay: 33, track: 'python', id: 'pyDay03', trackDay: 3, title: 'Strings: Operations, Slicing & Methods', emoji: '🔤', url: '/python/day03.html', free: true, prepared: true, comingSoon: false },
+    { globalDay: 34, track: 'python', id: 'pyDay04', trackDay: 4, title: 'Lists: Operations, Slicing, Methods & Comprehensions', emoji: '📋', url: '/python/index.html?day=pyDay04', free: false, prepared: false, comingSoon: true },
     { globalDay: 35, track: 'python', id: 'pyDay05', trackDay: 5, title: 'Custom Functions, Parameters, Return Values & Scope', emoji: '📦', url: '/python/index.html?day=pyDay05', free: false, prepared: false, comingSoon: true },
     { globalDay: 36, track: 'python', id: 'pyDay06', trackDay: 6, title: 'Lists & Tuples: Sequence Operations & Mutability', emoji: '📋', url: '/python/index.html?day=pyDay06', free: false, prepared: false, comingSoon: true },
     { globalDay: 37, track: 'python', id: 'pyDay07', trackDay: 7, title: 'Dictionaries & Sets: Key-Value Hash Maps & Set Theory', emoji: '📚', url: '/python/index.html?day=pyDay07', free: false, prepared: false, comingSoon: true },

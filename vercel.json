@@ -756,6 +756,10 @@
       "destination": "/python/day02.html"
     },
     {
+      "source": "/python/day03",
+      "destination": "/python/day03.html"
+    },
+    {
       "source": "/day01",
       "destination": "/python/day01.html"
     },
@@ -764,12 +768,20 @@
       "destination": "/python/day02.html"
     },
     {
+      "source": "/day03",
+      "destination": "/python/day03.html"
+    },
+    {
       "source": "/day01.html",
       "destination": "/python/day01.html"
     },
     {
       "source": "/day02.html",
       "destination": "/python/day02.html"
+    },
+    {
+      "source": "/day03.html",
+      "destination": "/python/day03.html"
     }
   ]
 }

@@ -47,6 +47,11 @@
       }
     } else {
       try {
+        if (question.validation?.freshResults) {
+          for (const { name } of question.validation.checkVars || []) {
+            if (pyodide.globals.has(name)) pyodide.globals.delete(name);
+          }
+        }
         pyodide.globals.set('__student_code__', studentCode);
         await pyodide.runPythonAsync(`
 import sys, io as _io, ast as _ast
@@ -141,6 +146,15 @@ finally:
         if (!existsInPython) {
           failures.push(`Variable <code>${cv.name}</code> not found — did you create and assign it?`);
           continue;
+        }
+
+        if (cv.exact) {
+          const expectedType = { string: 'str', bool: 'bool', int: 'int', list: 'list' }[cv.type];
+          const actualType = String(pyodide.runPython('type(' + cv.name + ').__name__'));
+          if (expectedType !== actualType) {
+            failures.push('Incorrect Python type for <code>' + cv.name + '</code>.');
+            continue;
+          }
         }
 
         if (cv.type === 'none') {
@@ -259,6 +273,17 @@ finally:
    */
   function checkVariable(cv, actual) {
     const type = cv.type;
+    // Lessons about exact text opt in; earlier rubrics retain their tolerance.
+    if (cv.exact === true) {
+      const rightType = type === 'string' ? typeof actual === 'string'
+        : type === 'bool' ? typeof actual === 'boolean'
+        : type === 'int' ? typeof actual === 'number' && Number.isInteger(actual)
+        : type === 'list' ? Array.isArray(actual) : false;
+      if (!rightType || JSON.stringify(actual) !== JSON.stringify(cv.value)) {
+        return { ok: false, reason: 'The value must match exactly, including type, case and spacing.' };
+      }
+      return { ok: true };
+    }
 
     if (type === 'float') {
       const a = parseFloat(actual);

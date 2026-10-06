@@ -10,6 +10,15 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const PREMIUM_DAY_MIN = 3;
 const PREMIUM_DAY_MAX = 30;
 
+// Python days 01-03 are universally free: they ship a complete static simulator
+// (public/python/dayNN.html) with no server dependency, so they need no
+// enrollment or auth. Day 03 (Strings) joined this set when its content,
+// questions and narration went live.
+// Keep this number in sync with the `num <= 3` branch of getDayUrl in
+// public/home.html and home.html, the Python branch of the day-card handler in
+// public/landing_v2/app.js, and the /python/dayNN rewrites in vercel.json.
+const PYTHON_FREE_DAY_MAX = 3;
+
 /**
  * Extracts the day number from a /notebook/dayXX path.
  * Returns null if the path is not a notebook day path.
@@ -201,7 +210,7 @@ export async function middleware(request: NextRequest) {
   if (legacyMatch) {
     const dayNum = parseInt(legacyMatch[1], 10);
     const formatted = dayNum.toString().padStart(2, '0');
-    if (dayNum >= 3) {
+    if (dayNum > PYTHON_FREE_DAY_MAX) {
       const dayId = `day${formatted}`;
       const targetUrl = new URL(`/notebook/${dayId}${url.search}`, request.url);
       return NextResponse.redirect(targetUrl, { status: 301 });
@@ -215,7 +224,7 @@ export async function middleware(request: NextRequest) {
   if (legacyPythonMatch) {
     const dayNum = parseInt(legacyPythonMatch[1], 10);
     const formatted = dayNum.toString().padStart(2, '0');
-    if (dayNum >= 3) {
+    if (dayNum > PYTHON_FREE_DAY_MAX) {
       const dayId = `day${formatted}`;
       const targetUrl = new URL(`/notebook/${dayId}${url.search}`, request.url);
       return NextResponse.redirect(targetUrl, { status: 301 });
@@ -269,8 +278,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Python & Excel free days (01 & 02) redirect cleanly to their free simulator pages
-  if (dayNum !== null && dayNum <= 2) {
+  // Python free days (01-03) redirect cleanly to their free simulator pages
+  if (dayNum !== null && dayNum <= PYTHON_FREE_DAY_MAX) {
     const formatted = dayNum.toString().padStart(2, '0');
     if (path.includes('excel-day')) {
       return NextResponse.redirect(new URL(`/excel/day${formatted}.html${url.search}`, request.url), { status: 301 });
@@ -283,7 +292,7 @@ export async function middleware(request: NextRequest) {
   const isGuestReel = (isSqlNotebook || path.startsWith('/sql-practice') || path.startsWith('/try')) &&
     (url.searchParams.get('guest') === 'true' || url.searchParams.has('q') || url.searchParams.has('question'));
 
-  if (dayNum !== null && dayNum >= 3 && dayNum <= PREMIUM_DAY_MAX) {
+  if (dayNum !== null && dayNum > PYTHON_FREE_DAY_MAX && dayNum <= PREMIUM_DAY_MAX) {
     // If coming from an Instagram Reel Guest Pass for SQL, allow through to the sandboxed SQL engine
     if (isGuestReel) {
       return NextResponse.next({ request });

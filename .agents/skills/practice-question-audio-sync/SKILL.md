@@ -213,35 +213,138 @@ After `onNarrationSegmentEnded` fires for a `completion` track:
 
 ## 🐍 Python Track Typewriter & Pyodide Execution Standard
 
-For all Python curriculum days (`pyDay01` through `pyDay30`):
+> **Rewritten against Python Day 01 production.** The `startAt`/`endAt` even-cadence
+> model below was replaced by **spoken-phrase segments**. Do not reintroduce it.
 
-### 1. Engine Registration (`PYTHON_QUESTION_SOLUTIONS`)
-In `public/python/python-engine.js`:
+For all Python curriculum days (`pyDay01` through `pyDay30`). The SQL sections
+above remain the reference for the SQL engine; the Python engine has since moved
+ahead of it and is now the stronger reference.
+
+### 1. Engine Registration — `segments`, not `startAt`/`endAt`
+
+`PYTHON_QUESTION_SOLUTIONS` lives inside a `SYNC-GENERATED` block in
+`public/python/python-engine.js` and is **rewritten by the builder** — never
+hand-edit it:
+
 ```javascript
-const PYTHON_QUESTION_SOLUTIONS = {
-  'pyDay01': {
-    1: {
-      code: "print('Hello, Python for Data Analysis')",
-      duration: 11.45,
-      startAt: 1.2,
-      endAt: 9.8,
-      scrollAt: 10.2
-    }
+PYTHON_QUESTION_SOLUTIONS['pyDayXX'] = {
+  "1": {
+    src: 'DayXX/New_PyDayXXQuestion01sol.mp3',
+    code: 'print("Hello, Python for Data Analysis!")',
+    duration: 11.45,
+    segments: [
+      { text: "print(",   startAt: 2.06, charInterval: 40 },
+      { text: '"Hello, Python for Data Analysis!")', startAt: 3.86, charInterval: 34 }
+    ],
+    scrollAt: 8.53
   }
 };
 ```
 
-### 2. High-Performance RAF Typewriter Loop
-- Uses `requestAnimationFrame` (`activeTypewriterRAF`) with character-by-character interpolation.
-- When `audioObj.currentTime >= solEntry.startAt`, typing begins at an even, natural cadence:
-  $$\text{charInterval} = \frac{\text{endAt} - \text{startAt}}{\text{totalChars}}$$
-- When `audioObj.currentTime >= solEntry.scrollAt`, `hasExecutedCurrentCode` triggers `runCurrentCode()` to execute in Pyodide.
+Each segment is **one phrase of code with the timestamp the narrator begins
+saying it** and a per-character cadence:
 
-### 3. Arbitrary Seeking & Scrubber Fast-Forward
-- If a learner scrubs forward into the middle of a solution track, the engine immediately calculates the exact text up to `currentTime`, updates CodeMirror with `mainEditor.setValue(interpolatedText)`, and sets the cursor at the end.
-- If scrubbing past `scrollAt`, CodeMirror receives the full code and Pyodide executes immediately.
+$$\text{charInterval}_{ms} = \frac{(\text{next segment start} - \text{this start}) \times 1000}{|\text{text}|}$$
 
-### 4. Audio Whitelist & URL Normalization
-- All audio source paths must pass through `resolveAudioUrl(src)` returning `/python/${clean}`.
-- All MP3 assets in `public/python/DayXX/*.mp3` must be whitelisted in `.gitignore` via `!public/python/**/*.mp3`.
+clamped to **25–85 ms**. The builder enforces the invariants:
+
+- Concatenating every `segments[].text` reproduces `code` **byte for byte**
+- `startAt` is monotonic non-decreasing
+- The final character lands **before** the clip ends
+- `scrollAt` is **never** earlier than the last character (no executing mid-type)
+
+### 2. Narration Must Describe the Code
+
+This is the single most important authoring rule, and no tooling can substitute
+for it. If the narration does not say what the code contains, typing cannot sync.
+
+> **"Here is the solution. We import `defaultdict` from `collections`. Then we build a list called `transactions` holding four sample records. The first record has user id U zero one … Finally we print the `fraud_map`."**
+
+Requirements:
+- Name every variable **when it is created**, in code order
+- Say `print` explicitly — 7 of 15 Day 01 scripts omitted it, leaving the last
+  line unanchored in every one of them
+- Speak every identifier required by `checkVars` (`fraud_map`, `flatten_dict`,
+  `flat`, `jump_sizes` were all graded but never narrated)
+- Leave ≥1s of speech after `print` so the final line can finish typing
+- Avoid trailing clauses that alias to earlier code tokens (ending with
+  "which **lists**…" made `lst` anchor 22s late)
+
+**Anti-pattern — conceptual narration.** "We recursively traverse the dictionary…
+If a value is another dictionary, we call flatten dict…" describes the algorithm
+but never its literals. Result: **20 of 21 segments unanchored**, ladder
+extrapolating 26s past a 13.7s clip, typing visibly wrong. Rewrite the script to
+walk the code.
+
+### 3. High-Performance RAF Typewriter Loop
+
+- `requestAnimationFrame` loop (`activeTypewriterRAF`) driven by per-character
+  events expanded from `segments`.
+- Each event carries an absolute `atSec` compared against
+  `audioObj.currentTime`.
+- At `scrollAt`, `hasExecutedCurrentCode` fires `runCurrentCode()` (Pyodide) and
+  scrolls `#mainOutput` into view.
+- Listeners are bound once per entry (`play`/`playing`/`timeupdate`) and removed
+  by `cancelTypewriter()`, so resume never requires re-entry.
+
+**Do NOT divide timings by `playbackRate`.** `audio.currentTime` already advances
+at content rate. Dividing double-compensates and makes typing run 25% *ahead* of
+the voice at 1.25x — the SQL engine still contains this bug; do not port it.
+
+### 4. Arbitrary Seeking, Fast-Forward & Backward Scrub
+
+- **Entry:** fast-forwards the editor to the text implied by `currentTime`.
+- **Backward scrub:** when `currentTime` drops below the last fired event, the
+  event cursor rewinds to zero and the visible text is rebuilt from the events —
+  so editor state depends only on audio position, never on history.
+- **Resume:** replaying forward from a rewound position retraces the same text
+  and completes.
+- Writes go through `setEditorCodeSafely(text)`, which no-ops when the value is
+  already identical.
+
+The harness pins all three as regression tests.
+
+### 5. Overflow Repair — Anchors Are Immutable
+
+When many segments have no spoken anchor, the fallback ladder can extrapolate
+past the clip end. Repair must compress **only unanchored runs**, into the window
+between their neighbouring anchors.
+
+Never rescale the whole ladder. Doing so dragged already-correct anchors
+**4–6 seconds early** (Q13 −5.67s, Q14 −5.82s, Q15 −2.81s) while looking like a
+successful fix. The builder's validation gate now catches the overflow that the
+old rescale used to hide.
+
+### 6. Anchor Safety
+
+- **`_preamble_floor`** — anchors may never resolve inside "Here is the solution."
+  Without it `is_full_time` → alias `["is"]` matched *"Here **is** the solution"*
+  and started the code 1.66s before the narrator began.
+- **`TOKEN_ALIASES`** must cover multi-word identifiers (`is_full_time` →
+  `["is full time", "full time"]`). Splitting on `_` reduces them to homophones.
+- **Prefer `word` over `phrase` anchors** for enumerations. Fuzzy multi-word
+  matching drifted +5.38s on one phrase and failed entirely on another;
+  single-token exact matching landed on the syllable.
+- Use `occurrence: N` when the narrator names a term in a list before describing
+  it (e.g. "two families: Mutable and Immutable. Mutable objects, such as …").
+
+### 7. Audio Whitelist & URL Normalization
+
+- All playback paths pass through `resolveAudioUrl(src)` → `/python/${clean}`.
+- `!public/python/**/*.mp3` must be whitelisted in `.gitignore`
+  (`git check-ignore` must exit `1`).
+- `.cache/` (Whisper word cache) must be gitignored.
+
+### 8. Regenerating a Python Day
+
+```bash
+python scripts/update_day01_narrations.py   # edit scripts (idempotent)
+python scripts/build_python_audio.py        # Edge-TTS, hash-cached
+python scripts/build_python_sync_data.py    # ASR + alignment + emit + validate
+node scripts/test_python_sync.js            # must be all-pass
+node scripts/test_python_topic_picker.js    # must be all-pass
+```
+
+The builder **must fail loudly**. Never relax its validation gate to force a
+green build — a silent partial rebuild shipped 6 overflow defects in Day 01.
 

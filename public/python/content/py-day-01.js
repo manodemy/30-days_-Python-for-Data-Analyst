@@ -347,65 +347,51 @@ window.COURSE_CONTENT['pyDay01'] = {
     transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
   .py-sp-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
-  .py-sp-header-left {
+  .py-sp-title-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
+    flex-wrap: wrap;
   }
   .py-sp-header-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(99, 102, 241, 0.2) 100%);
-    border: 1px solid rgba(56, 189, 248, 0.3);
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.16) 0%, rgba(99, 102, 241, 0.22) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15);
+    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  .py-sp-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
   }
   .py-sp-title {
     margin: 0;
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 1.02rem;
+    font-size: 1.12rem;
     font-weight: 800;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
     color: #f8fafc !important;
+    line-height: 1.3;
   }
   .py-sp-subtitle {
-    margin: 2px 0 0 0;
-    font-size: 0.74rem;
+    margin: 3px 0 0 0;
+    font-size: 0.82rem;
     color: #94a3b8 !important;
     font-weight: 500;
-  }
-  .py-sp-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.70rem;
-    font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 9999px;
-    background: rgba(245, 158, 11, 0.12);
-    border: 1px solid rgba(245, 158, 11, 0.32);
-    color: #fbbf24;
-  }
-  .py-sp-badge-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #fbbf24;
-    box-shadow: 0 0 8px #fbbf24;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
   }
   .py-sp-grid {
     display: grid;
@@ -643,25 +629,28 @@ window.COURSE_CONTENT['pyDay01'] = {
     box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), inset 0 1px 0 #ffffff;
   }
   [data-theme="light"] .py-sp-header {
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1.5px solid #e2e8f0;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
   }
   [data-theme="light"] .py-sp-header-icon {
-    background: linear-gradient(135deg, rgba(2, 132, 199, 0.1) 0%, rgba(99, 102, 241, 0.12) 100%);
-    border: 1px solid rgba(2, 132, 199, 0.25);
-    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.08);
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 1.5px solid #38bdf8;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.15);
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
   }
   [data-theme="light"] .py-sp-title {
     color: #0f172a !important;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
   }
-  [data-theme="light"] .py-sp-subtitle { color: #1e293b !important; font-weight: 600; }
-  [data-theme="light"] .py-sp-badge {
-    background: rgba(217, 119, 6, 0.08);
-    border: 1px solid rgba(217, 119, 6, 0.28);
-    color: #b45309;
-  }
-  [data-theme="light"] .py-sp-badge-dot {
-    background: #d97706;
-    box-shadow: 0 0 6px rgba(217, 119, 6, 0.5);
+  [data-theme="light"] .py-sp-subtitle {
+    color: #334155 !important;
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
   }
 
   /* Light Mode 4 Cards */
@@ -844,65 +833,50 @@ window.COURSE_CONTENT['pyDay01'] = {
     transition: all 0.3s ease;
   }
   .py-mut-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
-  .py-mut-header-left {
+  .py-mut-title-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
+    flex-wrap: wrap;
   }
   .py-mut-header-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
     background: linear-gradient(135deg, rgba(168, 85, 247, 0.18) 0%, rgba(99, 102, 241, 0.22) 100%);
     border: 1px solid rgba(168, 85, 247, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
+    box-shadow: 0 4px 14px rgba(168, 85, 247, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   .py-mut-title {
     margin: 0;
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 1.02rem;
+    font-size: 1.12rem;
     font-weight: 800;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
     color: #f8fafc !important;
+    line-height: 1.3;
   }
   .py-mut-subtitle {
-    margin: 2px 0 0 0;
-    font-size: 0.74rem;
+    margin: 6px 0 0 56px;
+    font-size: 0.88rem;
     color: #94a3b8 !important;
     font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
   }
-  .py-mut-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.70rem;
-    font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 9999px;
-    background: rgba(168, 85, 247, 0.12);
-    border: 1px solid rgba(168, 85, 247, 0.32);
-    color: #c084fc;
-  }
-  .py-mut-badge-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #c084fc;
-    box-shadow: 0 0 8px #c084fc;
+  @media (max-width: 640px) {
+    .py-mut-subtitle {
+      margin-left: 0;
+    }
   }
 
   /* Dual Comparison Columns Grid */
@@ -1217,25 +1191,28 @@ window.COURSE_CONTENT['pyDay01'] = {
     box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), inset 0 1px 0 #ffffff;
   }
   [data-theme="light"] .py-mut-header {
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1.5px solid #e2e8f0;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
   }
   [data-theme="light"] .py-mut-header-icon {
-    background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(99, 102, 241, 0.12) 100%);
-    border: 1px solid rgba(147, 51, 234, 0.25);
-    box-shadow: 0 2px 8px rgba(147, 51, 234, 0.08);
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+    border: 1.5px solid #c084fc;
+    box-shadow: 0 4px 14px rgba(168, 85, 247, 0.15);
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
   }
   [data-theme="light"] .py-mut-title {
     color: #0f172a !important;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
   }
-  [data-theme="light"] .py-mut-subtitle { color: #1e293b !important; font-weight: 600; }
-  [data-theme="light"] .py-mut-badge {
-    background: rgba(124, 58, 237, 0.08);
-    border: 1px solid rgba(124, 58, 237, 0.25);
-    color: #7c3aed;
-  }
-  [data-theme="light"] .py-mut-badge-dot {
-    background: #7c3aed;
-    box-shadow: 0 0 6px rgba(124, 58, 237, 0.5);
+  [data-theme="light"] .py-mut-subtitle {
+    color: #334155 !important;
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
   }
 
   /* Light Mode Panels */
@@ -1411,19 +1388,15 @@ window.COURSE_CONTENT['pyDay01'] = {
     overflow: hidden;
   }
   .py-matrix-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 14px;
-    padding-bottom: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    flex-wrap: wrap;
   }
-  .py-matrix-header-left {
+  .py-matrix-title-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
+    flex-wrap: wrap;
   }
   .py-matrix-header-icon {
     font-size: 1.25rem;
@@ -1431,44 +1404,42 @@ window.COURSE_CONTENT['pyDay01'] = {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: rgba(56, 189, 248, 0.12);
-    border: 1px solid rgba(56, 189, 248, 0.25);
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.16) 0%, rgba(56, 189, 248, 0.22) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  .py-matrix-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+  }
+  .py-matrix-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
   }
   .py-matrix-title {
     margin: 0;
-    font-size: 0.98rem;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 1.12rem;
     font-weight: 800;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
     color: #f8fafc;
+    line-height: 1.3;
   }
   .py-matrix-subtitle {
-    margin: 2px 0 0;
-    font-size: 0.74rem;
+    margin: 3px 0 0 0;
+    font-size: 0.82rem;
     color: #94a3b8;
-  }
-  .py-matrix-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: 9999px;
-    background: rgba(56, 189, 248, 0.1);
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #38bdf8;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .py-matrix-badge-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #38bdf8;
-    box-shadow: 0 0 6px #38bdf8;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
   }
 
   /* Matrix Table Container */
@@ -1606,24 +1577,28 @@ window.COURSE_CONTENT['pyDay01'] = {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   }
   [data-theme="light"] .py-matrix-header {
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1.5px solid #e2e8f0;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
   }
   [data-theme="light"] .py-matrix-header-icon {
-    background: #e0f2fe;
-    border-color: #bae6fd;
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    border: 1.5px solid #34d399;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.15);
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
   }
   [data-theme="light"] .py-matrix-title {
-    color: #0f172a;
+    color: #0f172a !important;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
   }
-  [data-theme="light"] .py-matrix-subtitle { color: #1e293b; font-weight: 600; }
-  [data-theme="light"] .py-matrix-badge {
-    background: #e0f2fe;
-    border-color: #bae6fd;
-    color: #0369a1;
-  }
-  [data-theme="light"] .py-matrix-badge-dot {
-    background: #0284c7;
-    box-shadow: 0 0 6px #0284c7;
+  [data-theme="light"] .py-matrix-subtitle {
+    color: #334155 !important;
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
   }
   [data-theme="light"] .py-matrix-table-wrap {
     border-color: #e2e8f0;
@@ -1940,19 +1915,76 @@ window.COURSE_CONTENT['pyDay01'] = {
     flex-wrap: wrap;
     margin-top: 12px;
   }
+  .py-vfc-pipeline-stepper,
   .py-vfc-breadcrumb {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    background: rgba(15, 23, 42, 0.9);
-    border: 1px solid rgba(99, 102, 241, 0.32);
-    padding: 8px 18px;
-    border-radius: 9999px;
+    justify-content: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .py-vfc-pipeline-stepper::-webkit-scrollbar,
+  .py-vfc-breadcrumb::-webkit-scrollbar {
+    display: none;
+  }
+  .py-vfc-step {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     font-size: 0.78rem;
     font-weight: 700;
     color: #cbd5e1;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  .py-vfc-step:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+  .py-vfc-step-idx {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: rgba(99, 102, 241, 0.18);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #818cf8;
+    line-height: 1.2;
+  }
+  .py-vfc-step-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #6366f1;
+    opacity: 0.8;
+    flex-shrink: 0;
+  }
+  .py-vfc-step-arrow svg {
+    display: block;
+  }
+  .py-vfc-step.step-active {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.16) 0%, rgba(99, 102, 241, 0.2) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    color: #38bdf8;
+    box-shadow: 0 2px 10px rgba(56, 189, 248, 0.15);
+  }
+  .py-vfc-step.step-active .py-vfc-step-idx {
+    background: rgba(56, 189, 248, 0.2);
+    border-color: rgba(56, 189, 248, 0.45);
+    color: #38bdf8;
   }
   .py-vfc-breadcrumb-sep {
     color: #818cf8;
@@ -2442,12 +2474,40 @@ window.COURSE_CONTENT['pyDay01'] = {
     color: #1d4ed8 !important;
     font-weight: 800 !important;
   }
+  [data-theme="light"] .py-vfc-pipeline-stepper,
   [data-theme="light"] .py-vfc-breadcrumb {
-    background: #f8fafc !important;
-    border: 1.5px solid #cbd5e1 !important;
-    color: #0f172a !important;
-    font-weight: 700 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.05) !important;
+  }
+  [data-theme="light"] .py-vfc-step {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+  }
+  [data-theme="light"] .py-vfc-step:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+  }
+  [data-theme="light"] .py-vfc-step-idx {
+    background: #e0e7ff;
+    border-color: #c7d2fe;
+    color: #4338ca;
+  }
+  [data-theme="light"] .py-vfc-step-arrow {
+    color: #3b82f6;
+    opacity: 0.9;
+  }
+  [data-theme="light"] .py-vfc-step.step-active {
+    background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+    border: 1px solid #93c5fd;
+    color: #1d4ed8;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);
+  }
+  [data-theme="light"] .py-vfc-step.step-active .py-vfc-step-idx {
+    background: #dbeafe;
+    border-color: #93c5fd;
+    color: #1d4ed8;
   }
   [data-theme="light"] .py-vfc-breadcrumb-sep {
     color: #2563eb !important;
@@ -2940,6 +3000,182 @@ window.COURSE_CONTENT['pyDay01'] = {
     color: #0284c7 !important;
   }
 
+  /* ═══════════════════════════════════════════════════════════════
+     THEORY NARRATION PLAYBACK ISOLATION & SPOTLIGHTS (SQL Day 02 Parity)
+     ═══════════════════════════════════════════════════════════════ */
+  .stunning-section-entry {
+    animation: stunningSectionPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    will-change: opacity, transform !important;
+  }
+  @keyframes stunningSectionPop {
+    0% {
+      opacity: 0;
+      transform: translateY(16px) scale(0.98);
+      filter: blur(3px);
+    }
+    60% {
+      opacity: 0.95;
+      transform: translateY(-2px) scale(1.005);
+      filter: blur(0px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0px);
+    }
+  }
+  .instant-display {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  /* Playback Active: Inactive sections are dimmed and non-distracting */
+  .playback-active .slide-section.section-hidden {
+    opacity: 0.18 !important;
+    filter: blur(0.4px) !important;
+    pointer-events: none !important;
+    transition: opacity 0.35s ease, filter 0.35s ease !important;
+  }
+
+  /* Card Spotlight Glow */
+  .py-sp-card.card-active-spotlight,
+  .py-sp-ai-banner.card-active-spotlight,
+  .py-mut-panel.card-active-spotlight,
+  .py-analyst-trap-card.card-active-spotlight,
+  .py-vfc-node.card-active-spotlight,
+  .card-active-spotlight {
+    transform: scale(1.025) translateY(-3px) !important;
+    border-color: #38bdf8 !important;
+    background: rgba(14, 165, 233, 0.12) !important;
+    box-shadow: 0 10px 28px -4px rgba(56, 189, 248, 0.35), 0 0 0 2px rgba(56, 189, 248, 0.7) !important;
+    z-index: 5 !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  [data-theme="light"] .py-sp-card.card-active-spotlight,
+  [data-theme="light"] .py-sp-ai-banner.card-active-spotlight,
+  [data-theme="light"] .py-mut-panel.card-active-spotlight,
+  [data-theme="light"] .py-analyst-trap-card.card-active-spotlight,
+  [data-theme="light"] .py-vfc-node.card-active-spotlight,
+  [data-theme="light"] .card-active-spotlight {
+    border-color: #0284c7 !important;
+    background: #f0f9ff !important;
+    box-shadow: 0 10px 24px -4px rgba(2, 132, 199, 0.28), 0 0 0 2px #0284c7 !important;
+  }
+
+  /* Table Row Active Spotlight */
+  .py-matrix-table tr.row-active-spotlight,
+  .py-master-ref-table tr.row-active-spotlight,
+  table tr.row-active-spotlight {
+    background: rgba(59, 130, 246, 0.18) !important;
+    border-left: 4px solid #38bdf8 !important;
+    box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.15) !important;
+    transition: background 0.25s ease, border-color 0.25s ease !important;
+  }
+  .py-matrix-table tr.row-active-spotlight td,
+  .py-master-ref-table tr.row-active-spotlight td,
+  table tr.row-active-spotlight td {
+    color: #f8fafc !important;
+    font-weight: 600 !important;
+  }
+
+  [data-theme="light"] .py-matrix-table tr.row-active-spotlight,
+  [data-theme="light"] .py-master-ref-table tr.row-active-spotlight,
+  [data-theme="light"] table tr.row-active-spotlight {
+    background: rgba(2, 132, 199, 0.12) !important;
+    border-left: 4px solid #0284c7 !important;
+  }
+  [data-theme="light"] .py-matrix-table tr.row-active-spotlight td,
+  [data-theme="light"] .py-master-ref-table tr.row-active-spotlight td,
+  [data-theme="light"] table tr.row-active-spotlight td {
+    color: #0f172a !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     WORLD-CLASS INTERACTIVE & VISUAL ENHANCEMENTS (10/10 UX)
+     ══════════════════════════════════════════════════════════ */
+
+  /* 1. Dynamic Table Row Spotlight & Hover FX */
+  .py-master-ref-table tbody tr,
+  .py-matrix-table tbody tr {
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    cursor: pointer;
+  }
+  .py-master-ref-table tbody tr:hover,
+  .py-matrix-table tbody tr:hover {
+    background: rgba(56, 189, 248, 0.08) !important;
+    transform: translateX(4px);
+    box-shadow: inset 3px 0 0 #38bdf8 !important;
+  }
+  [data-theme="light"] .py-master-ref-table tbody tr:hover,
+  [data-theme="light"] .py-matrix-table tbody tr:hover {
+    background: #f0f9ff !important;
+    box-shadow: inset 3px 0 0 #0284c7 !important;
+  }
+
+  /* 2. Top Gradient Accent Lines & Hover Micro-Elevation */
+  .py-sp-card,
+  .py-mut-showcase,
+  .py-matrix-showcase,
+  .py-analyst-trap-card,
+  .py-vfc-canvas {
+    position: relative !important;
+    overflow: hidden !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease !important;
+  }
+  .py-sp-card::before,
+  .py-mut-showcase::before,
+  .py-matrix-showcase::before,
+  .py-analyst-trap-card::before,
+  .py-vfc-canvas::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #34d399 100%);
+    opacity: 0.85;
+    z-index: 2;
+  }
+  .py-sp-card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.4), 0 0 16px rgba(56, 189, 248, 0.15) !important;
+    border-color: rgba(56, 189, 248, 0.4) !important;
+  }
+  [data-theme="light"] .py-sp-card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08), 0 0 12px rgba(2, 132, 199, 0.12) !important;
+    border-color: #0284c7 !important;
+  }
+
+  /* 3. Code Card Micro-Glow & Typography Polish */
+  .py-trap-box pre,
+  .py-code-box {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+  }
+  .py-trap-box pre:hover,
+  .py-code-box:hover {
+    border-color: rgba(56, 189, 248, 0.4) !important;
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.12) !important;
+  }
+  [data-theme="light"] .py-trap-box pre:hover,
+  [data-theme="light"] .py-code-box:hover {
+    border-color: #0284c7 !important;
+    box-shadow: 0 4px 16px rgba(2, 132, 199, 0.12) !important;
+  }
+
+  /* Heading & Block Active Spotlight */
+  .heading-box-wrap.narration-spotlight-active,
+  .narration-spotlight-active {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.3) !important;
+    transition: all 0.3s ease !important;
+  }
+
 </style>
 
 <!-- ═══ SECTION 1: 01. Why Python for Data Analysis? ═══ -->
@@ -2959,16 +3195,9 @@ window.COURSE_CONTENT['pyDay01'] = {
   <div class="py-sp-showcase">
     <!-- Header -->
     <div class="py-sp-header">
-      <div class="py-sp-header-left">
+      <div class="py-sp-title-row">
         <div class="py-sp-header-icon">🎯</div>
-        <div>
-          <h3 class="py-sp-title">Why Data Analysts Need Python: Core Capabilities</h3>
-          <p class="py-sp-subtitle">5 Core Superpowers Transforming Modern Data Teams</p>
-        </div>
-      </div>
-      <div class="py-sp-badge">
-        <span class="py-sp-badge-dot"></span>
-        <span>SUPERPOWERS</span>
+        <h3 class="py-sp-title">Why Data Analysts Need Python?</h3>
       </div>
     </div>
 
@@ -3051,24 +3280,18 @@ window.COURSE_CONTENT['pyDay01'] = {
       </div>
     </div>
   </div>
+</div>
 
   <!-- 🤝 Tool Matrix: Where Python Fits In -->
-  <div class="py-matrix-showcase" id="day01ToolMatrixSection">
+  <div class="slide-section py-matrix-showcase" id="day01ToolMatrixSection">
     <!-- Header -->
     <div class="py-matrix-header">
-      <div class="py-matrix-header-left">
+      <div class="py-matrix-title-row">
         <div class="py-matrix-header-icon">🤝</div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <h3 class="py-matrix-title" style="margin:0;">Tool Matrix: SQL vs. Excel vs. Python in Analytics</h3>
-          <button class="audio-play-btn" onclick="playAudio('Day01/New_PyDay01Audio02.mp3', this)" title="Play narration" style="position:static;">
-            <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-        </div>
-        <p class="py-matrix-subtitle">Where each tool excels across the data stack</p>
-      </div>
-      <div class="py-matrix-badge">
-        <span class="py-matrix-badge-dot"></span>
-        <span>STACK HARMONY</span>
+        <h3 class="py-matrix-title">Tool Matrix: SQL vs. Excel vs. Python in Analytics</h3>
+        <button class="audio-play-btn" onclick="playAudio('Day01/New_PyDay01Audio02.mp3', this)" title="Play narration">
+          <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
       </div>
     </div>
 
@@ -3146,7 +3369,6 @@ window.COURSE_CONTENT['pyDay01'] = {
       </table>
     </div>
   </div>
-</div>
 
 <!-- ═══ SECTION 2: 02. Mutable vs. Immutable Objects ═══ -->
 <div class="slide-section" id="day01MutabilitySection">
@@ -3165,17 +3387,11 @@ window.COURSE_CONTENT['pyDay01'] = {
   <div class="py-mut-showcase">
     <!-- Header -->
     <div class="py-mut-header">
-      <div class="py-mut-header-left">
+      <div class="py-mut-title-row">
         <div class="py-mut-header-icon">🔄</div>
-        <div>
-          <h3 class="py-mut-title">Mutability Architecture: In-Place Modification vs. Reallocation</h3>
-          <p class="py-mut-subtitle">In-Place Modification vs. Object Reallocation</p>
-        </div>
+        <h3 class="py-mut-title">Mutable vs. Immutable Objects in RAM</h3>
       </div>
-      <div class="py-mut-badge">
-        <span class="py-sp-badge-dot"></span>
-        <span>MEMORY REFERENCE</span>
-      </div>
+      <p class="py-mut-subtitle">How Python handles in-place memory updates vs. brand-new object reallocation in RAM</p>
     </div>
 
     <!-- 2-Column Analogy Grid -->
@@ -3461,14 +3677,39 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       
       <!-- Header Meta: Pipeline Breadcrumb & Pinned Sticky Note -->
       <div class="py-vfc-header-meta" style="justify-content:center;">
-        <div class="py-vfc-breadcrumb">
-          <span>Source Code</span>
-          <span class="py-vfc-breadcrumb-sep">➔</span>
-          <span>Object Instantiation</span>
-          <span class="py-vfc-breadcrumb-sep">➔</span>
-          <span>Heap Allocation</span>
-          <span class="py-vfc-breadcrumb-sep">➔</span>
-          <span class="highlight">Variable Pointers</span>
+        <div class="py-vfc-pipeline-stepper" role="list">
+          <div class="py-vfc-step" role="listitem">
+            <span class="py-vfc-step-idx">01</span>
+            <span>Source Code</span>
+          </div>
+          <div class="py-vfc-step-arrow" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <div class="py-vfc-step" role="listitem">
+            <span class="py-vfc-step-idx">02</span>
+            <span>Heap Objects</span>
+          </div>
+          <div class="py-vfc-step-arrow" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <div class="py-vfc-step" role="listitem">
+            <span class="py-vfc-step-idx">03</span>
+            <span>RAM Pointers</span>
+          </div>
+          <div class="py-vfc-step-arrow" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <div class="py-vfc-step" role="listitem">
+            <span class="py-vfc-step-idx">04</span>
+            <span>Reassignment &amp; Identity</span>
+          </div>
+          <div class="py-vfc-step-arrow" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <div class="py-vfc-step" role="listitem">
+            <span class="py-vfc-step-idx">05</span>
+            <span>Garbage Collection</span>
+          </div>
         </div>
 
         
@@ -4136,7 +4377,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
     {
         "id": 13,
         "prompt": "<strong>[Hard] Composite Fraud Detection Keys (Tuple-Keyed defaultdict)</strong><br/>Build a composite fraud detection system. Create a <code>defaultdict(float)</code> named <code>fraud_map</code>. For each transaction in the list (each is a dict with <code>user_id</code>, <code>device</code>, <code>ip</code>, <code>amount</code>), form a tuple key <code>(user_id, device, ip)</code> and accumulate the <code>amount</code>.",
-        "starterCode": "from collections import defaultdict\n\ntransactions = [\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.1\", \"amount\": 120.50},\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.1\", \"amount\": 340.00},\n    {\"user_id\": \"U02\", \"device\": \"desktop\", \"ip\": \"192.168.1.5\", \"amount\": 85.75},\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.2\", \"amount\": 500.00},\n]\n\nfraud_map = defaultdict(float)\n# Your code here\n",
+        "starterCode": "",
         "ref": "from collections import defaultdict\n\ntransactions = [\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.1\", \"amount\": 120.50},\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.1\", \"amount\": 340.00},\n    {\"user_id\": \"U02\", \"device\": \"desktop\", \"ip\": \"192.168.1.5\", \"amount\": 85.75},\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.2\", \"amount\": 500.00},\n]\n\nfraud_map = defaultdict(float)\nfor tx in transactions:\n    key = (tx[\"user_id\"], tx[\"device\"], tx[\"ip\"])\n    fraud_map[key] += tx[\"amount\"]\nprint(dict(fraud_map))\n",
         "questionAudio": "Day01/New_PyDay01Question13.mp3",
         "solutionAudio": "Day01/New_PyDay01Question13sol.mp3",
@@ -4153,7 +4394,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
     {
         "id": 14,
         "prompt": "<strong>[Hard] Recursive Nested Dict Flattener with None Coalescing</strong><br/>Write a recursive function <code>flatten_dict(d, parent_key='')</code> that converts nested dictionaries into flat dot-notation keys. Replace any <code>None</code> values with the string <code>'N/A'</code>. Store the result of flattening <code>nested</code> in <code>flat</code>.",
-        "starterCode": "nested = {\n    \"user\": {\n        \"name\": \"Aarav\",\n        \"address\": {\n            \"city\": \"Mumbai\",\n            \"pin\": None\n        }\n    },\n    \"score\": 95\n}\n\ndef flatten_dict(d, parent_key=''):\n    # Your code here\n    pass\n\nflat = flatten_dict(nested)\nprint(flat)\n",
+        "starterCode": "",
         "ref": "nested = {\n    \"user\": {\n        \"name\": \"Aarav\",\n        \"address\": {\n            \"city\": \"Mumbai\",\n            \"pin\": None\n        }\n    },\n    \"score\": 95\n}\n\ndef flatten_dict(d, parent_key=''):\n    items = {}\n    for k, v in d.items():\n        new_key = f\"{parent_key}.{k}\" if parent_key else k\n        if isinstance(v, dict):\n            items.update(flatten_dict(v, new_key))\n        else:\n            items[new_key] = 'N/A' if v is None else v\n    return items\n\nflat = flatten_dict(nested)\nprint(flat)\n",
         "questionAudio": "Day01/New_PyDay01Question14.mp3",
         "solutionAudio": "Day01/New_PyDay01Question14sol.mp3",
@@ -4171,7 +4412,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
     {
         "id": 15,
         "prompt": "<strong>[Hard] Dynamic List Over-Allocation Growth Tracker</strong><br/>Track when Python's list allocator jumps in size. Append integers 0–20 to a list one at a time. Each time <code>sys.getsizeof(lst)</code> increases versus the previous step, record a tuple <code>(index, size)</code> into a list named <code>jump_sizes</code>.",
-        "starterCode": "import sys\n\nlst = []\njump_sizes = []\nprev_size = sys.getsizeof(lst)\n\n# Your code here\nprint(jump_sizes)\n",
+        "starterCode": "",
         "ref": "import sys\n\nlst = []\njump_sizes = []\nprev_size = sys.getsizeof(lst)\n\nfor i in range(21):\n    lst.append(i)\n    cur_size = sys.getsizeof(lst)\n    if cur_size > prev_size:\n        jump_sizes.append((i, cur_size))\n        prev_size = cur_size\n\nprint(jump_sizes)\n",
         "questionAudio": "Day01/New_PyDay01Question15.mp3",
         "solutionAudio": "Day01/New_PyDay01Question15sol.mp3",
@@ -4191,12 +4432,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
     {
       id: 1,
       prompt: "Create a variable <code>sales = 1_000_000</code> using underscore separators. Store <code>type(sales).__name__</code> in <code>result_type</code> and the value in <code>result_value</code>.",
-      starterCode: `# Q1: Integer literals with underscore separators
-sales = 1_000_000
-result_type  = type(sales).__name__
-result_value = sales
-print(f"Type: {result_type}, Value: {result_value:,}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4208,12 +4444,7 @@ print(f"Type: {result_type}, Value: {result_value:,}")
     {
       id: 2,
       prompt: "Compute <code>2 ** 200</code> and store the digit count via <code>len(str(...))</code> in <code>digit_count</code>. Python integers never overflow — prove it!",
-      starterCode: `# Q2: Arbitrary precision integers
-big_num    = 2 ** 200
-digit_count = len(str(big_num))
-print(f"2^200 has {digit_count} digits")
-print(f"First 30 digits: {str(big_num)[:30]}...")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4224,16 +4455,7 @@ print(f"First 30 digits: {str(big_num)[:30]}...")
     {
       id: 3,
       prompt: "Demonstrate the float trap: check <code>0.1 + 0.2 == 0.3</code> (store in <code>is_equal</code>, expect <code>False</code>). Then fix with <code>math.isclose()</code> (store in <code>is_close_ok</code>, expect <code>True</code>).",
-      starterCode: `# Q3: IEEE 754 floating-point trap
-import math
-
-is_equal   = (0.1 + 0.2 == 0.3)
-is_close_ok = math.isclose(0.1 + 0.2, 0.3)
-
-print(f"0.1 + 0.2 == 0.3  → {is_equal}")
-print(f"0.1 + 0.2 ≈ 0.3   → {is_close_ok}")
-print(f"Actual sum: {0.1 + 0.2}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4245,19 +4467,7 @@ print(f"Actual sum: {0.1 + 0.2}")
     {
       id: 4,
       prompt: "Test integer caching: <code>a = 100; b = 100</code>, check <code>a is b</code> → store in <code>small_int_is</code>. Then <code>a = 300; b = 300</code>, check again → store in <code>big_int_is</code>. CPython caches -5 to 256; above that, <code>is</code> is undefined behavior!",
-      starterCode: `# Q4: CPython small-integer caching
-a = 100
-b = 100
-small_int_is = (a is b)   # True — CPython caches this range
-
-a = 300
-b = 300
-big_int_is = (a is b)     # May be True or False — implementation detail!
-
-print(f"100 is 100  → {small_int_is}  (cached range -5..256)")
-print(f"300 is 300  → {big_int_is}  (above cache range — undefined)")
-# IMPORTANT: Never use 'is' for value equality on integers!
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4268,20 +4478,7 @@ print(f"300 is 300  → {big_int_is}  (above cache range — undefined)")
     {
       id: 5,
       prompt: "NaN trap: store <code>math.nan != math.nan</code> in <code>nan_check</code> (expect <code>True</code>). Explain in a comment why this silently breaks naive <code>value == some_nan</code> deduplication logic.",
-      starterCode: `# Q5: NaN semantics — float('nan') != float('nan')
-import math
-
-nan_val  = math.nan
-nan_check = (nan_val != nan_val)   # NaN is never equal to itself!
-
-# Safe NaN test:
-is_nan = math.isnan(nan_val)
-
-print(f"nan != nan  → {nan_check}   (always True!)")
-print(f"math.isnan  → {is_nan}")
-# WARNING: if you filter with 'val == float("nan")', it NEVER matches.
-# Use math.isnan() or pandas isna() instead.
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4292,12 +4489,7 @@ print(f"math.isnan  → {is_nan}")
     {
       id: 6,
       prompt: "Reverse <code>\"DataAnalyst\"</code> using slicing; store the result in <code>result</code>.",
-      starterCode: `# Q6: String slicing reversal
-s = "DataAnalyst"
-result = s[::-1]
-print(f"Original : {s}")
-print(f"Reversed : {result}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4308,12 +4500,7 @@ print(f"Reversed : {result}")
     {
       id: 7,
       prompt: "Check falsiness of <code>\"\"</code>, <code>0</code>, <code>[]</code>, <code>{}</code>, <code>None</code>, and <code>0.0</code> — store results as a list of booleans in <code>result</code> (all should be <code>False</code>).",
-      starterCode: `# Q7: Python's falsy values
-falsy_candidates = ["", 0, [], {}, None, 0.0]
-result = [bool(v) for v in falsy_candidates]
-print(f"bool results: {result}")
-# All should be False — Python's falsy set
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4324,17 +4511,7 @@ print(f"bool results: {result}")
     {
       id: 8,
       prompt: "Create a <code>frozenset({1,2,3})</code>, attempt <code>.add(4)</code>, catch the <code>AttributeError</code>, and store the exception's type name in <code>error_type</code>.",
-      starterCode: `# Q8: frozenset immutability
-fs = frozenset({1, 2, 3})
-error_type = None
-try:
-    fs.add(4)
-except AttributeError as e:
-    error_type = type(e).__name__
-    print(f"Caught {error_type}: {e}")
-
-print(f"frozenset is still: {fs}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4345,19 +4522,7 @@ print(f"frozenset is still: {fs}")
     {
       id: 9,
       prompt: "Use <code>sys.getsizeof()</code> to compare memory: <code>int(0)</code>, <code>float(0.0)</code>, <code>bool(False)</code>. Store as a dict <code>result</code> mapping type name → byte size.",
-      starterCode: `# Q9: Memory footprint comparison
-import sys
-
-result = {
-    "int":   sys.getsizeof(int(0)),
-    "float": sys.getsizeof(float(0.0)),
-    "bool":  sys.getsizeof(bool(False)),
-    "str":   sys.getsizeof(""),
-}
-
-for k, v in result.items():
-    print(f"{k:8s}: {v} bytes")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4368,12 +4533,7 @@ for k, v in result.items():
     {
       id: 10,
       prompt: "Find the intersection of <code>{1,2,3,4}</code> and <code>{3,4,5,6}</code> using the <code>&</code> operator; store in <code>result</code>.",
-      starterCode: `# Q10: Set intersection
-a = {1, 2, 3, 4}
-b = {3, 4, 5, 6}
-result = a & b
-print(f"Intersection: {result}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4384,17 +4544,7 @@ print(f"Intersection: {result}")
     {
       id: 11,
       prompt: "Create a <code>namedtuple Employee(name, salary, dept)</code>, instantiate one record, and access fields by name. Store the salary in <code>result</code>.",
-      starterCode: `# Q11: namedtuple — structured immutable data
-from collections import namedtuple
-
-Employee = namedtuple('Employee', ['name', 'salary', 'dept'])
-emp = Employee(name="Priya Desai", salary=112800, dept="Data Science")
-
-result = emp.salary   # Access by name, not index
-print(f"Name  : {emp.name}")
-print(f"Salary: {emp.salary:,}")
-print(f"Dept  : {emp.dept}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4405,20 +4555,7 @@ print(f"Dept  : {emp.dept}")
     {
       id: 12,
       prompt: "Demonstrate string interning: <code>a = 'hello'; b = 'hello'</code>; check <code>a is b</code>, store in <code>result</code>. Explain in a comment why this should NEVER be relied on in application logic.",
-      starterCode: `# Q12: String interning (CPython implementation detail)
-a = 'hello'
-b = 'hello'
-result = (a is b)   # May be True due to interning, but NOT guaranteed!
-
-# Two strings with the same value created dynamically may not be interned:
-import random
-x = 'hel' + 'lo'   # Constant folding — often interned
-y = 'hel' + chr(108) + 'o'  # Runtime — less likely interned
-
-print(f"'hello' is 'hello': {result}")
-print(f"Dynamic x is y    : {x is y}  (may differ)")
-# LESSON: Always use == for value equality. 'is' checks identity, not value.
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4429,15 +4566,7 @@ print(f"Dynamic x is y    : {x is y}  (may differ)")
     {
       id: 13,
       prompt: "Prove <code>bool</code> is a subclass of <code>int</code>: check <code>isinstance(True, int)</code> (store in <code>is_subclass</code>) and compute <code>True + True + False</code> (store in <code>sum_result</code>, expect <code>2</code>).",
-      starterCode: `# Q13: bool is a subclass of int
-is_subclass = isinstance(True, int)
-sum_result  = True + True + False
-
-print(f"isinstance(True, int) → {is_subclass}")
-print(f"True + True + False   → {sum_result}")
-print(f"True  == 1: {True == 1}")
-print(f"False == 0: {False == 0}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4449,17 +4578,7 @@ print(f"False == 0: {False == 0}")
     {
       id: 14,
       prompt: "Conversion pipeline: <code>\"3.14\"</code> → <code>float</code> → <code>int</code> → <code>complex</code>. Store each intermediate in <code>step1</code>, <code>step2</code>, <code>step3</code>.",
-      starterCode: `# Q14: Type coercion pipeline
-raw = "3.14"
-step1 = float(raw)          # str → float: 3.14
-step2 = int(step1)           # float → int: 3  (truncates, doesn't round!)
-step3 = complex(step2)       # int → complex: (3+0j)
-
-print(f"str    : '{raw}'  → {type(raw).__name__}")
-print(f"float  : {step1}  → {type(step1).__name__}")
-print(f"int    : {step2}    → {type(step2).__name__}  (truncated!)")
-print(f"complex: {step3} → {type(step3).__name__}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4471,20 +4590,7 @@ print(f"complex: {step3} → {type(step3).__name__}")
     {
       id: 15,
       prompt: "Build a <code>defaultdict(list)</code> grouping a list of names by first letter. Store the resulting dict in <code>result</code>.",
-      starterCode: `# Q15: defaultdict grouping pattern
-from collections import defaultdict
-
-names = ["Alice", "Bob", "Anna", "Charlie", "Brian", "Carol", "Diana"]
-result = defaultdict(list)
-
-for name in names:
-    result[name[0]].append(name)
-
-# Convert to regular dict for display
-result = dict(result)
-for letter, group in sorted(result.items()):
-    print(f"{letter}: {group}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4495,25 +4601,7 @@ for letter, group in sorted(result.items()):
     {
       id: 16,
       prompt: "Demonstrate the mutable-default-argument trap: define <code>def add(item, lst=[])</code>, call it twice with different items. Store both return values in <code>call1</code>, <code>call2</code> — showing accumulation, not two fresh lists!",
-      starterCode: `# Q16: Mutable default argument trap
-def add(item, lst=[]):
-    lst.append(item)
-    return lst
-
-call1 = add("first")    # Returns ["first"]
-call2 = add("second")   # Returns ["first", "second"] — NOT ["second"]!
-
-print(f"call1: {call1}")
-print(f"call2: {call2}")
-print("Both calls share the same default list!")
-
-# FIX: use None as default
-def add_safe(item, lst=None):
-    if lst is None:
-        lst = []
-    lst.append(item)
-    return lst
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4524,20 +4612,7 @@ def add_safe(item, lst=None):
     {
       id: 17,
       prompt: "Compare <code>dict.get(\"key\", \"default\")</code> vs <code>dict[\"key\"]</code> on a missing key. Store the <code>.get()</code> result in <code>safe_result</code> and the exception type name in <code>error_type</code>.",
-      starterCode: `# Q17: Safe dict access patterns
-data = {"name": "Aarav", "dept": "Engineering"}
-
-safe_result = data.get("salary", "Not Available")
-
-error_type = None
-try:
-    _ = data["salary"]
-except KeyError as e:
-    error_type = type(e).__name__
-
-print(f"get() result : '{safe_result}'")
-print(f"KeyError type: {error_type}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4549,13 +4624,7 @@ print(f"KeyError type: {error_type}")
     {
       id: 18,
       prompt: "Tuple unpacking with <code>*</code>: <code>a, *b, c = (1,2,3,4,5)</code>. Store <code>a</code>, <code>b</code>, <code>c</code> separately.",
-      starterCode: `# Q18: Extended unpacking with *
-a, *b, c = (1, 2, 3, 4, 5)
-
-print(f"a = {a}        (first element)")
-print(f"b = {b}  (middle elements — always a list)")
-print(f"c = {c}        (last element)")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4568,24 +4637,7 @@ print(f"c = {c}        (last element)")
     {
       id: 19,
       prompt: "Shallow copy trap: <code>a=[[1,2],[3,4]]; b=a.copy(); b[0][0]=99</code>. Store <code>a</code> after mutation in <code>result</code> (trap: <code>a</code> is affected!). Fix with <code>copy.deepcopy</code>, store in <code>result_fixed</code>.",
-      starterCode: `# Q19: Shallow vs deep copy
-import copy
-
-a = [[1, 2], [3, 4]]
-b = a.copy()      # Shallow copy — nested lists are shared!
-b[0][0] = 99
-
-result = a        # a is mutated too!
-
-# Fix with deepcopy
-a2 = [[1, 2], [3, 4]]
-b2 = copy.deepcopy(a2)
-b2[0][0] = 99
-result_fixed = a2   # a2 is NOT affected
-
-print(f"After shallow copy mutation: a = {result}")
-print(f"After deep copy mutation  : a2= {result_fixed}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4597,15 +4649,7 @@ print(f"After deep copy mutation  : a2= {result_fixed}")
     {
       id: 20,
       prompt: "Use <code>Counter(\"mississippi\")</code> and store the 3 most common characters (with counts) in <code>result</code> using <code>.most_common(3)</code>.",
-      starterCode: `# Q20: Counter for frequency analysis
-from collections import Counter
-
-c = Counter("mississippi")
-result = c.most_common(3)   # List of (char, count) tuples
-
-print(f"Full count  : {dict(c)}")
-print(f"Top 3 chars : {result}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4616,28 +4660,7 @@ print(f"Top 3 chars : {result}")
     {
       id: 21,
       prompt: "Categorical data with <code>Enum</code>: define <code>class Status(Enum)</code> with <code>ACTIVE=1, INACTIVE=2, PENDING=3</code>. Store <code>Status.ACTIVE.value</code> in <code>result</code>. Add a comment explaining why Enum beats raw strings for categorical columns.",
-      starterCode: `# Q21: Enum for categorical data
-from enum import Enum
-
-class Status(Enum):
-    ACTIVE   = 1
-    INACTIVE = 2
-    PENDING  = 3
-
-result = Status.ACTIVE.value
-
-# Demonstrate enum advantages:
-print(f"Status.ACTIVE       : {Status.ACTIVE}")
-print(f"Status.ACTIVE.value : {Status.ACTIVE.value}")
-print(f"Status.ACTIVE.name  : {Status.ACTIVE.name}")
-print(f"Type-safe compare   : {Status.ACTIVE == Status.INACTIVE}")
-
-# WHY use Enum over raw strings like "active"?
-# 1. IDE autocomplete — no typos like "activee" slip through silently
-# 2. Type-safe comparisons — Status.ACTIVE != "active" prevents confusion
-# 3. Iterable membership — list(Status) gives all valid states
-# 4. Serializable — .value gives the int for database storage
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4648,15 +4671,7 @@ print(f"Type-safe compare   : {Status.ACTIVE == Status.INACTIVE}")
     {
       id: 22,
       prompt: "Build a <code>dict</code> from two parallel lists using <code>dict(zip([\"a\",\"b\",\"c\"], [1,2,3]))</code>; store in <code>result</code>.",
-      starterCode: `# Q22: dict from parallel lists via zip
-keys   = ["revenue", "cost", "profit"]
-values = [950000, 620000, 330000]
-
-result = dict(zip(keys, values))
-
-for k, v in result.items():
-    print(f"{k:10s}: {v:>10,}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4667,19 +4682,7 @@ for k, v in result.items():
     {
       id: 23,
       prompt: "Use <code>float('inf')</code> as a seed to find the minimum of a list WITHOUT using <code>min()</code>; store in <code>result</code>.",
-      starterCode: `# Q23: float('inf') as sentinel for minimum search
-data = [42, 17, 83, 5, 61, 29, 94, 11]
-
-current_min = float('inf')   # Start above every possible value
-for val in data:
-    if val < current_min:
-        current_min = val
-
-result = current_min
-
-print(f"Data    : {data}")
-print(f"Minimum : {result}")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4690,21 +4693,7 @@ print(f"Minimum : {result}")
     {
       id: 24,
       prompt: "Type-based dispatch: build <code>dispatch = {int: lambda x: x*2, str: lambda x: x.upper()}</code> and call <code>dispatch[type(5)](5)</code>. Store result in <code>result</code>.",
-      starterCode: `# Q24: Dict as type-dispatch table (replaces if/elif chains)
-dispatch = {
-    int:   lambda x: x * 2,
-    str:   lambda x: x.upper(),
-    list:  lambda x: sorted(x),
-    float: lambda x: round(x, 2),
-}
-
-result = dispatch[type(5)](5)      # Calls int handler → 10
-str_r  = dispatch[type("hi")]("hi")  # Calls str handler → "HI"
-
-print(f"dispatch(5)    → {result}")
-print(f"dispatch('hi') → {str_r}")
-print("Dict-based dispatch = idiomatic Python pattern!")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4715,34 +4704,7 @@ print("Dict-based dispatch = idiomatic Python pattern!")
     {
       id: 25,
       prompt: "Time comparison: measure lookup time of <code>x in a_list</code> vs <code>x in a_set</code> (1000 elements each). Store durations in <code>list_time</code>, <code>set_time</code>, and a boolean <code>set_faster</code> (expect <code>True</code>).",
-      starterCode: `# Q25: O(n) list lookup vs O(1) set lookup — empirical proof
-import time
-
-N = 10000
-data = list(range(N))
-a_list = data
-a_set  = set(data)
-target = N - 1   # Worst case: search for last element
-
-# Measure list lookup (O(n))
-start = time.perf_counter()
-for _ in range(1000):
-    _ = target in a_list
-list_time = time.perf_counter() - start
-
-# Measure set lookup (O(1))
-start = time.perf_counter()
-for _ in range(1000):
-    _ = target in a_set
-set_time = time.perf_counter() - start
-
-set_faster = set_time < list_time
-
-print(f"list lookup : {list_time*1000:.3f} ms")
-print(f"set  lookup : {set_time*1000:.3f} ms")
-print(f"set_faster  : {set_faster}")
-print(f"Speedup     : {list_time/max(set_time,1e-9):.1f}x")
-`,
+      starterCode: "",
       validation: {
         mode: "variable_check",
         checkVars: [

@@ -14,7 +14,8 @@
 | **5** | **`rag-theory-animator`** | [`.agents/skills/rag-theory-animator/`](file:///d:/Learn%20Python%20in%2060days/Manodemy_Web_V2/.agents/skills/rag-theory-animator/SKILL.md) | 🟢 Active | World-class narration-synced GSAP animated theory presentations with SVG diagrams & progressive disclosure | *"animate theory"*, *"theory video"*, *"animation engine"*, *"visual presentation"* |
 | **6** | **`marketing-reel-engine`** | [`.agents/skills/marketing-reel-engine/`](file:///d:/Learn%20Python%20in%2060days/Manodemy_Web_V2/.agents/skills/marketing-reel-engine/SKILL.md) | 🟢 Active | Autonomous 9:16 viral reel generation, Option A vs B psychological traps, ticking clock synthesis, 1-click launchpad packs | *"marketing"*, *"reel"*, *"viral hook"*, *"instagram"* |
 | **7** | **`teacher`** | [`.agents/skills/teacher/`](file:///d:/Learn%20Python%20in%2060days/Manodemy_Web_V2/.agents/skills/teacher/SKILL.md) | 🟢 Active | Elite 30-Day AI Engineering Mentor & Career Architect with persistent memory (6 LPA to 50 LPA transformation) | *"teacher"*, *"mentor"*, *"50 lpa"*, *"career sprint"*, *"system design"* |
-| **8** | **`python-day-orchestration`** | [`.agents/skills/python-day-orchestration/`](file:///d:/Learn%20Python%20in%2060days/Manodemy_Web_V2/.agents/skills/python-day-orchestration/SKILL.md) | 🟢 Active | Multi-agent orchestration protocol and quality gate specification (Maestro v4.0) for Python Days 01–30 with Pyodide execution, theory spotlights, and universal access | *"python day"*, *"python curriculum"*, *"pyodide"*, *"python audio sync"* |
+| **8** | **`python-day-orchestration`** | [`.agents/skills/python-day-orchestration/`](file:///d:/Learn%20Python%20in%2060days/Manodemy_Web_V2/.agents/skills/python-day-orchestration/SKILL.md) | 🟢 Active | Multi-agent orchestration protocol and quality gate specification (Maestro **v5.0**) for Python Days 01–30 — measured timelines, word-anchored narration sync, progressive reveal, caption coverage | *"python day"*, *"python curriculum"*, *"pyodide"*, *"python audio sync"*, *"narration sync"* |
+| **9** | **`course-design`** | [`.agents/skills/course-design/`](course-design/SKILL.md) | Active | Reusable lesson styling, continuity briefs, teaching patterns and rendered QA; v1 candidate baseline | Lesson presentation, shared course styling, continuity between days, course design review |
 
 ---
 
@@ -76,19 +77,31 @@
 
 ---
 
-## 🐍 8. `python-day-orchestration`
+## 🐍 8. `python-day-orchestration` — **v5.0**
 * **File:** [`.agents/skills/python-day-orchestration/SKILL.md`](file:///d:/Learn%20Python%20in%2060days/Manodemy_Web_V2/.agents/skills/python-day-orchestration/SKILL.md)
 * **What it does:**
-  - Standard operating procedure & quality gate specification (Maestro v4.0) for building Python Days 01–30 with 100% parity to Python Day 01.
-  - Enforces single-document continuous reading architecture with semantic section IDs (`#dayXX...`).
-  - Governs sub-second visual spotlights (`.narration-spotlight` with radiant `#38bdf8` cyan glow and auto-scroll).
-  - Drives paced character-by-character typewriter syncing using RAF and auto-execution via Pyodide.
-  - Manages master timeline synchronization (`PYTHON_DAY_TRACKS`), URL normalization (`resolveAudioUrl`), and audio asset whitelisting (`!public/python/**/*.mp3`).
-  - Guarantees universal access and edge rewrites in `page.tsx`, `middleware.ts`, `vercel.json`, and `home.html`.
+  - Standard operating procedure & quality gate specification (Maestro **v5.0**) for building Python Days 01–30 with 100% parity to Python Day 01. Hardened against Day 01 production.
+  - **Measured, never hand-entered:** durations come from the MP3s via `PYTHON_TRACK_DURATIONS`; `getLessonDurationString()` is the only sanctioned lesson-length source.
+  - **Narration must describe the code line-by-line** and speak every `checkVars` identifier — the one rule no tooling can substitute for.
+  - Word-anchored cue ladder with `phrase` / `word` / `occurrence` anchors and a per-track `CUE_LEAD_SEC`, resolved by Whisper ASR forced onto the known script.
+  - Immutable anchors: overflow repair compresses only unanchored runs, never true cues.
+  - Progressive reveal choreography (`reveal` / `container` / `gate`) plus the guard that stops a group hiding its own wrapper.
+  - Caption coverage for lecture, question **and** solution tracks.
+  - Enforces single-document continuous reading with semantic section IDs (`#dayXX...`).
+  - Ten quality gates: whitelist, orphan sweep, narration coverage, sync validation, harness suite, encoding audit, static compile, universal access, root mirror.
 
 ---
 
+## 9. `course-design` - v1 Candidate Baseline
+
+* **File:** [Course Design](course-design/SKILL.md)
+* **Contract:** [Design contract v1](course-design/references/design-contract-v1.md)
+* **Use for:** Lesson presentation, reusable course styling, continuity between days, teaching-pattern selection and design review. Pair with the domain orchestration skill for runtime and narration work.
+* **Routing:** Architect owns the contract, Frontend implements, QA verifies; no new permanent agents.
+* **Adoption:** Shared `public/python/course-design.css` with `python/course-design.css` mirror; Day03 only initially. Days01/02 remain references. v1 candidate evidence is distinct from user-approved gold screenshots.
+
 ## 🔄 How to Add or Update Skills in the Future
+
 1. When you finalize a new pattern in chat, simply say: **`"Update the skill file with this new standard"`**.
 2. The AI will immediately edit the corresponding `SKILL.md` and log the update in this master `SKILLS_INDEX.md`.
 

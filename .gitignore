@@ -43,6 +43,7 @@ video_pipeline/
 Instagram Ads/
 scratch/
 .whisper_cache/
+.cache/
 marketing/output/audio/.whisper_cache/
 
 # Node / Next.js

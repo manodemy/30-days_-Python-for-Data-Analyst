@@ -300,6 +300,62 @@ const PYTHON_DAY_TRACKS = {
 ],
     durations: [47.0, 46.0, 47.8, 46.9, 50.1, 10.1, 11.4, 11.1, 12.8, 11.4, 11.7, 12.0, 11.9, 13.5, 14.5, 10.9, 10.7, 12.4, 9.4, 14.1, 13.4, 14.5, 14.3, 12.0, 12.9, 12.4, 11.6, 11.5, 9.6, 10.8, 13.8, 11.5, 13.7, 10.2, 13.3]
   },
+'pyDay03': {
+  tracks: [
+    { "src": "Day03/New_PyDay03Audio01.mp3", "target": "#day03FundamentalsSection", "title": "Fundamentals", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio02.mp3", "target": "#day03FundamentalsTableSection", "title": "Fundamentals — Reference", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio03.mp3", "target": "#day03FundamentalsCodeSection", "title": "Fundamentals — Examples", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio04.mp3", "target": "#day03EscapesSection", "title": "Escape Sequences and Raw Strings", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio05.mp3", "target": "#day03EscapesTableSection", "title": "Escape Sequences and Raw Strings — Reference", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio06.mp3", "target": "#day03EscapesCodeSection", "title": "Escape Sequences and Raw Strings — Examples", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio07.mp3", "target": "#day03ConcatSection", "title": "Concatenation, Repetition and Comparison", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio08.mp3", "target": "#day03ConcatTableSection", "title": "Concatenation, Repetition and Comparison — Reference", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio09.mp3", "target": "#day03ConcatCodeSection", "title": "Concatenation, Repetition and Comparison — Examples", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio10.mp3", "target": "#day03SlicingSection", "title": "Indexing and Slicing", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio11.mp3", "target": "#day03SlicingTableSection", "title": "Indexing and Slicing — Reference", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio12.mp3", "target": "#day03SlicingCodeSection", "title": "Indexing and Slicing — Examples", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio13.mp3", "target": "#day03FormattingSection", "title": "String Formatting", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio14.mp3", "target": "#day03FormattingTableSection", "title": "String Formatting — Reference", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio15.mp3", "target": "#day03FormattingCodeSection", "title": "String Formatting — Examples", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio16.mp3", "target": "#day03MethodsSection", "title": "String Methods", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio17.mp3", "target": "#day03MethodsTableSection", "title": "String Methods — Reference", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio18.mp3", "target": "#day03MethodsCodeSection", "title": "String Methods — Examples", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio19.mp3", "target": "#day03ValidationSection", "title": "Validation Methods Compared", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio20.mp3", "target": "#day03ValidationTableSection", "title": "Validation Methods Compared — Reference", "type": "narration" },
+    { "src": "Day03/New_PyDay03Audio21.mp3", "target": "#day03ValidationCodeSection", "title": "Validation Methods Compared — Examples", "type": "narration" },
+    { "src": "Day03/New_PyDay03Question01.mp3", "target": "#questionBar", "title": "Question 1", "type": "question", "qId": 1 },
+    { "src": "Day03/New_PyDay03Question01sol.mp3", "target": "#questionBar", "title": "Q1 Solution Walkthrough", "type": "solution", "qId": 1 },
+    { "src": "Day03/New_PyDay03Question02.mp3", "target": "#questionBar", "title": "Question 2", "type": "question", "qId": 2 },
+    { "src": "Day03/New_PyDay03Question02sol.mp3", "target": "#questionBar", "title": "Q2 Solution Walkthrough", "type": "solution", "qId": 2 },
+    { "src": "Day03/New_PyDay03Question03.mp3", "target": "#questionBar", "title": "Question 3", "type": "question", "qId": 3 },
+    { "src": "Day03/New_PyDay03Question03sol.mp3", "target": "#questionBar", "title": "Q3 Solution Walkthrough", "type": "solution", "qId": 3 },
+    { "src": "Day03/New_PyDay03Question04.mp3", "target": "#questionBar", "title": "Question 4", "type": "question", "qId": 4 },
+    { "src": "Day03/New_PyDay03Question04sol.mp3", "target": "#questionBar", "title": "Q4 Solution Walkthrough", "type": "solution", "qId": 4 },
+    { "src": "Day03/New_PyDay03Question05.mp3", "target": "#questionBar", "title": "Question 5", "type": "question", "qId": 5 },
+    { "src": "Day03/New_PyDay03Question05sol.mp3", "target": "#questionBar", "title": "Q5 Solution Walkthrough", "type": "solution", "qId": 5 },
+    { "src": "Day03/New_PyDay03Question06.mp3", "target": "#questionBar", "title": "Question 6", "type": "question", "qId": 6 },
+    { "src": "Day03/New_PyDay03Question06sol.mp3", "target": "#questionBar", "title": "Q6 Solution Walkthrough", "type": "solution", "qId": 6 },
+    { "src": "Day03/New_PyDay03Question07.mp3", "target": "#questionBar", "title": "Question 7", "type": "question", "qId": 7 },
+    { "src": "Day03/New_PyDay03Question07sol.mp3", "target": "#questionBar", "title": "Q7 Solution Walkthrough", "type": "solution", "qId": 7 },
+    { "src": "Day03/New_PyDay03Question08.mp3", "target": "#questionBar", "title": "Question 8", "type": "question", "qId": 8 },
+    { "src": "Day03/New_PyDay03Question08sol.mp3", "target": "#questionBar", "title": "Q8 Solution Walkthrough", "type": "solution", "qId": 8 },
+    { "src": "Day03/New_PyDay03Question09.mp3", "target": "#questionBar", "title": "Question 9", "type": "question", "qId": 9 },
+    { "src": "Day03/New_PyDay03Question09sol.mp3", "target": "#questionBar", "title": "Q9 Solution Walkthrough", "type": "solution", "qId": 9 },
+    { "src": "Day03/New_PyDay03Question10.mp3", "target": "#questionBar", "title": "Question 10", "type": "question", "qId": 10 },
+    { "src": "Day03/New_PyDay03Question10sol.mp3", "target": "#questionBar", "title": "Q10 Solution Walkthrough", "type": "solution", "qId": 10 },
+    { "src": "Day03/New_PyDay03Question11.mp3", "target": "#questionBar", "title": "Question 11", "type": "question", "qId": 11 },
+    { "src": "Day03/New_PyDay03Question11sol.mp3", "target": "#questionBar", "title": "Q11 Solution Walkthrough", "type": "solution", "qId": 11 },
+    { "src": "Day03/New_PyDay03Question12.mp3", "target": "#questionBar", "title": "Question 12", "type": "question", "qId": 12 },
+    { "src": "Day03/New_PyDay03Question12sol.mp3", "target": "#questionBar", "title": "Q12 Solution Walkthrough", "type": "solution", "qId": 12 },
+    { "src": "Day03/New_PyDay03Question13.mp3", "target": "#questionBar", "title": "Question 13", "type": "question", "qId": 13 },
+    { "src": "Day03/New_PyDay03Question13sol.mp3", "target": "#questionBar", "title": "Q13 Solution Walkthrough", "type": "solution", "qId": 13 },
+    { "src": "Day03/New_PyDay03Question14.mp3", "target": "#questionBar", "title": "Question 14", "type": "question", "qId": 14 },
+    { "src": "Day03/New_PyDay03Question14sol.mp3", "target": "#questionBar", "title": "Q14 Solution Walkthrough", "type": "solution", "qId": 14 },
+    { "src": "Day03/New_PyDay03Question15.mp3", "target": "#questionBar", "title": "Question 15", "type": "question", "qId": 15 },
+    { "src": "Day03/New_PyDay03Question15sol.mp3", "target": "#questionBar", "title": "Q15 Solution Walkthrough", "type": "solution", "qId": 15 },
+  ],
+  durations: []
+},
 'pyDay02': {
     tracks: [
   {
@@ -757,7 +813,7 @@ function init() {
     loadDay(initialDay.id);
   } else {
     // Fallback direct load
-    const fallbackId = requestedDay === 2 ? 'pyDay02' : 'pyDay01';
+    const fallbackId = requestedDay === 4 ? 'pyDay04' : (requestedDay === 3 ? 'pyDay03' : (requestedDay === 2 ? 'pyDay02' : 'pyDay01'));
     loadDay(fallbackId);
   }
 
@@ -907,7 +963,9 @@ function buildDaySelector() {
 
   const manifest = window.COURSE_MANIFEST || [
     { day: 1, id: 'pyDay01', title: 'Data Types & Memory', emoji: '🔢' },
-    { day: 2, id: 'pyDay02', title: 'Operators & Expressions', emoji: '⚙️' }
+    { day: 2, id: 'pyDay02', title: 'Operators & Expressions', emoji: '⚙️' },
+    { day: 3, id: 'pyDay03', title: 'Strings & Text Processing', emoji: '🔤' },
+    { day: 4, id: 'pyDay04', title: 'Lists & Sequence Operations', emoji: '📋' }
   ];
 
   manifest.forEach(item => {
@@ -939,9 +997,11 @@ function loadDay(dayId) {
   if (daySel) daySel.value = dayId;
 
   // Initialize master timeline tracks for this day
-  const registry = PYTHON_DAY_TRACKS[dayId] || PYTHON_DAY_TRACKS['pyDay01'];
+  const registry = currentDayData.media?.mode === 'study'
+    ? { tracks: [], durations: [] }
+    : (PYTHON_DAY_TRACKS[dayId] || PYTHON_DAY_TRACKS['pyDay01']);
   combinedTracks = registry.tracks.slice();
-  combinedTrackDurations = registry.durations.slice();
+  combinedTrackDurations = resolveTrackDurations(dayId, registry);
   totalCombinedDuration = combinedTrackDurations.reduce((acc, d) => acc + d, 0);
 
   const seekBar = document.getElementById('seekBar');
@@ -953,6 +1013,8 @@ function loadDay(dayId) {
   if (pTime) {
     pTime.textContent = `0:00 / ${formatTime(totalCombinedDuration)}`;
   }
+  document.getElementById('playbackBar')?.classList.add('visible');
+  setupTimelineDragging();
 
   // Build topic selector & chapter list
   buildTopicSelector();
@@ -970,35 +1032,71 @@ function loadDay(dayId) {
 
   // Update stats
   updateStatsCard();
+  updateLessonMediaAvailability();
 }
 
+function updateLessonMediaAvailability() {
+  const studyOnly = currentDayData?.media?.mode === 'study';
+  document.documentElement.dataset.courseMedia = studyOnly ? 'study' : 'narrated';
+  document.querySelectorAll('.audio-play-btn, #navPlayBtn, #playPauseBtn').forEach(button => {
+    button.disabled = studyOnly;
+    if (studyOnly) {
+      button.title = currentDayData.media.reason || 'Narration recording pending';
+      button.setAttribute('aria-label', button.title);
+    }
+  });
+  const player = document.getElementById('playbackBar');
+  if (player) player.style.display = studyOnly ? 'none' : '';
+  const nav = document.getElementById('navPlayBtn');
+  if (studyOnly && nav) {
+    nav.classList.remove('p11-play-radar-pulse');
+    nav.textContent = 'Audio pending';
+  }
+}
+
+/**
+ * buildTopicSelector — SQL Day 02 parity.
+ *
+ * The topic picker is driven by `slides`, not the legacy `topics` array. A day
+ * built as one continuous document therefore collapses to a single static
+ * heading carrying the lesson's total duration, exactly like SQL Day 02.
+ */
 function buildTopicSelector() {
   const sel = document.getElementById('topicSelect');
   if (!sel || !currentDayData) return;
   sel.innerHTML = '';
 
-  const topics = currentDayData.topics || [
-    { id: 'topic-1', label: currentDayData.title || 'Lesson', duration: '12:00' }
-  ];
+  const slides = currentDayData.slides || [];
+  if (!slides.length) {
+    sel.innerHTML = '<option value="0">Overview</option>';
+    sel.value = '0';
+    return;
+  }
 
-  const multiTopic = topics.length > 1;
-  topics.forEach((t, idx) => {
+  const multiTopic = slides.length > 1;
+  const measuredTotal = getLessonDurationString();
+  slides.forEach((slide, idx) => {
     const opt = document.createElement('option');
-    opt.value = t.id;
-    const cleaned = t.label.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '').replace(/\s*\([0-9:]+\)\s*$/, '');
-    opt.textContent = multiTopic ? `Topic 0${idx + 1}: ${cleaned}` : cleaned;
+    opt.value = String(idx);
+    const cleaned = slide.title
+      .replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '')
+      .replace(/\s*\([0-9:]+\)\s*$/, '');
+    opt.textContent = `${multiTopic ? `Topic 0${idx + 1}: ` : ''}${cleaned} (${measuredTotal})`;
     sel.appendChild(opt);
   });
+
+  sel.value = String(currentSlideIndex || 0);
 }
 
-function onTopicSelectChange(topicId) {
-  const target = document.getElementById(topicId);
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } else {
-    const sc = document.getElementById('slideContent');
-    if (sc) sc.scrollTop = 0;
+function onTopicSelectChange(val) {
+  const idx = parseInt(val, 10);
+  if (Number.isNaN(idx)) return;
+  // Selecting the slide that is already mounted must not remount it, or the
+  // practice state inside the slide would be thrown away.
+  if (idx !== currentSlideIndex || !document.getElementById('slideBodyText')) {
+    renderSlide(idx);
   }
+  if (typeof clearDrawCanvas === 'function') clearDrawCanvas();
 }
 
 // ── Custom Dropdowns Initializer (100% SQL Flagship Parity) ───────
@@ -1063,17 +1161,21 @@ function initCustomDropdowns() {
           </span>
         `;
       } else if (select.id === 'topicSelect') {
-        const topics = (currentDayData && currentDayData.topics) || [];
-        const activeTopic = topics.find(t => t.id === select.value) || topics[0];
-        const rawTitle = activeTopic ? activeTopic.label : (currentDayData ? currentDayData.title : 'Overview');
-        const cleanedTitle = rawTitle.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '').replace(/\s*\([0-9:]+\)\s*$/, '');
-        const multiTopic = topics.length > 1;
-        const displayTitle = multiTopic ? rawTitle : cleanedTitle;
-        const topicDuration = activeTopic && activeTopic.duration ? activeTopic.duration : (currentDayData && currentDayData.slides && currentDayData.slides[0]?.duration ? currentDayData.slides[0].duration : '12:00');
+        // Single continuous-document slide renders as one heading + total duration.
+        const slides = (currentDayData && currentDayData.slides) || [];
+        const parsed = parseInt(select.value, 10);
+        const idx = Number.isNaN(parsed) ? (currentSlideIndex || 0) : parsed;
+        const slide = slides[idx] || slides[0] || null;
+        const cleanedTitle = slide
+          ? slide.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '').replace(/\s*\([0-9:]+\)\s*$/, '')
+          : (currentDayData ? currentDayData.title : 'Overview');
+        const multiTopic = slides.length > 1;
+        // Measured total, never the hand-authored slides[].duration string.
+        const totalDuration = getLessonDurationString();
 
         textSpan.innerHTML = `
-          <span class="trigger-title">${displayTitle}</span>
-          <span class="trigger-duration-badge">${topicDuration}</span>
+          <span class="trigger-title">${multiTopic ? `Topic 0${idx + 1}: ` : ''}${cleanedTitle}</span>
+          <span class="trigger-duration-badge">${totalDuration}</span>
         `;
       }
     }
@@ -1098,7 +1200,7 @@ function initCustomDropdowns() {
           optionsMenu.appendChild(header);
 
           trackGroup.days.forEach(d => {
-            const isSelected = (select.value === d.id || currentDayId === d.id || (currentDayId === 'pyDay01' && d.id === 'pyDay01') || (currentDayId === 'pyDay02' && d.id === 'pyDay02'));
+            const isSelected = (select.value === d.id || currentDayId === d.id || (currentDayId === 'pyDay01' && d.id === 'pyDay01') || (currentDayId === 'pyDay02' && d.id === 'pyDay02') || (currentDayId === 'pyDay03' && d.id === 'pyDay03') || (currentDayId === 'pyDay04' && d.id === 'pyDay04'));
             const isLocked = (!d.prepared && !d.free);
             const optionItem = document.createElement('div');
             optionItem.className = `custom-select-option${isSelected ? ' selected' : ''}${isLocked ? ' is-locked' : ''}`;
@@ -1137,38 +1239,33 @@ function initCustomDropdowns() {
           });
         });
       } else if (select.id === 'topicSelect') {
-        const topics = (currentDayData && currentDayData.topics) || [];
-        const multiTopic = topics.length > 1;
-        topics.forEach((t, idx) => {
+        const slides = (currentDayData && currentDayData.slides) || [];
+        const multiTopic = slides.length > 1;
+        const selectedIdx = parseInt(select.value, 10);
+        const totalDuration = getLessonDurationString();
+        slides.forEach((slide, idx) => {
           const optionItem = document.createElement('div');
-          const isSelected = (select.value === t.id || (!select.value && idx === 0));
+          const isSelected = (Number.isNaN(selectedIdx) && idx === 0) || selectedIdx === idx;
           optionItem.className = `custom-select-option${isSelected ? ' selected' : ''}`;
-          const cleaned = t.label.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '').replace(/\s*\([0-9:]+\)\s*$/, '');
-          const labelText = multiTopic ? `Topic 0${idx + 1}: ${cleaned}` : cleaned;
+          const cleaned = slide.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '').replace(/\s*\([0-9:]+\)\s*$/, '');
           optionItem.innerHTML = `
-            <span class="option-title">${labelText}</span>
-            <span class="option-duration">${t.duration || '2:00'}</span>
+            <span class="option-title">${multiTopic ? `Topic 0${idx + 1}: ${cleaned}` : cleaned}</span>
+            <span class="option-duration">${totalDuration}</span>
           `;
-          optionItem.dataset.value = t.id;
+          optionItem.dataset.value = String(idx);
           optionItem.addEventListener('click', (e) => {
             e.stopPropagation();
-            select.value = t.id;
+            select.value = String(idx);
             select.dispatchEvent(new Event('change'));
             optionsMenu.classList.remove('open');
             wrapper.classList.remove('open');
             trigger.classList.remove('open');
-
-            // Smooth scroll directly to the selected section
-            const sec = document.getElementById(t.id);
-            if (sec) {
-              sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
           });
           optionsMenu.appendChild(optionItem);
         });
       }
 
-      const isSingleTopic = (select.id === 'topicSelect' && (!currentDayData || !currentDayData.topics || currentDayData.topics.length <= 1));
+      const isSingleTopic = (select.id === 'topicSelect' && (!currentDayData || !currentDayData.slides || currentDayData.slides.length <= 1));
 
       if (isSingleTopic) {
         wrapper.classList.add('no-dropdown');
@@ -1252,7 +1349,23 @@ window.initCustomDropdowns = initCustomDropdowns;
 
 function buildChapterList() {
   const list = document.getElementById('chapterList');
-  if (!list || !combinedTracks || combinedTracks.length === 0) return;
+  if (!list) return;
+  if (currentDayData?.media?.mode === 'study') {
+    list.innerHTML = '';
+    for (const section of currentDayData.sections || []) {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'chapter-item';
+      item.textContent = String(section.number).padStart(2, '0') + '. ' + section.title;
+      item.onclick = () => {
+        document.getElementById(section.id)?.scrollIntoView({ block: 'start' });
+        list.style.display = 'none';
+      };
+      list.appendChild(item);
+    }
+    return;
+  }
+  if (!combinedTracks || combinedTracks.length === 0) return;
   list.innerHTML = '';
 
   const typeIcons = { narration: '▶', question: '❓', solution: '✅', completion: '🏆' };
@@ -1260,6 +1373,7 @@ function buildChapterList() {
 
   combinedTracks.forEach((t, idx) => {
     const dur = combinedTrackDurations[idx] || 0;
+    const elapsedAtTrack = elapsed; // capture for closure
     const item = document.createElement('div');
     item.className = 'chapter-item' + (idx === combinedTrackIndex ? ' active' : '');
     item.dataset.idx = idx;
@@ -1270,9 +1384,10 @@ function buildChapterList() {
       <span class="chapter-item__title">${t.title}</span>`;
     item.addEventListener('click', (e) => {
       e.stopPropagation();
-      seekCombinedPlayback(elapsed);
-      if (!isCombinedPlaying) playCombinedPlayback();
       list.style.display = 'none';
+      // SQL Day 02 parity: always seek, then play (whether or not already playing)
+      seekCombinedPlayback(elapsedAtTrack);
+      playCombinedPlayback();
     });
     list.appendChild(item);
     elapsed += dur;
@@ -1333,170 +1448,544 @@ function renderSlide(index) {
 
 // ── Audio-Synced Typewriter & Visual Synchronization Engine ──────────
 
+/* SYNC-GENERATED:PYTHON_QUESTION_SOLUTIONS:BEGIN — run scripts/build_python_sync_data.py */
 const PYTHON_QUESTION_SOLUTIONS = {
   'pyDay01': {
     "1": {
-        "src": "Day01/New_PyDay01Question01sol.mp3",
-        "code": "print(\"Hello, Python for Data Analysis!\")",
-        "duration": 11.4,
-        "startAt": 1.3,
-        "endAt": 10.0,
-        "scrollAt": 10.6
+      "src": "Day01/New_PyDay01Question01sol.mp3",
+      "code": "print(\"Hello, Python for Data Analysis!\")",
+      "duration": 11.45,
+      "segments": [
+        { "text": "print(", "startAt": 2.06, "charInterval": 85 },
+        { "text": "\"Hello, Python for Data Analysis!\")", "startAt": 3.86, "charInterval": 34 },
+      ],
+      "scrollAt": 8.53
     },
     "2": {
-        "src": "Day01/New_PyDay01Question02sol.mp3",
-        "code": "print(150 + 250)",
-        "duration": 12.8,
-        "startAt": 1.3,
-        "endAt": 11.4,
-        "scrollAt": 12.0
+      "src": "Day01/New_PyDay01Question02sol.mp3",
+      "code": "print(150 + 250)",
+      "duration": 12.77,
+      "segments": [
+        { "text": "print(150 ", "startAt": 2.14, "charInterval": 85 },
+        { "text": "+ 250)", "startAt": 4.48, "charInterval": 58 },
+      ],
+      "scrollAt": 11.49
     },
     "3": {
-        "src": "Day01/New_PyDay01Question03sol.mp3",
-        "code": "print(\"Total Records:\", 500)",
-        "duration": 11.7,
-        "startAt": 1.3,
-        "endAt": 10.3,
-        "scrollAt": 10.9
+      "src": "Day01/New_PyDay01Question03sol.mp3",
+      "code": "print(\"Total Records:\", 500)",
+      "duration": 11.74,
+      "segments": [
+        { "text": "print(\"Total Records:\"", "startAt": 3.08, "charInterval": 60 },
+        { "text": ", 500)", "startAt": 4.4, "charInterval": 58 },
+      ],
+      "scrollAt": 5.35
     },
     "4": {
-        "src": "Day01/New_PyDay01Question04sol.mp3",
-        "code": "employee_count = 150\nprint(\"Employee Count:\", employee_count)",
-        "duration": 11.9,
-        "startAt": 1.3,
-        "endAt": 10.5,
-        "scrollAt": 11.1
+      "src": "Day01/New_PyDay01Question04sol.mp3",
+      "code": "employee_count = 150\nprint(\"Employee Count:\", employee_count)",
+      "duration": 11.93,
+      "segments": [
+        { "text": "employee_count = 150\n", "startAt": 2.06, "charInterval": 85 },
+        { "text": "print(\"Employee Count:\", employee_count)", "startAt": 5.04, "charInterval": 25 },
+      ],
+      "scrollAt": 10.63
     },
     "5": {
-        "src": "Day01/New_PyDay01Question05sol.mp3",
-        "code": "average_salary = 75450.50\nprint(\"Average Salary:\", average_salary)",
-        "duration": 14.5,
-        "startAt": 1.3,
-        "endAt": 13.1,
-        "scrollAt": 13.7
+      "src": "Day01/New_PyDay01Question05sol.mp3",
+      "code": "average_salary = 75450.50\nprint(\"Average Salary:\", average_salary)",
+      "duration": 14.5,
+      "segments": [
+        { "text": "average_salary = 75450.50\n", "startAt": 2.08, "charInterval": 85 },
+        { "text": "print(\"Average Salary:\", average_salary)", "startAt": 7.3, "charInterval": 25 },
+      ],
+      "scrollAt": 8.9
     },
     "6": {
-        "src": "Day01/New_PyDay01Question06sol.mp3",
-        "code": "company_name = \"Manodemy\"\nprint(\"Company Name:\", company_name)",
-        "duration": 10.7,
-        "startAt": 1.3,
-        "endAt": 9.3,
-        "scrollAt": 9.9
+      "src": "Day01/New_PyDay01Question06sol.mp3",
+      "code": "company_name = \"Manodemy\"\nprint(\"Company Name:\", company_name)",
+      "duration": 10.82,
+      "segments": [
+        { "text": "company_name = \"Manodemy\"\n", "startAt": 2.06, "charInterval": 85 },
+        { "text": "print(\"Company Name:\", company_name)", "startAt": 5.9, "charInterval": 25 },
+      ],
+      "scrollAt": 7.4
     },
     "7": {
-        "src": "Day01/New_PyDay01Question07sol.mp3",
-        "code": "is_full_time = True\nprint(\"Full Time Status:\", is_full_time)",
-        "duration": 9.4,
-        "startAt": 1.3,
-        "endAt": 8.0,
-        "scrollAt": 8.6
+      "src": "Day01/New_PyDay01Question07sol.mp3",
+      "code": "is_full_time = True\nprint(\"Full Time Status:\", is_full_time)",
+      "duration": 9.43,
+      "segments": [
+        { "text": "is_full_time = True\n", "startAt": 2.0, "charInterval": 85 },
+        { "text": "print(\"Full Time Status:\", ", "startAt": 5.08, "charInterval": 40 },
+        { "text": "is_full_time)", "startAt": 6.16, "charInterval": 25 },
+      ],
+      "scrollAt": 7.08
     },
     "8": {
-        "src": "Day01/New_PyDay01Question08sol.mp3",
-        "code": "sales_figures = [1200, 1450, 1800]\nprint(\"Sales Figures:\", sales_figures)",
-        "duration": 13.4,
-        "startAt": 1.3,
-        "endAt": 12.0,
-        "scrollAt": 12.6
+      "src": "Day01/New_PyDay01Question08sol.mp3",
+      "code": "sales_figures = [1200, 1450, 1800]\nprint(\"Sales Figures:\", sales_figures)",
+      "duration": 15.46,
+      "segments": [
+        { "text": "sales_figures = [1200, 1450", "startAt": 1.98, "charInterval": 85 },
+        { "text": ", 1800]\n", "startAt": 6.69, "charInterval": 85 },
+        { "text": "print(\"Sales Figures:\", sales_figures)", "startAt": 13.88, "charInterval": 25 },
+      ],
+      "scrollAt": 15.21
     },
     "9": {
-        "src": "Day01/New_PyDay01Question09sol.mp3",
-        "code": "server_location = (\"Mumbai\", 19.07, 72.87)\nprint(\"Server Location:\", server_location)",
-        "duration": 14.3,
-        "startAt": 1.3,
-        "endAt": 12.9,
-        "scrollAt": 13.5
+      "src": "Day01/New_PyDay01Question09sol.mp3",
+      "code": "server_location = (\"Mumbai\", 19.07, 72.87)\nprint(\"Server Location:\", server_location)",
+      "duration": 16.34,
+      "segments": [
+        { "text": "server_location = (\"Mumbai\"", "startAt": 2.18, "charInterval": 85 },
+        { "text": ", 19.07, 72.87)\n", "startAt": 7.05, "charInterval": 85 },
+        { "text": "print(\"Server Location:\", server_location)", "startAt": 14.76, "charInterval": 25 },
+      ],
+      "scrollAt": 16.09
     },
     "10": {
-        "src": "Day01/New_PyDay01Question10sol.mp3",
-        "code": "customer_profile = {\"name\": \"Aarav\", \"orders\": 5}\nprint(\"Customer Profile:\", customer_profile)",
-        "duration": 12.9,
-        "startAt": 1.3,
-        "endAt": 11.5,
-        "scrollAt": 12.1
+      "src": "Day01/New_PyDay01Question10sol.mp3",
+      "code": "customer_profile = {\"name\": \"Aarav\", \"orders\": 5}\nprint(\"Customer Profile:\", customer_profile)",
+      "duration": 15.29,
+      "segments": [
+        { "text": "customer_profile = {\"name\"", "startAt": 2.04, "charInterval": 85 },
+        { "text": ": \"Aarav\", \"orders\": 5}\n", "startAt": 5.56, "charInterval": 85 },
+        { "text": "print(\"Customer Profile:\", ", "startAt": 13.42, "charInterval": 40 },
+        { "text": "customer_profile)", "startAt": 14.5, "charInterval": 25 },
+      ],
+      "scrollAt": 15.04
     },
     "11": {
-        "src": "Day01/New_PyDay01Question11sol.mp3",
-        "code": "unique_tags = {\"python\", \"sql\", \"analytics\"}\nprint(\"Unique Tags:\", unique_tags)",
-        "duration": 11.6,
-        "startAt": 1.3,
-        "endAt": 10.2,
-        "scrollAt": 10.8
+      "src": "Day01/New_PyDay01Question11sol.mp3",
+      "code": "unique_tags = {\"python\", \"sql\", \"analytics\"}\nprint(\"Unique Tags:\", unique_tags)",
+      "duration": 13.8,
+      "segments": [
+        { "text": "unique_tags = {\"python\", \"sql\"", "startAt": 2.1, "charInterval": 85 },
+        { "text": ", \"analytics\"}\n", "startAt": 8.04, "charInterval": 85 },
+        { "text": "print(\"Unique Tags:\", unique_tags)", "startAt": 12.1, "charInterval": 25 },
+      ],
+      "scrollAt": 13.55
     },
     "12": {
-        "src": "Day01/New_PyDay01Question12sol.mp3",
-        "code": "bonus_amount = None\nprint(\"Bonus Amount:\", bonus_amount)",
-        "duration": 9.6,
-        "startAt": 1.3,
-        "endAt": 8.2,
-        "scrollAt": 8.8
+      "src": "Day01/New_PyDay01Question12sol.mp3",
+      "code": "bonus_amount = None\nprint(\"Bonus Amount:\", bonus_amount)",
+      "duration": 11.28,
+      "segments": [
+        { "text": "bonus_amount = None\n", "startAt": 1.98, "charInterval": 85 },
+        { "text": "print(\"Bonus Amount:\", bonus_amount)", "startAt": 5.5, "charInterval": 25 },
+      ],
+      "scrollAt": 7.0
     },
     "13": {
-        "src": "Day01/New_PyDay01Question13sol.mp3",
-        "code": "from collections import defaultdict\n\ntransactions = [\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.1\", \"amount\": 120.50},\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.1\", \"amount\": 340.00},\n    {\"user_id\": \"U02\", \"device\": \"desktop\", \"ip\": \"192.168.1.5\", \"amount\": 85.75},\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.2\", \"amount\": 500.00},\n]\n\nfraud_map = defaultdict(float)\nfor tx in transactions:\n    key = (tx[\"user_id\"], tx[\"device\"], tx[\"ip\"])\n    fraud_map[key] += tx[\"amount\"]\nprint(dict(fraud_map))",
-        "duration": 13.8,
-        "startAt": 1.3,
-        "endAt": 12.4,
-        "scrollAt": 13.0
+      "src": "Day01/New_PyDay01Question13sol.mp3",
+      "code": "from collections import defaultdict\n\ntransactions = [\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.1\", \"amount\": 120.50},\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.1\", \"amount\": 340.00},\n    {\"user_id\": \"U02\", \"device\": \"desktop\", \"ip\": \"192.168.1.5\", \"amount\": 85.75},\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.2\", \"amount\": 500.00},\n]\n\nfraud_map = defaultdict(float)\nfor tx in transactions:\n    key = (tx[\"user_id\"], tx[\"device\"], tx[\"ip\"])\n    fraud_map[key] += tx[\"amount\"]\nprint(dict(fraud_map))",
+      "duration": 67.01,
+      "segments": [
+        { "text": "from collections import defaultdict\n\n", "startAt": 3.08, "charInterval": 75 },
+        { "text": "transactions = [\n    ", "startAt": 5.86, "charInterval": 85 },
+        { "text": "{\"user_id\": \"U01\", \"device\"", "startAt": 9.86, "charInterval": 85 },
+        { "text": ": \"mobile\", \"ip\": \"10.0.0.1\"", "startAt": 12.48, "charInterval": 85 },
+        { "text": ", \"amount\": 120.50},\n    ", "startAt": 16.5, "charInterval": 85 },
+        { "text": "{\"user_id\": \"U01\", \"device\"", "startAt": 20.12, "charInterval": 65 },
+        { "text": ": \"mobile\", \"ip\": \"10.0.0.1\"", "startAt": 21.88, "charInterval": 31 },
+        { "text": ", \"amount\": 340.00},\n    ", "startAt": 22.76, "charInterval": 85 },
+        { "text": "{\"user_id\": \"U02\", \"device\"", "startAt": 25.18, "charInterval": 59 },
+        { "text": ": \"desktop\", \"ip\": \"192.168.1.5\"", "startAt": 26.76, "charInterval": 85 },
+        { "text": ", \"amount\": 85.75},\n    ", "startAt": 32.06, "charInterval": 85 },
+        { "text": "{\"user_id\": \"U01\", \"device\"", "startAt": 35.46, "charInterval": 58 },
+        { "text": ": \"mobile\", \"ip\": \"10.0.0.2\"", "startAt": 37.02, "charInterval": 85 },
+        { "text": ", \"amount\": 500.00},\n]\n\n", "startAt": 40.68, "charInterval": 85 },
+        { "text": "fraud_map = defaultdict(float)\n", "startAt": 43.4, "charInterval": 85 },
+        { "text": "for tx in transactions:\n    ", "startAt": 49.64, "charInterval": 85 },
+        { "text": "key = (tx[\"user_id\"], tx[\"device\"", "startAt": 52.77, "charInterval": 64 },
+        { "text": "], tx[\"ip\"])\n    ", "startAt": 54.88, "charInterval": 85 },
+        { "text": "fraud_map[key] += tx[\"amount\"]\n", "startAt": 57.78, "charInterval": 85 },
+        { "text": "print(dict(fraud_map))", "startAt": 60.42, "charInterval": 38 },
+      ],
+      "scrollAt": 64.49
     },
     "14": {
-        "src": "Day01/New_PyDay01Question14sol.mp3",
-        "code": "nested = {\n    \"user\": {\n        \"name\": \"Aarav\",\n        \"address\": {\n            \"city\": \"Mumbai\",\n            \"pin\": None\n        }\n    },\n    \"score\": 95\n}\n\ndef flatten_dict(d, parent_key=''):\n    items = {}\n    for k, v in d.items():\n        new_key = f\"{parent_key}.{k}\" if parent_key else k\n        if isinstance(v, dict):\n            items.update(flatten_dict(v, new_key))\n        else:\n            items[new_key] = 'N/A' if v is None else v\n    return items\n\nflat = flatten_dict(nested)\nprint(flat)",
-        "duration": 13.7,
-        "startAt": 1.3,
-        "endAt": 12.3,
-        "scrollAt": 12.9
+      "src": "Day01/New_PyDay01Question14sol.mp3",
+      "code": "nested = {\n    \"user\": {\n        \"name\": \"Aarav\",\n        \"address\": {\n            \"city\": \"Mumbai\",\n            \"pin\": None\n        }\n    },\n    \"score\": 95\n}\n\ndef flatten_dict(d, parent_key=''):\n    items = {}\n    for k, v in d.items():\n        new_key = f\"{parent_key}.{k}\" if parent_key else k\n        if isinstance(v, dict):\n            items.update(flatten_dict(v, new_key))\n        else:\n            items[new_key] = 'N/A' if v is None else v\n    return items\n\nflat = flatten_dict(nested)\nprint(flat)",
+      "duration": 63.86,
+      "segments": [
+        { "text": "nested = {\n    ", "startAt": 2.8, "charInterval": 85 },
+        { "text": "\"user\": {\n        ", "startAt": 4.38, "charInterval": 85 },
+        { "text": "\"name\": \"Aarav\",\n        ", "startAt": 7.48, "charInterval": 85 },
+        { "text": "\"address\": {\n            ", "startAt": 9.7, "charInterval": 62 },
+        { "text": "\"city\": \"Mumbai\",\n            ", "startAt": 11.24, "charInterval": 68 },
+        { "text": "\"pin\": None\n        }\n    },\n    ", "startAt": 13.28, "charInterval": 64 },
+        { "text": "\"score\": 95\n}\n\n", "startAt": 15.4, "charInterval": 85 },
+        { "text": "def flatten_dict(d, parent_key=''):\n    ", "startAt": 17.96, "charInterval": 85 },
+        { "text": "items = {}\n    ", "startAt": 25.16, "charInterval": 77 },
+        { "text": "for k, v in d.items():\n        ", "startAt": 26.32, "charInterval": 85 },
+        { "text": "new_key = f\"{parent_key}.{k}\" ", "startAt": 30.82, "charInterval": 42 },
+        { "text": "if parent_key else k\n        ", "startAt": 32.08, "charInterval": 85 },
+        { "text": "if isinstance(v, dict):\n            ", "startAt": 40.5, "charInterval": 85 },
+        { "text": "items.update(flatten_dict(", "startAt": 48.76, "charInterval": 85 },
+        { "text": "v, new_key))\n        ", "startAt": 51.56, "charInterval": 40 },
+        { "text": "else:\n            ", "startAt": 52.4, "charInterval": 85 },
+        { "text": "items[new_key] = 'N/A' if v ", "startAt": 57.04, "charInterval": 40 },
+        { "text": "is None else v\n    ", "startAt": 58.16, "charInterval": 40 },
+        { "text": "return items\n\n", "startAt": 58.92, "charInterval": 85 },
+        { "text": "flat = flatten_dict(nested)\n", "startAt": 62.1, "charInterval": 29 },
+        { "text": "print(flat)", "startAt": 62.92, "charInterval": 50 },
+      ],
+      "scrollAt": 63.61
     },
     "15": {
-        "src": "Day01/New_PyDay01Question15sol.mp3",
-        "code": "import sys\n\nlst = []\njump_sizes = []\nprev_size = sys.getsizeof(lst)\n\nfor i in range(21):\n    lst.append(i)\n    cur_size = sys.getsizeof(lst)\n    if cur_size > prev_size:\n        jump_sizes.append((i, cur_size))\n        prev_size = cur_size\n\nprint(jump_sizes)",
-        "duration": 13.3,
-        "startAt": 1.3,
-        "endAt": 11.9,
-        "scrollAt": 12.5
+      "src": "Day01/New_PyDay01Question15sol.mp3",
+      "code": "import sys\n\nlst = []\njump_sizes = []\nprev_size = sys.getsizeof(lst)\n\nfor i in range(21):\n    lst.append(i)\n    cur_size = sys.getsizeof(lst)\n    if cur_size > prev_size:\n        jump_sizes.append((i, cur_size))\n        prev_size = cur_size\n\nprint(jump_sizes)",
+      "duration": 40.01,
+      "segments": [
+        { "text": "import sys\n\n", "startAt": 1.68, "charInterval": 85 },
+        { "text": "lst = []\n", "startAt": 4.02, "charInterval": 85 },
+        { "text": "jump_sizes = []\n", "startAt": 7.92, "charInterval": 85 },
+        { "text": "prev_size = sys.getsizeof(", "startAt": 14.58, "charInterval": 85 },
+        { "text": "lst)\n\n", "startAt": 21.24, "charInterval": 85 },
+        { "text": "for i in range(21):\n    ", "startAt": 31.18, "charInterval": 40 },
+        { "text": "lst.append(i)\n    ", "startAt": 32.14, "charInterval": 40 },
+        { "text": "cur_size = sys.getsizeof(lst)\n    ", "startAt": 32.86, "charInterval": 46 },
+        { "text": "if cur_size > prev_size:\n        ", "startAt": 34.42, "charInterval": 85 },
+        { "text": "jump_sizes.append((i, cur_size))\n        ", "startAt": 37.32, "charInterval": 25 },
+        { "text": "prev_size = cur_size\n\n", "startAt": 37.62, "charInterval": 40 },
+        { "text": "print(jump_sizes)", "startAt": 38.5, "charInterval": 25 },
+      ],
+      "scrollAt": 39.52
     }
-}
+  }
 };
+/* SYNC-GENERATED:PYTHON_QUESTION_SOLUTIONS:END */
 
+// ── Theory Visual Cues: word-level timestamps → selector targets (SQL Day 02 parity) ──
+// Each entry: { atSec, selector } where selector is what gets spotlit in the slide
+// Narration durations: Audio01=47.0s, Audio02=46.0s, Audio03=47.8s, Audio04=46.9s, Audio05=50.1s
+/* SYNC-GENERATED:THEORY_VISUAL_CUES:BEGIN */
 const THEORY_VISUAL_CUES = {
-  'Day01/New_PyDay01Audio01.mp3': [
-    { atSec: 0, target: '#day01WhyPythonSection', highlight: '#headingWhyPython' },
-    { atSec: 9.5, target: '.py-sp-grid', highlight: '.py-sp-grid .py-sp-card:nth-child(1)' },
-    { atSec: 17.5, target: '.py-sp-grid', highlight: '.py-sp-grid .py-sp-card:nth-child(2)' },
-    { atSec: 24.5, target: '.py-sp-grid', highlight: '.py-sp-grid .py-sp-card:nth-child(3)' },
-    { atSec: 32.5, target: '.py-sp-grid', highlight: '.py-sp-grid .py-sp-card:nth-child(4)' },
-    { atSec: 39.5, target: '.py-sp-grid', highlight: '.py-sp-grid .py-sp-card:nth-child(5)' }
+  "Day01/New_PyDay01Audio01.mp3": [
+    { atSec: 0.0, selector: "#headingWhyPython" },  // welcome to day 01
+    { atSec: 23.84, selector: ".py-sp-showcase .py-sp-header" },  // why data analysts need python
+    { atSec: 32.04, selector: ".py-sp-card.sp-blue" },  // first
+    { atSec: 38.14, selector: ".py-sp-card.sp-green" },  // second
+    { atSec: 44.46, selector: ".py-sp-card.sp-amber" },  // third
+    { atSec: 52.1, selector: ".py-sp-card.sp-purple" },  // fourth
+    { atSec: 56.7, selector: ".py-sp-ai-banner" }  // fifth
   ],
-  'Day01/New_PyDay01Audio02.mp3': [
-    { atSec: 0, target: '#day01ToolMatrixSection', highlight: '#day01ToolMatrixSection' },
-    { atSec: 9.5, target: '.py-matrix-table', highlight: '.py-matrix-table tbody tr:nth-child(1)' },
-    { atSec: 17.5, target: '.py-matrix-table', highlight: '.py-matrix-table tbody tr:nth-child(2)' },
-    { atSec: 27.5, target: '.py-matrix-table', highlight: '.py-matrix-table tbody tr:nth-child(3)' },
-    { atSec: 37.5, target: '.py-matrix-table', highlight: '.py-matrix-table tbody tr:nth-child(4), .py-matrix-table' }
+  "Day01/New_PyDay01Audio02.mp3": [
+    { atSec: 0.0, selector: "#day01ToolMatrixSection" },  // let's examine the analytics tool matrix
+    { atSec: 6.67, selector: ".py-matrix-table tbody tr:nth-child(1)" },  // enterprise
+    { atSec: 16.69, selector: ".py-matrix-table tbody tr:nth-child(2)" },  // scratchpad
+    { atSec: 23.51, selector: ".py-matrix-table tbody tr:nth-child(3)" },  // python
+    { atSec: 36.65, selector: ".py-matrix-table" }  // analysts
   ],
-  'Day01/New_PyDay01Audio03.mp3': [
-    { atSec: 0, target: '#day01MutabilitySection', highlight: '#headingMutability, .py-mut-header' },
-    { atSec: 11.5, target: '.py-mut-panel:first-child', highlight: '.py-mut-panel:first-child' },
-    { atSec: 20.5, target: '.py-mut-panel:last-child', highlight: '.py-mut-panel:last-child' },
-    { atSec: 31.5, target: '.py-analyst-trap-card', highlight: '.py-analyst-trap-card' }
+  "Day01/New_PyDay01Audio03.mp3": [
+    { atSec: 0.0, selector: "#headingMutability" },  // every value is an object
+    { atSec: 18.87, selector: ".py-mut-panel.panel-mutable" },  // mutable
+    { atSec: 26.39, selector: ".py-mut-panel.panel-immutable" },  // immutable
+    { atSec: 40.17, selector: ".py-analyst-trap-card" }  // pitfall
   ],
-  'Day01/New_PyDay01Audio04.mp3': [
-    { atSec: 0, target: '#day01DataTypesSection', highlight: '#headingDataTypes' },
-    { atSec: 9.5, target: '.py-master-ref-table', highlight: '.py-master-ref-table tbody tr:nth-child(1), .py-master-ref-table tbody tr:nth-child(2)' },
-    { atSec: 17.5, target: '.py-master-ref-table', highlight: '.py-master-ref-table tbody tr:nth-child(4), .py-master-ref-table tbody tr:nth-child(5)' },
-    { atSec: 27.5, target: '.py-master-ref-table', highlight: '.py-master-ref-table tbody tr:nth-child(7), .py-master-ref-table tbody tr:nth-child(9)' },
-    { atSec: 34.5, target: '.py-master-ref-table', highlight: '.py-master-ref-table tbody tr:nth-child(10), .py-master-ref-table tbody tr:nth-child(13)' }
+  "Day01/New_PyDay01Audio04.mp3": [
+    { atSec: 0.0, selector: "#headingDataTypes" },  // master data types reference
+    { atSec: 10.5, selector: ".py-master-ref-table tbody tr:nth-child(1)" },  // integer
+    { atSec: 16.14, selector: ".py-master-ref-table tbody tr:nth-child(2)" },  // float
+    { atSec: 23.58, selector: ".py-master-ref-table tbody tr:nth-child(3)" },  // complex
+    { atSec: 28.94, selector: ".py-master-ref-table tbody tr:nth-child(4)" },  // string
+    { atSec: 35.84, selector: ".py-master-ref-table tbody tr:nth-child(5)" },  // boolean
+    { atSec: 45.28, selector: ".py-master-ref-table tbody tr:nth-child(6)" },  // list
+    { atSec: 48.79, selector: ".py-master-ref-table tbody tr:nth-child(7)" },  // tuple
+    { atSec: 52.28, selector: ".py-master-ref-table tbody tr:nth-child(8)" },  // range
+    { atSec: 57.28, selector: ".py-master-ref-table tbody tr:nth-child(9)" },  // dictionary
+    { atSec: 65.6, selector: ".py-master-ref-table tbody tr:nth-child(10)" },  // set
+    { atSec: 71.8, selector: ".py-master-ref-table tbody tr:nth-child(11)" },  // frozen
+    { atSec: 78.27, selector: ".py-master-ref-table tbody tr:nth-child(12)" }  // nonetype
   ],
-  'Day01/New_PyDay01Audio05.mp3': [
-    { atSec: 0, target: '#day01MemorySection', highlight: '#headingMemory' },
-    { atSec: 2.0, target: '.vnode-code', highlight: '.vnode-code' },
-    { atSec: 10.5, target: '.vnode-objects', highlight: '.vnode-objects, .vnode-ram' },
-    { atSec: 19.5, target: '.vnode-pointers', highlight: '.vnode-pointers, .vnode-reuse' },
-    { atSec: 29.5, target: '.vnode-mutable', highlight: '.vnode-mutable, .vnode-immutable' },
-    { atSec: 37.5, target: '.vnode-immutable', highlight: '.vnode-immutable' },
-    { atSec: 43.5, target: '.vnode-mgmt', highlight: '.vnode-mgmt, .vnode-summary' }
+  "Day01/New_PyDay01Audio05.mp3": [
+    { atSec: 0.0, selector: "#headingMemory" },  // let's trace how python manages memory
+    { atSec: 6.22, selector: ".vnode-code" },  // python first allocates object values inside heap memory
+    { atSec: 12.76, selector: ".vnode-objects" },  // they are lightweight pointers or name tags bound to memory addresses
+    { atSec: 23.22, selector: ".vnode-pointers" },  // reassigning a variable does not overwrite the old data
+    { atSec: 34.02, selector: ".vnode-mutable" },  // use the is keyword which checks object identity
+    { atSec: 42.34, selector: ".vnode-mgmt" }  // python automatically frees unused memory using reference counting
   ]
 };
+/* SYNC-GENERATED:THEORY_VISUAL_CUES:END */
+
+/* SYNC-GENERATED:PYTHON_CAPTION_TRACKS:BEGIN */
+const PYTHON_CAPTION_TRACKS = {
+  "Day01/New_PyDay01Audio01.mp3": [
+    { start: 0.0, end: 3.46, text: "Welcome to Day 01 of Python for Data Analysis!" },
+    { start: 4.14, end: 9.92, text: "Python is a high-level, interpreted programming language known for its clean syntax and readability." },
+    { start: 10.74, end: 24.46, text: "Created by Guido van Rossum in 1991, Python emphasizes code simplicity, enabling developers and analysts to express complex logic in fewer lines of code than traditional languages like C++ or Java." },
+    { start: 24.46, end: 26.42, text: "Why Data Analysts Need Python?" },
+    { start: 26.96, end: 37.84, text: "For data analyst, Python gives you five indispensable superpowers: first, loading and transforming massive datasets of 10 million rows or more where Excel freezes." },
+    { start: 38.44, end: 44.34, text: "second, building end-to-end automated ETL pipelines that run overnight without manual effort." },
+    { start: 44.76, end: 51.79, text: "third, executing advanced statistical modeling, grouping, and regex data cleaning with Pandas and NumPy." },
+    { start: 52.4, end: 62.18, text: "fourth, rendering interactive dashboards and charts with Seaborn and Plotly fifth, acting as your direct gateway into machine learning and modern generative AI." }
+  ],
+  "Day01/New_PyDay01Audio02.mp3": [
+    { start: 0.0, end: 5.56, text: "Now, Let's examine the Analytics Tool Matrix: SQL versus Excel versus Python." },
+    { start: 6.26, end: 15.3, text: "SQL is your enterprise database workhorse, lightning-fast at filtering, joining, and aggregating billions of records directly inside the warehouse." },
+    { start: 15.98, end: 23.5, text: "Excel is your agile scratchpad for ad-hoc exploration, quick formulas, and executive summaries under 1 million rows." },
+    { start: 23.86, end: 35.04, text: "Python is your automation engine and analytical powerhouse, excelling at complex multi-step transformations, statistical algorithms, API integrations, and predictive modeling." },
+    { start: 35.64, end: 45.78, text: "The highest-paid modern data analysts don't pick just one; they extract with SQL, engineer and analyze with Python, and communicate insights with executive dashboards." }
+  ],
+  "Day01/New_PyDay01Audio03.mp3": [
+    { start: 0.0, end: 8.04, text: "In Python, every value is an object living in your computer's memory, and every object has an identity: its memory address." },
+    { start: 8.58, end: 12.42, text: "The big question is whether that object can be changed after it is created." },
+    { start: 12.88, end: 18.7, text: "The answer splits Python's data types into two families: Mutable objects and Immutable objects." },
+    { start: 19.22, end: 26.74, text: "Mutable objects, such as lists, dictionaries, and sets, can be modified in-place without changing their memory address." },
+    { start: 26.74, end: 34.3, text: "Immutable objects, including integers, floats, strings, and tuples, can never be changed once created." },
+    { start: 34.84, end: 38.9, text: "Any modification generates a brand new object at a new memory address." },
+    { start: 39.42, end: 48.42, text: "Watch out for the dangerous Pitfall: writing clean data equals raw data does not create a copy, it creates an alias pointing to the exact same memory!" },
+    { start: 49.08, end: 52.08, text: "Modifying clean data will silently corrupt your raw source." },
+    { start: 52.56, end: 55.72, text: "Always use dot copy to safeguard your analytical pipelines." }
+  ],
+  "Day01/New_PyDay01Audio04.mp3": [
+    { start: 0.0, end: 3.66, text: "Here is the Master Data Types Reference matrix for data analysts." },
+    { start: 4.32, end: 8.46, text: "The table is organised by category, exactly as it appears on screen." },
+    { start: 9.18, end: 15.96, text: "Starting with Numeric types: Integer, written int, is an arbitrary-precision whole number that never overflows." },
+    { start: 16.44, end: 23.2, text: "Float is an IEEE-754 double-precision decimal, ideal for currency and averages." },
+    { start: 23.88, end: 27.52, text: "Complex stores real and imaginary parts for scientific work." },
+    { start: 27.52, end: 35.26, text: "Moving to Text: String, written str, is an immutable Unicode sequence and the workhorse for categorical columns." },
+    { start: 36.14, end: 42.3, text: "Boolean, written bool, is simply True or False, and it controls every analytical branch you write." },
+    { start: 42.74, end: 56.5, text: "The Sequence family holds ordered collections: List is mutable and perfect for a column of rows, Tuple is immutable and protects fixed records, and Range generates lazy integer sequences for memory-efficient iteration." },
+    { start: 57.08, end: 65.36, text: "Mapping means Dictionary, written dict, which stores key-value pairs and gives you lightning-fast O of 1 lookups using a hash table." },
+    { start: 65.9, end: 77.18, text: "Set types eliminate duplicates automatically and power fast union and intersection operations; Frozen Set is the immutable, hashable version safe to use as a dictionary key." },
+    { start: 77.6, end: 83.6, text: "And finally, NoneType is the singleton that represents missing or null data, just like SQL NULL." }
+  ],
+  "Day01/New_PyDay01Audio05.mp3": [
+    { start: 0.0, end: 5.26, text: "Let's trace how Python manages memory under the hood through our runtime execution pipeline." },
+    { start: 5.76, end: 10.78, text: "When you run Python code, Python first allocates object values inside heap memory." },
+    { start: 11.34, end: 17.92, text: "Variables are not boxes that hold values; they are lightweight pointers or name tags bound to memory addresses." },
+    { start: 18.5, end: 23.78, text: "When two variables are assigned the same value, they point to the exact same object in RAM." },
+    { start: 24.38, end: 30.7, text: "Reassigning a variable does not overwrite the old data; it simply repoints the tag to a new memory location." },
+    { start: 31.16, end: 43.2, text: "To test whether two variables share the exact same memory address, use the is keyword, which checks object identity via memory IDs, compared to double equals, which checks value equality." },
+    { start: 44.06, end: 49.6, text: "Python automatically frees unused memory using reference counting and a cyclic garbage collector." }
+  ],
+  "Day01/New_PyDay01Question01sol.mp3": [
+    { start: 0.0, end: 1.04, text: "Here is the solution." },
+    { start: 1.52, end: 7.56, text: "We call the print function and pass the string Hello, Python for Data Analysis inside quotation marks." },
+    { start: 8.08, end: 11.06, text: "When run, Python displays this text in the terminal." }
+  ],
+  "Day01/New_PyDay01Question02sol.mp3": [
+    { start: 0.0, end: 1.06, text: "Here is the solution." },
+    { start: 1.56, end: 7.62, text: "We write print opening parenthesis, 150 plus 250, closing parenthesis." },
+    { start: 8.14, end: 12.36, text: "Python calculates the arithmetic expression first and outputs 400." }
+  ],
+  "Day01/New_PyDay01Question03sol.mp3": [
+    { start: 0.0, end: 1.04, text: "Here is the solution." },
+    { start: 1.54, end: 8.5, text: "We pass two arguments into print separated by a comma: the string label 'Total Records:' and the number 500." },
+    { start: 9.14, end: 11.32, text: "Python formats them separated by a space." }
+  ],
+  "Day01/New_PyDay01Question04sol.mp3": [
+    { start: 0.0, end: 1.06, text: "Here is the solution." },
+    { start: 1.56, end: 7.04, text: "We assign employee count equals 150, then call print passing the label and variable." },
+    { start: 7.7, end: 11.48, text: "Python looks up the variable's integer pointer and displays 150." }
+  ],
+  "Day01/New_PyDay01Question05sol.mp3": [
+    { start: 0.0, end: 1.06, text: "Here is the solution." },
+    { start: 1.56, end: 8.34, text: "We assign average salary equals 75450.50, then print it with its label." },
+    { start: 8.86, end: 14.06, text: "Python stores decimal numbers as 64-bit IEEE double-precision floats." }
+  ],
+  "Day01/New_PyDay01Question06sol.mp3": [
+    { start: 0.0, end: 1.06, text: "Here is the solution." },
+    { start: 1.56, end: 6.9, text: "We assign company name equals 'Manodemy' in quotes, then print it with its label." },
+    { start: 7.48, end: 10.44, text: "Python creates an immutable string object in memory." }
+  ],
+  "Day01/New_PyDay01Question07sol.mp3": [
+    { start: 0.0, end: 1.04, text: "Here is the solution." },
+    { start: 1.56, end: 5.82, text: "We write is full time equals True with a capital T, and print it." },
+    { start: 6.02, end: 9.04, text: "Python booleans are singletons used for conditional logic." }
+  ],
+  "Day01/New_PyDay01Question08sol.mp3": [
+    { start: 0.0, end: 1.08, text: "Here is the solution." },
+    { start: 1.6, end: 8.72, text: "We write sales figures equals opening bracket, 1200, 1450, 1800, closing bracket." },
+    { start: 9.01, end: 13.06, text: "Lists allow you to add, remove, and modify elements in place." },
+    { start: 13.46, end: 15.08, text: "Then we print the list with its label." }
+  ],
+  "Day01/New_PyDay01Question09sol.mp3": [
+    { start: 0.0, end: 1.06, text: "Here is the solution." },
+    { start: 1.54, end: 8.95, text: "We define server location equals parentheses containing 'Mumbai', 19.07, and 72.87." },
+    { start: 9.68, end: 13.84, text: "Tuples protect coordinates and dimensions from accidental modification." },
+    { start: 14.38, end: 15.98, text: "Then we print the tuple with its label." }
+  ],
+  "Day01/New_PyDay01Question10sol.mp3": [
+    { start: 0.0, end: 1.08, text: "Here is the solution." },
+    { start: 1.56, end: 9.11, text: "We assign customer profile equals curly braces, key 'name' colon 'Aarav', comma, key 'orders' colon 5." },
+    { start: 9.48, end: 12.82, text: "Dictionaries provide fast O of 1 lookups by key." },
+    { start: 13.02, end: 14.92, text: "Then we print the dictionary with its label." }
+  ],
+  "Day01/New_PyDay01Question11sol.mp3": [
+    { start: 0.0, end: 1.08, text: "Here is the solution." },
+    { start: 1.56, end: 8.04, text: "We assign unique tags equals curly braces containing 'python', 'sql', and 'analytics'." },
+    { start: 8.68, end: 11.22, text: "Sets automatically discard duplicate entries." },
+    { start: 11.72, end: 13.42, text: "Then we print the set with its label." }
+  ],
+  "Day01/New_PyDay01Question12sol.mp3": [
+    { start: 0.0, end: 1.04, text: "Here is the solution." },
+    { start: 1.56, end: 4.86, text: "We write bonus amount equals None with a capital N." },
+    { start: 5.1, end: 6.5, text: "Then we print it with its label." },
+    { start: 6.9, end: 10.92, text: "None is Python's standard singleton for representing the absence of a value." }
+  ],
+  "Day01/New_PyDay01Question13sol.mp3": [
+    { start: 0.0, end: 1.08, text: "Here is the solution." },
+    { start: 1.54, end: 3.96, text: "We import defaultdict from collections." },
+    { start: 4.46, end: 8.22, text: "Then we build a list called transactions holding four sample records." },
+    { start: 8.78, end: 18.46, text: "The first record has user id U zero one, device mobile, ip address ten dot zero dot zero dot one, and amount one twenty point five zero." },
+    { start: 18.8, end: 23.89, text: "The second record repeats user U zero one and mobile, with amount three forty." },
+    { start: 24.3, end: 34.02, text: "The third record is user U zero two on desktop, ip one nine two dot one six eight dot one dot five, amount eighty five point seven five." },
+    { start: 34.34, end: 41.6, text: "The fourth record is user U zero one, mobile, ip ten dot zero dot zero dot two, amount five hundred." },
+    { start: 41.94, end: 49.02, text: "Now we create an empty fraud map using defaultdict of float, so a missing key defaults to zero point zero." },
+    { start: 49.3, end: 51.1, text: "We loop through each transaction." },
+    { start: 51.62, end: 55.26, text: "We build a tuple key from user id, device, and ip." },
+    { start: 55.64, end: 59.4, text: "Then we add the transaction amount into fraud map at that key." },
+    { start: 59.84, end: 66.54, text: "Finally we print the fraud map, converted to a regular dictionary, which shows the total amount per unique combination." }
+  ],
+  "Day01/New_PyDay01Question14sol.mp3": [
+    { start: 0.0, end: 1.06, text: "Here is the solution." },
+    { start: 1.54, end: 3.16, text: "We build a dictionary called nested." },
+    { start: 3.72, end: 14.02, text: "It has a key user, whose value is another dictionary with key name, set to Aarav, and key address, which holds key city set to Mumbai and key pin set to None." },
+    { start: 14.46, end: 17.28, text: "It also has key score, set to ninety five." },
+    { start: 17.58, end: 25.6, text: "Then we define a function called flatten dict that takes a dictionary d and a parent key, and creates an empty dictionary called items." },
+    { start: 26.22, end: 29.78, text: "We loop over each key value pair in d using the items method." },
+    { start: 30.32, end: 40.12, text: "We build a new key: if parent key exists, we combine parent key, a dot, and the current key using an f string; otherwise the new key is just k." },
+    { start: 40.5, end: 49.24, text: "If the value is a dictionary, we check with isinstance, and recursively call flatten dict with the value and the new key, then update items." },
+    { start: 49.78, end: 56.22, text: "Otherwise, we set items at the new key to the value, or to the string N/A if the value is None." },
+    { start: 56.66, end: 57.6, text: "We return items." },
+    { start: 58.14, end: 63.48, text: "Finally we call flatten dict on nested, store the result in flat, and print flat." }
+  ],
+  "Day01/New_PyDay01Question15sol.mp3": [
+    { start: 0.0, end: 1.08, text: "Here is the solution." },
+    { start: 1.56, end: 2.46, text: "We import sys." },
+    { start: 2.9, end: 5.36, text: "Then we create an empty list called lst." },
+    { start: 5.86, end: 8.6, text: "We also create an empty list called jump sizes." },
+    { start: 9.14, end: 15.18, text: "We measure the size of lst using sys dot getsizeof, and store that value in prev size." },
+    { start: 15.7, end: 18.8, text: "We loop from 0 to 20 using range of 21." },
+    { start: 19.34, end: 21.86, text: "Inside the loop, we append i to lst." },
+    { start: 22.26, end: 27.02, text: "Then we measure the size of lst again with getsizeof, and store it in cur size." },
+    { start: 27.48, end: 35.96, text: "If cur size is greater than prev size, we append the tuple of i and cur size to jump sizes, and we update prev size to cur size." },
+    { start: 36.4, end: 39.62, text: "Finally we print jump sizes, and that is our complete answer." }
+  ],
+  "Day01/New_PyDay01Question01.mp3": [
+    { start: 0.0, end: 2.4, text: "Welcome to your first Python exercise!" },
+    { start: 3.06, end: 8.8, text: "Use Python's built-in print function to output the greeting: Hello, Python for Data Analysis!" },
+    { start: 9.36, end: 9.9, text: "to the console." }
+  ],
+  "Day01/New_PyDay01Question02.mp3": [
+    { start: 0.0, end: 2.02, text: "Let's perform calculations with print!" },
+    { start: 2.5, end: 5.56, text: "The print function can directly calculate math expressions." },
+    { start: 6.08, end: 10.62, text: "Use print to compute and display the sum of 150 plus 250." }
+  ],
+  "Day01/New_PyDay01Question03.mp3": [
+    { start: 0.0, end: 1.48, text: "Printing multiple values!" },
+    { start: 2.08, end: 6.1, text: "You can print multiple items in a single line separated by commas." },
+    { start: 6.42, end: 10.92, text: "Use print to output the label 'Total Records:' followed by the number 500." }
+  ],
+  "Day01/New_PyDay01Question04.mp3": [
+    { start: 0.0, end: 1.94, text: "Creating an integer variable!" },
+    { start: 2.56, end: 5.16, text: "Integers store whole numbers without decimals." },
+    { start: 5.52, end: 10.86, text: "Create a variable named employee count set to 150, and print it with the label 'Employee Count:'." }
+  ],
+  "Day01/New_PyDay01Question05.mp3": [
+    { start: 0.0, end: 1.52, text: "Creating a float variable!" },
+    { start: 1.96, end: 3.58, text: "Floats store decimal numbers." },
+    { start: 4.22, end: 12.16, text: "Create a float variable named average salary set to 75450.50, and print it with the label 'Average Salary:'." }
+  ],
+  "Day01/New_PyDay01Question06.mp3": [
+    { start: 0.0, end: 1.6, text: "Creating a string variable!" },
+    { start: 1.99, end: 4.72, text: "Strings store text enclosed in quotation marks." },
+    { start: 5.46, end: 10.54, text: "Create a string variable named company name set to 'Manodemy', and print it with its label." }
+  ],
+  "Day01/New_PyDay01Question07.mp3": [
+    { start: 0.0, end: 1.76, text: "Creating a boolean variable!" },
+    { start: 2.22, end: 7.0, text: "Booleans represent truth values and must be capitalized: True or False." },
+    { start: 7.58, end: 12.08, text: "Create a variable named is full time set to True, and print it with its label." }
+  ],
+  "Day01/New_PyDay01Question08.mp3": [
+    { start: 0.0, end: 1.28, text: "Creating a list!" },
+    { start: 1.52, end: 5.8, text: "Lists are ordered, mutable sequences defined inside square brackets." },
+    { start: 6.5, end: 13.74, text: "Create a list named sales figures containing 1200, 1450, and 1800, and print it with its label." }
+  ],
+  "Day01/New_PyDay01Question09.mp3": [
+    { start: 0.0, end: 1.28, text: "Creating a tuple!" },
+    { start: 1.46, end: 5.08, text: "Tuples are ordered, immutable sequences defined in parentheses." },
+    { start: 5.94, end: 14.12, text: "Create a tuple named server location with 'Mumbai', 19.07, and 72.87, and print it with its label." }
+  ],
+  "Day01/New_PyDay01Question10.mp3": [
+    { start: 0.0, end: 1.14, text: "Creating a dictionary!" },
+    { start: 1.76, end: 4.66, text: "Dictionaries store key-value pairs in curly braces." },
+    { start: 5.4, end: 11.62, text: "Create a dictionary named customer profile with name 'Aarav' and orders 5, and print it with its label." }
+  ],
+  "Day01/New_PyDay01Question11.mp3": [
+    { start: 0.0, end: 1.1, text: "Creating a set!" },
+    { start: 1.44, end: 4.6, text: "Sets store unique elements inside curly braces." },
+    { start: 5.28, end: 12.0, text: "Create a set named unique tags containing 'python', 'sql', and 'analytics', and print it with its label." }
+  ],
+  "Day01/New_PyDay01Question12.mp3": [
+    { start: 0.0, end: 1.32, text: "The NoneType singleton!" },
+    { start: 1.92, end: 5.06, text: "In Python, None represents missing or null data." },
+    { start: 5.44, end: 11.18, text: "Create a variable named bonus amount set to None with a capital N, and print it with its label." }
+  ],
+  "Day01/New_PyDay01Question13.mp3": [
+    { start: 0.0, end: 1.64, text: "Composite fraud detection!" },
+    { start: 2.26, end: 12.82, text: "Group transaction amounts across multi-dimensional keys user id, device, and ip into a dictionary called fraud map, using a tuple-keyed defaultdict of float." }
+  ],
+  "Day01/New_PyDay01Question14.mp3": [
+    { start: 0.0, end: 2.48, text: "Recursive dict flattener!" },
+    { start: 2.48, end: 14.1, text: "Write a recursive function called flatten dict that takes a nested dictionary and a parent key, and returns a flat dictionary with dot-separated keys, coalescing any None values to the string N/A." }
+  ],
+  "Day01/New_PyDay01Question15.mp3": [
+    { start: 0.0, end: 2.04, text: "Dynamic list allocator tracking!" },
+    { start: 2.48, end: 6.63, text: "Create an empty list called lst and a list called jump sizes." },
+    { start: 7.1, end: 13.34, text: "Loop through the integers zero to twenty using range of twenty one, appending each index to lst." },
+    { start: 13.8, end: 19.98, text: "Every time the size of lst jumps, append the index and the new size as a tuple to jump sizes." },
+    { start: 20.7, end: 21.18, text: "Finally print jump sizes." }
+  ]
+};
+/* SYNC-GENERATED:PYTHON_CAPTION_TRACKS:END */
+
+/* SYNC-GENERATED:PYTHON_TRACK_DURATIONS:BEGIN */
+const PYTHON_TRACK_DURATIONS = {
+  'pyDay01': [
+    62.52,
+    46.25,
+    56.26,
+    83.9,
+    50.06,
+    10.32,
+    11.45,
+    11.14,
+    12.77,
+    11.4,
+    11.74,
+    12.05,
+    11.93,
+    13.46,
+    14.5,
+    10.9,
+    10.82,
+    12.43,
+    9.43,
+    14.11,
+    15.46,
+    14.47,
+    16.34,
+    11.98,
+    15.29,
+    12.36,
+    13.8,
+    11.52,
+    11.28,
+    13.18,
+    67.01,
+    15.22,
+    63.86,
+    22.25,
+    40.01
+  ]
+};
+/* SYNC-GENERATED:PYTHON_TRACK_DURATIONS:END */
 
 function resolveAudioUrl(src) {
   if (!src) return '';
@@ -1507,14 +1996,380 @@ function resolveAudioUrl(src) {
 
 let currentSpotlightSelector = null;
 
-function clearTheoryVisuals() {
-  document.querySelectorAll('.narration-spotlight').forEach(el => {
-    el.classList.remove('narration-spotlight');
+// ── SQL Day 02 Parity: Section Isolation + Spotlight Orchestrator ──────────────
+
+/**
+ * clearSlidePlaybackVisibility — strips ALL playback isolation classes, restoring
+ * the slide to its fully-visible, non-playing state. Called on pause / stop / end.
+ */
+function clearSlidePlaybackVisibility() {
+  const containers = [
+    document.getElementById('slideBodyText'),
+    document.getElementById('slideContent'),
+    document.getElementById('presentSlideContent')
+  ].filter(Boolean);
+
+  containers.forEach(container => {
+    container.classList.remove('playback-active');
+    container.querySelectorAll(
+      '.section-hidden, .narration-spotlight-active, .active-section-mounted, ' +
+      '.stunning-section-entry, .instant-display, .row-active-spotlight, ' +
+      '.card-active-spotlight, .narration-spotlight'
+    ).forEach(el => {
+      el.classList.remove(
+        'section-hidden', 'narration-spotlight-active', 'active-section-mounted',
+        'stunning-section-entry', 'instant-display', 'row-active-spotlight',
+        'card-active-spotlight', 'narration-spotlight'
+      );
+      el.style.opacity = '';
+    });
   });
+
   currentSpotlightSelector = null;
 }
 
-function syncTheoryVisuals(audioObj, src) {
+/**
+ * updateSlidePlaybackVisibility — the heart of the SQL Day 02 parity sync.
+ * 1. Marks the slide container with .playback-active (enables dim rule).
+ * 2. Hides all .slide-section except the one containing targetSelector.
+ * 3. Plays the gorgeous pop-in animation on section entry.
+ * 4. Applies card / row / heading spotlight to the specific element.
+ * 5. Ergonomically scrolls the target into view.
+ *
+ * @param {string} targetSelector — CSS selector of the element to spotlight
+ * @param {boolean} isSeek — if true, skips animation (instant display on scrub)
+ */
+function updateSlidePlaybackVisibility(targetSelector, isSeek = false) {
+  const containers = [
+    document.getElementById('slideBodyText'),
+    document.getElementById('slideContent'),
+    document.getElementById('presentSlideContent')
+  ].filter(Boolean);
+
+  containers.forEach(container => {
+    container.classList.add('playback-active');
+
+    // 1. Clear previous spotlight classes
+    container.querySelectorAll(
+      '.narration-spotlight-active, .row-active-spotlight, .card-active-spotlight, .narration-spotlight'
+    ).forEach(el => {
+      el.classList.remove('narration-spotlight-active', 'row-active-spotlight', 'card-active-spotlight', 'narration-spotlight');
+    });
+
+    // 2. Find the target element
+    let targetEl = null;
+    try { targetEl = container.querySelector(targetSelector); } catch(e) {}
+    if (!targetEl) return;
+
+    // 3. Isolate the active .slide-section
+    const activeSection = targetEl.closest('.slide-section');
+    if (!activeSection) {
+      container.querySelectorAll('.slide-section').forEach(s => s.classList.remove('section-hidden'));
+      return;
+    }
+
+    const isAlreadyMounted = !activeSection.classList.contains('section-hidden') &&
+                             activeSection.classList.contains('active-section-mounted');
+
+    if (!isAlreadyMounted) {
+      container.querySelectorAll('.slide-section').forEach(section => {
+        if (section !== activeSection) {
+          section.classList.add('section-hidden');
+          section.classList.remove('stunning-section-entry', 'active-section-mounted', 'instant-display');
+        } else {
+          section.classList.remove('section-hidden');
+          section.classList.add('active-section-mounted');
+          if (isSeek) {
+            section.classList.add('instant-display');
+            section.classList.remove('stunning-section-entry');
+          } else {
+            section.classList.remove('instant-display');
+            section.classList.add('stunning-section-entry');
+          }
+        }
+      });
+      container.scrollTop = 0;
+    }
+
+    // 4. Apply spotlight to the specific element — card, row, or heading
+    const targetRow = targetEl.closest('tr');
+    const targetCard = targetEl.closest(
+      '.py-sp-card, .py-sp-ai-banner, .py-mut-panel, .py-analyst-trap-card, .py-vfc-node'
+    );
+
+    if (targetRow) {
+      targetRow.classList.add('row-active-spotlight');
+    } else if (targetCard) {
+      targetCard.classList.add('card-active-spotlight');
+    } else {
+      targetEl.classList.add('narration-spotlight-active');
+    }
+
+    // 5. Ergonomic smooth scroll: bring target to near-top of scroll container
+    try {
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = (targetCard || targetRow || targetEl).getBoundingClientRect();
+      const relativeTop = targetRect.top - containerRect.top + container.scrollTop;
+      container.scrollTo({ top: Math.max(0, relativeTop - 32), behavior: isSeek ? 'auto' : 'smooth' });
+    } catch(e) {}
+  });
+}
+
+// Alias: clearTheoryVisuals → also clears the new classes for backward compat
+function clearTheoryVisuals() {
+  clearSlidePlaybackVisibility();
+  clearPyNarrationGroups();
+}
+
+// ── Per-Track Narration Group Choreography (SQL Day 02 dispatcher parity) ─────
+// The cue ladder above spotlights one element at a time. These groups add the
+// second layer SQL uses: while the narrator walks a set of related elements, the
+// element being discussed lights up, the ones already covered stay marked as
+// done, and the ones still to come are dimmed.
+
+const PY_NARRATION_GROUPS = {
+  // Audio01 is a progressive reveal: the narrator introduces Python before the
+  // list exists, so nothing in the showcase is on screen until the phrase that
+  // introduces it, and each superpower appears only when the narrator reaches
+  // it. `gate` items are headings — revealed once, then left at full emphasis.
+  'New_PyDay01Audio01.mp3': {
+    scope: '#day01WhyPythonSection',
+    reveal: true,
+    container: '.py-sp-showcase',
+    items: [
+      { sel: '.py-sp-showcase .py-sp-header', gate: true },
+      '.py-sp-card.sp-blue',
+      '.py-sp-card.sp-green',
+      '.py-sp-card.sp-amber',
+      '.py-sp-card.sp-purple',
+      '.py-sp-ai-banner'
+    ]
+  },
+  'New_PyDay01Audio02.mp3': {
+    scope: '#day01ToolMatrixSection',
+    items: [
+      '.py-matrix-table tbody tr:nth-child(1)',
+      '.py-matrix-table tbody tr:nth-child(2)',
+      '.py-matrix-table tbody tr:nth-child(3)'
+    ],
+    resolveFromCue: true
+  },
+  'New_PyDay01Audio03.mp3': {
+    scope: '#day01MutabilitySection',
+    items: ['.py-mut-panel.panel-mutable', '.py-mut-panel.panel-immutable', '.py-analyst-trap-card']
+  },
+  'New_PyDay01Audio04.mp3': {
+    scope: '#day01DataTypesSection',
+    items: [
+      '.py-master-ref-table tbody tr:nth-child(1)',
+      '.py-master-ref-table tbody tr:nth-child(2)',
+      '.py-master-ref-table tbody tr:nth-child(3)',
+      '.py-master-ref-table tbody tr:nth-child(4)',
+      '.py-master-ref-table tbody tr:nth-child(5)',
+      '.py-master-ref-table tbody tr:nth-child(6)',
+      '.py-master-ref-table tbody tr:nth-child(7)',
+      '.py-master-ref-table tbody tr:nth-child(8)',
+      '.py-master-ref-table tbody tr:nth-child(9)',
+      '.py-master-ref-table tbody tr:nth-child(10)',
+      '.py-master-ref-table tbody tr:nth-child(11)',
+      '.py-master-ref-table tbody tr:nth-child(12)'
+    ]
+  },
+  'New_PyDay01Audio05.mp3': {
+    scope: '#day01MemorySection',
+    items: [
+      '.vnode-code',
+      '.vnode-objects',
+      '.vnode-pointers',
+      '.vnode-mutable',
+      '.vnode-mgmt'
+    ]
+  }
+};
+
+let activePyGroupKey = null;
+
+/**
+ * pyCueWindows — turns the cue ladder into explicit [start, end) windows so a
+ * highlight can be released when the narrator moves on, instead of latching.
+ */
+function pyCueWindows(src) {
+  if (!src) return [];
+  const fname = src.split('/').pop().split('?')[0];
+  const key = Object.keys(THEORY_VISUAL_CUES).find(k => k.includes(fname));
+  if (!key) return [];
+  const cues = THEORY_VISUAL_CUES[key];
+  return cues.map((cue, i) => ({
+    selector: cue.selector,
+    atSec: cue.atSec,
+    endAt: i + 1 < cues.length ? cues[i + 1].atSec : Infinity
+  }));
+}
+
+function pyActiveCueIndex(src, t) {
+  const windows = pyCueWindows(src);
+  let idx = -1;
+  for (let i = 0; i < windows.length; i++) {
+    if (t >= windows[i].atSec) idx = i;
+    else break;
+  }
+  return idx;
+}
+
+function clearPyNarrationGroups() {
+  document.querySelectorAll(
+    '.py-narration-active, .py-narration-dim, .py-narration-done, ' +
+    '.py-narration-upcoming, .py-narration-container-hidden'
+  ).forEach(el => {
+    el.classList.remove(
+      'py-narration-active', 'py-narration-dim', 'py-narration-done',
+      'py-narration-upcoming', 'py-narration-container-hidden'
+    );
+  });
+  activePyGroupKey = null;
+}
+
+/** Items are either a selector string or `{ sel, gate }` for heading elements. */
+function pyItemSelector(item) {
+  return typeof item === 'string' ? item : item.sel;
+}
+
+/**
+ * updatePyNarrationGroup — drives the group choreography for one theory track.
+ * Items already narrated keep a "done" mark so progress is visible; the item
+ * currently being discussed is the only one at full emphasis.
+ *
+ * Groups flagged `reveal` additionally hide anything the narrator has not reached
+ * yet, and hide their whole `container` until the first item is introduced.
+ */
+function updatePyNarrationGroup(src, currentTime, isPlaying) {
+  if (!src || !isPlaying) return;
+  const fname = src.split('/').pop().split('?')[0];
+  const group = PY_NARRATION_GROUPS[fname];
+  if (!group) return;
+
+  const windows = pyCueWindows(src);
+  const cueIndex = pyActiveCueIndex(src, currentTime);
+  if (cueIndex === -1) return;
+
+  const selectors = group.items.map(pyItemSelector);
+  let itemIndex = selectors.indexOf(windows[cueIndex].selector);
+
+  if (itemIndex === -1 && group.resolveFromCue) {
+    // The cue landed on a wrapper (e.g. the table itself); hold the last row lit.
+    const within = windows.slice(0, cueIndex + 1)
+      .map(w => selectors.indexOf(w.selector))
+      .filter(i => i !== -1);
+    itemIndex = within.length ? within[within.length - 1] : -1;
+  }
+
+  // A non-reveal group must leave its state alone until the first member is
+  // actually discussed, rather than blanking a group the narrator hasn't reached.
+  if (itemIndex === -1 && !group.reveal) return;
+
+  const groupKey = fname + ':' + cueIndex;
+  if (groupKey === activePyGroupKey) return;
+  activePyGroupKey = groupKey;
+
+  const scope = document.querySelector(group.scope) || document;
+
+  if (group.reveal && group.container) {
+    const box = scope.querySelector(group.container);
+    if (box) box.classList.toggle('py-narration-container-hidden', itemIndex === -1);
+  }
+
+  group.items.forEach((item, i) => {
+    const el = scope.querySelector(pyItemSelector(item));
+    if (!el) return;
+    const isGate = typeof item === 'object' && item.gate;
+    const isActive = i === itemIndex;
+    const isDone = !isGate && i < itemIndex;
+    let isUpcoming = i > itemIndex;
+
+    // Never withhold an element that contains other members of this group.
+    // Hiding such a wrapper (a whole table or showcase) would take the revealed
+    // items down with it, leaving the section blank.
+    if (isUpcoming && group.reveal) {
+      for (let j = 0; j < group.items.length; j++) {
+        if (j === i) continue;
+        const other = scope.querySelector(pyItemSelector(group.items[j]));
+        if (other && other !== el && el.contains(other)) {
+          isUpcoming = false;
+          break;
+        }
+      }
+    }
+
+    el.classList.toggle('py-narration-active', isActive);
+    el.classList.toggle('py-narration-done', isDone);
+    if (group.reveal) {
+      el.classList.remove('py-narration-dim');
+      el.classList.toggle('py-narration-upcoming', isUpcoming);
+    } else {
+      el.classList.remove('py-narration-upcoming');
+      el.classList.toggle('py-narration-dim', isUpcoming);
+    }
+  });
+}
+
+/**
+ * dispatchPythonTrackVisualHighlights — per-track entry point, mirroring
+ * SQL Day 02's dispatchTrackVisualHighlights. Keeps the track -> visual mapping
+ * in one place so a new narration track only needs a branch here.
+ */
+function dispatchPythonTrackVisualHighlights(track, currentTime, isPlaying, isSeek = false) {
+  if (!track || !track.src) return;
+
+  // Captions cover every track kind; the spotlight choreography is theory-only.
+  if (track.type !== 'solution') {
+    if (isPlaying) {
+      updatePyNarrationGroup(track.src, currentTime, true);
+      syncTheoryVisuals({ currentTime }, track.src, isSeek);
+    } else {
+      clearPyNarrationGroups();
+    }
+  }
+  updateNarrationCaption(track.src, currentTime, isPlaying);
+}
+
+/**
+ * updateNarrationCaption — shows the sentence the narrator is currently saying,
+ * using the timings forced onto the narration scripts by Whisper ASR.
+ */
+let lastCaptionText = null;
+
+function updateNarrationCaption(src, currentTime, isPlaying) {
+  const box = document.getElementById('workspaceVpCaption');
+  if (!box) return;
+  if (!isPlaying) {
+    box.classList.remove('narration-active');
+    lastCaptionText = null;
+    return;
+  }
+
+  const fname = src.split('/').pop().split('?')[0];
+  const key = Object.keys(PYTHON_CAPTION_TRACKS).find(k => k.includes(fname));
+  const sentences = key ? PYTHON_CAPTION_TRACKS[key] : null;
+  if (!sentences || !sentences.length) return;
+
+  let active = sentences[0];
+  for (let i = 0; i < sentences.length; i++) {
+    if (currentTime >= sentences[i].start) active = sentences[i];
+    else break;
+  }
+  if (!active || active.text === lastCaptionText) return;
+
+  lastCaptionText = active.text;
+  box.textContent = active.text;
+  box.classList.add('narration-active');
+}
+
+/**
+ * syncTheoryVisuals — called on ontimeupdate. Reads the THEORY_VISUAL_CUES map
+ * for the current audio file, finds the active cue, and calls
+ * updateSlidePlaybackVisibility with the right selector.
+ */
+function syncTheoryVisuals(audioObj, src, isSeek = false) {
   if (!audioObj || !src) return;
   const fname = src.split('/').pop().split('?')[0];
   const matchedKey = Object.keys(THEORY_VISUAL_CUES).find(k => k.includes(fname));
@@ -1532,17 +2387,9 @@ function syncTheoryVisuals(audioObj, src) {
     }
   }
 
-  if (activeCue && activeCue.highlight !== currentSpotlightSelector) {
-    clearTheoryVisuals();
-    currentSpotlightSelector = activeCue.highlight;
-    const highlightEls = document.querySelectorAll(activeCue.highlight);
-    if (highlightEls.length > 0) {
-      highlightEls.forEach(el => el.classList.add('narration-spotlight'));
-      const firstEl = highlightEls[0];
-      if (firstEl && typeof firstEl.scrollIntoView === 'function') {
-        firstEl.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
-      }
-    }
+  if (activeCue && activeCue.selector !== currentSpotlightSelector) {
+    currentSpotlightSelector = activeCue.selector;
+    updateSlidePlaybackVisibility(activeCue.selector, isSeek);
   }
 }
 
@@ -1550,6 +2397,9 @@ let activeTypewriterRAF = null;
 let activeTypewriterEvents = [];
 let activeTypewriterScrollAt = null;
 let hasExecutedCurrentCode = false;
+let typewriterAttachedAudio = null;
+let typewriterPlayHandler = null;
+let typewriterTimeupdateHandler = null;
 
 function cancelTypewriter() {
   if (activeTypewriterRAF) {
@@ -1560,110 +2410,209 @@ function cancelTypewriter() {
     clearInterval(typewriterTimer);
     typewriterTimer = null;
   }
+  if (typewriterAttachedAudio && typewriterPlayHandler) {
+    typewriterAttachedAudio.removeEventListener('play', typewriterPlayHandler);
+    typewriterAttachedAudio.removeEventListener('playing', typewriterPlayHandler);
+    typewriterAttachedAudio.removeEventListener('timeupdate', typewriterTimeupdateHandler);
+  }
+  typewriterAttachedAudio = null;
+  typewriterPlayHandler = null;
+  typewriterTimeupdateHandler = null;
   activeTypewriterEvents = [];
   activeTypewriterScrollAt = null;
   hasExecutedCurrentCode = false;
 }
 
+/**
+ * setEditorCodeSafely — writes narration-driven text into CodeMirror without
+ * clobbering the learner's own edits when the value is already identical.
+ */
+function setEditorCodeSafely(text) {
+  if (!mainEditor) return;
+  const next = text || '';
+  if (mainEditor.getValue() === next) return;
+  mainEditor.setValue(next);
+  try { mainEditor.setCursor(mainEditor.lineCount(), 0); } catch (e) {}
+}
+
+/**
+ * startAudioSyncedTypewriter — SQL Day 02 parity.
+ *
+ * Each `segments` entry is one phrase of the code with the timestamp the narrator
+ * starts saying it and a per-character cadence. Segments are expanded into
+ * per-character events that are compared against `audioObj.currentTime`.
+ *
+ * Cue timings are deliberately NOT divided by the playback rate: `currentTime`
+ * already advances at content speed, so at 1.25x the same content timestamps
+ * naturally arrive sooner and the typing tracks the voice in wall-clock terms.
+ * Scrubbing in either direction re-derives the visible text from `currentTime`,
+ * so the editor, the output panel and the narration can never disagree.
+ */
 function startAudioSyncedTypewriter(audioObj, solEntry) {
   cancelTypewriter();
   if (!audioObj || !solEntry || !mainEditor) return;
 
-  const targetCode = (solEntry.code || '').trim();
-  const dur = solEntry.duration || (audioObj.duration && !isNaN(audioObj.duration) ? audioObj.duration : 12);
-  const startAt = solEntry.startAt || 1.3;
-  const endAt = solEntry.endAt || Math.max(startAt + 1.0, dur - 1.4);
-  const scrollAt = solEntry.scrollAt || Math.max(endAt, dur - 0.8);
+  const duration = solEntry.duration ||
+    (audioObj.duration && !isNaN(audioObj.duration) ? audioObj.duration : 12);
 
-  activeTypewriterScrollAt = scrollAt;
+  let syncEvents = [];
+  if (Array.isArray(solEntry.segments) && solEntry.segments.length) {
+    let currentCode = '';
+    solEntry.segments.forEach(seg => {
+      const chars = (seg.text || '').split('');
+      const intervalSec = (seg.charInterval || 70) / 1000;
+      chars.forEach((ch, idx) => {
+        currentCode += ch;
+        syncEvents.push({
+          atSec: (seg.startAt || 0) + idx * intervalSec,
+          text: currentCode
+        });
+      });
+    });
+  } else {
+    // Legacy fallback: even cadence across the whole snippet.
+    const code = (solEntry.code || '').trim();
+    const startAt = solEntry.startAt || 1.3;
+    const endAt = solEntry.endAt || Math.max(startAt + 1, duration - 1.4);
+    const intervalSec = (endAt - startAt) / Math.max(1, code.length);
+    let currentCode = '';
+    code.split('').forEach((ch, idx) => {
+      currentCode += ch;
+      syncEvents.push({ atSec: startAt + idx * intervalSec, text: currentCode });
+    });
+  }
+  syncEvents.sort((a, b) => a.atSec - b.atSec);
+
+  const scrollAtSec = solEntry.scrollAt || Math.max(0, duration - 0.8);
+  const initialTime = (audioObj && typeof audioObj.currentTime === 'number') ? audioObj.currentTime : 0;
+
+  activeTypewriterEvents = syncEvents;
+  activeTypewriterScrollAt = scrollAtSec;
   hasExecutedCurrentCode = false;
 
-  const chars = targetCode.split('');
-  const totalChars = chars.length;
-  const typingDur = Math.max(0.4, endAt - startAt);
-  const charInterval = typingDur / Math.max(1, totalChars);
+  // Fast-forward the editor to wherever the learner scrubbed into.
+  let nextEvtIdx = 0;
+  let currentText = '';
+  while (nextEvtIdx < syncEvents.length && initialTime >= syncEvents[nextEvtIdx].atSec) {
+    currentText = syncEvents[nextEvtIdx].text;
+    nextEvtIdx++;
+  }
+  setEditorCodeSafely(currentText);
 
-  let currentCode = '';
-  activeTypewriterEvents = [];
-  chars.forEach((ch, idx) => {
-    currentCode += ch;
-    activeTypewriterEvents.push({
-      atSec: startAt + idx * charInterval,
-      text: currentCode
-    });
-  });
+  if (nextEvtIdx >= syncEvents.length && syncEvents.length && initialTime < scrollAtSec) {
+    hasExecutedCurrentCode = true;
+    if (typeof runCurrentCode === 'function') runCurrentCode(false);
+  }
+  if (initialTime >= scrollAtSec) {
+    hasExecutedCurrentCode = true;
+    if (typeof runCurrentCode === 'function') runCurrentCode(false);
+    const out = document.getElementById('mainOutput');
+    if (out) out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 
-  function tick() {
-    if (!audioObj || audioObj.paused) {
+  function step() {
+    if (!audioObj || audioObj.ended) {
       activeTypewriterRAF = null;
       return;
     }
+    const t = audioObj.currentTime || 0;
 
-    const t = audioObj.currentTime;
-    let textToSet = '';
-    if (t < startAt) {
-      textToSet = '';
-    } else if (t >= endAt) {
-      textToSet = targetCode;
-    } else {
-      for (let i = 0; i < activeTypewriterEvents.length; i++) {
-        if (activeTypewriterEvents[i].atSec <= t) {
-          textToSet = activeTypewriterEvents[i].text;
-        } else {
-          break;
-        }
+    // Backward scrub: rewind the event cursor and rebuild the visible text.
+    if (nextEvtIdx > 0 && t < syncEvents[nextEvtIdx - 1].atSec) {
+      nextEvtIdx = 0;
+      let text = '';
+      while (nextEvtIdx < syncEvents.length && t >= syncEvents[nextEvtIdx].atSec) {
+        text = syncEvents[nextEvtIdx].text;
+        nextEvtIdx++;
       }
+      setEditorCodeSafely(text);
     }
 
-    if (mainEditor.getValue() !== textToSet) {
-      mainEditor.setValue(textToSet);
-      mainEditor.setCursor(mainEditor.lineCount(), 0);
+    while (nextEvtIdx < syncEvents.length && t >= syncEvents[nextEvtIdx].atSec) {
+      setEditorCodeSafely(syncEvents[nextEvtIdx].text);
+      nextEvtIdx++;
     }
 
-    if (t >= scrollAt && !hasExecutedCurrentCode) {
+    if (!hasExecutedCurrentCode && t >= scrollAtSec) {
       hasExecutedCurrentCode = true;
       if (typeof runCurrentCode === 'function') {
-        runCurrentCode();
+        runCurrentCode(false);
+        setTimeout(() => {
+          const out = document.getElementById('mainOutput');
+          if (out) out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 350);
       }
     }
 
-    activeTypewriterRAF = requestAnimationFrame(tick);
-  }
-
-  // Immediate catchup for current time
-  const initT = audioObj.currentTime || 0;
-  let initText = '';
-  if (initT >= endAt) {
-    initText = targetCode;
-  } else if (initT >= startAt) {
-    for (let i = 0; i < activeTypewriterEvents.length; i++) {
-      if (activeTypewriterEvents[i].atSec <= initT) {
-        initText = activeTypewriterEvents[i].text;
-      } else {
-        break;
-      }
+    if (audioObj.paused) {
+      activeTypewriterRAF = null;
+    } else {
+      activeTypewriterRAF = requestAnimationFrame(step);
     }
   }
-  mainEditor.setValue(initText);
+
+  function ensureRunning() {
+    if (!activeTypewriterRAF) {
+      activeTypewriterRAF = requestAnimationFrame(step);
+    }
+  }
+
+  // Keep typing in step when playback resumes without a full re-entry.
+  if (typeof audioObj.addEventListener === 'function') {
+    typewriterAttachedAudio = audioObj;
+    typewriterPlayHandler = ensureRunning;
+    typewriterTimeupdateHandler = step;
+    audioObj.addEventListener('play', ensureRunning);
+    audioObj.addEventListener('playing', ensureRunning);
+    audioObj.addEventListener('timeupdate', step);
+  }
 
   if (!audioObj.paused) {
-    activeTypewriterRAF = requestAnimationFrame(tick);
+    activeTypewriterRAF = requestAnimationFrame(step);
   }
 }
 
-
 function playAudio(src, btn, onStartCb) {
+  if (currentDayData?.media?.mode === 'study') return;
   if (!src) return;
   const audioSrc = resolveAudioUrl(src);
 
-  // Toggle pause if already playing this file
+  // Initialize master timeline tracks if not loaded
+  if (!combinedTracks || combinedTracks.length === 0) {
+    const registry = (PYTHON_DAY_TRACKS && (PYTHON_DAY_TRACKS[currentDayId] || PYTHON_DAY_TRACKS['pyDay01']));
+    if (registry) {
+      combinedTracks = registry.tracks.slice();
+      combinedTrackDurations = resolveTrackDurations(currentDayId, registry);
+      totalCombinedDuration = combinedTrackDurations.reduce((acc, d) => acc + d, 0);
+    }
+  }
+
+  // 1. Direct integration with Master Combined Timeline (SQL Day 02 Parity)
   const fname = src.split('/').pop().split('?')[0];
+  const trackIdx = combinedTracks ? combinedTracks.findIndex(t => {
+    const tSrc = (t.src || t.audio || '').split('/').pop().split('?')[0];
+    return tSrc === fname || (t.src && t.src.includes(fname));
+  }) : -1;
+
+  if (trackIdx !== -1) {
+    currentPlayingBtn = btn;
+    if (combinedTrackIndex === trackIdx && isCombinedPlaying) {
+      pauseCombinedPlayback();
+    } else {
+      isCombinedPlaying = true;
+      playTrackSegment(trackIdx);
+    }
+    return;
+  }
+
+  // 2. Standalone fallback for audio clips outside the master timeline
   if (currentPlayingAudio && currentPlayingAudio.src.includes(fname)) {
     if (currentPlayingAudio.paused) {
       currentPlayingAudio.play().catch(e => console.warn(e));
       if (btn) {
         btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
         btn.classList.add('playing');
+        btn.setAttribute('title', 'Pause narration (Space)');
       }
       updatePlayButtonStates(true);
     } else {
@@ -1671,6 +2620,7 @@ function playAudio(src, btn, onStartCb) {
       if (btn) {
         btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
         btn.classList.remove('playing');
+        btn.setAttribute('title', 'Play narration (Space)');
       }
       if (activeTypewriterRAF) {
         cancelAnimationFrame(activeTypewriterRAF);
@@ -1681,7 +2631,7 @@ function playAudio(src, btn, onStartCb) {
     return;
   }
 
-  // Stop any active combined timeline audio
+  // Stop any active combined timeline audio if playing standalone clip
   if (activeCombinedAudio) {
     try { activeCombinedAudio.pause(); } catch(e) {}
     activeCombinedAudio = null;
@@ -1708,33 +2658,44 @@ function playAudio(src, btn, onStartCb) {
     if (btn) {
       btn.innerHTML = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
       btn.classList.add('playing');
+      btn.setAttribute('title', 'Pause narration (Space)');
     }
-    // Highlight parent section if theory
     const sec = btn ? btn.closest('.slide-section') : null;
     if (sec) {
       document.querySelectorAll('.slide-section').forEach(s => s.classList.remove('active-narration'));
       sec.classList.add('active-narration');
     }
     updatePlayButtonStates(true);
-    syncTheoryVisuals(currentPlayingAudio, src);
+    const clipCaption = document.getElementById('workspaceVpCaption');
+    if (clipCaption) {
+      clipCaption.style.display = 'block';
+      clipCaption.classList.add('narration-active');
+      const key = Object.keys(PYTHON_CAPTION_TRACKS).find(k => k.includes(fname));
+      const opening = key && PYTHON_CAPTION_TRACKS[key] && PYTHON_CAPTION_TRACKS[key][0];
+      clipCaption.textContent = opening ? opening.text : 'Narrator speaking…';
+    }
+    lastCaptionText = null;
+    dispatchPythonTrackVisualHighlights({ src, type: 'narration' }, currentPlayingAudio.currentTime, true);
     if (typeof onStartCb === 'function') {
       onStartCb(currentPlayingAudio);
     }
   };
 
   currentPlayingAudio.ontimeupdate = () => {
-    syncTheoryVisuals(currentPlayingAudio, src);
+    dispatchPythonTrackVisualHighlights({ src, type: 'narration' }, currentPlayingAudio.currentTime, true);
   };
 
   currentPlayingAudio.onpause = () => {
     if (btn) {
       btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
       btn.classList.remove('playing');
+      btn.setAttribute('title', 'Play narration (Space)');
     }
     if (activeTypewriterRAF) {
       cancelAnimationFrame(activeTypewriterRAF);
       activeTypewriterRAF = null;
     }
+    dispatchPythonTrackVisualHighlights({ src, type: 'narration' }, currentPlayingAudio.currentTime, false);
     updatePlayButtonStates(false);
   };
 
@@ -1742,10 +2703,16 @@ function playAudio(src, btn, onStartCb) {
     if (btn) {
       btn.innerHTML = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
       btn.classList.remove('playing');
+      btn.setAttribute('title', 'Play narration (Space)');
     }
     clearTheoryVisuals();
     cancelTypewriter();
     updatePlayButtonStates(false);
+    const doneCaption = document.getElementById('workspaceVpCaption');
+    if (doneCaption) {
+      doneCaption.style.display = 'none';
+      doneCaption.classList.remove('narration-active');
+    }
     currentPlayingAudio = null;
     currentPlayingBtn = null;
   };
@@ -1766,8 +2733,28 @@ function playAudio(src, btn, onStartCb) {
 }
 
 function playQuestionAudio(btn) {
+  if (currentDayData?.media?.mode === 'study') return;
   const q = currentDayData && currentDayData.practiceQuestions && currentDayData.practiceQuestions[currentQuestionIndex];
   if (!q) return;
+  if (!combinedTracks || combinedTracks.length === 0) {
+    const registry = (PYTHON_DAY_TRACKS && (PYTHON_DAY_TRACKS[currentDayId] || PYTHON_DAY_TRACKS['pyDay01']));
+    if (registry) {
+      combinedTracks = registry.tracks.slice();
+      combinedTrackDurations = resolveTrackDurations(currentDayId, registry);
+      totalCombinedDuration = combinedTrackDurations.reduce((acc, d) => acc + d, 0);
+    }
+  }
+  const qIdx = combinedTracks ? combinedTracks.findIndex(t => t.type === 'question' && (t.qId === q.id || findQuestionIdxById(t.qId) === currentQuestionIndex)) : -1;
+  if (qIdx !== -1) {
+    currentPlayingBtn = btn;
+    if (combinedTrackIndex === qIdx && isCombinedPlaying) {
+      pauseCombinedPlayback();
+    } else {
+      isCombinedPlaying = true;
+      playTrackSegment(qIdx);
+    }
+    return;
+  }
   const dayNum = String(currentDayData.day).padStart(2,'0');
   const qNum = String(currentQuestionIndex + 1).padStart(2,'0');
   const src = q.questionAudio || `Day${dayNum}/New_PyDay${dayNum}Question${qNum}.mp3`;
@@ -1776,15 +2763,33 @@ function playQuestionAudio(btn) {
 }
 
 function playSolutionAudioFromBtn(btn) {
+  if (currentDayData?.media?.mode === 'study') return;
   const q = currentDayData && currentDayData.practiceQuestions && currentDayData.practiceQuestions[currentQuestionIndex];
   if (!q) return;
+  if (!combinedTracks || combinedTracks.length === 0) {
+    const registry = (PYTHON_DAY_TRACKS && (PYTHON_DAY_TRACKS[currentDayId] || PYTHON_DAY_TRACKS['pyDay01']));
+    if (registry) {
+      combinedTracks = registry.tracks.slice();
+      combinedTrackDurations = resolveTrackDurations(currentDayId, registry);
+      totalCombinedDuration = combinedTrackDurations.reduce((acc, d) => acc + d, 0);
+    }
+  }
+  const sIdx = combinedTracks ? combinedTracks.findIndex(t => t.type === 'solution' && (t.qId === q.id || findQuestionIdxById(t.qId) === currentQuestionIndex)) : -1;
+  if (sIdx !== -1) {
+    currentPlayingBtn = btn;
+    if (combinedTrackIndex === sIdx && isCombinedPlaying) {
+      pauseCombinedPlayback();
+    } else {
+      isCombinedPlaying = true;
+      playTrackSegment(sIdx);
+    }
+    return;
+  }
   const dayNum = String(currentDayData.day).padStart(2,'0');
   const qNum = String(currentQuestionIndex + 1).padStart(2,'0');
   const src = q.solutionAudio || `Day${dayNum}/New_PyDay${dayNum}Question${qNum}sol.mp3`;
-
   const solMap = PYTHON_QUESTION_SOLUTIONS[currentDayId] || PYTHON_QUESTION_SOLUTIONS['pyDay01'];
   const solEntry = (solMap && solMap[q.id]) || { code: q.ref, duration: 12 };
-
   playAudio(src, btn, (audioInstance) => {
     if (solEntry) {
       startAudioSyncedTypewriter(audioInstance, solEntry);
@@ -1808,11 +2813,12 @@ function toggleCombinedPlayback() {
 }
 
 function playCombinedPlayback() {
+  if (currentDayData?.media?.mode === 'study') return;
   if (!combinedTracks || combinedTracks.length === 0) {
     const registry = (PYTHON_DAY_TRACKS && (PYTHON_DAY_TRACKS[currentDayId] || PYTHON_DAY_TRACKS['pyDay01']));
     if (registry) {
       combinedTracks = registry.tracks.slice();
-      combinedTrackDurations = registry.durations.slice();
+      combinedTrackDurations = resolveTrackDurations(currentDayId, registry);
       totalCombinedDuration = combinedTrackDurations.reduce((acc, d) => acc + d, 0);
     }
   }
@@ -1840,12 +2846,35 @@ function playCombinedPlayback() {
       if (solEntry) {
         startAudioSyncedTypewriter(activeCombinedAudio, solEntry);
       }
-    } else if (track && track.type === 'narration') {
-      syncTheoryVisuals(activeCombinedAudio, track.src);
+    } else if (track) {
+      dispatchPythonTrackVisualHighlights(track, activeCombinedAudio.currentTime, true);
     }
   } else {
     playTrackSegment(combinedTrackIndex);
   }
+}
+
+/**
+ * resolveTrackDurations — prefers the durations measured from the MP3s over the
+ * hand-entered registry list, so re-recording a narration can never leave the
+ * master timeline seeking against stale numbers. Falls back to the registry, and
+ * finally to a per-track probe of the audio metadata.
+ */
+function resolveTrackDurations(dayId, registry) {
+  const tracks = (registry && registry.tracks) || [];
+  const measured = (typeof PYTHON_TRACK_DURATIONS !== 'undefined') && PYTHON_TRACK_DURATIONS[dayId];
+
+  if (measured && measured.length === tracks.length && measured.every(d => d > 0)) {
+    return measured.slice();
+  }
+
+  const declared = (registry && registry.durations) || [];
+  if (declared.length === tracks.length && declared.every(d => d > 0)) {
+    return declared.slice();
+  }
+
+  // Last resort: let the browser report each clip's real length.
+  return tracks.map((track, i) => declared[i] || 0);
 }
 
 function pauseCombinedPlayback() {
@@ -1863,6 +2892,8 @@ function pauseCombinedPlayback() {
     clearInterval(playbackTimerInterval);
     playbackTimerInterval = null;
   }
+  // SQL Day 02 parity: restore full slide visibility on pause
+  clearSlidePlaybackVisibility();
 }
 
 function playTrackSegment(trackIdx, localOffset = 0) {
@@ -1889,43 +2920,37 @@ function playTrackSegment(trackIdx, localOffset = 0) {
   const track = combinedTracks[trackIdx];
   updateChapterListActive();
 
-  // Scroll and illuminate active content
+  // ── INSTANT SCENE TRANSITION (SQL Day 02 parity) ─────────────────
+  const qBar = document.getElementById('questionBar');
   if (track.type === 'question' && track.qId) {
-    loadPracticeQuestion(track.qId - 1);
-    const qBar = document.getElementById('questionBar');
+    // Use findIndex like SQL — qId value is NOT guaranteed to equal array position
+    const qIdx = findQuestionIdxById(track.qId);
+    if (qIdx !== -1) loadPracticeQuestion(qIdx);
     if (qBar) {
       qBar.classList.add('question-playing');
       qBar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   } else if (track.type === 'solution' && track.qId) {
-    loadPracticeQuestion(track.qId - 1);
-    const qBar = document.getElementById('questionBar');
+    const qIdx = findQuestionIdxById(track.qId);
+    if (qIdx !== -1) loadPracticeQuestion(qIdx);
     if (qBar) {
       qBar.classList.add('question-playing');
       qBar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   } else {
     // Theory narration track
-    const qBar = document.getElementById('questionBar');
     if (qBar) qBar.classList.remove('question-playing');
-
-    const targetEl = track.target ? document.querySelector(track.target) : null;
-    document.querySelectorAll('.slide-section').forEach(sec => {
-      sec.classList.remove('active-narration');
-    });
-    if (targetEl) {
-      const sec = targetEl.closest('.slide-section') || targetEl;
-      sec.classList.add('active-narration');
-      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
   }
 
-  // Caption banner
+  // Caption banner — replaced with the live spoken sentence as soon as the
+  // first timeupdate lands; this is the fallback title-only state.
   const captionBox = document.getElementById('workspaceVpCaption');
   if (captionBox) {
     captionBox.style.display = 'block';
     captionBox.textContent = `📢 Narrator: "${track.title}"`;
+    captionBox.classList.add('narration-active');
   }
+  lastCaptionText = null;
 
   let startOffset = 0;
   for (let i = 0; i < trackIdx; i++) {
@@ -1962,8 +2987,8 @@ function playTrackSegment(trackIdx, localOffset = 0) {
       if (solEntry) {
         startAudioSyncedTypewriter(activeCombinedAudio, solEntry);
       }
-    } else if (track.type === 'narration') {
-      syncTheoryVisuals(activeCombinedAudio, track.src);
+    } else {
+      dispatchPythonTrackVisualHighlights(track, activeCombinedAudio.currentTime, true);
     }
   };
 
@@ -1971,11 +2996,17 @@ function playTrackSegment(trackIdx, localOffset = 0) {
     if (isCombinedPlaying && activeCombinedAudio) {
       currentCombinedTime = startOffset + activeCombinedAudio.currentTime;
       updateProgressUI();
-
-      if (track.type === 'narration') {
-        syncTheoryVisuals(activeCombinedAudio, track.src);
-      }
+      dispatchPythonTrackVisualHighlights(track, activeCombinedAudio.currentTime, true);
     }
+  };
+
+  activeCombinedAudio.onpause = () => {
+    updatePlayButtonStates(false);
+    dispatchPythonTrackVisualHighlights(track, activeCombinedAudio.currentTime, false);
+  };
+
+  activeCombinedAudio.onseeked = () => {
+    dispatchPythonTrackVisualHighlights(track, activeCombinedAudio.currentTime, true, true);
   };
 
   activeCombinedAudio.onended = () => {
@@ -2001,7 +3032,20 @@ function playTrackSegment(trackIdx, localOffset = 0) {
   });
 }
 
-function seekCombinedPlayback(val) {
+/**
+ * findQuestionIdxById — SQL Day 02 parity.
+ * Looks up the 0-based array index of a practice question by its `id` field.
+ * This is the ONLY safe way to map track.qId → array index because id and
+ * position are not guaranteed to be in sync.
+ */
+function findQuestionIdxById(qId) {
+  if (!currentDayData || !currentDayData.practiceQuestions) return -1;
+  return currentDayData.practiceQuestions.findIndex(q => q.id === qId);
+}
+
+let isScrubbing = false;
+
+function seekCombinedPlayback(val, shouldPlay = true) {
   const targetTime = parseFloat(val);
   let elapsed = 0;
   let trackIdx = 0;
@@ -2022,36 +3066,51 @@ function seekCombinedPlayback(val) {
   }
 
   currentCombinedTime = targetTime;
+  combinedTrackIndex = trackIdx;
   updateProgressUI();
+  updateChapterListActive();
 
-  if (activeCombinedAudio) {
-    try { activeCombinedAudio.pause(); } catch(e) {}
-  }
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
+  const track = combinedTracks[trackIdx];
+
+  // ── INSTANT SYNCHRONOUS SCENE TRANSITION (SQL Day 02 parity) ────────
+  // Zero-latency DOM switch: load the right question / theory section
+  // immediately on seek so the UI never flashes the wrong content.
+  if (track) {
+    const qBar = document.getElementById('questionBar');
+    if (track.type === 'question' || track.type === 'solution') {
+      // Use findIndex like SQL engine — never assume qId-1 === array position
+      const qIdx = findQuestionIdxById(track.qId);
+      if (qIdx !== -1) {
+        loadPracticeQuestion(qIdx);
+      }
+      if (qBar) {
+        qBar.classList.add('question-playing');
+        qBar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      if (track.type === 'solution') {
+        const solMap = PYTHON_QUESTION_SOLUTIONS[currentDayId] || PYTHON_QUESTION_SOLUTIONS['pyDay01'];
+        const solEntry = (solMap && solMap[track.qId]);
+        if (solEntry) {
+          startAudioSyncedTypewriter({ currentTime: localTime, duration: combinedTrackDurations[trackIdx], paused: !isCombinedPlaying }, solEntry);
+        }
+      }
+    } else {
+      if (qBar) qBar.classList.remove('question-playing');
+      clearSlidePlaybackVisibility();
+      dispatchPythonTrackVisualHighlights(track, localTime, true, true);
+    }
   }
 
-  if (isCombinedPlaying) {
-    playTrackSegment(trackIdx, localTime);
-  } else {
-    combinedTrackIndex = trackIdx;
-    updateChapterListActive();
-    const track = combinedTracks[trackIdx];
-    if (track && track.type === 'solution' && track.qId) {
-      loadPracticeQuestion(track.qId - 1);
-      const solMap = PYTHON_QUESTION_SOLUTIONS[currentDayId] || PYTHON_QUESTION_SOLUTIONS['pyDay01'];
-      const solEntry = (solMap && solMap[track.qId]);
-      if (solEntry) {
-        startAudioSyncedTypewriter({ currentTime: localTime, duration: combinedTrackDurations[trackIdx], paused: true }, solEntry);
-      }
-    } else if (track && track.type === 'narration') {
-      const targetEl = track.target ? document.querySelector(track.target) : null;
-      if (targetEl) {
-        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      syncTheoryVisuals({ currentTime: localTime }, track.src);
-    } else if (track && track.type === 'question' && track.qId) {
-      loadPracticeQuestion(track.qId - 1);
+  // ── AUDIO TRACK RESOLUTION ──────────────────────────────────────────
+  if (shouldPlay) {
+    if (activeCombinedAudio) {
+      try { activeCombinedAudio.pause(); } catch(e) {}
+    }
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    if (isCombinedPlaying) {
+      playTrackSegment(trackIdx, localTime);
     }
   }
 }
@@ -2059,7 +3118,7 @@ function seekCombinedPlayback(val) {
 function skipCombined(seconds) {
   if (!totalCombinedDuration) return;
   const target = Math.max(0, Math.min(totalCombinedDuration, currentCombinedTime + seconds));
-  seekCombinedPlayback(target);
+  seekCombinedPlayback(target, isCombinedPlaying);
 }
 
 function onCombinedPlaybackEnded() {
@@ -2073,10 +3132,11 @@ function onCombinedPlaybackEnded() {
   updatePlayButtonStates(false);
   updateProgressUI();
 
-  document.querySelectorAll('.slide-section').forEach(sec => {
-    sec.classList.remove('active-narration');
-    sec.classList.remove('inactive-narration');
-  });
+  // SQL Day 02 parity: restore full slide visibility on playback end
+  clearSlidePlaybackVisibility();
+
+  const qBar = document.getElementById('questionBar');
+  if (qBar) qBar.classList.remove('question-playing');
 
   const captionBox = document.getElementById('workspaceVpCaption');
   if (captionBox) captionBox.style.display = 'none';
@@ -2085,18 +3145,135 @@ function onCombinedPlaybackEnded() {
 function updateProgressUI() {
   const seekBar = document.getElementById('seekBar');
   const playbackTime = document.getElementById('playbackTime');
-  const tooltip = document.getElementById('timelineHoverTooltip');
+  const isDragging = typeof isScrubbing !== 'undefined' && isScrubbing;
+  const dur = totalCombinedDuration > 0 ? totalCombinedDuration : 100;
 
   if (seekBar) {
-    seekBar.max = totalCombinedDuration || 100;
-    seekBar.value = currentCombinedTime;
+    seekBar.max = dur;
+    if (!isDragging) {
+      seekBar.value = currentCombinedTime;
+    }
+    const val = isDragging ? parseFloat(seekBar.value) : currentCombinedTime;
+    const fillPct = Math.max(0, Math.min(100, (val / dur) * 100));
+    seekBar.style.background = `linear-gradient(to right, #ef4444 0%, #ff4d4d ${fillPct}%, rgba(255, 255, 255, 0.15) ${fillPct}%)`;
   }
-  if (playbackTime) {
+  if (playbackTime && !isDragging) {
     playbackTime.textContent = `${formatTime(currentCombinedTime)} / ${formatTime(totalCombinedDuration)}`;
   }
-  if (tooltip) {
-    tooltip.textContent = formatTime(currentCombinedTime);
-  }
+}
+
+function setupTimelineDragging() {
+  const seekBar = document.getElementById('seekBar');
+  const tooltip = document.getElementById('timelineHoverTooltip');
+  const timelineRow = document.getElementById('playbackTimelineRow');
+  if (!seekBar || !timelineRow) return;
+
+  if (timelineRow.dataset.timelineDragBound) return;
+  timelineRow.dataset.timelineDragBound = 'true';
+
+  // Real-time hover preview tooltip showing Scene Title + Time + Category Badge
+  timelineRow.addEventListener('mousemove', (e) => {
+    const rect = seekBar.getBoundingClientRect();
+    const mouseX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+    const pos = rect.width > 0 ? (mouseX / rect.width) : 0;
+    const targetTime = pos * (totalCombinedDuration || 100);
+
+    // Resolve track at this hover position
+    let elapsed = 0;
+    let trackTitle = '';
+    let trackType = 'Theory';
+    if (typeof combinedTrackDurations !== 'undefined' && typeof combinedTracks !== 'undefined') {
+      for (let i = 0; i < combinedTrackDurations.length; i++) {
+        const dur = combinedTrackDurations[i];
+        if (targetTime < elapsed + dur || i === combinedTrackDurations.length - 1) {
+          const t = combinedTracks[i];
+          if (t) {
+            trackTitle = t.title || t.src || '';
+            if (t.type === 'question') trackType = 'Practice';
+            else if (t.type === 'solution') trackType = 'Solution';
+            else if (t.type === 'completion') trackType = 'Milestone';
+          }
+          break;
+        }
+        elapsed += dur;
+      }
+    }
+
+    if (tooltip) {
+      tooltip.classList.add('active');
+
+      const svgTheory = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px; vertical-align:-1px;"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>';
+      const svgPractice = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px; vertical-align:-1px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>';
+      const svgSolution = '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="margin-right:4px; vertical-align:-1px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+      const svgMilestone = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px; vertical-align:-1px;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H7"/><path d="M14 14.66V17c0 .55.45 1 1 1h2"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>';
+
+      let badgeHtml = '';
+      if (trackType === 'Theory') {
+        badgeHtml = '<span class="tt-badge tt-badge--theory">' + svgTheory + 'THEORY</span>';
+      } else if (trackType === 'Practice') {
+        badgeHtml = '<span class="tt-badge tt-badge--practice">' + svgPractice + 'PRACTICE</span>';
+      } else if (trackType === 'Solution') {
+        badgeHtml = '<span class="tt-badge tt-badge--solution">' + svgSolution + 'SOLUTION</span>';
+      } else {
+        badgeHtml = '<span class="tt-badge tt-badge--milestone">' + svgMilestone + 'MILESTONE</span>';
+      }
+
+      tooltip.innerHTML = `
+        <span class="tt-time">${formatTime(targetTime)}</span>
+        <span class="tt-divider"></span>
+        ${badgeHtml}
+        <span class="tt-title">${trackTitle}</span>
+      `;
+
+      // Smart Edge Clamping: Ensure tooltip is NEVER cropped at left or right window boundary
+      const tooltipWidth = tooltip.offsetWidth || 220;
+      const halfWidth = tooltipWidth / 2;
+      const minCenter = halfWidth + 8;
+      const maxCenter = Math.max(minCenter, rect.width - halfWidth - 8);
+      const clampedCenter = Math.max(minCenter, Math.min(maxCenter, mouseX));
+
+      tooltip.style.left = `${clampedCenter}px`;
+
+      // Position the pointer arrow precisely above the cursor
+      const arrowOffset = mouseX - clampedCenter;
+      tooltip.style.setProperty('--arrow-x', `${arrowOffset}px`);
+    }
+  });
+
+  timelineRow.addEventListener('mouseleave', () => {
+    if (tooltip) tooltip.classList.remove('active');
+  });
+
+  // Direct click on timeline row to seek instantly
+  timelineRow.addEventListener('click', (e) => {
+    const rect = seekBar.getBoundingClientRect();
+    if (rect.width <= 0) return;
+    const clickX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+    const pos = rect.width > 0 ? (clickX / rect.width) : 0;
+    const targetTime = pos * (totalCombinedDuration || 100);
+    const sb = document.getElementById('seekBar');
+    if (sb) {
+      sb.value = targetTime;
+      const fillPct = Math.max(0, Math.min(100, pos * 100));
+      sb.style.background = `linear-gradient(to right, #ef4444 0%, #ff4d4d ${fillPct}%, rgba(255, 255, 255, 0.15) ${fillPct}%)`;
+    }
+    seekCombinedPlayback(targetTime, true);
+  });
+
+  // Smooth live scrubbing
+  seekBar.addEventListener('input', (e) => {
+    isScrubbing = true;
+    const targetTime = parseFloat(e.target.value);
+    currentCombinedTime = targetTime;
+    updateProgressUI();
+    // Live visual scene sync during scrub without audio restart
+    seekCombinedPlayback(targetTime, false);
+  });
+
+  seekBar.addEventListener('change', (e) => {
+    isScrubbing = false;
+    seekCombinedPlayback(e.target.value, true);
+  });
 }
 
 function formatTime(secs) {
@@ -2105,21 +3282,135 @@ function formatTime(secs) {
   return `${m}:${s < 10 ? '0' : ''}${s}`;
 }
 
-function updatePlayButtonStates(isPlaying) {
-  const navBtn = document.getElementById('navPlayBtn');
-  const barBtn = document.getElementById('playPauseBtn');
+/**
+ * getLessonDurationString — the single source of truth for "how long is this
+ * lesson", so the topic badge and the timeline can never disagree.
+ *
+ * Prefers the durations measured from the MP3s. The `slides[].duration` string
+ * in the content bundle is hand-authored and goes stale the moment narration is
+ * re-recorded or a track is added — that is how the badge came to read 3:58
+ * while the timeline correctly read 13:41.
+ */
+function getLessonDurationString(dayId) {
+  const id = dayId || (typeof currentDayId !== 'undefined' && currentDayId) || 'pyDay01';
+  const content = window.COURSE_CONTENT && window.COURSE_CONTENT[id];
+  if (content?.media?.mode === 'study') return 'Study';
+  const measured = (typeof PYTHON_TRACK_DURATIONS !== 'undefined') && PYTHON_TRACK_DURATIONS[id];
+  if (Array.isArray(measured) && measured.length && measured.every(d => d > 0)) {
+    return formatTime(measured.reduce((a, d) => a + d, 0));
+  }
+  const registry = (typeof PYTHON_DAY_TRACKS !== 'undefined') && PYTHON_DAY_TRACKS[id];
+  if (registry && Array.isArray(registry.durations) && registry.durations.length) {
+    return formatTime(registry.durations.reduce((a, d) => a + d, 0));
+  }
+  const slide = currentDayData && currentDayData.slides && currentDayData.slides[0];
+  return (slide && slide.duration) || '0:00';
+}
 
+function updatePlayButtonStates(isPlaying) {
+  const equalizerHtml = `<span class="audio-wave-equalizer" aria-hidden="true"><span></span><span></span><span></span></span>`;
+
+  const navBtn = document.getElementById('navPlayBtn');
   if (navBtn) {
-    navBtn.innerHTML = isPlaying
-      ? `<span class="btn-icon">⏸</span> <span class="btn-text">Pause Lesson</span>`
-      : `<span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>`;
+    if (isPlaying) {
+      navBtn.innerHTML = `${equalizerHtml} <span class="btn-icon" aria-hidden="true">⏸</span> <span class="btn-text">Pause Lesson</span>`;
+      navBtn.classList.add('playing');
+      navBtn.setAttribute('aria-label', 'Pause Lesson');
+      navBtn.setAttribute('aria-pressed', 'true');
+    } else {
+      navBtn.innerHTML = `<span class="btn-icon" aria-hidden="true">▶</span> <span class="btn-text">Play Lesson</span>`;
+      navBtn.classList.remove('playing');
+      navBtn.setAttribute('aria-label', 'Play Lesson');
+      navBtn.setAttribute('aria-pressed', 'false');
+    }
   }
-  if (barBtn) {
-    barBtn.innerHTML = isPlaying
-      ? `<span class="btn-icon" aria-hidden="true">⏸</span><span class="btn-text">Pause Lesson</span>`
-      : `<span class="btn-icon" aria-hidden="true">&#9654;</span><span class="btn-text">Play Lesson</span>`;
-    barBtn.setAttribute('aria-pressed', isPlaying ? 'true' : 'false');
+
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  if (playPauseBtn) {
+    if (isPlaying) {
+      playPauseBtn.innerHTML = `${equalizerHtml} <span class="btn-icon" aria-hidden="true">⏸</span> <span class="btn-text">Pause Lesson</span>`;
+      playPauseBtn.classList.add('playing');
+      playPauseBtn.setAttribute('aria-label', 'Pause Lesson');
+      playPauseBtn.setAttribute('aria-pressed', 'true');
+    } else {
+      playPauseBtn.innerHTML = `<span class="btn-icon" aria-hidden="true">&#9654;</span> <span class="btn-text">Play Lesson</span>`;
+      playPauseBtn.classList.remove('playing');
+      playPauseBtn.setAttribute('aria-label', 'Play Lesson');
+      playPauseBtn.setAttribute('aria-pressed', 'false');
+    }
   }
+
+  const captionEl = document.getElementById('workspaceVpCaption');
+  if (captionEl) {
+    captionEl.classList.toggle('narration-active', isPlaying);
+  }
+
+  const activeTrack = (combinedTracks && combinedTrackIndex >= 0 && combinedTrackIndex < combinedTracks.length)
+    ? combinedTracks[combinedTrackIndex]
+    : null;
+  const activeSrc = activeTrack ? (activeTrack.src || '') : '';
+  const activeFname = activeSrc.split('/').pop().split('?')[0];
+
+  const playSvg = `<svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+  const pauseSvg = `<svg class="pause-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+
+  document.querySelectorAll('.audio-play-btn').forEach(btn => {
+    const onclickStr = btn.getAttribute('onclick') || '';
+
+    // For playAudio('filename.mp3', this)
+    if (onclickStr.includes('playAudio')) {
+      const match = onclickStr.match(/playAudio\(['"]([^'"]+)['"]/);
+      if (match) {
+        const btnSrc = match[1];
+        const btnFname = btnSrc.split('/').pop().split('?')[0];
+        if (activeFname && (activeFname === btnFname || activeSrc.includes(btnSrc)) && isPlaying) {
+          btn.innerHTML = pauseSvg;
+          btn.classList.add('playing');
+          btn.setAttribute('title', 'Pause narration (Space)');
+        } else {
+          btn.innerHTML = playSvg;
+          btn.classList.remove('playing');
+          btn.setAttribute('title', 'Play narration (Space)');
+        }
+      }
+    }
+
+    // For playQuestionAudio(this) or #playQuestionBtn
+    if (onclickStr.includes('playQuestionAudio') || btn.id === 'playQuestionBtn') {
+      const currentQ = currentDayData && currentDayData.practiceQuestions && currentDayData.practiceQuestions[currentQuestionIndex];
+      const matchesQ = activeTrack && activeTrack.type === 'question' && (
+        activeTrack.qId === (currentQ && currentQ.id) ||
+        findQuestionIdxById(activeTrack.qId) === currentQuestionIndex
+      );
+      if (matchesQ && isPlaying) {
+        btn.innerHTML = pauseSvg;
+        btn.classList.add('playing');
+        btn.setAttribute('title', 'Pause question audio (Space)');
+      } else {
+        btn.innerHTML = playSvg;
+        btn.classList.remove('playing');
+        btn.setAttribute('title', 'Play question audio (Space)');
+      }
+    }
+
+    // For playSolutionAudioFromBtn(this) or #playSolBtn
+    if (onclickStr.includes('playSolutionAudioFromBtn') || btn.id === 'playSolBtn') {
+      const currentQ = currentDayData && currentDayData.practiceQuestions && currentDayData.practiceQuestions[currentQuestionIndex];
+      const matchesSol = activeTrack && activeTrack.type === 'solution' && (
+        activeTrack.qId === (currentQ && currentQ.id) ||
+        findQuestionIdxById(activeTrack.qId) === currentQuestionIndex
+      );
+      if (matchesSol && isPlaying) {
+        btn.innerHTML = pauseSvg;
+        btn.classList.add('playing');
+        btn.setAttribute('title', 'Pause solution walkthrough (Space)');
+      } else {
+        btn.innerHTML = playSvg;
+        btn.classList.remove('playing');
+        btn.setAttribute('title', 'Play solution walkthrough (Space)');
+      }
+    }
+  });
 }
 
 function toggleVolumePopover(event) {
@@ -2144,6 +3435,9 @@ function setPlaybackVolume(val) {
   const label = document.getElementById('volumeValue');
   if (label) label.textContent = `${Math.round(val)}%`;
   if (currentPlayingAudio) currentPlayingAudio.volume = currentPlaybackVolume;
+  // The master timeline keeps its own audio element; without this the volume
+  // control is a no-op for the whole lesson.
+  if (activeCombinedAudio) activeCombinedAudio.volume = currentPlaybackVolume;
 }
 
 function selectSpeedOption(rate, label) {
@@ -2161,6 +3455,21 @@ function selectSpeedOption(rate, label) {
   document.getElementById('speedControlBtn')?.classList.remove('active');
 
   if (currentPlayingAudio) currentPlayingAudio.playbackRate = rate;
+  if (activeCombinedAudio) {
+    activeCombinedAudio.playbackRate = rate;
+    // Narration timings are authored at 1x, so the visual and typewriter layers
+    // have to be re-derived from the audio's current position at the new rate.
+    const track = combinedTracks[combinedTrackIndex];
+    if (track && activeCombinedAudio.currentTime > 0) {
+      if (track.type === 'solution' && track.qId) {
+        const solMap = PYTHON_QUESTION_SOLUTIONS[currentDayId] || PYTHON_QUESTION_SOLUTIONS['pyDay01'];
+        const solEntry = solMap && solMap[track.qId];
+        if (solEntry) startAudioSyncedTypewriter(activeCombinedAudio, solEntry);
+      } else if (track) {
+        dispatchPythonTrackVisualHighlights(track, activeCombinedAudio.currentTime, true, true);
+      }
+    }
+  }
 }
 
 // ── Practice Questions & CodeMirror Workbench ──────────────────
@@ -2348,6 +3657,12 @@ function loadPracticeQuestion(idx) {
   if (!currentDayData || !currentDayData.practiceQuestions || !currentDayData.practiceQuestions[idx]) return;
   const q = currentDayData.practiceQuestions[idx];
 
+  // Keep the active index in step with the panel. The master timeline advances
+  // the panel via this function, and grading, the picker highlight and the
+  // audio buttons all read currentQuestionIndex — without this they would act
+  // on whichever question was last clicked rather than the one on screen.
+  currentQuestionIndex = idx;
+
   // Update prompt
   const promptEl = document.getElementById('questionPrompt');
   if (promptEl) promptEl.innerHTML = q.prompt;
@@ -2356,26 +3671,9 @@ function loadPracticeQuestion(idx) {
   const counter = document.getElementById('qCounter');
   if (counter) counter.textContent = `Question-${String(q.id).padStart(2, '0')}`;
 
-  // Update editor with saved user code or starterCode (never preload default boilerplate)
-  const saved = getSavedQuestionCode(currentDayId, q.id);
-  let initialCode = '';
-  const isStaleBoilerplate = saved && (
-    saved.startsWith('# Q') ||
-    saved.startsWith('# Write your') ||
-    saved.includes('# TODO:') ||
-    saved.includes('Loading question...')
-  );
-
-  if (saved && !isStaleBoilerplate) {
-    initialCode = saved;
-  } else if (q.starterCode && q.starterCode.trim() !== '') {
-    initialCode = q.starterCode;
-  } else {
-    initialCode = '';
-  }
-
+  // Keep code cell completely blank initially (SQL Flagship standard)
   if (mainEditor) {
-    mainEditor.setValue(initialCode);
+    mainEditor.setValue('');
     mainEditor.clearHistory();
   }
 
@@ -2394,14 +3692,17 @@ function peekSolution() {
   const q = currentDayData && currentDayData.practiceQuestions && currentDayData.practiceQuestions[currentQuestionIndex];
   if (!q || !q.ref || !mainEditor) return;
   mainEditor.setValue(q.ref);
+  if (q.explanation) {
+    const output = document.getElementById('mainOutput');
+    if (output) output.innerHTML = '<div class="output-label">Solution reasoning</div><p>' + q.explanation + '</p>';
+  }
 }
 
 function resetCode() {
-  const q = currentDayData && currentDayData.practiceQuestions && currentDayData.practiceQuestions[currentQuestionIndex];
-  if (!mainEditor) return;
-  const starter = (q && q.starterCode && q.starterCode.trim() !== '') ? q.starterCode : '';
-  mainEditor.setValue(starter);
-  mainEditor.clearHistory();
+  if (mainEditor) {
+    mainEditor.setValue('');
+    mainEditor.clearHistory();
+  }
   clearOutput();
 }
 
@@ -2419,7 +3720,7 @@ function clearOutput() {
   }
 }
 
-async function runCurrentCode() {
+async function runCurrentCode(saveDraft = true) {
   if (!pyodideReady) {
     renderOutput({ stdout: '', stderr: '' }, document.getElementById('mainOutput'), false, 'Python engine still loading… please wait a moment.');
     return;
@@ -2436,12 +3737,14 @@ async function runCurrentCode() {
     return;
   }
 
-  // Save draft
-  saveQuestionCode(currentDayId, q.id, code);
+  // Save draft for user runs
+  if (saveDraft) {
+    saveQuestionCode(currentDayId, q.id, code);
+  }
 
   // Execute in Pyodide
   const start = performance.now();
-  const out = await executePython(code);
+  const out = await executePython(code, q);
   const duration = Math.round(performance.now() - start);
 
   // Grade submission if grader available
@@ -2467,7 +3770,7 @@ async function runCurrentCode() {
   }
 }
 
-async function executePython(code) {
+async function executePython(code, question = null) {
   if (!pyodide) return { stdout: '', stderr: 'Python runtime is not loaded yet. Please wait a moment.', error: true };
   if (!code || code.trim() === '') {
     return { stdout: '', stderr: 'Editor is empty. Write your Python code above and click Run.', error: true };
@@ -2478,6 +3781,12 @@ async function executePython(code) {
   let error = false;
 
   try {
+    // Independent assessments cannot reuse a previous submission's outputs.
+    if (question?.validation?.freshResults) {
+      for (const { name } of question.validation.checkVars || []) {
+        if (pyodide.globals.has(name)) pyodide.globals.delete(name);
+      }
+    }
     pyodide.globals.set('__student_code__', code);
     await pyodide.runPythonAsync(`
 import sys, io as _io, ast as _ast
@@ -2644,7 +3953,7 @@ function loadTestQuestion(idx) {
   // CodeMirror instance for test
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   const saved = testAnswers[q.id];
-  const initialCode = saved ? saved.code : (q.starterCode || '');
+  const initialCode = saved ? saved.code : '';
 
   if (!testEditor) {
     const wrap = document.getElementById('testEditorWrap');
@@ -2673,6 +3982,7 @@ function loadTestQuestion(idx) {
   if (sidebar) {
     const btns = sidebar.querySelectorAll('.test-q-btn');
     btns.forEach((b, i) => b.classList.toggle('active', i === idx));
+    if (currentDayData.designVersion) btns[idx]?.scrollIntoView({ block: 'nearest' });
   }
 
   // Clear test output
@@ -2689,7 +3999,7 @@ async function runTestCode() {
   const testOut = document.getElementById('testOutput');
 
   const start = performance.now();
-  const out = await executePython(code);
+  const out = await executePython(code, q);
   const duration = Math.round(performance.now() - start);
 
   let passed = false;
@@ -2720,7 +4030,10 @@ async function runTestCode() {
 }
 
 function clearTestEditor() {
-  if (testEditor) testEditor.setValue('');
+  if (testEditor) {
+    testEditor.setValue('');
+    testEditor.clearHistory();
+  }
 }
 
 function updateTestProgress() {
@@ -3008,6 +4321,7 @@ window.toggleLeftPanel = toggleLeftPanel;
 window.toggleRightPanel = toggleRightPanel;
 window.resetSplitScreen = resetSplitScreen;
 window.setMobileTab = setMobileTab;
+window.setupTimelineDragging = setupTimelineDragging;
 
 // Start on DOM ready
 if (document.readyState === 'loading') {
@@ -3042,3 +4356,46 @@ if (document.readyState === 'loading') {
 } else {
   initMobileThemeToggle();
 }
+
+// ── OTT Media Player Global Keyboard Shortcuts (Space / K / J / L / Arrows / [ / ] / C) ──
+document.addEventListener('keydown', (e) => {
+  const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+  if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select' || (document.activeElement && document.activeElement.isContentEditable)) {
+    return;
+  }
+  if (document.activeElement && document.activeElement.closest && document.activeElement.closest('.monaco-editor, .CodeMirror, #editor')) {
+    return;
+  }
+
+  if (e.code === 'Space' || e.code === 'KeyK') {
+    e.preventDefault();
+    toggleCombinedPlayback();
+  } else if (e.code === 'ArrowLeft' || e.code === 'KeyJ') {
+    e.preventDefault();
+    const target = Math.max(0, currentCombinedTime - 5);
+    seekCombinedPlayback(target, isCombinedPlaying);
+  } else if (e.code === 'ArrowRight' || e.code === 'KeyL') {
+    e.preventDefault();
+    const target = Math.min(totalCombinedDuration, currentCombinedTime + 5);
+    seekCombinedPlayback(target, isCombinedPlaying);
+  } else if (e.key === '[' || e.code === 'BracketLeft') {
+    e.preventDefault();
+    skipCombined(-10);
+  } else if (e.key === ']' || e.code === 'BracketRight') {
+    e.preventDefault();
+    skipCombined(10);
+  } else if (e.key === 'c' || e.key === 'C') {
+    e.preventDefault();
+    const captionBox = document.getElementById('workspaceVpCaption');
+    if (captionBox) {
+      captionBox.style.display = captionBox.style.display === 'none' ? 'block' : 'none';
+    }
+  }
+});
+
+// Auto-pause when browser tab is hidden (100% SQL Day 02 parity)
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && isCombinedPlaying) {
+    pauseCombinedPlayback();
+  }
+});

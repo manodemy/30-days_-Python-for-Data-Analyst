@@ -1,0 +1,1481 @@
+{
+  "day": 1,
+  "model": "tiny.en",
+  "lecture": {
+    "New_PyDay01Audio01.mp3": {
+      "src": "Day01/New_PyDay01Audio01.mp3",
+      "duration": 62.52,
+      "sentences": [
+        {
+          "text": "Welcome to Day 01 of Python for Data Analysis!",
+          "start": 0.0,
+          "end": 3.46
+        },
+        {
+          "text": "Python is a high-level, interpreted programming language known for its clean syntax and readability.",
+          "start": 4.14,
+          "end": 9.92
+        },
+        {
+          "text": "Created by Guido van Rossum in 1991, Python emphasizes code simplicity, enabling developers and analysts to express complex logic in fewer lines of code than traditional languages like C++ or Java.",
+          "start": 10.74,
+          "end": 24.46
+        },
+        {
+          "text": "Why Data Analysts Need Python?",
+          "start": 24.46,
+          "end": 26.42
+        },
+        {
+          "text": "For data analyst, Python gives you five indispensable superpowers: first, loading and transforming massive datasets of 10 million rows or more where Excel freezes.",
+          "start": 26.96,
+          "end": 37.84
+        },
+        {
+          "text": "second, building end-to-end automated ETL pipelines that run overnight without manual effort.",
+          "start": 38.44,
+          "end": 44.34
+        },
+        {
+          "text": "third, executing advanced statistical modeling, grouping, and regex data cleaning with Pandas and NumPy.",
+          "start": 44.76,
+          "end": 51.79
+        },
+        {
+          "text": "fourth, rendering interactive dashboards and charts with Seaborn and Plotly fifth, acting as your direct gateway into machine learning and modern generative AI.",
+          "start": 52.4,
+          "end": 62.18
+        }
+      ],
+      "cues": [
+        {
+          "atSec": 0.0,
+          "selector": "#headingWhyPython",
+          "quote": "welcome to day 01"
+        },
+        {
+          "atSec": 23.84,
+          "selector": ".py-sp-showcase .py-sp-header",
+          "quote": "why data analysts need python"
+        },
+        {
+          "atSec": 32.04,
+          "selector": ".py-sp-card.sp-blue",
+          "quote": "first"
+        },
+        {
+          "atSec": 38.14,
+          "selector": ".py-sp-card.sp-green",
+          "quote": "second"
+        },
+        {
+          "atSec": 44.46,
+          "selector": ".py-sp-card.sp-amber",
+          "quote": "third"
+        },
+        {
+          "atSec": 52.1,
+          "selector": ".py-sp-card.sp-purple",
+          "quote": "fourth"
+        },
+        {
+          "atSec": 56.7,
+          "selector": ".py-sp-ai-banner",
+          "quote": "fifth"
+        }
+      ],
+      "matchRatio": 0.904,
+      "asrCoverage": "122/132"
+    },
+    "New_PyDay01Audio02.mp3": {
+      "src": "Day01/New_PyDay01Audio02.mp3",
+      "duration": 46.25,
+      "sentences": [
+        {
+          "text": "Now, Let's examine the Analytics Tool Matrix: SQL versus Excel versus Python.",
+          "start": 0.0,
+          "end": 5.56
+        },
+        {
+          "text": "SQL is your enterprise database workhorse, lightning-fast at filtering, joining, and aggregating billions of records directly inside the warehouse.",
+          "start": 6.26,
+          "end": 15.3
+        },
+        {
+          "text": "Excel is your agile scratchpad for ad-hoc exploration, quick formulas, and executive summaries under 1 million rows.",
+          "start": 15.98,
+          "end": 23.5
+        },
+        {
+          "text": "Python is your automation engine and analytical powerhouse, excelling at complex multi-step transformations, statistical algorithms, API integrations, and predictive modeling.",
+          "start": 23.86,
+          "end": 35.04
+        },
+        {
+          "text": "The highest-paid modern data analysts don't pick just one; they extract with SQL, engineer and analyze with Python, and communicate insights with executive dashboards.",
+          "start": 35.64,
+          "end": 45.78
+        }
+      ],
+      "cues": [
+        {
+          "atSec": 0.0,
+          "selector": "#day01ToolMatrixSection",
+          "quote": "let's examine the analytics tool matrix"
+        },
+        {
+          "atSec": 6.67,
+          "selector": ".py-matrix-table tbody tr:nth-child(1)",
+          "quote": "enterprise"
+        },
+        {
+          "atSec": 16.69,
+          "selector": ".py-matrix-table tbody tr:nth-child(2)",
+          "quote": "scratchpad"
+        },
+        {
+          "atSec": 23.51,
+          "selector": ".py-matrix-table tbody tr:nth-child(3)",
+          "quote": "python"
+        },
+        {
+          "atSec": 36.65,
+          "selector": ".py-matrix-table",
+          "quote": "analysts"
+        }
+      ],
+      "matchRatio": 0.936,
+      "asrCoverage": "88/92"
+    },
+    "New_PyDay01Audio03.mp3": {
+      "src": "Day01/New_PyDay01Audio03.mp3",
+      "duration": 56.26,
+      "sentences": [
+        {
+          "text": "In Python, every value is an object living in your computer's memory, and every object has an identity: its memory address.",
+          "start": 0.0,
+          "end": 8.04
+        },
+        {
+          "text": "The big question is whether that object can be changed after it is created.",
+          "start": 8.58,
+          "end": 12.42
+        },
+        {
+          "text": "The answer splits Python's data types into two families: Mutable objects and Immutable objects.",
+          "start": 12.88,
+          "end": 18.7
+        },
+        {
+          "text": "Mutable objects, such as lists, dictionaries, and sets, can be modified in-place without changing their memory address.",
+          "start": 19.22,
+          "end": 26.74
+        },
+        {
+          "text": "Immutable objects, including integers, floats, strings, and tuples, can never be changed once created.",
+          "start": 26.74,
+          "end": 34.3
+        },
+        {
+          "text": "Any modification generates a brand new object at a new memory address.",
+          "start": 34.84,
+          "end": 38.9
+        },
+        {
+          "text": "Watch out for the dangerous Pitfall: writing clean data equals raw data does not create a copy, it creates an alias pointing to the exact same memory!",
+          "start": 39.42,
+          "end": 48.42
+        },
+        {
+          "text": "Modifying clean data will silently corrupt your raw source.",
+          "start": 49.08,
+          "end": 52.08
+        },
+        {
+          "text": "Always use dot copy to safeguard your analytical pipelines.",
+          "start": 52.56,
+          "end": 55.72
+        }
+      ],
+      "cues": [
+        {
+          "atSec": 0.0,
+          "selector": "#headingMutability",
+          "quote": "every value is an object"
+        },
+        {
+          "atSec": 18.87,
+          "selector": ".py-mut-panel.panel-mutable",
+          "quote": "mutable"
+        },
+        {
+          "atSec": 26.39,
+          "selector": ".py-mut-panel.panel-immutable",
+          "quote": "immutable"
+        },
+        {
+          "atSec": 40.17,
+          "selector": ".py-analyst-trap-card",
+          "quote": "pitfall"
+        }
+      ],
+      "matchRatio": 0.982,
+      "asrCoverage": "135/137"
+    },
+    "New_PyDay01Audio04.mp3": {
+      "src": "Day01/New_PyDay01Audio04.mp3",
+      "duration": 83.9,
+      "sentences": [
+        {
+          "text": "Here is the Master Data Types Reference matrix for data analysts.",
+          "start": 0.0,
+          "end": 3.66
+        },
+        {
+          "text": "The table is organised by category, exactly as it appears on screen.",
+          "start": 4.32,
+          "end": 8.46
+        },
+        {
+          "text": "Starting with Numeric types: Integer, written int, is an arbitrary-precision whole number that never overflows.",
+          "start": 9.18,
+          "end": 15.96
+        },
+        {
+          "text": "Float is an IEEE-754 double-precision decimal, ideal for currency and averages.",
+          "start": 16.44,
+          "end": 23.2
+        },
+        {
+          "text": "Complex stores real and imaginary parts for scientific work.",
+          "start": 23.88,
+          "end": 27.52
+        },
+        {
+          "text": "Moving to Text: String, written str, is an immutable Unicode sequence and the workhorse for categorical columns.",
+          "start": 27.52,
+          "end": 35.26
+        },
+        {
+          "text": "Boolean, written bool, is simply True or False, and it controls every analytical branch you write.",
+          "start": 36.14,
+          "end": 42.3
+        },
+        {
+          "text": "The Sequence family holds ordered collections: List is mutable and perfect for a column of rows, Tuple is immutable and protects fixed records, and Range generates lazy integer sequences for memory-efficient iteration.",
+          "start": 42.74,
+          "end": 56.5
+        },
+        {
+          "text": "Mapping means Dictionary, written dict, which stores key-value pairs and gives you lightning-fast O of 1 lookups using a hash table.",
+          "start": 57.08,
+          "end": 65.36
+        },
+        {
+          "text": "Set types eliminate duplicates automatically and power fast union and intersection operations; Frozen Set is the immutable, hashable version safe to use as a dictionary key.",
+          "start": 65.9,
+          "end": 77.18
+        },
+        {
+          "text": "And finally, NoneType is the singleton that represents missing or null data, just like SQL NULL.",
+          "start": 77.6,
+          "end": 83.6
+        }
+      ],
+      "cues": [
+        {
+          "atSec": 0.0,
+          "selector": "#headingDataTypes",
+          "quote": "master data types reference"
+        },
+        {
+          "atSec": 10.5,
+          "selector": ".py-master-ref-table tbody tr:nth-child(1)",
+          "quote": "integer"
+        },
+        {
+          "atSec": 16.14,
+          "selector": ".py-master-ref-table tbody tr:nth-child(2)",
+          "quote": "float"
+        },
+        {
+          "atSec": 23.58,
+          "selector": ".py-master-ref-table tbody tr:nth-child(3)",
+          "quote": "complex"
+        },
+        {
+          "atSec": 28.94,
+          "selector": ".py-master-ref-table tbody tr:nth-child(4)",
+          "quote": "string"
+        },
+        {
+          "atSec": 35.84,
+          "selector": ".py-master-ref-table tbody tr:nth-child(5)",
+          "quote": "boolean"
+        },
+        {
+          "atSec": 45.28,
+          "selector": ".py-master-ref-table tbody tr:nth-child(6)",
+          "quote": "list"
+        },
+        {
+          "atSec": 48.79,
+          "selector": ".py-master-ref-table tbody tr:nth-child(7)",
+          "quote": "tuple"
+        },
+        {
+          "atSec": 52.28,
+          "selector": ".py-master-ref-table tbody tr:nth-child(8)",
+          "quote": "range"
+        },
+        {
+          "atSec": 57.28,
+          "selector": ".py-master-ref-table tbody tr:nth-child(9)",
+          "quote": "dictionary"
+        },
+        {
+          "atSec": 65.6,
+          "selector": ".py-master-ref-table tbody tr:nth-child(10)",
+          "quote": "set"
+        },
+        {
+          "atSec": 71.8,
+          "selector": ".py-master-ref-table tbody tr:nth-child(11)",
+          "quote": "frozen"
+        },
+        {
+          "atSec": 78.27,
+          "selector": ".py-master-ref-table tbody tr:nth-child(12)",
+          "quote": "nonetype"
+        }
+      ],
+      "matchRatio": 0.913,
+      "asrCoverage": "174/186"
+    },
+    "New_PyDay01Audio05.mp3": {
+      "src": "Day01/New_PyDay01Audio05.mp3",
+      "duration": 50.06,
+      "sentences": [
+        {
+          "text": "Let's trace how Python manages memory under the hood through our runtime execution pipeline.",
+          "start": 0.0,
+          "end": 5.26
+        },
+        {
+          "text": "When you run Python code, Python first allocates object values inside heap memory.",
+          "start": 5.76,
+          "end": 10.78
+        },
+        {
+          "text": "Variables are not boxes that hold values; they are lightweight pointers or name tags bound to memory addresses.",
+          "start": 11.34,
+          "end": 17.92
+        },
+        {
+          "text": "When two variables are assigned the same value, they point to the exact same object in RAM.",
+          "start": 18.5,
+          "end": 23.78
+        },
+        {
+          "text": "Reassigning a variable does not overwrite the old data; it simply repoints the tag to a new memory location.",
+          "start": 24.38,
+          "end": 30.7
+        },
+        {
+          "text": "To test whether two variables share the exact same memory address, use the is keyword, which checks object identity via memory IDs, compared to double equals, which checks value equality.",
+          "start": 31.16,
+          "end": 43.2
+        },
+        {
+          "text": "Python automatically frees unused memory using reference counting and a cyclic garbage collector.",
+          "start": 44.06,
+          "end": 49.6
+        }
+      ],
+      "cues": [
+        {
+          "atSec": 0.0,
+          "selector": "#headingMemory",
+          "quote": "let's trace how python manages memory"
+        },
+        {
+          "atSec": 6.22,
+          "selector": ".vnode-code",
+          "quote": "python first allocates object values inside heap memory"
+        },
+        {
+          "atSec": 12.76,
+          "selector": ".vnode-objects",
+          "quote": "they are lightweight pointers or name tags bound to memory addresses"
+        },
+        {
+          "atSec": 23.22,
+          "selector": ".vnode-pointers",
+          "quote": "reassigning a variable does not overwrite the old data"
+        },
+        {
+          "atSec": 34.02,
+          "selector": ".vnode-mutable",
+          "quote": "use the is keyword which checks object identity"
+        },
+        {
+          "atSec": 42.34,
+          "selector": ".vnode-mgmt",
+          "quote": "python automatically frees unused memory using reference counting"
+        }
+      ],
+      "matchRatio": 0.988,
+      "asrCoverage": "123/124"
+    }
+  },
+  "solutions": {
+    "1": {
+      "src": "Day01/New_PyDay01Question01sol.mp3",
+      "code": "print(\"Hello, Python for Data Analysis!\")",
+      "duration": 11.45,
+      "segments": [
+        {
+          "text": "print(",
+          "startAt": 2.06,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "\"Hello, Python for Data Analysis!\")",
+          "startAt": 3.86,
+          "anchored": true,
+          "charInterval": 34
+        }
+      ],
+      "scrollAt": 8.53,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.04
+        },
+        {
+          "text": "We call the print function and pass the string Hello, Python for Data Analysis inside quotation marks.",
+          "start": 1.52,
+          "end": 7.56
+        },
+        {
+          "text": "When run, Python displays this text in the terminal.",
+          "start": 8.08,
+          "end": 11.06
+        }
+      ],
+      "matchRatio": 1.0,
+      "asrCoverage": "30/30"
+    },
+    "2": {
+      "src": "Day01/New_PyDay01Question02sol.mp3",
+      "code": "print(150 + 250)",
+      "duration": 12.77,
+      "segments": [
+        {
+          "text": "print(150 ",
+          "startAt": 2.14,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "+ 250)",
+          "startAt": 4.48,
+          "anchored": true,
+          "charInterval": 58
+        }
+      ],
+      "scrollAt": 11.49,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.06
+        },
+        {
+          "text": "We write print opening parenthesis, 150 plus 250, closing parenthesis.",
+          "start": 1.56,
+          "end": 7.62
+        },
+        {
+          "text": "Python calculates the arithmetic expression first and outputs 400.",
+          "start": 8.14,
+          "end": 12.36
+        }
+      ],
+      "matchRatio": 1.0,
+      "asrCoverage": "23/23"
+    },
+    "3": {
+      "src": "Day01/New_PyDay01Question03sol.mp3",
+      "code": "print(\"Total Records:\", 500)",
+      "duration": 11.74,
+      "segments": [
+        {
+          "text": "print(\"Total Records:\"",
+          "startAt": 3.08,
+          "anchored": true,
+          "charInterval": 60
+        },
+        {
+          "text": ", 500)",
+          "startAt": 4.4,
+          "anchored": true,
+          "charInterval": 58
+        }
+      ],
+      "scrollAt": 5.35,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.04
+        },
+        {
+          "text": "We pass two arguments into print separated by a comma: the string label 'Total Records:' and the number 500.",
+          "start": 1.54,
+          "end": 8.5
+        },
+        {
+          "text": "Python formats them separated by a space.",
+          "start": 9.14,
+          "end": 11.32
+        }
+      ],
+      "matchRatio": 0.9,
+      "asrCoverage": "27/30"
+    },
+    "4": {
+      "src": "Day01/New_PyDay01Question04sol.mp3",
+      "code": "employee_count = 150\nprint(\"Employee Count:\", employee_count)",
+      "duration": 11.93,
+      "segments": [
+        {
+          "text": "employee_count = 150\n",
+          "startAt": 2.06,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "print(\"Employee Count:\", employee_count)",
+          "startAt": 5.04,
+          "anchored": true,
+          "charInterval": 25
+        }
+      ],
+      "scrollAt": 10.63,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.06
+        },
+        {
+          "text": "We assign employee count equals 150, then call print passing the label and variable.",
+          "start": 1.56,
+          "end": 7.04
+        },
+        {
+          "text": "Python looks up the variable's integer pointer and displays 150.",
+          "start": 7.7,
+          "end": 11.48
+        }
+      ],
+      "matchRatio": 0.964,
+      "asrCoverage": "27/28"
+    },
+    "5": {
+      "src": "Day01/New_PyDay01Question05sol.mp3",
+      "code": "average_salary = 75450.50\nprint(\"Average Salary:\", average_salary)",
+      "duration": 14.5,
+      "segments": [
+        {
+          "text": "average_salary = 75450.50\n",
+          "startAt": 2.08,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "print(\"Average Salary:\", average_salary)",
+          "startAt": 7.3,
+          "anchored": true,
+          "charInterval": 25
+        }
+      ],
+      "scrollAt": 8.9,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.06
+        },
+        {
+          "text": "We assign average salary equals 75450.50, then print it with its label.",
+          "start": 1.56,
+          "end": 8.34
+        },
+        {
+          "text": "Python stores decimal numbers as 64-bit IEEE double-precision floats.",
+          "start": 8.86,
+          "end": 14.06
+        }
+      ],
+      "matchRatio": 0.815,
+      "asrCoverage": "22/25"
+    },
+    "6": {
+      "src": "Day01/New_PyDay01Question06sol.mp3",
+      "code": "company_name = \"Manodemy\"\nprint(\"Company Name:\", company_name)",
+      "duration": 10.82,
+      "segments": [
+        {
+          "text": "company_name = \"Manodemy\"\n",
+          "startAt": 2.06,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "print(\"Company Name:\", company_name)",
+          "startAt": 5.9,
+          "anchored": true,
+          "charInterval": 25
+        }
+      ],
+      "scrollAt": 7.4,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.06
+        },
+        {
+          "text": "We assign company name equals 'Manodemy' in quotes, then print it with its label.",
+          "start": 1.56,
+          "end": 6.9
+        },
+        {
+          "text": "Python creates an immutable string object in memory.",
+          "start": 7.48,
+          "end": 10.44
+        }
+      ],
+      "matchRatio": 0.923,
+      "asrCoverage": "24/26"
+    },
+    "7": {
+      "src": "Day01/New_PyDay01Question07sol.mp3",
+      "code": "is_full_time = True\nprint(\"Full Time Status:\", is_full_time)",
+      "duration": 9.43,
+      "segments": [
+        {
+          "text": "is_full_time = True\n",
+          "startAt": 2.0,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "print(\"Full Time Status:\", ",
+          "startAt": 5.08,
+          "anchored": true,
+          "charInterval": 40
+        },
+        {
+          "text": "is_full_time)",
+          "startAt": 6.16,
+          "anchored": false,
+          "charInterval": 25
+        }
+      ],
+      "scrollAt": 7.08,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.04
+        },
+        {
+          "text": "We write is full time equals True with a capital T, and print it.",
+          "start": 1.56,
+          "end": 5.82
+        },
+        {
+          "text": "Python booleans are singletons used for conditional logic.",
+          "start": 6.02,
+          "end": 9.04
+        }
+      ],
+      "matchRatio": 0.923,
+      "asrCoverage": "24/26"
+    },
+    "8": {
+      "src": "Day01/New_PyDay01Question08sol.mp3",
+      "code": "sales_figures = [1200, 1450, 1800]\nprint(\"Sales Figures:\", sales_figures)",
+      "duration": 15.46,
+      "segments": [
+        {
+          "text": "sales_figures = [1200, 1450",
+          "startAt": 1.98,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": ", 1800]\n",
+          "startAt": 6.69,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "print(\"Sales Figures:\", sales_figures)",
+          "startAt": 13.88,
+          "anchored": true,
+          "charInterval": 25
+        }
+      ],
+      "scrollAt": 15.21,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.08
+        },
+        {
+          "text": "We write sales figures equals opening bracket, 1200, 1450, 1800, closing bracket.",
+          "start": 1.6,
+          "end": 8.72
+        },
+        {
+          "text": "Lists allow you to add, remove, and modify elements in place.",
+          "start": 9.01,
+          "end": 13.06
+        },
+        {
+          "text": "Then we print the list with its label.",
+          "start": 13.46,
+          "end": 15.08
+        }
+      ],
+      "matchRatio": 0.849,
+      "asrCoverage": "31/35"
+    },
+    "9": {
+      "src": "Day01/New_PyDay01Question09sol.mp3",
+      "code": "server_location = (\"Mumbai\", 19.07, 72.87)\nprint(\"Server Location:\", server_location)",
+      "duration": 16.34,
+      "segments": [
+        {
+          "text": "server_location = (\"Mumbai\"",
+          "startAt": 2.18,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": ", 19.07, 72.87)\n",
+          "startAt": 7.05,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "print(\"Server Location:\", server_location)",
+          "startAt": 14.76,
+          "anchored": true,
+          "charInterval": 25
+        }
+      ],
+      "scrollAt": 16.09,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.06
+        },
+        {
+          "text": "We define server location equals parentheses containing 'Mumbai', 19.07, and 72.87.",
+          "start": 1.54,
+          "end": 8.95
+        },
+        {
+          "text": "Tuples protect coordinates and dimensions from accidental modification.",
+          "start": 9.68,
+          "end": 13.84
+        },
+        {
+          "text": "Then we print the tuple with its label.",
+          "start": 14.38,
+          "end": 15.98
+        }
+      ],
+      "matchRatio": 0.875,
+      "asrCoverage": "28/31"
+    },
+    "10": {
+      "src": "Day01/New_PyDay01Question10sol.mp3",
+      "code": "customer_profile = {\"name\": \"Aarav\", \"orders\": 5}\nprint(\"Customer Profile:\", customer_profile)",
+      "duration": 15.29,
+      "segments": [
+        {
+          "text": "customer_profile = {\"name\"",
+          "startAt": 2.04,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": ": \"Aarav\", \"orders\": 5}\n",
+          "startAt": 5.56,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "print(\"Customer Profile:\", ",
+          "startAt": 13.42,
+          "anchored": true,
+          "charInterval": 40
+        },
+        {
+          "text": "customer_profile)",
+          "startAt": 14.5,
+          "anchored": false,
+          "charInterval": 25
+        }
+      ],
+      "scrollAt": 15.04,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.08
+        },
+        {
+          "text": "We assign customer profile equals curly braces, key 'name' colon 'Aarav', comma, key 'orders' colon 5.",
+          "start": 1.56,
+          "end": 9.11
+        },
+        {
+          "text": "Dictionaries provide fast O of 1 lookups by key.",
+          "start": 9.48,
+          "end": 12.82
+        },
+        {
+          "text": "Then we print the dictionary with its label.",
+          "start": 13.02,
+          "end": 14.92
+        }
+      ],
+      "matchRatio": 0.865,
+      "asrCoverage": "32/37"
+    },
+    "11": {
+      "src": "Day01/New_PyDay01Question11sol.mp3",
+      "code": "unique_tags = {\"python\", \"sql\", \"analytics\"}\nprint(\"Unique Tags:\", unique_tags)",
+      "duration": 13.8,
+      "segments": [
+        {
+          "text": "unique_tags = {\"python\", \"sql\"",
+          "startAt": 2.1,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": ", \"analytics\"}\n",
+          "startAt": 8.04,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "print(\"Unique Tags:\", unique_tags)",
+          "startAt": 12.1,
+          "anchored": true,
+          "charInterval": 25
+        }
+      ],
+      "scrollAt": 13.55,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.08
+        },
+        {
+          "text": "We assign unique tags equals curly braces containing 'python', 'sql', and 'analytics'.",
+          "start": 1.56,
+          "end": 8.04
+        },
+        {
+          "text": "Sets automatically discard duplicate entries.",
+          "start": 8.68,
+          "end": 11.22
+        },
+        {
+          "text": "Then we print the set with its label.",
+          "start": 11.72,
+          "end": 13.42
+        }
+      ],
+      "matchRatio": 0.897,
+      "asrCoverage": "26/29"
+    },
+    "12": {
+      "src": "Day01/New_PyDay01Question12sol.mp3",
+      "code": "bonus_amount = None\nprint(\"Bonus Amount:\", bonus_amount)",
+      "duration": 11.28,
+      "segments": [
+        {
+          "text": "bonus_amount = None\n",
+          "startAt": 1.98,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "print(\"Bonus Amount:\", bonus_amount)",
+          "startAt": 5.5,
+          "anchored": true,
+          "charInterval": 25
+        }
+      ],
+      "scrollAt": 7.0,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.04
+        },
+        {
+          "text": "We write bonus amount equals None with a capital N.",
+          "start": 1.56,
+          "end": 4.86
+        },
+        {
+          "text": "Then we print it with its label.",
+          "start": 5.1,
+          "end": 6.5
+        },
+        {
+          "text": "None is Python's standard singleton for representing the absence of a value.",
+          "start": 6.9,
+          "end": 10.92
+        }
+      ],
+      "matchRatio": 0.97,
+      "asrCoverage": "32/33"
+    },
+    "13": {
+      "src": "Day01/New_PyDay01Question13sol.mp3",
+      "code": "from collections import defaultdict\n\ntransactions = [\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.1\", \"amount\": 120.50},\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.1\", \"amount\": 340.00},\n    {\"user_id\": \"U02\", \"device\": \"desktop\", \"ip\": \"192.168.1.5\", \"amount\": 85.75},\n    {\"user_id\": \"U01\", \"device\": \"mobile\", \"ip\": \"10.0.0.2\", \"amount\": 500.00},\n]\n\nfraud_map = defaultdict(float)\nfor tx in transactions:\n    key = (tx[\"user_id\"], tx[\"device\"], tx[\"ip\"])\n    fraud_map[key] += tx[\"amount\"]\nprint(dict(fraud_map))",
+      "duration": 67.01,
+      "segments": [
+        {
+          "text": "from collections import defaultdict\n\n",
+          "startAt": 3.08,
+          "anchored": true,
+          "charInterval": 75
+        },
+        {
+          "text": "transactions = [\n    ",
+          "startAt": 5.86,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "{\"user_id\": \"U01\", \"device\"",
+          "startAt": 9.86,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": ": \"mobile\", \"ip\": \"10.0.0.1\"",
+          "startAt": 12.48,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": ", \"amount\": 120.50},\n    ",
+          "startAt": 16.5,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "{\"user_id\": \"U01\", \"device\"",
+          "startAt": 20.12,
+          "anchored": true,
+          "charInterval": 65
+        },
+        {
+          "text": ": \"mobile\", \"ip\": \"10.0.0.1\"",
+          "startAt": 21.88,
+          "anchored": true,
+          "charInterval": 31
+        },
+        {
+          "text": ", \"amount\": 340.00},\n    ",
+          "startAt": 22.76,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "{\"user_id\": \"U02\", \"device\"",
+          "startAt": 25.18,
+          "anchored": true,
+          "charInterval": 59
+        },
+        {
+          "text": ": \"desktop\", \"ip\": \"192.168.1.5\"",
+          "startAt": 26.76,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": ", \"amount\": 85.75},\n    ",
+          "startAt": 32.06,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "{\"user_id\": \"U01\", \"device\"",
+          "startAt": 35.46,
+          "anchored": true,
+          "charInterval": 58
+        },
+        {
+          "text": ": \"mobile\", \"ip\": \"10.0.0.2\"",
+          "startAt": 37.02,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": ", \"amount\": 500.00},\n]\n\n",
+          "startAt": 40.68,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "fraud_map = defaultdict(float)\n",
+          "startAt": 43.4,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "for tx in transactions:\n    ",
+          "startAt": 49.64,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "key = (tx[\"user_id\"], tx[\"device\"",
+          "startAt": 52.77,
+          "anchored": true,
+          "charInterval": 64
+        },
+        {
+          "text": "], tx[\"ip\"])\n    ",
+          "startAt": 54.88,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "fraud_map[key] += tx[\"amount\"]\n",
+          "startAt": 57.78,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "print(dict(fraud_map))",
+          "startAt": 60.42,
+          "anchored": true,
+          "charInterval": 38
+        }
+      ],
+      "scrollAt": 64.49,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.08
+        },
+        {
+          "text": "We import defaultdict from collections.",
+          "start": 1.54,
+          "end": 3.96
+        },
+        {
+          "text": "Then we build a list called transactions holding four sample records.",
+          "start": 4.46,
+          "end": 8.22
+        },
+        {
+          "text": "The first record has user id U zero one, device mobile, ip address ten dot zero dot zero dot one, and amount one twenty point five zero.",
+          "start": 8.78,
+          "end": 18.46
+        },
+        {
+          "text": "The second record repeats user U zero one and mobile, with amount three forty.",
+          "start": 18.8,
+          "end": 23.89
+        },
+        {
+          "text": "The third record is user U zero two on desktop, ip one nine two dot one six eight dot one dot five, amount eighty five point seven five.",
+          "start": 24.3,
+          "end": 34.02
+        },
+        {
+          "text": "The fourth record is user U zero one, mobile, ip ten dot zero dot zero dot two, amount five hundred.",
+          "start": 34.34,
+          "end": 41.6
+        },
+        {
+          "text": "Now we create an empty fraud map using defaultdict of float, so a missing key defaults to zero point zero.",
+          "start": 41.94,
+          "end": 49.02
+        },
+        {
+          "text": "We loop through each transaction.",
+          "start": 49.3,
+          "end": 51.1
+        },
+        {
+          "text": "We build a tuple key from user id, device, and ip.",
+          "start": 51.62,
+          "end": 55.26
+        },
+        {
+          "text": "Then we add the transaction amount into fraud map at that key.",
+          "start": 55.64,
+          "end": 59.4
+        },
+        {
+          "text": "Finally we print the fraud map, converted to a regular dictionary, which shows the total amount per unique combination.",
+          "start": 59.84,
+          "end": 66.54
+        }
+      ],
+      "matchRatio": 0.72,
+      "asrCoverage": "117/176"
+    },
+    "14": {
+      "src": "Day01/New_PyDay01Question14sol.mp3",
+      "code": "nested = {\n    \"user\": {\n        \"name\": \"Aarav\",\n        \"address\": {\n            \"city\": \"Mumbai\",\n            \"pin\": None\n        }\n    },\n    \"score\": 95\n}\n\ndef flatten_dict(d, parent_key=''):\n    items = {}\n    for k, v in d.items():\n        new_key = f\"{parent_key}.{k}\" if parent_key else k\n        if isinstance(v, dict):\n            items.update(flatten_dict(v, new_key))\n        else:\n            items[new_key] = 'N/A' if v is None else v\n    return items\n\nflat = flatten_dict(nested)\nprint(flat)",
+      "duration": 63.86,
+      "segments": [
+        {
+          "text": "nested = {\n    ",
+          "startAt": 2.8,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "\"user\": {\n        ",
+          "startAt": 4.38,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "\"name\": \"Aarav\",\n        ",
+          "startAt": 7.48,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "\"address\": {\n            ",
+          "startAt": 9.7,
+          "anchored": true,
+          "charInterval": 62
+        },
+        {
+          "text": "\"city\": \"Mumbai\",\n            ",
+          "startAt": 11.24,
+          "anchored": true,
+          "charInterval": 68
+        },
+        {
+          "text": "\"pin\": None\n        }\n    },\n    ",
+          "startAt": 13.28,
+          "anchored": true,
+          "charInterval": 64
+        },
+        {
+          "text": "\"score\": 95\n}\n\n",
+          "startAt": 15.4,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "def flatten_dict(d, parent_key=''):\n    ",
+          "startAt": 17.96,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "items = {}\n    ",
+          "startAt": 25.16,
+          "anchored": true,
+          "charInterval": 77
+        },
+        {
+          "text": "for k, v in d.items():\n        ",
+          "startAt": 26.32,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "new_key = f\"{parent_key}.{k}\" ",
+          "startAt": 30.82,
+          "anchored": true,
+          "charInterval": 42
+        },
+        {
+          "text": "if parent_key else k\n        ",
+          "startAt": 32.08,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "if isinstance(v, dict):\n            ",
+          "startAt": 40.5,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "items.update(flatten_dict(",
+          "startAt": 48.76,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "v, new_key))\n        ",
+          "startAt": 51.56,
+          "anchored": true,
+          "charInterval": 40
+        },
+        {
+          "text": "else:\n            ",
+          "startAt": 52.4,
+          "anchored": false,
+          "charInterval": 85
+        },
+        {
+          "text": "items[new_key] = 'N/A' if v ",
+          "startAt": 57.04,
+          "anchored": true,
+          "charInterval": 40
+        },
+        {
+          "text": "is None else v\n    ",
+          "startAt": 58.16,
+          "anchored": false,
+          "charInterval": 40
+        },
+        {
+          "text": "return items\n\n",
+          "startAt": 58.92,
+          "anchored": false,
+          "charInterval": 85
+        },
+        {
+          "text": "flat = flatten_dict(nested)\n",
+          "startAt": 62.1,
+          "anchored": true,
+          "charInterval": 29
+        },
+        {
+          "text": "print(flat)",
+          "startAt": 62.92,
+          "anchored": true,
+          "charInterval": 50
+        }
+      ],
+      "scrollAt": 63.61,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.06
+        },
+        {
+          "text": "We build a dictionary called nested.",
+          "start": 1.54,
+          "end": 3.16
+        },
+        {
+          "text": "It has a key user, whose value is another dictionary with key name, set to Aarav, and key address, which holds key city set to Mumbai and key pin set to None.",
+          "start": 3.72,
+          "end": 14.02
+        },
+        {
+          "text": "It also has key score, set to ninety five.",
+          "start": 14.46,
+          "end": 17.28
+        },
+        {
+          "text": "Then we define a function called flatten dict that takes a dictionary d and a parent key, and creates an empty dictionary called items.",
+          "start": 17.58,
+          "end": 25.6
+        },
+        {
+          "text": "We loop over each key value pair in d using the items method.",
+          "start": 26.22,
+          "end": 29.78
+        },
+        {
+          "text": "We build a new key: if parent key exists, we combine parent key, a dot, and the current key using an f string; otherwise the new key is just k.",
+          "start": 30.32,
+          "end": 40.12
+        },
+        {
+          "text": "If the value is a dictionary, we check with isinstance, and recursively call flatten dict with the value and the new key, then update items.",
+          "start": 40.5,
+          "end": 49.24
+        },
+        {
+          "text": "Otherwise, we set items at the new key to the value, or to the string N/A if the value is None.",
+          "start": 49.78,
+          "end": 56.22
+        },
+        {
+          "text": "We return items.",
+          "start": 56.66,
+          "end": 57.6
+        },
+        {
+          "text": "Finally we call flatten dict on nested, store the result in flat, and print flat.",
+          "start": 58.14,
+          "end": 63.48
+        }
+      ],
+      "matchRatio": 0.913,
+      "asrCoverage": "167/182"
+    },
+    "15": {
+      "src": "Day01/New_PyDay01Question15sol.mp3",
+      "code": "import sys\n\nlst = []\njump_sizes = []\nprev_size = sys.getsizeof(lst)\n\nfor i in range(21):\n    lst.append(i)\n    cur_size = sys.getsizeof(lst)\n    if cur_size > prev_size:\n        jump_sizes.append((i, cur_size))\n        prev_size = cur_size\n\nprint(jump_sizes)",
+      "duration": 40.01,
+      "segments": [
+        {
+          "text": "import sys\n\n",
+          "startAt": 1.68,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "lst = []\n",
+          "startAt": 4.02,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "jump_sizes = []\n",
+          "startAt": 7.92,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "prev_size = sys.getsizeof(",
+          "startAt": 14.58,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "lst)\n\n",
+          "startAt": 21.24,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "for i in range(21):\n    ",
+          "startAt": 31.18,
+          "anchored": true,
+          "charInterval": 40
+        },
+        {
+          "text": "lst.append(i)\n    ",
+          "startAt": 32.14,
+          "anchored": false,
+          "charInterval": 40
+        },
+        {
+          "text": "cur_size = sys.getsizeof(lst)\n    ",
+          "startAt": 32.86,
+          "anchored": false,
+          "charInterval": 46
+        },
+        {
+          "text": "if cur_size > prev_size:\n        ",
+          "startAt": 34.42,
+          "anchored": true,
+          "charInterval": 85
+        },
+        {
+          "text": "jump_sizes.append((i, cur_size))\n        ",
+          "startAt": 37.32,
+          "anchored": true,
+          "charInterval": 25
+        },
+        {
+          "text": "prev_size = cur_size\n\n",
+          "startAt": 37.62,
+          "anchored": true,
+          "charInterval": 40
+        },
+        {
+          "text": "print(jump_sizes)",
+          "startAt": 38.5,
+          "anchored": false,
+          "charInterval": 25
+        }
+      ],
+      "scrollAt": 39.52,
+      "sentences": [
+        {
+          "text": "Here is the solution.",
+          "start": 0.0,
+          "end": 1.08
+        },
+        {
+          "text": "We import sys.",
+          "start": 1.56,
+          "end": 2.46
+        },
+        {
+          "text": "Then we create an empty list called lst.",
+          "start": 2.9,
+          "end": 5.36
+        },
+        {
+          "text": "We also create an empty list called jump sizes.",
+          "start": 5.86,
+          "end": 8.6
+        },
+        {
+          "text": "We measure the size of lst using sys dot getsizeof, and store that value in prev size.",
+          "start": 9.14,
+          "end": 15.18
+        },
+        {
+          "text": "We loop from 0 to 20 using range of 21.",
+          "start": 15.7,
+          "end": 18.8
+        },
+        {
+          "text": "Inside the loop, we append i to lst.",
+          "start": 19.34,
+          "end": 21.86
+        },
+        {
+          "text": "Then we measure the size of lst again with getsizeof, and store it in cur size.",
+          "start": 22.26,
+          "end": 27.02
+        },
+        {
+          "text": "If cur size is greater than prev size, we append the tuple of i and cur size to jump sizes, and we update prev size to cur size.",
+          "start": 27.48,
+          "end": 35.96
+        },
+        {
+          "text": "Finally we print jump sizes, and that is our complete answer.",
+          "start": 36.4,
+          "end": 39.62
+        }
+      ],
+      "matchRatio": 0.934,
+      "asrCoverage": "106/114"
+    }
+  }
+}
