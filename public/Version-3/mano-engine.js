@@ -66,7 +66,7 @@ function isFreeDay(dayKey) {
   const match = String(dayKey).match(/day(\d+)/i);
   if (match) {
     const num = parseInt(match[1], 10);
-    return num >= 1 && num <= 17;
+    return num >= 1 && num <= 18;
   }
   return false;
 }
@@ -1292,11 +1292,47 @@ function renderSideSlide() {
   lastActiveSlideIndex = currentSlide;
   lastActiveDay = currentDay;
 
-  const slide = COURSE_CONFIG.slides[currentSlide];
+  // Synchronize narration tracks for active day and slide BEFORE building header
+  const dayConfig = (typeof slideTrackMap !== 'undefined') ? slideTrackMap[currentDay] : null;
+  const config = dayConfig ? dayConfig[currentSlide] : null;
+  if (config) {
+    combinedTracks = config.tracks;
+    combinedTrackDurations = config.durations;
+
+    if (activeAudioInstance) {
+      activeAudioInstance.pause();
+      activeAudioInstance.src = "";
+      activeAudioInstance.load();
+      activeAudioInstance = null;
+    }
+    isCombinedPlaying = false;
+    combinedAudios = [];
+
+    const newKey = `${currentDay}_${currentSlide}`;
+    const saved = slideProgressHistory[newKey];
+    if (saved) {
+      combinedTrackIndex = saved.trackIndex || 0;
+      currentCombinedTime = saved.combinedTime || 0;
+      pendingAudioStartTime = saved.audioTime || 0;
+    } else {
+      currentCombinedTime = 0;
+      combinedTrackIndex = 0;
+      pendingAudioStartTime = 0;
+    }
+
+    updatePlayButtonStates(false);
+    recomputeTotalDuration();
+  } else {
+    combinedTracks = [];
+    combinedTrackDurations = [];
+    combinedTrackIndex = 0;
+  }
+
+  const slide = COURSE_CONFIG.slides ? COURSE_CONFIG.slides[currentSlide] : null;
 
   // Parse the slide HTML
   const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = slide.html;
+  tempDiv.innerHTML = slide ? slide.html : '';
 
   // Extract h2
   const h2 = tempDiv.querySelector('h2');
@@ -1307,7 +1343,10 @@ function renderSideSlide() {
   // Populate elements
   const slideHeader = document.getElementById('slideHeader');
   if (slideHeader) {
-    const activeTitle = (typeof combinedTracks !== 'undefined' && combinedTracks && combinedTracks[combinedTrackIndex]) ? (combinedTracks[combinedTrackIndex].title || 'In this lesson') : 'In this lesson';
+    const activeTitle = (typeof combinedTracks !== 'undefined' && combinedTracks && combinedTracks[combinedTrackIndex] && combinedTracks[combinedTrackIndex].title)
+      ? combinedTracks[combinedTrackIndex].title
+      : (slide && slide.title ? slide.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '').trim() : 'In this lesson');
+
     slideHeader.innerHTML = `
       <div class="slide-header-content">
         ${headerHtml}
@@ -1319,6 +1358,10 @@ function renderSideSlide() {
         </button>
       </div>
     `;
+  }
+
+  if (typeof buildChapterList === 'function') {
+    buildChapterList();
   }
 
   const slideBodyText = document.getElementById('slideBodyText');
@@ -1391,42 +1434,7 @@ function renderSideSlide() {
   }
 
   // Show narration autoplay widget if the slide has tracks defined
-  const dayConfig = (typeof slideTrackMap !== 'undefined') ? slideTrackMap[currentDay] : null;
-  const config = dayConfig ? dayConfig[currentSlide] : null;
   if (config) {
-    // Swapping track list dynamically
-    combinedTracks = config.tracks;
-    combinedTrackDurations = config.durations;
-
-    // Stop currently playing combined narration cleanly if active
-    if (activeAudioInstance) {
-      activeAudioInstance.pause();
-      activeAudioInstance.src = "";
-      activeAudioInstance.load();
-      activeAudioInstance = null;
-    }
-    isCombinedPlaying = false;
-    combinedAudios = [];
-
-    // Restore progress if it exists in history
-    const newKey = `${currentDay}_${currentSlide}`;
-    const saved = slideProgressHistory[newKey];
-    if (saved) {
-      combinedTrackIndex = saved.trackIndex;
-      currentCombinedTime = saved.combinedTime;
-      pendingAudioStartTime = saved.audioTime;
-    } else {
-      currentCombinedTime = 0;
-      combinedTrackIndex = 0;
-      pendingAudioStartTime = 0;
-    }
-
-    // Update UI button states
-    updatePlayButtonStates(false);
-
-    // Re-calculate total duration
-    recomputeTotalDuration();
-
     const navBtn = document.getElementById('navPlayBtn');
     if (navBtn) navBtn.style.display = 'inline-flex';
     document.getElementById('playbackBar')?.classList.add('visible');
@@ -2936,8 +2944,20 @@ function submitTest() {
 
         if (studentQuery !== '' && studentQuery !== '-- Write your answer here' && studentQuery !== '-- Write your query here\n') {
           try {
-            if (window.gradeSubmission) {
-              gradingResult = window.gradeSubmission(studentQuery, q, db);
+            if (q.type === 'mcq' || (q.options && q.options.length > 0)) {
+              const expectedAns = q.answer !== undefined 
+                ? String(q.answer).trim().toLowerCase() 
+                : (q.options && q.correct !== undefined ? String(q.options[q.correct]).trim().toLowerCase() : '');
+              const studentClean = studentQuery.toLowerCase().replace(/^--\s*selected answer:\s*/i, '').trim();
+              correct = (studentClean === expectedAns) || 
+                        (studentClean === String(q.correct)) ||
+                        (expectedAns !== '' && studentClean.includes(expectedAns));
+            } else if (window.gradeSubmission) {
+              const effectiveQ = Object.assign({}, q, {
+                ref: q.ref || q.referenceSql || q.answer || '',
+                prompt: q.prompt || q.question || ''
+              });
+              gradingResult = window.gradeSubmission(studentQuery, effectiveQ, db);
               correct = !!(gradingResult && gradingResult.passed);
             }
           } catch (qErr) {
@@ -2952,9 +2972,9 @@ function submitTest() {
           correct,
           studentQuery,
           attempted: !!ansObj.attempted,
-          referenceSql: q.ref || q.referenceSql || '',
-          prompt: q.prompt || '',
-          angle: (typeof getInterviewersAngle === 'function') ? getInterviewersAngle(day, q.id || (i + 1), q.prompt || '') : 'Evaluates core analytical syntax.'
+          referenceSql: q.ref || q.referenceSql || q.answer || (q.options && q.correct !== undefined ? q.options[q.correct] : ''),
+          prompt: q.prompt || q.question || '',
+          angle: (typeof getInterviewersAngle === 'function') ? getInterviewersAngle(day, q.id || (i + 1), q.prompt || q.question || '') : 'Evaluates core analytical syntax.'
         });
 
         // Update test sidebar indicator
@@ -3143,6 +3163,24 @@ function resumeTestAttempt(dayId, attempt, timeRemaining) {
   startTestTimer();
 }
 
+window.selectMcqOption = function(qIndex, optIndex) {
+  const questions = (COURSE_CONFIG && COURSE_CONFIG.testQuestions) ? COURSE_CONFIG.testQuestions : [];
+  const q = questions[qIndex];
+  if (!q || !q.options || !q.options[optIndex]) return;
+  const optVal = q.options[optIndex];
+  if (!testAnswers) testAnswers = [];
+  testAnswers[qIndex] = { answer: optVal, attempted: true };
+  if (testEditor) {
+    testEditor.setValue('-- Selected Answer: ' + optVal + '\n');
+  }
+  const outEl = document.getElementById('testOutput');
+  if (outEl) {
+    outEl.innerHTML = `<div class="output-label">Terminal Output</div><span class="output-success">✅ Selected option: <strong>${optVal}</strong></span>`;
+  }
+  if (typeof updateTestProgress === 'function') updateTestProgress();
+  renderTestQuestion(qIndex);
+};
+
 function renderTestQuestion(index) {
   testCurrentQ = index;
   const questions = (COURSE_CONFIG && COURSE_CONFIG.testQuestions) ? COURSE_CONFIG.testQuestions : [];
@@ -3151,7 +3189,22 @@ function renderTestQuestion(index) {
   const qPromptEl = document.getElementById('testQuestionPrompt');
   if (qPromptEl) {
     if (q) {
-      qPromptEl.innerHTML = `<div style="text-align: justify; text-justify: inter-word;"><strong style="color:var(--ink-info);">Question ${index + 1}:</strong> ${q.prompt}</div>`;
+      const promptText = q.prompt || q.question || '';
+      let optionsHtml = '';
+      if (q.type === 'mcq' || (q.options && q.options.length > 0)) {
+        const saved = (testAnswers && testAnswers[index]) ? (testAnswers[index].answer || '').trim() : '';
+        optionsHtml = `<div class="mcq-options-container" style="display:flex;flex-direction:column;gap:8px;margin-top:14px;">` +
+          q.options.map((opt, optIdx) => {
+            const isSelected = saved === opt || saved === String(optIdx) || saved === ('-- Selected Answer: ' + opt);
+            const letter = String.fromCharCode(65 + optIdx);
+            return `<div class="mcq-opt-card ${isSelected ? 'selected' : ''}" onclick="selectMcqOption(${index}, ${optIdx})" style="cursor:pointer;padding:10px 14px;border-radius:8px;border:1px solid ${isSelected ? '#38bdf8' : 'rgba(255,255,255,0.1)'};background:${isSelected ? 'rgba(56,189,248,0.15)' : '#0d1117'};color:${isSelected ? '#38bdf8' : '#e2e8f0'};font-size:0.88rem;display:flex;align-items:center;gap:10px;transition:all 0.15s ease;">` +
+              `<span style="font-weight:700;padding:2px 8px;border-radius:4px;background:${isSelected ? '#38bdf8' : 'rgba(255,255,255,0.08)'};color:${isSelected ? '#0f172a' : '#94a3b8'};font-size:0.75rem;">${letter}</span>` +
+              `<span>${opt}</span>` +
+            `</div>`;
+          }).join('') +
+        `</div>`;
+      }
+      qPromptEl.innerHTML = `<div style="text-align: justify; text-justify: inter-word;"><strong style="color:var(--ink-info);">Question ${index + 1}:</strong> ${promptText}</div>${optionsHtml}`;
     } else {
       qPromptEl.innerHTML = `<div style="text-align: justify; text-justify: inter-word;">Question ${index + 1} not available.</div>`;
     }
@@ -3266,7 +3319,11 @@ function runTestQuery() {
 
     let grading = null;
     if (window.gradeSubmission && currentQ) {
-      grading = window.gradeSubmission(sql, currentQ, db);
+      const effectiveQ = Object.assign({}, currentQ, {
+        ref: currentQ.ref || currentQ.referenceSql || currentQ.answer || '',
+        prompt: currentQ.prompt || currentQ.question || ''
+      });
+      grading = window.gradeSubmission(sql, effectiveQ, db);
     }
 
     let statusBanner = '';
@@ -5553,6 +5610,28 @@ function openQPicker() {
   const trigger = document.getElementById('qPickerTrigger');
   if (!popover || !trigger) return;
   populateQPicker();
+
+  if (window.innerWidth <= 768) {
+    const rect = trigger.getBoundingClientRect();
+    popover.style.position = 'fixed';
+    popover.style.top = (rect.bottom + 6) + 'px';
+    popover.style.left = '8px';
+    popover.style.right = '8px';
+    popover.style.width = 'auto';
+    popover.style.maxWidth = 'calc(100vw - 16px)';
+    popover.style.maxHeight = 'min(440px, 65vh)';
+    popover.style.zIndex = '999999';
+  } else {
+    popover.style.position = '';
+    popover.style.top = '';
+    popover.style.left = '';
+    popover.style.right = '';
+    popover.style.width = '';
+    popover.style.maxWidth = '';
+    popover.style.maxHeight = '';
+    popover.style.zIndex = '';
+  }
+
   popover.style.display = 'flex';
   trigger.setAttribute('aria-expanded', 'true');
   // Dismiss on outside click
@@ -5564,18 +5643,33 @@ function openQPicker() {
 function closeQPicker() {
   const popover = document.getElementById('qPickerPopover');
   const trigger = document.getElementById('qPickerTrigger');
-  if (popover) popover.style.display = 'none';
+  if (popover) {
+    popover.style.display = 'none';
+    if (window.innerWidth <= 768) {
+      popover.style.position = '';
+      popover.style.top = '';
+      popover.style.left = '';
+      popover.style.right = '';
+      popover.style.width = '';
+      popover.style.maxWidth = '';
+      popover.style.maxHeight = '';
+      popover.style.zIndex = '';
+    }
+  }
   if (trigger) trigger.setAttribute('aria-expanded', 'false');
   document.removeEventListener('click', _qPickerOutsideClick);
 }
 
 function _qPickerOutsideClick(e) {
   const wrapper = document.getElementById('qPickerWrapper');
-  if (wrapper && !wrapper.contains(e.target)) {
+  const popover = document.getElementById('qPickerPopover');
+  if (
+    (!wrapper || !wrapper.contains(e.target)) &&
+    (!popover || !popover.contains(e.target))
+  ) {
     closeQPicker();
   } else {
     // Clicked inside — re-attach listener if popover still open
-    const popover = document.getElementById('qPickerPopover');
     if (popover && popover.style.display !== 'none') {
       document.addEventListener('click', _qPickerOutsideClick, { once: true });
     }
@@ -6071,8 +6165,8 @@ function loadDayContent(dayId) {
                           Boolean(urlP.get('q')) || 
                           Boolean(urlP.get('question'));
 
-  // 1. Days 18+: Coming Soon lock ONLY for regular non-admin students (Reel visitors get Reel Pass!)
-  if (dayNum >= 18 && !isAdminUser() && !isGuestReelPass) {
+  // 1. Days > 18: Coming Soon lock ONLY for regular non-admin students (Reel visitors get Reel Pass!)
+  if (dayNum > 18 && !isAdminUser() && !isGuestReelPass) {
     if (window.showComingSoonToast) {
       window.showComingSoonToast(dayMeta?.title || `Day ${String(dayNum).padStart(2, '0')}`, dayNum);
     }
@@ -6094,9 +6188,9 @@ function loadDayContent(dayId) {
     return;
   }
 
-  // 2. Days 18+: Paywall check for non-paid users (Reel visitors get Reel Pass!)
+  // 2. Days > 18: Paywall check for non-paid users (Reel visitors get Reel Pass!)
   if (!isPaidUser() && !isAdminUser()) {
-    if (dayNum >= 18 && !isGuestReelPass) {
+    if (dayNum > 18 && !isGuestReelPass) {
       showGuestPaywallModal(`Day ${String(dayNum).padStart(2, '0')}`);
       return;
     }
@@ -6577,8 +6671,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     // Populate topicSelect dropdown
     const topicSelect = document.getElementById('topicSelect');
     if (topicSelect) {
-      const multiTopic2 = COURSE_CONFIG.slides.length > 1;
-      topicSelect.innerHTML = COURSE_CONFIG.slides.map((slide, idx) => {
+      const slidesList = (COURSE_CONFIG && COURSE_CONFIG.slides) ? COURSE_CONFIG.slides : [];
+      const multiTopic2 = slidesList.length > 1;
+      topicSelect.innerHTML = slidesList.map((slide, idx) => {
         const cleanedTitle = slide.title.replace(/^(Topic\s+\d+:\s*|\d+\.\s*)/i, '');
         const duration = getSlideDurationString(idx);
         return `<option value="${idx}">${multiTopic2 ? `Topic 0${idx + 1}: ` : ''}${cleanedTitle} (${duration})</option>`;
@@ -6588,8 +6683,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize custom dropdown overlays
     initCustomDropdowns();
-
-
+    updateDayNavArrows();
     console.log('Version-3 Scrimba SQL Sandbox initialized successfully.');
   } catch (err) {
     console.error('Initialization error:', err);
@@ -6923,8 +7017,10 @@ function initCustomDropdowns() {
 
       if (isSingleTopic) {
         wrapper.classList.add('no-dropdown');
-        const chev = trigger.querySelector('.day-picker-chevron');
-        if (chev) chev.style.display = 'none';
+        wrapper.querySelectorAll('.day-picker-chevron').forEach(el => el.remove());
+        if (trigger) {
+          trigger.querySelectorAll('.day-picker-chevron').forEach(el => el.remove());
+        }
         wrapper.onclick = null;
       } else {
         wrapper.classList.remove('no-dropdown');
@@ -8204,8 +8300,8 @@ const slideTrackMap = {
   }
 };
 
-let combinedTrackDurations = slideTrackMap['day01'][0].durations;
-let combinedTracks = slideTrackMap['day01'][0].tracks;
+let combinedTrackDurations = [];
+let combinedTracks = [];
 
 const AUDIO_CDN_BASE = "/Version-3";
 let manifest = {};
@@ -13629,27 +13725,227 @@ if (document.readyState === 'loading') {
 
 // ── Mobile Theme Toggle Relocation ──
 function initMobileThemeToggle() {
-  const mql = window.matchMedia('(max-width: 768px)');
-  function relocateToggle(e) {
-    const btn = document.getElementById('themeToggleBtn');
-    const dayNav = document.querySelector('.day-navigation');
-    const headerRight = document.querySelector('.header-right');
-    const topicPill = document.querySelector('.topic-picker-pill');
-    if (!btn || !dayNav || !headerRight) return;
-
-    if (e.matches) {
-      dayNav.appendChild(btn);
-    } else {
-      if (headerRight.firstChild !== btn) {
-        headerRight.insertBefore(btn, headerRight.firstChild);
-      }
-    }
+  const btn = document.getElementById('themeToggleBtn');
+  const headerRight = document.querySelector('.header-right');
+  if (btn && headerRight && !headerRight.contains(btn)) {
+    headerRight.insertBefore(btn, headerRight.firstChild);
   }
-  mql.addEventListener('change', relocateToggle);
-  relocateToggle(mql);
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initMobileThemeToggle);
 } else {
   initMobileThemeToggle();
 }
+
+// ═══════════════════════════════════════════════════════════════
+// 💡 SOLUTION PEEK FUNCTIONS (Practice & Test Portal)
+// ═══════════════════════════════════════════════════════════════
+
+function peekSolution() {
+  const chalId = typeof getActiveChallengeId === 'function' ? getActiveChallengeId() : null;
+  const chal = chalId ? REEL_CHALLENGES[chalId] : null;
+  let q = (COURSE_CONFIG && COURSE_CONFIG.practiceQuestions && COURSE_CONFIG.practiceQuestions[currentPracticeQ]) || null;
+  if (chal) {
+    const isCorrectA = chal.correctOption === 'A';
+    const sol = isCorrectA ? chal.codeA : chal.codeB;
+    if (mainEditor) {
+      mainEditor.setValue(sol);
+      mainEditor.focus();
+    }
+    return;
+  }
+  if (!q) return;
+  const sol = q.referenceSql || q.ref || q.solution || '';
+  if (!sol || !mainEditor) return;
+  mainEditor.setValue(sol);
+  mainEditor.focus();
+  const out = document.getElementById('mainOutput');
+  if (out) {
+    out.innerHTML = '<div class="output-label">Terminal Output</div><span class="output-success">💡 Reference solution loaded into editor. Click \'▶ Run\' to execute!</span>';
+  }
+  if (typeof showToast === 'function') showToast('💡 Reference solution loaded');
+}
+window.peekSolution = peekSolution;
+
+function peekTestSolution() {
+  if (!testEditor && typeof initTestEditor === 'function') initTestEditor();
+  const questions = (COURSE_CONFIG && COURSE_CONFIG.testQuestions) ? COURSE_CONFIG.testQuestions : [];
+  const q = questions[testCurrentQ];
+  if (!q) return;
+  if (q.type === 'mcq' || (q.options && q.options.length > 0)) {
+    const ans = q.answer !== undefined ? q.answer : (q.options && q.correct !== undefined ? q.options[q.correct] : '');
+    if (ans) {
+      if (typeof selectMcqOption === 'function') {
+        const optIdx = q.options.findIndex(o => o === ans);
+        if (optIdx !== -1) selectMcqOption(testCurrentQ, optIdx);
+      }
+      if (testEditor) testEditor.setValue('-- Selected Answer: ' + ans + '\n');
+      const out = document.getElementById('testOutput');
+      if (out) out.innerHTML = '<div class="output-label">Terminal Output</div><span class="output-success">💡 Correct option: <strong>' + ans + '</strong></span>';
+    }
+    return;
+  }
+  const sol = q.ref || q.referenceSql || q.answer || '';
+  if (!sol || !testEditor) return;
+  testEditor.setValue(sol);
+  testEditor.focus();
+  if (typeof saveCurrentTestAnswer === 'function') saveCurrentTestAnswer();
+  const out = document.getElementById('testOutput');
+  if (out) {
+    out.innerHTML = '<div class="output-label">Terminal Output</div><span class="output-success">💡 Solution query loaded into editor. Click \'▶ Run\' to execute!</span>';
+  }
+  if (typeof showToast === 'function') showToast('💡 Reference solution loaded');
+}
+window.peekTestSolution = peekTestSolution;
+
+// ═══════════════════════════════════════════════════════════════
+// 🧭 PREV / NEXT DAY ARROW NAVIGATION ENGINE
+// ═══════════════════════════════════════════════════════════════
+
+function getAdjacentDayInfo() {
+  const path = window.location.pathname;
+  const match = path.match(/day(\d+)\.html/i);
+  let currentNum = match ? parseInt(match[1], 10) : (typeof COURSE_CONFIG !== 'undefined' && COURSE_CONFIG.dayId ? parseInt(COURSE_CONFIG.dayId.replace('day', ''), 10) : 1);
+  
+  const prevNum = currentNum - 1;
+  const nextNum = currentNum + 1;
+  const maxDay = 18;
+  
+  const prevUrl = prevNum >= 1 ? `/sql/day${String(prevNum).padStart(2, '0')}.html` : null;
+  const nextUrl = nextNum <= maxDay ? `/sql/day${String(nextNum).padStart(2, '0')}.html` : null;
+  
+  return { prevUrl, nextUrl, prevNum, nextNum, currentNum };
+}
+
+function updateDayNavArrows() {
+  const { prevUrl, nextUrl, prevNum, nextNum } = getAdjacentDayInfo();
+  const prevBtn = document.getElementById('prevDayBtn');
+  const nextBtn = document.getElementById('nextDayBtn');
+  
+  if (prevBtn) {
+    if (prevUrl) {
+      prevBtn.disabled = false;
+      prevBtn.classList.remove('disabled');
+      prevBtn.title = `Previous Day (Day ${String(prevNum).padStart(2, '0')})`;
+      prevBtn.setAttribute('aria-label', `Previous Day (Day ${String(prevNum).padStart(2, '0')})`);
+    } else {
+      prevBtn.disabled = true;
+      prevBtn.classList.add('disabled');
+      prevBtn.title = 'You are on the first day';
+      prevBtn.setAttribute('aria-label', 'First day reached');
+    }
+  }
+  
+  if (nextBtn) {
+    if (nextUrl) {
+      nextBtn.disabled = false;
+      nextBtn.classList.remove('disabled');
+      nextBtn.title = `Next Day (Day ${String(nextNum).padStart(2, '0')})`;
+      nextBtn.setAttribute('aria-label', `Next Day (Day ${String(nextNum).padStart(2, '0')})`);
+    } else {
+      nextBtn.disabled = true;
+      nextBtn.classList.add('disabled');
+      nextBtn.title = 'You are on the last available day';
+      nextBtn.setAttribute('aria-label', 'Last day reached');
+    }
+  }
+}
+window.updateDayNavArrows = updateDayNavArrows;
+
+function navigateToPrevDay() {
+  const { prevUrl } = getAdjacentDayInfo();
+  if (prevUrl) window.location.href = prevUrl;
+}
+window.navigateToPrevDay = navigateToPrevDay;
+
+function navigateToNextDay() {
+  const { nextUrl } = getAdjacentDayInfo();
+  if (nextUrl) window.location.href = nextUrl;
+}
+window.navigateToNextDay = navigateToNextDay;
+
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(updateDayNavArrows, 100);
+});
+
+
+// ── Mobile Header Info Bars Toggle (Zen / Focus Mode) ────────────────
+function toggleMobileHeader(e) {
+  if (e) {
+    if (typeof e.preventDefault === 'function') e.preventDefault();
+    if (typeof e.stopPropagation === 'function') e.stopPropagation();
+  }
+  const header = document.querySelector('.header');
+  const toggleBtn = document.getElementById('mobileHdrToggleBtn');
+  if (!header) return;
+
+  const isCollapsed = header.classList.toggle('is-collapsed');
+  if (toggleBtn) {
+    toggleBtn.classList.toggle('is-collapsed', isCollapsed);
+    const label = toggleBtn.querySelector('.hdr-toggle-label');
+    if (label) {
+      label.textContent = isCollapsed ? 'Show Info' : 'Hide Info';
+    }
+    const icon = toggleBtn.querySelector('.hdr-toggle-icon');
+    if (icon) {
+      icon.style.transform = isCollapsed ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+    toggleBtn.setAttribute('title', isCollapsed ? 'Show top header info bars' : 'Hide top header info bars');
+    toggleBtn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+  }
+  try {
+    sessionStorage.setItem('manodemy-header-collapsed', isCollapsed ? 'true' : 'false');
+  } catch (err) {}
+}
+window.toggleMobileHeader = toggleMobileHeader;
+
+function initMobileHeaderToggle() {
+  const tabsNav = document.getElementById('mobileTabsNav');
+  if (!tabsNav) return;
+
+  // Wrap existing buttons into .mobile-tabs-group if not already wrapped
+  if (!tabsNav.querySelector('.mobile-tabs-group')) {
+    const existingBtns = Array.from(tabsNav.querySelectorAll('.mobile-tab-btn'));
+    if (existingBtns.length > 0) {
+      const group = document.createElement('div');
+      group.className = 'mobile-tabs-group';
+      existingBtns.forEach(btn => group.appendChild(btn));
+      tabsNav.prepend(group);
+    }
+  }
+
+  // Ensure the toggle button exists
+  if (!document.getElementById('mobileHdrToggleBtn')) {
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'mobile-hdr-toggle-btn';
+    toggleBtn.id = 'mobileHdrToggleBtn';
+    toggleBtn.setAttribute('aria-label', 'Toggle top header info bars');
+    toggleBtn.setAttribute('title', 'Hide top header info bars');
+    toggleBtn.onclick = toggleMobileHeader;
+    toggleBtn.innerHTML = '<span class="hdr-toggle-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg></span><span class="hdr-toggle-label">Hide Info</span>';
+    tabsNav.appendChild(toggleBtn);
+  }
+
+  // Restore saved state if any
+  try {
+    if (sessionStorage.getItem('manodemy-header-collapsed') === 'true') {
+      const header = document.querySelector('.header');
+      const toggleBtn = document.getElementById('mobileHdrToggleBtn');
+      if (header) header.classList.add('is-collapsed');
+      if (toggleBtn) {
+        toggleBtn.classList.add('is-collapsed');
+        const label = toggleBtn.querySelector('.hdr-toggle-label');
+        if (label) label.textContent = 'Show Info';
+        const icon = toggleBtn.querySelector('.hdr-toggle-icon');
+        if (icon) icon.style.transform = 'rotate(180deg)';
+        toggleBtn.setAttribute('title', 'Show top header info bars');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+  } catch (err) {}
+}
+window.initMobileHeaderToggle = initMobileHeaderToggle;
+
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(initMobileHeaderToggle, 50);
+});

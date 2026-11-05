@@ -74,7 +74,7 @@
       initTestPortal();
       initSplitDivider();
       initTheme();
-      initHeaderNavigation();
+      initHeaderNavigation(content);
       initMobileThemeToggle();
       initMobileKeyboardObserver();
 
@@ -644,11 +644,14 @@
     if (slideHeader) {
       const h2 = slideHeader.querySelector('h2');
       if (h2) {
-        h2.innerHTML = `<span style="margin-right: 6px;">📊</span> 01. Spreadsheet Architecture & Formulas`;
+        const dNum = content.day || window.COURSE_DAY || 1;
+        const dStr = String(dNum).padStart(2, '0');
+        h2.innerHTML = `<span style="margin-right: 6px;">📊</span> ${dStr}. ${content.title}`;
       }
       const activeChapterTitle = document.getElementById('activeChapterTitle');
       if (activeChapterTitle) {
-        activeChapterTitle.textContent = '01. Excel Interface & Grid Anatomy';
+        const firstTopic = (content.topics && content.topics[0]) || (content.slides && content.slides[0] && content.slides[0].title) || content.title;
+        activeChapterTitle.textContent = firstTopic;
       }
     }
 
@@ -991,23 +994,12 @@
   }
 
   function initMobileThemeToggle() {
-    const mql = window.matchMedia('(max-width: 768px)');
-    function relocateToggle(e) {
-      const btn = document.getElementById('themeToggleBtn');
-      const dayNav = document.querySelector('.day-navigation');
-      const headerRight = document.querySelector('.header-right');
-      if (!btn || !dayNav || !headerRight) return;
-
-      if (e.matches) {
-        dayNav.appendChild(btn);
-      } else {
-        if (headerRight.firstChild !== btn) {
-          headerRight.insertBefore(btn, headerRight.firstChild);
-        }
-      }
+    // Keep themeToggleBtn cleanly inside header-right across all viewports
+    const btn = document.getElementById('themeToggleBtn');
+    const headerRight = document.querySelector('.header-right');
+    if (btn && headerRight && !headerRight.contains(btn)) {
+      headerRight.insertBefore(btn, headerRight.firstChild);
     }
-    mql.addEventListener('change', relocateToggle);
-    relocateToggle(mql);
   }
 
   function initMobileKeyboardObserver() {
@@ -1130,7 +1122,8 @@
   }
   window.showComingSoonToast = showComingSoonToast;
 
-  function initHeaderNavigation() {
+  function initHeaderNavigation(content) {
+    const curContent = content || getActiveExcelContent() || {};
     updateDayNavArrows();
 
     const daySelect = document.getElementById('daySelect');
@@ -1309,7 +1302,10 @@
     }
 
     if (topicSelect) {
-      topicSelect.innerHTML = `<option value="topic01" selected>Spreadsheet Architecture & Essential Formulas</option>`;
+      const curContentFinal = curContent || (window.EXCEL_COURSE_CONTENT && window.EXCEL_COURSE_CONTENT[`excelDay${String(currentDayNum).padStart(2, '0')}`]) || {};
+      const dayTitle = curContent.title || (window.EXCEL_MANIFEST && window.EXCEL_MANIFEST.find(d => d.day === currentDayNum)?.title) || 'Excel Orientation & Essential Mathematical Formulas';
+      const durationStr = curContent.lectureDuration || '10:00';
+      topicSelect.innerHTML = `<option value="topic01" selected>${dayTitle}</option>`;
       const topicPill = topicSelect.closest('.topic-picker-pill');
       if (topicPill) {
         topicPill.querySelectorAll('.day-picker-dot').forEach(el => el.remove());
@@ -1320,15 +1316,17 @@
           topicPill.insertBefore(trigger, topicSelect);
         }
         trigger.innerHTML = `
-          <span class="trigger-title">Spreadsheet Architecture & Formulas</span>
-          <span class="trigger-duration-badge" style="background: rgba(16, 124, 65, 0.2); color: #21A366; border: 1px solid rgba(16, 124, 65, 0.4); padding: 1px 7px; border-radius: 12px; font-size: 11px; font-weight: 700; margin-left: 6px;">10:00</span>
+          <span class="trigger-title">${dayTitle}</span>
+          <span class="trigger-duration-badge" style="background: rgba(16, 124, 65, 0.2); color: #21A366; border: 1px solid rgba(16, 124, 65, 0.4); padding: 1px 7px; border-radius: 12px; font-size: 11px; font-weight: 700; margin-left: 6px;">${durationStr}</span>
         `;
       }
     }
 
     const inLessonBtn = document.querySelector('.in-this-lesson-pill') || document.getElementById('inThisLessonBtn') || document.querySelector('.chapter-dropdown-btn');
     if (inLessonBtn) {
-      inLessonBtn.innerHTML = `<span>01. Excel Interface & Grid Anatomy</span> <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>`;
+      const curContentFinal = curContent || (window.EXCEL_COURSE_CONTENT && window.EXCEL_COURSE_CONTENT[`excelDay${String(currentDayNum).padStart(2, '0')}`]) || {};
+      const firstSectionTitle = (curContent.topics && curContent.topics[0]) || '01. Excel Interface & Grid Anatomy';
+      inLessonBtn.innerHTML = `<span>${firstSectionTitle}</span> <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>`;
     }
   }
 

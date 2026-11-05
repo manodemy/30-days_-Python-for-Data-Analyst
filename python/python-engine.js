@@ -4803,24 +4803,11 @@ if (document.readyState === 'loading') {
 
 // ── Mobile Theme Toggle Relocation ──
 function initMobileThemeToggle() {
-  const mql = window.matchMedia('(max-width: 768px)');
-  function relocateToggle(e) {
-    const btn = document.getElementById('themeToggleBtn');
-    const dayNav = document.querySelector('.day-navigation');
-    const headerRight = document.querySelector('.header-right');
-    const topicPill = document.querySelector('.topic-picker-pill');
-    if (!btn || !dayNav || !headerRight) return;
-
-    if (e.matches) {
-      dayNav.appendChild(btn);
-    } else {
-      if (headerRight.firstChild !== btn) {
-        headerRight.insertBefore(btn, headerRight.firstChild);
-      }
-    }
+  const btn = document.getElementById('themeToggleBtn');
+  const headerRight = document.querySelector('.header-right');
+  if (btn && headerRight && !headerRight.contains(btn)) {
+    headerRight.insertBefore(btn, headerRight.firstChild);
   }
-  mql.addEventListener('change', relocateToggle);
-  relocateToggle(mql);
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initMobileThemeToggle);
