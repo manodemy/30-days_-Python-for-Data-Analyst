@@ -1146,6 +1146,32 @@
             if (optionsMenu.children.length === 0) {
               renderDayOptionsMenu();
             }
+            if (window.innerWidth <= 900) {
+              // Body portal on mobile to escape all container overflow/backdrop-filter bugs
+              if (optionsMenu.parentElement !== document.body) {
+                document.body.appendChild(optionsMenu);
+              }
+              const rect = dayPill.getBoundingClientRect();
+              optionsMenu.style.position = 'fixed';
+              optionsMenu.style.top = Math.max(70, Math.round(rect.bottom + 6)) + 'px';
+              optionsMenu.style.left = '10px';
+              optionsMenu.style.right = '10px';
+              optionsMenu.style.width = 'calc(100vw - 20px)';
+              optionsMenu.style.zIndex = '999999';
+              optionsMenu.style.maxHeight = '65vh';
+            } else {
+              // On desktop, keep inside dayPill
+              if (optionsMenu.parentElement !== dayPill) {
+                dayPill.appendChild(optionsMenu);
+              }
+              optionsMenu.style.removeProperty('position');
+              optionsMenu.style.removeProperty('top');
+              optionsMenu.style.removeProperty('left');
+              optionsMenu.style.removeProperty('right');
+              optionsMenu.style.removeProperty('width');
+              optionsMenu.style.removeProperty('zIndex');
+              optionsMenu.style.removeProperty('maxHeight');
+            }
             optionsMenu.classList.add('open');
             dayPill.classList.add('open');
           }
