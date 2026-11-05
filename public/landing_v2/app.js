@@ -1313,13 +1313,9 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (isPaid) window.location.href = `/notebook/excel-day${day}`;
         else openCheckout();
       } else {
-        // Python days 01-03 ship a complete static simulator and are free for
-        // everyone; day 03 (Strings) joined that set when it went live.
-        const pythonDay = parseInt(day, 10);
-        if (pythonDay >= 1 && pythonDay <= 3) {
-          const dd = String(pythonDay).padStart(2, '0');
-          window.location.href = `/python/day${dd}.html`;
-        } else if (isPaid) window.location.href = `/notebook/day${day}`;
+        if (day === '01') window.location.href = '/python/day01.html';
+        else if (day === '02') window.location.href = '/python/day02.html';
+        else if (isPaid) window.location.href = `/notebook/day${day}`;
         else openCheckout();
       }
     });
