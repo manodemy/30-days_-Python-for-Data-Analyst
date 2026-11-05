@@ -1219,6 +1219,29 @@ th.spotlight-col {
   100% { outline-offset: -2px; }
 }
 
+/* ── Inline Cell Editor (Real Excel-style in-cell input) ─────────── */
+.excel-inline-input {
+  position: absolute;
+  z-index: 200;
+  border: 2px solid #217346 !important;
+  outline: none !important;
+  padding: 0 4px;
+  font-size: 12px;
+  font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+  background: #ffffff;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(33, 115, 70, 0.25);
+  caret-color: #000;
+}
+.excel-inline-input:focus {
+  outline: none !important;
+  border-color: #107c41 !important;
+}
+/* Selection highlight inside the multi-cell range while editing */
+.excel-cell.active-cell.in-range {
+  background: rgba(33, 115, 70, 0.08) !important;
+}
+
 .corner-triangle {
   width: 0;
   height: 0;

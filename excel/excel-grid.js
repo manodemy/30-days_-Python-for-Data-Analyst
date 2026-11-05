@@ -52,11 +52,13 @@
       this.activeCol = 0;
       this.selectionStart = { row: 0, col: 0 };
       this.selectionEnd = { row: 0, col: 0 };
+      this.selectionAnchor = { row: 0, col: 0 }; // Anchor for Shift/Ctrl+Shift range expansion
       this.isSelecting = false;
       this.headerSelectMode = null; // 'col' | 'row'
 
       this.isEditing = false;
       this.editCell = null;
+      this.inlineEditorEl = null; // Inline cell editor overlay element
       this.copiedRange = null; // { sheet, minR, maxR, minC, maxC, tsv, isCut }
       this.undoStack = [];
       this.redoStack = [];
@@ -250,6 +252,22 @@
       this.updateSelectionOverlays();
       this.updateFormulaBar();
       this.updateStatusBar();
+
+      // Reposition inline editor overlay after every render (TD positions may shift with scroll)
+      if (this.isEditing && this.inlineEditorEl) {
+        const activeTd = this.table.querySelector(`td[data-row="${this.activeRow}"][data-col="${this.activeCol}"]`);
+        if (activeTd) {
+          const rect = activeTd.getBoundingClientRect();
+          const containerRect = this.container.getBoundingClientRect();
+          const topPos = rect.top - containerRect.top + this.container.scrollTop;
+          const leftPos = rect.left - containerRect.left + this.container.scrollLeft;
+          this.inlineEditorEl.style.top = topPos + 'px';
+          this.inlineEditorEl.style.left = leftPos + 'px';
+          this.inlineEditorEl.style.width = Math.max(rect.width, 90) + 'px';
+          this.inlineEditorEl.style.height = rect.height + 'px';
+          this.inlineEditorEl.focus();
+        }
+      }
     }
 
     isInSelection(r, c) {
@@ -599,6 +617,7 @@
     selectAll() {
       this.activeRow = 0;
       this.activeCol = 0;
+      this.selectionAnchor = { row: 0, col: 0 };
       this.selectionStart = { row: 0, col: 0 };
       this.selectionEnd = { row: TOTAL_ROWS - 1, col: TOTAL_COLS - 1 };
       this.updateFormulaBar();
@@ -771,6 +790,7 @@
           const c = parseInt(colTh.getAttribute('data-col'), 10);
           this.activeRow = 0;
           this.activeCol = c;
+          this.selectionAnchor = { row: 0, col: c };
           this.selectionStart = { row: 0, col: c };
           this.selectionEnd = { row: TOTAL_ROWS - 1, col: c };
           this.headerSelectMode = 'col';
@@ -788,6 +808,7 @@
           const r = parseInt(rowTh.getAttribute('data-row'), 10);
           this.activeRow = r;
           this.activeCol = 0;
+          this.selectionAnchor = { row: r, col: 0 };
           this.selectionStart = { row: r, col: 0 };
           this.selectionEnd = { row: r, col: TOTAL_COLS - 1 };
           this.headerSelectMode = 'row';
@@ -1073,6 +1094,11 @@
           const val = this.formulaInput.value;
           const caret = this.formulaInput.selectionStart || val.length;
 
+          // Keep inline editor in sync with formula bar
+          if (this.inlineEditorEl && this.inlineEditorEl.value !== val) {
+            this.inlineEditorEl.value = val;
+          }
+
           if (this.shouldEnterPointMode(val, caret)) {
             if (!this.pointMode.isActive) {
               this.enterPointMode(this.activeSheetName, this.activeRow, this.activeCol, caret);
@@ -1122,9 +1148,22 @@
       this.activeCol = Math.max(0, Math.min(TOTAL_COLS - 1, col));
 
       if (!expandSelection) {
+        // Not expanding: anchor moves to new cell, single cell selection
+        this.selectionAnchor = { row: this.activeRow, col: this.activeCol };
         this.selectionStart = { row: this.activeRow, col: this.activeCol };
+        this.selectionEnd = { row: this.activeRow, col: this.activeCol };
+      } else {
+        // Expanding: keep anchor fixed, extend selection to current active cell
+        // selectionStart = min(anchor, active), selectionEnd = max(anchor, active)
+        this.selectionStart = {
+          row: Math.min(this.selectionAnchor.row, this.activeRow),
+          col: Math.min(this.selectionAnchor.col, this.activeCol)
+        };
+        this.selectionEnd = {
+          row: Math.max(this.selectionAnchor.row, this.activeRow),
+          col: Math.max(this.selectionAnchor.col, this.activeCol)
+        };
       }
-      this.selectionEnd = { row: this.activeRow, col: this.activeCol };
 
       this.updateFormulaBar();
       this.updateStatusBar();
@@ -1137,30 +1176,128 @@
     }
 
     startEditing(initialChar = null) {
-      this.isEditing = true;
-      if (this.formulaInput) {
-        if (initialChar !== null) {
-          this.formulaInput.value = initialChar;
-        } else {
-          const cellObj = this.workbook.getCell(this.activeSheetName, this.activeRow, this.activeCol);
-          this.formulaInput.value = cellObj ? (cellObj.formula || cellObj.raw || '') : '';
-        }
-        this.formulaInput.focus();
-        const len = this.formulaInput.value.length;
-        this.formulaInput.setSelectionRange(len, len);
+      // Remove any existing inline editor first
+      this.removeInlineEditor();
 
-        // Dispatch input event to trigger Point Mode if = was typed
+      this.isEditing = true;
+      const cellObj = this.workbook.getCell(this.activeSheetName, this.activeRow, this.activeCol);
+      const rawVal = cellObj ? (cellObj.formula || cellObj.raw || '') : '';
+      const startVal = initialChar !== null ? initialChar : rawVal;
+
+      // Sync formula bar
+      if (this.formulaInput) {
+        this.formulaInput.value = startVal;
+        // Fire input event to trigger Point Mode detection if = typed
         this.formulaInput.dispatchEvent(new Event('input', { bubbles: true }));
       }
+
+      // --- Inline Cell Editor Overlay ---
+      // Find the active cell <td> in the rendered table
+      const activeTd = this.table.querySelector(`td[data-row="${this.activeRow}"][data-col="${this.activeCol}"]`);
+      if (activeTd) {
+        const rect = activeTd.getBoundingClientRect();
+        const containerRect = this.container.getBoundingClientRect();
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = startVal;
+        input.className = 'excel-inline-input';
+
+        // Position absolutely over the cell, relative to the container
+        const topPos = rect.top - containerRect.top + this.container.scrollTop;
+        const leftPos = rect.left - containerRect.left + this.container.scrollLeft;
+
+        input.style.cssText = `
+          position: absolute;
+          top: ${topPos}px;
+          left: ${leftPos}px;
+          width: ${Math.max(rect.width, 90)}px;
+          height: ${rect.height}px;
+          z-index: 200;
+          border: 2px solid #217346;
+          outline: none;
+          padding: 0 4px;
+          font-size: 12px;
+          font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+          background: #fff;
+          box-sizing: border-box;
+          line-height: ${rect.height}px;
+        `;
+
+        // Keep formula bar in sync while typing in cell
+        input.addEventListener('input', () => {
+          if (this.formulaInput) {
+            this.formulaInput.value = input.value;
+            this.formulaInput.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
+
+        // Keyboard handling inside inline editor
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            e.stopPropagation();
+            this.commitEdit(e.shiftKey ? -1 : 1, 0);
+          } else if (e.key === 'Tab') {
+            e.preventDefault();
+            e.stopPropagation();
+            this.commitEdit(0, e.shiftKey ? -1 : 1);
+          } else if (e.key === 'Escape') {
+            e.preventDefault();
+            e.stopPropagation();
+            this.cancelEdit();
+          } else if (e.key === 'F4') {
+            e.preventDefault();
+            this.cycleF4InFormulaBar();
+            input.value = this.formulaInput ? this.formulaInput.value : input.value;
+          } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            // Allow navigating away with arrow (commits edit)
+            e.preventDefault();
+            e.stopPropagation();
+            this.commitEdit(e.key === 'ArrowDown' ? 1 : -1, 0);
+          }
+        });
+
+        // Position the container to allow absolute children
+        const containerPos = window.getComputedStyle(this.container).position;
+        if (containerPos === 'static') {
+          this.container.style.position = 'relative';
+        }
+
+        this.container.appendChild(input);
+        this.inlineEditorEl = input;
+        input.focus();
+        const len = input.value.length;
+        input.setSelectionRange(len, len);
+      } else {
+        // Fallback: focus formula bar if cell TD not in view yet
+        if (this.formulaInput) {
+          this.formulaInput.focus();
+          const len = this.formulaInput.value.length;
+          this.formulaInput.setSelectionRange(len, len);
+        }
+      }
+
       this.updateStatusBar();
     }
 
-    commitEdit(moveDeltaRow = 0, moveDeltaCol = 0) {
-      if (this.formulaInput) {
-        const val = this.formulaInput.value;
-        this.pushUndoCommand(this.activeSheetName, this.activeRow, this.activeCol);
-        this.workbook.setCellValue(this.activeSheetName, this.activeRow, this.activeCol, val);
+    removeInlineEditor() {
+      if (this.inlineEditorEl) {
+        this.inlineEditorEl.remove();
+        this.inlineEditorEl = null;
       }
+    }
+
+    commitEdit(moveDeltaRow = 0, moveDeltaCol = 0) {
+      // Read value from inline editor if present, otherwise from formula bar
+      const val = this.inlineEditorEl
+        ? this.inlineEditorEl.value
+        : (this.formulaInput ? this.formulaInput.value : '');
+
+      this.removeInlineEditor();
+      this.pushUndoCommand(this.activeSheetName, this.activeRow, this.activeCol);
+      this.workbook.setCellValue(this.activeSheetName, this.activeRow, this.activeCol, val);
+
       this.isEditing = false;
       if (moveDeltaRow !== 0 || moveDeltaCol !== 0) {
         this.moveActiveCell(moveDeltaRow, moveDeltaCol);
@@ -1171,6 +1308,7 @@
     }
 
     cancelEdit() {
+      this.removeInlineEditor();
       this.isEditing = false;
       this.updateFormulaBar();
       this.render();
