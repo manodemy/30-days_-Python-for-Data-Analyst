@@ -277,15 +277,15 @@
       });
     }
 
-    const xpEarned = challenge.xp || 75;
+    const marksEarned = challenge.marks || 1.0;
     return {
       id: challenge.id,
       passed: isPassed,
-      score: isPassed ? (challenge.marks || 1.0) : 0,
+      score: isPassed ? marksEarned : 0,
       userFormula,
       userValue,
       expectedValue: expected,
-      feedback: isPassed ? `🌟 100% Correct (+${xpEarned} XP)` : (checks.find(c => !c.passed)?.detail || "Check failed."),
+      feedback: isPassed ? `100% Correct (+${marksEarned.toFixed(1)} Marks)` : (checks.find(c => !c.passed)?.detail || "Check failed."),
       checks
     };
   }
@@ -346,12 +346,12 @@
         detail = "State criteria satisfied.";
     }
 
-    const xpEarned = challenge.xp || 75;
+    const marksEarned = challenge.marks || 1.0;
     return {
       id: challenge.id,
       passed,
-      score: passed ? (challenge.marks || 1.0) : 0,
-      feedback: passed ? `🌟 100% Correct (+${xpEarned} XP)` : detail,
+      score: passed ? marksEarned : 0,
+      feedback: passed ? `100% Correct (+${marksEarned.toFixed(1)} Marks)` : detail,
       checks: [{ name: `State Check: ${stateCheck.type}`, passed, detail }]
     };
   }
@@ -378,7 +378,7 @@
       score: passed ? 1.0 : 0,
       userValue: topOrderId,
       expectedValue: "ORD-1006 (Total Revenue: $12,600)",
-      feedback: passed ? "🌟 100% Correct! Dataset successfully sorted descending by Revenue." : "Dataset is not yet sorted descending by Total Revenue. Select Column G and click Sort Z to A.",
+      feedback: passed ? "100% Correct! Dataset successfully sorted descending by Revenue." : "Dataset is not yet sorted descending by Total Revenue. Select Column G and click Sort Z to A.",
       checks: [
         {
           name: "Descending Revenue Sort Check",
@@ -400,7 +400,7 @@
       score: hasRule ? 1.0 : 0,
       userValue: hasRule ? "Rule Applied" : "None",
       expectedValue: "Cell Equals 'High' -> Emerald Fill",
-      feedback: hasRule ? "🌟 100% Correct! Conditional formatting rule successfully applied." : "Conditional formatting rule for 'High' not yet active.",
+      feedback: hasRule ? "100% Correct! Conditional formatting rule successfully applied." : "Conditional formatting rule for 'High' not yet active.",
       checks: [
         {
           name: "Conditional Formatting Rule Check",

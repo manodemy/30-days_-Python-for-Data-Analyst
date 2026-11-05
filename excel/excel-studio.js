@@ -209,6 +209,41 @@
       grid.applyQuestionSpotlight(ch);
     }
 
+    const outMsg = document.getElementById('outputInitMsg');
+    if (outMsg) {
+      if (passedChallenges.has(ch.id)) {
+        outMsg.className = 'output-success';
+        const marksAwarded = (ch.marks || 1.0).toFixed(1);
+        outMsg.innerHTML = `
+          <div class="result-card result-card--success">
+            <div class="result-header">
+              <div class="result-status">
+                <span class="result-icon-circle result-icon-circle--success">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <span class="result-title">Solved</span>
+              </div>
+              <span class="result-score-badge">+${marksAwarded} Marks</span>
+            </div>
+            <div class="result-body">
+              <div class="result-field">
+                <span class="result-field-label">Target Cell</span>
+                <code class="result-field-code">${ch.targetCell || ''}</code>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        outMsg.className = 'output-success';
+        outMsg.innerHTML = `
+          <div class="result-prompt-card">
+            <span style="font-size: 1.1rem; flex-shrink: 0;">💡</span>
+            <span>Enter your formula in <strong>${ch.targetCell || 'the target cell'}</strong> and press <strong>Enter</strong> (or click <strong>Check Formula</strong>).</span>
+          </div>
+        `;
+      }
+    }
+
     populateQuestionPicker();
   }
 
@@ -275,13 +310,52 @@
     if (outMsg) {
       if (gradeResult.passed) {
         outMsg.className = 'output-success';
-        outMsg.textContent = `🎉 ${gradeResult.feedback}`;
+        const marksAwarded = (ch.marks || 1.0).toFixed(1);
+        const evalVal = gradeResult.userValue !== null && gradeResult.userValue !== undefined ? gradeResult.userValue : '';
+        outMsg.innerHTML = `
+          <div class="result-card result-card--success">
+            <div class="result-header">
+              <div class="result-status">
+                <span class="result-icon-circle result-icon-circle--success">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <span class="result-title">100% Correct</span>
+              </div>
+              <span class="result-score-badge">+${marksAwarded} Marks</span>
+            </div>
+            <div class="result-body">
+              <div class="result-field">
+                <span class="result-field-label">Formula</span>
+                <code class="result-field-code">${gradeResult.userFormula || ''}</code>
+              </div>
+              <div class="result-field">
+                <span class="result-field-label">Computed Value</span>
+                <span class="result-field-value">${evalVal}</span>
+              </div>
+            </div>
+          </div>
+        `;
         passedChallenges.add(ch.id);
         updateScorecardUI();
         populateQuestionPicker();
       } else {
         outMsg.className = 'output-error';
-        outMsg.textContent = `⚠️ Check Failed: ${gradeResult.feedback}`;
+        outMsg.innerHTML = `
+          <div class="result-card result-card--error">
+            <div class="result-header">
+              <div class="result-status">
+                <span class="result-icon-circle result-icon-circle--error">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 4L12 12M12 4L4 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+                </span>
+                <span class="result-title">Check Incomplete</span>
+              </div>
+              <span class="result-error-pill">Needs Review</span>
+            </div>
+            <div class="result-body">
+              <div class="result-message">${gradeResult.feedback || 'Formula result does not match expected output.'}</div>
+            </div>
+          </div>
+        `;
       }
     }
   }
@@ -337,7 +411,12 @@
     const outMsg = document.getElementById('outputInitMsg');
     if (outMsg) {
       outMsg.className = 'output-info';
-      outMsg.textContent = `💡 Hint for ${ch.title}: ${ch.hint}`;
+      outMsg.innerHTML = `
+        <div class="result-prompt-card" style="border-color: rgba(56, 189, 248, 0.35); background: rgba(56, 189, 248, 0.08); color: #38bdf8;">
+          <span style="font-size: 1.1rem; flex-shrink: 0;">💡</span>
+          <span><strong>Hint for ${ch.title}:</strong> ${ch.hint}</span>
+        </div>
+      `;
     }
 
     if (grid && ch.targetCell && ch.expectedFormulaPrefix) {
@@ -358,7 +437,12 @@
     const outMsg = document.getElementById('outputInitMsg');
     if (outMsg) {
       outMsg.className = 'output-success';
-      outMsg.textContent = '↺ Workbook reset to initial starter data.';
+      outMsg.innerHTML = `
+        <div class="result-prompt-card" style="border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); color: #34d399;">
+          <span style="font-size: 1.1rem; flex-shrink: 0;">↺</span>
+          <span>Workbook reset to initial starter state.</span>
+        </div>
+      `;
     }
   }
 
@@ -397,7 +481,12 @@
     const outMsg = document.getElementById('outputInitMsg');
     if (outMsg) {
       outMsg.className = 'output-success';
-      outMsg.textContent = '📥 Generated authentic Microsoft 365 OOXML workbook: Manodemy_Day01_Sales_Practice.xlsx';
+      outMsg.innerHTML = `
+        <div class="result-prompt-card" style="border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); color: #34d399;">
+          <span style="font-size: 1.1rem; flex-shrink: 0;">📥</span>
+          <span>Downloaded authentic Microsoft 365 OOXML workbook: <strong>Manodemy_Day01_Sales_Practice.xlsx</strong></span>
+        </div>
+      `;
     }
   }
 
@@ -1070,8 +1159,8 @@
           optionsMenu.innerHTML = '';
 
           const tracks = [
+            { key: 'excel', label: '📊 Excel Mastery (Days 01–12)', days: allDays.filter(d => d.track === 'excel') },
             { key: 'sql', label: '🗄️ SQL Mastery (Days 01–18)', days: allDays.filter(d => d.track === 'sql') },
-            { key: 'excel', label: '📊 Advanced Excel & BI (Days 19–30)', days: allDays.filter(d => d.track === 'excel') },
             { key: 'python', label: '🐍 Python for Data Analysis (Days 31–60)', days: allDays.filter(d => d.track === 'python') }
           ];
 
