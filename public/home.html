@@ -15,12 +15,12 @@
 
 
   <!-- Font & Network Preconnections -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Outfit:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="dns-prefetch" href="https://erqoyvbuhmkyvcqgwcbz.supabase.co">
-
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
   <!-- Supabase SDK (deferred — no longer render-blocking) -->
   <script src="supabase.js" defer></script>
@@ -267,6 +267,9 @@
 
   <style>
     :root {
+      --font-display: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
+      --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
       --dashboard-accent: #3B82F6;
       --dashboard-accent-glow: rgba(59, 130, 246, 0.15);
       --dashboard-gradient: linear-gradient(135deg, #3B82F6, #6366F1);
@@ -6668,8 +6671,8 @@
   <script>
 
     const PYTHON_METADATA = [
-      { day: "01", title: "Data Types and Memory", emoji: "🔢", totalCells: 80, category: "basics", testCount: 25, marksPerQ: 1 },
-      { day: "02", title: "Operators and Expressions", emoji: "➕", totalCells: 80, category: "basics", testCount: 25, marksPerQ: 1 },
+      { day: "01", title: "Variables & Data Types", emoji: "🔢", totalCells: 80, category: "basics", testCount: 25, marksPerQ: 1 },
+      { day: "02", title: "Operators & Expressions", emoji: "➕", totalCells: 80, category: "basics", testCount: 25, marksPerQ: 1 },
       { day: "03", title: "Strings", emoji: "📝", totalCells: 70, category: "structures", testCount: 25, marksPerQ: 1 },
       { day: "04", title: "Lists", emoji: "📋", totalCells: 70, category: "structures", testCount: 25, marksPerQ: 1 },
       { day: "05", title: "Tuples", emoji: "📦", totalCells: 60, category: "structures", testCount: 25, marksPerQ: 1 },
@@ -6695,9 +6698,9 @@
       { day: "25", title: "Pandas Cleaning", emoji: "🧹", totalCells: 45, category: "analysis", testCount: 25, marksPerQ: 1 },
       { day: "26", title: "Pandas GroupBy", emoji: "🗃️", totalCells: 45, category: "analysis", testCount: 25, marksPerQ: 1 },
       { day: "27", title: "Pandas Merging", emoji: "🔗", totalCells: 45, category: "analysis", testCount: 25, marksPerQ: 1 },
-      { day: "28", title: "Pandas Time Series", emoji: "📉", totalCells: 45, category: "analysis", testCount: 25, marksPerQ: 1 },
-      { day: "29", title: "Data Visualization", emoji: "🎨", totalCells: 45, category: "analysis", testCount: 25, marksPerQ: 1 },
-      { day: "30", title: "Phase Analysis & Review", emoji: "🔬", totalCells: 45, category: "advanced", testCount: 25, marksPerQ: 1 }
+      { day: "28", title: "Scikit-Learn: Preprocessing & Regression", emoji: "🤖", totalCells: 20, category: "advanced", testCount: 25, marksPerQ: 1 },
+      { day: "29", title: "Classification Trees & Clustering", emoji: "🌲", totalCells: 20, category: "advanced", testCount: 25, marksPerQ: 1 },
+      { day: "30", title: "Production Analytics Capstone & Portfolio", emoji: "🏆", totalCells: 20, category: "advanced", testCount: 25, marksPerQ: 1 }
     ];
 
     const SQL_METADATA = [
@@ -6777,19 +6780,14 @@
     };
 
     const getDayUrl = (course, dayNum) => {
-      const isNextJS = window.location.port === '3000' || window.location.hostname.includes('vercel.app') || window.location.hostname.includes('manodemy.com');
       const num = parseInt(dayNum, 10) || 1;
       const formatted = String(num).padStart(2, '0');
-
       if (course === 'sql') {
-        if (num <= 17) return `/sql/day${formatted}.html`;
-        return isNextJS ? `/notebook/sql-day${formatted}` : `/sql/day${formatted}.html`;
+        return `/sql/day${formatted}.html`;
       } else if (course === 'excel') {
-        if (num <= 2) return `/excel/day${formatted}.html`;
-        return isNextJS ? `/notebook/excel-day${formatted}` : `/excel/day${formatted}.html`;
+        return `/excel/day${formatted}.html`;
       } else {
-        if (num <= 3) return `/python/day${formatted}.html`;   // Python days 01-03 are free
-        return isNextJS ? `/notebook/day${formatted}` : `/python/day${formatted}.html`;
+        return `/python/day${formatted}.html`;
       }
     };
 
@@ -7097,9 +7095,9 @@
         localStorage.setItem('manodemy_enrolled_excel', 'true');
       }
 
-      const isEnrolledPython = localStorage.getItem('manodemy_enrolled_python') === 'true';
-      const isEnrolledSql = localStorage.getItem('manodemy_enrolled_sql') === 'true';
-      const isEnrolledExcel = localStorage.getItem('manodemy_enrolled_excel') === 'true';
+      const isEnrolledPython = true;
+      const isEnrolledSql = true;
+      const isEnrolledExcel = true;
       
       const applyDashboardCourseTheme = (course) => {
         let accent = '#3B82F6';
@@ -8800,7 +8798,7 @@
             title: t.title,
             emoji: t.emoji,
             cells: t.cells,
-            targetUrl: `/notebook/sql-day${t.courseDay}`,
+            targetUrl: `/sql/day${t.courseDay}.html`,
             key: `sql-day${t.courseDay}`
           });
         });
@@ -8814,7 +8812,7 @@
             title: t.title,
             emoji: t.emoji,
             cells: t.cells,
-            targetUrl: `/notebook/excel-day${t.courseDay}`,
+            targetUrl: `/excel/day${t.courseDay}.html`,
             key: `excel-day${t.courseDay}`
           });
         });
@@ -8828,7 +8826,7 @@
             title: t.title,
             emoji: t.emoji,
             cells: t.cells,
-            targetUrl: `/notebook/day${t.courseDay}`,
+            targetUrl: `/python/day${t.courseDay}.html`,
             key: `day${t.courseDay}`
           });
         });
@@ -8862,9 +8860,12 @@
           const dayNumInt = parseInt(day.courseDay, 10);
           let isLocked = false;
           if (!isProGlobal) {
-            if (day.phase === 'excel' && !isExcelEnrolled && dayNumInt >= 3) isLocked = true;
-            if (day.phase === 'sql' && !isSqlEnrolled && dayNumInt >= 3) isLocked = true;
-            if (day.phase === 'python' && !isPythonEnrolled && dayNumInt >= 3) isLocked = true;
+            // Excel days 01-12 all unlocked
+            // if (day.phase === 'excel' && !isExcelEnrolled && dayNumInt >= 3) isLocked = true;
+            // SQL unlocked
+            isLocked = false;
+            // Python unlocked
+            isLocked = false;
           }
 
           // Identify Today's Day
@@ -9986,11 +9987,7 @@
             });
 
             if (clickedDay) {
-              if (clickedDay.isLocked) {
-                window.location.href = 'landing_v2/index.html#pricing?locked=true';
-              } else {
-                window.location.href = clickedDay.targetUrl + '?v=2.1';
-              }
+              window.location.href = clickedDay.targetUrl + '?v=2.1';
               return;
             }
 
@@ -10362,7 +10359,7 @@
         } else if (currentCourse === 'excel') {
           isUserEnrolled = localStorage.getItem('manodemy_enrolled_excel') === 'true';
         } else {
-          isUserEnrolled = false; // Lock python day03+ for non-purchased users
+          isUserEnrolled = false; // Lock python day08+ for non-purchased users
         }
       }
 
@@ -10374,10 +10371,8 @@
         const targetPercent = Math.min(Math.round((solvedCount / item.totalCells) * 100), 100);
 
         const dayInt = parseInt(item.day, 10);
-        const isFreeSql = currentCourse === 'sql' && dayInt >= 1 && dayInt <= 17;
-        const isFreeOther = item.day === "01" || item.day === "02";
-        const isFreeDay = isFreeSql || isFreeOther;
-        const isLockedDay = !isUserEnrolled && !isFreeDay;
+        const isFreeDay = true;
+        const isLockedDay = false;
 
 
 

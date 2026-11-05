@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Day 16: String Functions — SQL for Data Analyst — Manodemy</title>
+  <title>Day 16: Window Functions II � SQL for Data Analyst � Manodemy</title>
   <meta name="description" content="Day 16: String Functions — Interactive workbook with hands-on challenges. Part of Manodemy's SQL for Data Analyst course.">
   <meta name="robots" content="index, follow">
 <!-- Fonts -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <!-- CodeMirror 5 -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Outfit:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- CodeMirror 5 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
 
   <!-- App CSS -->
-  <link rel="stylesheet" href="/Version-3/styles.css?v=83.0">
+  <link rel="stylesheet" href="/Version-3/styles.css?v=87.0.0">
 
   <!-- CodeMirror JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
@@ -33,41 +33,7 @@
 
   <!-- Supabase SDK (deferred) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <!-- Authentication + Enrollment Route Guard -->
-  <script>
-    document.addEventListener('DOMContentLoaded', async function PaywallGuard() {
-      const currentPath = window.location.pathname;
-      const isProtectedDay = currentPath.match(/day18\.html/);
-      const removePreload = () => {
-        const p = document.getElementById('paywall-preload-screen');
-        if (p) p.remove();
-      };
-      if (!isProtectedDay) { removePreload(); return; }
-      try {
-        if (typeof window.supabase === 'undefined') {
-          window.location.href = '../index.html?reason=sdk_blocked'; return;
-        }
-        const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
-        const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
-        const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-        const { data: { session }, error } = await sb.auth.getSession();
-        if (error || !session) {
-          window.location.href = `../index.html?redirect=${encodeURIComponent(currentPath)}`; return;
-        }
-        const plan = session.user.user_metadata?.plan;
-        const isEnrolledLocal = localStorage.getItem('manodemy_enrolled') === 'true';
-        if (plan === 'pro' || isEnrolledLocal) { removePreload(); return; }
-        try {
-          const { data: enrolled } = await sb.rpc('check_enrollment', { p_course_id: 'sql-20day' });
-          if (enrolled) {
-            localStorage.setItem('manodemy_enrolled', 'true');
-            removePreload(); return;
-          }
-        } catch (rpcErr) { /* RPC failed */ }
-        window.location.href = `../index.html#pricing?locked=true`;
-      } catch (err) { window.location.href = `../index.html`; }
-    });
-  </script>
+  
 
   <!-- Theme Initialization (Anti-FOUC) -->
   <script>
@@ -82,10 +48,7 @@
 </head>
 <body>
 
-  <!-- Paywall Preload Screen -->
-  <div id="paywall-preload-screen" class="paywall-preload" aria-hidden="true">
-    <div class="paywall-preload__spinner"></div>
-  </div>
+  
 
 
 
@@ -130,6 +93,7 @@
     <div class="header-center">
       <!-- Day Selector Dropdown & Topic Selector Dropdown -->
       <div class="day-navigation">
+        <button class="day-nav-arrow-btn day-nav-arrow-btn--prev" id="prevDayBtn" onclick="navigateToPrevDay()" title="Previous Day" aria-label="Previous Day"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
         <div class="day-picker-pill">
           <span class="day-picker-dot day-picker-dot--day"></span>
           <select id="daySelect">
@@ -140,15 +104,15 @@
           </span>
         </div>
 
-        <div class="day-picker-pill topic-picker-pill">
+        <div class="day-picker-pill topic-picker-pill no-dropdown">
           <span class="day-picker-dot day-picker-dot--topic"></span>
           <select id="topicSelect" onchange="onTopicSelectChange(this.value)">
             <!-- Populated dynamically -->
           </select>
-          <span class="day-picker-chevron">
-            <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
+          
         </div>
+
+        <button class="day-nav-arrow-btn day-nav-arrow-btn--next" id="nextDayBtn" onclick="navigateToNextDay()" title="Next Day" aria-label="Next Day"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
 
         <button class="hdr-btn hdr-btn--autoplay" id="navPlayBtn" onclick="toggleCombinedPlayback()" title="Play lecture narration" style="display: none;">
           <span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>
@@ -198,7 +162,7 @@
         </span>
       </button>
       <button class="hdr-btn hdr-btn--test" id="takeTestBtn" onclick="openTestPortal()" title="Take the day test">🧪 Take Test</button>
-      <button class="hdr-btn hdr-btn--score" id="scoreBtn" onclick="openScoreCard()" title="View Score Card">
+      <button class="hdr-btn hdr-btn--score" id="scoreBtn" onclick="window.location.href='/home.html'" title="View Score Card">
         <svg class="score-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right: 4px;"><path d="M1.5 1.5H5.5V5.5H1.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 1.5H12.5V5.5H8.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 8.5H5.5V12.5H1.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8.5H12.5V12.5H8.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Score Card
       </button>
@@ -221,11 +185,21 @@
   </header>
 
   <div class="mobile-tabs-nav" id="mobileTabsNav">
-    <button class="mobile-tab-btn" id="tabBtnPractice" onclick="setMobileTab('practice')">
-      <span class="tab-emoji">💻</span> Practice
-    </button>
-    <button class="mobile-tab-btn active" id="tabBtnTheory" onclick="setMobileTab('theory')">
-      <span class="tab-emoji">📖</span> Lesson
+    <div class="mobile-tabs-group">
+      <button class="mobile-tab-btn" id="tabBtnPractice" onclick="setMobileTab('practice')">
+        <span class="tab-emoji">💻</span> Practice
+      </button>
+      <button class="mobile-tab-btn active" id="tabBtnTheory" onclick="setMobileTab('theory')">
+        <span class="tab-emoji">📖</span> Lesson
+      </button>
+    </div>
+    <button class="mobile-hdr-toggle-btn" id="mobileHdrToggleBtn" onclick="toggleMobileHeader(event)" aria-label="Toggle top header bars" title="Hide top header info">
+      <span class="hdr-toggle-icon">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </span>
+      <span class="hdr-toggle-label">Hide Info</span>
     </button>
   </div>
 
@@ -267,6 +241,7 @@
           <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         </button>
         <div class="spacer"></div>
+        <button class="tb-btn tb-btn--solution" onclick="peekSolution()" title="Peek reference solution">💡 Solution</button>
         <button class="tb-btn tb-btn--run" id="runBtn" onclick="runCurrentQuery()">▶ Run</button>
         <button class="tb-btn tb-btn--tables" id="peekTrigger" onclick="togglePeekPopover(event)">📊 Tables</button>
         <button class="tb-btn tb-btn--clear" onclick="clearEditor()">✕ Clear</button>
@@ -504,12 +479,12 @@
           <div class="stats-row">
             <div class="stats-item">
               <span class="stats-label">ATTEMPTED</span>
-              <span class="stats-value"><span id="testAttemptedCount">0</span><span class="stats-total"> / 25</span></span>
+              <span class="stats-value stats-value--fraction"><span class="stats-num" id="testAttemptedCount">0</span><span class="stats-den">25</span></span>
             </div>
             <div class="stats-divider"></div>
             <div class="stats-item">
               <span class="stats-label">BEST SCORE</span>
-              <span class="stats-value"><span id="testBestScoreCount">0</span><span class="stats-total"> / 25</span></span>
+              <span class="stats-value stats-value--fraction"><span class="stats-num" id="testBestScoreCount">0</span><span class="stats-den">25</span></span>
             </div>
           </div>
           <div class="stats-progress-bar">
@@ -524,7 +499,7 @@
 
       <div class="test-header-right">
         <!-- Score Card Button -->
-        <button class="hdr-btn hdr-btn--score" id="testScoreBtn" onclick="openTestScoreCard()" title="View Score Card">
+        <button class="hdr-btn hdr-btn--score" id="testScoreBtn" onclick="window.location.href='/home.html'" title="View Score Card">
           <svg class="score-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right: 4px;"><path d="M1.5 1.5H5.5V5.5H1.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 1.5H12.5V5.5H8.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1.5 8.5H5.5V12.5H1.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8.5H12.5V12.5H8.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Score Card
         </button>
@@ -569,7 +544,9 @@
         <div class="test-toolbar">
           <span class="q-counter" id="testQCounter">Q1 / 25</span>
           <div class="spacer" style="flex:1"></div>
+          <button class="tb-btn tb-btn--solution" onclick="peekTestSolution()" title="Peek reference solution">💡 Solution</button>
           <button class="tb-btn tb-btn--run" onclick="runTestQuery()">▶ Run</button>
+          <button class="tb-btn tb-btn--tables" onclick="togglePeekPopover(event)">📊 Tables</button>
           <button class="tb-btn tb-btn--clear" onclick="clearTestEditor()">✕ Clear</button>
         </div>
 
@@ -606,7 +583,8 @@
           </tbody>
         </table>
       </div>
-      <div class="scorecard-footer">
+      <div class="scorecard-footer" style="display: flex; justify-content: space-between; align-items: center;">
+        <a href="/home.html" class="scorecard-dashboard-btn" style="background: linear-gradient(135deg, #00e6f6, #a855f7); color: #060913; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; margin-right: auto;">📊 View Overall Scorecard</a>
         <button class="scorecard-close-btn" onclick="closeScorecard()">Close</button>
       </div>
     </div>
@@ -618,12 +596,12 @@
   <!-- Supabase SDK -->
   <script src="/supabase.js" defer></script>
   <!-- Content & Grading modules -->
-  <script src="/Version-3/content/manifest.js?v=66.0"></script>
-  <script src="/Version-3/content/day-16.js?v=59.5"></script>
-  <script src="/Version-3/db-seeds/retail-seed.js?v=66.0"></script>
-  <script src="/Version-3/grading-engine.js?v=66.0"></script>
-  <script src="/Version-3/persistence.js?v=66.0"></script>
+  <script src="/Version-3/content/manifest.js?v=82.0"></script>
+  <script src="/Version-3/content/day-16.js?v=63.0"></script>
+  <script src="/Version-3/db-seeds/retail-seed.js?v=82.0"></script>
+  <script src="/Version-3/grading-engine.js?v=68.0"></script>
+  <script src="/Version-3/persistence.js?v=82.0"></script>
   <!-- App JS -->
-  <script src="/Version-3/mano-engine.js?v=83.0"></script>
+  <script src="/Version-3/mano-engine.js?v=87.0.0"></script>
 </body>
 </html>

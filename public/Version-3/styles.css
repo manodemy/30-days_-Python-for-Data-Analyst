@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Outfit:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 /* ═══════════════════════════════════════════════════════════════
    Version-3: Scrimba SQL Sandbox — Complete Stylesheet
@@ -7,7 +7,7 @@
 /* ─── Dual-Theme Design Tokens Architecture ─── */
 :root, [data-theme="dark"] {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   --font: var(--font-sans);
   --mono: var(--font-mono);
@@ -466,6 +466,8 @@ a { color: var(--cyan); text-decoration: none; }
    HEADER
    ═══════════════════════════════════════════════════════════════ */
 .header {
+  position: relative !important;
+  z-index: 50000 !important;
   background: var(--surface);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -1299,6 +1301,8 @@ a { color: var(--cyan); text-decoration: none; }
 
 /* Toolbar */
 .editor-toolbar {
+  position: relative;
+  z-index: 20;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1331,6 +1335,7 @@ a { color: var(--cyan); text-decoration: none; }
 /* ── Question Picker Wrapper ── */
 .q-picker-wrapper {
   position: relative;
+  z-index: 101;
   display: inline-flex;
   align-items: center;
 }
@@ -3511,7 +3516,7 @@ pre span {
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 9000;
+  z-index: 200000 !important;
   background: var(--bg);
   flex-direction: column;
 }
@@ -3882,7 +3887,7 @@ pre span {
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 10000 !important;
+  z-index: 250000 !important;
   background: var(--modal-overlay);
   backdrop-filter: blur(12px);
   justify-content: center;
@@ -4014,6 +4019,7 @@ pre span {
   /* Header layout updates on mobile view to support 2 ultra-slim rows */
   .header {
     height: auto !important;
+    max-height: 160px !important;
     display: grid !important;
     grid-template-areas:
       "left right"
@@ -4024,7 +4030,22 @@ pre span {
     padding: 4px clamp(4px, 1.5vw, 8px) !important;
     background: var(--surface) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-    overflow-x: hidden !important;
+    overflow: hidden !important;
+    transition: max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.22s ease,
+                padding 0.28s ease,
+                border-color 0.28s ease !important;
+  }
+
+  .header.is-collapsed {
+    max-height: 0 !important;
+    opacity: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-bottom-width: 0 !important;
+    border-bottom-color: transparent !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
   }
   .header-left {
     grid-area: left !important;
@@ -4089,27 +4110,53 @@ pre span {
     flex-shrink: 1 !important;
   }
   .topic-picker-pill {
-    flex: 1 1 auto !important;
-    max-width: 190px !important;
-    min-width: 80px !important;
-    height: 24px !important;
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 26px !important;
+  }
+  .day-nav-arrow-btn {
+    width: 26px !important;
+    min-width: 26px !important;
+    height: 26px !important;
+    padding: 0 !important;
+    border-radius: 6px !important;
+  }
+  .day-picker-pill:not(.topic-picker-pill) {
+    height: 26px !important;
+    padding: 0 6px !important;
+    font-size: 11.5px !important;
+    flex-shrink: 0 !important;
+  }
+  .header-left .back-to-home-btn {
+    margin-right: 0 !important;
+  }
+  .trigger-duration-badge,
+  .topic-picker-pill .trigger-duration-badge,
+  .topic-duration-badge {
+    display: none !important;
+  }
+  .trigger-duration-badge,
+  .topic-picker-pill .trigger-duration-badge,
+  .topic-duration-badge {
+    display: none !important;
   }
   /* Mode toggle when placed next to topic dropdown in Row 2 */
   .day-navigation .theme-toggle-btn {
     flex-shrink: 0 !important;
-    margin-left: auto !important; /* Pushes mode toggle directly to the far right edge in the same line */
-    width: 50px !important;
-    height: 25px !important;
+    margin-left: auto !important;
+    width: 38px !important;
+    height: 22px !important;
     padding: 0 !important;
   }
   .day-navigation .theme-switch-thumb {
-    width: 19px !important;
-    height: 19px !important;
+    width: 16px !important;
+    height: 16px !important;
     top: 2px !important;
-    left: 3px !important;
+    left: 2px !important;
   }
   [data-theme="light"] .day-navigation .theme-switch-thumb {
-    transform: translateX(25px) !important;
+    transform: translateX(16px) !important;
   }
 
   .header-right {
@@ -4143,15 +4190,9 @@ pre span {
     margin-right: 1px !important;
   }
 
-  /* Overall Score Card badge in Row 1 */
+  /* Overall Score Card badge is hidden on mobile to prevent Row 1 collision */
   .header-overall-score {
-    height: 24px !important;
-    padding: 0 clamp(4px, 1.2vw, 7px) !important;
-    gap: 3px !important;
-    flex-shrink: 0 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    border-radius: 6px !important;
+    display: none !important;
   }
   .overall-score-curr {
     font-size: clamp(0.56rem, 1.5vw, 0.68rem) !important;
@@ -4343,71 +4384,335 @@ pre span {
     border-width: 1px !important;
   }
 
-  /* Mobile Tab Navigation — Floating icon-only overlay vertically centered on screen edges */
+  /* Mobile Tab Navigation Bar */
   .mobile-tabs-nav {
     display: flex !important;
-    position: fixed !important;
-    top: 50% !important; /* Vertically centered */
-    transform: translateY(-50%) !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: auto !important;
-    background: transparent !important;
-    border-bottom: none !important;
-    z-index: 200 !important;
-    pointer-events: none;
-    justify-content: space-between !important;
+    position: relative !important;
+    width: 100% !important;
+    height: 34px !important;
+    background: #0b0f1a !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     align-items: center !important;
-    padding: 0 !important;
+    justify-content: space-between !important;
+    flex-shrink: 0 !important;
+    z-index: 90 !important;
+    padding: 3px 10px !important;
+    box-sizing: border-box !important;
+    gap: 8px !important;
+  }
+
+  .mobile-tabs-group {
+    display: inline-flex !important;
+    align-items: center !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 9999px !important;
+    padding: 2px !important;
+    gap: 3px !important;
   }
   
   .mobile-tab-btn {
-    pointer-events: auto;
     flex: 0 0 auto !important;
-    width: 32px !important;
-    height: 48px !important; /* Elegant vertical tab shape */
-    background: rgba(8, 12, 21, 0.8) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    color: #64748b;
-    font-size: 0 !important; /* Hide text labels */
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
-  }
-
-  #tabBtnPractice {
-    border-left: none !important; /* Code button flush to left edge */
-    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-radius: 0 8px 8px 0 !important; /* Curve on inner right side */
-  }
-
-  #tabBtnTheory {
-    border-right: none !important; /* Theory button flush to right edge */
-    border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-radius: 8px 0 0 8px !important; /* Curve on inner left side */
+    height: 26px !important;
+    padding: 0 11px !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 9999px !important;
+    color: #94a3b8 !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    text-transform: none !important;
+    line-height: 1 !important;
   }
   
-  .mobile-tab-btn:hover {
-    background: rgba(8, 12, 21, 0.95) !important;
+  .mobile-tab-btn:hover:not(.active) {
+    color: #f1f5f9 !important;
+    background: rgba(255, 255, 255, 0.06) !important;
   }
   
   .mobile-tab-btn.active {
-    color: #00e6f6 !important;
-    border-color: rgba(0, 230, 246, 0.3) !important;
-    background: rgba(0, 230, 246, 0.15) !important;
-    box-shadow: 0 4px 14px rgba(0, 230, 246, 0.2) !important;
+    color: #030712 !important;
+    background: linear-gradient(135deg, #00f6ff 0%, #0077fe 100%) !important;
+    border-color: rgba(0, 246, 255, 0.7) !important;
+    box-shadow: 0 1px 8px rgba(0, 246, 255, 0.35) !important;
+    font-weight: 800 !important;
   }
 
   .tab-emoji {
-    display: inline !important;
-    font-size: 0.95rem !important; /* Slightly larger emoji for clean view */
+    display: inline-block !important;
+    font-size: 0.78rem !important;
     line-height: 1 !important;
+  }
+
+  /* Hide / Show Header Info Bar Button */
+  .mobile-hdr-toggle-btn {
+    height: 26px !important;
+    padding: 0 9px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 9999px !important;
+    color: #cbd5e1 !important;
+    font-size: 0.67rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    flex-shrink: 0 !important;
+    line-height: 1 !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  .mobile-hdr-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+  }
+
+  .mobile-hdr-toggle-btn.is-collapsed {
+    background: rgba(0, 246, 255, 0.1) !important;
+    border-color: rgba(0, 246, 255, 0.5) !important;
+    color: #00f6ff !important;
+    box-shadow: 0 0 8px rgba(0, 246, 255, 0.2) !important;
+  }
+
+  .mobile-hdr-toggle-btn .hdr-toggle-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  [data-theme="light"] .mobile-tabs-nav {
+    background: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+  }
+  [data-theme="light"] .mobile-tabs-group {
+    background: rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+  }
+  [data-theme="light"] .mobile-tab-btn {
+    color: #64748b !important;
+  }
+  [data-theme="light"] .mobile-tab-btn:hover:not(.active) {
+    background: rgba(0, 0, 0, 0.04) !important;
+    color: #1e293b !important;
+  }
+  [data-theme="light"] .mobile-tab-btn.active {
+    background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+    box-shadow: 0 1px 8px rgba(2, 132, 199, 0.3) !important;
+  }
+  [data-theme="light"] .mobile-hdr-toggle-btn {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #475569 !important;
+  }
+  [data-theme="light"] .mobile-hdr-toggle-btn:hover {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+    border-color: #94a3b8 !important;
+  }
+  [data-theme="light"] .mobile-hdr-toggle-btn.is-collapsed {
+    background: #eff6ff !important;
+    border-color: #3b82f6 !important;
+    color: #2563eb !important;
+    box-shadow: 0 0 6px rgba(59, 130, 246, 0.2) !important;
+  }
+  
+  
+  /* ═══════════════════════════════════════════════════════════════
+     MOBILE PRACTICE TOOLBAR - ZERO OVERFLOW & ZERO TEXT CLIPPING
+     ═══════════════════════════════════════════════════════════════ */
+  .editor-toolbar {
+    position: relative !important;
+    z-index: 20 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    padding: 4px 6px !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-height: 36px !important;
+  }
+  .editor-toolbar::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .editor-toolbar .spacer {
+    display: none !important;
+  }
+
+  .q-picker-wrapper {
+    position: relative !important;
+    z-index: 1001 !important;
+  }
+
+  /* Question Picker Popover Mobile Fix — Never Clipped, Zero Horizontal Crop */
+  .q-picker-popover {
+    position: fixed !important;
+    left: 8px !important;
+    right: 8px !important;
+    width: auto !important;
+    max-width: calc(100vw - 16px) !important;
+    max-height: min(440px, 65vh) !important;
+    z-index: 999999 !important;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.15) !important;
+    margin: 0 !important;
+  }
+  [data-theme="light"] .q-picker-popover {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.08) !important;
+  }
+  .q-picker-list {
+    max-height: calc(min(440px, 65vh) - 45px) !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+  }
+  .q-picker-item {
+    padding: 9px 12px !important;
+    min-height: 42px !important;
+    box-sizing: border-box !important;
+  }
+  .q-picker-item-title {
+    font-size: 0.8rem !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Compact Question Navigation Buttons */
+  .editor-toolbar .q-nav-btn {
+    width: 24px !important;
+    height: 26px !important;
+    min-width: 24px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 5px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Question Picker Trigger - Single Line, Never Wraps */
+  .q-picker-trigger {
+    padding: 2px 7px !important;
+    height: 26px !important;
+    gap: 4px !important;
+    border-radius: 5px !important;
+    flex-shrink: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+  }
+
+  .q-counter {
+    font-size: 0.68rem !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.01em !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+  }
+
+  .q-picker-chevron {
+    width: 8px !important;
+    height: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Solution Audio Button */
+  .editor-toolbar .audio-play-btn {
+    width: 24px !important;
+    height: 26px !important;
+    min-width: 24px !important;
+    padding: 0 !important;
+    margin-left: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 5px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Compact Action Buttons - Perfectly proportioned for touch */
+  .editor-toolbar .tb-btn {
+    height: 26px !important;
+    padding: 0 7px !important;
+    font-size: 0.66rem !important;
+    font-weight: 700 !important;
+    gap: 3px !important;
+    border-radius: 5px !important;
+    flex-shrink: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+  }
+
+  .editor-toolbar .tb-btn--run {
+    padding: 0 9px !important;
+    background: #059669 !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+  }
+
+  .editor-toolbar .tb-btn--solution {
+    padding: 0 8px !important;
+    font-weight: 800 !important;
+  }
+
+  .editor-toolbar .tb-btn--tables {
+    padding: 0 7px !important;
+  }
+
+  .editor-toolbar .tb-btn--clear {
+    padding: 0 6px !important;
+  }
+
+  [data-theme="light"] .editor-toolbar {
+    background: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+  }
+  [data-theme="light"] .q-picker-trigger {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+  }
+  [data-theme="light"] .editor-toolbar .tb-btn {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #475569 !important;
+  }
+  [data-theme="light"] .editor-toolbar .tb-btn--run {
+    background: #059669 !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+  }
+  [data-theme="light"] .editor-toolbar .tb-btn--solution {
+    background: #fffbeb !important;
+    border-color: #f59e0b !important;
+    color: #b45309 !important;
+  }
+  [data-theme="light"] .editor-toolbar .tb-btn--tables {
+    background: #f8fafc !important;
+    border-color: #f59e0b !important;
+    color: #d97706 !important;
   }
 
   /* Full screen view rules for tabs on mobile */
@@ -5269,6 +5574,7 @@ pre span {
 
 .custom-select-options {
   position: absolute;
+  z-index: 100000 !important;
   top: calc(100% + 10px);
   left: 0;
   width: max-content;
@@ -10461,6 +10767,7 @@ code.schema-peek-trigger:hover {
 
 .custom-select-options {
   position: absolute;
+  z-index: 100000 !important;
   top: calc(100% + 6px);
   left: 0;
   min-width: 240px;
@@ -10963,4 +11270,649 @@ code.schema-peek-trigger:hover {
 }
 [data-theme="light"] .slide-content .audio-play-btn {
   color: #475569 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PREMIUM DAY NAVIGATION ARROW BUTTONS (Prev & Next Day)
+   ═══════════════════════════════════════════════════════════════ */
+.day-nav-arrow-btn {
+  width: 32px; min-width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-2, #141620) !important;
+  border: 1.5px solid var(--border, rgba(255, 255, 255, 0.12)) !important;
+  color: var(--text-secondary, #94a3b8) !important;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.day-nav-arrow-btn svg {
+  display: block;
+  stroke-width: 2.6px;
+  transition: transform 0.2s ease, stroke 0.2s ease;
+}
+.day-nav-arrow-btn:hover:not(:disabled):not(.disabled) {
+  color: var(--cyan, #00f6ff) !important;
+  border-color: rgba(0, 246, 255, 0.45) !important;
+  background: #1f2338 !important;
+  box-shadow: 0 0 12px rgba(0, 246, 255, 0.35) !important;
+  transform: translateY(-0.5px) scale(1.06);
+}
+.day-nav-arrow-btn--prev:hover:not(:disabled):not(.disabled) svg {
+  transform: translateX(-1.5px);
+}
+.day-nav-arrow-btn--next:hover:not(:disabled):not(.disabled) svg {
+  transform: translateX(1.5px);
+}
+.day-nav-arrow-btn:active:not(:disabled):not(.disabled) {
+  transform: translateY(0) scale(0.95);
+}
+.day-nav-arrow-btn.disabled,
+.day-nav-arrow-btn:disabled {
+  opacity: 0.22 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  background: rgba(15, 23, 42, 0.3) !important;
+  box-shadow: none !important;
+}
+
+/* Light Mode Arrow Buttons */
+[data-theme="light"] .day-nav-arrow-btn {
+  background: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+  color: #475569 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+[data-theme="light"] .day-nav-arrow-btn:hover:not(:disabled):not(.disabled) {
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+  background: #f8fafc !important;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.16) !important;
+}
+[data-theme="light"] .day-nav-arrow-btn.disabled,
+[data-theme="light"] .day-nav-arrow-btn:disabled {
+  opacity: 0.28 !important;
+  border-color: #e2e8f0 !important;
+  background: #f1f5f9 !important;
+  color: #94a3b8 !important;
+}
+
+/* Hide Chevron for Single-Topic Days */
+.day-picker-pill.no-dropdown .day-picker-chevron,
+.topic-picker-pill.no-dropdown .day-picker-chevron,
+.no-dropdown .day-picker-chevron {
+  display: none !important;
+}
+.day-picker-pill.no-dropdown {
+  padding-right: 12px !important;
+  cursor: default !important;
+}
+
+/* Interactive Solution Button */
+.tb-btn--solution {
+  background: rgba(245, 158, 11, 0.12) !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+  color: #fbbf24 !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+.tb-btn--solution:hover {
+  background: rgba(245, 158, 11, 0.22) !important;
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.25) !important;
+}
+[data-theme="light"] .tb-btn--solution {
+  background: #fef3c7 !important;
+  border-color: #f59e0b !important;
+  color: #b45309 !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   Python Code Block: macOS IDE Chrome (Traffic Lights + Title)
+   Covers both .mac-dot (Days 08-11) and .traffic-light patterns
+   (Days 06-07, 12-13, 15-27) plus .py-code-box (Days 01-14)
+   ══════════════════════════════════════════════════════════════ */
+
+/* ─── Code Block Container & Header ─── */
+.code-subblock-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 8px 14px !important;
+  background: #050811 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px 8px 0 0 !important;
+  flex-shrink: 0 !important;
+}
+[data-theme="light"] .code-subblock-header {
+  background: #f1f5f9 !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+/* ─── macOS Dot Pattern (.mac-dots / .mac-dot) — Days 08-11 ─── */
+.mac-dots {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+.mac-dot {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
+}
+.mac-dot.red   { background: #ef4444 !important; }
+.mac-dot.yellow { background: #f59e0b !important; }
+.mac-dot.green  { background: #10b981 !important; }
+[data-theme="light"] .mac-dot.red    { background: #ef4444 !important; }
+[data-theme="light"] .mac-dot.yellow { background: #f59e0b !important; }
+[data-theme="light"] .mac-dot.green  { background: #10b981 !important; }
+
+/* ─── Traffic Light Pattern (.traffic-light) — Days 06-07, 16-27 ─── */
+.code-subblock-traffic-lights {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+.traffic-light {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
+}
+.traffic-light.red,
+.traffic-light.light-red   { background: #ef4444 !important; }
+.traffic-light.yellow,
+.traffic-light.light-yellow { background: #f59e0b !important; }
+.traffic-light.green,
+.traffic-light.light-green  { background: #10b981 !important; }
+[data-theme="light"] .traffic-light.red,
+[data-theme="light"] .traffic-light.light-red   { background: #ef4444 !important; }
+[data-theme="light"] .traffic-light.yellow,
+[data-theme="light"] .traffic-light.light-yellow { background: #f59e0b !important; }
+[data-theme="light"] .traffic-light.green,
+[data-theme="light"] .traffic-light.light-green  { background: #10b981 !important; }
+
+/* ─── Code Filename Title ─── */
+.code-subblock-title {
+  font-size: 0.7rem !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  color: rgba(148, 163, 184, 0.8) !important;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  max-width: 55% !important;
+  text-align: right !important;
+  flex: 1 !important;
+  margin-left: 8px !important;
+}
+[data-theme="light"] .code-subblock-title {
+  color: #64748b !important;
+}
+
+/* ─── Code Subblock with Header: remove top padding, full-bleed header ─── */
+.code-subblock:has(.code-subblock-header),
+.code-subblock:has(.code-subblock-traffic-lights) {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ─── Code Subblock Body (the code area below the header) ─── */
+.code-subblock-body,
+.code-subblock-body pre {
+  padding: 12px 16px !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+/* ─── .py-code-box — used in Days 01-05 and as code container in 12-27 ─── */
+.py-code-box {
+  margin: 0 !important;
+  padding: 12px 16px !important;
+  background: #080d1a !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+  font-size: 0.78rem !important;
+  color: #f8fafc !important;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+  line-height: 1.6 !important;
+  overflow-x: auto !important;
+}
+.py-code-box pre {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  font-size: inherit !important;
+  color: inherit !important;
+}
+.py-code-box code {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  color: inherit !important;
+  background: transparent !important;
+}
+[data-theme="light"] .py-code-box {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+}
+[data-theme="light"] .py-code-box pre,
+[data-theme="light"] .py-code-box code {
+  color: #0f172a !important;
+}
+
+/* When py-code-box is used inside a code-subblock structure (Days 20-27),
+   remove its own border-radius so header+body look like one unit */
+.code-subblock-traffic-lights ~ .py-code-box,
+.code-subblock > .py-code-box {
+  border-top: none !important;
+  border-radius: 0 0 8px 8px !important;
+}
+
+/* ─── Syntax Token Colors in py-code-box (Days 12-27 use span.code-keyword, .code-string etc.) ─── */
+/* Dark mode tokens */
+.py-code-box .code-keyword, .py-code-box .kw { color: #38bdf8 !important; font-weight: 700 !important; }
+.py-code-box .code-string,  .py-code-box .code-str  { color: #86efac !important; }
+.py-code-box .code-comment, .py-code-box .code-cmt  { color: #94a3b8 !important; font-style: italic !important; }
+.py-code-box .code-number,  .py-code-box .code-num  { color: #fbbf24 !important; }
+.py-code-box .code-function,.py-code-box .code-fn   { color: #a78bfa !important; }
+.py-code-box .code-builtin  { color: #34d399 !important; }
+.py-code-box .code-operator { color: #f472b6 !important; }
+.py-code-box .code-class    { color: #fcd34d !important; font-weight: 700 !important; }
+/* Light mode tokens */
+[data-theme="light"] .py-code-box .code-keyword, [data-theme="light"] .py-code-box .kw { color: #0c4a6e !important; font-weight: 700 !important; }
+[data-theme="light"] .py-code-box .code-string,  [data-theme="light"] .py-code-box .code-str  { color: #166534 !important; }
+[data-theme="light"] .py-code-box .code-comment, [data-theme="light"] .py-code-box .code-cmt  { color: #64748b !important; font-style: italic !important; }
+[data-theme="light"] .py-code-box .code-number,  [data-theme="light"] .py-code-box .code-num  { color: #b45309 !important; }
+[data-theme="light"] .py-code-box .code-function,[data-theme="light"] .py-code-box .code-fn   { color: #6d28d9 !important; }
+[data-theme="light"] .py-code-box .code-builtin  { color: #0f766e !important; }
+[data-theme="light"] .py-code-box .code-operator { color: #be185d !important; }
+[data-theme="light"] .py-code-box .code-class    { color: #92400e !important; font-weight: 700 !important; }
+
+/* Syntax tokens inside code-subblock (for Days 06-11 that use code-subblock with kw/code-comment) */
+.code-subblock .code-keyword { color: #38bdf8 !important; font-weight: 700 !important; }
+.code-subblock .code-string  { color: #86efac !important; }
+.code-subblock .code-number  { color: #fbbf24 !important; }
+.code-subblock .code-function { color: #a78bfa !important; }
+.code-subblock .code-builtin  { color: #34d399 !important; }
+[data-theme="light"] .code-subblock .code-keyword { color: #0c4a6e !important; font-weight: 700 !important; }
+[data-theme="light"] .code-subblock .code-string  { color: #166534 !important; }
+[data-theme="light"] .code-subblock .code-number  { color: #b45309 !important; }
+[data-theme="light"] .code-subblock .code-function { color: #6d28d9 !important; }
+[data-theme="light"] .code-subblock .code-builtin  { color: #0f766e !important; }
+
+/* ─── Copy Button in code-subblock-header ─── */
+.code-subblock .copy-btn,
+.code-subblock-header .copy-btn {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: rgba(148, 163, 184, 0.7) !important;
+  border-radius: 4px !important;
+  padding: 2px 8px !important;
+  font-size: 0.68rem !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  font-family: 'Inter', sans-serif !important;
+}
+.code-subblock .copy-btn:hover,
+.code-subblock-header .copy-btn:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #f8fafc !important;
+}
+[data-theme="light"] .code-subblock .copy-btn,
+[data-theme="light"] .code-subblock-header .copy-btn {
+  border-color: #cbd5e1 !important;
+  color: #64748b !important;
+}
+[data-theme="light"] .code-subblock .copy-btn:hover {
+  background: #e2e8f0 !important;
+  color: #1e293b !important;
+}
+
+/* ─── Ensure code-subblock with header has proper border-radius ─── */
+.code-subblock {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+[data-theme="light"] .code-subblock {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+}
+
+
+/* ─── Safety Guard: Code Line & Number Gutter Styling ─── */
+.code-line {
+  display: flex !important;
+  line-height: 1.55 !important;
+  min-height: 1.55em !important;
+}
+.code-line-num {
+  display: inline-block !important;
+  width: 2.2rem !important;
+  min-width: 2.2rem !important;
+  text-align: right !important;
+  padding-right: 12px !important;
+  margin-right: 12px !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #64748b !important;
+  user-select: none !important;
+  opacity: 0.7 !important;
+}
+[data-theme="light"] .code-line-num {
+  border-right-color: #cbd5e1 !important;
+  color: #94a3b8 !important;
+}
+.code-line-code {
+  flex: 1 !important;
+  white-space: pre !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   Universal Light Mode High-Contrast Typography & Color Science
+   Guarantees WCAG AAA visibility for all Python code & components
+   ══════════════════════════════════════════════════════════════ */
+
+/* ─── 1. Code Syntax Tokens (Light Mode) ─── */
+[data-theme="light"] .py-var,
+[data-theme="light"] .code-var,
+[data-theme="light"] .code-subblock .py-var,
+[data-theme="light"] .code-subblock .code-var,
+[data-theme="light"] .py-code-box .py-var,
+[data-theme="light"] .py-code-box .code-var,
+[data-theme="light"] pre code .py-var,
+[data-theme="light"] pre code .code-var {
+  color: #0f172a !important; /* Deep charcoal black (14.5:1 contrast on white) */
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .py-fn,
+[data-theme="light"] .code-fn,
+[data-theme="light"] .code-function,
+[data-theme="light"] .code-subblock .py-fn,
+[data-theme="light"] .code-subblock .code-fn,
+[data-theme="light"] .code-subblock .code-function,
+[data-theme="light"] .py-code-box .py-fn,
+[data-theme="light"] .py-code-box .code-fn,
+[data-theme="light"] .py-code-box .code-function,
+[data-theme="light"] pre code .py-fn,
+[data-theme="light"] pre code .code-fn,
+[data-theme="light"] pre code .code-function {
+  color: #1d4ed8 !important; /* Deep royal sapphire blue (6.5:1 contrast) */
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .py-kw,
+[data-theme="light"] .code-kw,
+[data-theme="light"] .code-keyword,
+[data-theme="light"] .kw,
+[data-theme="light"] .code-subblock .py-kw,
+[data-theme="light"] .code-subblock .code-kw,
+[data-theme="light"] .code-subblock .code-keyword,
+[data-theme="light"] .code-subblock .kw,
+[data-theme="light"] .py-code-box .py-kw,
+[data-theme="light"] .py-code-box .code-kw,
+[data-theme="light"] .py-code-box .code-keyword,
+[data-theme="light"] .py-code-box .kw,
+[data-theme="light"] pre code .py-kw,
+[data-theme="light"] pre code .code-kw,
+[data-theme="light"] pre code .code-keyword {
+  color: #be123c !important; /* Deep ruby crimson (5.8:1 contrast) */
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .py-str,
+[data-theme="light"] .code-str,
+[data-theme="light"] .code-string,
+[data-theme="light"] .code-subblock .py-str,
+[data-theme="light"] .code-subblock .code-str,
+[data-theme="light"] .code-subblock .code-string,
+[data-theme="light"] .py-code-box .py-str,
+[data-theme="light"] .py-code-box .code-str,
+[data-theme="light"] .py-code-box .code-string,
+[data-theme="light"] pre code .py-str,
+[data-theme="light"] pre code .code-str,
+[data-theme="light"] pre code .code-string {
+  color: #15803d !important; /* Rich forest green (5.2:1 contrast) */
+  font-weight: 500 !important;
+}
+
+[data-theme="light"] .py-num,
+[data-theme="light"] .code-num,
+[data-theme="light"] .code-number,
+[data-theme="light"] .code-subblock .py-num,
+[data-theme="light"] .code-subblock .code-num,
+[data-theme="light"] .code-subblock .code-number,
+[data-theme="light"] .py-code-box .py-num,
+[data-theme="light"] .py-code-box .code-num,
+[data-theme="light"] .py-code-box .code-number,
+[data-theme="light"] pre code .py-num,
+[data-theme="light"] pre code .code-num,
+[data-theme="light"] pre code .code-number {
+  color: #b45309 !important; /* Deep amber ochre (5.1:1 contrast) */
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .py-comment,
+[data-theme="light"] .code-comment,
+[data-theme="light"] .code-cmt,
+[data-theme="light"] .code-subblock .py-comment,
+[data-theme="light"] .code-subblock .code-comment,
+[data-theme="light"] .code-subblock .code-cmt,
+[data-theme="light"] .py-code-box .py-comment,
+[data-theme="light"] .py-code-box .code-comment,
+[data-theme="light"] .py-code-box .code-cmt,
+[data-theme="light"] pre code .py-comment,
+[data-theme="light"] pre code .code-comment,
+[data-theme="light"] pre code .code-cmt {
+  color: #64748b !important; /* Slate gray (4.6:1 contrast) */
+  font-style: italic !important;
+}
+
+[data-theme="light"] .py-builtin,
+[data-theme="light"] .code-builtin,
+[data-theme="light"] .code-subblock .py-builtin,
+[data-theme="light"] .code-subblock .code-builtin,
+[data-theme="light"] .py-code-box .py-builtin,
+[data-theme="light"] .py-code-box .code-builtin {
+  color: #0f766e !important; /* Deep teal (5.5:1 contrast) */
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .py-cls,
+[data-theme="light"] .code-class,
+[data-theme="light"] .code-subblock .py-cls,
+[data-theme="light"] .code-subblock .code-class {
+  color: #7e22ce !important; /* Royal purple (6.0:1 contrast) */
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .code-operator,
+[data-theme="light"] .code-op {
+  color: #334155 !important; /* Slate */
+  font-weight: 600 !important;
+}
+
+/* ─── 2. Code Block Surfaces & Text (Light Mode) ─── */
+[data-theme="light"] .code-subblock {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-left: 3.5px solid #0284c7 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+[data-theme="light"] .code-subblock-header {
+  background: #f1f5f9 !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+[data-theme="light"] .code-subblock-title {
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+[data-theme="light"] .code-subblock-body,
+[data-theme="light"] .code-subblock pre,
+[data-theme="light"] .code-subblock pre code {
+  color: #0f172a !important; /* Crisp charcoal text */
+  background: #ffffff !important;
+}
+[data-theme="light"] .py-code-box {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+}
+[data-theme="light"] .py-code-box pre,
+[data-theme="light"] .py-code-box code {
+  color: #0f172a !important;
+}
+
+/* ─── 3. Anti-Pattern Tables & Bug/Fix Code Tags (Light Mode) ─── */
+[data-theme="light"] .ap-code-bad,
+[data-theme="light"] .ap-code-bug {
+  background: #fff1f2 !important;
+  border: 1px solid #fecdd3 !important;
+  color: #be123c !important; /* High-contrast crimson (7:1) */
+  font-weight: 700 !important;
+}
+[data-theme="light"] .ap-code-fix,
+[data-theme="light"] .ap-code-good {
+  background: #ecfdf5 !important;
+  border: 1px solid #a7f3d0 !important;
+  color: #047857 !important; /* High-contrast deep emerald (6:1) */
+  font-weight: 700 !important;
+}
+[data-theme="light"] .ap-result-bad,
+[data-theme="light"] .ap-bad-text {
+  color: #be123c !important;
+  font-weight: 600 !important;
+}
+[data-theme="light"] .ap-result-good,
+[data-theme="light"] .ap-good-text {
+  color: #047857 !important;
+  font-weight: 600 !important;
+}
+
+/* ─── 4. Key Notes, Tips, Traps & Callouts (Light Mode) ─── */
+[data-theme="light"] .py-keynotes-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+[data-theme="light"] .py-keynotes-header {
+  background: #f8fafc !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+[data-theme="light"] .py-keynotes-title {
+  color: #0f172a !important;
+}
+[data-theme="light"] .py-keynotes-badge {
+  background: #e0f2fe !important;
+  color: #0369a1 !important;
+  border: 1px solid #bae6fd !important;
+}
+[data-theme="light"] .py-keynotes-list,
+[data-theme="light"] .py-keynotes-list li {
+  color: #334155 !important;
+}
+[data-theme="light"] .py-keynotes-list li strong {
+  color: #0f172a !important;
+}
+[data-theme="light"] .py-keynotes-list li code {
+  color: #0369a1 !important;
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* ─── 5. Semantic Badges, Tool Pills & Showcase Cards (Light Mode) ─── */
+[data-theme="light"] .py-badge,
+[data-theme="light"] .py-badge-blue {
+  background: #e0f2fe !important;
+  color: #0369a1 !important;
+  border: 1px solid #7dd3fc !important;
+}
+[data-theme="light"] .py-badge-green {
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  border: 1px solid #6ee7b7 !important;
+}
+[data-theme="light"] .py-badge-rose {
+  background: #fff1f2 !important;
+  color: #be123c !important;
+  border: 1px solid #fecdd3 !important;
+}
+[data-theme="light"] .py-badge-gold {
+  background: #fefce8 !important;
+  color: #a16207 !important;
+  border: 1px solid #fef08a !important;
+}
+[data-theme="light"] .py-badge-purple {
+  background: #faf5ff !important;
+  color: #7e22ce !important;
+  border: 1px solid #e9d5ff !important;
+}
+[data-theme="light"] .py-tool-pill,
+[data-theme="light"] .py-tool-flag,
+[data-theme="light"] .py-sp-tag,
+[data-theme="light"] .py-sp-code-pill {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+}
+[data-theme="light"] .py-sp-card,
+[data-theme="light"] .py-mut-panel,
+[data-theme="light"] .py-analyst-trap-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+}
+[data-theme="light"] .py-sp-title,
+[data-theme="light"] .py-mut-title,
+[data-theme="light"] .py-anti-title,
+[data-theme="light"] .py-trap-title {
+  color: #0f172a !important;
+}
+[data-theme="light"] .py-sp-desc,
+[data-theme="light"] .py-mut-desc,
+[data-theme="light"] .py-trap-text {
+  color: #334155 !important;
+}
+[data-theme="light"] .py-mut-types-label,
+[data-theme="light"] .py-mut-subtitle,
+[data-theme="light"] .py-mut-takeaway {
+  color: #334155 !important;
+}
+[data-theme="light"] .py-mut-header-text h4,
+[data-theme="light"] .py-mut-header-text h5 {
+  color: #0f172a !important;
+}
+
+
+/* ═════════════════════════════════════════════════════════════════
+   10/10 FLAGSHIP ELEVATION: UNIVERSAL RESPONSIVE HEADER FINAL OVERRIDES
+═════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .day-nav-arrow-btn {
+    width: 26px !important;
+    min-width: 26px !important;
+    height: 26px !important;
+    padding: 0 !important;
+    border-radius: 6px !important;
+  }
+  .day-picker-pill:not(.topic-picker-pill) {
+    height: 26px !important;
+    padding: 0 6px !important;
+    font-size: 11.5px !important;
+    flex-shrink: 0 !important;
+  }
 }

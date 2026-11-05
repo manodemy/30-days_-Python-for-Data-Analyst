@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manodemy - Python Day 03: Strings &amp; Text Processing</title>
+  <title>Manodemy — Python Day 03: Strings & Text Processing</title>
   <meta name="description" content="Day 03: Strings & Text Processing — Interactive Python learning studio with live Pyodide runtime, slide walkthroughs, and timed assessment.">
   <meta name="robots" content="index, follow">
 
   <!-- Fonts -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <!-- CodeMirror 5 -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Outfit:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- CodeMirror 5 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
 
   <!-- App CSS (Shared Flagship Version-3 Stylesheet) -->
-  <link rel="stylesheet" href="/Version-3/styles.css?v=85.0">
+  <link rel="stylesheet" href="/Version-3/styles.css?v=236.0.0">
 
   <style>
     @keyframes playBtnRadarPulse {
@@ -94,6 +94,23 @@
       display: flex !important;
       flex-shrink: 0 !important;
     }
+
+    /* Slide Content & Heading Top Spacing Tightening */
+    .slide-content {
+      padding-top: 8px !important;
+    }
+    .slide-section:first-of-type,
+    .slide-section:first-child,
+    #day02FundamentalsSection,
+    #day03FundamentalsSection {
+      margin-top: 4px !important;
+    }
+    .slide-section:first-of-type .heading-box-wrap,
+    .slide-section:first-child .heading-box-wrap,
+    #day02FundamentalsSection .heading-box-wrap,
+    #day03FundamentalsSection .heading-box-wrap {
+      margin-top: 0 !important;
+    }
   </style>
 
   <!-- CodeMirror JS -->
@@ -118,9 +135,8 @@
       } catch(e) {}
     })();
   </script>
-  <link rel="stylesheet" href="/python/course-design.css?v=156.0">
 </head>
-<body data-course-design-shell="1">
+<body>
 
   <!-- ═══════════════ PYTHON ENGINE LOADING OVERLAY ═══════════════ -->
   <div class="py-loading-overlay" id="pyLoadingOverlay">
@@ -173,6 +189,7 @@
     <div class="header-center">
       <!-- Day Selector Dropdown & Topic Selector Dropdown -->
       <div class="day-navigation">
+        <button class="day-nav-arrow-btn day-nav-arrow-btn--prev" id="prevDayBtn" onclick="navigateToPrevDay()" title="Previous Day" aria-label="Previous Day"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
         <div class="day-picker-pill">
           <span class="day-picker-dot day-picker-dot--day"></span>
           <select id="daySelect">
@@ -183,15 +200,15 @@
           </span>
         </div>
 
-        <div class="day-picker-pill topic-picker-pill">
+        <div class="day-picker-pill topic-picker-pill no-dropdown">
           <span class="day-picker-dot day-picker-dot--topic"></span>
           <select id="topicSelect" onchange="onTopicSelectChange(this.value)">
             <!-- Populated dynamically -->
           </select>
-          <span class="day-picker-chevron">
-            <svg width="8" height="5" viewBox="0 0 8 5" fill="none"><path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
+          
         </div>
+
+        <button class="day-nav-arrow-btn day-nav-arrow-btn--next" id="nextDayBtn" onclick="navigateToNextDay()" title="Next Day" aria-label="Next Day"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
 
         <button class="hdr-btn hdr-btn--autoplay p11-play-radar-pulse" id="navPlayBtn" onclick="toggleCombinedPlayback()" title="Play lecture narration" style="display: inline-flex;">
           <span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>
@@ -266,11 +283,21 @@
   </header>
 
   <div class="mobile-tabs-nav" id="mobileTabsNav">
-    <button class="mobile-tab-btn" id="tabBtnPractice" onclick="setMobileTab('practice')">
-      <span class="tab-emoji">💻</span> Practice
-    </button>
-    <button class="mobile-tab-btn active" id="tabBtnTheory" onclick="setMobileTab('theory')">
-      <span class="tab-emoji">📖</span> Lesson
+    <div class="mobile-tabs-group">
+      <button class="mobile-tab-btn" id="tabBtnPractice" onclick="setMobileTab('practice')">
+        <span class="tab-emoji">💻</span> Practice
+      </button>
+      <button class="mobile-tab-btn active" id="tabBtnTheory" onclick="setMobileTab('theory')">
+        <span class="tab-emoji">📖</span> Lesson
+      </button>
+    </div>
+    <button class="mobile-hdr-toggle-btn" id="mobileHdrToggleBtn" onclick="toggleMobileHeader(event)" aria-label="Toggle top header bars" title="Hide top header info">
+      <span class="hdr-toggle-icon">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </span>
+      <span class="hdr-toggle-label">Hide Info</span>
     </button>
   </div>
 
@@ -529,7 +556,7 @@
       </div>
 
       <div class="test-header-center">
-        <div class="test-title">Day 03 - Strings Assessment</div>
+        <div class="test-title">📝 Day 03 — Python Interview Assessment</div>
       </div>
 
       <div class="test-header-right">
@@ -624,12 +651,12 @@
   </div>
 
   <!-- Content & Grading modules -->
-  <script src="/Version-3/content/manifest.js?v=110.0"></script>
-  <script src="/python/content/manifest.js?v=110.0"></script>
-  <script src="/python/content/py-day-03.js?v=156.0"></script>
-  <script src="/python/python-grading-engine.js?v=156.0"></script>
+  <script src="/Version-3/content/manifest.js?v=236.0"></script>
+  <script src="/python/content/manifest.js?v=236.0"></script>
+  <script src="/python/content/py-narrations.js?v=236.0"></script>
+  <script src="/python/content/py-day-03.js?v=236.0"></script>
+  <script src="/python/python-grading-engine.js?v=236.0"></script>
   <!-- App JS -->
-  <script src="/python/python-engine.js?v=156.0"></script>
-  <script src="/python/course-study.js?v=156.0"></script>
+  <script src="/python/python-engine.js?v=236.0"></script>
 </body>
 </html>
