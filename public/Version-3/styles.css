@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Outfit:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+/* ⚡ Performance: Fonts loaded non-blocking in HTML <link> */
 
 /* ═══════════════════════════════════════════════════════════════
    Version-3: Scrimba SQL Sandbox — Complete Stylesheet
@@ -11915,4 +11915,13 @@ code.schema-peek-trigger:hover {
     font-size: 11.5px !important;
     flex-shrink: 0 !important;
   }
+}
+
+/* ⚡ Lightning Rendering Optimization: Skip off-screen paint & layout computation */
+.theory-slide:not(.active),
+.q-picker-card:not(.visible),
+.scorecard-modal:not(.active),
+.auth-modal:not(.active) {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 450px;
 }

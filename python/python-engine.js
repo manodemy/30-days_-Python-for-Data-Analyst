@@ -727,6 +727,93 @@ const PYTHON_DAY_TRACKS = {
   8.93,
   8.5
 ]
+  },
+  'pyDay04': {
+    tracks: [
+      { "src": "Day04/New_PyDay04Audio01.mp3", "target": "#day04FundamentalsSection", "title": "Fundamentals & Collections", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio02.mp3", "target": "#day04FundamentalsTableSection", "title": "Fundamentals — Reference", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio03.mp3", "target": "#day04FundamentalsCodeSection", "title": "Fundamentals — Code", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio04.mp3", "target": "#day04IndexingSlicingSection", "title": "Indexing & Slicing", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio05.mp3", "target": "#day04IndexingSlicingTableSection", "title": "Indexing & Slicing — Reference", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio06.mp3", "target": "#day04IndexingSlicingCodeSection", "title": "Indexing & Slicing — Code", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio07.mp3", "target": "#day04UnpackingSection", "title": "Unpacking & Starred Assignment", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio08.mp3", "target": "#day04UnpackingTableSection", "title": "Unpacking — Reference", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio09.mp3", "target": "#day04UnpackingCodeSection", "title": "Unpacking — Code", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio10.mp3", "target": "#day04ModifyingSection", "title": "Modifying Lists & Mutability", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio11.mp3", "target": "#day04ModifyingTableSection", "title": "Modifying — Reference", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio12.mp3", "target": "#day04ModifyingCodeSection", "title": "Modifying — Code", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio13.mp3", "target": "#day04AddingSection", "title": "Adding Elements: append, insert, extend", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio14.mp3", "target": "#day04AddingTableSection", "title": "Adding Elements — Reference", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio15.mp3", "target": "#day04AddingCodeSection", "title": "Adding Elements — Code", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio16.mp3", "target": "#day04RemovingSection", "title": "Removing Elements: pop, remove, del", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio17.mp3", "target": "#day04RemovingTableSection", "title": "Removing Elements — Reference", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio18.mp3", "target": "#day04RemovingCodeSection", "title": "Removing Elements — Code", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio19.mp3", "target": "#day04CopyingSection", "title": "References, Shallow & Deep Copy", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio20.mp3", "target": "#day04CopyingTableSection", "title": "Copying — Reference", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio21.mp3", "target": "#day04CopyingCodeSection", "title": "Copying — Code", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio22.mp3", "target": "#day04MistakesSection", "title": "14 Critical List Anti-Patterns", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio23.mp3", "target": "#day04SortingPerfSection", "title": "Sorting, Reversing & Complexity", "type": "narration" },
+      { "src": "Day04/New_PyDay04Audio24.mp3", "target": "#day04SortingPerfCodeSection", "title": "Sorting & Analytics Code", "type": "narration" }
+    ],
+    durations: []
+  },
+  'pyDay05': {
+    tracks: [
+      { "src": "Day05/New_PyDay05Audio01.mp3", "target": "#day05FundamentalsSection", "title": "Fundamentals & Train Ticket", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio02.mp3", "target": "#day05FundamentalsCodeSection", "title": "Syntax & Commas Code", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio03.mp3", "target": "#day05MemorySection", "title": "Memory & Sealed Display Case", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio04.mp3", "target": "#day05MemoryTableSection", "title": "Memory Architecture Reference", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio05.mp3", "target": "#day05MemoryCodeSection", "title": "Memory & Nested Lists Code", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio06.mp3", "target": "#day05IndexingSection", "title": "Indexing & Locker Row", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio07.mp3", "target": "#day05IndexingTableSection", "title": "Indexing Reference Table", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio08.mp3", "target": "#day05IndexingCodeSection", "title": "Indexing & Safe Guard Code", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio09.mp3", "target": "#day05SlicingSection", "title": "Slicing & Stop-Sign Rule", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio10.mp3", "target": "#day05SlicingTableSection", "title": "Slicing Reference Table", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio11.mp3", "target": "#day05SlicingCodeSection", "title": "Slicing & Strides Code", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio12.mp3", "target": "#day05MethodsSection", "title": "Built-in Methods & Operations", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio13.mp3", "target": "#day05MethodsTableSection", "title": "Methods Reference Table", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio14.mp3", "target": "#day05MethodsCodeSection", "title": "Methods & Roundtrip Code", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio15.mp3", "target": "#day05UnpackingSection", "title": "Packing & Unpacking", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio16.mp3", "target": "#day05UnpackingTableSection", "title": "Unpacking Reference Table", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio17.mp3", "target": "#day05UnpackingCodeSection", "title": "Packing & Swap Code", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio18.mp3", "target": "#day05ApplicationsSection", "title": "Real-World Applications", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio19.mp3", "target": "#day05ApplicationsTableSection", "title": "Applications Reference Table", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio20.mp3", "target": "#day05ApplicationsCodeSection", "title": "Dict Keys & NamedTuples Code", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio21.mp3", "target": "#day05DecisionSection", "title": "Architectural Decision Matrix", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio22.mp3", "target": "#day05DecisionTableSection", "title": "Matrix Reference Table", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio23.mp3", "target": "#day05MistakesSection", "title": "10 Critical Anti-Patterns", "type": "narration" },
+      { "src": "Day05/New_PyDay05Audio24.mp3", "target": "#day05MistakesTableSection", "title": "Anti-Patterns Reference Table", "type": "narration" }
+    ],
+    durations: []
+  },
+  'pyDay06': {
+    tracks: [
+      { "src": "Day06/New_PyDay06Audio01.mp3", "target": "#day06FundamentalsSection", "title": "Fundamentals & Properties", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio02.mp3", "target": "#day06PropertiesTableSection", "title": "Structures Comparison Table", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio03.mp3", "target": "#day06CreationSection", "title": "Creation & Empty Set Trap", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio04.mp3", "target": "#day06CreationCodeSection", "title": "Creation Syntax Code", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio05.mp3", "target": "#day06InspectionSection", "title": "Membership & Hash Engine", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio06.mp3", "target": "#day06InspectionTableSection", "title": "Inspection Reference Table", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio07.mp3", "target": "#day06AddSection", "title": "Adding: add vs update", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio08.mp3", "target": "#day06AddMethodsTableSection", "title": "Insertion Methods Table", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio09.mp3", "target": "#day06RemoveSection", "title": "Removing: 5 Eviction Strategies", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio10.mp3", "target": "#day06RemoveMethodsTableSection", "title": "Eviction Reference Table", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio11.mp3", "target": "#day06RemoveCodeSection", "title": "Eviction Strategies Code", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio12.mp3", "target": "#day06DeduplicationSection", "title": "One-Line Deduplication", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio13.mp3", "target": "#day06DeduplicationTableSection", "title": "Deduplication Patterns Table", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio14.mp3", "target": "#day06MathOneSection", "title": "Union & Intersection Math", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio15.mp3", "target": "#day06MathOneCodeSection", "title": "Union & Intersection Code", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio16.mp3", "target": "#day06MathTwoSection", "title": "Difference & Symmetric Diff", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio17.mp3", "target": "#day06SetMathTableSection", "title": "Set Operations Matrix Table", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio18.mp3", "target": "#day06RelationshipsSection", "title": "Relationships & Disjoint Testing", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio19.mp3", "target": "#day06RelationshipsTableSection", "title": "Relationships Reference Table", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio20.mp3", "target": "#day06RelationshipsCodeSection", "title": "Relationships Code Walkthrough", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio21.mp3", "target": "#day06MistakesSection", "title": "10 Critical Set Anti-Patterns", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio22.mp3", "target": "#day06MistakesTableSection", "title": "Anti-Patterns Diagnostic Table", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio23.mp3", "target": "#day06InterviewSubcard", "title": "Top 25 FAANG Interview Questions", "type": "narration" },
+      { "src": "Day06/New_PyDay06Audio24.mp3", "target": "#day06KeyNotesSubcard", "title": "Key Notes: Sets & Math", "type": "narration" }
+    ],
+    durations: []
   }
 };
 
@@ -745,15 +832,47 @@ async function loadPyodideRuntime() {
       });
       updateLoadingProgress(70);
 
-      // Pre-warm stdlib imports
+      // Pre-warm stdlib imports & compile fast student code runner
       await pyodide.runPythonAsync(`
-import sys, io, math, time, functools, copy
+import sys, io as _io, ast as _ast, traceback as _traceback
+import math, time, functools, copy
 from collections import defaultdict, Counter, namedtuple
 from decimal import Decimal
-print("Python 3.11 engine ready.")
+
+def __run_student_code_fast__(code):
+    _buf_stdout = _io.StringIO()
+    _buf_stderr = _io.StringIO()
+    _old_stdout, _old_stderr = sys.stdout, sys.stderr
+    sys.stdout, sys.stderr = _buf_stdout, _buf_stderr
+    _init_keys = set(globals().keys())
+    try:
+        _parsed = _ast.parse(code)
+        if _parsed.body:
+            _last = _parsed.body[-1]
+            if isinstance(_last, _ast.Expr):
+                if len(_parsed.body) > 1:
+                    exec(compile(_ast.Module(body=_parsed.body[:-1], type_ignores=[]), '<student_code>', 'exec'), globals())
+                _eval_val = eval(compile(_ast.Expression(_last.value), '<student_code>', 'eval'), globals())
+                if _eval_val is not None:
+                    print(_eval_val)
+            else:
+                exec(compile(_parsed, '<student_code>', 'exec'), globals())
+                if not _buf_stdout.getvalue().strip():
+                    _assigned = [k for k in globals().keys() if not k.startswith('_') and k not in _init_keys and k != 'code']
+                    for _k in _assigned:
+                        print(f"{_k} = {repr(globals()[_k])}")
+    except Exception:
+        _traceback.print_exc(file=_buf_stderr)
+    finally:
+        sys.stdout, sys.stderr = _old_stdout, _old_stderr
+    return (_buf_stdout.getvalue(), _buf_stderr.getvalue())
+
+print("⚡ Python 3.11 fast execution engine ready.")
 `);
       updateLoadingProgress(100);
       pyodideReady = true;
+      window.pyodideReady = true;
+      window.pyodide = pyodide;
 
       const runBtn = document.getElementById('runBtn');
       if (runBtn) {
@@ -807,13 +926,13 @@ function init() {
 
   let initialDay = null;
   if (window.COURSE_MANIFEST && window.COURSE_MANIFEST.length > 0) {
-    initialDay = window.COURSE_MANIFEST.find(d => d.day === requestedDay) || window.COURSE_MANIFEST[0];
+    initialDay = window.COURSE_MANIFEST.find(d => d.day === requestedDay);
   }
   if (initialDay) {
     loadDay(initialDay.id);
   } else {
     // Fallback direct load
-    const fallbackId = requestedDay === 4 ? 'pyDay04' : (requestedDay === 3 ? 'pyDay03' : (requestedDay === 2 ? 'pyDay02' : 'pyDay01'));
+    const fallbackId = 'pyDay' + String(requestedDay).padStart(2, '0');
     loadDay(fallbackId);
   }
 
@@ -961,12 +1080,11 @@ function buildDaySelector() {
   if (!sel) return;
   sel.innerHTML = '';
 
-  const manifest = window.COURSE_MANIFEST || [
-    { day: 1, id: 'pyDay01', title: 'Data Types & Memory', emoji: '🔢' },
-    { day: 2, id: 'pyDay02', title: 'Operators & Expressions', emoji: '⚙️' },
-    { day: 3, id: 'pyDay03', title: 'Strings & Text Processing', emoji: '🔤' },
-    { day: 4, id: 'pyDay04', title: 'Lists & Sequence Operations', emoji: '📋' }
-  ];
+  const manifest = (window.COURSE_MANIFEST && window.COURSE_MANIFEST.length > 0)
+    ? window.COURSE_MANIFEST
+    : (window.COURSE_MANIFEST_60 && window.COURSE_MANIFEST_60.length > 0)
+      ? window.COURSE_MANIFEST_60.filter(d => d.track === 'python').map(d => ({ day: d.trackDay, id: d.id, title: d.title, emoji: '🐍' }))
+      : Array.from({ length: 27 }, (_, i) => ({ day: i + 1, id: `pyDay${String(i + 1).padStart(2, '0')}`, title: `Day ${String(i + 1).padStart(2, '0')}`, emoji: '🐍' }));
 
   manifest.forEach(item => {
     const opt = document.createElement('option');
@@ -981,6 +1099,153 @@ function buildDaySelector() {
       window.location.href = `/python/day${String(targetDay.day).padStart(2,'0')}.html`;
     }
   };
+}
+
+function parseTrackDurationStr(str) {
+  if (!str || typeof str !== 'string') return 90;
+  const parts = str.split(':');
+  if (parts.length === 2) {
+    const mins = parseInt(parts[0], 10) || 0;
+    const secs = parseInt(parts[1], 10) || 0;
+    return mins * 60 + secs;
+  }
+  return 90;
+}
+
+function scrollToLessonTarget(targetSelector, isInstant = false) {
+  if (!targetSelector) return;
+  try {
+    const targetEl = document.querySelector(targetSelector);
+    if (!targetEl) return;
+    const container = document.getElementById('slideContent') || document.getElementById('slideBodyText');
+    if (container && container.contains(targetEl)) {
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = targetEl.getBoundingClientRect();
+      const relativeTop = targetRect.top - containerRect.top + container.scrollTop;
+      container.scrollTo({ top: Math.max(0, relativeTop - 20), behavior: isInstant ? 'auto' : 'smooth' });
+    } else {
+      targetEl.scrollIntoView({ behavior: isInstant ? 'auto' : 'smooth', block: 'start' });
+    }
+  } catch(e) {
+    try {
+      document.querySelector(targetSelector)?.scrollIntoView({ behavior: isInstant ? 'auto' : 'smooth', block: 'start' });
+    } catch(err) {}
+  }
+}
+
+function resolvePythonDayTracks(dayId, dayData) {
+  // If pre-recorded Whisper ASR tracks exist for early days (pyDay01, pyDay02, pyDay03), use them
+  if (PYTHON_DAY_TRACKS && PYTHON_DAY_TRACKS[dayId] && PYTHON_DAY_TRACKS[dayId].tracks && (dayId === 'pyDay01' || dayId === 'pyDay02' || dayId === 'pyDay03')) {
+    return PYTHON_DAY_TRACKS[dayId];
+  }
+
+  // If complete tracks (at least 30) are already defined in registry, use them
+  if (PYTHON_DAY_TRACKS && PYTHON_DAY_TRACKS[dayId] && PYTHON_DAY_TRACKS[dayId].tracks && PYTHON_DAY_TRACKS[dayId].tracks.length >= 30) {
+    return PYTHON_DAY_TRACKS[dayId];
+  }
+
+  if (!dayData) return { tracks: [], durations: [] };
+
+  const dayNum = parseInt(dayId.replace('pyDay', ''), 10) || 1;
+  const pad = String(dayNum).padStart(2, '0');
+  const tracks = [];
+  const durations = [];
+
+  const html = (dayData.slides && dayData.slides[0] && dayData.slides[0].html) || '';
+
+  // Extract headings with IDs from slide HTML
+  const h2Regex = /<h2[^>]*id=["']([^"']+)["'][^>]*>([\s\S]*?)<\/h2>/gi;
+  const headings = [];
+  let hm;
+  while ((hm = h2Regex.exec(html)) !== null) {
+    const id = hm[1];
+    const inner = hm[2];
+    const titleMatch = inner.match(/class=["']heading-title-text["'][^>]*>([\s\S]*?)<\/span>/i);
+    let title = (titleMatch ? titleMatch[1] : inner).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    headings.push({ id, title });
+  }
+
+  // Also check section elements with IDs
+  const secRegex = /<(?:section|div)[^>]*id=["']([^"']+)["'][^>]*class=["'][^"']*slide-section[^"']*["'][^>]*>/gi;
+  const secIds = [];
+  let sm;
+  while ((sm = secRegex.exec(html)) !== null) {
+    secIds.push(sm[1]);
+  }
+
+  const rawTopics = dayData.topics || [];
+  const topicCount = Math.max(rawTopics.length, headings.length, 10);
+
+  for (let i = 0; i < Math.min(10, topicCount); i++) {
+    const rawTopic = rawTopics[i];
+    const h = headings[i];
+    let title = '';
+    let target = '';
+    let dur = 90;
+
+    if (rawTopic) {
+      if (typeof rawTopic === 'string') {
+        title = rawTopic;
+      } else if (typeof rawTopic === 'object') {
+        title = rawTopic.label || rawTopic.title || '';
+        if (rawTopic.id) target = '#' + rawTopic.id;
+        if (rawTopic.duration) dur = parseTrackDurationStr(rawTopic.duration);
+      }
+    }
+
+    if (!title && h) {
+      title = h.title;
+    }
+
+    if (!target) {
+      if (secIds[i]) {
+        target = '#' + secIds[i];
+      } else if (h && h.id) {
+        target = '#' + h.id;
+      }
+    }
+
+    // Clean title
+    title = title.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
+    const numPrefix = String(i + 1).padStart(2, '0') + '. ';
+    if (!title.startsWith(String(i + 1).padStart(2, '0')) && !title.match(/^\d+\.\s*/)) {
+      title = numPrefix + title;
+    }
+
+    tracks.push({
+      src: `Day${pad}/New_PyDay${pad}Audio${String(i + 1).padStart(2, '0')}.mp3`,
+      target: target,
+      title: title,
+      type: 'narration'
+    });
+    durations.push(dur);
+  }
+
+  // Add practice questions and solutions
+  const questions = dayData.practiceQuestions || [];
+  questions.forEach((q, idx) => {
+    const qNum = idx + 1;
+    const qPad = String(qNum).padStart(2, '0');
+    tracks.push({
+      src: `Day${pad}/New_PyDay${pad}Question${qPad}.mp3`,
+      target: '#questionBar',
+      title: `Question ${qNum}`,
+      type: 'question',
+      qId: q.id || qNum
+    });
+    durations.push(30);
+
+    tracks.push({
+      src: `Day${pad}/New_PyDay${pad}Question${qPad}sol.mp3`,
+      target: '#questionBar',
+      title: `Q${qNum} Solution Walkthrough`,
+      type: 'solution',
+      qId: q.id || qNum
+    });
+    durations.push(45);
+  });
+
+  return { tracks, durations };
 }
 
 function loadDay(dayId) {
@@ -999,7 +1264,7 @@ function loadDay(dayId) {
   // Initialize master timeline tracks for this day
   const registry = currentDayData.media?.mode === 'study'
     ? { tracks: [], durations: [] }
-    : (PYTHON_DAY_TRACKS[dayId] || PYTHON_DAY_TRACKS['pyDay01']);
+    : resolvePythonDayTracks(dayId, currentDayData);
   combinedTracks = registry.tracks.slice();
   combinedTrackDurations = resolveTrackDurations(dayId, registry);
   totalCombinedDuration = combinedTrackDurations.reduce((acc, d) => acc + d, 0);
@@ -1033,6 +1298,7 @@ function loadDay(dayId) {
   // Update stats
   updateStatsCard();
   updateLessonMediaAvailability();
+  updateDayNavArrows();
 }
 
 function updateLessonMediaAvailability() {
@@ -1143,13 +1409,9 @@ function initCustomDropdowns() {
 
       if (select.id === 'daySelect') {
         const val = select.value || currentDayId || 'pyDay01';
-        let dayNumStr = '01';
-        if (val.toLowerCase().includes('02') || val.toLowerCase().includes('day2')) dayNumStr = '02';
-        else if (val.toLowerCase().includes('01') || val.toLowerCase().includes('day1')) dayNumStr = '01';
-        else {
-          const match = val.match(/\d+/);
-          if (match) dayNumStr = String(match[0]).padStart(2, '0');
-        }
+        const match = val.match(/\d+/);
+        const dayNum = match ? parseInt(match[0], 10) : 1;
+        const dayNumStr = String(dayNum).padStart(2, '0');
 
         const svgIcons = window.SVG_TRACK_ICONS || {};
         const iconHtml = svgIcons.python || '<span class="track-logo-badge track-logo-python" title="Python Track"><svg viewBox="45.9 0 367.2 459" fill="none" style="width:14px;height:14px;"><path fill="#306998" d="M229.5 0C161.4 0 122.4 15.6 122.4 53.6v34.4h107.1v15.3H122.4c-47.8 0-76.5 30.6-76.5 76.5v61.2c0 45.9 28.7 76.5 76.5 76.5h30.6v-45.9c0-51 41.3-91.8 91.8-91.8h107.1V107.1c0-53.6-47.8-107.1-122.4-107.1zM175.9 30.6c8.4 0 15.3 6.9 15.3 15.3s-6.9 15.3-15.3 15.3-15.3-6.9-15.3-15.3 6.9-15.3 15.3-15.3z" /><path fill="#FFE873" d="M229.5 459c68.1 0 107.1-15.6 107.1-53.6v-34.4H229.5v-15.3h107.1c47.8 0 76.5-30.6 76.5-76.5v-61.2c0-45.9-28.7-76.5-76.5-76.5h-30.6v45.9c0 51-41.3 91.8-91.8 91.8H122.4V351.9c0 53.6 47.8 107.1 22.4 107.1zm53.6-30.6c-8.4 0-15.3-6.9-15.3-15.3s6.9-15.3 15.3-15.3 15.3-6.9 15.3-15.3z" /></svg></span>';
@@ -1200,7 +1462,7 @@ function initCustomDropdowns() {
           optionsMenu.appendChild(header);
 
           trackGroup.days.forEach(d => {
-            const isSelected = (select.value === d.id || currentDayId === d.id || (currentDayId === 'pyDay01' && d.id === 'pyDay01') || (currentDayId === 'pyDay02' && d.id === 'pyDay02') || (currentDayId === 'pyDay03' && d.id === 'pyDay03') || (currentDayId === 'pyDay04' && d.id === 'pyDay04'));
+            const isSelected = (select.value === d.id || currentDayId === d.id);
             const isLocked = (!d.prepared && !d.free);
             const optionItem = document.createElement('div');
             optionItem.className = `custom-select-option${isSelected ? ' selected' : ''}${isLocked ? ' is-locked' : ''}`;
@@ -1269,8 +1531,10 @@ function initCustomDropdowns() {
 
       if (isSingleTopic) {
         wrapper.classList.add('no-dropdown');
-        const chev = trigger.querySelector('.day-picker-chevron');
-        if (chev) chev.style.display = 'none';
+        wrapper.querySelectorAll('.day-picker-chevron').forEach(el => el.remove());
+        if (trigger) {
+          trigger.querySelectorAll('.day-picker-chevron').forEach(el => el.remove());
+        }
         wrapper.onclick = null;
       } else {
         wrapper.classList.remove('no-dropdown');
@@ -1431,7 +1695,9 @@ function renderSlide(index) {
   }
   const activeChapterTitle = document.getElementById('activeChapterTitle');
   if (activeChapterTitle) {
-    activeChapterTitle.textContent = slide.title.length > 28 ? slide.title.substring(0, 26) + '…' : slide.title;
+    // Use first track title (the actual day topic) if available; otherwise fall back to slide.title
+    const firstTrackTitle = (combinedTracks && combinedTracks[0] && combinedTracks[0].title) || slide.title;
+    activeChapterTitle.textContent = firstTrackTitle.length > 30 ? firstTrackTitle.substring(0, 28) + '…' : firstTrackTitle;
   }
 
   // Render unified continuous document
@@ -1440,9 +1706,126 @@ function renderSlide(index) {
     bodyText.innerHTML = slide.html;
     const skel = document.getElementById('slideSkeleton');
     if (skel) skel.style.display = 'none';
+    applyCodeLineNumbers(bodyText);
+    initTableInteractiveFeatures(bodyText);
   }
 
   updateChapterListActive();
+}
+
+/**
+ * Universal Code Line Numbering Engine
+ * Automatically parses code lines and generates authentic IDE line numbers gutter
+ */
+function applyCodeLineNumbers(container) {
+  // Pure pass-through: preserves pristine native pre/code formatting identical to SQL flagship standard
+  // Avoids destructive string splitting and preserves standard indentation and syntax tokens
+}
+window.applyCodeLineNumbers = applyCodeLineNumbers;
+
+/**
+ * Universal Interactive Table Search & Cheatsheet Filter Engine
+ * Allows students to instantly search/filter operators and traps in any reference table
+ */
+function filterTableRows(inputEl) {
+  if (!inputEl) return;
+  const query = inputEl.value.toLowerCase().trim();
+  const tableCard = inputEl.closest('.topic-subcard, .db-mock-table-wrap') || inputEl.parentElement.closest('div');
+  let table = tableCard ? tableCard.querySelector('table') : null;
+  if (!table && inputEl.closest('.table-header-wrap')) {
+    const hdr = inputEl.closest('.table-header-wrap');
+    const siblingWrap = hdr.nextElementSibling;
+    if (siblingWrap) table = siblingWrap.querySelector('table') || (siblingWrap.tagName === 'TABLE' ? siblingWrap : null);
+  }
+  if (!table) {
+    const parentContainer = inputEl.closest('.slide-section, section, div');
+    if (parentContainer) table = parentContainer.querySelector('table');
+  }
+  if (!table) return;
+  const tbody = table.querySelector('tbody');
+  if (!tbody) return;
+  const rows = tbody.querySelectorAll('tr:not(.table-empty-row)');
+  let visibleCount = 0;
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+    if (!query || text.includes(query)) {
+      row.style.display = '';
+      visibleCount++;
+    } else {
+      row.style.display = 'none';
+    }
+  });
+  let emptyNotice = tbody.querySelector('.table-empty-row');
+  if (visibleCount === 0) {
+    if (!emptyNotice) {
+      emptyNotice = document.createElement('tr');
+      emptyNotice.className = 'table-empty-row';
+      const cols = table.querySelectorAll('thead th').length || 4;
+      emptyNotice.innerHTML = `<td colspan="${cols}" class="table-empty-cell">No matching operators or rules found for "${query}"</td>`;
+      tbody.appendChild(emptyNotice);
+    }
+  } else if (emptyNotice) {
+    emptyNotice.remove();
+  }
+}
+window.filterTableRows = filterTableRows;
+window.filterTable = filterTableRows;
+
+/**
+ * Click-to-Copy Interactive Syntax in Tables
+ */
+function initTableInteractiveFeatures(container) {
+  if (!container) container = document;
+  const codeSnippets = container.querySelectorAll('.db-table-mock td code, .db-table-mock .prec-ops-wrap code');
+  codeSnippets.forEach(codeEl => {
+    if (codeEl.dataset.copyInit) return;
+    codeEl.dataset.copyInit = 'true';
+    codeEl.title = 'Click to copy syntax';
+    codeEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const text = codeEl.innerText.replace(/→.*$/, '').trim();
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        codeEl.classList.add('table-code-copied');
+        setTimeout(() => {
+          codeEl.classList.remove('table-code-copied');
+        }, 1200);
+      }).catch(() => {});
+    });
+  });
+}
+window.initTableInteractiveFeatures = initTableInteractiveFeatures;
+
+/**
+ * Click-to-Copy for Code Snippet Boxes
+ */
+function copySnippetCode(btn) {
+  if (!btn) return;
+  const box = btn.closest('.snippet-code-box');
+  if (!box) return;
+  const codeEl = box.querySelector('pre code');
+  if (!codeEl) return;
+  const text = codeEl.innerText.trim();
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.classList.remove('copied');
+    }, 1500);
+  }).catch(() => {});
+}
+window.copySnippetCode = copySnippetCode;
+
+if (typeof document !== 'undefined') {
+  const initAll = () => {
+    applyCodeLineNumbers(document);
+    initTableInteractiveFeatures(document);
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    setTimeout(initAll, 0);
+  }
 }
 
 
@@ -2579,7 +2962,7 @@ function playAudio(src, btn, onStartCb) {
 
   // Initialize master timeline tracks if not loaded
   if (!combinedTracks || combinedTracks.length === 0) {
-    const registry = (PYTHON_DAY_TRACKS && (PYTHON_DAY_TRACKS[currentDayId] || PYTHON_DAY_TRACKS['pyDay01']));
+    const registry = resolvePythonDayTracks(currentDayId, currentDayData);
     if (registry) {
       combinedTracks = registry.tracks.slice();
       combinedTrackDurations = resolveTrackDurations(currentDayId, registry);
@@ -2737,7 +3120,7 @@ function playQuestionAudio(btn) {
   const q = currentDayData && currentDayData.practiceQuestions && currentDayData.practiceQuestions[currentQuestionIndex];
   if (!q) return;
   if (!combinedTracks || combinedTracks.length === 0) {
-    const registry = (PYTHON_DAY_TRACKS && (PYTHON_DAY_TRACKS[currentDayId] || PYTHON_DAY_TRACKS['pyDay01']));
+    const registry = resolvePythonDayTracks(currentDayId, currentDayData);
     if (registry) {
       combinedTracks = registry.tracks.slice();
       combinedTrackDurations = resolveTrackDurations(currentDayId, registry);
@@ -2767,7 +3150,7 @@ function playSolutionAudioFromBtn(btn) {
   const q = currentDayData && currentDayData.practiceQuestions && currentDayData.practiceQuestions[currentQuestionIndex];
   if (!q) return;
   if (!combinedTracks || combinedTracks.length === 0) {
-    const registry = (PYTHON_DAY_TRACKS && (PYTHON_DAY_TRACKS[currentDayId] || PYTHON_DAY_TRACKS['pyDay01']));
+    const registry = resolvePythonDayTracks(currentDayId, currentDayData);
     if (registry) {
       combinedTracks = registry.tracks.slice();
       combinedTrackDurations = resolveTrackDurations(currentDayId, registry);
@@ -2815,7 +3198,7 @@ function toggleCombinedPlayback() {
 function playCombinedPlayback() {
   if (currentDayData?.media?.mode === 'study') return;
   if (!combinedTracks || combinedTracks.length === 0) {
-    const registry = (PYTHON_DAY_TRACKS && (PYTHON_DAY_TRACKS[currentDayId] || PYTHON_DAY_TRACKS['pyDay01']));
+    const registry = resolvePythonDayTracks(currentDayId, currentDayData);
     if (registry) {
       combinedTracks = registry.tracks.slice();
       combinedTrackDurations = resolveTrackDurations(currentDayId, registry);
@@ -2940,6 +3323,10 @@ function playTrackSegment(trackIdx, localOffset = 0) {
   } else {
     // Theory narration track
     if (qBar) qBar.classList.remove('question-playing');
+    // Scroll to the section targeted by this narration track
+    if (track && track.target) {
+      scrollToLessonTarget(track.target, false);
+    }
   }
 
   // Caption banner — replaced with the live spoken sentence as soon as the
@@ -3097,6 +3484,10 @@ function seekCombinedPlayback(val, shouldPlay = true) {
     } else {
       if (qBar) qBar.classList.remove('question-playing');
       clearSlidePlaybackVisibility();
+      // Scroll to the section targeted by this narration track
+      if (track && track.target) {
+        scrollToLessonTarget(track.target, true);
+      }
       dispatchPythonTrackVisualHighlights(track, localTime, true, true);
     }
   }
@@ -3599,6 +3990,28 @@ function openQPicker() {
   const trigger = document.getElementById('qPickerTrigger');
   if (!popover) return;
   buildQPickerList();
+
+  if (window.innerWidth <= 768 && trigger) {
+    const rect = trigger.getBoundingClientRect();
+    popover.style.position = 'fixed';
+    popover.style.top = (rect.bottom + 6) + 'px';
+    popover.style.left = '8px';
+    popover.style.right = '8px';
+    popover.style.width = 'auto';
+    popover.style.maxWidth = 'calc(100vw - 16px)';
+    popover.style.maxHeight = 'min(440px, 65vh)';
+    popover.style.zIndex = '999999';
+  } else {
+    popover.style.position = '';
+    popover.style.top = '';
+    popover.style.left = '';
+    popover.style.right = '';
+    popover.style.width = '';
+    popover.style.maxWidth = '';
+    popover.style.maxHeight = '';
+    popover.style.zIndex = '';
+  }
+
   popover.style.display = 'flex';
   if (trigger) trigger.setAttribute('aria-expanded', 'true');
   setTimeout(() => {
@@ -3609,17 +4022,32 @@ function openQPicker() {
 function closeQPicker() {
   const popover = document.getElementById('qPickerPopover');
   const trigger = document.getElementById('qPickerTrigger');
-  if (popover) popover.style.display = 'none';
+  if (popover) {
+    popover.style.display = 'none';
+    if (window.innerWidth <= 768) {
+      popover.style.position = '';
+      popover.style.top = '';
+      popover.style.left = '';
+      popover.style.right = '';
+      popover.style.width = '';
+      popover.style.maxWidth = '';
+      popover.style.maxHeight = '';
+      popover.style.zIndex = '';
+    }
+  }
   if (trigger) trigger.setAttribute('aria-expanded', 'false');
   document.removeEventListener('click', _qPickerOutsideClick);
 }
 
 function _qPickerOutsideClick(e) {
   const wrapper = document.getElementById('qPickerWrapper');
-  if (wrapper && !wrapper.contains(e.target)) {
+  const popover = document.getElementById('qPickerPopover');
+  if (
+    (!wrapper || !wrapper.contains(e.target)) &&
+    (!popover || !popover.contains(e.target))
+  ) {
     closeQPicker();
   } else {
-    const popover = document.getElementById('qPickerPopover');
     if (popover && popover.style.display !== 'none') {
       document.addEventListener('click', _qPickerOutsideClick, { once: true });
     }
@@ -3787,51 +4215,29 @@ async function executePython(code, question = null) {
         if (pyodide.globals.has(name)) pyodide.globals.delete(name);
       }
     }
-    pyodide.globals.set('__student_code__', code);
-    await pyodide.runPythonAsync(`
-import sys, io as _io, ast as _ast
-
-_buf_stdout = _io.StringIO()
-_buf_stderr = _io.StringIO()
-_old_stdout = sys.stdout
-_old_stderr = sys.stderr
-sys.stdout = _buf_stdout
-sys.stderr = _buf_stderr
-
-_init_keys = set(globals().keys())
-
+    const runner = pyodide.globals.get('__run_student_code_fast__');
+    if (runner) {
+      const res = runner(code);
+      stdout = String(res.get(0) || '');
+      stderr = String(res.get(1) || '');
+      res.destroy?.();
+    } else {
+      pyodide.globals.set('__student_code__', code);
+      await pyodide.runPythonAsync(`
+import sys, io as _io, ast as _ast, traceback as _traceback
+_buf_stdout, _buf_stderr = _io.StringIO(), _io.StringIO()
+_old_out, _old_err = sys.stdout, sys.stderr
+sys.stdout, sys.stderr = _buf_stdout, _buf_stderr
 try:
-    _parsed = _ast.parse(__student_code__)
-    if _parsed.body:
-        _last = _parsed.body[-1]
-        if isinstance(_last, _ast.Expr):
-            # Execute leading statements if any
-            if len(_parsed.body) > 1:
-                exec(compile(_ast.Module(body=_parsed.body[:-1], type_ignores=[]), '<student_code>', 'exec'), globals())
-            # Evaluate last expression
-            _eval_val = eval(compile(_ast.Expression(_last.value), '<student_code>', 'eval'), globals())
-            if _eval_val is not None:
-                print(_eval_val)
-        else:
-            exec(compile(_parsed, '<student_code>', 'exec'), globals())
-            # If no stdout was produced by print(), display newly assigned user variables
-            if not _buf_stdout.getvalue().strip():
-                _assigned = [
-                    k for k in globals().keys() 
-                    if not k.startswith('_') and k not in _init_keys and k != '__student_code__'
-                ]
-                for _k in _assigned:
-                    print(f"{_k} = {repr(globals()[_k])}")
-except Exception as _err:
-    import traceback
-    traceback.print_exc(file=_buf_stderr)
+    exec(compile(__student_code__, '<student_code>', 'exec'), globals())
+except Exception:
+    _traceback.print_exc(file=_buf_stderr)
 finally:
-    sys.stdout = _old_stdout
-    sys.stderr = _old_stderr
+    sys.stdout, sys.stderr = _old_out, _old_err
 `);
-
-    stdout = String(await pyodide.runPythonAsync(`_buf_stdout.getvalue()`));
-    stderr = String(await pyodide.runPythonAsync(`_buf_stderr.getvalue()`));
+      stdout = String(await pyodide.runPythonAsync(`_buf_stdout.getvalue()`));
+      stderr = String(await pyodide.runPythonAsync(`_buf_stderr.getvalue()`));
+    }
     if (stderr.trim()) {
       error = true;
     }
@@ -4398,4 +4804,168 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden && isCombinedPlaying) {
     pauseCombinedPlayback();
   }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// 🧭 PREV / NEXT DAY ARROW NAVIGATION ENGINE (Python Track)
+// ═══════════════════════════════════════════════════════════════
+
+function getAdjacentPythonDayInfo() {
+  const path = window.location.pathname;
+  const match = path.match(/day(\d+)/i);
+  let currentNum = match 
+    ? parseInt(match[1], 10) 
+    : (typeof COURSE_DAY !== 'undefined' ? parseInt(String(COURSE_DAY).replace(/\D/g, ''), 10) || 1 : 1);
+  
+  const prevNum = currentNum - 1;
+  const nextNum = currentNum + 1;
+  
+  const manifestMax = (typeof window !== 'undefined' && Array.isArray(window.COURSE_MANIFEST) && window.COURSE_MANIFEST.length > 0)
+    ? window.COURSE_MANIFEST.length
+    : (typeof window !== 'undefined' && Array.isArray(window.COURSE_MANIFEST_60)
+        ? window.COURSE_MANIFEST_60.filter(d => d.track === 'python' && !d.comingSoon).length
+        : 27);
+  const maxDay = Math.max(27, manifestMax);
+  
+  const prevUrl = prevNum >= 1 ? `/python/day${String(prevNum).padStart(2, '0')}.html` : null;
+  const nextUrl = nextNum <= maxDay ? `/python/day${String(nextNum).padStart(2, '0')}.html` : null;
+  
+  return { prevUrl, nextUrl, prevNum, nextNum, currentNum, maxDay };
+}
+
+function updateDayNavArrows() {
+  const { prevUrl, nextUrl, prevNum, nextNum } = getAdjacentPythonDayInfo();
+  const prevBtn = document.getElementById('prevDayBtn');
+  const nextBtn = document.getElementById('nextDayBtn');
+  
+  if (prevBtn) {
+    if (prevUrl) {
+      prevBtn.disabled = false;
+      prevBtn.classList.remove('disabled');
+      prevBtn.title = `Previous Day (Day ${String(prevNum).padStart(2, '0')})`;
+      prevBtn.setAttribute('aria-label', `Previous Day (Day ${String(prevNum).padStart(2, '0')})`);
+    } else {
+      prevBtn.disabled = true;
+      prevBtn.classList.add('disabled');
+      prevBtn.title = 'You are on the first day';
+      prevBtn.setAttribute('aria-label', 'First day reached');
+    }
+  }
+  
+  if (nextBtn) {
+    if (nextUrl) {
+      nextBtn.disabled = false;
+      nextBtn.classList.remove('disabled');
+      nextBtn.title = `Next Day (Day ${String(nextNum).padStart(2, '0')})`;
+      nextBtn.setAttribute('aria-label', `Next Day (Day ${String(nextNum).padStart(2, '0')})`);
+    } else {
+      nextBtn.disabled = true;
+      nextBtn.classList.add('disabled');
+      nextBtn.title = 'You are on the last available day';
+      nextBtn.setAttribute('aria-label', 'Last day reached');
+    }
+  }
+}
+window.updateDayNavArrows = updateDayNavArrows;
+
+function navigateToPrevDay() {
+  const { prevUrl } = getAdjacentPythonDayInfo();
+  if (prevUrl) window.location.href = prevUrl;
+}
+window.navigateToPrevDay = navigateToPrevDay;
+
+function navigateToNextDay() {
+  const { nextUrl } = getAdjacentPythonDayInfo();
+  if (nextUrl) window.location.href = nextUrl;
+}
+window.navigateToNextDay = navigateToNextDay;
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(updateDayNavArrows, 50);
+  });
+} else {
+  setTimeout(updateDayNavArrows, 50);
+}
+
+
+// ── Mobile Header Info Bars Toggle (Zen / Focus Mode) ────────────────
+function toggleMobileHeader(e) {
+  if (e) {
+    if (typeof e.preventDefault === 'function') e.preventDefault();
+    if (typeof e.stopPropagation === 'function') e.stopPropagation();
+  }
+  const header = document.querySelector('.header');
+  const toggleBtn = document.getElementById('mobileHdrToggleBtn');
+  if (!header) return;
+
+  const isCollapsed = header.classList.toggle('is-collapsed');
+  if (toggleBtn) {
+    toggleBtn.classList.toggle('is-collapsed', isCollapsed);
+    const label = toggleBtn.querySelector('.hdr-toggle-label');
+    if (label) {
+      label.textContent = isCollapsed ? 'Show Info' : 'Hide Info';
+    }
+    const icon = toggleBtn.querySelector('.hdr-toggle-icon');
+    if (icon) {
+      icon.style.transform = isCollapsed ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+    toggleBtn.setAttribute('title', isCollapsed ? 'Show top header info bars' : 'Hide top header info bars');
+    toggleBtn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+  }
+  try {
+    sessionStorage.setItem('manodemy-header-collapsed', isCollapsed ? 'true' : 'false');
+  } catch (err) {}
+}
+window.toggleMobileHeader = toggleMobileHeader;
+
+function initMobileHeaderToggle() {
+  const tabsNav = document.getElementById('mobileTabsNav');
+  if (!tabsNav) return;
+
+  // Wrap existing buttons into .mobile-tabs-group if not already wrapped
+  if (!tabsNav.querySelector('.mobile-tabs-group')) {
+    const existingBtns = Array.from(tabsNav.querySelectorAll('.mobile-tab-btn'));
+    if (existingBtns.length > 0) {
+      const group = document.createElement('div');
+      group.className = 'mobile-tabs-group';
+      existingBtns.forEach(btn => group.appendChild(btn));
+      tabsNav.prepend(group);
+    }
+  }
+
+  // Ensure the toggle button exists
+  if (!document.getElementById('mobileHdrToggleBtn')) {
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'mobile-hdr-toggle-btn';
+    toggleBtn.id = 'mobileHdrToggleBtn';
+    toggleBtn.setAttribute('aria-label', 'Toggle top header info bars');
+    toggleBtn.setAttribute('title', 'Hide top header info bars');
+    toggleBtn.onclick = toggleMobileHeader;
+    toggleBtn.innerHTML = '<span class="hdr-toggle-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg></span><span class="hdr-toggle-label">Hide Info</span>';
+    tabsNav.appendChild(toggleBtn);
+  }
+
+  // Restore saved state if any
+  try {
+    if (sessionStorage.getItem('manodemy-header-collapsed') === 'true') {
+      const header = document.querySelector('.header');
+      const toggleBtn = document.getElementById('mobileHdrToggleBtn');
+      if (header) header.classList.add('is-collapsed');
+      if (toggleBtn) {
+        toggleBtn.classList.add('is-collapsed');
+        const label = toggleBtn.querySelector('.hdr-toggle-label');
+        if (label) label.textContent = 'Show Info';
+        const icon = toggleBtn.querySelector('.hdr-toggle-icon');
+        if (icon) icon.style.transform = 'rotate(180deg)';
+        toggleBtn.setAttribute('title', 'Show top header info bars');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+  } catch (err) {}
+}
+window.initMobileHeaderToggle = initMobileHeaderToggle;
+
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(initMobileHeaderToggle, 50);
 });

@@ -686,8 +686,8 @@ class LiveHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         # Intercept dayXX.html requests — generate on the fly from notebook
-        m_py = re.match(r'/day(\d{1,2})(?:\.html)?', self.path)
-        m_sql = re.match(r'/sql/day(\d{1,2})(?:\.html)?', self.path)
+        m_py = None # Static Python studio
+        m_sql = None # Static SQL studio
         m_excel = None # Excel days are interactive web apps served directly as static
         
         m = m_py or m_sql or m_excel

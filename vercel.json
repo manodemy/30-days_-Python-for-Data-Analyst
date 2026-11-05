@@ -9,11 +9,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
         }
       ]
     },
@@ -89,7 +85,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://checkout.razorpay.com https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https://*.supabase.co https://*.razorpay.com https://img.youtube.com https://*.googleusercontent.com https://*.githubusercontent.com https://*.gravatar.com https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.facebook.com https://*.facebook.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.razorpay.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com https://get.geojs.io https://ipapi.co https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://connect.facebook.net https://www.facebook.com https://*.facebook.com; frame-src 'self' https://api.razorpay.com https://www.youtube.com https://www.youtube-nocookie.com;"
+          "value": "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://checkout.razorpay.com https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https://*.supabase.co https://*.razorpay.com https://img.youtube.com https://*.googleusercontent.com https://*.githubusercontent.com https://*.gravatar.com https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.facebook.com https://*.facebook.com https://www.google.com https://*.google.com https://*.google.co.in; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.razorpay.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com https://get.geojs.io https://ipapi.co https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://ad.doubleclick.net https://connect.facebook.net https://www.facebook.com https://*.facebook.com https://www.google.com https://*.google.com https://*.google.co.in; frame-src 'self' https://api.razorpay.com https://www.youtube.com https://www.youtube-nocookie.com;"
         },
         {
           "key": "Permissions-Policy",
@@ -180,11 +176,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
         }
       ]
     },
@@ -193,11 +185,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
         }
       ]
     },
@@ -206,11 +194,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
         }
       ]
     },
@@ -219,11 +203,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
         }
       ]
     },
@@ -232,11 +212,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
         }
       ]
     },
@@ -245,11 +221,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
         }
       ]
     },
@@ -289,6 +261,42 @@
         {
           "key": "Expires",
           "value": "0"
+        }
+      ]
+    },
+    {
+      "source": "/excel/styles.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/excel/(.*)\\.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/python/content/(.*)\\.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/python/python-grading-engine.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
         }
       ]
     }
@@ -620,27 +628,7 @@
       "permanent": false
     },
     {
-      "source": "/day:day(0[3-9]|[12][0-9]|30).html",
-      "destination": "/notebook/day:day",
-      "permanent": true
-    },
-    {
-      "source": "/sql/day:day(18).html",
-      "destination": "/notebook/sql-day:day",
-      "permanent": false
-    },
-    {
-      "source": "/excel/day:day(0[3-9]|1[0-2]).html",
-      "destination": "/notebook/excel-day:day",
-      "permanent": true
-    },
-    {
-      "source": "/sql/day:day(18)",
-      "destination": "/notebook/sql-day:day",
-      "permanent": true
-    },
-    {
-      "source": "/sql/day:day(0[1-9]|1[0-7])",
+      "source": "/sql/day:day(0[1-9]|1[0-8])",
       "destination": "/sql/day:day.html",
       "permanent": true
     },
@@ -660,34 +648,24 @@
       "permanent": true
     },
     {
-      "source": "/day:day(0[3-9]|[12][0-9]|30)",
-      "destination": "/notebook/day:day",
-      "permanent": true
-    },
-    {
-      "source": "/day:day([3-9])",
-      "destination": "/notebook/day0:day",
-      "permanent": true
-    },
-    {
-      "source": "/excel/day:day(0[1-2])",
+      "source": "/excel/day:day(0[1-9]|1[0-2])",
       "destination": "/excel/day:day.html",
       "permanent": true
     },
     {
-      "source": "/excel/day:day([1-2])",
+      "source": "/excel/day:day([1-9])",
       "destination": "/excel/day0:day.html",
       "permanent": true
     },
     {
-      "source": "/excel/day:day(0[3-9]|1[0-2])",
-      "destination": "/notebook/excel-day:day",
-      "permanent": true
+      "source": "/notebook/excel-day:day(0[1-9]|1[0-2])",
+      "destination": "/excel/day:day.html",
+      "permanent": false
     },
     {
-      "source": "/excel/day:day([3-9])",
-      "destination": "/notebook/excel-day0:day",
-      "permanent": true
+      "source": "/notebook/excel-day:day([1-9])",
+      "destination": "/excel/day0:day.html",
+      "permanent": false
     },
     {
       "source": "/privacy",
@@ -760,6 +738,22 @@
       "destination": "/python/day03.html"
     },
     {
+      "source": "/python/day04",
+      "destination": "/python/day04.html"
+    },
+    {
+      "source": "/python/day05",
+      "destination": "/python/day05.html"
+    },
+    {
+      "source": "/python/day06",
+      "destination": "/python/day06.html"
+    },
+    {
+      "source": "/python/day07",
+      "destination": "/python/day07.html"
+    },
+    {
       "source": "/day01",
       "destination": "/python/day01.html"
     },
@@ -772,6 +766,22 @@
       "destination": "/python/day03.html"
     },
     {
+      "source": "/day04",
+      "destination": "/python/day04.html"
+    },
+    {
+      "source": "/day05",
+      "destination": "/python/day05.html"
+    },
+    {
+      "source": "/day06",
+      "destination": "/python/day06.html"
+    },
+    {
+      "source": "/day07",
+      "destination": "/python/day07.html"
+    },
+    {
       "source": "/day01.html",
       "destination": "/python/day01.html"
     },
@@ -782,6 +792,298 @@
     {
       "source": "/day03.html",
       "destination": "/python/day03.html"
+    },
+    {
+      "source": "/day04.html",
+      "destination": "/python/day04.html"
+    },
+    {
+      "source": "/day05.html",
+      "destination": "/python/day05.html"
+    },
+    {
+      "source": "/day06.html",
+      "destination": "/python/day06.html"
+    },
+    {
+      "source": "/day07.html",
+      "destination": "/python/day07.html"
+    },
+    {
+      "source": "/python/day08",
+      "destination": "/python/day08.html"
+    },
+    {
+      "source": "/day08",
+      "destination": "/python/day08.html"
+    },
+    {
+      "source": "/day08.html",
+      "destination": "/python/day08.html"
+    },
+    {
+      "source": "/python/day09",
+      "destination": "/python/day09.html"
+    },
+    {
+      "source": "/day09",
+      "destination": "/python/day09.html"
+    },
+    {
+      "source": "/day09.html",
+      "destination": "/python/day09.html"
+    },
+    {
+      "source": "/python/day10",
+      "destination": "/python/day10.html"
+    },
+    {
+      "source": "/day10",
+      "destination": "/python/day10.html"
+    },
+    {
+      "source": "/day10.html",
+      "destination": "/python/day10.html"
+    },
+    {
+      "source": "/python/day11",
+      "destination": "/python/day11.html"
+    },
+    {
+      "source": "/day11",
+      "destination": "/python/day11.html"
+    },
+    {
+      "source": "/day11.html",
+      "destination": "/python/day11.html"
+    },
+    {
+      "source": "/python/day12",
+      "destination": "/python/day12.html"
+    },
+    {
+      "source": "/day12",
+      "destination": "/python/day12.html"
+    },
+    {
+      "source": "/day12.html",
+      "destination": "/python/day12.html"
+    },
+    {
+      "source": "/python/day13",
+      "destination": "/python/day13.html"
+    },
+    {
+      "source": "/day13",
+      "destination": "/python/day13.html"
+    },
+    {
+      "source": "/day13.html",
+      "destination": "/python/day13.html"
+    },
+    {
+      "source": "/python/day14",
+      "destination": "/python/day14.html"
+    },
+    {
+      "source": "/day14",
+      "destination": "/python/day14.html"
+    },
+    {
+      "source": "/day14.html",
+      "destination": "/python/day14.html"
+    },
+    {
+      "source": "/python/day15",
+      "destination": "/python/day15.html"
+    },
+    {
+      "source": "/day15",
+      "destination": "/python/day15.html"
+    },
+    {
+      "source": "/day15.html",
+      "destination": "/python/day15.html"
+    },
+    {
+      "source": "/python/day16",
+      "destination": "/python/day16.html"
+    },
+    {
+      "source": "/day16",
+      "destination": "/python/day16.html"
+    },
+    {
+      "source": "/day16.html",
+      "destination": "/python/day16.html"
+    },
+    {
+      "source": "/python/day17",
+      "destination": "/python/day17.html"
+    },
+    {
+      "source": "/day17",
+      "destination": "/python/day17.html"
+    },
+    {
+      "source": "/day17.html",
+      "destination": "/python/day17.html"
+    },
+    {
+      "source": "/python/day18",
+      "destination": "/python/day18.html"
+    },
+    {
+      "source": "/day18",
+      "destination": "/python/day18.html"
+    },
+    {
+      "source": "/day18.html",
+      "destination": "/python/day18.html"
+    },
+    {
+      "source": "/python/day19",
+      "destination": "/python/day19.html"
+    },
+    {
+      "source": "/day19",
+      "destination": "/python/day19.html"
+    },
+    {
+      "source": "/day19.html",
+      "destination": "/python/day19.html"
+    },
+    {
+      "source": "/python/day20",
+      "destination": "/python/day20.html"
+    },
+    {
+      "source": "/day20",
+      "destination": "/python/day20.html"
+    },
+    {
+      "source": "/day20.html",
+      "destination": "/python/day20.html"
+    },
+    {
+      "source": "/python/day21",
+      "destination": "/python/day21.html"
+    },
+    {
+      "source": "/day21",
+      "destination": "/python/day21.html"
+    },
+    {
+      "source": "/day21.html",
+      "destination": "/python/day21.html"
+    },
+    {
+      "source": "/python/day22",
+      "destination": "/python/day22.html"
+    },
+    {
+      "source": "/day22",
+      "destination": "/python/day22.html"
+    },
+    {
+      "source": "/day22.html",
+      "destination": "/python/day22.html"
+    },
+    {
+      "source": "/python/day23",
+      "destination": "/python/day23.html"
+    },
+    {
+      "source": "/day23",
+      "destination": "/python/day23.html"
+    },
+    {
+      "source": "/day23.html",
+      "destination": "/python/day23.html"
+    },
+    {
+      "source": "/python/day24",
+      "destination": "/python/day24.html"
+    },
+    {
+      "source": "/day24",
+      "destination": "/python/day24.html"
+    },
+    {
+      "source": "/day24.html",
+      "destination": "/python/day24.html"
+    },
+    {
+      "source": "/python/day25",
+      "destination": "/python/day25.html"
+    },
+    {
+      "source": "/day25",
+      "destination": "/python/day25.html"
+    },
+    {
+      "source": "/day25.html",
+      "destination": "/python/day25.html"
+    },
+    {
+      "source": "/python/day26",
+      "destination": "/python/day26.html"
+    },
+    {
+      "source": "/day26",
+      "destination": "/python/day26.html"
+    },
+    {
+      "source": "/day26.html",
+      "destination": "/python/day26.html"
+    },
+    {
+      "source": "/python/day27",
+      "destination": "/python/day27.html"
+    },
+    {
+      "source": "/day27",
+      "destination": "/python/day27.html"
+    },
+    {
+      "source": "/day27.html",
+      "destination": "/python/day27.html"
+    },
+    {
+      "source": "/python/day28",
+      "destination": "/python/day28.html"
+    },
+    {
+      "source": "/day28",
+      "destination": "/python/day28.html"
+    },
+    {
+      "source": "/day28.html",
+      "destination": "/python/day28.html"
+    },
+    {
+      "source": "/python/day29",
+      "destination": "/python/day29.html"
+    },
+    {
+      "source": "/day29",
+      "destination": "/python/day29.html"
+    },
+    {
+      "source": "/day29.html",
+      "destination": "/python/day29.html"
+    },
+    {
+      "source": "/python/day30",
+      "destination": "/python/day30.html"
+    },
+    {
+      "source": "/day30",
+      "destination": "/python/day30.html"
+    },
+    {
+      "source": "/day30.html",
+      "destination": "/python/day30.html"
     }
   ]
 }
