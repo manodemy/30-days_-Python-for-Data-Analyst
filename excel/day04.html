@@ -1,265 +1,1124 @@
 <!DOCTYPE html>
-<html lang="en" data-course="excel">
+<html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 04: Excel Tables — Excel for Data Analyst — Manodemy</title>
-<meta name="description" content="Day 04: Excel Tables — Interactive workbook with hands-on challenges. Part of Manodemy's Excel for Data Analyst course.">
-<meta name="robots" content="noindex, nofollow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 04: Excel Tables and Structured References — Excel for Data Analyst — Manodemy</title>
+  <meta name="description"
+    content="Day 04: Excel Tables and Structured References — Interactive spreadsheet studio with live calculation engine, Microsoft 365 ribbon, and 20 hands-on business challenges.">
+  <meta name="robots" content="noindex, nofollow">
 
-<!-- Performance: Preconnect to critical origins -->
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="dns-prefetch" href="https://erqoyvbuhmkyvcqgwcbz.supabase.co">
-<!-- Supabase SDK (deferred) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<!-- Authentication + Enrollment Route Guard -->
-<script>
-  document.addEventListener('DOMContentLoaded', async function PaywallGuard() {
-    const currentPath = window.location.pathname;
-    const isProtectedDay = currentPath.match(/day(0[3-9]|1[0-2])\.html/);
-    const removePreload = () => {
-      const p = document.getElementById('paywall-preload-screen');
-      if (p) p.remove();
-    };
-    if (!isProtectedDay) { removePreload(); return; }
-    try {
-      if (typeof window.supabase === 'undefined') {
-        window.location.href = '../index.html?reason=sdk_blocked'; return;
+  <!-- Performance: Preconnect to critical origins -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://erqoyvbuhmkyvcqgwcbz.supabase.co">
+
+  <!-- Supabase SDK (deferred) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+
+  <!-- All Days Unlocked: Paywall Guard Bypassed -->
+
+  <!-- Typography & Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Excel Studio Styles (Inherits Version-3 Flagship + Microsoft 365 Parity) -->
+  <link rel="stylesheet" href="/Version-3/styles.css?v=236.0.0">
+  <link rel="stylesheet" href="/excel/styles.css?v=238.0.0">
+
+  <style>
+    /* Paywall Preload Screen */
+    .paywall-preload {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #060913;
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .paywall-preload__spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid rgba(16, 124, 65, 0.2);
+      border-top-color: #21A366;
+      border-radius: 50%;
+      animation: pySpin 0.7s linear infinite;
+    }
+
+    @keyframes playBtnRadarPulse {
+      0% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 0 rgba(16, 124, 65, 0.9), 0 0 20px rgba(16, 124, 65, 0.6);
       }
-      const SUPA_URL = 'https://erqoyvbuhmkyvcqgwcbz.supabase.co';
-      const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW95dmJ1aG1reXZjcWd3Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzODk1MTIsImV4cCI6MjA5NDk2NTUxMn0.9UnIfq8xMrKANPPTtoOADKH-NJ_it9HDp7xrJL4FXtw';
-      const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-      const { data: { session }, error } = await sb.auth.getSession();
-      if (error || !session) {
-        window.location.href = `../index.html?redirect=${encodeURIComponent(currentPath)}`; return;
+
+      50% {
+        transform: scale(1.12);
+        box-shadow: 0 0 0 12px rgba(16, 124, 65, 0), 0 0 45px rgba(16, 124, 65, 1);
       }
-      const plan = session.user.user_metadata?.plan;
-      const isEnrolledLocal = localStorage.getItem('manodemy_enrolled') === 'true';
-      if (plan === 'pro' || isEnrolledLocal) { removePreload(); return; }
+
+      100% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 0 rgba(16, 124, 65, 0), 0 0 20px rgba(16, 124, 65, 0.6);
+      }
+    }
+
+    .p11-play-radar-pulse {
+      animation: playBtnRadarPulse 1.4s infinite cubic-bezier(0.4, 0, 0.2, 1) !important;
+      border: 1px solid rgba(52, 211, 153, 1) !important;
+      background: linear-gradient(135deg, #0b5c30 0%, #107C41 100%) !important;
+      color: #ffffff !important;
+    }
+
+    /* Studio Loading Overlay */
+    .py-loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #060913;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      transition: opacity 0.3s ease;
+    }
+
+    .py-loading-spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid rgba(16, 124, 65, 0.2);
+      border-top-color: #21A366;
+      border-radius: 50%;
+      animation: pySpin 0.7s linear infinite;
+    }
+
+    @keyframes pySpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .py-loading-text {
+      color: #f1f5f9;
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .py-loading-bar-wrap {
+      width: 200px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .py-loading-bar {
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, #107C41, #34d399);
+      border-radius: 2px;
+      animation: pyBar 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pyBar {
+      0% {
+        margin-left: 0%;
+        width: 20%;
+      }
+
+      50% {
+        margin-left: 50%;
+        width: 45%;
+      }
+
+      100% {
+        margin-left: 100%;
+        width: 10%;
+      }
+    }
+  </style>
+  <script>window.COURSE_DAY = 4; window.COURSE_TRACK = 'excel';</script>
+  <!-- Theme Initialization (Anti-FOUC) -->
+  <script>
+    (function() {
       try {
-        const { data: enrolled } = await sb.rpc('check_enrollment', { p_course_id: 'excel-12day' });
-        if (enrolled) {
-          localStorage.setItem('manodemy_enrolled', 'true');
-          removePreload(); return;
+        var saved = localStorage.getItem('manodemy-theme');
+        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+        } else {
+          document.documentElement.classList.add('light');
+          document.documentElement.classList.remove('dark');
         }
-      } catch (rpcErr) { /* RPC failed */ }
-      window.location.href = `../index.html#pricing?locked=true`;
-    } catch (err) { window.location.href = `../index.html`; }
-  });
-</script>
-<!-- Non-render-blocking fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
-<link rel="stylesheet" href="../notebook.css">
-<!-- PWA -->
-<link rel="manifest" href="/manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#060913">
+      } catch(e) {}
+    })();
+  </script>
 </head>
-<body data-kernel="excel">
-<!-- Paywall Preload Screen -->
-<div id="paywall-preload-screen" class="paywall-preload" aria-hidden="true">
-  <div class="paywall-preload__spinner"></div>
-</div>
 
-<nav class="top-bar nav-container" id="topBar">
-  <div class="nav-zone--left">
-    <div class="avatar-wrapper" id="profileAvatar" role="button" tabindex="0" aria-label="Open profile card" aria-expanded="false" aria-haspopup="true">
-      <div class="avatar-circle" id="avatarCircle"></div>
-      <div class="avatar-status-dot" aria-hidden="true"></div>
-    </div>
-    <div class="nav-score-card">
-      <div class="score-info">
-        <span class="score-label">Solved</span>
-        <span class="score-values"><span id="scoreSolved" class="score-highlight">0</span> / <span id="scoreTotal">0</span></span>
-      </div>
-      <div class="score-track"><div class="score-fill" id="scoreProgress" style="width:0%"></div></div>
+<body>
+
+  
+
+  <!-- Loading Overlay -->
+  <div class="py-loading-overlay" id="pyLoadingOverlay">
+    <div class="py-loading-spinner"></div>
+    <div class="py-loading-text">📊 Loading Excel Calculation Engine & Workbook...</div>
+    <div class="py-loading-bar-wrap">
+      <div class="py-loading-bar" id="pyLoadingBar"></div>
     </div>
   </div>
 
-  <div class="nav-center has-dropdown">
-    <div class="nav-center-flex">
-      <a href="day03.html" class="nav-icon-btn prev-btn" aria-label="Previous Day" title="Previous Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
-      <button class="nav-dropdown-btn" id="dayDropdownBtn">
-        <span class="day-badge">Day 04</span>
-        <span class="day-title">Excel Tables</span>
-        <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
-      <a href="day05.html" class="nav-icon-btn next-btn" aria-label="Next Day" title="Next Day"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
-    </div>
-    <div class="nav-dropdown-menu" id="dayDropdownMenu">
-      <div class="dropdown-header">Jump to another day</div>
-      <div class="dropdown-scroll">
-        <a href="day01.html" class="dropdown-item "><span class="day-num">Day 01</span> <span class="day-em">📊</span> Excel Orientation & Essential Formulas</a>
-<a href="day02.html" class="dropdown-item "><span class="day-num">Day 02</span> <span class="day-em">🎨</span> Formatting, Sorting & Filtering</a>
-<a href="day03.html" class="dropdown-item "><span class="day-num">Day 03</span> <span class="day-em">🧹</span> Data Cleaning Essentials</a>
-<a href="day04.html" class="dropdown-item active"><span class="day-num">Day 04</span> <span class="day-em">📋</span> Excel Tables</a>
-<a href="day05.html" class="dropdown-item "><span class="day-num">Day 05</span> <span class="day-em">🔍</span> Lookup & Reference Functions</a>
-<a href="day06.html" class="dropdown-item "><span class="day-num">Day 06</span> <span class="day-em">🔀</span> Logic Functions</a>
-<a href="day07.html" class="dropdown-item "><span class="day-num">Day 07</span> <span class="day-em">📝</span> Text Functions</a>
-<a href="day08.html" class="dropdown-item "><span class="day-num">Day 08</span> <span class="day-em">📅</span> Date & Time Functions</a>
-<a href="day09.html" class="dropdown-item "><span class="day-num">Day 09</span> <span class="day-em">🧮</span> Conditional Aggregation</a>
-<a href="day10.html" class="dropdown-item "><span class="day-num">Day 10</span> <span class="day-em">⚙️</span> PivotTables Core Mechanics</a>
-<a href="day11.html" class="dropdown-item "><span class="day-num">Day 11</span> <span class="day-em">📈</span> PivotTables Advanced & Charts</a>
-<a href="day12.html" class="dropdown-item "><span class="day-num">Day 12</span> <span class="day-em">🏆</span> Data Validation, What-If & Capstone</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="nav-zone--right">
-    <div class="nav-controls">
-      <a href="../home.html" class="nav-icon-btn scorecard-btn" title="Back to Dashboard" aria-label="Score Card">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
-        Score Card
+  <!-- ═══════════════ TOP HEADER (100% FLAGSHIP PARITY) ═══════════════ -->
+  <header class="header">
+    <div class="header-left">
+      <!-- Back Arrow Link -->
+      <a href="/home.html" class="back-to-home-btn" title="Back to Home Dashboard"
+        style="color: #64748b; margin-right: 12px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;"
+        onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
       </a>
-    </div>
-  </div>
-</nav>
+      <!-- User Profile Avatar with active green dot -->
+      <div class="user-profile">
+        <img
+          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzY0NzQ4YiI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg=="
+          alt="User Profile" class="avatar-img" style="background-color: rgba(255,255,255,0.08);" />
+        <span class="active-dot"></span>
+      </div>
 
-<div class="profile-card" id="profileCard" role="dialog" aria-label="User profile summary" aria-modal="false">
-  <div class="profile-card__header">
-    <div class="profile-card__info">
-      <h2 class="profile-card__name" id="profileName">Loading...</h2>
-      <p class="profile-card__email" id="profileEmail">loading@... </p>
+      <!-- Graded Stats Card with Progress Indicator -->
+      <div class="stats-card">
+        <div class="stats-row">
+          <div class="stats-item">
+            <span class="stats-label">SOLVED</span>
+            <span class="stats-value stats-value--fraction">
+              <span class="stats-num" id="solvedCount">0</span>
+              <span class="stats-den" id="totalQuestions">20</span>
+            </span>
+          </div>
+          <div class="stats-divider"></div>
+          <div class="stats-item">
+            <span class="stats-label">MARKS</span>
+            <span class="stats-value stats-value--fraction">
+              <span class="stats-num" id="marksCount">0.0</span>
+              <span class="stats-den" id="totalMarks">20.0</span>
+            </span>
+          </div>
+        </div>
+        <div class="stats-progress-bar">
+          <div class="stats-progress-fill" id="statsProgressFill" style="width: 0%; background: #107C41;"></div>
+        </div>
+      </div>
     </div>
-    <span class="profile-card__badge" id="profileBadge">Free</span>
-  </div>
-  <div class="profile-card__progress-section">
-    <div class="profile-card__progress-labels">
-      <span class="profile-card__progress-text">Overall Progress</span>
-      <span class="profile-card__progress-pct" id="profileProgressPct">0%</span>
-    </div>
-  </div>
-  <button class="profile-card__signout" id="signOutBtn">Sign Out</button>
-</div>
 
-<div class="pyodide-status" id="pyStatus">📊 Loading Excel Formula Engine...</div>
-<div class="layout">
-  <main class="notebook" id="notebook">
-    <div class="nb-title"><h1>📋 Day 04 : Excel Tables</h1></div>
-<div class="nb-section" id="sec-0">
-<div class="nb-rich"><div class="excel-grid-container" style="margin: 20px 0; overflow-x: auto;">
-  <table class="excel-grid" style="border-collapse: collapse; width: 100%; max-width: 500px; background-color: #0b0f19; border: 1px solid #1f293d; font-family: sans-serif; font-size: 14px; text-align: center;">
-    <thead><tr style="background-color: #161f30; color: #9ab4e9;">
-      <th style="border: 1px solid #1f293d; padding: 8px; font-weight: bold; width: 40px;"></th>
-      <th style="border: 1px solid #1f293d; padding: 8px; font-weight: bold;">A (Base Salary)</th>
-      <th style="border: 1px solid #1f293d; padding: 8px; font-weight: bold;">B (Bonus)</th>
-    </tr></thead>
-    <tbody>
-      <tr><td style="border: 1px solid #1f293d; padding: 8px; background-color: #161f30; color: #9ab4e9; font-weight: bold;">1</td>
-        <td id="cell-A1" data-val="5000" style="border: 1px solid #1f293d; padding: 8px; color: #e2e8f0;">5000</td>
-        <td id="cell-B1" data-val="500" style="border: 1px solid #1f293d; padding: 8px; color: #e2e8f0;">500</td></tr>
-      <tr><td style="border: 1px solid #1f293d; padding: 8px; background-color: #161f30; color: #9ab4e9; font-weight: bold;">2</td>
-        <td id="cell-A2" data-val="6000" style="border: 1px solid #1f293d; padding: 8px; color: #e2e8f0;">6000</td>
-        <td id="cell-B2" data-val="800" style="border: 1px solid #1f293d; padding: 8px; color: #e2e8f0;">800</td></tr>
-    </tbody>
-  </table>
-</div></div>
-</div>
-<div class="nb-section" id="sec-1">
-<div class="nb-rich"><h2 style="color: #000000ff; background-color: #02fff2ff; border-left: 6px solid #0c0c0cff; padding: 12px 15px; margin-top: 40px; border-radius: 4px;">
-    <b>1. Structured Tables : <span style="color: #070707ff; font-size: 0.85em; font-weight: normal;">Aggregations Over Ranges</span></b>
-</h2>
-<div style="border-left: 4px solid #4DB6AC; padding-left: 15px; margin: 15px 0; color: #CCCCCC;">
-    <b>🔍 Concept</b><br>
-    Excel Tables (Insert → Table or Ctrl+T) transform a plain data range into a powerful structured object. Tables auto-expand when new rows are added, support structured references like <code>TableName[ColumnName]</code>, and have built-in filter dropdowns. The Total Row can instantly compute SUM, AVERAGE, COUNT, and more for each column.
-</div></div>
-<div class="code-cell" id="cell-1">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-1')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-1')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-1">=SUM(A1:B2)</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="checks-Table Formulas-3">
-<div class="nb-rich"><h3 style="color: #C7D2FE; background-color: #0e0e0fff; border-left: 6px solid #6366F1; padding: 12px 15px; margin-top: 50px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-    <b>🧪 Concept Checks: <code>Table Formulas</code></b>
-</h3></div>
-<div class="question"><p><strong>Q1.</strong> Calculate sum of A1 and B1 (total compensation for row 1).</p></div>
-<div class="code-cell" id="cell-2">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-2')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-2')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-2">=Write your Excel formula here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q2.</strong> Calculate sum of A2 and B2 (total compensation for row 2).</p></div>
-<div class="code-cell" id="cell-3">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-3')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-3')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-3">=Write your Excel formula here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q3.</strong> Calculate total base salary in range A1:A2.</p></div>
-<div class="code-cell" id="cell-4">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-4')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-4')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-4">=Write your Excel formula here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q4.</strong> Calculate total bonus in range B1:B2.</p></div>
-<div class="code-cell" id="cell-5">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-5')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-5')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-5">=Write your Excel formula here</textarea>
-<div class="cell-output hidden"></div></div>
-<div class="question"><p><strong>Q5.</strong> Calculate average base salary across A1:A2.</p></div>
-<div class="code-cell" id="cell-6">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-6')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-6')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-6">=Write your Excel formula here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="practice">
-<div class="section-header gold"><h2>🛠️ Professional Practice Tasks</h2></div>
-<div class="question task"><p><strong>Task 1 (Total Earnings):</strong> Calculate total compensation (base + bonus) across both rows using SUM(A1:B2).</p></div>
-<div class="code-cell" id="cell-7">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-7')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-7')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-7">=Write your Excel formula here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="interview">
-<div class="section-header purple"><h2>💻 Pure Coding Interview Questions</h2></div>
-<div class="question interview"><p><strong>Q1.</strong> Calculate total bonus in range B1:B2 and explain why Excel Tables are better than plain ranges for growing datasets.</p></div>
-<div class="code-cell" id="cell-8">
-<div class="cell-bar"><span class="cell-label">In [ ]:</span><div class="cell-actions"><button class="run-btn" onclick="runCell('cell-8')">▶ Run</button><button class="clear-btn" onclick="clearOutput('cell-8')">✕ Clear</button></div></div>
-<textarea class="cm-source" id="src-8">=Write your Excel formula here</textarea>
-<div class="cell-output hidden"></div></div>
-</div>
-<div class="nb-section" id="summary">
-<div class="section-header cyan"><h2>📊 Day 04 Executive Summary</h2></div>
-<div class="nb-rich"><div style="border-left: 4px solid #22d3ee; padding-left: 16px; margin: 20px 0; color: #CBD5E1; font-size: 0.97em; line-height: 1.75;">Excel Tables are the professional way to manage data. They auto-expand, support structured references, and make formulas self-documenting. Always convert raw data to a Table before building PivotTables or VLOOKUP references — it prevents broken references when data grows.</div></div>
-</div>
-  </main>
-  <nav class="sidebar" id="sidebar">
-    <div class="sidebar-top"><div class="sidebar-header"><span class="icon">📄</span> CONTENTS</div></div>
-    <ul class="toc-list"><li><a href="#sec-0" class="toc-link">🎯 Enterprise Objective</a></li>
-<li><a href="#sec-1" class="toc-link">1. Structured Tables</a></li>
-<li><a href="#checks-Table Formulas-3" class="toc-link">🧪 Checks: Table Formulas</a></li>
-<li><a href="#practice" class="toc-link">🛠️ Practice Tasks</a></li>
-<li><a href="#interview" class="toc-link">💻 Interview Questions</a></li>
-<li><a href="#summary" class="toc-link">📊 Executive Summary</a></li></ul>
-    <div class="sidebar-resize" id="sidebarResize"></div>
-  </nav>
-</div>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldcode.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/foldgutter.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/fold/indent-fold.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script defer src="../notebook.js?v=2.1"></script>
-<script src="../voice.js" defer></script>
-<script src="../hints.js" defer></script>
-<!-- PWA Service Worker Registration -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('[Service Worker] Registered scope:', reg.scope))
-        .catch(err => console.error('[Service Worker] Registration failed:', err));
-    });
-  }
-</script>
+    <div class="header-center">
+      <!-- Day Selector Dropdown & Topic Selector Dropdown -->
+      <div class="day-navigation">
+        <a href="day03.html" class="day-nav-arrow-btn day-nav-arrow-btn--prev" id="prevDayBtn"
+          title="Previous Day: Day 03" aria-label="Previous Day"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6" />
+          </svg></a>
+        <div class="day-picker-pill">
+          <span class="day-picker-dot day-picker-dot--excel"></span>
+          <select id="daySelect">
+            <!-- Populated dynamically -->
+          </select>
+          <span class="day-picker-chevron">
+            <svg width="8" height="5" viewBox="0 0 8 5" fill="none">
+              <path d="M1 1L4 4L7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </span>
+        </div>
+
+        <div class="day-picker-pill topic-picker-pill no-dropdown">
+          <select id="topicSelect" onchange="onTopicSelectChange(this.value)">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <a href="day05.html" class="day-nav-arrow-btn day-nav-arrow-btn--next" id="nextDayBtn"
+          title="Next Day: Day 05" aria-label="Next Day"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg></a>
+
+        <button class="hdr-btn hdr-btn--autoplay p11-play-radar-pulse" id="navPlayBtn"
+          onclick="toggleCombinedPlayback()" title="Play lecture narration" style="display: inline-flex;">
+          <span class="btn-icon">▶</span> <span class="btn-text">Play Lesson</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <!-- Modern Clean Dual-State Theme Toggle Switch (100% SQL & Python Parity) -->
+      <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()"
+        role="switch" aria-checked="false" aria-label="Toggle dark and light mode" title="Switch to Light mode">
+        <span class="theme-switch-track" aria-hidden="true">
+          <span class="track-icon track-icon--moon" title="Dark mode">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </span>
+          <span class="track-icon track-icon--sun" title="Light mode">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="3.5"/><line x1="12" y1="20.5" x2="12" y2="22.5"/><line x1="4.5" y1="4.5" x2="6" y2="6"/><line x1="18" y1="18" x2="19.5" y2="19.5"/><line x1="1.5" y1="12" x2="3.5" y2="12"/><line x1="20.5" y1="12" x2="22.5" y2="12"/><line x1="4.5" y1="19.5" x2="6" y2="18"/><line x1="18" y1="6" x2="19.5" y2="4.5"/>
+            </svg>
+          </span>
+          <span class="theme-switch-thumb">
+            <svg class="thumb-icon thumb-icon--moon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="thumb-icon thumb-icon--sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="3.5"/><line x1="12" y1="20.5" x2="12" y2="22.5"/><line x1="4.5" y1="4.5" x2="6" y2="6"/><line x1="18" y1="18" x2="19.5" y2="19.5"/><line x1="1.5" y1="12" x2="3.5" y2="12"/><line x1="20.5" y1="12" x2="22.5" y2="12"/><line x1="4.5" y1="19.5" x2="6" y2="18"/><line x1="18" y1="6" x2="19.5" y2="4.5"/>
+            </svg>
+          </span>
+        </span>
+      </button>
+
+      <button class="hdr-btn hdr-btn--test" id="takeTestBtn" onclick="openTestPortal()"
+        title="Take the Day 04 Excel Interview Test">🧪 Take Test</button>
+      <button class="hdr-btn hdr-btn--score" id="scoreBtn" onclick="window.location.href='/home.html'"
+        title="View Score Card">
+        <svg class="score-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right: 4px;">
+          <path d="M1.5 1.5H5.5V5.5H1.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M8.5 1.5H12.5V5.5H8.5V1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M1.5 8.5H5.5V12.5H1.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M8.5 8.5H12.5V12.5H8.5V8.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        Score Card
+      </button>
+
+      <!-- Overall Course Score Badge -->
+      <div class="header-overall-score" id="headerOverallScoreBadge" onclick="window.location.href='/home.html'"
+        title="View Overall Course Score & Certificate Status">
+        <div class="overall-score-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.3"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+            <path d="M4 22h16" />
+            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+          </svg>
+        </div>
+        <div class="overall-score-content">
+          <div class="overall-score-val">
+            <span class="overall-score-num" id="headerOverallScore">0</span>
+            <span class="overall-score-max">/ 1500</span>
+          </div>
+        </div>
+        <div class="overall-score-bar">
+          <div class="overall-score-bar-fill" id="overallScoreBarFill" style="width: 0%; background: #21A366;"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Tabs Navigation -->
+  <div class="mobile-tabs-nav" id="mobileTabsNav">
+    <div class="mobile-tabs-group">
+      <button class="mobile-tab-btn active" id="tabBtnPractice" onclick="setMobileTab('practice')">
+        <span class="tab-emoji">📊</span> Practice
+      </button>
+      <button class="mobile-tab-btn" id="tabBtnTheory" onclick="setMobileTab('theory')">
+        <span class="tab-emoji">📖</span> Lesson
+      </button>
+    </div>
+    <button class="mobile-hdr-toggle-btn" id="mobileHdrToggleBtn" onclick="toggleMobileHeader(event)"
+      aria-label="Toggle top header bars" title="Hide top header info">
+      <span class="hdr-toggle-icon">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </span>
+      <span class="hdr-toggle-label">Hide Info</span>
+    </button>
+  </div>
+
+  <!-- ═══════════════ SPLIT WORKSPACE ═══════════════ -->
+  <div class="workspace mobile-show-practice" id="workspaceContainer">
+
+    <!-- ─── LEFT PANEL (EXCEL SPREADSHEET WORKBENCH) ─── -->
+    <div class="panel-left" id="panelLeft">
+
+      <!-- Toolbar — above the question prompt -->
+      <div class="editor-toolbar">
+        <!-- ◀ Prev Question -->
+        <button class="q-nav-btn" id="prevQBtn" onclick="prevQuestion()" title="Previous question"
+          aria-label="Previous question">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+          </svg>
+        </button>
+
+        <!-- Question Picker Trigger -->
+        <div class="q-picker-wrapper" id="qPickerWrapper">
+          <button class="q-picker-trigger" id="qPickerTrigger" onclick="toggleQPicker(event)" title="Jump to question"
+            aria-haspopup="listbox" aria-expanded="false">
+            <span class="q-counter" id="qCounter">Question-01</span>
+            <svg class="q-picker-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          <!-- Question List Popover (100% Flagship Parity) -->
+          <div class="q-picker-popover" id="qPickerPopover" role="listbox" aria-label="Question list"
+            style="display:none;">
+            <div class="q-picker-header">
+              <span>Practice Questions in this topic</span>
+              <span class="q-picker-count-badge" id="qPickerCountBadge">0 / 20</span>
+            </div>
+            <div class="q-picker-list" id="qPickerList">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ▶ Next Question -->
+        <button class="q-nav-btn" id="nextQBtn" onclick="nextQuestion()" title="Next question"
+          aria-label="Next question">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+          </svg>
+        </button>
+
+        <div class="spacer"></div>
+        <button class="tb-btn tb-btn--solution" id="hintBtn" onclick="peekSolution()" title="Peek solution hint">💡
+          Solution</button>
+        <button class="tb-btn tb-btn--reset" id="resetBtn" onclick="resetWorkbookData()"
+          title="Reset workbook to starter data">↺ Reset</button>
+        <button class="tb-btn tb-btn--run tb-btn--excel-run" id="runBtn" onclick="runCurrentFormula()"
+          title="Evaluate formula (Ctrl+Enter)">▶ Check Formula</button>
+        <button class="tb-btn tb-btn--clear" id="clearBtn" onclick="clearActiveCell()" title="Clear active cell">✕
+          Clear</button>
+      </div>
+
+      <!-- Question Prompt Bar (Clean Full Width, Zero Clutter) -->
+      <div class="question-bar" id="questionBar">
+        <div class="q-marker" style="background: #107C41;"></div>
+        <div class="question-prompt" id="questionPrompt">
+          Loading practice challenge...
+        </div>
+      </div>
+
+      <!-- ════ MICROSOFT 365 REAL SPREADSHEET STUDIO WORKBENCH ════ -->
+      <div class="excel-workbench-container" id="excelWorkbench">
+
+        <!-- 1. Ribbon Tab Bar -->
+        <div class="excel-ribbon-tab-bar">
+          <button class="ribbon-tab-btn" id="tabFile" onclick="switchRibbonTab('file')">File</button>
+          <button class="ribbon-tab-btn active" id="tabHome" onclick="switchRibbonTab('home')">Home</button>
+          <button class="ribbon-tab-btn" id="tabInsert" onclick="switchRibbonTab('insert')">Insert</button>
+          <button class="ribbon-tab-btn" id="tabFormulas" onclick="switchRibbonTab('formulas')">Formulas</button>
+          <button class="ribbon-tab-btn" id="tabData" onclick="switchRibbonTab('data')">Data</button>
+          <button class="ribbon-tab-btn" id="tabView" onclick="switchRibbonTab('view')">View</button>
+        </div>
+
+        <!-- 2. Ribbon Command Bar (Tools Toolbar) -->
+        <div class="excel-ribbon-toolbar" id="excelRibbonToolbar">
+
+          <!-- File Panel -->
+          <div class="ribbon-panel" id="panelRibbonFile">
+            <div class="ribbon-group" title="File Actions">
+              <button class="ribbon-btn tb-btn--xlsx" onclick="downloadPracticeWorkbookXLSX()"
+                title="Download Excel Workbook">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                </svg>
+                <span>Download .XLSX</span>
+              </button>
+              <button class="ribbon-btn tb-btn--gsheets" onclick="openPracticeGoogleSheets()"
+                title="Open in Google Sheets">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 7h10v2H7zm0 4h10v2H7zm0 4h7v2H7z" />
+                </svg>
+                <span>Google Sheets</span>
+              </button>
+              <button class="ribbon-btn" onclick="copyCurrentSheetToClipboard()" title="Copy active sheet data as TSV">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                <span>Copy Data</span>
+              </button>
+              <button class="ribbon-btn" onclick="resetWorkbookData()" title="Reset workbook data">↺ Reset
+                Workbook</button>
+            </div>
+          </div>
+
+          <!-- Home Panel (Default) -->
+          <div class="ribbon-panel active" id="panelRibbonHome">
+            <!-- Clipboard Group -->
+            <div class="ribbon-group" title="Clipboard">
+              <button class="ribbon-btn" onclick="copyCurrentSheetToClipboard()" title="Copy (Ctrl+C)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+
+            <!-- Export & Sync Group -->
+            <div class="ribbon-group" title="Export & Sync">
+              <button class="ribbon-btn tb-btn--xlsx" onclick="downloadPracticeWorkbookXLSX()"
+                title="Download authentic Microsoft 365 OOXML workbook (.xlsx)"
+                style="color: var(--excel-brand-green); font-weight: 700;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                </svg>
+                <span>.XLSX</span>
+              </button>
+              <button class="ribbon-btn" onclick="openPracticeGoogleSheets()"
+                title="Open Practice Data in Google Sheets">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 7h10v2H7zm0 4h10v2H7zm0 4h7v2H7z" />
+                </svg>
+                <span>GSheets</span>
+              </button>
+            </div>
+
+            <!-- Font Group -->
+            <div class="ribbon-group" title="Font Tools">
+              <select class="ribbon-select" title="Font Family" style="width: 85px;">
+                <option>Calibri</option>
+                <option>Segoe UI</option>
+                <option>Arial</option>
+              </select>
+              <select class="ribbon-select" title="Font Size" style="width: 48px;">
+                <option>10</option>
+                <option selected>11</option>
+                <option>12</option>
+                <option>14</option>
+              </select>
+              <button class="ribbon-btn" id="btnBold" onclick="toggleCellFormat('bold')"
+                title="Bold (Ctrl+B)"><strong>B</strong></button>
+              <button class="ribbon-btn" id="btnItalic" onclick="toggleCellFormat('italic')"
+                title="Italic (Ctrl+I)"><em>I</em></button>
+              <button class="ribbon-btn" id="btnUnderline" onclick="toggleCellFormat('underline')"
+                title="Underline (Ctrl+U)"><u>U</u></button>
+              <button class="ribbon-btn" title="Border" onclick="alert('Border formatting active.')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="1" />
+                  <line x1="12" y1="3" x2="12" y2="21" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                </svg>
+              </button>
+              <button class="ribbon-btn" title="Fill Color" onclick="alert('Fill color highlights active cell.')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 11l-8-8-8.5 8.5a2.12 2.12 0 0 0 0 3l5 5a2.12 2.12 0 0 0 3 0L19 11z" />
+                  <path d="M5 2v4" />
+                  <path d="M19 11l3 3" />
+                  <path d="M19 22H2" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Alignment Group -->
+            <div class="ribbon-group" title="Alignment">
+              <button class="ribbon-btn" onclick="setCellAlignment('left')" title="Align Left">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="17" y1="10" x2="3" y2="10" />
+                  <line x1="21" y1="6" x2="3" y2="6" />
+                  <line x1="21" y1="14" x2="3" y2="14" />
+                  <line x1="17" y1="18" x2="3" y2="18" />
+                </svg>
+              </button>
+              <button class="ribbon-btn" onclick="setCellAlignment('center')" title="Center">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="10" x2="6" y2="10" />
+                  <line x1="21" y1="6" x2="3" y2="6" />
+                  <line x1="21" y1="14" x2="3" y2="14" />
+                  <line x1="18" y1="18" x2="6" y2="18" />
+                </svg>
+              </button>
+              <button class="ribbon-btn" onclick="setCellAlignment('right')" title="Align Right">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="21" y1="10" x2="7" y2="10" />
+                  <line x1="21" y1="6" x2="3" y2="6" />
+                  <line x1="21" y1="14" x2="3" y2="14" />
+                  <line x1="21" y1="18" x2="7" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Number Formatting Group -->
+            <div class="ribbon-group" title="Number Formatting">
+              <select class="ribbon-select" id="numberFormatSelect" onchange="applyNumberFormat(this.value)"
+                style="width: 90px;">
+                <option value="general">General</option>
+                <option value="number">Number</option>
+                <option value="currency">Currency ($)</option>
+                <option value="percent">Percent (%)</option>
+              </select>
+              <button class="ribbon-btn" onclick="applyNumberFormat('currency')"
+                title="Format as Currency ($)"><strong>$</strong></button>
+              <button class="ribbon-btn" onclick="applyNumberFormat('percent')"
+                title="Percent Style (%)"><strong>%</strong></button>
+              <button class="ribbon-btn" onclick="applyNumberFormat('number')"
+                title="Comma Style (,)"><strong>,</strong></button>
+            </div>
+
+            <!-- Styles & Analysis -->
+            <div class="ribbon-group" title="Styles & Analysis">
+              <button class="ribbon-btn" onclick="openPivotModal()" title="PivotTable Cross-Tabulation"
+                style="color: var(--excel-brand-green); font-weight: 700;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 3h18v18H3V3zm2 2v4h6V5H5zm8 0v4h6V5h-6zM5 11v8h6v-8H5zm8 0v8h6v-8h-6z" />
+                </svg>
+                <span>PivotTable</span>
+              </button>
+            </div>
+
+            <!-- Quick Formula Assistant Chips -->
+            <div class="ribbon-group" title="Quick Formula Inserts">
+              <button class="ribbon-chip-btn" onclick="insertFormulaSnippet('=IF(')">=IF()</button>
+              <button class="ribbon-chip-btn" onclick="insertFormulaSnippet('=IFS(')">=IFS()</button>
+              <button class="ribbon-chip-btn" onclick="insertFormulaSnippet('=SWITCH(')">=SWITCH()</button>
+              <button class="ribbon-chip-btn" onclick="insertFormulaSnippet('=AND(')">=AND()</button>
+              <button class="ribbon-chip-btn" onclick="insertFormulaSnippet('=OR(')">=OR()</button>
+              <button class="ribbon-chip-btn" onclick="insertFormulaSnippet('=NOT(')">=NOT()</button>
+              <button class="ribbon-chip-btn" onclick="insertFormulaSnippet('=IFERROR(')">=IFERROR()</button>
+              <button class="ribbon-chip-btn" onclick="insertFormulaSnippet('=IFNA(')">=IFNA()</button>
+            </div>
+          </div>
+
+          <!-- Insert Panel (Features PivotTable) -->
+          <div class="ribbon-panel" id="panelRibbonInsert">
+            <div class="ribbon-group">
+              <button class="ribbon-btn pivot-btn" onclick="openPivotModal()" title="Insert PivotTable Summary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 3h18v18H3V3zm2 2v4h6V5H5zm8 0v4h6V5h-6zM5 11v8h6v-8H5zm8 0v8h6v-8h-6z" />
+                </svg>
+                <span>PivotTable</span>
+              </button>
+              <button class="ribbon-btn"
+                onclick="alert('Tables are actively structured. Use Decision_Modeling sheet to view evaluated metrics.')">📋
+                Table</button>
+            </div>
+            <div class="ribbon-group">
+              <button class="ribbon-btn"
+                onclick="alert('Column Chart: Select a data range and view metrics in Decision_Modeling.')">📊 Column
+                Chart</button>
+              <button class="ribbon-btn"
+                onclick="alert('Line Chart: Trend analysis is covered in Day 11 Data Visualization.')">📈 Line
+                Chart</button>
+              <button class="ribbon-btn"
+                onclick="alert('Pie Chart: Plan tier distribution is ready in Decision_Modeling.')">🥧 Pie Chart</button>
+            </div>
+          </div>
+
+          <!-- Formulas Panel -->
+          <div class="ribbon-panel" id="panelRibbonFormulas">
+            <div class="ribbon-group">
+              <button class="ribbon-btn" onclick="insertFormulaSnippet('=IF(')">🔀 Logical IF</button>
+              <button class="ribbon-btn" onclick="insertFormulaSnippet('=IFS(')">🌳 Multi IFS</button>
+              <button class="ribbon-btn" onclick="insertFormulaSnippet('=SWITCH(')">🎛️ SWITCH</button>
+              <button class="ribbon-btn" onclick="insertFormulaSnippet('=AND(')">🔗 AND</button>
+              <button class="ribbon-btn" onclick="insertFormulaSnippet('=OR(')">🔀 OR</button>
+              <button class="ribbon-btn" onclick="insertFormulaSnippet('=IFERROR(')">🛡️ IFERROR</button>
+              <button class="ribbon-btn" onclick="insertFormulaSnippet('=IFNA(')">🎯 IFNA</button>
+            </div>
+          </div>
+
+          <!-- Data Panel -->
+          <div class="ribbon-panel" id="panelRibbonData">
+            <div class="ribbon-group">
+              <button class="ribbon-btn" onclick="sortActiveColumn('asc')">⬇️ Sort A to Z</button>
+              <button class="ribbon-btn" onclick="sortActiveColumn('desc')">⬆️ Sort Z to A</button>
+              <button class="ribbon-btn" onclick="alert('AutoFilter enabled on all dataset headers.')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                </svg>
+                <span>Filter</span>
+              </button>
+              <button class="ribbon-btn" onclick="alert('Flash Fill shortcut: Press Ctrl+E to pattern-split text.')">⚡
+                Flash Fill</button>
+            </div>
+          </div>
+
+          <!-- View Panel -->
+          <div class="ribbon-panel" id="panelRibbonView">
+            <div class="ribbon-group">
+              <button class="ribbon-btn active" onclick="alert('Standard Normal View active.')">Normal</button>
+              <button class="ribbon-btn" onclick="toggleTheme()">🌓 Dark/Light Mode</button>
+              <button class="ribbon-btn" onclick="resetSplitScreen()">◫ 50/50 Split View</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Excel Formula Bar -->
+        <div class="excel-formula-bar">
+          <div class="name-box" id="excelActiveCoord" title="Active Cell Address">A1</div>
+          <div class="formula-btn-group">
+            <button class="formula-btn" onclick="cancelFormulaEdit()" title="Cancel">✕</button>
+            <button class="formula-btn" onclick="runCurrentFormula()" title="Enter / Evaluate Formula">✓</button>
+            <button class="formula-btn fx-icon" title="Insert Function">fx</button>
+          </div>
+          <div class="formula-input-wrapper">
+            <input type="text" class="formula-main-input" id="excelFormulaInput"
+              placeholder="Enter formula or value (e.g. =IF(Subscriptions!E2>=50000, ...)) and press Enter..." autocomplete="off"
+              spellcheck="false">
+          </div>
+        </div>
+
+        <!-- 3b. Point Mode Active Breadcrumb Banner -->
+        <div class="point-mode-banner" id="pointModeBanner" style="display: none;">
+          <span class="point-mode-pulse"></span>
+          <span class="point-mode-text" id="pointModeText">📍 Editing <strong>Decision_Modeling!B2</strong> — Drag or
+            click cells on this sheet to insert reference</span>
+          <div class="point-mode-actions">
+            <button class="point-mode-btn point-mode-btn--done" onclick="excelGrid.commitPointMode()">Done
+              (Enter)</button>
+            <button class="point-mode-btn point-mode-btn--cancel" onclick="excelGrid.cancelPointMode()">Cancel
+              (Esc)</button>
+          </div>
+        </div>
+
+        <!-- 4. Interactive Spreadsheet Grid -->
+        <div class="excel-grid-viewport" id="excelGridContainer">
+          <table class="excel-sheet-table" id="excelGridTable">
+            <!-- Populated dynamically by HyperFormula & Excel Engine -->
+          </table>
+        </div>
+
+        <!-- 5. Bottom Multi-Sheet Tab Navigation -->
+        <div class="excel-bottom-bar" id="excelSheetTabs">
+          <!-- Populated dynamically: Subscriptions, Plan_Tiers, Decision_Modeling -->
+        </div>
+
+        <!-- 6. Excel Status Bar -->
+        <div class="excel-status-bar">
+          <div class="status-left">
+            <span id="statusCellMode">Ready</span>
+            <span class="status-metric" id="statusSelectedCoord">Cell: A1</span>
+          </div>
+          <div class="status-right">
+            <span class="status-metric" id="statusMetricAvg">Average: 0</span>
+            <span class="status-metric" id="statusMetricCount">Count: 0</span>
+            <span class="status-metric" id="statusMetricSum">Sum: 0</span>
+            <span>100%</span>
+          </div>
+        </div>
+
+        <!-- 7. Formula Execution Terminal / Output Drawer -->
+        <div class="output-section" id="mainOutput" style="margin: 0; border-top: 1px solid rgba(255,255,255,0.08);">
+          <div class="output-label">Formula Execution & Test Results</div>
+          <div id="outputInitMsg" class="output-success">⚡ Enter your Excel formula in the formula bar above and click
+            'Check Formula' (or press Enter) to verify!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── DIVIDER ─── -->
+    <div class="divider" id="divider" role="separator" aria-label="Resizable Divider">
+      <div class="divider-toggles">
+        <button class="div-toggle-btn div-toggle-btn--left" onclick="toggleLeftPanel(event)"
+          title="Toggle spreadsheet workbench" aria-label="Toggle spreadsheet panel">◀</button>
+        <button class="div-toggle-btn div-toggle-btn--split" onclick="resetSplitScreen(event)"
+          title="Reset split screen" aria-label="Reset split screen">◫</button>
+        <button class="div-toggle-btn div-toggle-btn--right" onclick="toggleRightPanel(event)"
+          title="Toggle notes panel" aria-label="Toggle notes panel">▶</button>
+      </div>
+    </div>
+
+    <!-- ─── RIGHT PANEL (THEORY & AUDIO) ─── -->
+    <div class="panel-right" id="panelRight">
+      <div class="right-content" id="rightContent">
+
+        <!-- Slide Viewer -->
+        <div class="slide-viewer" id="slideViewer">
+          <div class="slide-card" style="position: relative;">
+            <div class="slide-header" id="slideHeader">
+              <div class="slide-header-content">
+                <h2><span style="margin-right: 6px;">⚖️</span> 05. Logical Decision Trees &amp; Error Handling</h2>
+                <button class="chapter-pill-btn" id="chapterPillBtn" onclick="toggleChapterList(event)"
+                  title="Jump to Chapter">
+                  <span id="activeChapterTitle">01. Boolean Decision Mechanics & Logical Flow</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Chapter / Topic List Dropdown Popover (100% Flagship Parity) -->
+            <div class="chapter-list chapter-list-popover" id="chapterList" aria-label="Topic List" role="listbox" style="display:none;">
+              <!-- Populated by buildChapterList() -->
+            </div>
+
+            <div class="slide-content" id="slideContent"
+              style="position: relative; overflow-y: auto; overflow-x: hidden; overscroll-behavior-x: none; min-height: 0;">
+              <!-- Canvas Overlay inside scrollable container -->
+              <canvas class="draw-canvas" id="workspaceDrawCanvas"
+                style="position: absolute; top: 0; left: 0; z-index: 10;"></canvas>
+              <!-- Content container populated by JS -->
+              <div id="slideBodyText" aria-live="polite" aria-label="Lesson Content">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
+            <!-- Subtitle/Narration Caption bubble inside workspace slide card -->
+            <div class="vp-caption" id="workspaceVpCaption"
+              style="display: none; margin: 0; padding: 10px 16px; background: rgba(16, 124, 65, 0.08); border-top: 1px solid rgba(16, 124, 65, 0.2); font-size: 0.78rem; font-weight: 500; color: #34d399; text-align: center; font-family: sans-serif; flex-shrink: 0;">
+              📢 Narrating slide events...
+            </div>
+          </div>
+          <!-- Workspace Drawing Toolbar -->
+          <div class="ws-draw-toolbar" id="wsDrawToolbar" style="display: none;">
+            <button class="tool-btn" id="wsRectBtn" onclick="setWsDrawMode('rect')"
+              title="Highlight with Rectangle Box">⬜ Highlight</button>
+            <button class="tool-btn" id="wsUndoBtn" onclick="undoLastHighlight()" title="Undo Last Highlight">↶
+              Undo</button>
+            <button class="tool-btn" id="wsClearBtn" onclick="clearWsDrawings()" title="Clear All Drawings">✕
+              Clear</button>
+          </div>
+        </div>
+
+        <!-- Full Video Player Playback Bar (100% Flagship Standard) -->
+        <div class="playback-bar visible" id="playbackBar">
+          <!-- TOP ROW: 100% Full-Width Progress Slider -->
+          <div class="playback-timeline-row" id="playbackTimelineRow">
+            <div class="timeline-hover-tooltip" id="timelineHoverTooltip">0:00</div>
+            <input type="range" class="seek-bar" id="seekBar" min="0" max="100" value="0" step="0.1"
+              onchange="seekCombinedPlayback(this.value)" aria-label="Playback position" aria-valuemin="0"
+              aria-valuemax="100" aria-valuenow="0">
+          </div>
+
+          <!-- BOTTOM ROW: Controls Bar -->
+          <div class="playback-controls-row">
+            <!-- Left Group: Skip Back, Play Lesson (Emerald Pill), Skip Forward, Volume -->
+            <div class="playback-left-controls">
+              <!-- Skip Back 10s (<<) -->
+              <button class="skip-btn-icon" id="skipBackBtn" onclick="skipCombined(-10)" title="Skip back 10 seconds"
+                aria-label="Skip back 10 seconds">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z" />
+                </svg>
+              </button>
+
+              <!-- Play / Pause Button -->
+              <button class="play-btn-red-pill" id="playPauseBtn" onclick="toggleCombinedPlayback()"
+                title="Play/Pause Lesson" aria-label="Play/Pause" aria-pressed="false"
+                style="background: linear-gradient(135deg, #0b5c30 0%, #107C41 100%);">
+                <span class="btn-icon" aria-hidden="true">&#9654;</span>
+                <span class="btn-text">Play Lesson</span>
+              </button>
+
+              <!-- Skip Forward 10s (>>) -->
+              <button class="skip-btn-icon" id="skipFwdBtn" onclick="skipCombined(10)" title="Skip forward 10 seconds"
+                aria-label="Skip forward 10 seconds">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 6v12l8.5-6L13 6zm-1 6L3.5 6v12l8.5-6z" />
+                </svg>
+              </button>
+
+              <!-- Volume Control Wrapper -->
+              <div class="volume-control-wrapper">
+                <button class="volume-btn-icon" id="volumeBtn" onclick="toggleVolumePopover(event)"
+                  title="Adjust Volume">
+                  <svg class="volume-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                  </svg>
+                </button>
+                <div class="volume-popover" id="volumePopover">
+                  <input type="range" id="volumeSlider" min="0" max="100" value="100" step="1"
+                    oninput="setPlaybackVolume(this.value)">
+                  <span class="volume-value" id="volumeValue">100%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Group: Speed Control, Time Readout -->
+            <div class="playback-right-controls">
+              <div class="speed-control-wrapper">
+                <button class="speed-control-btn-pill" id="speedControlBtn" onclick="toggleSpeedPopover(event)"
+                  title="Playback Speed">
+                  <svg class="speed-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 15.2a10 10 0 0 0 17.3 3.58 10 10 0 0 0-.27-10.21zM10.85 15.75a1.2 1.2 0 1 0 1.2-1.2 1.2 1.2 0 0 0-1.2 1.2zM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1z" />
+                  </svg>
+                  <span id="speedValueLabel">1.0x</span>
+                </button>
+                <div class="speed-popover" id="speedPopover">
+                  <div class="speed-option active" onclick="selectSpeedOption(1, '1.0x')">1.0x</div>
+                  <div class="speed-option" onclick="selectSpeedOption(1.25, '1.25x')">1.25x</div>
+                  <div class="speed-option" onclick="selectSpeedOption(1.5, '1.5x')">1.5x</div>
+                  <div class="speed-option" onclick="selectSpeedOption(1.75, '1.75x')">1.75x</div>
+                  <div class="speed-option" onclick="selectSpeedOption(2, '2.0x')">2.0x</div>
+                </div>
+              </div>
+              <span class="playback-time" id="playbackTime" aria-label="Playback time" aria-live="off">0:00 /
+                10:00</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ GOOGLE SHEETS & EXCEL COMPANION MODAL ═══════════ -->
+  <div class="pivot-modal-overlay" id="gsheetsModal" style="display:none;">
+    <div class="pivot-modal-card" style="max-width: 580px;">
+      <div class="pivot-header" style="background: linear-gradient(135deg, #0f9d58 0%, #107C41 100%);">
+        <h3 style="margin:0;display:flex;align-items:center;gap:8px;">
+          <span>📊</span> <span>Google Sheets & Excel Practice Companion</span>
+        </h3>
+        <button type="button" class="formula-btn" onclick="closeGSheetsModal()"
+          style="color:#fff;font-size:16px;">✕</button>
+      </div>
+      <div class="pivot-body" style="padding: 24px; line-height: 1.6; display: block;">
+        <p style="margin-top: 0; margin-bottom: 16px; font-size: 13.5px; color: var(--text-dim, #666);">
+          Want to practice offline or in your personal Google Drive? Choose an option below to access the exact
+          <strong>Subscriptions</strong>, <strong>Plan_Tiers</strong>, and <strong>Decision_Modeling</strong> datasets:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <!-- Option 1: Download .XLSX -->
+          <div
+            style="padding: 14px 16px; background: rgba(16, 124, 65, 0.08); border: 1px solid rgba(16, 124, 65, 0.35); border-radius: 8px;">
+            <div
+              style="font-weight: 700; color: #107C41; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between;">
+              <span style="display: flex; align-items: center; gap: 6px;">📥 Option 1: Download Multi-Sheet Workbook
+                (.xlsx)</span>
+              <span
+                style="font-size: 10px; background: #107C41; color: #fff; padding: 2px 7px; border-radius: 4px; font-weight: 700;">Recommended</span>
+            </div>
+            <p style="font-size: 12px; margin: 0 0 10px 0; color: var(--text-dim, #666);">
+              Pre-formatted Excel workbook containing all 3 sheets, emerald headers, currency formats, and decision
+              tables. Opens directly in Microsoft Excel, Apple Numbers, or drag directly into Google Drive!
+            </p>
+            <button class="tb-btn tb-btn--xlsx" onclick="downloadPracticeWorkbookXLSX(); closeGSheetsModal();"
+              style="width: 100%; justify-content: center; height: 36px; font-size: 13px;">
+              <span>📥 Download Manodemy_Day04_TransGlobal_Freight_Practice.xlsx</span>
+            </button>
+          </div>
+
+          <!-- Option 2: Copy TSV to Clipboard -->
+          <div
+            style="padding: 14px 16px; background: rgba(15, 157, 88, 0.08); border: 1px solid rgba(15, 157, 88, 0.35); border-radius: 8px;">
+            <div style="font-weight: 700; color: #0f9d58; margin-bottom: 4px;">
+              <span>📋 Option 2: Copy Active Dataset to Clipboard</span>
+            </div>
+            <p style="font-size: 12px; margin: 0 0 10px 0; color: var(--text-dim, #666);">
+              Copies all rows of the currently selected sheet (<span id="copySheetNameBadge"
+                style="font-weight:700;">Subscriptions</span>) as tab-delimited text so you can paste (<kbd>Ctrl+V</kbd>)
+              into any blank Google Sheet or Excel window immediately.
+            </p>
+            <button class="tb-btn" onclick="copyCurrentSheetToClipboard();"
+              style="width: 100%; justify-content: center; height: 36px; background: rgba(15, 157, 88, 0.15); border: 1px solid #0f9d58; color: #0f9d58; font-weight: 700; font-size: 13px;">
+              <span>📋 Copy Sheet Data to Clipboard</span>
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-top: 18px; font-size: 11.5px; color: var(--text-dim, #888); text-align: center;">
+          💡 <strong>Pro Tip:</strong> Certified course progression, 20 practice questions, and the Timed Test Portal
+          are auto-graded live right here inside the Manodemy Studio!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ PIVOT TABLE INTERACTIVE MODAL ═══════════════ -->
+  <div class="pivot-modal-overlay" id="pivotModal" style="display:none;">
+    <div class="pivot-modal-card">
+      <div class="pivot-header">
+        <h3 style="margin:0;display:flex;align-items:center;gap:8px;">
+          <span>📊</span> <span>Interactive PivotTable Builder</span>
+        </h3>
+        <button type="button" class="formula-btn" onclick="closePivotModal()"
+          style="color:#fff;font-size:16px;">✕</button>
+      </div>
+      <div class="pivot-body">
+        <div class="pivot-fields-panel">
+          <div class="pivot-fields-title">Choose Fields to Analyze:</div>
+          <div class="pivot-field-item">
+            <input type="checkbox" id="pvFieldPlan" checked onchange="updatePivotCalculation()">
+            <label for="pvFieldPlan"><strong>Plan Tier</strong> (Rows)</label>
+          </div>
+          <div class="pivot-field-item">
+            <input type="checkbox" id="pvFieldIndustry" checked onchange="updatePivotCalculation()">
+            <label for="pvFieldIndustry"><strong>Industry</strong> (Cols)</label>
+          </div>
+          <div class="pivot-field-item">
+            <input type="checkbox" id="pvFieldARR" checked onchange="updatePivotCalculation()">
+            <label for="pvFieldARR"><strong>ARR</strong> (Values: Sum)</label>
+          </div>
+          <div class="pivot-field-item">
+            <input type="checkbox" id="pvFieldHours" onchange="updatePivotCalculation()">
+            <label for="pvFieldHours"><strong>Usage Hours</strong> (Values: Sum)</label>
+          </div>
+          <div
+            style="margin-top:14px;padding:8px;background:rgba(16,124,65,0.1);border-radius:6px;font-size:11px;color:#a7f3d0;">
+            💡 <strong>Excel 365 Tip:</strong> PivotTables automatically cross-tabulate multi-dimensional SaaS cohort metrics in seconds without writing manual formulas!
+          </div>
+        </div>
+
+        <div class="pivot-result-panel">
+          <div style="font-weight:700;font-size:13px;margin-bottom:8px;color:#34d399;">PivotTable Summary Output:</div>
+          <table class="pivot-table-render" id="pivotTableRender">
+            <!-- Dynamically calculated -->
+          </table>
+        </div>
+      </div>
+      <div class="pivot-footer">
+        <button type="button" class="tb-btn tb-btn--reset" onclick="closePivotModal()">Close</button>
+        <button type="button" class="tb-btn tb-btn--run tb-btn--excel-run" onclick="closePivotModal()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TIMED TEST PORTAL MODAL (20 QUESTIONS) ═══════════════ -->
+  <div class="test-overlay" id="testOverlay" style="display:none;">
+    <div class="test-header">
+      <div class="test-header-left">
+        <!-- User Profile Avatar with active green dot -->
+        <div class="user-profile">
+          <img
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzY0NzQ4YiI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg=="
+            alt="User Profile" class="avatar-img" style="background-color: rgba(255,255,255,0.08);" />
+          <span class="active-dot"></span>
+        </div>
+
+        <!-- Test Progress Stats Card -->
+        <div class="stats-card">
+          <div class="stats-row">
+            <div class="stats-item">
+              <span class="stats-label">ATTEMPTED</span>
+              <span class="stats-value stats-value--fraction"><span class="stats-num"
+                  id="testAttemptedCount">0</span><span class="stats-den">20</span></span>
+            </div>
+            <div class="stats-divider"></div>
+            <div class="stats-item">
+              <span class="stats-label">SCORE</span>
+              <span class="stats-value stats-value--fraction"><span class="stats-num"
+                  id="testBestScoreCount">0</span><span class="stats-den">20</span></span>
+            </div>
+          </div>
+          <div class="stats-progress-bar">
+            <div class="stats-progress-fill" id="testProgressFill" style="width: 0%; background: #107C41;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-header-center">
+        <div class="test-title">📝 Day 04 — Excel Tables & Structured References Assessment</div>
+      </div>
+
+      <div class="test-header-right">
+        <div class="test-timer-wrapper">
+          <span class="timer-icon">⏳</span>
+          <span class="test-timer" id="testTimer">60:00</span>
+        </div>
+        <button class="test-close-btn" onclick="closeTestPortal()">✕ Exit Test</button>
+      </div>
+    </div>
+
+    <div class="test-body">
+      <!-- Sidebar with 20 buttons -->
+      <div class="test-sidebar" id="testSidebar">
+        <!-- 20 buttons populated by JS -->
+      </div>
+
+      <!-- Main Test Area -->
+      <div class="test-main">
+        <div class="test-question-prompt" id="testQuestionPrompt">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="test-options-list" id="testOptionsList"
+          style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
+          <!-- Radio options populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <div class="test-submit-bar">
+      <span class="test-progress" id="testProgress">Attempted: 0 / 20</span>
+      <button class="test-submit-btn" id="submitTestBtn" onclick="submitTest()">Submit Test</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SCORECARD OVERLAY ═══════════════ -->
+  <div class="scorecard-overlay" id="scorecardOverlay" style="display:none;">
+    <div class="scorecard">
+      <div class="scorecard-header" style="background: linear-gradient(135deg, #0b5c30, #107C41); color: #fff;">
+        <h2>📊 Excel Day 04 Test Results</h2>
+        <div class="score-big" id="scoreBig">0 / 20</div>
+        <div class="score-meta" id="scoreMeta">Time spent: 00:00</div>
+      </div>
+      <div class="scorecard-body">
+        <table class="scorecard-table" id="scorecardTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Status</th>
+              <th>Question & Selected Answer</th>
+            </tr>
+          </thead>
+          <tbody id="scorecardBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+      <div class="scorecard-footer" style="display: flex; justify-content: space-between; align-items: center;">
+        <a href="/home.html" class="scorecard-dashboard-btn"
+          style="background: linear-gradient(135deg, #107C41, #34d399); color: #060913; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; margin-right: auto;">📊
+          View Overall Scorecard</a>
+        <button class="scorecard-close-btn" onclick="closeScorecard()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Master Manifests & Curriculum Content -->
+  <script src="/Version-3/content/manifest.js?v=239.0.0"></script>
+  <script src="/excel/content/manifest.js?v=239.0.0"></script>
+  <script src="/excel/content/excel-day-04.js?v=239.0.0"></script>
+  <script>
+    // Point active studio content to Day 04
+    if (window.EXCEL_COURSE_CONTENT && window.EXCEL_COURSE_CONTENT['excelDay04']) {
+      window.EXCEL_COURSE_CONTENT['excelDay01'] = window.EXCEL_COURSE_CONTENT['excelDay04'];
+    }
+  </script>
+
+  <!-- Excel Calculation Engine & Virtual Grid -->
+  <script src="/excel/excel-engine.js?v=239.0.0"></script>
+  <script src="/excel/excel-grid.js?v=239.0.0"></script>
+  <script src="/excel/excel-ribbon.js?v=239.0.0"></script>
+  <script src="/excel/excel-charts.js?v=239.0.0"></script>
+  <script src="/excel/excel-pivot.js?v=239.0.0"></script>
+  <script src="/excel/excel-xlsx-writer.js?v=239.0.0"></script>
+  <script src="/excel/excel-grading-engine.js?v=239.0.0"></script>
+  <script src="/excel/excel-studio.js?v=239.0.0"></script>
+
 </body>
+
 </html>
