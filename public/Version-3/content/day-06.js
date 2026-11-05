@@ -2,7 +2,7 @@
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day06'] = {
   "day": 6,
-  "title": "GROUP BY & HAVING",
+  "title": "GROUP BY & HAVING Clauses",
   "db": "retail",
   "emoji": "🗃️",
   "slides": [

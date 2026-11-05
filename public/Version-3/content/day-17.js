@@ -2,7 +2,7 @@
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day17'] = {
   "day": 17,
-  "title": "DDL, DML & Constraints",
+  "title": "DDL, DML & Schema Design",
   "db": "retail",
   "emoji": "🛠️",
   "slides": [
@@ -396,7 +396,7 @@ window.COURSE_CONTENT['day17'] = {
       "title": "Create Reviews Table with Constraints",
       "prompt": "Create a table named <code>product_reviews</code> with columns: <code>review_id</code> (INTEGER PRIMARY KEY AUTOINCREMENT), <code>product_id</code> (INTEGER NOT NULL), <code>customer_id</code> (INTEGER NOT NULL), <code>rating</code> (INTEGER NOT NULL with a CHECK constraint between 1 and 5), <code>review_text</code> (TEXT), and <code>review_date</code> (TEXT with DEFAULT <code>date('now')</code>).",
       "starterSql": "-- Create table product_reviews with constraints\nCREATE TABLE product_reviews (\n  review_id   INTEGER PRIMARY KEY AUTOINCREMENT,\n  product_id  INTEGER NOT NULL,\n  customer_id INTEGER NOT NULL,\n  rating      INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),\n  review_text TEXT,\n  review_date TEXT DEFAULT (date('now'))\n);",
-      "referenceSql": "CREATE TABLE product_reviews (review_id INTEGER PRIMARY KEY AUTOINCREMENT, product_id INTEGER NOT NULL, customer_id INTEGER NOT NULL, rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5), review_text TEXT, review_date TEXT DEFAULT (date('now')));",
+      "referenceSql": "CREATE TABLE IF NOT EXISTS product_reviews (review_id INTEGER PRIMARY KEY AUTOINCREMENT, product_id INTEGER NOT NULL, customer_id INTEGER NOT NULL, rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5), review_text TEXT, review_date TEXT DEFAULT (date('now')));",
       "solutionAudio": "Day17/New_Day17Question01sol.mp3",
       "solutionCode": "CREATE TABLE product_reviews (\n  review_id   INTEGER PRIMARY KEY AUTOINCREMENT,\n  product_id  INTEGER NOT NULL,\n  customer_id INTEGER NOT NULL,\n  rating      INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),\n  review_text TEXT,\n  review_date TEXT DEFAULT (date('now'))\n);",
       "tableScroll": false
@@ -544,7 +544,7 @@ window.COURSE_CONTENT['day17'] = {
   ],
   "testQuestions": [
     { "id": 1, "prompt": "Create a table called <code>feedback</code> with id (PK), comment (TEXT, NOT NULL), rating (INT, CHECK 1-5).", "ref": "CREATE TABLE feedback (id INTEGER PRIMARY KEY AUTOINCREMENT, comment TEXT NOT NULL, rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5));" },
-    { "id": 2, "prompt": "Insert a row into <code>employees</code>: first_name='John', last_name='Doe', salary=60000, department_id=10, is_active=1.", "ref": "INSERT INTO employees (first_name, last_name, salary, department_id, is_active) VALUES ('John', 'Doe', 60000, 10, 1);" },
+    { "id": 2, "prompt": "Insert a row into <code>employees</code>: first_name='John', last_name='Doe', salary=60000, department_id=10, is_active=1.", "ref": "INSERT INTO employees (first_name, last_name, salary, hire_date, job_title, email, department_id, is_active) VALUES ('John', 'Doe', 60000, '2023-01-01', 'Analyst', 'john.doe@example.com', 10, 1);" },
     { "id": 3, "prompt": "Update salary by 10% for all employees in department 20.", "ref": "UPDATE employees SET salary = salary * 1.10 WHERE department_id = 20;" },
     { "id": 4, "prompt": "Delete orders older than 2023-01-01 with status 'Cancelled'.", "ref": "DELETE FROM orders WHERE order_date < '2023-01-01' AND status = 'Cancelled';" },
     { "id": 5, "prompt": "Add a column <code>tags</code> (TEXT, DEFAULT 'none') to the <code>products</code> table.", "ref": "ALTER TABLE products ADD COLUMN tags TEXT DEFAULT 'none';" },
@@ -556,13 +556,13 @@ window.COURSE_CONTENT['day17'] = {
     { "id": 11, "prompt": "Rename a column by adding a new column <code>full_name</code> to customers as a TEXT column.", "ref": "ALTER TABLE customers ADD COLUMN full_name TEXT;" },
     { "id": 12, "prompt": "Update a single employee's salary: set salary=90000 where employee_id=5.", "ref": "UPDATE employees SET salary = 90000 WHERE employee_id = 5;" },
     { "id": 13, "prompt": "Create a table <code>promo_codes</code> with code (TEXT UNIQUE NOT NULL, PRIMARY KEY), discount_pct (REAL CHECK 0-100), active (INTEGER DEFAULT 1).", "ref": "CREATE TABLE promo_codes (code TEXT PRIMARY KEY NOT NULL UNIQUE, discount_pct REAL CHECK(discount_pct BETWEEN 0 AND 100), active INTEGER DEFAULT 1);" },
-    { "id": 14, "prompt": "Insert a new order: customer_id=1, employee_id=2, order_date='2026-01-15', total_amount=50000, status='Processing'.", "ref": "INSERT INTO orders (customer_id, employee_id, order_date, total_amount, status) VALUES (1, 2, '2026-01-15', 50000, 'Processing');" },
+    { "id": 14, "prompt": "Insert a new order: customer_id=1, order_date='2026-01-15', total_amount=50000, status='Processing'.", "ref": "INSERT INTO orders (customer_id, order_date, total_amount, status) VALUES (1, '2026-01-15', 50000, 'Processing');" },
     { "id": 15, "prompt": "Delete all order_items for orders that have been Cancelled.", "ref": "DELETE FROM order_items WHERE order_id IN (SELECT order_id FROM orders WHERE status = 'Cancelled');" },
-    { "id": 16, "prompt": "Use a transaction to: (1) deduct 10 from stock_qty of product_id=1, and (2) insert into order_items.", "ref": "BEGIN TRANSACTION; UPDATE products SET stock_qty = stock_qty - 10 WHERE product_id = 1; INSERT INTO order_items (order_id, product_id, qty, price) VALUES (99, 1, 10, 5000); COMMIT;" },
+    { "id": 16, "prompt": "Use a transaction to: (1) deduct 10 from stock_qty of product_id=1, and (2) insert into order_items.", "ref": "BEGIN TRANSACTION; UPDATE products SET stock_qty = stock_qty - 10 WHERE product_id = 1; INSERT INTO order_items (order_id, product_id, qty, unit_price) VALUES (99, 1, 10, 5000); COMMIT;" },
     { "id": 17, "prompt": "Create a UNIQUE constraint: add unique index on employees(email).", "ref": "CREATE UNIQUE INDEX idx_emp_email ON employees(email);" },
     { "id": 18, "prompt": "Drop the table <code>temp_analytics</code> if it exists.", "ref": "DROP TABLE IF EXISTS temp_analytics;" },
     { "id": 19, "prompt": "Update all orders from customer_id=3 that are Processing to Shipped.", "ref": "UPDATE orders SET status = 'Shipped' WHERE customer_id = 3 AND status = 'Processing';" },
-    { "id": 20, "prompt": "Insert a new category: name='Accessories', description='Phone and computer accessories'.", "ref": "INSERT INTO categories (name, description) VALUES ('Accessories', 'Phone and computer accessories');" },
+    { "id": 20, "prompt": "Insert a new category: name='Accessories' with parent_id=NULL.", "ref": "INSERT INTO categories (name, parent_id) VALUES ('Accessories', NULL);" },
     { "id": 21, "prompt": "Show the definition of all tables in the SQLite database.", "ref": "SELECT name, sql FROM sqlite_master WHERE type = 'table';" },
     { "id": 22, "prompt": "Create a <code>notifications</code> table: id PK, message TEXT NOT NULL, seen INTEGER DEFAULT 0, created_at TEXT DEFAULT datetime('now').", "ref": "CREATE TABLE notifications (id INTEGER PRIMARY KEY AUTOINCREMENT, message TEXT NOT NULL, seen INTEGER DEFAULT 0, created_at TEXT DEFAULT (datetime('now')));" },
     { "id": 23, "prompt": "Use UPDATE to set commission=NULL for all employees in department 30.", "ref": "UPDATE employees SET commission = NULL WHERE department_id = 30;" },

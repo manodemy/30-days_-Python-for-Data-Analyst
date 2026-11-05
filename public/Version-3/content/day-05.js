@@ -2,7 +2,7 @@
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day05'] = {
   "day": 5,
-  "title": "Aggregate Functions",
+  "title": "Aggregate Functions: COUNT & SUM",
   "db": "retail",
   "emoji": "\ud83d\udcca",
   "slides": [

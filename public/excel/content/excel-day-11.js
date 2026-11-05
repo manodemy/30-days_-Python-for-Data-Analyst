@@ -8,7 +8,7 @@ if (!window.EXCEL_COURSE_CONTENT) window.EXCEL_COURSE_CONTENT = {};
 window.EXCEL_COURSE_CONTENT['excelDay11'] = {
   day: 11,
   globalDay: 29,
-  title: "Advanced PivotTables, Calculated Fields and Pivot Charts",
+  title: "Advanced PivotTables & Pivot Charts",
   description: "Master advanced PivotTable engineering: Calculated Fields, 'Show Values As' dynamic ratios (% of Column, % of Row, Difference From), running totals, timeline slicers, dual-axis column & line PivotCharts, GETPIVOTDATA formula architecture, Power Pivot / Data Model relational concepts, and interactive multi-slicer executive dashboards.",
   topics: [
     "01. Calculated Fields vs. Calculated Items in the Pivot Engine",

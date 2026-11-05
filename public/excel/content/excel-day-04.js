@@ -8,7 +8,7 @@ if (!window.EXCEL_COURSE_CONTENT) window.EXCEL_COURSE_CONTENT = {};
 window.EXCEL_COURSE_CONTENT['excelDay04'] = {
   day: 4,
   globalDay: 22,
-  title: "Excel Tables and Structured References",
+  title: "Excel Tables & Structured References",
   description: "Master official Microsoft Excel Tables (Ctrl+T), structured referencing syntax ([@Column], Table[Column]), calculated columns, total row aggregations ([#Totals]), special item specifiers ([#Headers], [#Data]), dynamic range auto-expansion, interactive visual slicers, table-to-range conversion, and XLOOKUP integration.",
   topics: [
     "01. The Evolution from Flat Grid to Official Excel Tables (Ctrl+T)",

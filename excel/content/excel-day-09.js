@@ -9,7 +9,7 @@ if (!window.EXCEL_COURSE_CONTENT) window.EXCEL_COURSE_CONTENT = {};
 window.EXCEL_COURSE_CONTENT['excelDay09'] = {
   day: 9,
   globalDay: 27,
-  title: "Multi-Condition Aggregations & Statistical Metrics",
+  title: "Conditional Aggregations: SUMIFS",
   description: "Master multi-criteria boundary logic with MAXIFS and MINIFS, date range temporal intervals, exclusionary logic (<>), wildcard pattern matching (* and ?), and production statistical metrics including MEDIAN, MODE.SNGL, STDEV.S, PERCENTILE.INC, and Pearson's CORREL in digital marketing attribution models.",
   topics: [
     "01. Multi-Condition Maximums: MAXIFS(max_range, criteria_range1, criteria1, ...)",

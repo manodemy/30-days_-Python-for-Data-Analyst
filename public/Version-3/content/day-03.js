@@ -2,7 +2,7 @@
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day03'] = {
   "day": 3,
-  "title": "Filtering Data: WHERE, Operators & Pattern Matching",
+  "title": "Filtering Data: WHERE & LIKE",
   "db": "retail",
   "emoji": "🔍",
   "slides": [

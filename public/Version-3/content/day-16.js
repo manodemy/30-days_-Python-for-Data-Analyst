@@ -2,7 +2,7 @@
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day16'] = {
   "day": 16,
-  "title": "Window Functions II — Analytic",
+  "title": "Analytic Functions: LAG & LEAD",
   "db": "retail",
   "emoji": "📈",
   "slides": [
@@ -516,10 +516,10 @@ window.COURSE_CONTENT['day16'] = {
       "id": 9,
       "title": "Cumulative Product Quantity Sold",
       "prompt": "From <code>order_items</code>, calculate the cumulative running sum of <code>qty</code> for each <code>product_id</code> ordered by <code>order_item_id</code>. Return <code>order_item_id</code>, <code>order_id</code>, <code>product_id</code>, <code>qty</code>, and <code>running_qty</code> ordered by <code>product_id, order_item_id</code>.",
-      "starterSql": "-- Cumulative quantity sold per product\nSELECT order_item_id, order_id, product_id, qty,\n       SUM(qty) OVER (PARTITION BY product_id ORDER BY order_item_id) AS running_qty\nFROM order_items\nORDER BY product_id, order_item_id;",
-      "referenceSql": "SELECT order_item_id, order_id, product_id, qty, SUM(qty) OVER (PARTITION BY product_id ORDER BY order_item_id) AS running_qty FROM order_items ORDER BY product_id, order_item_id;",
+      "starterSql": "-- Cumulative quantity sold per product\nSELECT order_item_id, order_id, product_id, qty,\n       SUM(qty) OVER (PARTITION BY product_id ORDER BY id) AS running_qty\nFROM order_items\nORDER BY product_id, order_item_id;",
+      "referenceSql": "SELECT id, order_id, product_id, qty, SUM(qty) OVER (PARTITION BY product_id ORDER BY id) AS running_qty FROM order_items ORDER BY product_id, id;",
       "solutionAudio": "Day16/New_Day16Question09sol.mp3",
-      "solutionCode": "SELECT order_item_id, order_id, product_id, qty,\n       SUM(qty) OVER (PARTITION BY product_id ORDER BY order_item_id) AS running_qty\nFROM order_items\nORDER BY product_id, order_item_id;",
+      "solutionCode": "SELECT order_item_id, order_id, product_id, qty,\n       SUM(qty) OVER (PARTITION BY product_id ORDER BY id) AS running_qty\nFROM order_items\nORDER BY product_id, order_item_id;",
       "tableScroll": true
     },
     {

@@ -2,7 +2,7 @@
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day02'] = {
   "day": 2,
-  "title": "Basic Retrieval: SELECT, DISTINCT, ORDER BY & LIMIT",
+  "title": "SELECT, DISTINCT & ORDER BY",
   "db": "retail",
   "emoji": "💾",
   "slides": [

@@ -8,7 +8,7 @@ if (!window.EXCEL_COURSE_CONTENT) window.EXCEL_COURSE_CONTENT = {};
 window.EXCEL_COURSE_CONTENT['excelDay03'] = {
   day: 3,
   globalDay: 21,
-  title: "Data Cleaning, Deduplication and Data Validation",
+  title: "Data Cleaning & Validation",
   description: "Master enterprise data sanitization, stripping non-printable characters with CLEAN(), normalizing whitespace with TRIM(), surgical string replacement via SUBSTITUTE(), casting text numbers to numeric floats with VALUE(), string length audits using LEN(), duplicate remediation, Text-to-Columns, Flash Fill, and bulletproof Data Validation rules.",
   topics: [
     "01. Identifying Dirty Data & Data Cleaning Architecture",

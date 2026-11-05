@@ -8,7 +8,7 @@ if (!window.EXCEL_COURSE_CONTENT) window.EXCEL_COURSE_CONTENT = {};
 window.EXCEL_COURSE_CONTENT['excelDay05'] = {
   day: 5,
   globalDay: 23,
-  title: "Logical Decision Trees, Nested Formulas and Error Handling",
+  title: "Logic Functions: IF, AND & OR",
   description: "Master advanced boolean logic, nested branching trees, high-speed boolean arithmetic, and enterprise error handling with IFERROR and IFNA in SaaS subscription analytics.",
   topics: [
     "01. Boolean Decision Mechanics & Logical Flow (IF & IFS)",

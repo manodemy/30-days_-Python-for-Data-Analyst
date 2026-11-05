@@ -2,7 +2,7 @@
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day15'] = {
   "day": 15,
-  "title": "Window Functions I — Ranking",
+  "title": "Window Functions: ROW_NUMBER & RANK",
   "db": "retail",
   "emoji": "🔢",
   "slides": [
@@ -568,10 +568,10 @@ window.COURSE_CONTENT['day15'] = {
       "id": 13,
       "title": "Top Spender per Country",
       "prompt": "Join <code>customers</code> and <code>orders</code>, calculate total spent per customer, and use <code>ROW_NUMBER()</code> partitioned by <code>country</code> to find the single top spender in each country. Return <code>country</code>, <code>first_name</code>, and <code>spent</code>.",
-      "starterSql": "-- Single top spender per country\nWITH country_spend AS (\n  SELECT c.country, c.first_name,\n         SUM(o.total_amount) AS spent,\n         ROW_NUMBER() OVER (PARTITION BY c.country ORDER BY SUM(o.total_amount) DESC) AS rn\n  FROM customers c\n  JOIN orders o ON c.customer_id = o.customer_id\n  GROUP BY c.country, c.customer_id\n)\nSELECT country, first_name, spent\nFROM country_spend\nWHERE rn = 1;",
-      "referenceSql": "WITH country_spend AS (SELECT c.country, c.first_name, SUM(o.total_amount) AS spent, ROW_NUMBER() OVER (PARTITION BY c.country ORDER BY SUM(o.total_amount) DESC) AS rn FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.country, c.customer_id) SELECT country, first_name, spent FROM country_spend WHERE rn = 1;",
+      "starterSql": "-- Single top spender per country\nWITH country_spend AS (\n  SELECT c.region, c.first_name,\n         SUM(o.total_amount) AS spent,\n         ROW_NUMBER() OVER (PARTITION BY c.region ORDER BY SUM(o.total_amount) DESC) AS rn\n  FROM customers c\n  JOIN orders o ON c.customer_id = o.customer_id\n  GROUP BY c.region, c.customer_id\n)\nSELECT country, first_name, spent\nFROM country_spend\nWHERE rn = 1;",
+      "referenceSql": "WITH region_spend AS (SELECT c.region, c.first_name, SUM(o.total_amount) AS spent, ROW_NUMBER() OVER (PARTITION BY c.region ORDER BY SUM(o.total_amount) DESC) AS rn FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.region, c.customer_id) SELECT region, first_name, spent FROM region_spend WHERE rn = 1;",
       "solutionAudio": "Day15/New_Day15Question13sol.mp3",
-      "solutionCode": "WITH country_spend AS (\n  SELECT c.country, c.first_name,\n         SUM(o.total_amount) AS spent,\n         ROW_NUMBER() OVER (PARTITION BY c.country ORDER BY SUM(o.total_amount) DESC) AS rn\n  FROM customers c\n  JOIN orders o ON c.customer_id = o.customer_id\n  GROUP BY c.country, c.customer_id\n)\nSELECT country, first_name, spent\nFROM country_spend\nWHERE rn = 1;",
+      "solutionCode": "WITH country_spend AS (\n  SELECT c.region, c.first_name,\n         SUM(o.total_amount) AS spent,\n         ROW_NUMBER() OVER (PARTITION BY c.region ORDER BY SUM(o.total_amount) DESC) AS rn\n  FROM customers c\n  JOIN orders o ON c.customer_id = o.customer_id\n  GROUP BY c.region, c.customer_id\n)\nSELECT country, first_name, spent\nFROM country_spend\nWHERE rn = 1;",
       "tableScroll": false
     },
     {

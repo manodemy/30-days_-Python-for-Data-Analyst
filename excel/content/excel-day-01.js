@@ -7,7 +7,7 @@ if (!window.EXCEL_COURSE_CONTENT) window.EXCEL_COURSE_CONTENT = {};
 window.EXCEL_COURSE_CONTENT['excelDay01'] = {
   day: 1,
   globalDay: 19,
-  title: "Excel Orientation & Essential Mathematical Formulas",
+  title: "Spreadsheet Basics & Formulas",
   description: "Master modern spreadsheet architecture, cell addressing models, mathematical precedence, core statistical aggregations, criteria sums, and lookups.",
   topics: [
     "01. Excel Interface & Grid Anatomy",

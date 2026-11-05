@@ -604,7 +604,9 @@
     }
 
     // 3.5 GROUP BY Non-Aggregated Projection Trap
-    const groupMatch = studentSql.match(/GROUP\s+BY\s+([\s\S]+?)(?:\s+(?:HAVING|ORDER\s+BY|LIMIT)|;|$)/i);
+    // Only evaluate for simple single-level queries to avoid false positives on CTEs/subqueries
+    const hasCteOrSubquery = /\bWITH\b/i.test(studentSql) || /\(\s*SELECT\b/i.test(studentSql);
+    const groupMatch = !hasCteOrSubquery ? studentSql.match(/GROUP\s+BY\s+([\s\S]+?)(?:\s+(?:HAVING|ORDER\s+BY|LIMIT)|;|$)/i) : null;
     if (groupMatch) {
       const groupColsRaw = splitSqlTopLevelList(groupMatch[1]).map(s => s.toLowerCase());
       const groupColsClean = groupColsRaw.map(s => s.split('.').pop().trim());
@@ -655,7 +657,7 @@
     }
 
     // 5. RANK vs DENSE_RANK
-    if (/\bRANK\s*\(\s*\)\s+OVER/i.test(studentSql) && /\bDENSE_RANK\s*\(\s*\)\s+OVER/i.test(refSql || '')) {
+    if (/\bRANK\s*\(\s*\)\s+OVER/i.test(studentSql) && !/\bRANK\s*\(\s*\)\s+OVER/i.test(refSql || '') && /\bDENSE_RANK\s*\(\s*\)\s+OVER/i.test(refSql || '')) {
       diags.push({
         trapId: 'RANK_VS_DENSE_RANK_TIE_SKIPPING',
         badge: '🏅 Ranking Function Mismatch',
@@ -692,8 +694,9 @@
       });
     }
 
-    // 7. NULL equality
-    if (/=\s*NULL\b/i.test(studentSql)) {
+    // 7. NULL equality (in WHERE/HAVING/ON clauses, not in UPDATE SET clauses)
+    const whereHavingClause = (studentSql.match(/\b(?:WHERE|HAVING|ON)\b([\s\S]+?)(?:\b(?:GROUP\s+BY|ORDER\s+BY|LIMIT|RETURNING|UNION)\b|;|$)/i) || [])[1] || '';
+    if (/=\s*NULL\b/i.test(whereHavingClause)) {
       diags.push({
         trapId: 'NULL_EQUALITY_TRAP',
         badge: '💀 NULL Comparison Trap',
@@ -926,7 +929,7 @@
   }
 
   function gradeSubmission(studentSql, question, db, edgeDb) {
-    const refSql = question.ref || question.referenceSql || '';
+    const refSql = question.ref || question.referenceSql || question.answer || '';
     const gradingRules = Object.assign({}, question.grading || {});
     if (gradingRules.orderSensitive === undefined) {
       gradingRules.orderSensitive = /\bORDER\s+BY\b/i.test(refSql);
@@ -946,8 +949,13 @@
       };
     }
 
-    // Safety guard
-    if (/\b(DROP|ALTER|DELETE|UPDATE|TRUNCATE|ATTACH|PRAGMA)\b/i.test(trimmed)) {
+    // Safety guard — allow DDL/DML when expected by question or on Day 17
+    const isAllowedDml = question.allowDml || 
+      (question.grading && question.grading.allowDml) || 
+      /\b(DROP|ALTER|DELETE|UPDATE|TRUNCATE|CREATE|INSERT|TRANSACTION|SAVEPOINT|ROLLBACK)\b/i.test(refSql) ||
+      (typeof COURSE_CONFIG !== 'undefined' && COURSE_CONFIG.dayId === 'day17');
+
+    if (!isAllowedDml && /\b(DROP|ALTER|DELETE|UPDATE|TRUNCATE|ATTACH|PRAGMA)\b/i.test(trimmed)) {
       return {
         passed: false,
         status: 'EXECUTION_ERROR',
@@ -991,10 +999,25 @@
     }
 
     // Layer 2: Sandbox Execution
+    if (db && !/CREATE\s+TABLE/i.test(refSql) && !/CREATE\s+TABLE/i.test(studentSql) && (/product_reviews/i.test(refSql) || /product_reviews/i.test(studentSql))) {
+      try {
+        db.exec("CREATE TABLE IF NOT EXISTS product_reviews (review_id INTEGER PRIMARY KEY AUTOINCREMENT, product_id INTEGER NOT NULL, customer_id INTEGER NOT NULL, rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5), review_text TEXT, review_date TEXT DEFAULT (date('now')));");
+      } catch (e) {}
+    }
     let refRaw, stuRaw;
+    if (db) { try { db.exec('ROLLBACK;'); } catch (e) {} }
+    const hasExplicitTx = /\bBEGIN\s+(?:TRANSACTION|DEFERRED|IMMEDIATE|EXCLUSIVE)\b/i.test(refSql) || /\bBEGIN\s+(?:TRANSACTION|DEFERRED|IMMEDIATE|EXCLUSIVE)\b/i.test(studentSql);
+    const needsIsolation = !hasExplicitTx && (isAllowedDml || /\b(DROP|ALTER|DELETE|UPDATE|CREATE|INSERT|TRANSACTION)\b/i.test(refSql) || /\b(DROP|ALTER|DELETE|UPDATE|CREATE|INSERT|TRANSACTION)\b/i.test(studentSql));
+
+    if (needsIsolation && db) {
+      try { db.exec('SAVEPOINT manodemy_ref;'); } catch (e) {}
+    }
     try {
       refRaw = db.exec(refSql);
     } catch (e) {
+      if (needsIsolation && db) {
+        try { db.exec('ROLLBACK TO manodemy_ref; RELEASE manodemy_ref;'); } catch (rbErr) {}
+      }
       return {
         passed: false,
         status: 'EXECUTION_ERROR',
@@ -1005,10 +1028,20 @@
         error: e.message
       };
     }
+    if (needsIsolation && db) {
+      try { db.exec('ROLLBACK TO manodemy_ref;'); } catch (e) {}
+      try { db.exec('RELEASE manodemy_ref;'); } catch (e) {}
+    }
 
+    if (needsIsolation && db) {
+      try { db.exec('SAVEPOINT manodemy_stu;'); } catch (e) {}
+    }
     try {
       stuRaw = db.exec(studentSql);
     } catch (e) {
+      if (needsIsolation && db) {
+        try { db.exec('ROLLBACK TO manodemy_stu; RELEASE manodemy_stu;'); } catch (rbErr) {}
+      }
       const diags = runDiagnostics(studentSql, refSql, null, null, e.message);
       const top = diags[0];
       return {
@@ -1022,6 +1055,10 @@
         remediation: top?.remediation || null,
         error: e.message
       };
+    }
+    if (needsIsolation && db) {
+      try { db.exec('ROLLBACK TO manodemy_stu;'); } catch (e) {}
+      try { db.exec('RELEASE manodemy_stu;'); } catch (e) {}
     }
 
     const ref = normalizeResult(refRaw);

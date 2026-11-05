@@ -149,9 +149,19 @@ finally:
         }
 
         if (cv.exact) {
-          const expectedType = { string: 'str', bool: 'bool', int: 'int', list: 'list' }[cv.type];
+          const expectedType = {
+            string: 'str',
+            bool: 'bool',
+            int: 'int',
+            list: 'list',
+            tuple: 'tuple',
+            float: 'float',
+            dict: 'dict',
+            set: 'set',
+            array: 'list'
+          }[cv.type];
           const actualType = String(pyodide.runPython('type(' + cv.name + ').__name__'));
-          if (expectedType !== actualType) {
+          if (expectedType && expectedType !== actualType) {
             failures.push('Incorrect Python type for <code>' + cv.name + '</code>.');
             continue;
           }
@@ -177,7 +187,15 @@ finally:
           const raw = pyodide.globals.get(cv.name);
           // Convert Pyodide proxy to JS value
           if (raw && typeof raw.toJs === 'function') {
-            actualVal = raw.toJs({ dict_converter: Object.fromEntries });
+            try {
+              actualVal = raw.toJs({ dict_converter: Object.fromEntries });
+            } catch (_) {
+              try {
+                actualVal = raw.toJs();
+              } catch (__) {
+                actualVal = raw;
+              }
+            }
           } else {
             actualVal = raw;
           }
@@ -186,7 +204,7 @@ finally:
           continue;
         }
 
-        if (actualVal === undefined || actualVal === null) {
+        if ((actualVal === undefined || actualVal === null) && cv.type !== 'falsy' && cv.type !== 'none') {
           failures.push(`Variable <code>${cv.name}</code> is undefined or None.`);
           continue;
         }
@@ -223,9 +241,9 @@ finally:
           let isDict = false;
           try {
             const pyType = String(pyodide.runPython(`type(${cv.name}).__name__`));
-            isDict = (pyType === 'dict');
+            isDict = (pyType === 'dict' || pyType === 'defaultdict' || pyType.toLowerCase().includes('dict'));
           } catch (e) {
-            isDict = typeof actualVal === 'object' && !Array.isArray(actualVal);
+            isDict = (typeof actualVal === 'object' || actualVal instanceof Map) && !Array.isArray(actualVal);
           }
           if (!isDict) {
             failures.push(`<code>${cv.name}</code>: Expected a dict {}, got ${typeof actualVal}`);
@@ -278,8 +296,12 @@ finally:
       const rightType = type === 'string' ? typeof actual === 'string'
         : type === 'bool' ? typeof actual === 'boolean'
         : type === 'int' ? typeof actual === 'number' && Number.isInteger(actual)
-        : type === 'list' ? Array.isArray(actual) : false;
-      if (!rightType || JSON.stringify(actual) !== JSON.stringify(cv.value)) {
+        : type === 'float' ? typeof actual === 'number'
+        : (type === 'list' || type === 'tuple' || type === 'array') ? Array.isArray(actual)
+        : type === 'dict' ? typeof actual === 'object' && actual !== null && !Array.isArray(actual)
+        : type === 'set' ? (actual instanceof Set || Array.isArray(actual))
+        : false;
+      if (!rightType || (cv.value !== undefined && JSON.stringify(actual) !== JSON.stringify(cv.value))) {
         return { ok: false, reason: 'The value must match exactly, including type, case and spacing.' };
       }
       return { ok: true };
@@ -307,11 +329,14 @@ finally:
     }
 
     if (type === 'bool') {
-      // Pyodide returns Python booleans as JS booleans
-      const a = actual === true || actual === 1 || actual === 'True';
-      const e = cv.value !== undefined ? (cv.value === true || cv.value === 1 || cv.value === 'True') : null;
-      if (e !== null && a !== e) {
-        return { ok: false, reason: `Expected ${e ? 'True' : 'False'}, got ${a ? 'True' : 'False'}` };
+      if (typeof actual !== 'boolean') {
+        return { ok: false, reason: `Expected a boolean (True or False), got ${typeof actual}` };
+      }
+      if (cv.value !== undefined) {
+        const expectedBool = (cv.value === true || cv.value === 'true' || cv.value === 1);
+        if (actual !== expectedBool) {
+          return { ok: false, reason: `Expected ${expectedBool ? 'True' : 'False'}, got ${actual ? 'True' : 'False'}` };
+        }
       }
       return { ok: true };
     }
@@ -346,12 +371,13 @@ finally:
     }
 
     if (type === 'dict') {
-      if (typeof actual !== 'object' || Array.isArray(actual)) {
+      if ((typeof actual !== 'object' && !(actual instanceof Map)) || Array.isArray(actual)) {
         return { ok: false, reason: `Expected a dict, got ${typeof actual}` };
       }
       if (cv.keys != null) {
         for (const k of cv.keys) {
-          if (!(k in actual)) {
+          const hasKey = (actual instanceof Map) ? actual.has(k) : (k in actual);
+          if (!hasKey) {
             return { ok: false, reason: `Dict missing key: "${k}"` };
           }
         }

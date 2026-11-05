@@ -8,7 +8,7 @@ if (!window.EXCEL_COURSE_CONTENT) window.EXCEL_COURSE_CONTENT = {};
 window.EXCEL_COURSE_CONTENT['excelDay10'] = {
   day: 10,
   globalDay: 28,
-  title: "PivotTables: Core Mechanics, Grouping and Slicers",
+  title: "PivotTables: Grouping & Slicers",
   description: "Master multi-dimensional aggregation without formulas, clean source table range anchoring, field quadrant mapping, date grouping hierarchies, visual slicers, and cross-checking reconciliation against SUMIFS.",
   topics: [
     "01. PivotTable Architecture & The In-Memory Pivot Cache",

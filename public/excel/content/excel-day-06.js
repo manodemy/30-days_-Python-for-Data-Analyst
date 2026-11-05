@@ -156,7 +156,7 @@ if (!window.EXCEL_COURSE_CONTENT) window.EXCEL_COURSE_CONTENT = {};
 window.EXCEL_COURSE_CONTENT['excelDay06'] = {
   day: 6,
   globalDay: 24,
-  title: "Modern Lookup and Reference: XLOOKUP & INDEX/MATCH",
+  title: "Lookup Functions: XLOOKUP & INDEX",
   description: "Master enterprise 2-way matrix retrieval, bidirectional lookups, wildcard searching, tiered volume discount matching, horizontal referencing, and multi-criteria array lookups in B2B wholesale distribution.",
   topics: [
     "01. Architecture of Modern Lookups: Moving Beyond VLOOKUP",

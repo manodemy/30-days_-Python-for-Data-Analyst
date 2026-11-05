@@ -9,7 +9,7 @@ if (!window.EXCEL_COURSE_CONTENT) window.EXCEL_COURSE_CONTENT = {};
 window.EXCEL_COURSE_CONTENT['excelDay08'] = {
   day: 8,
   globalDay: 26,
-  title: "Dates, Calendars and Time Analytics",
+  title: "Date & Time Analytics",
   description: "Master modern date serial mathematics, date construction with DATE(), temporal extraction with YEAR(), MONTH(), DAY(), forward/backward offsets with EDATE() and EOMONTH(), business milestone modeling with WORKDAY(), working duration calculations with NETWORKDAYS.INTL(), financial pro-rata tenure with YEARFRAC(), and commercial debt aging bucket models.",
   topics: [
     "01. The 1900 Date System & Serial Number Epoch",

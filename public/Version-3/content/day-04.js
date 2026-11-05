@@ -2,7 +2,7 @@
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['day04'] = {
   "day": 4,
-  "title": "Operators & Expressions",
+  "title": "Operators, Expressions & Math",
   "db": "retail",
   "emoji": "⚙️",
   "slides": [

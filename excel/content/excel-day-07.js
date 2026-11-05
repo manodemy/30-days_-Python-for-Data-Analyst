@@ -90,7 +90,7 @@ if (!window.EXCEL_COURSE_CONTENT) window.EXCEL_COURSE_CONTENT = {};
 window.EXCEL_COURSE_CONTENT['excelDay07'] = {
   day: 7,
   globalDay: 25,
-  title: "Text Parsing and Dynamic Array Functions",
+  title: "Text Functions & Dynamic Arrays",
   description: "Master enterprise employee string decomposition, surgical substring boundary extractions, case-sensitive FIND vs case-insensitive SEARCH, dynamic array text manipulation with TEXTSPLIT, and delimited record aggregation with TEXTJOIN.",
   topics: [
     "01. String Extraction Foundations: LEFT(), RIGHT(), and MID()",

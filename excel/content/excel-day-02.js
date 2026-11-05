@@ -8,7 +8,7 @@ if (!window.EXCEL_COURSE_CONTENT) window.EXCEL_COURSE_CONTENT = {};
 window.EXCEL_COURSE_CONTENT['excelDay02'] = {
   day: 2,
   globalDay: 20,
-  title: "Formatting, Sorting, Filtering and Sheet Views",
+  title: "Formatting, Sorting & Filtering",
   description: "Master professional number and date formatting, freeze panes, multi-level sorting, AutoFilter queries, dynamic SUBTOTAL calculations, conditional formatting, and formula-driven view layers.",
   topics: [
     "01. Custom Number Formatting ($#,##0.00;($#,##0.00);\"-\")",

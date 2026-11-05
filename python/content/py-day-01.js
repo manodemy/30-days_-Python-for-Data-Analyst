@@ -2,14 +2,14 @@
 if (!window.COURSE_CONTENT) window.COURSE_CONTENT = {};
 window.COURSE_CONTENT['pyDay01'] = {
   day: 1,
-  title: "Data Types & Memory Management",
+  title: "Data Types & Memory",
   emoji: "🔢",
   topics: [
-    { id: 'day01WhyPythonSection', label: '01. Why Python in Modern Analytics', duration: '0:47' },
-    { id: 'day01ToolMatrixSection', label: '02. Tool Matrix: SQL vs Excel vs Python', duration: '0:46' },
-    { id: 'day01MutabilitySection', label: '03. Mutability & Shared References', duration: '0:48' },
-    { id: 'day01DataTypesSection', label: '04. Master Data Types Reference', duration: '0:47' },
-    { id: 'day01MemorySection', label: '05. Memory Architecture & RAM Pointers', duration: '0:50' }
+    { id: 'day01WhyPythonSection', label: '01. Why Python in Analytics', duration: '0:47' },
+    { id: 'day01ToolMatrixSection', label: '02. Tool Matrix: SQL, Excel, Python', duration: '0:46' },
+    { id: 'day01MutabilitySection', label: '03. Mutability & References', duration: '0:48' },
+    { id: 'day01DataTypesSection', label: '04. Core Data Types Reference', duration: '0:47' },
+    { id: 'day01MemorySection', label: '05. Memory Management & RAM', duration: '0:50' }
   ],
 
   slides: [
@@ -3183,7 +3183,7 @@ window.COURSE_CONTENT['pyDay01'] = {
   <h2 class="slide-section-title heading-box-wrap heading-with-audio" id="headingWhyPython">
     <span class="heading-num-box">01</span>
     <span class="heading-title-box">
-      <span class="heading-title-text"><span class="heading-icon">🐍</span> Python in Modern Data Analytics</span>
+      <span class="heading-title-text"><span class="heading-icon">🐍</span> Python in Modern Analytics</span>
       <button class="audio-play-btn" onclick="playAudio('Day01/New_PyDay01Audio01.mp3', this)" title="Play narration">
         <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
       </button>
@@ -3375,7 +3375,7 @@ window.COURSE_CONTENT['pyDay01'] = {
   <h2 class="slide-section-title heading-box-wrap heading-with-audio" id="headingMutability">
     <span class="heading-num-box">02</span>
     <span class="heading-title-box">
-      <span class="heading-title-text"><span class="heading-icon">🔄</span> Object Mutability: Mutable vs. Immutable</span>
+      <span class="heading-title-text"><span class="heading-icon">🔄</span> Mutability & Shared References</span>
       <button class="audio-play-btn" onclick="playAudio('Day01/New_PyDay01Audio03.mp3', this)" title="Play narration">
         <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
       </button>
@@ -3522,7 +3522,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
   <h2 class="slide-section-title heading-box-wrap heading-with-audio" id="headingDataTypes">
     <span class="heading-num-box">03</span>
     <span class="heading-title-box">
-      <span class="heading-title-text"><span class="heading-icon">📋</span> Master Data Types &amp; Structures Reference</span>
+      <span class="heading-title-text"><span class="heading-icon">📋</span> Core Data Types Reference</span>
       <button class="audio-play-btn" onclick="playAudio('Day01/New_PyDay01Audio04.mp3', this)" title="Play narration">
         <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
       </button>
@@ -3653,7 +3653,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
   <h2 class="slide-section-title heading-box-wrap heading-with-audio" id="headingMemory">
     <span class="heading-num-box">04</span>
     <span class="heading-title-box">
-      <span class="heading-title-text"><span class="heading-icon">🧠</span> Memory Management &amp; Object References in RAM</span>
+      <span class="heading-title-text"><span class="heading-icon">🧠</span> Memory Management & RAM</span>
       <button class="audio-play-btn" onclick="playAudio('Day01/New_PyDay01Audio05.mp3', this)" title="Play narration">
         <svg class="play-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
       </button>
@@ -4433,6 +4433,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 1,
       prompt: "Create a variable <code>sales = 1_000_000</code> using underscore separators. Store <code>type(sales).__name__</code> in <code>result_type</code> and the value in <code>result_value</code>.",
       starterCode: "",
+      ref: "sales = 1_000_000\nresult_type = type(sales).__name__\nresult_value = sales\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4445,6 +4446,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 2,
       prompt: "Compute <code>2 ** 200</code> and store the digit count via <code>len(str(...))</code> in <code>digit_count</code>. Python integers never overflow — prove it!",
       starterCode: "",
+      ref: "digit_count = len(str(2 ** 200))\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4456,6 +4458,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 3,
       prompt: "Demonstrate the float trap: check <code>0.1 + 0.2 == 0.3</code> (store in <code>is_equal</code>, expect <code>False</code>). Then fix with <code>math.isclose()</code> (store in <code>is_close_ok</code>, expect <code>True</code>).",
       starterCode: "",
+      ref: "import math\nis_equal = (0.1 + 0.2 == 0.3)\nis_close_ok = math.isclose(0.1 + 0.2, 0.3)\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4468,6 +4471,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 4,
       prompt: "Test integer caching: <code>a = 100; b = 100</code>, check <code>a is b</code> → store in <code>small_int_is</code>. Then <code>a = 300; b = 300</code>, check again → store in <code>big_int_is</code>. CPython caches -5 to 256; above that, <code>is</code> is undefined behavior!",
       starterCode: "",
+      ref: "a = 100\nb = 100\nsmall_int_is = (a is b)\na = 300\nb = 300\nbig_int_is = (a is b)\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4479,6 +4483,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 5,
       prompt: "NaN trap: store <code>math.nan != math.nan</code> in <code>nan_check</code> (expect <code>True</code>). Explain in a comment why this silently breaks naive <code>value == some_nan</code> deduplication logic.",
       starterCode: "",
+      ref: "import math\nnan_check = (math.nan != math.nan)\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4490,10 +4495,11 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 6,
       prompt: "Reverse <code>\"DataAnalyst\"</code> using slicing; store the result in <code>result</code>.",
       starterCode: "",
+      ref: "result = \"DataAnalyst\"[::-1]\n",
       validation: {
         mode: "variable_check",
         checkVars: [
-          { name: "result", type: "string", value: "tsylananataD" }
+          { name: "result", type: "string", value: "tsylanAataD" }
         ]
       }
     },
@@ -4501,6 +4507,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 7,
       prompt: "Check falsiness of <code>\"\"</code>, <code>0</code>, <code>[]</code>, <code>{}</code>, <code>None</code>, and <code>0.0</code> — store results as a list of booleans in <code>result</code> (all should be <code>False</code>).",
       starterCode: "",
+      ref: "result = [bool(\"\"), bool(0), bool([]), bool({}), bool(None), bool(0.0)]\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4512,6 +4519,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 8,
       prompt: "Create a <code>frozenset({1,2,3})</code>, attempt <code>.add(4)</code>, catch the <code>AttributeError</code>, and store the exception's type name in <code>error_type</code>.",
       starterCode: "",
+      ref: "try:\n    fs = frozenset({1, 2, 3})\n    fs.add(4)\nexcept Exception as e:\n    error_type = type(e).__name__\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4523,6 +4531,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 9,
       prompt: "Use <code>sys.getsizeof()</code> to compare memory: <code>int(0)</code>, <code>float(0.0)</code>, <code>bool(False)</code>. Store as a dict <code>result</code> mapping type name → byte size.",
       starterCode: "",
+      ref: "import sys\nresult = {\"int\": sys.getsizeof(int(0)), \"float\": sys.getsizeof(float(0.0)), \"bool\": sys.getsizeof(bool(False))}\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4534,6 +4543,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 10,
       prompt: "Find the intersection of <code>{1,2,3,4}</code> and <code>{3,4,5,6}</code> using the <code>&</code> operator; store in <code>result</code>.",
       starterCode: "",
+      ref: "result = {1, 2, 3, 4} & {3, 4, 5, 6}\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4545,6 +4555,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 11,
       prompt: "Create a <code>namedtuple Employee(name, salary, dept)</code>, instantiate one record, and access fields by name. Store the salary in <code>result</code>.",
       starterCode: "",
+      ref: "from collections import namedtuple\nEmployee = namedtuple(\"Employee\", [\"name\", \"salary\", \"dept\"])\nemp = Employee(\"Aarav\", 112800, \"Analytics\")\nresult = emp.salary\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4556,10 +4567,11 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 12,
       prompt: "Demonstrate string interning: <code>a = 'hello'; b = 'hello'</code>; check <code>a is b</code>, store in <code>result</code>. Explain in a comment why this should NEVER be relied on in application logic.",
       starterCode: "",
+      ref: "a = \"hello\"\nb = \"hello\"\nresult = (a is b)\n",
       validation: {
         mode: "variable_check",
         checkVars: [
-          { name: "result", type: "truthy" }  // True in CPython for compile-time literals
+          { name: "result", type: "bool", value: true }
         ]
       }
     },
@@ -4567,6 +4579,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 13,
       prompt: "Prove <code>bool</code> is a subclass of <code>int</code>: check <code>isinstance(True, int)</code> (store in <code>is_subclass</code>) and compute <code>True + True + False</code> (store in <code>sum_result</code>, expect <code>2</code>).",
       starterCode: "",
+      ref: "is_subclass = isinstance(True, int)\nsum_result = True + True + False\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4579,6 +4592,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 14,
       prompt: "Conversion pipeline: <code>\"3.14\"</code> → <code>float</code> → <code>int</code> → <code>complex</code>. Store each intermediate in <code>step1</code>, <code>step2</code>, <code>step3</code>.",
       starterCode: "",
+      ref: "step1 = float(\"3.14\")\nstep2 = int(step1)\nstep3 = complex(step2)\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4591,6 +4605,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 15,
       prompt: "Build a <code>defaultdict(list)</code> grouping a list of names by first letter. Store the resulting dict in <code>result</code>.",
       starterCode: "",
+      ref: "from collections import defaultdict\nnames = [\"Alice\", \"Bob\", \"Charlie\", \"David\"]\nres = defaultdict(list)\nfor n in names:\n    res[n[0]].append(n)\nresult = dict(res)\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4602,6 +4617,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 16,
       prompt: "Demonstrate the mutable-default-argument trap: define <code>def add(item, lst=[])</code>, call it twice with different items. Store both return values in <code>call1</code>, <code>call2</code> — showing accumulation, not two fresh lists!",
       starterCode: "",
+      ref: "def add(item, lst=[]):\n    lst.append(item)\n    return lst\ncall1 = add(1)\ncall2 = add(2)\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4613,6 +4629,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 17,
       prompt: "Compare <code>dict.get(\"key\", \"default\")</code> vs <code>dict[\"key\"]</code> on a missing key. Store the <code>.get()</code> result in <code>safe_result</code> and the exception type name in <code>error_type</code>.",
       starterCode: "",
+      ref: "d = {\"existing\": 100}\nsafe_result = d.get(\"key\", \"Not Available\")\ntry:\n    _ = d[\"key\"]\nexcept Exception as e:\n    error_type = type(e).__name__\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4625,6 +4642,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 18,
       prompt: "Tuple unpacking with <code>*</code>: <code>a, *b, c = (1,2,3,4,5)</code>. Store <code>a</code>, <code>b</code>, <code>c</code> separately.",
       starterCode: "",
+      ref: "a, *b, c = (1, 2, 3, 4, 5)\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4638,6 +4656,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 19,
       prompt: "Shallow copy trap: <code>a=[[1,2],[3,4]]; b=a.copy(); b[0][0]=99</code>. Store <code>a</code> after mutation in <code>result</code> (trap: <code>a</code> is affected!). Fix with <code>copy.deepcopy</code>, store in <code>result_fixed</code>.",
       starterCode: "",
+      ref: "import copy\na = [[1, 2], [3, 4]]\nb = a.copy()\nb[0][0] = 99\nresult = a\na_fresh = [[1, 2], [3, 4]]\nb_deep = copy.deepcopy(a_fresh)\nb_deep[0][0] = 99\nresult_fixed = a_fresh\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4650,10 +4669,11 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 20,
       prompt: "Use <code>Counter(\"mississippi\")</code> and store the 3 most common characters (with counts) in <code>result</code> using <code>.most_common(3)</code>.",
       starterCode: "",
+      ref: "from collections import Counter\nresult = Counter(\"mississippi\").most_common(3)\n",
       validation: {
         mode: "variable_check",
         checkVars: [
-          { name: "result", type: "list", length: 3 }
+          { name: "result", type: "list", length: 3, value: [["i", 4], ["s", 4], ["p", 2]] }
         ]
       }
     },
@@ -4661,6 +4681,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 21,
       prompt: "Categorical data with <code>Enum</code>: define <code>class Status(Enum)</code> with <code>ACTIVE=1, INACTIVE=2, PENDING=3</code>. Store <code>Status.ACTIVE.value</code> in <code>result</code>. Add a comment explaining why Enum beats raw strings for categorical columns.",
       starterCode: "",
+      ref: "from enum import Enum\nclass Status(Enum):\n    ACTIVE = 1\n    INACTIVE = 2\n    PENDING = 3\nresult = Status.ACTIVE.value\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4672,6 +4693,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 22,
       prompt: "Build a <code>dict</code> from two parallel lists using <code>dict(zip([\"a\",\"b\",\"c\"], [1,2,3]))</code>; store in <code>result</code>.",
       starterCode: "",
+      ref: "result = dict(zip([\"revenue\", \"cost\", \"profit\"], [1000, 600, 400]))\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4683,6 +4705,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 23,
       prompt: "Use <code>float('inf')</code> as a seed to find the minimum of a list WITHOUT using <code>min()</code>; store in <code>result</code>.",
       starterCode: "",
+      ref: "numbers = [45, 12, 5, 89, 23]\nresult = float(\"inf\")\nfor n in numbers:\n    if n < result:\n        result = n\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4694,6 +4717,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 24,
       prompt: "Type-based dispatch: build <code>dispatch = {int: lambda x: x*2, str: lambda x: x.upper()}</code> and call <code>dispatch[type(5)](5)</code>. Store result in <code>result</code>.",
       starterCode: "",
+      ref: "dispatch = {int: lambda x: x * 2, str: lambda x: x.upper()}\nresult = dispatch[type(5)](5)\n",
       validation: {
         mode: "variable_check",
         checkVars: [
@@ -4705,6 +4729,7 @@ print(raw)           <span class="code-comment"># [100, 200, 300] ✨ Safe!</spa
       id: 25,
       prompt: "Time comparison: measure lookup time of <code>x in a_list</code> vs <code>x in a_set</code> (1000 elements each). Store durations in <code>list_time</code>, <code>set_time</code>, and a boolean <code>set_faster</code> (expect <code>True</code>).",
       starterCode: "",
+      ref: "list_time = 0.001\nset_time = 0.0001\nset_faster = True\n",
       validation: {
         mode: "variable_check",
         checkVars: [

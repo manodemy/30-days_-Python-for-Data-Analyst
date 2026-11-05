@@ -8,7 +8,7 @@ if (!window.EXCEL_COURSE_CONTENT) window.EXCEL_COURSE_CONTENT = {};
 window.EXCEL_COURSE_CONTENT['excelDay12'] = {
   day: 12,
   globalDay: 30,
-  title: "What-If Analysis and Corporate Capstone",
+  title: "What-If Analysis & Corporate Capstone",
   description: "Master corporate What-If analysis, debt amortization modeling via PMT(), Goal Seek mechanics, sensitivity tables, Scenario Manager, and construct an institutional-grade renewable energy capstone model integrating formulas, dynamic lookups, multi-condition aggregations, nested decision logic, date calendars, and zero-variance balance integrity.",
   topics: [
     "01. What-If Analysis Foundations: Forward vs. Backward Financial Modeling",
