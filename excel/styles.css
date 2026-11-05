@@ -2025,7 +2025,7 @@ html[data-theme="light"] .reference-table code,
     align-items: center !important;
     gap: 4px 6px !important;
     padding: 4px 8px !important;
-    overflow: hidden !important;
+    overflow: visible !important;
     height: auto !important;
     min-height: auto !important;
     box-sizing: border-box !important;
@@ -2183,6 +2183,7 @@ html[data-theme="light"] .reference-table code,
     width: 100% !important;
     display: flex !important;
     justify-content: stretch !important;
+    overflow: visible !important;
   }
 
   .day-navigation {
@@ -2191,6 +2192,8 @@ html[data-theme="light"] .reference-table code,
     align-items: center !important;
     gap: 4px !important;
     box-sizing: border-box !important;
+    overflow: visible !important;
+    position: relative !important;
   }
 
   .day-nav-arrow-btn {
@@ -2440,6 +2443,51 @@ html[data-theme="light"] .reference-table code,
    MOBILE VIEWPORT PARITY (<= 900px)
    ═════════════════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
+  /* Day Dropdown Modal & Mobile Stacking */
+  .header:not(.is-collapsed),
+  .app-header:not(.is-collapsed),
+  header:not(.is-collapsed) {
+    overflow: visible !important;
+  }
+
+  .header-center {
+    overflow: visible !important;
+  }
+
+  .day-navigation {
+    overflow: visible !important;
+    position: relative !important;
+  }
+
+  .day-picker-pill {
+    position: relative !important;
+  }
+
+  .day-picker-pill.open {
+    z-index: 100000 !important;
+  }
+
+  .day-picker-pill .custom-select-options {
+    position: fixed !important;
+    top: 74px !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: 65vh !important;
+    z-index: 999999 !important;
+    border-radius: 14px !important;
+    background: rgba(10, 15, 29, 0.98) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(16, 124, 65, 0.3) !important;
+    padding: 8px !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
   /* Mobile Tabs Navigation Bar */
   .mobile-tabs-nav {
     display: flex !important;

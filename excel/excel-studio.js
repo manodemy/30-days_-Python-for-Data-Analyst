@@ -1045,71 +1045,94 @@
         }
 
         // Populate optionsMenu with grouped 60 days
-        const allDays = window.COURSE_MANIFEST_60 || [];
-        const svgIcons = window.SVG_TRACK_ICONS || {};
-        optionsMenu.innerHTML = '';
+        function renderDayOptionsMenu() {
+          let allDays = window.COURSE_MANIFEST_60 || [];
+          if ((!allDays || allDays.length === 0) && window.EXCEL_MANIFEST && window.EXCEL_MANIFEST.length > 0) {
+            allDays = window.EXCEL_MANIFEST.map(d => ({
+              track: 'excel',
+              trackDay: d.day,
+              globalDay: d.globalDay,
+              title: d.title,
+              free: true,
+              prepared: true,
+              comingSoon: false,
+              url: `/excel/day${String(d.day).padStart(2, '0')}.html`
+            }));
+          }
+          if (!allDays || allDays.length === 0) return;
 
-        const tracks = [
-          { key: 'sql', label: '🗄️ SQL Mastery (Days 01–18)', days: allDays.filter(d => d.track === 'sql') },
-          { key: 'excel', label: '📊 Advanced Excel & BI (Days 19–30)', days: allDays.filter(d => d.track === 'excel') },
-          { key: 'python', label: '🐍 Python for Data Analysis (Days 31–60)', days: allDays.filter(d => d.track === 'python') }
-        ];
+          const svgIcons = window.SVG_TRACK_ICONS || {
+            excel: `<svg viewBox="0 0 23 23" fill="none" style="width:14px;height:14px;"><path d="M14.625 0H8.625L1.5 2.625V20.375L8.625 23H14.625V0Z" fill="#107C41"/><path d="M21.5 2.625H14.625V6.375H21.5V2.625Z" fill="#1F9A55"/><path d="M21.5 6.375H14.625V10.125H21.5V6.375Z" fill="#33C481"/><path d="M21.5 10.125H14.625V13.875H21.5V10.125Z" fill="#107C41"/><path d="M21.5 13.875H14.625V17.625H21.5V13.875Z" fill="#1B9A59"/><path d="M21.5 17.625H14.625V20.375H21.5V17.625Z" fill="#107C41"/><path d="M10.125 6.375H3.375V16.625H10.125V6.375Z" fill="#107C41"/><path d="M11.813 7.875L9.938 11.25L11.813 14.625H9.563L8.438 12.75L7.313 14.625H5.063L6.938 11.25L5.063 7.875H7.313L8.438 9.75L9.563 7.875H11.813Z" fill="white"/></svg>`,
+            sql: `<svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"></path><path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"></path></svg>`,
+            python: `<svg viewBox="0 0 24 24" fill="none" style="width:14px;height:14px;"><path d="M11.927 2.1c-4.225 0-3.957 1.83-3.957 1.83l.004 1.895h4.033v.57H6.33S3.5 6.064 3.5 10.284c0 4.22 2.47 4.07 2.47 4.07h1.474v-2.07s-.08-2.47 2.43-2.47h4.167s2.35.038 2.35-2.312V4.012S16.85 2.1 11.927 2.1zm-2.22 1.342a.84.84 0 1 1 0 1.68.84.84 0 0 1 0-1.68z" fill="#3b82f6"/><path d="M12.073 21.9c4.225 0 3.957-1.83 3.957-1.83l-.004-1.895h-4.033v-.57h5.677s2.83.33 2.83-3.89c0-4.22-2.47-4.07-2.47-4.07h-1.474v2.07s.08 2.47-2.43 2.47h-4.167s-2.35-.038-2.35 2.312v3.488s-.458 1.912 4.464 1.912zm2.22-1.342a.84.84 0 1 1 0-1.68.84.84 0 0 1 0 1.68z" fill="#eab308"/></svg>`
+          };
 
-        tracks.forEach(trackGroup => {
-          if (trackGroup.days.length === 0) return;
-          const header = document.createElement('div');
-          header.className = 'dropdown-section-header';
-          header.textContent = trackGroup.label;
-          optionsMenu.appendChild(header);
+          optionsMenu.innerHTML = '';
 
-          trackGroup.days.forEach(d => {
-            const isCurrentExcel = (d.track === 'excel' && d.trackDay === currentDayNum);
-            const isLocked = !d.free && !d.prepared;
-            const optionItem = document.createElement('div');
-            optionItem.className = `custom-select-option${isCurrentExcel ? ' selected' : ''}${isLocked ? ' is-locked' : ''}`;
+          const tracks = [
+            { key: 'sql', label: '🗄️ SQL Mastery (Days 01–18)', days: allDays.filter(d => d.track === 'sql') },
+            { key: 'excel', label: '📊 Advanced Excel & BI (Days 19–30)', days: allDays.filter(d => d.track === 'excel') },
+            { key: 'python', label: '🐍 Python for Data Analysis (Days 31–60)', days: allDays.filter(d => d.track === 'python') }
+          ];
 
-            const iconSvg = svgIcons[d.track] || '';
-            const dayNumStr = String(d.track === 'excel' ? d.trackDay : (d.trackDay || d.globalDay)).padStart(2, '0');
+          tracks.forEach(trackGroup => {
+            if (trackGroup.days.length === 0) return;
+            const header = document.createElement('div');
+            header.className = 'dropdown-section-header';
+            header.textContent = trackGroup.label;
+            optionsMenu.appendChild(header);
 
-            let badgeHtml = '';
-            if (d.comingSoon && !d.prepared) {
-              badgeHtml = '<span class="day-coming-soon-badge">Coming Soon</span>';
-            } else if (d.free) {
-              badgeHtml = '<span class="day-free-badge">FREE</span>';
-            } else if (isLocked) {
-              badgeHtml = '<span class="day-lock-badge" title="Pro subscription required">🔒</span>';
-            }
+            trackGroup.days.forEach(d => {
+              const isCurrentExcel = (d.track === 'excel' && d.trackDay === currentDayNum);
+              const isLocked = !d.free && !d.prepared;
+              const optionItem = document.createElement('div');
+              optionItem.className = `custom-select-option${isCurrentExcel ? ' selected' : ''}${isLocked ? ' is-locked' : ''}`;
 
-            optionItem.innerHTML = `
-              <span class="option-day-tag">
-                <span class="track-icon-wrap">${iconSvg}</span>
-                <span style="display:flex;flex-direction:column;gap:1px;overflow:hidden;">
-                  <strong>Day ${dayNumStr}</strong>
-                  <span class="option-day-title">${d.title}</span>
-                </span>
-              </span>
-              ${badgeHtml}
-            `;
+              const iconSvg = svgIcons[d.track] || '';
+              const dayNumStr = String(d.track === 'excel' ? d.trackDay : (d.trackDay || d.globalDay)).padStart(2, '0');
 
-            optionItem.addEventListener('click', (e) => {
-              e.stopPropagation();
-              if (isCurrentExcel) {
-                optionsMenu.classList.remove('open');
-                dayPill.classList.remove('open');
-                return;
-              }
+              let badgeHtml = '';
               if (d.comingSoon && !d.prepared) {
-                showComingSoonToast(d.title, d.track === 'excel' ? d.trackDay : d.globalDay);
-                optionsMenu.classList.remove('open');
-                dayPill.classList.remove('open');
-                return;
+                badgeHtml = '<span class="day-coming-soon-badge">Coming Soon</span>';
+              } else if (d.free) {
+                badgeHtml = '<span class="day-free-badge">FREE</span>';
+              } else if (isLocked) {
+                badgeHtml = '<span class="day-lock-badge" title="Pro subscription required">🔒</span>';
               }
-              window.location.href = d.url;
-            });
 
-            optionsMenu.appendChild(optionItem);
+              optionItem.innerHTML = `
+                <span class="option-day-tag">
+                  <span class="track-icon-wrap">${iconSvg}</span>
+                  <span style="display:flex;flex-direction:column;gap:1px;overflow:hidden;">
+                    <strong>Day ${dayNumStr}</strong>
+                    <span class="option-day-title">${d.title}</span>
+                  </span>
+                </span>
+                ${badgeHtml}
+              `;
+
+              optionItem.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (isCurrentExcel) {
+                  optionsMenu.classList.remove('open');
+                  dayPill.classList.remove('open');
+                  return;
+                }
+                if (d.comingSoon && !d.prepared) {
+                  showComingSoonToast(d.title, d.track === 'excel' ? d.trackDay : d.globalDay);
+                  optionsMenu.classList.remove('open');
+                  dayPill.classList.remove('open');
+                  return;
+                }
+                window.location.href = d.url;
+              });
+
+              optionsMenu.appendChild(optionItem);
+            });
           });
-        });
+        }
+
+        renderDayOptionsMenu();
 
         // Toggle open/close on pill click
         dayPill.onclick = (e) => {
@@ -1120,6 +1143,9 @@
             menu.parentElement?.classList.remove('open');
           });
           if (!isOpen) {
+            if (optionsMenu.children.length === 0) {
+              renderDayOptionsMenu();
+            }
             optionsMenu.classList.add('open');
             dayPill.classList.add('open');
           }
@@ -1151,7 +1177,7 @@
     }
   }
 
-  // Global document click listener for outside close
+  // Global document click & touch listeners for outside close
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.day-picker-pill')) {
       document.querySelectorAll('.custom-select-options.open').forEach(menu => {
@@ -1160,6 +1186,15 @@
       });
     }
   });
+
+  document.addEventListener('touchstart', (e) => {
+    if (!e.target.closest('.day-picker-pill') && !e.target.closest('.custom-select-options')) {
+      document.querySelectorAll('.custom-select-options.open').forEach(menu => {
+        menu.classList.remove('open');
+        menu.parentElement?.classList.remove('open');
+      });
+    }
+  }, { passive: true });
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
