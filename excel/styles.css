@@ -22,8 +22,15 @@
   --excel-grid-text: #f8fafc;
   --excel-status-bg: #0b5c30;
   --excel-status-text: #e2e8f0;
-  --excel-selection-border: #21A366;
-  --excel-selection-bg: rgba(33, 163, 102, 0.15);
+  /* Active cell: Excel-green outline */
+  --excel-selection-border: #107C41;
+  --excel-selection-bg: #0f131c;
+  /* Multi-cell range: Excel blue highlight (dark mode) */
+  --excel-range-bg: rgba(100, 160, 240, 0.22);
+  --excel-range-border: #1a73e8;
+  /* Selected header (dark mode) */
+  --excel-header-selected-bg: rgba(100, 160, 240, 0.28);
+  --excel-header-selected-color: #93c5fd;
 }
 
 /* Light Mode Overrides for Excel */
@@ -38,8 +45,15 @@
   --excel-grid-text: #000000;
   --excel-status-bg: #107C41;
   --excel-status-text: #ffffff;
+  /* Active cell: Excel-green outline */
   --excel-selection-border: #107C41;
-  --excel-selection-bg: rgba(16, 124, 65, 0.08);
+  --excel-selection-bg: #ffffff;
+  /* Multi-cell range: Excel blue highlight (light mode — matches real Excel) */
+  --excel-range-bg: rgba(173, 214, 255, 0.55);
+  --excel-range-border: #1a73e8;
+  /* Selected header (light mode) */
+  --excel-header-selected-bg: rgba(26, 115, 232, 0.14);
+  --excel-header-selected-color: #1557b0;
 }
 
 /* ── Day Badge Customization for Excel Track ─────────────────────── */
@@ -434,10 +448,10 @@
 }
 
 .excel-col-th.selected {
-  background: rgba(16, 124, 65, 0.18) !important;
-  color: var(--excel-brand-green) !important;
+  background: var(--excel-header-selected-bg, rgba(26, 115, 232, 0.14)) !important;
+  color: var(--excel-header-selected-color, #1557b0) !important;
   font-weight: 700;
-  border-bottom: 2px solid var(--excel-brand-green) !important;
+  border-bottom: 2px solid var(--excel-range-border, #1a73e8) !important;
 }
 
 .excel-row-th {
@@ -462,10 +476,10 @@
 }
 
 .excel-row-th.selected {
-  background: rgba(16, 124, 65, 0.18) !important;
-  color: var(--excel-brand-green) !important;
+  background: var(--excel-header-selected-bg, rgba(26, 115, 232, 0.14)) !important;
+  color: var(--excel-header-selected-color, #1557b0) !important;
   font-weight: 700;
-  border-right: 2px solid var(--excel-brand-green) !important;
+  border-right: 2px solid var(--excel-range-border, #1a73e8) !important;
 }
 
 .excel-data-cell {
@@ -1166,17 +1180,6 @@
   font-size: 12px;
 }
 
-.excel-cell.active-cell {
-  outline: 2px solid var(--excel-selection-border) !important;
-  outline-offset: -2px;
-  background: var(--excel-selection-bg) !important;
-  z-index: 10;
-}
-
-.excel-cell.in-range {
-  background: rgba(16, 124, 65, 0.14) !important;
-}
-
 .excel-cell.spotlight-target-cell {
   outline: 2px dashed #f59e0b !important;
   outline-offset: -2px;
@@ -1237,12 +1240,51 @@ th.spotlight-col {
   outline: none !important;
   border-color: #107c41 !important;
 }
-/* Selection highlight inside the multi-cell range while editing */
-.excel-cell.active-cell.in-range {
-  background: rgba(33, 115, 70, 0.08) !important;
+/* ── Active Cell: Excel-style green border, white/dark background ── */
+.excel-cell.active-cell {
+  background: var(--excel-selection-bg) !important;
+  outline: 2px solid var(--excel-selection-border) !important;
+  outline-offset: -2px;
+  z-index: 12;
+  position: relative;
 }
 
-.corner-triangle {
+/* ── In-Range Selection: Excel blue fill (NOT green) ─────────────── */
+.excel-cell.in-range {
+  background: var(--excel-range-bg) !important;
+}
+
+/* Active cell INSIDE a range keeps white/clear background so it stands out */
+.excel-cell.active-cell.in-range {
+  background: var(--excel-selection-bg) !important;
+  outline: 2px solid var(--excel-selection-border) !important;
+  outline-offset: -2px;
+  z-index: 12;
+}
+
+/* ── Column / Row headers turn BLUE when their cells are in selection ── */
+th.excel-col-th.selected {
+  background: var(--excel-header-selected-bg) !important;
+  color: var(--excel-header-selected-color) !important;
+  border-bottom: 2px solid var(--excel-range-border) !important;
+}
+th.excel-row-th.selected {
+  background: var(--excel-header-selected-bg) !important;
+  color: var(--excel-header-selected-color) !important;
+  border-right: 2px solid var(--excel-range-border) !important;
+}
+
+/* ── Selection Rectangle Overlay (the blue border around entire range) ── */
+.excel-selection-overlay {
+  position: absolute;
+  pointer-events: none;
+  z-index: 15;
+  border: 2px solid var(--excel-range-border, #1a73e8);
+  box-sizing: border-box;
+  border-radius: 0;
+}
+
+/* ── Copied Marching Ants (Ctrl+C) ───────────────────────────────── */
   width: 0;
   height: 0;
   border-style: solid;
@@ -1317,20 +1359,29 @@ body:not(.dark) .point-mode-banner {
 }
 
 /* Marching Ants Cell Highlights */
+@keyframes pointAntsPulse {
+  0% { opacity: 0.85; }
+  50% { opacity: 1; }
+  100% { opacity: 0.85; }
+}
+
 .excel-cell.in-point-ref {
-  background: rgba(37, 99, 235, 0.1) !important;
+  background: rgba(37, 99, 235, 0.12) !important;
+  z-index: 5;
+  position: relative;
+  animation: pointAntsPulse 1.2s infinite ease-in-out;
 }
 
 .excel-cell.in-point-ref.color-1 {
-  background: rgba(225, 29, 72, 0.1) !important;
+  background: rgba(225, 29, 72, 0.12) !important;
 }
 
 .excel-cell.in-point-ref.color-2 {
-  background: rgba(16, 124, 65, 0.1) !important;
+  background: rgba(16, 124, 65, 0.12) !important;
 }
 
 .excel-cell.in-point-ref.color-3 {
-  background: rgba(217, 119, 6, 0.1) !important;
+  background: rgba(217, 119, 6, 0.12) !important;
 }
 
 /* Animated Marching Ants Dashed Edges (Color 0: Azure) */

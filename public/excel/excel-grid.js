@@ -156,9 +156,17 @@
         }
         const colLetter = ExcelEngine.colIndexToName(c);
         let colClass = 'excel-col-th';
-        const minC = Math.min(this.selectionStart.col, this.selectionEnd.col);
-        const maxC = Math.max(this.selectionStart.col, this.selectionEnd.col);
-        if (c >= minC && c <= maxC) colClass += ' selected';
+        let isColSelected = false;
+        if (this.pointMode && this.pointMode.isActive && this.pointMode.activeRefRange && this.pointMode.activeRefRange.sheet === this.activeSheetName) {
+          const pMinC = Math.min(this.pointMode.activeRefRange.startCol, this.pointMode.activeRefRange.endCol);
+          const pMaxC = Math.max(this.pointMode.activeRefRange.startCol, this.pointMode.activeRefRange.endCol);
+          isColSelected = (c >= pMinC && c <= pMaxC);
+        } else {
+          const minC = Math.min(this.selectionStart.col, this.selectionEnd.col);
+          const maxC = Math.max(this.selectionStart.col, this.selectionEnd.col);
+          isColSelected = (c >= minC && c <= maxC);
+        }
+        if (isColSelected) colClass += ' selected';
         if (this.spotlightInfo && this.spotlightInfo.sourceCols && this.spotlightInfo.sourceCols.has(colLetter)) {
           colClass += ' spotlight-col';
         }
@@ -181,7 +189,15 @@
       for (let r = startRow; r <= endRow; r++) {
         let rowClass = 'excel-row';
         let rowHdrClass = 'excel-row-th';
-        if (r >= selMinR && r <= selMaxR) rowHdrClass += ' selected';
+        let isRowSelected = false;
+        if (this.pointMode && this.pointMode.isActive && this.pointMode.activeRefRange && this.pointMode.activeRefRange.sheet === this.activeSheetName) {
+          const pMinR = Math.min(this.pointMode.activeRefRange.startRow, this.pointMode.activeRefRange.endRow);
+          const pMaxR = Math.max(this.pointMode.activeRefRange.startRow, this.pointMode.activeRefRange.endRow);
+          isRowSelected = (r >= pMinR && r <= pMaxR);
+        } else {
+          isRowSelected = (r >= selMinR && r <= selMaxR);
+        }
+        if (isRowSelected) rowHdrClass += ' selected';
 
         html += `<tr class="${rowClass}" data-row="${r}">`;
         html += `<th class="${rowHdrClass}" data-row="${r}" style="width: 46px; min-width: 46px; max-width: 46px;" title="Row ${r + 1}">${r + 1}</th>`;
@@ -194,9 +210,10 @@
           let displayVal = cellObj ? (cellObj.value !== null && cellObj.value !== undefined ? cellObj.value : '') : '';
 
           let cellClass = 'excel-cell';
-          const isActive = (r === this.activeRow && c === this.activeCol);
+          const isCrossSheetPoint = (this.pointMode && this.pointMode.isActive && this.pointMode.originSheet !== this.activeSheetName);
+          const isActive = !isCrossSheetPoint && (r === this.activeRow && c === this.activeCol);
           if (isActive) cellClass += ' active-cell';
-          if (this.isInSelection(r, c)) cellClass += ' in-range';
+          if (!isCrossSheetPoint && this.isInSelection(r, c)) cellClass += ' in-range';
 
           // Point Mode Marching Ants edge styling
           const pointRef = this.getPointRefEdgeClasses(r, c);
@@ -255,17 +272,27 @@
 
       // Reposition inline editor overlay after every render (TD positions may shift with scroll)
       if (this.isEditing && this.inlineEditorEl) {
-        const activeTd = this.table.querySelector(`td[data-row="${this.activeRow}"][data-col="${this.activeCol}"]`);
-        if (activeTd) {
-          const rect = activeTd.getBoundingClientRect();
-          const containerRect = this.container.getBoundingClientRect();
-          const topPos = rect.top - containerRect.top + this.container.scrollTop;
-          const leftPos = rect.left - containerRect.left + this.container.scrollLeft;
-          this.inlineEditorEl.style.top = topPos + 'px';
-          this.inlineEditorEl.style.left = leftPos + 'px';
-          this.inlineEditorEl.style.width = Math.max(rect.width, 90) + 'px';
-          this.inlineEditorEl.style.height = rect.height + 'px';
-          this.inlineEditorEl.focus();
+        if (this.pointMode && this.pointMode.isActive && this.pointMode.originSheet !== this.activeSheetName) {
+          // On foreign sheet during cross-sheet formula entry: hide inline editor overlay so it doesn't obstruct cells
+          this.inlineEditorEl.style.display = 'none';
+        } else {
+          this.inlineEditorEl.style.display = 'block';
+          const targetRow = (this.pointMode && this.pointMode.isActive) ? this.pointMode.originRow : this.activeRow;
+          const targetCol = (this.pointMode && this.pointMode.isActive) ? this.pointMode.originCol : this.activeCol;
+          const activeTd = this.table.querySelector(`td[data-row="${targetRow}"][data-col="${targetCol}"]`);
+          if (activeTd) {
+            const rect = activeTd.getBoundingClientRect();
+            const containerRect = this.container.getBoundingClientRect();
+            const topPos = rect.top - containerRect.top + this.container.scrollTop;
+            const leftPos = rect.left - containerRect.left + this.container.scrollLeft;
+            this.inlineEditorEl.style.top = topPos + 'px';
+            this.inlineEditorEl.style.left = leftPos + 'px';
+            this.inlineEditorEl.style.width = Math.max(rect.width, 90) + 'px';
+            this.inlineEditorEl.style.height = rect.height + 'px';
+            if (!this.pointMode || !this.pointMode.isActive) {
+              this.inlineEditorEl.focus();
+            }
+          }
         }
       }
     }
@@ -328,7 +355,7 @@
     shouldEnterPointMode(val, caret) {
       if (!val || typeof val !== 'string' || !val.trim().startsWith('=')) return false;
       const prefix = val.substring(0, caret).trim();
-      return /[=(,+\-*\/^&:>]$/.test(prefix);
+      return /[=(,+\-*\/^&:>!]$/.test(prefix);
     }
 
     enterPointMode(originSheet, originRow, originCol, caretPos) {
@@ -359,9 +386,10 @@
       if (!banner) return;
       if (this.pointMode.isActive) {
         banner.style.display = 'flex';
-        const txt = banner.querySelector('.banner-text');
+        const txt = banner.querySelector('.point-mode-text, #pointModeText, .banner-text');
         if (txt) {
-          txt.textContent = `Point Mode Active: Drag or click cells in ${this.activeSheetName} to reference them in formula`;
+          const originCoord = ExcelEngine.formatCellCoord(this.pointMode.originSheet, this.pointMode.originCol, this.pointMode.originRow);
+          txt.innerHTML = `📍 Point Mode: Referencing cells from <strong>${this.activeSheetName}</strong> into <strong>${originCoord}</strong>`;
         }
       } else {
         banner.style.display = 'none';
@@ -372,12 +400,17 @@
       if (!this.formulaInput || !this.pointMode.activeRefRange) return;
       const r = this.pointMode.activeRefRange;
 
-      const isSingleCell = (r.startRow === r.endRow && r.startCol === r.endCol);
+      const minR = Math.min(r.startRow, r.endRow);
+      const maxR = Math.max(r.startRow, r.endRow);
+      const minC = Math.min(r.startCol, r.endCol);
+      const maxC = Math.max(r.startCol, r.endCol);
+
+      const isSingleCell = (minR === maxR && minC === maxC);
       const isCrossSheet = (r.sheet !== this.pointMode.originSheet);
 
       const baseRef = isSingleCell
-        ? ExcelEngine.formatCellCoord(null, r.startCol, r.startRow)
-        : `${ExcelEngine.formatCellCoord(null, r.startCol, r.startRow)}:${ExcelEngine.formatCellCoord(null, r.endCol, r.endRow)}`;
+        ? ExcelEngine.formatCellCoord(null, minC, minR)
+        : `${ExcelEngine.formatCellCoord(null, minC, minR)}:${ExcelEngine.formatCellCoord(null, maxC, maxR)}`;
 
       const formattedRef = isCrossSheet
         ? (r.sheet.includes(' ') ? `'${r.sheet}'!` : `${r.sheet}!`) + baseRef
@@ -388,13 +421,15 @@
       const after = currentVal.substring(this.pointMode.tokenEndIndex);
 
       this.formulaInput.value = before + formattedRef + after;
+      if (this.inlineEditorEl) {
+        this.inlineEditorEl.value = this.formulaInput.value;
+      }
       this.pointMode.tokenEndIndex = this.pointMode.tokenStartIndex + formattedRef.length;
       this.formulaInput.setSelectionRange(this.pointMode.tokenEndIndex, this.pointMode.tokenEndIndex);
     }
 
-    commitPointMode() {
-      if (!this.formulaInput) return;
-      let val = this.formulaInput.value.trim();
+    commitPointMode(moveDeltaRow = 1, moveDeltaCol = 0) {
+      let val = (this.formulaInput ? this.formulaInput.value : (this.inlineEditorEl ? this.inlineEditorEl.value : '')).trim();
 
       // Auto-close missing parentheses
       let openCount = (val.match(/\(/g) || []).length;
@@ -403,7 +438,8 @@
         val += ')';
         closeCount++;
       }
-      this.formulaInput.value = val;
+      if (this.formulaInput) this.formulaInput.value = val;
+      if (this.inlineEditorEl) this.inlineEditorEl.value = val;
 
       const originSheet = this.pointMode.originSheet;
       const originRow = this.pointMode.originRow;
@@ -412,13 +448,17 @@
       this.pushUndoCommand(originSheet, originRow, originCol);
       this.workbook.setCellValue(originSheet, originRow, originCol, val);
 
-      const wasCrossSheet = (this.activeSheetName !== originSheet);
+      this.removeInlineEditor();
+      this.isEditing = false;
       this.exitPointMode();
 
-      if (wasCrossSheet) {
-        this.switchSheet(originSheet);
-      }
-      this.setActiveCell(originRow, originCol);
+      // Return to origin sheet
+      this.switchSheet(originSheet);
+
+      // Advance active cell to row below (Excel default on Enter)
+      const targetRow = Math.min(TOTAL_ROWS - 1, originRow + moveDeltaRow);
+      const targetCol = Math.min(TOTAL_COLS - 1, originCol + moveDeltaCol);
+      this.setActiveCell(targetRow, targetCol);
       this.render();
 
       if (typeof window.onPointFormulaCommitted === 'function') {
@@ -431,12 +471,11 @@
       const originRow = this.pointMode.originRow;
       const originCol = this.pointMode.originCol;
 
-      const wasCrossSheet = (this.activeSheetName !== originSheet);
+      this.removeInlineEditor();
+      this.isEditing = false;
       this.exitPointMode();
 
-      if (wasCrossSheet) {
-        this.switchSheet(originSheet);
-      }
+      this.switchSheet(originSheet);
       this.setActiveCell(originRow, originCol);
       this.updateFormulaBar();
       this.render();
@@ -500,7 +539,50 @@
     }
 
     updateSelectionOverlays() {
-      // Repositions active cell outline and drag fill-handle square
+      // Remove existing selection rectangle overlay
+      const existing = this.container.querySelectorAll('.excel-selection-overlay');
+      existing.forEach(el => el.remove());
+
+      // If in point mode on a foreign sheet, do not draw origin sheet's standard multi-cell selection overlay
+      if (this.pointMode && this.pointMode.isActive && this.pointMode.originSheet !== this.activeSheetName) {
+        return;
+      }
+
+      // Ensure container is relatively positioned for absolute children
+      if (this.container && window.getComputedStyle(this.container).position === 'static') {
+        this.container.style.position = 'relative';
+      }
+
+      const minR = Math.min(this.selectionStart.row, this.selectionEnd.row);
+      const maxR = Math.max(this.selectionStart.row, this.selectionEnd.row);
+      const minC = Math.min(this.selectionStart.col, this.selectionEnd.col);
+      const maxC = Math.max(this.selectionStart.col, this.selectionEnd.col);
+
+      // Only draw overlay for multi-cell selections
+      if (minR === maxR && minC === maxC) return;
+
+      // Find corner TDs of the selection rectangle
+      const firstTd = this.table.querySelector(`td[data-row="${minR}"][data-col="${minC}"]`);
+      const lastTd = this.table.querySelector(`td[data-row="${maxR}"][data-col="${maxC}"]`);
+      if (!firstTd || !lastTd) return;
+
+      const containerRect = this.container.getBoundingClientRect();
+      const firstRect = firstTd.getBoundingClientRect();
+      const lastRect = lastTd.getBoundingClientRect();
+
+      const topPos = firstRect.top - containerRect.top + this.container.scrollTop;
+      const leftPos = firstRect.left - containerRect.left + this.container.scrollLeft;
+      const width = lastRect.right - firstRect.left;
+      const height = lastRect.bottom - firstRect.top;
+
+      // Draw the blue selection rectangle border
+      const overlay = document.createElement('div');
+      overlay.className = 'excel-selection-overlay';
+      overlay.style.top = topPos + 'px';
+      overlay.style.left = leftPos + 'px';
+      overlay.style.width = width + 'px';
+      overlay.style.height = height + 'px';
+      this.container.appendChild(overlay);
     }
 
     escapeHTML(str) {
@@ -544,11 +626,10 @@
       }
     }
 
-    // Wall Street Modeling Continuous Data Jump (Ctrl + Arrow)
-    jumpToDataBoundary(deltaRow, deltaCol, expandSelection = false) {
+    findDataBoundary(startRow, startCol, deltaRow, deltaCol) {
       const sheet = this.activeSheetName;
-      let r = this.activeRow;
-      let c = this.activeCol;
+      let r = startRow;
+      let c = startCol;
 
       const isCellFilled = (row, col) => {
         const cell = this.workbook.getCell(sheet, row, col);
@@ -560,7 +641,7 @@
       const nextC = c + deltaCol;
 
       if (nextR < 0 || nextR >= TOTAL_ROWS || nextC < 0 || nextC >= TOTAL_COLS) {
-        return;
+        return { row: r, col: c };
       }
 
       const nextFilled = isCellFilled(nextR, nextC);
@@ -594,8 +675,71 @@
           c += deltaCol;
         }
       }
+      return { row: r, col: c };
+    }
 
-      this.setActiveCell(r, c, expandSelection);
+    // Wall Street Modeling Continuous Data Jump (Ctrl + Arrow)
+    jumpToDataBoundary(deltaRow, deltaCol, expandSelection = false) {
+      const boundary = this.findDataBoundary(this.activeRow, this.activeCol, deltaRow, deltaCol);
+      this.setActiveCell(boundary.row, boundary.col, expandSelection);
+    }
+
+    handlePointModeArrow(deltaRow, deltaCol, isShift, isCtrl) {
+      if (!this.pointMode.isActive) return false;
+
+      if (!this.pointMode.activeRefRange) {
+        this.pointMode.activeRefRange = {
+          sheet: this.activeSheetName,
+          startRow: this.activeRow,
+          startCol: this.activeCol,
+          endRow: this.activeRow,
+          endCol: this.activeCol,
+          colorIdx: this.pointMode.colorIdx
+        };
+      }
+
+      const r = this.pointMode.activeRefRange;
+
+      if (isShift) {
+        let targetEndRow = r.endRow;
+        let targetEndCol = r.endCol;
+
+        if (isCtrl) {
+          const boundary = this.findDataBoundary(r.endRow, r.endCol, deltaRow, deltaCol);
+          targetEndRow = boundary.row;
+          targetEndCol = boundary.col;
+        } else {
+          targetEndRow = Math.max(0, Math.min(TOTAL_ROWS - 1, r.endRow + deltaRow));
+          targetEndCol = Math.max(0, Math.min(TOTAL_COLS - 1, r.endCol + deltaCol));
+        }
+
+        r.endRow = targetEndRow;
+        r.endCol = targetEndCol;
+      } else {
+        let targetRow = r.startRow;
+        let targetCol = r.startCol;
+
+        if (isCtrl) {
+          const boundary = this.findDataBoundary(r.startRow, r.startCol, deltaRow, deltaCol);
+          targetRow = boundary.row;
+          targetCol = boundary.col;
+        } else {
+          targetRow = Math.max(0, Math.min(TOTAL_ROWS - 1, r.startRow + deltaRow));
+          targetCol = Math.max(0, Math.min(TOTAL_COLS - 1, r.startCol + deltaCol));
+        }
+
+        r.startRow = targetRow;
+        r.startCol = targetCol;
+        r.endRow = targetRow;
+        r.endCol = targetCol;
+      }
+
+      this.activeRow = r.endRow;
+      this.activeCol = r.endCol;
+      this.ensureActiveCellVisible();
+      this.updateFormulaReference();
+      this.render();
+      return true;
     }
 
     jumpToEndOfData(expandSelection = false) {
@@ -788,6 +932,20 @@
         if (colTh) {
           e.preventDefault();
           const c = parseInt(colTh.getAttribute('data-col'), 10);
+          if (this.pointMode && this.pointMode.isActive) {
+            const boundary = this.findDataBoundary(1, c, 1, 0);
+            this.pointMode.activeRefRange = {
+              sheet: this.activeSheetName,
+              startRow: 1,
+              startCol: c,
+              endRow: Math.max(1, boundary.row),
+              endCol: c,
+              colorIdx: this.pointMode.colorIdx
+            };
+            this.updateFormulaReference();
+            this.render();
+            return;
+          }
           this.activeRow = 0;
           this.activeCol = c;
           this.selectionAnchor = { row: 0, col: c };
@@ -901,14 +1059,22 @@
 
         if (this.headerSelectMode === 'col' && colTh) {
           const c = parseInt(colTh.getAttribute('data-col'), 10);
-          this.selectionEnd.col = c;
+          // Extend column selection from anchor col to current col
+          const minC = Math.min(this.selectionAnchor.col, c);
+          const maxC = Math.max(this.selectionAnchor.col, c);
+          this.selectionStart = { row: 0, col: minC };
+          this.selectionEnd = { row: TOTAL_ROWS - 1, col: maxC };
           this.render();
           return;
         }
 
         if (this.headerSelectMode === 'row' && rowTh) {
           const r = parseInt(rowTh.getAttribute('data-row'), 10);
-          this.selectionEnd.row = r;
+          // Extend row selection from anchor row to current row
+          const minR = Math.min(this.selectionAnchor.row, r);
+          const maxR = Math.max(this.selectionAnchor.row, r);
+          this.selectionStart = { row: minR, col: 0 };
+          this.selectionEnd = { row: maxR, col: TOTAL_COLS - 1 };
           this.render();
           return;
         }
@@ -926,7 +1092,19 @@
         }
 
         if (this.isSelecting) {
-          this.selectionEnd = { row: r, col: c };
+          // Drag selection: anchor stays at mousedown cell, extend to current
+          this.activeRow = r;
+          this.activeCol = c;
+          this.selectionStart = {
+            row: Math.min(this.selectionAnchor.row, r),
+            col: Math.min(this.selectionAnchor.col, c)
+          };
+          this.selectionEnd = {
+            row: Math.max(this.selectionAnchor.row, r),
+            col: Math.max(this.selectionAnchor.col, c)
+          };
+          this.updateFormulaBar();
+          this.updateStatusBar();
           this.render();
         }
       });
@@ -946,14 +1124,34 @@
           if (e.target !== this.formulaInput) return;
         }
 
-        if (this.pointMode.isActive) {
+        if (this.pointMode && this.pointMode.isActive) {
           if (e.key === 'Enter') {
             e.preventDefault();
-            this.commitPointMode();
+            this.commitPointMode(e.shiftKey ? -1 : 1, 0);
+            return;
+          } else if (e.key === 'Tab') {
+            e.preventDefault();
+            this.commitPointMode(0, e.shiftKey ? -1 : 1);
             return;
           } else if (e.key === 'Escape') {
             e.preventDefault();
             this.cancelPointMode();
+            return;
+          } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            this.handlePointModeArrow(1, 0, e.shiftKey, e.ctrlKey || e.metaKey);
+            return;
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            this.handlePointModeArrow(-1, 0, e.shiftKey, e.ctrlKey || e.metaKey);
+            return;
+          } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            this.handlePointModeArrow(0, 1, e.shiftKey, e.ctrlKey || e.metaKey);
+            return;
+          } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            this.handlePointModeArrow(0, -1, e.shiftKey, e.ctrlKey || e.metaKey);
             return;
           }
         }
@@ -1234,6 +1432,45 @@
 
         // Keyboard handling inside inline editor
         input.addEventListener('keydown', (e) => {
+          if (this.pointMode && this.pointMode.isActive) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              e.stopPropagation();
+              this.commitPointMode(e.shiftKey ? -1 : 1, 0);
+              return;
+            } else if (e.key === 'Tab') {
+              e.preventDefault();
+              e.stopPropagation();
+              this.commitPointMode(0, e.shiftKey ? -1 : 1);
+              return;
+            } else if (e.key === 'Escape') {
+              e.preventDefault();
+              e.stopPropagation();
+              this.cancelPointMode();
+              return;
+            } else if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              e.stopPropagation();
+              this.handlePointModeArrow(1, 0, e.shiftKey, e.ctrlKey || e.metaKey);
+              return;
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              e.stopPropagation();
+              this.handlePointModeArrow(-1, 0, e.shiftKey, e.ctrlKey || e.metaKey);
+              return;
+            } else if (e.key === 'ArrowRight') {
+              e.preventDefault();
+              e.stopPropagation();
+              this.handlePointModeArrow(0, 1, e.shiftKey, e.ctrlKey || e.metaKey);
+              return;
+            } else if (e.key === 'ArrowLeft') {
+              e.preventDefault();
+              e.stopPropagation();
+              this.handlePointModeArrow(0, -1, e.shiftKey, e.ctrlKey || e.metaKey);
+              return;
+            }
+          }
+
           if (e.key === 'Enter') {
             e.preventDefault();
             e.stopPropagation();
@@ -1289,6 +1526,11 @@
     }
 
     commitEdit(moveDeltaRow = 0, moveDeltaCol = 0) {
+      if (this.pointMode && this.pointMode.isActive) {
+        this.commitPointMode(moveDeltaRow, moveDeltaCol);
+        return;
+      }
+
       // Read value from inline editor if present, otherwise from formula bar
       const val = this.inlineEditorEl
         ? this.inlineEditorEl.value
@@ -1308,6 +1550,10 @@
     }
 
     cancelEdit() {
+      if (this.pointMode && this.pointMode.isActive) {
+        this.cancelPointMode();
+        return;
+      }
       this.removeInlineEditor();
       this.isEditing = false;
       this.updateFormulaBar();
@@ -1436,6 +1682,19 @@
     }
 
     switchSheet(sheetName) {
+      if (this.isEditing && this.formulaInput && this.formulaInput.value.startsWith('=')) {
+        if (!this.pointMode.isActive) {
+          let val = this.formulaInput.value;
+          if (/=[A-Za-z_]+$/.test(val)) {
+            val += '(';
+            this.formulaInput.value = val;
+            if (this.inlineEditorEl) this.inlineEditorEl.value = val;
+          }
+          const newCaret = this.formulaInput.value.length;
+          this.enterPointMode(this.activeSheetName, this.activeRow, this.activeCol, newCaret);
+        }
+      }
+
       this.activeSheetName = sheetName;
       this.workbook.createSheet(sheetName);
 
