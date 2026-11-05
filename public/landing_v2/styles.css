@@ -9458,8 +9458,16 @@ footer .nav-brand-symbol {
   border-radius: 18px !important;
 }
 
+.nav-menu-wrapper {
+  position: relative !important;
+  z-index: 10030 !important;
+}
+
 /* Menu Toggle Button (Compact 36px Hamburger ≡) */
 .nav-menu-toggle-btn {
+  position: relative !important;
+  z-index: 10030 !important;
+
   width: 36px !important;
   height: 36px !important;
   border-radius: 50% !important;
@@ -9692,3 +9700,39 @@ footer .nav-brand-symbol {
   }
 }
 
+
+/* ──────────────────────────────────────────────────────────
+   Curriculum Track Tabs Compact Spacing (Reduced Gap Above & Below)
+   ────────────────────────────────────────────────────────── */
+main > .curriculum-section:first-child,
+.curriculum-section:first-of-type {
+  padding-top: 74px !important;
+  padding-bottom: 32px !important;
+}
+
+.curr-tabs {
+  margin-top: 0 !important;
+  margin-bottom: 14px !important;
+}
+
+main > .hero:not(:first-child) {
+  padding: 56px 0 44px !important;
+}
+
+@media (max-width: 860px) {
+  main > .curriculum-section:first-child,
+  .curriculum-section:first-of-type {
+    padding-top: 50px !important;
+    padding-bottom: 24px !important;
+  }
+
+  .curr-tabs {
+    margin-top: 0 !important;
+    margin-bottom: 10px !important;
+  }
+
+  main > .hero:not(:first-child) {
+    padding-top: 40px !important;
+    padding-bottom: 28px !important;
+  }
+}
