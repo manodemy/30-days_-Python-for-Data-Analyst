@@ -16,7 +16,7 @@ TWO MODES:
 import json, sys, re, os, html as ht, time
 from pathlib import Path
 from http.server import SimpleHTTPRequestHandler
-from socketserver import TCPServer
+from socketserver import ThreadingTCPServer
 
 if hasattr(sys.stdout, 'reconfigure'):
     try:
@@ -688,7 +688,7 @@ class LiveHandler(SimpleHTTPRequestHandler):
         # Intercept dayXX.html requests — generate on the fly from notebook
         m_py = re.match(r'/day(\d{1,2})(?:\.html)?', self.path)
         m_sql = re.match(r'/sql/day(\d{1,2})(?:\.html)?', self.path)
-        m_excel = re.match(r'/excel/day(\d{1,2})(?:\.html)?', self.path)
+        m_excel = None # Excel days are interactive web apps served directly as static
         
         m = m_py or m_sql or m_excel
         if m:
@@ -729,10 +729,27 @@ class LiveHandler(SimpleHTTPRequestHandler):
         # Everything else (CSS, JS, index.html) served normally
         super().do_GET()
 
+    def translate_path(self, path):
+        # Resolve path relative to ROOT first
+        p = super().translate_path(path)
+        if not os.path.exists(p):
+            # Fallback to public/ directory (mimicking Next.js / Vercel public routing)
+            rel = os.path.relpath(p, str(ROOT))
+            pub_p = ROOT / 'public' / rel
+            if pub_p.exists():
+                return str(pub_p)
+        return p
+
     def log_message(self, fmt, *args):
-        p = args[0].split()[1] if args else ''
-        if p.endswith('.html') and not p.startswith('/day'):
-            print(f'  📄 [{time.strftime("%H:%M:%S")}] {p}')
+        try:
+            if args and isinstance(args[0], str):
+                parts = args[0].split()
+                if len(parts) > 1:
+                    p = parts[1]
+                    if p.endswith('.html') and not p.startswith('/day'):
+                        print(f'  📄 [{time.strftime("%H:%M:%S")}] {p}')
+        except Exception:
+            pass
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -835,8 +852,8 @@ if __name__ == '__main__':
         print(f'   Notebooks: {NB_DIR}')
         print(f'   Edit any notebook → refresh browser → see changes instantly!')
         print(f'   Press Ctrl+C to stop.\n')
-        TCPServer.allow_reuse_address = True
-        with TCPServer(('', port), LiveHandler) as httpd:
+        ThreadingTCPServer.allow_reuse_address = True
+        with ThreadingTCPServer(('', port), LiveHandler) as httpd:
             try:
                 httpd.serve_forever()
             except KeyboardInterrupt:

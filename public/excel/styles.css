@@ -142,7 +142,18 @@
   min-height: 0;
   background: var(--excel-grid-cell-bg);
   border-top: 1px solid var(--excel-ribbon-border);
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.excel-ribbon-tab-bar,
+.excel-ribbon-toolbar,
+.excel-formula-bar,
+.point-mode-banner,
+.excel-bottom-bar,
+.excel-status-bar,
+#mainOutput.output-section {
+  flex-shrink: 0 !important;
 }
 
 /* ── 1. Ribbon Tab Bar ─────────────────────────────────────────── */
@@ -380,11 +391,11 @@
 
 /* ── 4. Spreadsheet Interactive Grid Table ──────────────────────── */
 .excel-grid-viewport {
-  flex: 1;
+  flex: 1 1 140px;
+  min-height: 120px;
   overflow: auto;
   position: relative;
   background: var(--excel-grid-cell-bg);
-  min-height: 350px;
 }
 
 .excel-sheet-table {
@@ -2810,25 +2821,33 @@ html[data-theme="light"] .reference-table code,
   }
 
   .excel-grid-viewport {
-    height: 320px !important;
-    max-height: 45vh !important;
+    height: clamp(160px, 32vh, 320px) !important;
+    max-height: 40vh !important;
     flex: none !important;
     overflow: auto !important;
     -webkit-overflow-scrolling: touch !important;
+    transition: height 0.2s ease;
   }
 
-  /* Sheet Tabs: Sticky & 100% visible on mobile */
+  body.mobile-keyboard-open .excel-grid-viewport,
+  body.is-cell-editing .excel-grid-viewport {
+    height: 150px !important;
+    max-height: 25vh !important;
+  }
+
+  /* Sheet Tabs: Sticky & 100% visible on mobile, pinned above virtual keyboard */
   .excel-bottom-bar,
   #excelSheetTabs {
     display: flex !important;
     position: sticky !important;
-    bottom: 0 !important;
+    bottom: var(--kb-offset, 0px) !important;
     z-index: 100 !important;
     height: 38px !important;
     background: var(--excel-ribbon-bg, #1e2330) !important;
     border-top: 1px solid var(--excel-ribbon-border, #2e364a) !important;
     border-bottom: 1px solid var(--excel-ribbon-border, #2e364a) !important;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4) !important;
+    transition: bottom 0.15s ease-out;
   }
 
   .excel-status-bar {
@@ -2842,14 +2861,15 @@ html[data-theme="light"] .reference-table code,
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    min-height: 140px !important;
-    max-height: 320px !important;
+    min-height: 90px !important;
+    max-height: 280px !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
     margin-top: 8px !important;
-    margin-bottom: 80px !important;
+    margin-bottom: calc(var(--kb-offset, 0px) + 80px) !important;
     border-top: 1px solid var(--border, rgba(255, 255, 255, 0.12)) !important;
     background: var(--terminal-bg, #04060b) !important;
+    transition: margin-bottom 0.15s ease-out;
   }
 }
 

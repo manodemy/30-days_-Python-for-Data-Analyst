@@ -76,6 +76,7 @@
       initTheme();
       initHeaderNavigation();
       initMobileThemeToggle();
+      initMobileKeyboardObserver();
 
       // 5. Hide Loading Overlay
       const overlay = document.getElementById('pyLoadingOverlay');
@@ -356,6 +357,16 @@
             </div>
           </div>
         `;
+      }
+
+      // Smoothly scroll result card into view on mobile so it is never hidden
+      if (window.innerWidth <= 900) {
+        setTimeout(() => {
+          const mainOut = document.getElementById('mainOutput');
+          if (mainOut) {
+            mainOut.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }, 100);
       }
     }
   }
@@ -997,6 +1008,35 @@
     }
     mql.addEventListener('change', relocateToggle);
     relocateToggle(mql);
+  }
+
+  function initMobileKeyboardObserver() {
+    function updateKb() {
+      if (window.innerWidth > 900) {
+        document.documentElement.style.setProperty('--kb-offset', '0px');
+        document.body.classList.remove('mobile-keyboard-open');
+        return;
+      }
+      let kbHeight = 0;
+      if (window.visualViewport) {
+        const vv = window.visualViewport;
+        kbHeight = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      }
+      const isKbOpen = kbHeight > 60 || document.body.classList.contains('is-cell-editing');
+      document.body.classList.toggle('mobile-keyboard-open', isKbOpen);
+      document.documentElement.style.setProperty('--kb-offset', `${Math.round(kbHeight)}px`);
+    }
+
+    window.updateMobileKeyboard = updateKb;
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', updateKb);
+      window.visualViewport.addEventListener('scroll', updateKb);
+    }
+    window.addEventListener('resize', updateKb);
+    window.addEventListener('orientationchange', () => setTimeout(updateKb, 200));
+
+    updateKb();
   }
 
   // ═══════════════ 9b. HEADER NAVIGATION & MOBILE ZEN TOGGLE ═══════════════

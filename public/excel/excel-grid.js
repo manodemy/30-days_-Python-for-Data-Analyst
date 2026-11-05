@@ -1285,7 +1285,17 @@
       if (this.formulaInput) {
         this.formulaInput.addEventListener('focus', () => {
           this.isEditing = true;
+          document.body.classList.add('is-cell-editing');
+          window.updateMobileKeyboard?.();
           this.updateStatusBar();
+        });
+        this.formulaInput.addEventListener('blur', () => {
+          setTimeout(() => {
+            if (!this.inlineEditorEl && document.activeElement !== this.formulaInput) {
+              document.body.classList.remove('is-cell-editing');
+              window.updateMobileKeyboard?.();
+            }
+          }, 200);
         });
         this.formulaInput.addEventListener('input', () => {
           this.isEditing = true;
@@ -1378,6 +1388,8 @@
       this.removeInlineEditor();
 
       this.isEditing = true;
+      document.body.classList.add('is-cell-editing');
+      window.updateMobileKeyboard?.();
       const cellObj = this.workbook.getCell(this.activeSheetName, this.activeRow, this.activeCol);
       const rawVal = cellObj ? (cellObj.formula || cellObj.raw || '') : '';
       const startVal = initialChar !== null ? initialChar : rawVal;
@@ -1400,6 +1412,7 @@
         input.type = 'text';
         input.value = startVal;
         input.className = 'excel-inline-input';
+        this.inlineEditorEl = input;
 
         // Position absolutely over the cell, relative to the container
         const topPos = rect.top - containerRect.top + this.container.scrollTop;
@@ -1519,6 +1532,8 @@
     }
 
     removeInlineEditor() {
+      document.body.classList.remove('is-cell-editing');
+      window.updateMobileKeyboard?.();
       if (this.inlineEditorEl) {
         this.inlineEditorEl.remove();
         this.inlineEditorEl = null;
