@@ -377,6 +377,8 @@
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
+  width: max-content;
+  min-width: 100%;
   font-family: 'Calibri', 'Segoe UI', var(--font-sans, sans-serif);
   font-size: 12px;
   color: var(--excel-grid-text);
@@ -385,9 +387,9 @@
 }
 
 .excel-corner-th {
-  width: 44px;
-  min-width: 44px;
-  max-width: 44px;
+  width: 46px;
+  min-width: 46px;
+  max-width: 46px;
   height: 24px;
   background: var(--excel-grid-header-bg);
   position: sticky;
@@ -427,6 +429,8 @@
   border-bottom: 1px solid var(--excel-header-border);
   line-height: 23px;
   box-sizing: border-box;
+  user-select: none;
+  cursor: pointer;
 }
 
 .excel-col-th.selected {
@@ -437,9 +441,9 @@
 }
 
 .excel-row-th {
-  width: 44px;
-  min-width: 44px;
-  max-width: 44px;
+  width: 46px;
+  min-width: 46px;
+  max-width: 46px;
   height: 24px;
   min-height: 24px;
   max-height: 24px;
@@ -1188,14 +1192,31 @@ th.spotlight-col {
 }
 
 .excel-spacer-row {
-  padding: 0;
-  margin: 0;
-  border: none;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
 }
 .excel-spacer-row td {
-  padding: 0;
-  margin: 0;
-  border: none;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  pointer-events: none;
+}
+
+.excel-cell.copied-marching {
+  outline: 2px dashed #107c41 !important;
+  outline-offset: -2px;
+  animation: excelMarching 1s linear infinite;
+}
+
+@keyframes excelMarching {
+  0% { outline-offset: -2px; }
+  50% { outline-offset: -1px; }
+  100% { outline-offset: -2px; }
 }
 
 .corner-triangle {
